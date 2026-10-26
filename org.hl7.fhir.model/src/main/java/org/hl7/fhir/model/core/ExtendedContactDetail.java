@@ -344,6 +344,41 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.address != null) {
+          visitor.visit(this, "address", -1, this.address);
+        }
+        if (this.organization != null) {
+          visitor.visit(this, "organization", -1, this.organization);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "purpose":  return new Property("purpose", "CodeableConcept", "The purpose/type of contact.", 0, 1, purpose);

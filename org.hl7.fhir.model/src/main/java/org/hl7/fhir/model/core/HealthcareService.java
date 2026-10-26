@@ -324,6 +324,23 @@ public class HealthcareService extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Coded value for the eligibility.", 0, 1, code);
@@ -1931,6 +1948,173 @@ public class HealthcareService extends DomainResource {
         children.add(new Property("appointmentRequired", "boolean", "Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization.", 0, 1, appointmentRequired));
         children.add(new Property("availability", "Availability", "A collection of times that the healthcare service is available.", 0, 1, availability));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpointList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.providedBy != null) {
+          visitor.visit(this, "providedBy", -1, this.providedBy);
+        }
+        if (this.offeredInList != null) {
+          int i = 0;
+          for (Base v : this.offeredInList) {
+            if (v != null) {
+              visitor.visit(this, "offeredIn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialtyList != null) {
+          int i = 0;
+          for (Base v : this.specialtyList) {
+            if (v != null) {
+              visitor.visit(this, "specialty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.locationList != null) {
+          int i = 0;
+          for (Base v : this.locationList) {
+            if (v != null) {
+              visitor.visit(this, "location", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+        if (this.extraDetails != null) {
+          visitor.visit(this, "extraDetails", -1, this.extraDetails);
+        }
+        if (this.photo != null) {
+          visitor.visit(this, "photo", -1, this.photo);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.coverageAreaList != null) {
+          int i = 0;
+          for (Base v : this.coverageAreaList) {
+            if (v != null) {
+              visitor.visit(this, "coverageArea", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceProvisionCodeList != null) {
+          int i = 0;
+          for (Base v : this.serviceProvisionCodeList) {
+            if (v != null) {
+              visitor.visit(this, "serviceProvisionCode", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.eligibilityList != null) {
+          int i = 0;
+          for (Base v : this.eligibilityList) {
+            if (v != null) {
+              visitor.visit(this, "eligibility", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.programList != null) {
+          int i = 0;
+          for (Base v : this.programList) {
+            if (v != null) {
+              visitor.visit(this, "program", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.referralMethodList != null) {
+          int i = 0;
+          for (Base v : this.referralMethodList) {
+            if (v != null) {
+              visitor.visit(this, "referralMethod", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.referralRequired != null) {
+          visitor.visit(this, "referralRequired", -1, this.referralRequired);
+        }
+        if (this.appointmentRequired != null) {
+          visitor.visit(this, "appointmentRequired", -1, this.appointmentRequired);
+        }
+        if (this.availability != null) {
+          visitor.visit(this, "availability", -1, this.availability);
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

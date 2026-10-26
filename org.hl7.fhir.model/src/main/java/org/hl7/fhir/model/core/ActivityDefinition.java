@@ -577,6 +577,26 @@ public class ActivityDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.typeCanonical != null) {
+            visitor.visit(this, "typeCanonical", -1, this.typeCanonical);
+          }
+          if (this.typeReference != null) {
+            visitor.visit(this, "typeReference", -1, this.typeReference);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
@@ -912,6 +932,17 @@ public class ActivityDefinition extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("path", "string", "The path to the element to be customized. This is the path on the resource that will hold the result of the calculation defined by the expression. The specified path SHALL be a FHIRPath resolvable on the specified target type of the ActivityDefinition, and SHALL consist only of identifiers, constant indexers, and a restricted subset of functions. The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, 1, path));
           children.add(new Property("expression", "Expression", "An expression specifying the value of the customized element.", 0, 1, expression));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
         }
 
         @Override
@@ -4022,6 +4053,260 @@ public class ActivityDefinition extends MetadataResource {
         children.add(new Property("observationResultRequirement", "canonical(ObservationDefinition)", "Defines the observations that are expected to be produced by the action.", 0, java.lang.Integer.MAX_VALUE, observationResultRequirementList));
         children.add(new Property("transform", "canonical", "A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.", 0, 1, transform));
         children.add(new Property("dynamicValue", "", "Dynamic values that will be evaluated to produce values for elements of the resulting resource. For example, if the dosage of a medication must be computed based on the patient's weight, a dynamic value would be used to specify an expression that calculated the weight, and the path on the request resource that would contain the result.", 0, java.lang.Integer.MAX_VALUE, dynamicValueList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.subtitle != null) {
+          visitor.visit(this, "subtitle", -1, this.subtitle);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject[x]", -1, this.subject);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.usage != null) {
+          visitor.visit(this, "usage", -1, this.usage);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.libraryList != null) {
+          int i = 0;
+          for (Base v : this.libraryList) {
+            if (v != null) {
+              visitor.visit(this, "library", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.profile != null) {
+          visitor.visit(this, "profile", -1, this.profile);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.doNotPerform != null) {
+          visitor.visit(this, "doNotPerform", -1, this.doNotPerform);
+        }
+        if (this.timing != null) {
+          visitor.visit(this, "timing[x]", -1, this.timing);
+        }
+        if (this.asNeeded != null) {
+          visitor.visit(this, "asNeeded[x]", -1, this.asNeeded);
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.product != null) {
+          visitor.visit(this, "product[x]", -1, this.product);
+        }
+        if (this.quantity != null) {
+          visitor.visit(this, "quantity", -1, this.quantity);
+        }
+        if (this.dosageInstruction != null) {
+          visitor.visit(this, "dosageInstruction", -1, this.dosageInstruction);
+        }
+        if (this.bodySiteList != null) {
+          int i = 0;
+          for (Base v : this.bodySiteList) {
+            if (v != null) {
+              visitor.visit(this, "bodySite", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specimenRequirementList != null) {
+          int i = 0;
+          for (Base v : this.specimenRequirementList) {
+            if (v != null) {
+              visitor.visit(this, "specimenRequirement", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.observationRequirementList != null) {
+          int i = 0;
+          for (Base v : this.observationRequirementList) {
+            if (v != null) {
+              visitor.visit(this, "observationRequirement", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.observationResultRequirementList != null) {
+          int i = 0;
+          for (Base v : this.observationResultRequirementList) {
+            if (v != null) {
+              visitor.visit(this, "observationResultRequirement", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.transform != null) {
+          visitor.visit(this, "transform", -1, this.transform);
+        }
+        if (this.dynamicValueList != null) {
+          int i = 0;
+          for (Base v : this.dynamicValueList) {
+            if (v != null) {
+              visitor.visit(this, "dynamicValue", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

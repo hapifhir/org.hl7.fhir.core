@@ -299,6 +299,32 @@ public class Organization extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.issuer != null) {
+            visitor.visit(this, "issuer", -1, this.issuer);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "An identifier allocated to this qualification for this organization.", 0, java.lang.Integer.MAX_VALUE, identifierList);
@@ -1114,6 +1140,77 @@ public class Organization extends DomainResource {
         children.add(new Property("partOf", "Reference(Organization)", "The organization of which this organization forms a part.", 0, 1, partOf));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the organization.", 0, java.lang.Integer.MAX_VALUE, endpointList));
         children.add(new Property("qualification", "", "The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.", 0, java.lang.Integer.MAX_VALUE, qualificationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.aliasList != null) {
+          int i = 0;
+          for (Base v : this.aliasList) {
+            if (v != null) {
+              visitor.visit(this, "alias", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOf != null) {
+          visitor.visit(this, "partOf", -1, this.partOf);
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.qualificationList != null) {
+          int i = 0;
+          for (Base v : this.qualificationList) {
+            if (v != null) {
+              visitor.visit(this, "qualification", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

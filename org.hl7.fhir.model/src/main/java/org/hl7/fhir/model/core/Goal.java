@@ -579,6 +579,20 @@ public class Goal extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.participant != null) {
+            visitor.visit(this, "participant", -1, this.participant);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.priority != null) {
+            visitor.visit(this, "priority", -1, this.priority);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "participant":  return new Property("participant", "Reference(Patient|Practitioner|RelatedPerson|PractitionerRole|CareTeam|Organization|Group)", "The person ororganization whose acceptance/priority is being reflected.", 0, 1, participant);
@@ -1003,6 +1017,20 @@ public class Goal extends DomainResource {
           children.add(new Property("measure", "CodeableConcept", "The parameter whose value is being tracked, e.g. body weight, blood pressure, or hemoglobin A1c level.", 0, 1, measure));
           children.add(new Property("detail[x]", "Quantity|Range|CodeableConcept|string|boolean|integer|Ratio", "The target value of the focus to be achieved to signify the fulfillment of the goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any focus value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any focus value at or above the low value. A CodeableConcept target value could be Positive, Negative, Abnormal, Normal, Present, Absent, Yes, No.", 0, 1, detail));
           children.add(new Property("due[x]", "date|Duration", "Indicates either the date or the duration after start by which the goal should be met.", 0, 1, due));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.measure != null) {
+            visitor.visit(this, "measure", -1, this.measure);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail[x]", -1, this.detail);
+          }
+          if (this.due != null) {
+            visitor.visit(this, "due[x]", -1, this.due);
+          }
         }
 
         @Override
@@ -2124,6 +2152,104 @@ public class Goal extends DomainResource {
         children.add(new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|CareTeam|Group)", "Indicates whose goal this is - patient goal, practitioner goal, etc.", 0, 1, source));
         children.add(new Property("addresses", "Reference(Condition|Observation|MedicationStatement|MedicationRequest|NutritionOrder|ServiceRequest|RiskAssessment|Procedure|NutritionIntake)", "The identified conditions and other resources that provide the context for why the goal exists.", 0, java.lang.Integer.MAX_VALUE, addressesList));
         children.add(new Property("note", "Annotation", "Any comments related to the goal.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.lifecycleStatus != null) {
+          visitor.visit(this, "lifecycleStatus", -1, this.lifecycleStatus);
+        }
+        if (this.lifecycleStatusReasonList != null) {
+          int i = 0;
+          for (Base v : this.lifecycleStatusReasonList) {
+            if (v != null) {
+              visitor.visit(this, "lifecycleStatusReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.achievementStatus != null) {
+          visitor.visit(this, "achievementStatus", -1, this.achievementStatus);
+        }
+        if (this.achievementStatusDate != null) {
+          visitor.visit(this, "achievementStatusDate", -1, this.achievementStatusDate);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.continuous != null) {
+          visitor.visit(this, "continuous", -1, this.continuous);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.start != null) {
+          visitor.visit(this, "start[x]", -1, this.start);
+        }
+        if (this.acceptanceList != null) {
+          int i = 0;
+          for (Base v : this.acceptanceList) {
+            if (v != null) {
+              visitor.visit(this, "acceptance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.targetList != null) {
+          int i = 0;
+          for (Base v : this.targetList) {
+            if (v != null) {
+              visitor.visit(this, "target", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.addressesList != null) {
+          int i = 0;
+          for (Base v : this.addressesList) {
+            if (v != null) {
+              visitor.visit(this, "addresses", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

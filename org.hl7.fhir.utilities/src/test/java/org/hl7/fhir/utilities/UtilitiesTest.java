@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class UtilitiesTest {
@@ -210,6 +212,91 @@ class UtilitiesTest {
     assertEquals(1, Utilities.getDecimalPrecision("1.0"));
     assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
     assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
+  }
+
+  @ParameterizedTest(name = "unescapeJson({0}) = {1}")
+  @CsvSource(delimiter = '|', quoteCharacter = '\'', value = {
+    "\\\"a\\\" | \"a\"",
+    "\\u0041B | AB",
+    "x\\u00e9y | xéy",
+    "a\\\\b | a\\b",
+    "tab\\there | 'tab\there'",
+    "\\uD83D\\uDE00 | \uD83D\uDE00",
+  })
+  void testUnescapeJson(String json, String expected) {
+    assertEquals(expected, Utilities.unescapeJson(json));
+  }
+
+  @Test
+  void testUnescapeJsonReversesEscapeJson() {
+    String value = "say \"hi\"\\now";
+    assertEquals(value, Utilities.unescapeJson(Utilities.escapeJson(value)));
+  }
+
+  @ParameterizedTest
+  @CsvSource({"a\\", "\\u00", "\\uZZZZ", "\\u+041", "\\u-041"})
+  void testUnescapeJsonInvalidEscape(String json) {
+    Assertions.assertThrows(FHIRException.class, () -> Utilities.unescapeJson(json));
+  }
+
+  @ParameterizedTest(name = "highBoundary({0}, {1}) = {2}")
+  @CsvSource({
+    "9.95, 1, 10.0",
+    "0.994, 1, 1.0",
+    "0.996, 1, 1.0",
+    "99.96, 1, 100.0",
+    "9, 0, 10",
+    "-9.96, 1, -9.9",
+    "0.55, 1, 0.6",
+    "1.587, 2, 1.59",
+    "0.0034, 1, 0.0"
+  })
+  void testHighBoundaryForDecimalCarry(String value, int precision, String expected) {
+    assertEquals(expected, Utilities.highBoundaryForDecimal(value, precision));
+  }
+
+  @ParameterizedTest(name = "lowBoundary({0}, {1}) = {2}")
+  @CsvSource({
+    // a negative low boundary is the negated high boundary of the magnitude, so it carries too
+    "-9.96, 1, -10.0",
+    "-9.95, 1, -10.0",
+    "-99.96, 1, -100.0",
+    "-9, 0, -10",
+    // borrowing from the first digit must not leave a leading zero
+    "10, 0, 9",
+    "10, 1, 9.5",
+    "100, 2, 99.50",
+    "1000, 0, 999",
+    "9.95, 1, 9.9"
+  })
+  void testLowBoundaryForDecimalCarry(String value, int precision, String expected) {
+    assertEquals(expected, Utilities.lowBoundaryForDecimal(value, precision));
+  }
+
+  @ParameterizedTest(name = "{0}Boundary({1}, {2}) = {3}")
+  @CsvSource({
+    // the precision is in the mantissa; the result has no exponent
+    "high, 9.5e2, 0, 955",
+    "low, 9.5e2, 0, 945",
+    "high, 9.5e2, 8, 955.00000000",
+    "low, 9.5e2, 8, 945.00000000",
+    "high, -9.5e2, 0, -945",
+    "low, -9.5e2, 0, -955",
+    "high, 1e2, 0, 150",
+    "low, 1e2, 0, 50",
+    "high, 1.5e-3, 8, 0.00155000",
+    "low, 1.5e-3, 8, 0.00145000",
+    "high, -1.5e-3, 8, -0.00145000",
+    "high, 1.5E2, 1, 155.0",
+    "low, 1.5E2, 1, 145.0",
+    "high, 1.5e+2, 0, 155",
+    "high, 9.95e1, 1, 99.6",
+    "high, 9.95e-1, 1, 1.0",
+    "low, 1.0e0, 1, 0.9",
+    "high, 1.0e0, 1, 1.1"
+  })
+  void testBoundaryForDecimalWithExponent(String boundary, String value, int precision, String expected) {
+    assertEquals(expected, "high".equals(boundary) ? Utilities.highBoundaryForDecimal(value, precision) : Utilities.lowBoundaryForDecimal(value, precision));
   }
   
   public static Stream<Arguments> windowsRootPaths() {

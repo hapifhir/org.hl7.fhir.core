@@ -301,6 +301,23 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.id != null) {
+          visitor.visit(this, "id", -1, this.id);
+        }
+        if (this.meta != null) {
+          visitor.visit(this, "meta", -1, this.meta);
+        }
+        if (this.implicitRules != null) {
+          visitor.visit(this, "implicitRules", -1, this.implicitRules);
+        }
+        if (this.language != null) {
+          visitor.visit(this, "language", -1, this.language);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "id":  return new Property("id", "id", "The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.", 0, 1, id);

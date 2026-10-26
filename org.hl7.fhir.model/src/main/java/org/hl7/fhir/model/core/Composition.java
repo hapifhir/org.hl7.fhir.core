@@ -292,6 +292,35 @@ public class Composition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.functionList != null) {
+            int i = 0;
+            for (Base v : this.functionList) {
+              if (v != null) {
+                visitor.visit(this, "function", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.time != null) {
+            visitor.visit(this, "time", -1, this.time);
+          }
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Meaning and purpose of participation, in creation of the clinical document. The list includes: data entry person, informant, primary information recipient, and tracker. Other types are allowed.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -600,6 +629,23 @@ public class Composition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.classifierList != null) {
+            int i = 0;
+            for (Base v : this.classifierList) {
+              if (v != null) {
+                visitor.visit(this, "classifier", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The kind of classifier (e.g. population, intervention, comparator, outcome).", 0, 1, type);
@@ -905,6 +951,20 @@ public class Composition extends DomainResource {
           children.add(new Property("mode", "CodeableConcept", "The type of attestation the authenticator offers.", 0, 1, mode));
           children.add(new Property("time", "dateTime", "When the composition was attested by the party.", 0, 1, time));
           children.add(new Property("party", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization|Group)", "Who attested the composition in the specified way.", 0, 1, party));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.time != null) {
+            visitor.visit(this, "time", -1, this.time);
+          }
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
         }
 
         @Override
@@ -1253,6 +1313,17 @@ public class Composition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target[x]", -1, this.target);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The type of relationship to the related artifact.", 0, 1, type);
@@ -1538,6 +1609,23 @@ public class Composition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("period", "Period", "The period of time covered by the documentation. There is no assertion that the documentation is a complete representation for this period, only that it documents events during this time.", 0, 1, period));
           children.add(new Property("detail", "CodeableReference(Any)", "Represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the typeCode, such as a \"History and Physical Report\" in which case the procedure being documented is necessarily a \"History and Physical\" act. The events may be included as a code or as a reference to another resource.", 0, java.lang.Integer.MAX_VALUE, detailList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2186,6 +2274,65 @@ public class Composition extends DomainResource {
           children.add(new Property("entry", "Reference(Any)", "A reference to the actual resource from which the narrative in the section is derived.", 0, java.lang.Integer.MAX_VALUE, entryList));
           children.add(new Property("emptyReason", "CodeableConcept", "If the section is empty, why the list is empty. An empty section typically has some text explaining the empty reason.", 0, 1, emptyReason));
           children.add(new Property("section", "@Composition.section", "A nested sub-section within this section.", 0, java.lang.Integer.MAX_VALUE, sectionList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.authorList != null) {
+            int i = 0;
+            for (Base v : this.authorList) {
+              if (v != null) {
+                visitor.visit(this, "author", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.focus != null) {
+            visitor.visit(this, "focus", -1, this.focus);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.orderedBy != null) {
+            visitor.visit(this, "orderedBy", -1, this.orderedBy);
+          }
+          if (this.entryList != null) {
+            int i = 0;
+            for (Base v : this.entryList) {
+              if (v != null) {
+                visitor.visit(this, "entry", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.emptyReason != null) {
+            visitor.visit(this, "emptyReason", -1, this.emptyReason);
+          }
+          if (this.sectionList != null) {
+            int i = 0;
+            for (Base v : this.sectionList) {
+              if (v != null) {
+                visitor.visit(this, "section", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3850,6 +3997,164 @@ public class Composition extends DomainResource {
         children.add(new Property("relatesTo", "", "Relationships that this composition has with other compositions or documents (FHIR or non-FHIR resources) that already exist.", 0, java.lang.Integer.MAX_VALUE, relatesToList));
         children.add(new Property("event", "", "The clinical service, such as a colonoscopy or an appendectomy, being documented.", 0, java.lang.Integer.MAX_VALUE, eventList));
         children.add(new Property("section", "", "The root of the sections that make up the composition.", 0, java.lang.Integer.MAX_VALUE, sectionList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.consentList != null) {
+          int i = 0;
+          for (Base v : this.consentList) {
+            if (v != null) {
+              visitor.visit(this, "consent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.classificationList != null) {
+          int i = 0;
+          for (Base v : this.classificationList) {
+            if (v != null) {
+              visitor.visit(this, "classification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.attesterList != null) {
+          int i = 0;
+          for (Base v : this.attesterList) {
+            if (v != null) {
+              visitor.visit(this, "attester", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.custodian != null) {
+          visitor.visit(this, "custodian", -1, this.custodian);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sectionList != null) {
+          int i = 0;
+          for (Base v : this.sectionList) {
+            if (v != null) {
+              visitor.visit(this, "section", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

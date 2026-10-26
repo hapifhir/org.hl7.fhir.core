@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,6 +58,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.eclipse.jgit.ignore.IgnoreNode;
 
@@ -92,7 +94,7 @@ public class NPMPackageGenerator {
     private String getDirectory() {
       switch (this) {
       case RESOURCE: return "package/";
-      case EXAMPLE: return "package/example/";
+      case EXAMPLE: return "package/examples/"; // as the package spec says. Older packages have package/example/ - see NpmPackage.EXAMPLE_FOLDERS
       case OPENAPI: return "package/openapi/";
       case SCHEMATRON: return "package/xml/";
       case RDF: return "package/rdf/";      
@@ -325,7 +327,7 @@ public class NPMPackageGenerator {
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
     dir.add("lib", "package");
-    dir.add("example", "example");
+    dir.add("example", "examples");
     if (ig.hasJurisdiction() && ig.getJurisdiction().size() == 1 && ig.getJurisdictionFirstRep().getCoding().size() == 1) {
       Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
       npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());
@@ -586,9 +588,17 @@ public class NPMPackageGenerator {
     indexer.start(indexdb);
   }
 
+  /**
+   * TarArchiveOutputStream rejects names of TarConstants.NAMELEN (100) bytes or more unless a
+   * long file mode is set.
+   */
+  static boolean tooLongForTar(String path) {
+    return path.getBytes(StandardCharsets.UTF_8).length >= TarConstants.NAMELEN;
+  }
+
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = cat.getDirectory()+name;      
     }
@@ -598,7 +608,7 @@ public class NPMPackageGenerator {
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = cat.getDirectory()+name;      
     }
@@ -623,7 +633,7 @@ public class NPMPackageGenerator {
       folder = "package/"+folder;
     }
     String path = folder+"/"+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = folder+"/"+name;      
     }

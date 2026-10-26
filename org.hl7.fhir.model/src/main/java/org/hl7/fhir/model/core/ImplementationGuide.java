@@ -9476,6 +9476,23 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.packageId != null) {
+            visitor.visit(this, "packageId", -1, this.packageId);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "uri":  return new Property("uri", "canonical(ImplementationGuide)", "A canonical reference to the Implementation guide for the dependency.", 0, 1, uri);
@@ -9809,6 +9826,17 @@ public class ImplementationGuide extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("type", "uri", "The type of resource for the profile that instances must conform to. This must be a resource, or a type with a [Structure Type Characterstics (Constraint Control)](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html) of [can-be-target (Can Be Target)](https://build.fhir.org/ig/HL7/fhir-extensions/CodeSystem-type-characteristics-code.html#type-characteristics-code-can-be-target).", 0, 1, type));
           children.add(new Property("profile", "canonical(StructureDefinition)", "A reference to the profile that instances must conform to.", 0, 1, profile));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.profile != null) {
+            visitor.visit(this, "profile", -1, this.profile);
+          }
         }
 
         @Override
@@ -10257,6 +10285,50 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.groupingList != null) {
+            int i = 0;
+            for (Base v : this.groupingList) {
+              if (v != null) {
+                visitor.visit(this, "grouping", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.resourceList != null) {
+            int i = 0;
+            for (Base v : this.resourceList) {
+              if (v != null) {
+                visitor.visit(this, "resource", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.page != null) {
+            visitor.visit(this, "page", -1, this.page);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.templateList != null) {
+            int i = 0;
+            for (Base v : this.templateList) {
+              if (v != null) {
+                visitor.visit(this, "template", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "grouping":  return new Property("grouping", "", "A logical group of resources. Logical groups can be used when building pages.", 0, java.lang.Integer.MAX_VALUE, groupingList);
@@ -10610,6 +10682,17 @@ public class ImplementationGuide extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("name", "string", "The human-readable title to display for the package of resources when rendering the implementation guide.", 0, 1, name));
           children.add(new Property("description", "markdown", "Human readable text describing the package.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -11197,6 +11280,44 @@ public class ImplementationGuide extends CanonicalResource {
           children.add(new Property("isExample", "boolean", "If true, indicates the resource is an example instance.", 0, 1, isExample));
           children.add(new Property("profile", "canonical(StructureDefinition)", "If present, indicates profile(s) the instance is valid against.", 0, java.lang.Integer.MAX_VALUE, profileList));
           children.add(new Property("groupingId", "id", "Reference to the id of the grouping this resource appears in.", 0, 1, groupingId));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.fhirVersionList != null) {
+            int i = 0;
+            for (Base v : this.fhirVersionList) {
+              if (v != null) {
+                visitor.visit(this, "fhirVersion", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.isExample != null) {
+            visitor.visit(this, "isExample", -1, this.isExample);
+          }
+          if (this.profileList != null) {
+            int i = 0;
+            for (Base v : this.profileList) {
+              if (v != null) {
+                visitor.visit(this, "profile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.groupingId != null) {
+            visitor.visit(this, "groupingId", -1, this.groupingId);
+          }
         }
 
         @Override
@@ -11797,6 +11918,32 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.source != null) {
+            visitor.visit(this, "source[x]", -1, this.source);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.generation != null) {
+            visitor.visit(this, "generation", -1, this.generation);
+          }
+          if (this.pageList != null) {
+            int i = 0;
+            for (Base v : this.pageList) {
+              if (v != null) {
+                visitor.visit(this, "page", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "source[x]":  return new Property("source[x]", "url|string|markdown", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
@@ -12144,6 +12291,17 @@ public class ImplementationGuide extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("code", "Coding", "A tool-specific code that defines the parameter.", 0, 1, code));
           children.add(new Property("value", "string", "Value for named type.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -12495,6 +12653,20 @@ public class ImplementationGuide extends CanonicalResource {
           children.add(new Property("code", "code", "Type of template specified.", 0, 1, code));
           children.add(new Property("source", "string", "The source location for the template.", 0, 1, source));
           children.add(new Property("scope", "string", "The scope in which the template applies.", 0, 1, scope));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.source != null) {
+            visitor.visit(this, "source", -1, this.source);
+          }
+          if (this.scope != null) {
+            visitor.visit(this, "scope", -1, this.scope);
+          }
         }
 
         @Override
@@ -13018,6 +13190,50 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.rendering != null) {
+            visitor.visit(this, "rendering", -1, this.rendering);
+          }
+          if (this.resourceList != null) {
+            int i = 0;
+            for (Base v : this.resourceList) {
+              if (v != null) {
+                visitor.visit(this, "resource", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.pageList != null) {
+            int i = 0;
+            for (Base v : this.pageList) {
+              if (v != null) {
+                visitor.visit(this, "page", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.imageList != null) {
+            int i = 0;
+            for (Base v : this.imageList) {
+              if (v != null) {
+                visitor.visit(this, "image", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.otherList != null) {
+            int i = 0;
+            for (Base v : this.otherList) {
+              if (v != null) {
+                visitor.visit(this, "other", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "rendering":  return new Property("rendering", "url", "A pointer to official web page, PDF or other rendering of the implementation guide.", 0, 1, rendering);
@@ -13478,6 +13694,29 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.isExample != null) {
+            visitor.visit(this, "isExample", -1, this.isExample);
+          }
+          if (this.profileList != null) {
+            int i = 0;
+            for (Base v : this.profileList) {
+              if (v != null) {
+                visitor.visit(this, "profile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relativePath != null) {
+            visitor.visit(this, "relativePath", -1, this.relativePath);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "Reference(Any)", "Where this resource is found.", 0, 1, reference);
@@ -13882,6 +14121,26 @@ public class ImplementationGuide extends CanonicalResource {
           children.add(new Property("name", "string", "Relative path to the page.", 0, 1, name));
           children.add(new Property("title", "string", "Label for the page intended for human display.", 0, 1, title));
           children.add(new Property("anchor", "string", "The name of an anchor available on the page.", 0, java.lang.Integer.MAX_VALUE, anchorList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.anchorList != null) {
+            int i = 0;
+            for (Base v : this.anchorList) {
+              if (v != null) {
+                visitor.visit(this, "anchor", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -15476,6 +15735,125 @@ public class ImplementationGuide extends CanonicalResource {
         children.add(new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to. If there is more than one profile for a type, then resources SHALL conform to one of them.", 0, java.lang.Integer.MAX_VALUE, globalList));
         children.add(new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition));
         children.add(new Property("manifest", "", "Information about an assembled implementation guide, created by the publication tooling.", 0, 1, manifest));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.packageId != null) {
+          visitor.visit(this, "packageId", -1, this.packageId);
+        }
+        if (this.license != null) {
+          visitor.visit(this, "license", -1, this.license);
+        }
+        if (this.fhirVersionList != null) {
+          int i = 0;
+          for (Base v : this.fhirVersionList) {
+            if (v != null) {
+              visitor.visit(this, "fhirVersion", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dependsOnList != null) {
+          int i = 0;
+          for (Base v : this.dependsOnList) {
+            if (v != null) {
+              visitor.visit(this, "dependsOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.globalList != null) {
+          int i = 0;
+          for (Base v : this.globalList) {
+            if (v != null) {
+              visitor.visit(this, "global", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.definition != null) {
+          visitor.visit(this, "definition", -1, this.definition);
+        }
+        if (this.manifest != null) {
+          visitor.visit(this, "manifest", -1, this.manifest);
+        }
       }
 
       @Override

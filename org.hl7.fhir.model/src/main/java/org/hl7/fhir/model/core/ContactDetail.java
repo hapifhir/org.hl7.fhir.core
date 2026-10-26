@@ -204,6 +204,23 @@ public class ContactDetail extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "name":  return new Property("name", "string", "The name of an individual to contact.", 0, 1, name);

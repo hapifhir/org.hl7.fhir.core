@@ -759,6 +759,53 @@ public class SubscriptionTopic extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.supportedInteractionList != null) {
+            int i = 0;
+            for (Base v : this.supportedInteractionList) {
+              if (v != null) {
+                visitor.visit(this, "supportedInteraction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.queryCriteria != null) {
+            visitor.visit(this, "queryCriteria", -1, this.queryCriteria);
+          }
+          if (this.fhirPathCriteria != null) {
+            visitor.visit(this, "fhirPathCriteria", -1, this.fhirPathCriteria);
+          }
+          if (this.event != null) {
+            visitor.visit(this, "event", -1, this.event);
+          }
+          if (this.canFilterByList != null) {
+            int i = 0;
+            for (Base v : this.canFilterByList) {
+              if (v != null) {
+                visitor.visit(this, "canFilterBy", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.notificationShapeList != null) {
+            int i = 0;
+            for (Base v : this.notificationShapeList) {
+              if (v != null) {
+                visitor.visit(this, "notificationShape", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "markdown", "The human readable description of this trigger for the SubscriptionTopic -  for example, \"An Encounter enters the 'in-progress' state\".", 0, 1, description);
@@ -1353,6 +1400,26 @@ public class SubscriptionTopic extends CanonicalResource {
           children.add(new Property("current", "string", "The FHIR query based rules are applied to the current resource state (e.g., state after an update).", 0, 1, current));
           children.add(new Property("resultForDelete", "code", "For 'delete' interactions, should the 'current' query criteria count as an automatic pass or an automatic fail. If not present, the testing behavior during `delete` interactions is unspecified (server discretion).", 0, 1, resultForDelete));
           children.add(new Property("requireBoth", "boolean", "If set to `true`, both the `current` and `previous` query criteria must evaluate `true` to trigger a notification for this topic.  If set to `false` or not present, a notification for this topic will be triggered if either the `current` or `previous` tests evaluate to `true`.", 0, 1, requireBoth));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.previous != null) {
+            visitor.visit(this, "previous", -1, this.previous);
+          }
+          if (this.resultForCreate != null) {
+            visitor.visit(this, "resultForCreate", -1, this.resultForCreate);
+          }
+          if (this.current != null) {
+            visitor.visit(this, "current", -1, this.current);
+          }
+          if (this.resultForDelete != null) {
+            visitor.visit(this, "resultForDelete", -1, this.resultForDelete);
+          }
+          if (this.requireBoth != null) {
+            visitor.visit(this, "requireBoth", -1, this.requireBoth);
+          }
         }
 
         @Override
@@ -1980,6 +2047,41 @@ public class SubscriptionTopic extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.filterParameter != null) {
+            visitor.visit(this, "filterParameter", -1, this.filterParameter);
+          }
+          if (this.filterDefinition != null) {
+            visitor.visit(this, "filterDefinition", -1, this.filterDefinition);
+          }
+          if (this.comparatorList != null) {
+            int i = 0;
+            for (Base v : this.comparatorList) {
+              if (v != null) {
+                visitor.visit(this, "comparator", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "markdown", "Description of how this filtering parameter is intended to be used.", 0, 1, description);
@@ -2504,6 +2606,41 @@ public class SubscriptionTopic extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.includeList != null) {
+            int i = 0;
+            for (Base v : this.includeList) {
+              if (v != null) {
+                visitor.visit(this, "include", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.revIncludeList != null) {
+            int i = 0;
+            for (Base v : this.revIncludeList) {
+              if (v != null) {
+                visitor.visit(this, "revInclude", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relatedQueryList != null) {
+            int i = 0;
+            for (Base v : this.relatedQueryList) {
+              if (v != null) {
+                visitor.visit(this, "relatedQuery", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "resource":  return new Property("resource", "uri", "URL of the Data Type, Resource, or definition (e.g., logical model) that is the type used in this shape. This is the 'focus' resource of the topic (or one of them if there are more than one) and the root for this shape definition. It will be the same, a generality, or a specificity of `SubscriptionTopic.trigger.resource` when it is present.", 0, 1, resource);
@@ -2812,6 +2949,17 @@ public class SubscriptionTopic extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("queryType", "Coding", "Coded value(s) used to describe the type of information that evaluating this query will provide. Subscribers can use the values to ensure the data they request are relevant and necessary for their use.", 0, 1, queryType));
           children.add(new Property("query", "string", "Query a subscriber can use to retrieve additional information. The exact contents of the query MAY depend on the value of the `queryType`, however this SHOULD be a query suitable for use as an HTTP GET request (either fully-qualified or partial).", 0, 1, query));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.queryType != null) {
+            visitor.visit(this, "queryType", -1, this.queryType);
+          }
+          if (this.query != null) {
+            visitor.visit(this, "query", -1, this.query);
+          }
         }
 
         @Override
@@ -4291,6 +4439,113 @@ public class SubscriptionTopic extends CanonicalResource {
         children.add(new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the SubscriptionTopic content was or is planned to be effective.", 0, 1, effectivePeriod));
         children.add(new Property("trigger", "", "A definition of a state change or event that triggers a notification based on the SubscriptionTopic. The criteria may be just a human readable description, or may contain a FHIRPath expression, query-based definition, or event coding. Multiple triggers are considered OR joined (e.g., an update matching ANY of the definitions will trigger a notification).", 0, java.lang.Integer.MAX_VALUE, triggerList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.triggerList != null) {
+          int i = 0;
+          for (Base v : this.triggerList) {
+            if (v != null) {
+              visitor.visit(this, "trigger", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

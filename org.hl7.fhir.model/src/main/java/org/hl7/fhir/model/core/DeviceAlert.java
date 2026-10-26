@@ -338,6 +338,20 @@ public class DeviceAlert extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.observation != null) {
+            visitor.visit(this, "observation", -1, this.observation);
+          }
+          if (this.component != null) {
+            visitor.visit(this, "component", -1, this.component);
+          }
+          if (this.limit != null) {
+            visitor.visit(this, "limit", -1, this.limit);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "observation":  return new Property("observation", "Reference(Observation)", "Indicates the Observation whose value is causing the alert condition; or, if `component` is present, the Observation with a component causing the alert condition.", 0, 1, observation);
@@ -840,6 +854,44 @@ public class DeviceAlert extends DomainResource {
           children.add(new Property("manifestation", "CodeableConcept", "How the signal is being annunciated.", 0, 1, manifestation));
           children.add(new Property("type", "CodeableConcept", "Details of the signal manifestation, such as a 1 meter visual indicator or a 4 meter visual indicator.", 0, java.lang.Integer.MAX_VALUE, typeList));
           children.add(new Property("period", "Period", "The period during which the signal was in the indicated state. If no `period.end` is indicated, the signalling state is presumed to be on-going at last update.", 0, 1, period));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.activationState != null) {
+            visitor.visit(this, "activationState", -1, this.activationState);
+          }
+          if (this.presence != null) {
+            visitor.visit(this, "presence", -1, this.presence);
+          }
+          if (this.annunciator != null) {
+            visitor.visit(this, "annunciator", -1, this.annunciator);
+          }
+          if (this.manifestation != null) {
+            visitor.visit(this, "manifestation", -1, this.manifestation);
+          }
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
         }
 
         @Override
@@ -1926,6 +1978,92 @@ public class DeviceAlert extends DomainResource {
         children.add(new Property("derivedFrom", "", "The value causing the alert condition.", 0, java.lang.Integer.MAX_VALUE, derivedFromList));
         children.add(new Property("label", "string", "The label might combine information from the alert code, priority, the measurement type, measurement value, body sites and other sources, e.g., “HR > 180”.", 0, 1, label));
         children.add(new Property("signal", "", "Annunciation or notification of the alert condition.", 0, java.lang.Integer.MAX_VALUE, signalList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.procedureList != null) {
+          int i = 0;
+          for (Base v : this.procedureList) {
+            if (v != null) {
+              visitor.visit(this, "procedure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence", -1, this.occurrence);
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device", -1, this.device);
+        }
+        if (this.acknowledged != null) {
+          visitor.visit(this, "acknowledged", -1, this.acknowledged);
+        }
+        if (this.acknowledgedBy != null) {
+          visitor.visit(this, "acknowledgedBy", -1, this.acknowledgedBy);
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.label != null) {
+          visitor.visit(this, "label", -1, this.label);
+        }
+        if (this.signalList != null) {
+          int i = 0;
+          for (Base v : this.signalList) {
+            if (v != null) {
+              visitor.visit(this, "signal", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -2,7 +2,6 @@ package org.hl7.fhir.model.utilities;
 
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.Element;
-import org.hl7.fhir.model.Property;
 import org.hl7.fhir.model.core.Resource;
 
 
@@ -24,17 +23,14 @@ public class ElementVisitor {
   }
 
   private void visitBase(Object context, Base base) {
-    for (Property p : base.getChildren()) {
-      if (p.hasValues()) {
-        for (Base b : p.getValues()) {
-          if (b instanceof Resource) {
-            visit(context, (Resource) b);
-          } else {
-            visit(context, (Element) b);
-          }
-        }
+    base.forEachChild((parent, name, index, child) -> {
+      if (child instanceof Resource) {
+        visit(context, (Resource) child);
+      } else {
+        visit(context, (Element) child);
       }
-    }
+      return false;
+    });
   }
 
   public void visit(Object context, Resource res) {

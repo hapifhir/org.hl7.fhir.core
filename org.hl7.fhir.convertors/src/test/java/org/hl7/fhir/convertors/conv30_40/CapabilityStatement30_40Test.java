@@ -188,7 +188,7 @@ public class CapabilityStatement30_40Test {
     input.addExtension(new Extension("response", new org.hl7.fhir.r4.model.Reference("responseRef")));
     input.addExtension(new Extension("documentation", new StringType("some documentation")));
 
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), input.fhirType());
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
     CapabilityStatement.CapabilityStatementMessagingEventComponent result = CapabilityStatement30_40.convertMessageExtensionToMessageEvent(input);
 
     assertNotNull(result);
@@ -206,7 +206,7 @@ public class CapabilityStatement30_40Test {
     Extension inputString = new Extension("", new StringType("stringInput"));
     Extension inputCode = new Extension("", new org.hl7.fhir.r4.model.CodeType("codeInput"));
 
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), inputString.fhirType());
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
     CodeType resultString = CapabilityStatement30_40.convertFocusExtensionR4ToMessageEventDstu3(inputString);
     assertEquals("stringInput", resultString.getValue());
     CodeType resultCode = CapabilityStatement30_40.convertFocusExtensionR4ToMessageEventDstu3(inputCode);
@@ -274,7 +274,7 @@ public class CapabilityStatement30_40Test {
     input.setResponse(new org.hl7.fhir.dstu3.model.Reference("response ref"));
     input.setDocumentation("Some documentation");
 
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), input.fhirType());
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
     org.hl7.fhir.r4.model.Extension result = CapabilityStatement30_40.convertCapabilityStatementMessageEvent(input);
 
     assertEquals(VersionConvertorConstants.EXT_IG_CONFORMANCE_MESSAGE_EVENT, result.getUrl());
@@ -310,7 +310,7 @@ public class CapabilityStatement30_40Test {
 
   @Test
   public void convertFocusMessagingEventComponentDstu3ToExtensionR4() {
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), "");
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
 
     org.hl7.fhir.r4.model.Extension result1 = CapabilityStatement30_40.convertFocusMessagingEventComponent(new org.hl7.fhir.dstu3.model.CodeType("someCode"));
     assertNotNull(result1);

@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.igs.testing;
+package org.hl7.fhir.convertors.igs.r5.testing;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
@@ -83,16 +83,20 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
   @Override
   public org.hl7.fhir.r4.model.Resource convertR5ToR4(Resource source) {
     VersionConvertor_40_50 vc = new VersionConvertor_40_50(new BaseAdvisor_40_50());
-    ConversionContext40_50.INSTANCE.init(vc, source.fhirType());
-    switch (source.fhirType() ) {
-      case "TestReport":
-        return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
-      case "TestPlan":
-        return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
-      case "TestScript":
-        return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
-      default:
-        return null;
+    ConversionContext40_50.INSTANCE.init(vc);
+    try {
+      switch (source.fhirType() ) {
+        case "TestReport":
+          return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
+        case "TestPlan":
+          return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
+        case "TestScript":
+          return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
+        default:
+          return null;
+      }
+    } finally {
+      ConversionContext40_50.INSTANCE.close();
     }
   }
 
@@ -633,9 +637,9 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
     if (src == null)
       return null;
     org.hl7.fhir.r5.igs.testing.TestScript tgt = new org.hl7.fhir.r5.igs.testing.TestScript();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, EXT_TS_TESTSYSTEM);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, EXT_TS_TESTSYSTEM, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
-      // the advisor will get this ignored.
+      // copyDomainResource was told to leave this extension out
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
       org.hl7.fhir.r4.model.Extension se = ext.getExtensionByUrl("conformance");
@@ -705,7 +709,7 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript tgt = new org.hl7.fhir.r4.model.TestScript();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())

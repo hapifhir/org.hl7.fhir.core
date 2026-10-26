@@ -318,6 +318,16 @@ public abstract class ResourceRenderer extends DataRenderer {
       display = type.child("display");
       actual = type.child("reference");
       id = type.child("identifier");
+      if (actual == null || !actual.hasPrimitiveValue()) {
+        // target type not allowed by the element: use the target in the alternate-reference extension, keep the outer display
+        ResourceWrapper alternate = getAlternateReference(type);
+        if (alternate != null) {
+          actual = alternate.child("reference");
+          if (display == null) {
+            display = alternate.child("display");
+          }
+        }
+      }
     } else {
       actual = type;
     }
@@ -442,6 +452,16 @@ public abstract class ResourceRenderer extends DataRenderer {
       display = type.child("display");
       actual = type.child("reference");
       id = type.child("identifier");
+      if (actual == null || !actual.hasPrimitiveValue()) {
+        // target type not allowed by the element: use the target in the alternate-reference extension, keep the outer display
+        ResourceWrapper alternate = getAlternateReference(type);
+        if (alternate != null) {
+          actual = alternate.child("reference");
+          if (display == null) {
+            display = alternate.child("display");
+          }
+        }
+      }
     } else {
       actual = type;
     }
@@ -481,6 +501,19 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
  
+  /**
+   * The target of a reference whose type is not allowed by the element, see http://hl7.org/fhir/StructureDefinition/alternate-reference
+   */
+  private ResourceWrapper getAlternateReference(ResourceWrapper reference) {
+    for (ResourceWrapper ext : reference.extensions(ExtensionDefinitions.EXT_ALTERNATE_REFERENCE)) {
+      ResourceWrapper value = ext.child("value");
+      if (value != null && "Reference".equals(value.fhirType())) {
+        return value;
+      }
+    }
+    return null;
+  }
+
   private boolean isLocalReference(String url) {
     if (url == null) {
       return false;
@@ -1632,7 +1665,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDE80");
       x.tx(" Latest");
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" ("+actualVersion+")");
     } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
@@ -1645,7 +1678,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1662,7 +1695,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.style(context.getOpacity());
+      x.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

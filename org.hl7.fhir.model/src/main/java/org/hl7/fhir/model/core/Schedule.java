@@ -614,6 +614,68 @@ public class Schedule extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.serviceCategoryList != null) {
+          int i = 0;
+          for (Base v : this.serviceCategoryList) {
+            if (v != null) {
+              visitor.visit(this, "serviceCategory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceTypeList != null) {
+          int i = 0;
+          for (Base v : this.serviceTypeList) {
+            if (v != null) {
+              visitor.visit(this, "serviceType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialtyList != null) {
+          int i = 0;
+          for (Base v : this.specialtyList) {
+            if (v != null) {
+              visitor.visit(this, "specialty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.actorList != null) {
+          int i = 0;
+          for (Base v : this.actorList) {
+            if (v != null) {
+              visitor.visit(this, "actor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.planningHorizon != null) {
+          visitor.visit(this, "planningHorizon", -1, this.planningHorizon);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "External Ids for this item.", 0, java.lang.Integer.MAX_VALUE, identifierList);

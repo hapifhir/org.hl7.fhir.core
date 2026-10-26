@@ -1,0 +1,127 @@
+package org.hl7.fhir.convertors.ig.testing.rN;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_50_N;
+import org.hl7.fhir.convertors.context.ConversionContext50_N;
+import org.hl7.fhir.convertors.conv50_N.VersionConvertor_50_N;
+import org.hl7.fhir.convertors.igs.rN.testing.TestingR5Convertor;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.testing.TestingJsonParser;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Round trip tests for the R5 &lt;-&gt; testing-IG (R6) converters in org.hl7.fhir.convertors.igs.rN.testing.
+ * Each TestScript, TestReport and TestPlan example in the Testing IG is parsed into the
+ * org.hl7.fhir.model.testing model, converted to R5 and back again, and the result is required to be
+ * deeply equal to the original.
+ * <p/>
+ * The IG -&gt; R5 direction goes through convertRNToR5 (the entry point the VersionConvertorRegistry
+ * uses, which sets up ConversionContext50_N itself). There is no registry entry point for R5 -&gt; IG,
+ * so the way back calls the static converters directly inside a ConversionContext50_N set up here.
+ * <p/>
+ * When a round trip is not deeply equal, the (pretty printed) original and round-tripped resources
+ * are written to [tmp]/conversions-rN/expected/&lt;file&gt; and [tmp]/conversions-rN/actual/&lt;file&gt;
+ * so the difference can be inspected.
+ */
+class TestingR5RoundTripTests {
+
+  private static final String[] PACKAGES = {"hl7.fhir.uv.testing#current"};
+  private static final String[] RESOURCE_TYPES = {"TestScript", "TestReport", "TestPlan"};
+
+  // examples that use features with no agreed cross-version mapping are suppressed (reported as
+  // skipped, not failed) rather than removed, so the case and the reason stay visible
+  private static final Map<String, String> SUPPRESSED = Map.of(
+      "TestScript-testscript-example-readcommon.json",
+      "uses TestScript.common, introduced in the Testing IG - no agreed migration to/from R5");
+
+  // loading a package - especially a '#current' one, which re-resolves against the ci-build server -
+  // is expensive, so each package is loaded once and reused across all the tests
+  private static final Map<String, NpmPackage> PACKAGE_CACHE = new HashMap<>();
+
+  private static synchronized NpmPackage getPackage(String pid) throws IOException {
+    NpmPackage npm = PACKAGE_CACHE.get(pid);
+    if (npm == null) {
+      npm = new FilesystemPackageCacheManager.Builder().build().loadPackage(pid);
+      PACKAGE_CACHE.put(pid, npm);
+    }
+    return npm;
+  }
+
+  static Stream<Arguments> data() throws IOException {
+    List<Arguments> objects = new ArrayList<>();
+    for (String pid : PACKAGES) {
+      NpmPackage npm = getPackage(pid);
+      for (String fn : npm.listExamples()) {
+        if (fn.endsWith(".json") && fn.contains("-")) {
+          String rt = fn.substring(0, fn.indexOf("-"));
+          if (Utilities.existsInList(rt, RESOURCE_TYPES)) {
+            objects.add(Arguments.of(pid + "/" + fn, pid, fn));
+          }
+        }
+      }
+    }
+    return objects.stream();
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("data")
+  void testRoundTrip(String name, String pid, String filename) throws IOException {
+    Assumptions.assumeFalse(SUPPRESSED.containsKey(filename), () -> "suppressed: " + SUPPRESSED.get(filename));
+    byte[] source = FileUtilities.streamToBytes(getPackage(pid).loadExample(filename));
+
+    Resource r1 = new TestingJsonParser(ModelContext.fullCoreContext(), true, true).parse(source);
+    Resource r2 = convertToR5AndBack(r1);
+
+    boolean ok = r1.equalsDeep(r2);
+    if (!ok) {
+      writeDiff(r1, "expected", filename);
+      writeDiff(r2, "actual", filename);
+    }
+    assertTrue(ok, "not deeply equal after IG -> R5 -> IG round trip for " + name
+        + " - compare [tmp]/conversions-rN/expected/" + filename + " and [tmp]/conversions-rN/actual/" + filename);
+  }
+
+  private Resource convertToR5AndBack(Resource r1) {
+    org.hl7.fhir.r5.model.Resource r5 = new TestingR5Convertor().convertRNToR5(r1);
+    VersionConvertor_50_N vc = new VersionConvertor_50_N(new BaseAdvisor_50_N());
+    ConversionContext50_N.INSTANCE.init(vc);
+    try {
+      if (r5 instanceof org.hl7.fhir.r5.model.TestScript) {
+        return TestingR5Convertor.convertTestScript((org.hl7.fhir.r5.model.TestScript) r5);
+      } else if (r5 instanceof org.hl7.fhir.r5.model.TestReport) {
+        return TestingR5Convertor.convertTestReport((org.hl7.fhir.r5.model.TestReport) r5);
+      } else if (r5 instanceof org.hl7.fhir.r5.model.Basic) {
+        return TestingR5Convertor.convertTestPlan((org.hl7.fhir.r5.model.Basic) r5);
+      } else {
+        throw new IllegalStateException("Unexpected resource type: " + r5.fhirType());
+      }
+    } finally {
+      ConversionContext50_N.INSTANCE.close();
+    }
+  }
+
+  private void writeDiff(Resource r, String kind, String filename) throws IOException {
+    String dir = Utilities.path("[tmp]", "conversions-rN", kind);
+    FileUtilities.createDirectory(dir);
+    TestingJsonParser json = new TestingJsonParser(ModelContext.fullCoreContext(), true, true);
+    json.setOutputStyle(OutputStyle.PRETTY);
+    FileUtilities.stringToFile(json.composeString(r), Utilities.path(dir, filename));
+  }
+}

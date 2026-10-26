@@ -195,6 +195,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public static class ResourceProxy {
     private Resource resource;
     private CanonicalResourceProxy proxy;
+    private ResourceProxy replaced; // the latest entry with a url that this one replaced in allResourcesById, if any
 
     public ResourceProxy(Resource resource) {
       super();
@@ -221,6 +222,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return ((CanonicalResource) resource).getUrl();
       } else {
         return null;
+      }
+    }
+
+    private boolean hasTypeAndId(String type, String id) {
+      if (resource == null) {
+        return type.equals(proxy.getType()) && id.equals(proxy.getId());
+      } else {
+        return type.equals(resource.fhirType()) && id.equals(resource.getId());
       }
     }
 
@@ -262,6 +271,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
+  // the entries of allResourcesById, the earlier entries they replaced, and the entries without an id, by url (see indexResource())
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
 
   // all maps are to the full URI
@@ -354,7 +364,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
-      allResourcesById.putAll(other.allResourcesById);
+      // the maps are copied rather than shared, so that resources added to or dropped from one context don't
+      // change the other's maps
+      for (Map.Entry<String, Map<String, ResourceProxy>> e : other.allResourcesById.entrySet()) {
+        allResourcesById.put(e.getKey(), new HashMap<>(e.getValue()));
+      }
+      for (Map.Entry<String, List<ResourceProxy>> e : other.allResourcesByUrl.entrySet()) {
+        allResourcesByUrl.put(e.getKey(), new ArrayList<>(e.getValue()));
+      }
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
       maps.copy(other.maps);
@@ -443,24 +460,57 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void registerInAllResourceIndex(CanonicalResourceProxy r, PackageInformation packageInfo) {
-    if (r.getId() != null) {
-      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
-      if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
-        allResourcesById.put(r.getType(), map);
+    indexResource(r.getType(), r.getId(), new ResourceProxy(r), packageInfo);
+  }
+
+  /**
+   * Adds the entry to allResourcesById, if it has an id, and to allResourcesByUrl, if it has a url. An entry from an
+   * examples package doesn't replace an entry with the same type and id, and is not added at all.
+   *
+   * allResourcesById only has the latest entry for each type and id, but allResourcesByUrl keeps the earlier ones,
+   * because they are usually other versions of the resource that are still loaded (the canonical resource managers
+   * keep them too, and fetchResourceVersions() lists them). It has the most recently added entry first, so an earlier
+   * entry never hides a later one. dropResource() removes every entry with the type and id from both: each entry
+   * links to the one it replaced, so that the urls of the earlier entries can be found.
+   * This relies on an entry's url not changing after it's added: the urls that are changed (by PackageHacker) are
+   * changed before the resource is registered
+   *
+   * @return false if the entry was not added
+   */
+  private boolean indexResource(String type, String id, ResourceProxy r, PackageInformation packageInfo) {
+    String url = r.getUrl();
+    if (id != null) {
+      Map<String, ResourceProxy> map = allResourcesById.computeIfAbsent(type, k -> new HashMap<>());
+      if (packageInfo != null && packageInfo.isExamplesPackage() && map.containsKey(id)) {
+        return false;
       }
-      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-        map.put(r.getId(), new ResourceProxy(r));
+      ResourceProxy previous = map.put(id, r);
+      if (previous != null) {
+        r.replaced = previous.getUrl() != null ? previous : previous.replaced;
       }
     }
-    if (r.getUrl() != null) {
-      List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
-      if (list == null) {
-        list = new ArrayList<>();
-        allResourcesByUrl.put(r.getUrl(), list);
-      }
-      list.add(new ResourceProxy(r));
+    if (url != null) {
+      allResourcesByUrl.computeIfAbsent(url, k -> new ArrayList<>()).add(0, r);
     }
+    return true;
+  }
+
+  private void unindexUrl(String url, String type, String id) {
+    List<ResourceProxy> list = allResourcesByUrl.get(url);
+    if (list != null) {
+      list.removeIf(e -> e.hasTypeAndId(type, id));
+      if (list.isEmpty()) {
+        allResourcesByUrl.remove(url);
+      }
+    }
+  }
+
+  /**
+   * @return the entries with the url (of any type), the most recently added first
+   */
+  private List<ResourceProxy> getResourcesForUrl(String url) {
+    List<ResourceProxy> list = allResourcesByUrl.get(url);
+    return list == null ? Collections.emptyList() : list;
   }
 
   private boolean registerResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
@@ -516,28 +566,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         packages.put(packageInfo.getVID(), packageInfo);
       }
 
-      if (r.getId() != null) {
-        Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
-        if (map == null) {
-          map = new HashMap<String, ResourceProxy>();
-          allResourcesById.put(r.fhirType(), map);
-        }
-        if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-          map.put(r.getId(), new ResourceProxy(r));
-        } else {
-          logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
-        }
-      }
-      if (r instanceof CanonicalResource) {
-        CanonicalResource cr = (CanonicalResource) r;
-        if (cr.getUrl() != null) {
-          List<ResourceProxy> list = allResourcesByUrl.get(cr.getUrl());
-          if (list == null) {
-            list = new ArrayList<>();
-            allResourcesByUrl.put(cr.getUrl(), list);
-          }
-          list.add(new ResourceProxy(r));
-        }
+      if (!indexResource(r.fhirType(), r.getId(), new ResourceProxy(r), packageInfo)) {
+        logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -2599,20 +2629,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) questionnaires.getByPackage(uri, version, pvlist);
         }
 
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
-            if (uri.equals(r.getUrl())) {
-              Resource resource = r.getResource();
-              if (version == null) {
-                return (T) resource;
-              }
-              if (resource instanceof CanonicalResource && version.equals(((CanonicalResource) resource).getVersion())) {
-                return (T) resource;
-              }
-              if (version.equals(resource.getMeta().getVersionId())) {
-                return (T) resource;
-              }
-            }
+        for (ResourceProxy r : getResourcesForUrl(uri)) {
+          Resource resource = r.getResource();
+          if (version == null) {
+            return (T) resource;
+          }
+          if (resource instanceof CanonicalResource && version.equals(((CanonicalResource) resource).getVersion())) {
+            return (T) resource;
+          }
+          if (version.equals(resource.getMeta().getVersionId())) {
+            return (T) resource;
           }
         }
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -2835,12 +2861,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         }
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
-            if (uri.equals(r.getUrl())) {
-              return (T) r.getResource();
-            }
-          }
+        List<ResourceProxy> list = getResourcesForUrl(uri);
+        if (!list.isEmpty()) {
+          return (T) list.get(0).getResource();
         }
       } else if ("ImplementationGuide".equals(cls)) {
         return (T) guides.get(uri, version);
@@ -2983,6 +3006,25 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.addAll((List<T>) questionnaires.getList());
       } else if (class_ == SearchParameter.class) {
         res.addAll((List<T>) searchParameters.getList());
+      }
+    }
+    return res;
+  }
+
+  @Override
+  public List<StructureDefinition> fetchSpecializations() {
+    List<StructureDefinition> res = new ArrayList<>();
+    synchronized (lock) {
+      // the same resources in the same order as structures.getList(), but a definition that the package
+      // index says is a constraint isn't loaded just to find that out. This has to give the same result
+      // as filtering fetchResourcesByType(StructureDefinition.class), so keep the two in step
+      for (CanonicalResourceManager<StructureDefinition>.CachedCanonicalResource<StructureDefinition> cr : structures.getCachedList()) {
+        if (!"constraint".equals(cr.getDerivation())) {
+          StructureDefinition sd = cr.getResource();
+          if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+            res.add(sd);
+          }
+        }
       }
     }
     return res;
@@ -3171,7 +3213,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
+        // this is a challenge because we might have more than one resource with this id (different versions).
+        // The earlier entries with this id can have other urls, so the urls of all of them are unindexed
+        for (ResourceProxy r = map.remove(id); r != null; r = r.replaced) {
+          if (r.getUrl() != null) {
+            unindexUrl(r.getUrl(), fhirType, id);
+          }
+        }
       }
 
       if (fhirType.equals("StructureDefinition")) {
@@ -3712,7 +3760,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version, sourceOfReference);
     if (result == null) {
-      result = doFindTxResource(class_, canonical, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }
@@ -3734,7 +3782,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version);
     if (result == null) {
-      result = doFindTxResource(class_, canonical + "|" + version, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }

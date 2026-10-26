@@ -407,6 +407,29 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.symptomConditionEffect != null) {
+            visitor.visit(this, "symptomConditionEffect", -1, this.symptomConditionEffect);
+          }
+          if (this.classification != null) {
+            visitor.visit(this, "classification", -1, this.classification);
+          }
+          if (this.frequencyOfOccurrence != null) {
+            visitor.visit(this, "frequencyOfOccurrence", -1, this.frequencyOfOccurrence);
+          }
+          if (this.managementList != null) {
+            int i = 0;
+            for (Base v : this.managementList) {
+              if (v != null) {
+                visitor.visit(this, "management", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "symptomConditionEffect":  return new Property("symptomConditionEffect", "CodeableReference(ObservationDefinition)", "The situation in which the undesirable effect may manifest.", 0, 1, symptomConditionEffect);
@@ -1035,6 +1058,59 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.diseaseSymptomProcedure != null) {
+            visitor.visit(this, "diseaseSymptomProcedure", -1, this.diseaseSymptomProcedure);
+          }
+          if (this.diseaseStatus != null) {
+            visitor.visit(this, "diseaseStatus", -1, this.diseaseStatus);
+          }
+          if (this.comorbidityList != null) {
+            int i = 0;
+            for (Base v : this.comorbidityList) {
+              if (v != null) {
+                visitor.visit(this, "comorbidity", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.intendedEffectList != null) {
+            int i = 0;
+            for (Base v : this.intendedEffectList) {
+              if (v != null) {
+                visitor.visit(this, "intendedEffect", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration[x]", -1, this.duration);
+          }
+          if (this.undesirableEffectList != null) {
+            int i = 0;
+            for (Base v : this.undesirableEffectList) {
+              if (v != null) {
+                visitor.visit(this, "undesirableEffect", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.applicability != null) {
+            visitor.visit(this, "applicability", -1, this.applicability);
+          }
+          if (this.otherTherapyList != null) {
+            int i = 0;
+            for (Base v : this.otherTherapyList) {
+              if (v != null) {
+                visitor.visit(this, "otherTherapy", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "diseaseSymptomProcedure":  return new Property("diseaseSymptomProcedure", "CodeableReference(ObservationDefinition)", "The situation that is being documented as an indication for this item.", 0, 1, diseaseSymptomProcedure);
@@ -1422,6 +1498,17 @@ public class ClinicalUseDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType));
           children.add(new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|SubstanceDefinition|NutritionProduct|BiologicallyDerivedProduct|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products, biological, food etc.) as part of an indication or contraindication.", 0, 1, treatment));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.relationshipType != null) {
+            visitor.visit(this, "relationshipType", -1, this.relationshipType);
+          }
+          if (this.treatment != null) {
+            visitor.visit(this, "treatment", -1, this.treatment);
+          }
         }
 
         @Override
@@ -1945,6 +2032,56 @@ public class ClinicalUseDefinition extends DomainResource {
           children.add(new Property("applicability", "Expression", "An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.", 0, 1, applicability));
           children.add(new Property("management", "CodeableConcept", "Actions for managing the contraindication.", 0, java.lang.Integer.MAX_VALUE, managementList));
           children.add(new Property("otherTherapy", "@ClinicalUseDefinition.indication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapyList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.diseaseSymptomProcedure != null) {
+            visitor.visit(this, "diseaseSymptomProcedure", -1, this.diseaseSymptomProcedure);
+          }
+          if (this.diseaseStatus != null) {
+            visitor.visit(this, "diseaseStatus", -1, this.diseaseStatus);
+          }
+          if (this.comorbidityList != null) {
+            int i = 0;
+            for (Base v : this.comorbidityList) {
+              if (v != null) {
+                visitor.visit(this, "comorbidity", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.indicationList != null) {
+            int i = 0;
+            for (Base v : this.indicationList) {
+              if (v != null) {
+                visitor.visit(this, "indication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.applicability != null) {
+            visitor.visit(this, "applicability", -1, this.applicability);
+          }
+          if (this.managementList != null) {
+            int i = 0;
+            for (Base v : this.managementList) {
+              if (v != null) {
+                visitor.visit(this, "management", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.otherTherapyList != null) {
+            int i = 0;
+            for (Base v : this.otherTherapyList) {
+              if (v != null) {
+                visitor.visit(this, "otherTherapy", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2490,6 +2627,41 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.interactantList != null) {
+            int i = 0;
+            for (Base v : this.interactantList) {
+              if (v != null) {
+                visitor.visit(this, "interactant", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.effect != null) {
+            visitor.visit(this, "effect", -1, this.effect);
+          }
+          if (this.incidence != null) {
+            visitor.visit(this, "incidence", -1, this.incidence);
+          }
+          if (this.managementList != null) {
+            int i = 0;
+            for (Base v : this.managementList) {
+              if (v != null) {
+                visitor.visit(this, "management", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "interactant":  return new Property("interactant", "", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactantList);
@@ -2855,6 +3027,17 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.item != null) {
+            visitor.visit(this, "item[x]", -1, this.item);
+          }
+          if (this.route != null) {
+            visitor.visit(this, "route", -1, this.route);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "item[x]":  return new Property("item[x]", "Reference(MedicinalProductDefinition|Medication|SubstanceDefinition|NutritionProduct|BiologicallyDerivedProduct|ObservationDefinition)|CodeableConcept", "The specific medication, product, food, substance etc. or laboratory test that interacts.", 0, 1, item);
@@ -3124,6 +3307,17 @@ public class ClinicalUseDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("description", "markdown", "A textual definition of this warning, with formatting.", 0, 1, description));
           children.add(new Property("code", "CodeableConcept", "A coded or unformatted textual definition of this warning.", 0, 1, code));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
         }
 
         @Override
@@ -3884,6 +4078,77 @@ public class ClinicalUseDefinition extends DomainResource {
         children.add(new Property("population", "Reference(Group)", "The population group to which this applies.", 0, java.lang.Integer.MAX_VALUE, populationList));
         children.add(new Property("library", "canonical(Library)", "Logic used by the clinical use definition.", 0, java.lang.Integer.MAX_VALUE, libraryList));
         children.add(new Property("warning", "", "A critical piece of information about environmental, health or physical risks or hazards that serve as caution to the user. For example 'Do not operate heavy machinery', 'May cause drowsiness', or 'Get medical advice/attention if you feel unwell'.", 0, 1, warning));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.undesirableEffect != null) {
+          visitor.visit(this, "undesirableEffect", -1, this.undesirableEffect);
+        }
+        if (this.indication != null) {
+          visitor.visit(this, "indication", -1, this.indication);
+        }
+        if (this.contraindication != null) {
+          visitor.visit(this, "contraindication", -1, this.contraindication);
+        }
+        if (this.interaction != null) {
+          visitor.visit(this, "interaction", -1, this.interaction);
+        }
+        if (this.populationList != null) {
+          int i = 0;
+          for (Base v : this.populationList) {
+            if (v != null) {
+              visitor.visit(this, "population", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.libraryList != null) {
+          int i = 0;
+          for (Base v : this.libraryList) {
+            if (v != null) {
+              visitor.visit(this, "library", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.warning != null) {
+          visitor.visit(this, "warning", -1, this.warning);
+        }
       }
 
       @Override

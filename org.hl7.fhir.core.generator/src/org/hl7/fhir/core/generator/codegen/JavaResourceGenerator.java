@@ -769,6 +769,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
+    generateVisitChildren(analysis, ti, indent);
     write(indent+"  @Override\r\n");
     write(indent+"  public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {\r\n");
     write(indent+"    switch (_name) {\r\n");
@@ -805,6 +806,42 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"  }\r\n\r\n");  
   }
 	
+  /**
+   * visitChildren() visits the same values as listChildren() lists, in the same order, but reads
+   * the fields directly, and skips the absent ones, instead of building a Property for every
+   * element. See Base.visitChildren() and IModelObjectVisitor
+   */
+  private void generateVisitChildren(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    write(indent+"  @Override\r\n");
+    write(indent+"  protected void visitChildren(IModelObjectVisitor visitor) {\r\n");
+    write(indent+"    super.visitChildren(visitor);\r\n");
+    if (!analysis.isInterface()) {
+      for (ElementDefinition e : ti.getChildren()) {
+        String name = escapeJavaString(e.getName());
+        if (e.typeSummary().equals("xhtml")) {
+          // as in listChildren(): the XhtmlType wrapper presents the XhtmlNode as a Base
+          write(indent+"    visitor.visit(this, \""+name+"\", -1, new XhtmlType(modelContext, this));\r\n");
+          continue;
+        }
+        String field = getElementName(e.getName(), true)+(e.unbounded() ? "List" : "");
+        write(indent+"    if (this."+field+" != null) {\r\n");
+        if (e.unbounded()) {
+          write(indent+"      int i = 0;\r\n");
+          write(indent+"      for (Base v : this."+field+") {\r\n");
+          write(indent+"        if (v != null) {\r\n");
+          write(indent+"          visitor.visit(this, \""+name+"\", i, v);\r\n");
+          write(indent+"        }\r\n");
+          write(indent+"        i++;\r\n");
+          write(indent+"      }\r\n");
+        } else {
+          write(indent+"      visitor.visit(this, \""+name+"\", -1, this."+field+");\r\n");
+        }
+        write(indent+"    }\r\n");
+      }
+    }
+    write(indent+"  }\r\n\r\n");
+  }
+
   private String resolvedTypeCode(ElementDefinition e) {
     return resolvedTypeCode(e, null);
   }

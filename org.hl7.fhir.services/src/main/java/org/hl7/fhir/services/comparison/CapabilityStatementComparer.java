@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -753,7 +754,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (StructuralMatch<Element> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<Element> t, CapabilityStatementComparison comparison) {
@@ -920,15 +921,15 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   private Cell style(Cell cell, String left, String right, boolean isLeft) {
     if (left != null && right != null) {
       if (!left.equals(right)) {
-        cell.setStyle("background-color: "+COLOR_DIFFERENT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT);
       }
     } else if (left != null) {
       if (!isLeft) {        
-        cell.setStyle("background-color: "+COLOR_NO_CELL_RIGHT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_RIGHT);
       }
     } else if (right != null) {        
       if (isLeft) {        
-        cell.setStyle("background-color: "+COLOR_NO_CELL_LEFT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_LEFT);
       }
     }
     return cell;

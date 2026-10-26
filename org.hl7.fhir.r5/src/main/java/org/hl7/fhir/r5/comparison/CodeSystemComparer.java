@@ -10,7 +10,6 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
@@ -19,9 +18,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -36,10 +33,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
-import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
@@ -557,7 +554,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     for (StructuralMatch<ConceptDefinitionComponent> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ConceptDefinitionComponent> t, CodeSystemComparison comparison) {
@@ -569,14 +566,14 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         if (t.getLeft().getDisplay().equals(t.getRight().getDisplay())) {
           r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).span(2));        
         } else {
-          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         }
       } else if (t.getLeft().hasDisplay()) {
         r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null));        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
       } else if (t.getRight().hasDisplay()) {        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
         r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null));        
       } else {
         r.getCells().add(missingCell(gen).span(2));
@@ -594,9 +591,9 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
           }
         } else if (lp != null) {
           r.getCells().add(gen.new Cell(null, null, lp.getValue().toString(), null, null));        
-          r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));        
+          r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
         } else if (rp != null) {        
-          r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));        
+          r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
           r.getCells().add(gen.new Cell(null, null, rp.getValue().toString(), null, null));        
         } else {
           r.getCells().add(missingCell(gen).span(2));
@@ -626,7 +623,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   private Cell propertyCell(HierarchicalTableGenerator gen, ConceptDefinitionComponent cd, PropertyComponent p, boolean right, CodeSystemComparison comp) {
     ConceptPropertyComponent cp = getProp(cd, p, right, comp);
     if (cp == null) {
-      return missingCell(gen, right ? COLOR_NO_CELL_RIGHT : COLOR_NO_CELL_LEFT);
+      return missingCell(gen, right ? BackgroundColorCode.COLOR_NO_CELL_RIGHT : BackgroundColorCode.COLOR_NO_CELL_LEFT);
     } else {
       return gen.new Cell(null, null, cp.getValue().toString(), null, null);
     }

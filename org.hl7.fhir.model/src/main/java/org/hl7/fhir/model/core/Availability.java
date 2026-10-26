@@ -330,6 +330,29 @@ public class Availability extends DataType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.daysOfWeekList != null) {
+            int i = 0;
+            for (Base v : this.daysOfWeekList) {
+              if (v != null) {
+                visitor.visit(this, "daysOfWeek", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.allDay != null) {
+            visitor.visit(this, "allDay", -1, this.allDay);
+          }
+          if (this.availableStartTime != null) {
+            visitor.visit(this, "availableStartTime", -1, this.availableStartTime);
+          }
+          if (this.availableEndTime != null) {
+            visitor.visit(this, "availableEndTime", -1, this.availableEndTime);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "daysOfWeek":  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeekList);
@@ -635,6 +658,17 @@ public class Availability extends DataType implements ICompositeType {
           super.listChildren(children);
           children.add(new Property("description", "string", "The reason that can be presented to the user as to why this time is not available.", 0, 1, description));
           children.add(new Property("during", "Period", "The {item} is not available (seasonally or for a public holiday) during this period.", 0, 1, during));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.during != null) {
+            visitor.visit(this, "during", -1, this.during);
+          }
         }
 
         @Override
@@ -957,6 +991,32 @@ public class Availability extends DataType implements ICompositeType {
         children.add(new Property("period", "Period", "The period of time when the availability is applicable.  For example, you might use this property to indicate the period during the holiday season when you close an hour early.", 0, 1, period));
         children.add(new Property("availableTime", "", "A collection of times that the {item} is available.", 0, java.lang.Integer.MAX_VALUE, availableTimeList));
         children.add(new Property("notAvailableTime", "", "The {item} is not available during this period of time due to the provided reason.", 0, java.lang.Integer.MAX_VALUE, notAvailableTimeList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.availableTimeList != null) {
+          int i = 0;
+          for (Base v : this.availableTimeList) {
+            if (v != null) {
+              visitor.visit(this, "availableTime", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.notAvailableTimeList != null) {
+          int i = 0;
+          for (Base v : this.notAvailableTimeList) {
+            if (v != null) {
+              visitor.visit(this, "notAvailableTime", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -1390,6 +1390,26 @@ public class DosageCondition extends BackboneType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.details != null) {
+          visitor.visit(this, "details", -1, this.details);
+        }
+        if (this.operation != null) {
+          visitor.visit(this, "operation", -1, this.operation);
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value[x]", -1, this.value);
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "code":  return new Property("code", "CodeableConcept", "The specific event occurrence or resource context used as a base point (reference point) in time.  This establishes the context in which the 'path' is evaluated.", 0, 1, code);

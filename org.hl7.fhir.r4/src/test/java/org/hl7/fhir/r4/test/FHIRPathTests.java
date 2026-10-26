@@ -38,6 +38,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -190,6 +191,10 @@ public class FHIRPathTests {
     Resource res = null;
 
     List<Base> outcome = new ArrayList<Base>();
+    // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
+    // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
+    String testContext = test.getAttribute("context");
+    String testContextType = test.getAttribute("contextType");
 
     System.out.println(name);
 
@@ -218,10 +223,15 @@ public class FHIRPathTests {
       }
 
       try {
-        if (Utilities.noString(input)) {
+        String rt = res == null ? null : res.getResourceType().toString();
+        if (!Utilities.noString(testContextType)) {
+          fp.checkOnTypes(res, "Resource", rt, Arrays.asList(testContextType.split("\\|")), node, new ArrayList<>());
+        } else if (!Utilities.noString(testContext)) {
+          fp.check(res, "Resource", rt, testContext, node);
+        } else if (res == null) {
           fp.check(null, null, null, node);
         } else {
-          fp.check(res, "Resource", res.getResourceType().toString(), res.getResourceType().toString(), node);
+          fp.check(res, "Resource", rt, rt, node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS,
             String.format("Expected exception didn't occur checking %s", expression));
@@ -238,7 +248,7 @@ public class FHIRPathTests {
 
     if (node != null) {
       try {
-        outcome = fp.evaluate(res, node);
+        outcome = evaluateInContext(res, testContext, node);
         Assertions.assertTrue(fail == TestResultType.OK,
             String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
@@ -313,6 +323,21 @@ public class FHIRPathTests {
         }
       }
     }
+  }
+
+  /**
+   * if the test specifies a context, evaluate that first as a preparatory filter, and then evaluate the
+   * expression against the single item it selects (it's an error in the test if it selects zero, or more than one)
+   */
+  private List<Base> evaluateInContext(Resource root, String testContext, ExpressionNode node) {
+    if (Utilities.noString(testContext)) {
+      return fp.evaluate(root, node);
+    }
+    List<Base> focus = fp.evaluate(root, fp.parse(testContext));
+    if (focus.size() != 1) {
+      Assertions.fail(String.format("Context '%s' selected %d items, but must select exactly one", testContext, focus.size()));
+    }
+    return fp.evaluate(null, root, root, focus.get(0), node);
   }
 
   @Test
@@ -398,5 +423,19 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
     assertEquals(1, results.size());
     assertEquals("fr", results.get(0).primitiveValue());
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @CsvSource(delimiter = '|', quoteCharacter = '"', value = {
+    "'100'.toDecimal() = 1 | false",
+    "'10'.toDecimal() = 1 | false",
+    "'100'.toDecimal() = 100 | true",
+    "'1.50'.toDecimal() = 1.5 | true",
+    "'1.0'.toDecimal() = 1 | true",
+  })
+  public void testEvaluate_DecimalEquality(String expression, String expected) throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), expression);
+    assertEquals(1, results.size());
+    assertEquals(expected, results.get(0).primitiveValue());
   }
 }

@@ -25653,6 +25653,9 @@ public class XmlParser extends XmlParserBase {
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
+    } else if (!xpp.getName().startsWith(prefix)) {
+      // all the names below start with the prefix, so if this one does not, there is no need to try them
+      return false;
     } else if (xpp.getName().equals(prefix+"RatioRange")) {
       return true;
     } else if (xpp.getName().equals(prefix+"Quantity")) {

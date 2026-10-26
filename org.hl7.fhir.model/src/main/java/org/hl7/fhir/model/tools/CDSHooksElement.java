@@ -116,6 +116,14 @@ public abstract class CDSHooksElement extends LogicalBase implements ICompositeT
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.extension != null) {
+          visitor.visit(this, "extension", -1, this.extension);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "extension":  return new Property("extension", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksExtensions", "A JSON object that has properties where the names are defined by the extension definitions", 0, 1, extension);

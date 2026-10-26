@@ -1214,6 +1214,80 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.use != null) {
+            visitor.visit(this, "use", -1, this.use);
+          }
+          if (this.scopeList != null) {
+            int i = 0;
+            for (Base v : this.scopeList) {
+              if (v != null) {
+                visitor.visit(this, "scope", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.min != null) {
+            visitor.visit(this, "min", -1, this.min);
+          }
+          if (this.max != null) {
+            visitor.visit(this, "max", -1, this.max);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.allowedTypeList != null) {
+            int i = 0;
+            for (Base v : this.allowedTypeList) {
+              if (v != null) {
+                visitor.visit(this, "allowedType", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.targetProfileList != null) {
+            int i = 0;
+            for (Base v : this.targetProfileList) {
+              if (v != null) {
+                visitor.visit(this, "targetProfile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.searchType != null) {
+            visitor.visit(this, "searchType", -1, this.searchType);
+          }
+          if (this.binding != null) {
+            visitor.visit(this, "binding", -1, this.binding);
+          }
+          if (this.referencedFromList != null) {
+            int i = 0;
+            for (Base v : this.referencedFromList) {
+              if (v != null) {
+                visitor.visit(this, "referencedFrom", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.partList != null) {
+            int i = 0;
+            for (Base v : this.partList) {
+              if (v != null) {
+                visitor.visit(this, "part", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "code", "The name of used to identify the parameter.", 0, 1, name);
@@ -1745,6 +1819,17 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.strength != null) {
+            visitor.visit(this, "strength", -1, this.strength);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "strength":  return new Property("strength", "code", "Indicates the degree of conformance expectations associated with this binding - that is, the degree to which the provided value set must be adhered to in the instances.", 0, 1, strength);
@@ -2036,6 +2121,17 @@ public class OperationDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("source", "string", "The name of the parameter or dot-separated path of parameter names pointing to the resource parameter that is expected to contain a reference to this resource.", 0, 1, source));
           children.add(new Property("sourceId", "string", "The id of the element in the referencing resource that is expected to resolve to this resource.", 0, 1, sourceId));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.source != null) {
+            visitor.visit(this, "source", -1, this.source);
+          }
+          if (this.sourceId != null) {
+            visitor.visit(this, "sourceId", -1, this.sourceId);
+          }
         }
 
         @Override
@@ -2331,6 +2427,23 @@ public class OperationDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("parameterName", "string", "Name of parameter to include in overload.", 0, java.lang.Integer.MAX_VALUE, parameterNameList));
           children.add(new Property("comment", "string", "Comments to go on overload.", 0, 1, comment));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.parameterNameList != null) {
+            int i = 0;
+            for (Base v : this.parameterNameList) {
+              if (v != null) {
+                visitor.visit(this, "parameterName", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
         }
 
         @Override
@@ -4361,6 +4474,146 @@ public class OperationDefinition extends CanonicalResource {
         children.add(new Property("outputProfile", "canonical(StructureDefinition)", "Additional validation information for the out parameters - a single profile that covers all the parameters. The profile is a constraint on the parameters resource.", 0, 1, outputProfile));
         children.add(new Property("parameter", "", "The parameters for the operation/query.", 0, java.lang.Integer.MAX_VALUE, parameterList));
         children.add(new Property("overload", "", "Defines an appropriate combination of parameters to use when invoking this operation, to help code generators when generating overloaded parameter sets for this operation.", 0, java.lang.Integer.MAX_VALUE, overloadList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.affectsState != null) {
+          visitor.visit(this, "affectsState", -1, this.affectsState);
+        }
+        if (this.synchronicity != null) {
+          visitor.visit(this, "synchronicity", -1, this.synchronicity);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+        if (this.base != null) {
+          visitor.visit(this, "base", -1, this.base);
+        }
+        if (this.resourceList != null) {
+          int i = 0;
+          for (Base v : this.resourceList) {
+            if (v != null) {
+              visitor.visit(this, "resource", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.system != null) {
+          visitor.visit(this, "system", -1, this.system);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.instance != null) {
+          visitor.visit(this, "instance", -1, this.instance);
+        }
+        if (this.inputProfile != null) {
+          visitor.visit(this, "inputProfile", -1, this.inputProfile);
+        }
+        if (this.outputProfile != null) {
+          visitor.visit(this, "outputProfile", -1, this.outputProfile);
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.overloadList != null) {
+          int i = 0;
+          for (Base v : this.overloadList) {
+            if (v != null) {
+              visitor.visit(this, "overload", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

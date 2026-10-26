@@ -287,6 +287,17 @@ public class Immunization extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "function":  return new Property("function", "CodeableConcept", "Describes the function played by the performer in the immunization event (e.g. ordering provider, administering provider, etc.).", 0, 1, function);
@@ -536,6 +547,17 @@ public class Immunization extends DomainResource {
           super.listChildren(children);
           children.add(new Property("program", "CodeableConcept", "Indicates which program the patient had their eligibility evaluated for.", 0, 1, program));
           children.add(new Property("programStatus", "CodeableConcept", "Indicates the patient's eligibility status for a specific payment program.", 0, 1, programStatus));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.program != null) {
+            visitor.visit(this, "program", -1, this.program);
+          }
+          if (this.programStatus != null) {
+            visitor.visit(this, "programStatus", -1, this.programStatus);
+          }
         }
 
         @Override
@@ -856,6 +878,20 @@ public class Immunization extends DomainResource {
           children.add(new Property("date", "dateTime", "Date of reaction to the immunization.", 0, 1, date));
           children.add(new Property("manifestation", "CodeableReference(Observation)", "Details of the reaction.", 0, 1, manifestation));
           children.add(new Property("reported", "boolean", "Self-reported indicator.", 0, 1, reported));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.manifestation != null) {
+            visitor.visit(this, "manifestation", -1, this.manifestation);
+          }
+          if (this.reported != null) {
+            visitor.visit(this, "reported", -1, this.reported);
+          }
         }
 
         @Override
@@ -1273,6 +1309,32 @@ public class Immunization extends DomainResource {
           children.add(new Property("targetDisease", "CodeableConcept", "The vaccine preventable disease the dose is being administered against.", 0, java.lang.Integer.MAX_VALUE, targetDiseaseList));
           children.add(new Property("doseNumber", "CodeableConcept", "Nominal position in a series as intended by the practitioner administering the dose.", 0, 1, doseNumber));
           children.add(new Property("seriesDoses", "CodeableConcept", "The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.", 0, 1, seriesDoses));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.series != null) {
+            visitor.visit(this, "series", -1, this.series);
+          }
+          if (this.authority != null) {
+            visitor.visit(this, "authority", -1, this.authority);
+          }
+          if (this.targetDiseaseList != null) {
+            int i = 0;
+            for (Base v : this.targetDiseaseList) {
+              if (v != null) {
+                visitor.visit(this, "targetDisease", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.doseNumber != null) {
+            visitor.visit(this, "doseNumber", -1, this.doseNumber);
+          }
+          if (this.seriesDoses != null) {
+            visitor.visit(this, "seriesDoses", -1, this.seriesDoses);
+          }
         }
 
         @Override
@@ -2908,6 +2970,155 @@ public class Immunization extends DomainResource {
         children.add(new Property("fundingSource", "CodeableConcept", "Indicates the source of the vaccine actually administered. This may be different than the patient eligibility (e.g. the patient may be eligible for a publicly purchased vaccine but due to inventory issues, vaccine purchased with private funds was actually administered).", 0, 1, fundingSource));
         children.add(new Property("reaction", "", "Categorical data indicating that an adverse event is associated in time to an immunization.", 0, java.lang.Integer.MAX_VALUE, reactionList));
         children.add(new Property("protocolApplied", "", "The protocol (set of recommendations) being followed by the provider who administered the dose.", 0, java.lang.Integer.MAX_VALUE, protocolAppliedList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.vaccineCode != null) {
+          visitor.visit(this, "vaccineCode", -1, this.vaccineCode);
+        }
+        if (this.administeredProduct != null) {
+          visitor.visit(this, "administeredProduct", -1, this.administeredProduct);
+        }
+        if (this.manufacturer != null) {
+          visitor.visit(this, "manufacturer", -1, this.manufacturer);
+        }
+        if (this.lotNumber != null) {
+          visitor.visit(this, "lotNumber", -1, this.lotNumber);
+        }
+        if (this.expirationDate != null) {
+          visitor.visit(this, "expirationDate", -1, this.expirationDate);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.supportingInformationList != null) {
+          int i = 0;
+          for (Base v : this.supportingInformationList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.primarySource != null) {
+          visitor.visit(this, "primarySource", -1, this.primarySource);
+        }
+        if (this.informationSource != null) {
+          visitor.visit(this, "informationSource", -1, this.informationSource);
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.site != null) {
+          visitor.visit(this, "site", -1, this.site);
+        }
+        if (this.route != null) {
+          visitor.visit(this, "route", -1, this.route);
+        }
+        if (this.doseQuantity != null) {
+          visitor.visit(this, "doseQuantity", -1, this.doseQuantity);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.isSubpotent != null) {
+          visitor.visit(this, "isSubpotent", -1, this.isSubpotent);
+        }
+        if (this.subpotentReasonList != null) {
+          int i = 0;
+          for (Base v : this.subpotentReasonList) {
+            if (v != null) {
+              visitor.visit(this, "subpotentReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.programEligibilityList != null) {
+          int i = 0;
+          for (Base v : this.programEligibilityList) {
+            if (v != null) {
+              visitor.visit(this, "programEligibility", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.fundingSource != null) {
+          visitor.visit(this, "fundingSource", -1, this.fundingSource);
+        }
+        if (this.reactionList != null) {
+          int i = 0;
+          for (Base v : this.reactionList) {
+            if (v != null) {
+              visitor.visit(this, "reaction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.protocolAppliedList != null) {
+          int i = 0;
+          for (Base v : this.protocolAppliedList) {
+            if (v != null) {
+              visitor.visit(this, "protocolApplied", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

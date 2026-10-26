@@ -325,7 +325,9 @@ public class ConceptMap43_50 {
           return null;
       Enumeration<ConceptMapRelationship> tgt = new Enumeration<ConceptMapRelationship>(new Enumerations.ConceptMapRelationshipEnumFactory());
       ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-      ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+      if (src.getValueAsString() != null && !VersionConvertorConstants.CONCEPTMAP_EQUIVALENCES_KEPT_BY_RELATIONSHIP.contains(src.getValueAsString())) {
+        ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+      }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {

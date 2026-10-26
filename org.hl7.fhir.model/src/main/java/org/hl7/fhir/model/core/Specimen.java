@@ -428,6 +428,17 @@ public class Specimen extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The landmark or feature being highlighted.", 0, 1, type);
@@ -991,6 +1002,44 @@ public class Specimen extends DomainResource {
           children.add(new Property("procedure", "Reference(Procedure)", "The procedure event during which the specimen was collected (e.g. the surgery leading to the collection of a pathology sample).", 0, 1, procedure));
           children.add(new Property("bodyStructure", "CodeableReference(BodyStructure)", "Anatomical location from which the specimen was collected (if subject is a patient). This is the target site.  This element is not used for environmental specimens.", 0, java.lang.Integer.MAX_VALUE, bodyStructureList));
           children.add(new Property("fastingStatus[x]", "CodeableConcept|Duration", "Abstinence or reduction from some or all food, drink, or both, for a period of time prior to sample collection.", 0, 1, fastingStatus));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.collector != null) {
+            visitor.visit(this, "collector", -1, this.collector);
+          }
+          if (this.collected != null) {
+            visitor.visit(this, "collected[x]", -1, this.collected);
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration", -1, this.duration);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.device != null) {
+            visitor.visit(this, "device", -1, this.device);
+          }
+          if (this.procedure != null) {
+            visitor.visit(this, "procedure", -1, this.procedure);
+          }
+          if (this.bodyStructureList != null) {
+            int i = 0;
+            for (Base v : this.bodyStructureList) {
+              if (v != null) {
+                visitor.visit(this, "bodyStructure", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.fastingStatus != null) {
+            visitor.visit(this, "fastingStatus[x]", -1, this.fastingStatus);
+          }
         }
 
         @Override
@@ -1639,6 +1688,35 @@ public class Specimen extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.performer != null) {
+            visitor.visit(this, "performer", -1, this.performer);
+          }
+          if (this.device != null) {
+            visitor.visit(this, "device", -1, this.device);
+          }
+          if (this.additiveList != null) {
+            int i = 0;
+            for (Base v : this.additiveList) {
+              if (v != null) {
+                visitor.visit(this, "additive", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.time != null) {
+            visitor.visit(this, "time[x]", -1, this.time);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "string", "Textual description of procedure.", 0, 1, description);
@@ -1990,6 +2068,17 @@ public class Specimen extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableReference(SubstanceDefinition|Substance)", "The type of the substance used in the processing step.  This is represented as a concept from a code system or described in a Substance or SubstanceDefinition resource.", 0, 1, type);
@@ -2237,6 +2326,17 @@ public class Specimen extends DomainResource {
           super.listChildren(children);
           children.add(new Property("device", "CodeableReference(Device)", "The device resource for the container holding the specimen. If the container is in a holder then the referenced device will point to a parent device.", 0, 1, device));
           children.add(new Property("specimenQuantity", "Quantity", "The quantity of specimen in the container; may be volume, dimensions, or other appropriate measurements, depending on the specimen type.", 0, 1, specimenQuantity));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.device != null) {
+            visitor.visit(this, "device", -1, this.device);
+          }
+          if (this.specimenQuantity != null) {
+            visitor.visit(this, "specimenQuantity", -1, this.specimenQuantity);
+          }
         }
 
         @Override
@@ -3278,6 +3378,113 @@ public class Specimen extends DomainResource {
         children.add(new Property("container", "", "The container holding the specimen.  The recursive nature of containers; i.e. blood in tube in tray in rack is not addressed here.", 0, java.lang.Integer.MAX_VALUE, containerList));
         children.add(new Property("condition", "CodeableConcept", "A mode or state of being that describes the nature of the specimen.", 0, java.lang.Integer.MAX_VALUE, conditionList));
         children.add(new Property("note", "Annotation", "To communicate any details or issues about the specimen or during the specimen collection. (for example: broken vial, sent with patient, frozen).", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.focus != null) {
+          visitor.visit(this, "focus", -1, this.focus);
+        }
+        if (this.receivedTime != null) {
+          visitor.visit(this, "receivedTime", -1, this.receivedTime);
+        }
+        if (this.parentList != null) {
+          int i = 0;
+          for (Base v : this.parentList) {
+            if (v != null) {
+              visitor.visit(this, "parent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.requestList != null) {
+          int i = 0;
+          for (Base v : this.requestList) {
+            if (v != null) {
+              visitor.visit(this, "request", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.combined != null) {
+          visitor.visit(this, "combined", -1, this.combined);
+        }
+        if (this.roleList != null) {
+          int i = 0;
+          for (Base v : this.roleList) {
+            if (v != null) {
+              visitor.visit(this, "role", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.featureList != null) {
+          int i = 0;
+          for (Base v : this.featureList) {
+            if (v != null) {
+              visitor.visit(this, "feature", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.collection != null) {
+          visitor.visit(this, "collection", -1, this.collection);
+        }
+        if (this.processingList != null) {
+          int i = 0;
+          for (Base v : this.processingList) {
+            if (v != null) {
+              visitor.visit(this, "processing", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.containerList != null) {
+          int i = 0;
+          for (Base v : this.containerList) {
+            if (v != null) {
+              visitor.visit(this, "container", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conditionList != null) {
+          int i = 0;
+          for (Base v : this.conditionList) {
+            if (v != null) {
+              visitor.visit(this, "condition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

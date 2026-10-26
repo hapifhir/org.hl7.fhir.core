@@ -392,6 +392,26 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.system != null) {
+          visitor.visit(this, "system", -1, this.system);
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.display != null) {
+          visitor.visit(this, "display", -1, this.display);
+        }
+        if (this.userSelected != null) {
+          visitor.visit(this, "userSelected", -1, this.userSelected);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "system":  return new Property("system", "uri", "The identification of the code system that defines the meaning of the symbol in the code.", 0, 1, system);

@@ -248,6 +248,20 @@ public class Binary extends BaseBinary implements IBaseBinary {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.contentType != null) {
+          visitor.visit(this, "contentType", -1, this.contentType);
+        }
+        if (this.securityContext != null) {
+          visitor.visit(this, "securityContext", -1, this.securityContext);
+        }
+        if (this.data != null) {
+          visitor.visit(this, "data", -1, this.data);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "contentType":  return new Property("contentType", "code", "MimeType of the binary content represented as a standard MimeType (BCP 13).", 0, 1, contentType);

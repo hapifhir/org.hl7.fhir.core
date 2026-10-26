@@ -75,10 +75,12 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/*
+/**
  * This is a stand alone implementation of worker context for use inside a tool.
  * It loads from the validation package (validation-min.xml.zip), and has a 
  * very light client to connect to an open unauthenticated terminology service
+ *
+ * Not thread safe, and not meant to be - see BaseWorkerContext, and "Thread Safety" in the README.
  */
 
 @Slf4j

@@ -20,37 +20,39 @@ public class Element14_50 {
 
   public void copyElement(org.hl7.fhir.dstu2016may.model.Element src,
                           org.hl7.fhir.r5.model.Element tgt,
-                          String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension14_50.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.dstu2016may.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          if (advisor.useAdvisorForExtension(e)) {
+            org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
+            advisor.handleExtension(e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension14_50.convertExtension(e));
+          }
         }
-      });
+      }
+    }
   }
 
   public void copyElement(org.hl7.fhir.r5.model.Element src,
                           org.hl7.fhir.dstu2016may.model.Element tgt,
-                          String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.dstu2016may.model.Extension convertedExtension = new org.hl7.fhir.dstu2016may.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension14_50.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          if (advisor.useAdvisorForExtension(e)) {
+            org.hl7.fhir.dstu2016may.model.Extension convertedExtension = new org.hl7.fhir.dstu2016may.model.Extension();
+            advisor.handleExtension(e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension14_50.convertExtension(e));
+          }
         }
-      });
+      }
+    }
   }
 }

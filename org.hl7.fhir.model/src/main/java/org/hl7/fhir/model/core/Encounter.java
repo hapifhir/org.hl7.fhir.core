@@ -578,6 +578,20 @@ public class Encounter extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.effectiveDate != null) {
+            visitor.visit(this, "effectiveDate", -1, this.effectiveDate);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "The current business status.", 0, 1, code);
@@ -901,6 +915,26 @@ public class Encounter extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Role of participant in encounter.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -1215,6 +1249,29 @@ public class Encounter extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.useList != null) {
+            int i = 0;
+            for (Base v : this.useList) {
+              if (v != null) {
+                visitor.visit(this, "use", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueList != null) {
+            int i = 0;
+            for (Base v : this.valueList) {
+              if (v != null) {
+                visitor.visit(this, "value", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "use":  return new Property("use", "CodeableConcept", "What the reason value should be used as e.g. Chief Complaint, Health Concern, Health Maintenance (including screening).", 0, java.lang.Integer.MAX_VALUE, useList);
@@ -1500,6 +1557,29 @@ public class Encounter extends DomainResource {
           super.listChildren(children);
           children.add(new Property("condition", "CodeableReference(Condition)", "The coded diagnosis or a reference to a Condition (with other resources referenced in the evidence.detail), the use property will indicate the purpose of this specific diagnosis.", 0, java.lang.Integer.MAX_VALUE, conditionList));
           children.add(new Property("use", "CodeableConcept", "Role that this diagnosis has within the encounter (e.g. admission, billing, discharge …).", 0, java.lang.Integer.MAX_VALUE, useList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.conditionList != null) {
+            int i = 0;
+            for (Base v : this.conditionList) {
+              if (v != null) {
+                visitor.visit(this, "condition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.useList != null) {
+            int i = 0;
+            for (Base v : this.useList) {
+              if (v != null) {
+                visitor.visit(this, "use", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1878,6 +1958,29 @@ public class Encounter extends DomainResource {
           children.add(new Property("reAdmission", "CodeableConcept", "Indicates that this encounter is directly related to a prior admission, often because the conditions addressed in the prior admission were not fully addressed.", 0, 1, reAdmission));
           children.add(new Property("destination", "Reference(Location|Organization)", "Location/organization to which the patient is discharged.", 0, 1, destination));
           children.add(new Property("dischargeDisposition", "CodeableConcept", "Category or kind of location after discharge.", 0, 1, dischargeDisposition));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.preAdmissionIdentifier != null) {
+            visitor.visit(this, "preAdmissionIdentifier", -1, this.preAdmissionIdentifier);
+          }
+          if (this.origin != null) {
+            visitor.visit(this, "origin", -1, this.origin);
+          }
+          if (this.admitSource != null) {
+            visitor.visit(this, "admitSource", -1, this.admitSource);
+          }
+          if (this.reAdmission != null) {
+            visitor.visit(this, "reAdmission", -1, this.reAdmission);
+          }
+          if (this.destination != null) {
+            visitor.visit(this, "destination", -1, this.destination);
+          }
+          if (this.dischargeDisposition != null) {
+            visitor.visit(this, "dischargeDisposition", -1, this.dischargeDisposition);
+          }
         }
 
         @Override
@@ -2316,6 +2419,23 @@ public class Encounter extends DomainResource {
           children.add(new Property("status", "code", "The status of the participants' presence at the specified location during the period specified. If the participant is no longer at the location, then the period will have an end date/time.", 0, 1, status));
           children.add(new Property("form", "CodeableConcept", "This will be used to specify the required levels (bed/ward/room/etc.) desired to be recorded to simplify either messaging or query.", 0, 1, form));
           children.add(new Property("period", "Period", "Time period during which the patient was present at the location.", 0, 1, period));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.location != null) {
+            visitor.visit(this, "location", -1, this.location);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.form != null) {
+            visitor.visit(this, "form", -1, this.form);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
         }
 
         @Override
@@ -4102,6 +4222,206 @@ public class Encounter extends DomainResource {
         children.add(new Property("specialCourtesy", "CodeableConcept", "Special courtesies that may be provided to the patient during the encounter (VIP, board member, professional courtesy).", 0, java.lang.Integer.MAX_VALUE, specialCourtesyList));
         children.add(new Property("admission", "", "Details about the stay during which a healthcare service is provided.\r\rThis does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.", 0, 1, admission));
         children.add(new Property("location", "", "List of locations where  the patient has been during this encounter.", 0, java.lang.Integer.MAX_VALUE, locationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.businessStatusList != null) {
+          int i = 0;
+          for (Base v : this.businessStatusList) {
+            if (v != null) {
+              visitor.visit(this, "businessStatus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.class_List != null) {
+          int i = 0;
+          for (Base v : this.class_List) {
+            if (v != null) {
+              visitor.visit(this, "class", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceTypeList != null) {
+          int i = 0;
+          for (Base v : this.serviceTypeList) {
+            if (v != null) {
+              visitor.visit(this, "serviceType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.subjectStatus != null) {
+          visitor.visit(this, "subjectStatus", -1, this.subjectStatus);
+        }
+        if (this.episodeOfCareList != null) {
+          int i = 0;
+          for (Base v : this.episodeOfCareList) {
+            if (v != null) {
+              visitor.visit(this, "episodeOfCare", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.careTeamList != null) {
+          int i = 0;
+          for (Base v : this.careTeamList) {
+            if (v != null) {
+              visitor.visit(this, "careTeam", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOf != null) {
+          visitor.visit(this, "partOf", -1, this.partOf);
+        }
+        if (this.serviceProvider != null) {
+          visitor.visit(this, "serviceProvider", -1, this.serviceProvider);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.appointmentList != null) {
+          int i = 0;
+          for (Base v : this.appointmentList) {
+            if (v != null) {
+              visitor.visit(this, "appointment", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.virtualServiceList != null) {
+          int i = 0;
+          for (Base v : this.virtualServiceList) {
+            if (v != null) {
+              visitor.visit(this, "virtualService", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actualPeriod != null) {
+          visitor.visit(this, "actualPeriod", -1, this.actualPeriod);
+        }
+        if (this.plannedStartDate != null) {
+          visitor.visit(this, "plannedStartDate", -1, this.plannedStartDate);
+        }
+        if (this.plannedEndDate != null) {
+          visitor.visit(this, "plannedEndDate", -1, this.plannedEndDate);
+        }
+        if (this.length != null) {
+          visitor.visit(this, "length", -1, this.length);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.diagnosisList != null) {
+          int i = 0;
+          for (Base v : this.diagnosisList) {
+            if (v != null) {
+              visitor.visit(this, "diagnosis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.accountList != null) {
+          int i = 0;
+          for (Base v : this.accountList) {
+            if (v != null) {
+              visitor.visit(this, "account", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dietPreferenceList != null) {
+          int i = 0;
+          for (Base v : this.dietPreferenceList) {
+            if (v != null) {
+              visitor.visit(this, "dietPreference", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialArrangementList != null) {
+          int i = 0;
+          for (Base v : this.specialArrangementList) {
+            if (v != null) {
+              visitor.visit(this, "specialArrangement", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialCourtesyList != null) {
+          int i = 0;
+          for (Base v : this.specialCourtesyList) {
+            if (v != null) {
+              visitor.visit(this, "specialCourtesy", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.admission != null) {
+          visitor.visit(this, "admission", -1, this.admission);
+        }
+        if (this.locationList != null) {
+          int i = 0;
+          for (Base v : this.locationList) {
+            if (v != null) {
+              visitor.visit(this, "location", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

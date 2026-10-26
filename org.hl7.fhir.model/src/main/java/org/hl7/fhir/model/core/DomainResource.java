@@ -273,6 +273,41 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+        if (this.containedList != null) {
+          int i = 0;
+          for (Base v : this.containedList) {
+            if (v != null) {
+              visitor.visit(this, "contained", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.extensionList != null) {
+          int i = 0;
+          for (Base v : this.extensionList) {
+            if (v != null) {
+              visitor.visit(this, "extension", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.modifierExtensionList != null) {
+          int i = 0;
+          for (Base v : this.modifierExtensionList) {
+            if (v != null) {
+              visitor.visit(this, "modifierExtension", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "text":  return new Property("text", "Narrative", "A human-readable narrative that contains a summary of the resource and can be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.", 0, 1, text);

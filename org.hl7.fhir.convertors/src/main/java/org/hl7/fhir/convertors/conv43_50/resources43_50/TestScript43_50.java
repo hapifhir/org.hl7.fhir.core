@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
@@ -57,9 +58,9 @@ public class TestScript43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript tgt = new org.hl7.fhir.r5.model.TestScript();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     for (org.hl7.fhir.r4b.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope")) {
-      // the advisor will get this ignored.
+      // copyDomainResource was told to leave this extension out
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
       org.hl7.fhir.r4b.model.Extension se = ext.getExtensionByUrl("conformance");
@@ -125,7 +126,7 @@ public class TestScript43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4b.model.TestScript tgt = new org.hl7.fhir.r4b.model.TestScript();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())

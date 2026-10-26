@@ -895,6 +895,74 @@ public class ImagingStudy extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uid != null) {
+            visitor.visit(this, "uid", -1, this.uid);
+          }
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.modality != null) {
+            visitor.visit(this, "modality", -1, this.modality);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.numberOfInstances != null) {
+            visitor.visit(this, "numberOfInstances", -1, this.numberOfInstances);
+          }
+          if (this.endpointList != null) {
+            int i = 0;
+            for (Base v : this.endpointList) {
+              if (v != null) {
+                visitor.visit(this, "endpoint", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.bodySiteList != null) {
+            int i = 0;
+            for (Base v : this.bodySiteList) {
+              if (v != null) {
+                visitor.visit(this, "bodySite", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.specimenList != null) {
+            int i = 0;
+            for (Base v : this.specimenList) {
+              if (v != null) {
+                visitor.visit(this, "specimen", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.started != null) {
+            visitor.visit(this, "started", -1, this.started);
+          }
+          if (this.performerList != null) {
+            int i = 0;
+            for (Base v : this.performerList) {
+              if (v != null) {
+                visitor.visit(this, "performer", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.instanceList != null) {
+            int i = 0;
+            for (Base v : this.instanceList) {
+              if (v != null) {
+                visitor.visit(this, "instance", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "uid":  return new Property("uid", "id", "The DICOM Series Instance UID of the series.", 0, 1, uid);
@@ -1333,6 +1401,17 @@ public class ImagingStudy extends DomainResource {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the imaging study..", 0, 1, function));
           children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson|HealthcareService)", "Indicates who or what performed the imaging study.", 0, 1, actor));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
         }
 
         @Override
@@ -1797,6 +1876,26 @@ public class ImagingStudy extends DomainResource {
           children.add(new Property("number", "unsignedInt", "The number of the instance assigned by the creator of the series. MAY or MAY NOT correspond to intended display order.", 0, 1, number));
           children.add(new Property("numberOfFrames", "unsignedInt", "The number frames in a multiframe image.", 0, 1, numberOfFrames));
           children.add(new Property("title", "string", "The title of the instance.", 0, 1, title));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uid != null) {
+            visitor.visit(this, "uid", -1, this.uid);
+          }
+          if (this.sopClass != null) {
+            visitor.visit(this, "sopClass", -1, this.sopClass);
+          }
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.numberOfFrames != null) {
+            visitor.visit(this, "numberOfFrames", -1, this.numberOfFrames);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
         }
 
         @Override
@@ -2958,6 +3057,110 @@ public class ImagingStudy extends DomainResource {
         children.add(new Property("numberOfSeries", "unsignedInt", "Number of known Series in the Study. This value might be present even if the ImagingStudy.series element is empty or only partially populated.", 0, 1, numberOfSeries));
         children.add(new Property("numberOfInstances", "unsignedInt", "Number of known SOP Instances in Study. This value might be present even if the ImagingStudy.series.instance elements are empty or only partially populated.", 0, 1, numberOfInstances));
         children.add(new Property("series", "", "The set of Series belonging to the study. Each Series contains a set of SOP Instances, which could be images, waveforms, or other content.", 0, java.lang.Integer.MAX_VALUE, seriesList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.modalityList != null) {
+          int i = 0;
+          for (Base v : this.modalityList) {
+            if (v != null) {
+              visitor.visit(this, "modality", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.started != null) {
+          visitor.visit(this, "started", -1, this.started);
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.procedureList != null) {
+          int i = 0;
+          for (Base v : this.procedureList) {
+            if (v != null) {
+              visitor.visit(this, "procedure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.referrer != null) {
+          visitor.visit(this, "referrer", -1, this.referrer);
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.numberOfSeries != null) {
+          visitor.visit(this, "numberOfSeries", -1, this.numberOfSeries);
+        }
+        if (this.numberOfInstances != null) {
+          visitor.visit(this, "numberOfInstances", -1, this.numberOfInstances);
+        }
+        if (this.seriesList != null) {
+          int i = 0;
+          for (Base v : this.seriesList) {
+            if (v != null) {
+              visitor.visit(this, "series", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

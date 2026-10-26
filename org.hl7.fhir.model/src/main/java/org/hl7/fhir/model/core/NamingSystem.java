@@ -704,6 +704,29 @@ public class NamingSystem extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.authoritative != null) {
+            visitor.visit(this, "authoritative", -1, this.authoritative);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "Identifies the unique identifier scheme used for this particular identifier.", 0, 1, type);
@@ -2779,6 +2802,170 @@ public class NamingSystem extends MetadataResource {
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts. If the type is `successor` or `predecessor`, the related resource must be a NamingSystem.", 0, java.lang.Integer.MAX_VALUE, relatedArtifactList));
         children.add(new Property("usage", "string", "Provides guidance on the use of the namespace, including the handling of formatting characters, use of upper vs. lower case, etc.", 0, 1, usage));
         children.add(new Property("uniqueId", "", "Indicates how the system may be identified when referenced in electronic exchange.", 0, java.lang.Integer.MAX_VALUE, uniqueIdList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.responsible != null) {
+          visitor.visit(this, "responsible", -1, this.responsible);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.usage != null) {
+          visitor.visit(this, "usage", -1, this.usage);
+        }
+        if (this.uniqueIdList != null) {
+          int i = 0;
+          for (Base v : this.uniqueIdList) {
+            if (v != null) {
+              visitor.visit(this, "uniqueId", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

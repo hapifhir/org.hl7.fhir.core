@@ -3312,6 +3312,17 @@ public class SearchParameter extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "definition":  return new Property("definition", "canonical(SearchParameter)", "The definition of the search parameter that describes this part.", 0, 1, definition);
@@ -5446,6 +5457,173 @@ public class SearchParameter extends CanonicalResource {
         children.add(new Property("modifier", "code", "A modifier supported for the search parameter.", 0, java.lang.Integer.MAX_VALUE, modifierList));
         children.add(new Property("chain", "string", "Contains the names of any search parameters which may be chained to the containing search parameter. Chained parameters may be added to search parameters of type reference and specify that resources will only be returned if they contain a reference to a resource which matches the chained parameter value. Values for this field should be drawn from SearchParameter.code for a parameter on the target resource type.", 0, java.lang.Integer.MAX_VALUE, chainList));
         children.add(new Property("component", "", "Used to define the parts of a composite search parameter.", 0, java.lang.Integer.MAX_VALUE, componentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.derivedFrom != null) {
+          visitor.visit(this, "derivedFrom", -1, this.derivedFrom);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.aliasCodeList != null) {
+          int i = 0;
+          for (Base v : this.aliasCodeList) {
+            if (v != null) {
+              visitor.visit(this, "aliasCode", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.baseList != null) {
+          int i = 0;
+          for (Base v : this.baseList) {
+            if (v != null) {
+              visitor.visit(this, "base", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.expression != null) {
+          visitor.visit(this, "expression", -1, this.expression);
+        }
+        if (this.processingMode != null) {
+          visitor.visit(this, "processingMode", -1, this.processingMode);
+        }
+        if (this.constraint != null) {
+          visitor.visit(this, "constraint", -1, this.constraint);
+        }
+        if (this.targetList != null) {
+          int i = 0;
+          for (Base v : this.targetList) {
+            if (v != null) {
+              visitor.visit(this, "target", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.multipleOr != null) {
+          visitor.visit(this, "multipleOr", -1, this.multipleOr);
+        }
+        if (this.multipleAnd != null) {
+          visitor.visit(this, "multipleAnd", -1, this.multipleAnd);
+        }
+        if (this.comparatorList != null) {
+          int i = 0;
+          for (Base v : this.comparatorList) {
+            if (v != null) {
+              visitor.visit(this, "comparator", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.modifierList != null) {
+          int i = 0;
+          for (Base v : this.modifierList) {
+            if (v != null) {
+              visitor.visit(this, "modifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.chainList != null) {
+          int i = 0;
+          for (Base v : this.chainList) {
+            if (v != null) {
+              visitor.visit(this, "chain", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.componentList != null) {
+          int i = 0;
+          for (Base v : this.componentList) {
+            if (v != null) {
+              visitor.visit(this, "component", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

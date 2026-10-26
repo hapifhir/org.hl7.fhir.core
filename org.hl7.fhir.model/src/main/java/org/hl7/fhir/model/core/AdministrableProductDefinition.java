@@ -321,6 +321,20 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
@@ -833,6 +847,38 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.firstDose != null) {
+            visitor.visit(this, "firstDose", -1, this.firstDose);
+          }
+          if (this.maxSingleDose != null) {
+            visitor.visit(this, "maxSingleDose", -1, this.maxSingleDose);
+          }
+          if (this.maxDosePerDay != null) {
+            visitor.visit(this, "maxDosePerDay", -1, this.maxDosePerDay);
+          }
+          if (this.maxDosePerTreatmentPeriod != null) {
+            visitor.visit(this, "maxDosePerTreatmentPeriod", -1, this.maxDosePerTreatmentPeriod);
+          }
+          if (this.maxTreatmentPeriod != null) {
+            visitor.visit(this, "maxTreatmentPeriod", -1, this.maxTreatmentPeriod);
+          }
+          if (this.targetSpeciesList != null) {
+            int i = 0;
+            for (Base v : this.targetSpeciesList) {
+              if (v != null) {
+                visitor.visit(this, "targetSpecies", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Coded expression for the route.", 0, 1, code);
@@ -1221,6 +1267,23 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.withdrawalPeriodList != null) {
+            int i = 0;
+            for (Base v : this.withdrawalPeriodList) {
+              if (v != null) {
+                visitor.visit(this, "withdrawalPeriod", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Coded expression for the species.", 0, 1, code);
@@ -1529,6 +1592,20 @@ public class AdministrableProductDefinition extends DomainResource {
           children.add(new Property("tissue", "CodeableConcept", "Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.", 0, 1, tissue));
           children.add(new Property("value", "Quantity", "A value for the time.", 0, 1, value));
           children.add(new Property("supportingInformation", "string", "Extra information about the withdrawal period.", 0, 1, supportingInformation));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.tissue != null) {
+            visitor.visit(this, "tissue", -1, this.tissue);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.supportingInformation != null) {
+            visitor.visit(this, "supportingInformation", -1, this.supportingInformation);
+          }
         }
 
         @Override
@@ -2383,6 +2460,89 @@ public class AdministrableProductDefinition extends DomainResource {
         children.add(new Property("code", "Coding", "A code that this product is known by, within some formal terminology. May be a PhPID. PhPID is really a code or a label, and not an identifier, because it applies to multiple products.", 0, java.lang.Integer.MAX_VALUE, codeList));
         children.add(new Property("property", "", "Characteristics e.g. a product's onset of action.", 0, java.lang.Integer.MAX_VALUE, propertyList));
         children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licensed or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).", 0, java.lang.Integer.MAX_VALUE, routeOfAdministrationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.formOfList != null) {
+          int i = 0;
+          for (Base v : this.formOfList) {
+            if (v != null) {
+              visitor.visit(this, "formOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.administrableDoseForm != null) {
+          visitor.visit(this, "administrableDoseForm", -1, this.administrableDoseForm);
+        }
+        if (this.unitOfPresentation != null) {
+          visitor.visit(this, "unitOfPresentation", -1, this.unitOfPresentation);
+        }
+        if (this.producedFromList != null) {
+          int i = 0;
+          for (Base v : this.producedFromList) {
+            if (v != null) {
+              visitor.visit(this, "producedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.ingredientList != null) {
+          int i = 0;
+          for (Base v : this.ingredientList) {
+            if (v != null) {
+              visitor.visit(this, "ingredient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device", -1, this.device);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.routeOfAdministrationList != null) {
+          int i = 0;
+          for (Base v : this.routeOfAdministrationList) {
+            if (v != null) {
+              visitor.visit(this, "routeOfAdministration", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

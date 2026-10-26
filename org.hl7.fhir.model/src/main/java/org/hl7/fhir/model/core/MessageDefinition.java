@@ -585,6 +585,23 @@ public class MessageDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.profile != null) {
+            visitor.visit(this, "profile", -1, this.profile);
+          }
+          if (this.min != null) {
+            visitor.visit(this, "min", -1, this.min);
+          }
+          if (this.max != null) {
+            visitor.visit(this, "max", -1, this.max);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "uri", "The kind of resource that must be the focus for this message. This must be a resource, or a type with a [Structure Type Characterstics (Constraint Control)](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-structuredefinition-type-characteristics.html) of [can-be-target (Can Be Target)](https://build.fhir.org/ig/HL7/fhir-extensions/CodeSystem-type-characteristics-code.html#type-characteristics-code-can-be-target).", 0, 1, code);
@@ -920,6 +937,17 @@ public class MessageDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("message", "canonical(MessageDefinition)", "A reference to the message definition that must be adhered to by this supported response.", 0, 1, message));
           children.add(new Property("situation", "markdown", "Provides a description of the circumstances in which this response should be used (as opposed to one of the alternative responses).", 0, 1, situation));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.message != null) {
+            visitor.visit(this, "message", -1, this.message);
+          }
+          if (this.situation != null) {
+            visitor.visit(this, "situation", -1, this.situation);
+          }
         }
 
         @Override
@@ -2619,6 +2647,134 @@ public class MessageDefinition extends CanonicalResource {
         children.add(new Property("focus", "", "Identifies the resource (or resources) that are being addressed by the event.  For example, the Encounter for an admit message or two Account records for a merge.", 0, java.lang.Integer.MAX_VALUE, focusList));
         children.add(new Property("responseRequired", "code", "Declare at a message definition level whether a response is required or only upon error or success, or never.", 0, 1, responseRequired));
         children.add(new Property("allowedResponse", "", "Indicates what types of messages may be sent as an application-level response to this message.", 0, java.lang.Integer.MAX_VALUE, allowedResponseList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.base != null) {
+          visitor.visit(this, "base", -1, this.base);
+        }
+        if (this.parentList != null) {
+          int i = 0;
+          for (Base v : this.parentList) {
+            if (v != null) {
+              visitor.visit(this, "parent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.event != null) {
+          visitor.visit(this, "event[x]", -1, this.event);
+        }
+        if (this.category != null) {
+          visitor.visit(this, "category", -1, this.category);
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.responseRequired != null) {
+          visitor.visit(this, "responseRequired", -1, this.responseRequired);
+        }
+        if (this.allowedResponseList != null) {
+          int i = 0;
+          for (Base v : this.allowedResponseList) {
+            if (v != null) {
+              visitor.visit(this, "allowedResponse", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

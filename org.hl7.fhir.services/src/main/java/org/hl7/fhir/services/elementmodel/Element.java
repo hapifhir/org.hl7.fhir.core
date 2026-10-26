@@ -455,6 +455,62 @@ public class Element extends Base implements NamedItem {
 	    }
 	  }
 	}
+
+  /**
+   * The same values in the same order as listChildren(), which groups the children by name, in
+   * order of first appearance. Normally the children with the same name are already together
+   */
+  @Override
+  protected void visitChildren(IModelObjectVisitor visitor) {
+    if (children == null || children.isEmpty()) {
+      return;
+    }
+    if (childNamesAreGrouped()) {
+      String last = null;
+      int index = 0;
+      for (Element c : children) {
+        if (!c.getName().equals(last)) {
+          last = c.getName();
+          index = 0;
+        }
+        visitor.visit(this, c.getName(), c.getProperty().isList() ? index : -1, c);
+        index++;
+      }
+    } else {
+      Map<String, List<Element>> groups = new LinkedHashMap<>();
+      for (Element c : children) {
+        groups.computeIfAbsent(c.getName(), k -> new ArrayList<>()).add(c);
+      }
+      for (List<Element> group : groups.values()) {
+        int index = 0;
+        for (Element c : group) {
+          visitor.visit(this, c.getName(), c.getProperty().isList() ? index : -1, c);
+          index++;
+        }
+      }
+    }
+  }
+
+  private boolean childNamesAreGrouped() {
+    Set<String> done = null;
+    String last = null;
+    for (Element c : children) {
+      String n = c.getName();
+      if (!n.equals(last)) {
+        if (last != null) {
+          if (done == null) {
+            done = new HashSet<>();
+          }
+          done.add(last);
+        }
+        if (done != null && done.contains(n)) {
+          return false;
+        }
+        last = n;
+      }
+    }
+    return true;
+  }
 	
   @Override
   public Base setProperty(String name, Base value) throws FHIRException {
@@ -1644,8 +1700,10 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getBasePath() {
-    if (property.getStructure().hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS), VersionResolutionRules.defaultRule());
+    // a resource can implement more than one interface: use the first one that defines this element
+    for (Extension ext : property.getStructure().getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+      String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
+      StructureDefinition sd = implemented == null ? null : property.getContext().fetchResource(StructureDefinition.class, implemented, VersionResolutionRules.defaultRule());
       if (sd != null) {
         ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {

@@ -12,6 +12,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -705,7 +706,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       StructuralMatch<String> t = comparison.getMetadata().get(n);
       addRow(gen, model.getRows(), n, t);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, String name, StructuralMatch<String> t) {
@@ -716,8 +717,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       if (t.getLeft().equals(t.getRight())) {
         r.getCells().add(gen.new Cell(null, null, t.getLeft(), null, null).span(2));        
       } else {
-        r.getCells().add(gen.new Cell(null, null, t.getLeft(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-        r.getCells().add(gen.new Cell(null, null, t.getRight(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, t.getLeft(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, t.getRight(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
       }
     } else if (t.hasLeft()) {
       r.setColor(COLOR_NO_ROW_RIGHT);

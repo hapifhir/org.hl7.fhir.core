@@ -133,7 +133,7 @@ public class BundleRenderer extends ResourceRenderer {
             } else {
               xn.stripAnchorsByName(context.getAnchors());
             }
-            root.blockquote().addChildren(xn);
+            root.blockquote().addChildren(seatEntryNarrative(xn));
           }
           if (be.has("request")) {
             renderRequest(x, be.child("request"));
@@ -143,6 +143,28 @@ public class BundleRenderer extends ResourceRenderer {
           }
         }
       }
+    }
+  }
+
+  /**
+   * Sit the narrative of an entry at the same heading depth as every other entry.
+   *
+   * <p>Each entry brings its own heading levels: the generic renderer starts its headings at h3,
+   * a nested document Bundle renders its sections at h2, and authored narrative can use anything.
+   * Composed as they are, the headings of the entries are out of step with each other, and whoever
+   * later fits the whole Bundle narrative under a page heading shifts the h3 entries one level too
+   * deep (see https://github.com/HL7/fhir-ig-publisher/issues/1404).
+   *
+   * <p>Works on a copy, since the narrative of a resource shares its nodes with the resource. If the
+   * narrative is too deeply nested to shift, it is left as it is.
+   */
+  private XhtmlNode seatEntryNarrative(XhtmlNode xn) {
+    XhtmlNode res = xn.copy();
+    try {
+      res.ensureTopHeadingIs(3);
+      return res;
+    } catch (FHIRException e) {
+      return xn;
     }
   }
 

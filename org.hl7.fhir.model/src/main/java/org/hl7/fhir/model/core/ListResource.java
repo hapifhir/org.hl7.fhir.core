@@ -522,6 +522,23 @@ public class ListResource extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.flag != null) {
+            visitor.visit(this, "flag", -1, this.flag);
+          }
+          if (this.deleted != null) {
+            visitor.visit(this, "deleted", -1, this.deleted);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.item != null) {
+            visitor.visit(this, "item", -1, this.item);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "flag":  return new Property("flag", "CodeableConcept", "The flag allows the system constructing the list to indicate the role and significance of the item in the list.", 0, 1, flag);
@@ -1458,6 +1475,83 @@ public class ListResource extends DomainResource {
         children.add(new Property("note", "Annotation", "Comments that apply to the overall list.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("entry", "", "Entries in this list.", 0, java.lang.Integer.MAX_VALUE, entryList));
         children.add(new Property("emptyReason", "CodeableConcept", "If the list is empty, why the list is empty.", 0, 1, emptyReason));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.mode != null) {
+          visitor.visit(this, "mode", -1, this.mode);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.contributorList != null) {
+          int i = 0;
+          for (Base v : this.contributorList) {
+            if (v != null) {
+              visitor.visit(this, "contributor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.orderedBy != null) {
+          visitor.visit(this, "orderedBy", -1, this.orderedBy);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.entryList != null) {
+          int i = 0;
+          for (Base v : this.entryList) {
+            if (v != null) {
+              visitor.visit(this, "entry", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.emptyReason != null) {
+          visitor.visit(this, "emptyReason", -1, this.emptyReason);
+        }
       }
 
       @Override

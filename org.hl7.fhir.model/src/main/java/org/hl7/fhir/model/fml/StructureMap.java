@@ -1481,6 +1481,23 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.url != null) {
+        visitor.visit(this, "url", -1, this.url);
+      }
+      if (this.mode != null) {
+        visitor.visit(this, "mode", -1, this.mode);
+      }
+      if (this.alias != null) {
+        visitor.visit(this, "alias", -1, this.alias);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "url":
@@ -1778,6 +1795,17 @@ public class StructureMap extends CanonicalResource {
       super.listChildren(children);
       children.add(new Property("name", "id", "The name used to refer to the constant.", 0, 1, name));
       children.add(new Property("value", "string", "A FHIRPath expression that is the value of this variable.", 0, 1, value));
+    }
+
+    @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.value != null) {
+        visitor.visit(this, "value", -1, this.value);
+      }
     }
 
     @Override
@@ -2288,6 +2316,41 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.extends_ != null) {
+        visitor.visit(this, "extends", -1, this.extends_);
+      }
+      if (this.typeMode != null) {
+        visitor.visit(this, "typeMode", -1, this.typeMode);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+      if (this.inputList != null) {
+        int i = 0;
+        for (Base v : this.inputList) {
+          if (v != null) {
+            visitor.visit(this, "input", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.ruleList != null) {
+        int i = 0;
+        for (Base v : this.ruleList) {
+          if (v != null) {
+            visitor.visit(this, "rule", i, v);
+          }
+          i++;
+        }
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "name":
@@ -2747,6 +2810,23 @@ public class StructureMap extends CanonicalResource {
       children.add(new Property("type", "string", "Type for this instance of data.", 0, 1, type));
       children.add(new Property("mode", "code", "Mode for this instance of data.", 0, 1, mode));
       children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
+    }
+
+    @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.type != null) {
+        visitor.visit(this, "type", -1, this.type);
+      }
+      if (this.mode != null) {
+        visitor.visit(this, "mode", -1, this.mode);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
     }
 
     @Override
@@ -3300,6 +3380,53 @@ public class StructureMap extends CanonicalResource {
       children.add(new Property("rule", "@StructureMap.group.rule", "Rules contained in this rule.", 0, java.lang.Integer.MAX_VALUE, ruleList));
       children.add(new Property("dependent", "", "Which other rules to apply in the context of this rule.", 0, java.lang.Integer.MAX_VALUE, dependentList));
       children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
+    }
+
+    @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.sourceList != null) {
+        int i = 0;
+        for (Base v : this.sourceList) {
+          if (v != null) {
+            visitor.visit(this, "source", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.targetList != null) {
+        int i = 0;
+        for (Base v : this.targetList) {
+          if (v != null) {
+            visitor.visit(this, "target", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.ruleList != null) {
+        int i = 0;
+        for (Base v : this.ruleList) {
+          if (v != null) {
+            visitor.visit(this, "rule", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.dependentList != null) {
+        int i = 0;
+        for (Base v : this.dependentList) {
+          if (v != null) {
+            visitor.visit(this, "dependent", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
     }
 
     @Override
@@ -4179,6 +4306,50 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.context != null) {
+        visitor.visit(this, "context", -1, this.context);
+      }
+      if (this.min != null) {
+        visitor.visit(this, "min", -1, this.min);
+      }
+      if (this.max != null) {
+        visitor.visit(this, "max", -1, this.max);
+      }
+      if (this.type != null) {
+        visitor.visit(this, "type", -1, this.type);
+      }
+      if (this.defaultValue != null) {
+        visitor.visit(this, "defaultValue", -1, this.defaultValue);
+      }
+      if (this.elementList != null) {
+        int i = 0;
+        for (Base v : this.elementList) {
+          if (v != null) {
+            visitor.visit(this, "element", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.listMode != null) {
+        visitor.visit(this, "listMode", -1, this.listMode);
+      }
+      if (this.variable != null) {
+        visitor.visit(this, "variable", -1, this.variable);
+      }
+      if (this.condition != null) {
+        visitor.visit(this, "condition", -1, this.condition);
+      }
+      if (this.check != null) {
+        visitor.visit(this, "check", -1, this.check);
+      }
+      if (this.logMessage != null) {
+        visitor.visit(this, "logMessage", -1, this.logMessage);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "context":
@@ -4940,6 +5111,50 @@ public class StructureMap extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.context != null) {
+            visitor.visit(this, "context", -1, this.context);
+          }
+          if (this.elementList != null) {
+            int i = 0;
+            for (Base v : this.elementList) {
+              if (v != null) {
+                visitor.visit(this, "element", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.variable != null) {
+            visitor.visit(this, "variable", -1, this.variable);
+          }
+          if (this.listModeList != null) {
+            int i = 0;
+            for (Base v : this.listModeList) {
+              if (v != null) {
+                visitor.visit(this, "listMode", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.listRuleId != null) {
+            visitor.visit(this, "listRuleId", -1, this.listRuleId);
+          }
+          if (this.transform != null) {
+            visitor.visit(this, "transform", -1, this.transform);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "context":  return new Property("context", "string", "Variable this rule applies to.", 0, 1, context);
@@ -5349,6 +5564,14 @@ public class StructureMap extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
@@ -5644,6 +5867,23 @@ public class StructureMap extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name));
           children.add(new Property("parameter", "@StructureMap.group.rule.target.parameter", "Parameter to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, parameterList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -7025,6 +7265,122 @@ public class StructureMap extends CanonicalResource {
         children.add(new Property("import", "canonical(StructureMap)", "Other maps used by this map (canonical URLs).", 0, java.lang.Integer.MAX_VALUE, import_List));
         children.add(new Property("const", "", "Definition of a constant value used in the map rules.", 0, java.lang.Integer.MAX_VALUE, const_List));
         children.add(new Property("group", "", "Organizes the mapping into managable chunks for human review/ease of maintenance.", 0, java.lang.Integer.MAX_VALUE, groupList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.structureList != null) {
+          int i = 0;
+          for (Base v : this.structureList) {
+            if (v != null) {
+              visitor.visit(this, "structure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.import_List != null) {
+          int i = 0;
+          for (Base v : this.import_List) {
+            if (v != null) {
+              visitor.visit(this, "import", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.const_List != null) {
+          int i = 0;
+          for (Base v : this.const_List) {
+            if (v != null) {
+              visitor.visit(this, "const", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupList != null) {
+          int i = 0;
+          for (Base v : this.groupList) {
+            if (v != null) {
+              visitor.visit(this, "group", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

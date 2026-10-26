@@ -270,6 +270,20 @@ public class Annotation extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.author != null) {
+          visitor.visit(this, "author[x]", -1, this.author);
+        }
+        if (this.time != null) {
+          visitor.visit(this, "time", -1, this.time);
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "author[x]":  return new Property("author[x]", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)|string", "The individual responsible for making the annotation.", 0, 1, author);

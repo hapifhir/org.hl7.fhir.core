@@ -2721,6 +2721,17 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.relation != null) {
+            visitor.visit(this, "relation", -1, this.relation);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "relation":  return new Property("relation", "code", "A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).", 0, 1, relation);
@@ -3141,6 +3152,35 @@ public class Bundle extends Resource implements IBaseBundle {
           children.add(new Property("search", "", "Information about the search process that lead to the creation of this entry.", 0, 1, search));
           children.add(new Property("request", "", "Additional information about how this entry should be processed as part of a transaction or batch.  For history, it shows how the entry was processed to create the version contained in the entry.", 0, 1, request));
           children.add(new Property("response", "", "Indicates the results of processing the corresponding 'request' entry in the batch or transaction being responded to or what the results of an operation where when returning history.", 0, 1, response));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkList != null) {
+            int i = 0;
+            for (Base v : this.linkList) {
+              if (v != null) {
+                visitor.visit(this, "link", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.fullUrl != null) {
+            visitor.visit(this, "fullUrl", -1, this.fullUrl);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.search != null) {
+            visitor.visit(this, "search", -1, this.search);
+          }
+          if (this.request != null) {
+            visitor.visit(this, "request", -1, this.request);
+          }
+          if (this.response != null) {
+            visitor.visit(this, "response", -1, this.response);
+          }
         }
 
         @Override
@@ -3584,6 +3624,17 @@ public class Bundle extends Resource implements IBaseBundle {
           super.listChildren(children);
           children.add(new Property("mode", "code", "Why this entry is in the result set - whether it's included as a match or because of an _include requirement, or to convey information or warning information about the search process.", 0, 1, mode));
           children.add(new Property("score", "decimal", "When searching, the server's search ranking score for the entry.", 0, 1, score));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.score != null) {
+            visitor.visit(this, "score", -1, this.score);
+          }
         }
 
         @Override
@@ -4119,6 +4170,29 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.ifNoneMatch != null) {
+            visitor.visit(this, "ifNoneMatch", -1, this.ifNoneMatch);
+          }
+          if (this.ifModifiedSince != null) {
+            visitor.visit(this, "ifModifiedSince", -1, this.ifModifiedSince);
+          }
+          if (this.ifMatch != null) {
+            visitor.visit(this, "ifMatch", -1, this.ifMatch);
+          }
+          if (this.ifNoneExist != null) {
+            visitor.visit(this, "ifNoneExist", -1, this.ifNoneExist);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "method":  return new Property("method", "code", "In a transaction or batch, this is the HTTP action to be executed for this entry. In a history bundle, this indicates the HTTP action that occurred.", 0, 1, method);
@@ -4649,6 +4723,26 @@ public class Bundle extends Resource implements IBaseBundle {
           children.add(new Property("etag", "string", "The Etag for the resource, if the operation for the entry produced a versioned resource (see [Resource Metadata and Versioning](http.html#versioning) and [Managing Resource Contention](http.html#concurrency)).", 0, 1, etag));
           children.add(new Property("lastModified", "instant", "The date/time that the resource was modified on the server.", 0, 1, lastModified));
           children.add(new Property("outcome", "Resource", "An OperationOutcome containing hints and warnings produced as part of processing this entry in a batch or transaction.", 0, 1, outcome));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.location != null) {
+            visitor.visit(this, "location", -1, this.location);
+          }
+          if (this.etag != null) {
+            visitor.visit(this, "etag", -1, this.etag);
+          }
+          if (this.lastModified != null) {
+            visitor.visit(this, "lastModified", -1, this.lastModified);
+          }
+          if (this.outcome != null) {
+            visitor.visit(this, "outcome", -1, this.outcome);
+          }
         }
 
         @Override
@@ -5250,6 +5344,44 @@ public class Bundle extends Resource implements IBaseBundle {
         children.add(new Property("link", "", "A series of links that provide context to this bundle.", 0, java.lang.Integer.MAX_VALUE, linkList));
         children.add(new Property("entry", "", "An entry in a bundle resource - will either contain a resource or information about a resource (transactions and history only).", 0, java.lang.Integer.MAX_VALUE, entryList));
         children.add(new Property("issues", "Resource", "An OperationOutcome that captures issues and warnings that relate to the construction of the Bundle and the content within it.", 0, 1, issues));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifier != null) {
+          visitor.visit(this, "identifier", -1, this.identifier);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.timestamp != null) {
+          visitor.visit(this, "timestamp", -1, this.timestamp);
+        }
+        if (this.total != null) {
+          visitor.visit(this, "total", -1, this.total);
+        }
+        if (this.linkList != null) {
+          int i = 0;
+          for (Base v : this.linkList) {
+            if (v != null) {
+              visitor.visit(this, "link", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.entryList != null) {
+          int i = 0;
+          for (Base v : this.entryList) {
+            if (v != null) {
+              visitor.visit(this, "entry", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.issues != null) {
+          visitor.visit(this, "issues", -1, this.issues);
+        }
       }
 
       @Override

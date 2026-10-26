@@ -288,6 +288,26 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.collector != null) {
+            visitor.visit(this, "collector", -1, this.collector);
+          }
+          if (this.sourcePatient != null) {
+            visitor.visit(this, "sourcePatient", -1, this.sourcePatient);
+          }
+          if (this.sourceOrganization != null) {
+            visitor.visit(this, "sourceOrganization", -1, this.sourceOrganization);
+          }
+          if (this.collected != null) {
+            visitor.visit(this, "collected[x]", -1, this.collected);
+          }
+          if (this.procedure != null) {
+            visitor.visit(this, "procedure", -1, this.procedure);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "collector":  return new Property("collector", "Reference(Practitioner|PractitionerRole)", "Healthcare professional who is performing the collection.", 0, 1, collector);
@@ -745,6 +765,17 @@ public class BiologicallyDerivedProduct extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Code that specifies the property. It should reference an established coding system.", 0, 1, type));
           children.add(new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -1679,6 +1710,95 @@ public class BiologicallyDerivedProduct extends DomainResource {
         children.add(new Property("collection", "", "How this product was collected.", 0, 1, collection));
         children.add(new Property("storageTempRequirements", "Range", "The temperature requirements for storage of the biologically-derived product.", 0, 1, storageTempRequirements));
         children.add(new Property("property", "", "A property that is specific to this BiologicallyDerviedProduct instance.", 0, java.lang.Integer.MAX_VALUE, propertyList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.productCategoryList != null) {
+          int i = 0;
+          for (Base v : this.productCategoryList) {
+            if (v != null) {
+              visitor.visit(this, "productCategory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.productCode != null) {
+          visitor.visit(this, "productCode", -1, this.productCode);
+        }
+        if (this.parentList != null) {
+          int i = 0;
+          for (Base v : this.parentList) {
+            if (v != null) {
+              visitor.visit(this, "parent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.requestList != null) {
+          int i = 0;
+          for (Base v : this.requestList) {
+            if (v != null) {
+              visitor.visit(this, "request", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.therapyIdentifierList != null) {
+          int i = 0;
+          for (Base v : this.therapyIdentifierList) {
+            if (v != null) {
+              visitor.visit(this, "therapyIdentifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.biologicalSourceEvent != null) {
+          visitor.visit(this, "biologicalSourceEvent", -1, this.biologicalSourceEvent);
+        }
+        if (this.processingFacilityList != null) {
+          int i = 0;
+          for (Base v : this.processingFacilityList) {
+            if (v != null) {
+              visitor.visit(this, "processingFacility", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.division != null) {
+          visitor.visit(this, "division", -1, this.division);
+        }
+        if (this.productStatus != null) {
+          visitor.visit(this, "productStatus", -1, this.productStatus);
+        }
+        if (this.expirationDate != null) {
+          visitor.visit(this, "expirationDate", -1, this.expirationDate);
+        }
+        if (this.collection != null) {
+          visitor.visit(this, "collection", -1, this.collection);
+        }
+        if (this.storageTempRequirements != null) {
+          visitor.visit(this, "storageTempRequirements", -1, this.storageTempRequirements);
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

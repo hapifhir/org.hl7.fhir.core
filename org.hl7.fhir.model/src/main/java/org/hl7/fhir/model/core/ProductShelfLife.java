@@ -239,6 +239,26 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period[x]", -1, this.period);
+        }
+        if (this.specialPrecautionsForStorageList != null) {
+          int i = 0;
+          for (Base v : this.specialPrecautionsForStorageList) {
+            if (v != null) {
+              visitor.visit(this, "specialPrecautionsForStorage", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "type":  return new Property("type", "CodeableConcept", "This describes the shelf life, taking into account various scenarios such as shelf life of the packaged Medicinal Product itself, shelf life after transformation where necessary and shelf life after the first opening of a bottle, etc. The shelf life type shall be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.", 0, 1, type);

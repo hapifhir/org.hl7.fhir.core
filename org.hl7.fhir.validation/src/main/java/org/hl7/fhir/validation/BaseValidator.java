@@ -248,20 +248,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   private boolean doingLevel(IssueSeverity error) {
-    switch (error) {
-      case ERROR:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case FATAL:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case WARNING:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case INFORMATION:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.HINTS;
-      case NULL:
-        return true;
-      default:
-        return true;
-    }
+    return ValidationLevel.includes(settings.getLevel(), error);
   }
 
   private boolean doingErrors() {
@@ -1164,7 +1151,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         boolean refMatchesUrl = ref.matches(urlRegex);
         if (!ok && refMatchesUrl) {
           String tt = extractResourceType(ref);
-          ok = VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(tt);
+          ok = cu.isCanonicalResource(tt);
         }
         if (!ok && stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
           source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
@@ -1771,6 +1758,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           org.hl7.fhir.r5.model.Resource r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
           rN = VersionConvertorFactory_50_N.convertResource(r5);
           break;
+        case R6:
+          org.hl7.fhir.model.core.Resource r6 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(json);
+          rN = r6;
+          break;
         default:
           return null; // this can't happen
       }
@@ -1989,5 +1980,25 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     xverManager = value;
   }
 
+
+  protected String determineId(String path, Element element) {
+    if (element == null) {
+      return null;
+    }
+    if (path.endsWith("]")) {
+      path = path.substring(0, path.lastIndexOf("["));
+    }
+    switch (path) {
+      case "StructureDefinition.snapshot.element": return element.getNamedChildValue("id", "path");
+      case "StructureDefinition.differential.element": return element.getNamedChildValue("id", "path");
+      case "SearchParameter": return element.getNamedChildValue("code");
+      default:
+        if (path.contains(".")) {
+          return determineId(path.substring(0, path.lastIndexOf(".")), element.getParentForValidator());
+        } else {
+          return null;
+        }
+    }
+  }
 
 }

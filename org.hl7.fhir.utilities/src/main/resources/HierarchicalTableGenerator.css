@@ -1,0 +1,162 @@
+
+.xhtTableBorder0 {
+    border: 0px #F0F0F0 solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
+.xhtTableBorder1 {
+    border: 1px #F0F0F0 solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
+.xhtTableBorder2 {
+    border: 2px black solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
+.xhtRowEven {
+    background-color: white;
+}
+
+.xhtRowOdd {
+    background-color: #F7F7F7;
+}
+
+.xhtRowBorder2 {
+    border: 2px #F0F0F0 solid;
+    padding: 0px;
+    vertical-align: top;
+    font-size: 11px;
+    font-family: verdana;
+}
+
+.xhtRowBorder1 {
+    border: 1px #F0F0F0 solid;
+    padding: 0px;
+    vertical-align: top;
+    font-size: 11px;
+    font-family: verdana;
+}
+
+.xhtRowBorder0 {
+    border: 0px #F0F0F0 solid;
+    padding: 0px;
+    vertical-align: top;
+    font-size: 11px;
+    font-family: verdana;
+}
+
+.xhtRowGreyedOut {
+    opacity: 0.50;
+}
+
+.xhtRowTopSilver {
+    border-top: 1px solid silver;
+}
+
+.xhtCellColorNoCellLeft {
+    background-color: #ffff4d
+}
+
+
+.xhtCellColorNoCellRight {
+    background-color: #ffcc33
+}
+
+
+.xhtCellColorNoRowLeft {
+    background-color: #ffffb3
+}
+
+
+.xhtCellColorNoRowRight {
+    background-color: #ffecb3
+}
+
+
+.xhtCellColorDifferent {
+    background-color: #f0b3ff
+}
+
+.xhtCellBorder0 {
+    vertical-align: top;
+    text-align : var(--ig-left,left);
+    border: 0px #F0F0F0 solid;
+    padding:0px 4px 0px 4px;
+}
+
+.xhtCellBorder1 {
+    vertical-align: top;
+    text-align : var(--ig-left,left);
+    border: 1px #F0F0F0 solid;
+    padding:0px 4px 0px 4px;
+}
+
+/* only the hierarchy column: the other columns wrap */
+.xhtCellNoWrap {
+    white-space: nowrap;
+}
+
+.xhtCellLeftLine {
+    border-left: 1px grey solid;
+}
+
+.xhtCellRightLine {
+    border-right: 1px grey solid;
+}
+
+.xhtPieceBold {
+    font-weight: bold
+}
+
+.xhtPieceItalic {
+    font-style: italic
+}
+
+.xhtPieceCode {
+    padding: 2px 4px;
+    color: #005c00;
+    background-color: #f9f2f4;
+    white-space: nowrap;
+    border-radius: 4px;
+}
+
+.xhtPiecePre {
+    white-space: pre;
+    font-family: courier;
+}
+
+.xhtPieceDeEmphasized {
+    opacity: 0.50;
+}
+
+.xhtPieceStrikeout {
+    text-decoration: line-through;
+}
+
+.xhtPieceDarkGreen {
+    color: darkgreen;
+}
+
+.xhtConstraintStyle {
+    padding-left: 3px;
+    padding-right: 3px;
+    border: 1px maroon solid;
+    font-weight: bold;
+    color: #301212;
+    background-color: #fdf4f4;
+}
+
+.xhtBindingNotTestable {
+    color: #c97a18
+}
+
+.xhtPieceBaseline {
+    vertical-align: baseline;
+}

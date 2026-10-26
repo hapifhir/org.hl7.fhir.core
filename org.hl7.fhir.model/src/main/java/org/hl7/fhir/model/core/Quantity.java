@@ -457,6 +457,26 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.value != null) {
+          visitor.visit(this, "value", -1, this.value);
+        }
+        if (this.comparator != null) {
+          visitor.visit(this, "comparator", -1, this.comparator);
+        }
+        if (this.unit != null) {
+          visitor.visit(this, "unit", -1, this.unit);
+        }
+        if (this.system != null) {
+          visitor.visit(this, "system", -1, this.system);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "value":  return new Property("value", "decimal", "The value of the measured amount. The value includes an implicit precision in the presentation of the value.", 0, 1, value);

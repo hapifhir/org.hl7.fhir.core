@@ -321,6 +321,15 @@ public class Narrative extends BaseNarrative implements INarrative {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        visitor.visit(this, "div", -1, new XhtmlType(modelContext, this));
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "status":  return new Property("status", "code", "The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.", 0, 1, status);

@@ -362,6 +362,20 @@ public class MessageHeader extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.endpoint != null) {
+            visitor.visit(this, "endpoint[x]", -1, this.endpoint);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.receiver != null) {
+            visitor.visit(this, "receiver", -1, this.receiver);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "endpoint[x]":  return new Property("endpoint[x]", "url|Reference(Endpoint)", "Indicates where the message should be routed.", 0, 1, endpoint);
@@ -873,6 +887,29 @@ public class MessageHeader extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.endpoint != null) {
+            visitor.visit(this, "endpoint[x]", -1, this.endpoint);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.software != null) {
+            visitor.visit(this, "software", -1, this.software);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.contact != null) {
+            visitor.visit(this, "contact", -1, this.contact);
+          }
+          if (this.sender != null) {
+            visitor.visit(this, "sender", -1, this.sender);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "endpoint[x]":  return new Property("endpoint[x]", "url|Reference(Endpoint)", "Identifies the routing target to send acknowledgements to.", 0, 1, endpoint);
@@ -1274,6 +1311,20 @@ public class MessageHeader extends DomainResource {
           children.add(new Property("identifier", "Identifier", "The Bundle.identifier of the message to which this message is a response.", 0, 1, identifier));
           children.add(new Property("code", "code", "Code that identifies the type of response to the message - whether it was successful or not, and whether it should be resent or not.", 0, 1, code));
           children.add(new Property("details", "Reference(OperationOutcome)", "Full details of any issues found in the message.", 0, 1, details));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifier != null) {
+            visitor.visit(this, "identifier", -1, this.identifier);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.details != null) {
+            visitor.visit(this, "details", -1, this.details);
+          }
         }
 
         @Override
@@ -1842,6 +1893,44 @@ public class MessageHeader extends DomainResource {
         children.add(new Property("response", "", "Information about the message that this message is a response to.  Only present if this message is a response.", 0, 1, response));
         children.add(new Property("focus", "Reference(Any)", "The actual data of the message - a reference to the root/focus class of the event. This is allowed to be a Parameters resource.", 0, java.lang.Integer.MAX_VALUE, focusList));
         children.add(new Property("definition", "canonical(MessageDefinition)", "Permanent link to the MessageDefinition for this message.", 0, 1, definition));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.event != null) {
+          visitor.visit(this, "event[x]", -1, this.event);
+        }
+        if (this.destinationList != null) {
+          int i = 0;
+          for (Base v : this.destinationList) {
+            if (v != null) {
+              visitor.visit(this, "destination", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.reason != null) {
+          visitor.visit(this, "reason", -1, this.reason);
+        }
+        if (this.response != null) {
+          visitor.visit(this, "response", -1, this.response);
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.definition != null) {
+          visitor.visit(this, "definition", -1, this.definition);
+        }
       }
 
       @Override

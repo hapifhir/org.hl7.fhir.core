@@ -456,6 +456,38 @@ public class Signature extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.when != null) {
+          visitor.visit(this, "when", -1, this.when);
+        }
+        if (this.who != null) {
+          visitor.visit(this, "who", -1, this.who);
+        }
+        if (this.onBehalfOf != null) {
+          visitor.visit(this, "onBehalfOf", -1, this.onBehalfOf);
+        }
+        if (this.targetFormat != null) {
+          visitor.visit(this, "targetFormat", -1, this.targetFormat);
+        }
+        if (this.sigFormat != null) {
+          visitor.visit(this, "sigFormat", -1, this.sigFormat);
+        }
+        if (this.data != null) {
+          visitor.visit(this, "data", -1, this.data);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "type":  return new Property("type", "Coding", "An indication of the reason that the entity signed this document. This may be explicitly included as part of the signature information and can be used when determining accountability for various actions concerning the document.", 0, java.lang.Integer.MAX_VALUE, typeList);

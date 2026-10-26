@@ -238,6 +238,23 @@ public class Procedure extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+          if (this.onBehalfOf != null) {
+            visitor.visit(this, "onBehalfOf", -1, this.onBehalfOf);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "function":  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the procedure. For example, surgeon, anaesthetist, endoscopist.", 0, 1, function);
@@ -531,6 +548,17 @@ public class Procedure extends DomainResource {
           super.listChildren(children);
           children.add(new Property("action", "CodeableConcept", "The kind of change that happened to the device during the procedure.", 0, 1, action));
           children.add(new Property("manipulated", "Reference(Device)", "The device that was manipulated (changed) during the procedure.", 0, 1, manipulated));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.action != null) {
+            visitor.visit(this, "action", -1, this.action);
+          }
+          if (this.manipulated != null) {
+            visitor.visit(this, "manipulated", -1, this.manipulated);
+          }
         }
 
         @Override
@@ -2179,6 +2207,179 @@ public class Procedure extends DomainResource {
         children.add(new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDeviceList));
         children.add(new Property("used", "CodeableReference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedList));
         children.add(new Property("supportingInfo", "Reference(Any)", "Other resources from the patient record that may be relevant to the procedure.  The information from these resources was either used to create the instance or is provided to help with its interpretation. This extension should not be used if more specific inline elements or extensions are available.", 0, java.lang.Integer.MAX_VALUE, supportingInfoList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.focus != null) {
+          visitor.visit(this, "focus", -1, this.focus);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.recorded != null) {
+          visitor.visit(this, "recorded", -1, this.recorded);
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.reported != null) {
+          visitor.visit(this, "reported[x]", -1, this.reported);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.outcomeList != null) {
+          int i = 0;
+          for (Base v : this.outcomeList) {
+            if (v != null) {
+              visitor.visit(this, "outcome", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reportList != null) {
+          int i = 0;
+          for (Base v : this.reportList) {
+            if (v != null) {
+              visitor.visit(this, "report", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.complicationList != null) {
+          int i = 0;
+          for (Base v : this.complicationList) {
+            if (v != null) {
+              visitor.visit(this, "complication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.followUpList != null) {
+          int i = 0;
+          for (Base v : this.followUpList) {
+            if (v != null) {
+              visitor.visit(this, "followUp", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.focalDeviceList != null) {
+          int i = 0;
+          for (Base v : this.focalDeviceList) {
+            if (v != null) {
+              visitor.visit(this, "focalDevice", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.usedList != null) {
+          int i = 0;
+          for (Base v : this.usedList) {
+            if (v != null) {
+              visitor.visit(this, "used", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

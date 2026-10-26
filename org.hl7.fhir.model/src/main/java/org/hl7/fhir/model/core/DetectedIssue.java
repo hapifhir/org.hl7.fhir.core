@@ -360,6 +360,29 @@ public class DetectedIssue extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.codeList != null) {
+            int i = 0;
+            for (Base v : this.codeList) {
+              if (v != null) {
+                visitor.visit(this, "code", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "A manifestation that led to the recording of this detected issue.", 0, java.lang.Integer.MAX_VALUE, codeList);
@@ -724,6 +747,29 @@ public class DetectedIssue extends DomainResource {
           children.add(new Property("date", "dateTime", "Indicates when the mitigating action was documented.", 0, 1, date));
           children.add(new Property("author", "Reference(Practitioner|PractitionerRole)", "Identifies the practitioner who determined the mitigation and takes responsibility for the mitigation step occurring.", 0, 1, author));
           children.add(new Property("note", "Annotation", "Clinicians may add additional notes or justifications about the mitigation action. For example, patient can have this drug because they have had it before without any issues. Multiple justifications may be provided.", 0, java.lang.Integer.MAX_VALUE, noteList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.action != null) {
+            visitor.visit(this, "action", -1, this.action);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.author != null) {
+            visitor.visit(this, "author", -1, this.author);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1851,6 +1897,101 @@ public class DetectedIssue extends DomainResource {
         children.add(new Property("medicationClass", "CodeableConcept", "Represents the medication class that is responsible for the detected issue.", 0, java.lang.Integer.MAX_VALUE, medicationClassList));
         children.add(new Property("managementCode", "CodeableConcept", "An indication of the importance or type of step that should or may be taken in order to address the detected issue. This is different than mitigation in that it is not specifically providing actions to be taken, rather general suggestions about approach.", 0, 1, managementCode));
         children.add(new Property("mitigation", "", "Indicates an action that has been taken or is committed to reduce or eliminate the likelihood of the risk identified by the detected issue from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.", 0, java.lang.Integer.MAX_VALUE, mitigationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.severity != null) {
+          visitor.visit(this, "severity", -1, this.severity);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.identified != null) {
+          visitor.visit(this, "identified[x]", -1, this.identified);
+        }
+        if (this.author != null) {
+          visitor.visit(this, "author", -1, this.author);
+        }
+        if (this.implicatedList != null) {
+          int i = 0;
+          for (Base v : this.implicatedList) {
+            if (v != null) {
+              visitor.visit(this, "implicated", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.evidenceList != null) {
+          int i = 0;
+          for (Base v : this.evidenceList) {
+            if (v != null) {
+              visitor.visit(this, "evidence", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.detail != null) {
+          visitor.visit(this, "detail", -1, this.detail);
+        }
+        if (this.reference != null) {
+          visitor.visit(this, "reference", -1, this.reference);
+        }
+        if (this.qualityOfEvidence != null) {
+          visitor.visit(this, "qualityOfEvidence", -1, this.qualityOfEvidence);
+        }
+        if (this.expectedOnsetType != null) {
+          visitor.visit(this, "expectedOnsetType", -1, this.expectedOnsetType);
+        }
+        if (this.medicationClassList != null) {
+          int i = 0;
+          for (Base v : this.medicationClassList) {
+            if (v != null) {
+              visitor.visit(this, "medicationClass", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managementCode != null) {
+          visitor.visit(this, "managementCode", -1, this.managementCode);
+        }
+        if (this.mitigationList != null) {
+          int i = 0;
+          for (Base v : this.mitigationList) {
+            if (v != null) {
+              visitor.visit(this, "mitigation", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

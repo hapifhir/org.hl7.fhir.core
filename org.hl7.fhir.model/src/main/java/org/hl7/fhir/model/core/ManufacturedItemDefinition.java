@@ -285,6 +285,17 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
@@ -842,6 +853,59 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.functionList != null) {
+            int i = 0;
+            for (Base v : this.functionList) {
+              if (v != null) {
+                visitor.visit(this, "function", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.amountList != null) {
+            int i = 0;
+            for (Base v : this.amountList) {
+              if (v != null) {
+                visitor.visit(this, "amount", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.constituentList != null) {
+            int i = 0;
+            for (Base v : this.constituentList) {
+              if (v != null) {
+                visitor.visit(this, "constituent", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Defining type of the component e.g. shell, layer, ink.", 0, 1, type);
@@ -1332,6 +1396,47 @@ public class ManufacturedItemDefinition extends DomainResource {
           children.add(new Property("location", "CodeableConcept", "The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc.", 0, java.lang.Integer.MAX_VALUE, locationList));
           children.add(new Property("function", "CodeableConcept", "The function of this constituent within the component e.g. binder.", 0, java.lang.Integer.MAX_VALUE, functionList));
           children.add(new Property("hasIngredient", "CodeableReference(Ingredient)", "The ingredient that is the constituent of the given component.", 0, java.lang.Integer.MAX_VALUE, hasIngredientList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.amountList != null) {
+            int i = 0;
+            for (Base v : this.amountList) {
+              if (v != null) {
+                visitor.visit(this, "amount", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.locationList != null) {
+            int i = 0;
+            for (Base v : this.locationList) {
+              if (v != null) {
+                visitor.visit(this, "location", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.functionList != null) {
+            int i = 0;
+            for (Base v : this.functionList) {
+              if (v != null) {
+                visitor.visit(this, "function", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.hasIngredientList != null) {
+            int i = 0;
+            for (Base v : this.hasIngredientList) {
+              if (v != null) {
+                visitor.visit(this, "hasIngredient", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2105,6 +2210,77 @@ public class ManufacturedItemDefinition extends DomainResource {
         children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.", 0, java.lang.Integer.MAX_VALUE, ingredientList));
         children.add(new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, propertyList));
         children.add(new Property("component", "", "Physical parts of the manufactured item, that it is intrinsically made from. This is distinct from the ingredients that are part of its chemical makeup.", 0, java.lang.Integer.MAX_VALUE, componentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.manufacturedDoseForm != null) {
+          visitor.visit(this, "manufacturedDoseForm", -1, this.manufacturedDoseForm);
+        }
+        if (this.unitOfPresentation != null) {
+          visitor.visit(this, "unitOfPresentation", -1, this.unitOfPresentation);
+        }
+        if (this.manufacturerList != null) {
+          int i = 0;
+          for (Base v : this.manufacturerList) {
+            if (v != null) {
+              visitor.visit(this, "manufacturer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.marketingStatusList != null) {
+          int i = 0;
+          for (Base v : this.marketingStatusList) {
+            if (v != null) {
+              visitor.visit(this, "marketingStatus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.ingredientList != null) {
+          int i = 0;
+          for (Base v : this.ingredientList) {
+            if (v != null) {
+              visitor.visit(this, "ingredient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.componentList != null) {
+          int i = 0;
+          for (Base v : this.componentList) {
+            if (v != null) {
+              visitor.visit(this, "component", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

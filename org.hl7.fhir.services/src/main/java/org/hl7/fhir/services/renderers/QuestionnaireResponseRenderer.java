@@ -89,7 +89,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     for (ResourceWrapper i : items) {
       renderTreeItem(status, gen, row.getSubRows(), qr, i);
     }
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn);
   }
 

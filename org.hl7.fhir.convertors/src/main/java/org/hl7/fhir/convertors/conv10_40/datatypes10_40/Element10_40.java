@@ -19,55 +19,58 @@ public class Element10_40 {
 
   public void copyElement(org.hl7.fhir.dstu2.model.Element src,
                           org.hl7.fhir.r4.model.Element tgt,
-                          String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.r4.model.Extension convertedExtension = new org.hl7.fhir.r4.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension10_40.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.dstu2.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          if (advisor.useAdvisorForExtension(e)) {
+            org.hl7.fhir.r4.model.Extension convertedExtension = new org.hl7.fhir.r4.model.Extension();
+            advisor.handleExtension(e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension10_40.convertExtension(e));
+          }
         }
-      });
+      }
+    }
   }
 
   public void copyElement(org.hl7.fhir.r4.model.Element src,
                           org.hl7.fhir.dstu2.model.Element tgt,
-                          String path,
                           String... extensionsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
-      .forEach(e -> {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension10_40.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.r4.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
+          if (advisor.useAdvisorForExtension(e)) {
+            org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
+            advisor.handleExtension(e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension10_40.convertExtension(e));
+          }
         }
-      });
+      }
+    }
   }
 
   public void copyElement(org.hl7.fhir.r4.model.DomainResource src,
                           org.hl7.fhir.dstu2.model.Element tgt,
-                          String path,
                           String... extensionsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionsToIgnore))
-      .forEach(e -> {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension10_40.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.r4.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
+          if (advisor.useAdvisorForExtension(e)) {
+            org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
+            advisor.handleExtension(e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension10_40.convertExtension(e));
+          }
         }
-      });
+      }
+    }
   }
 }

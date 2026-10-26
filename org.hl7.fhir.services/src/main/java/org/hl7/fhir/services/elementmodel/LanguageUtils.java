@@ -555,15 +555,36 @@ public class LanguageUtils {
     return true; // for now...
   }
 
+  /**
+   * The translation units being built for a resource, with an index so that checking for an existing unit doesn't
+   * mean scanning the whole list (which made generating translations quadratic in the size of the resource)
+   */
+  private static class IndexedTranslationUnits {
+    private final List<TranslationUnit> list = new ArrayList<>();
+    private final Set<List<String>> keys = new HashSet<>();
+
+    void add(TranslationUnit tu) {
+      list.add(tu);
+      if (tu.getId() != null && tu.getSrcText() != null) {
+        keys.add(List.of(tu.getId(), tu.getSrcText()));
+      }
+    }
+
+    // same semantics as the linear scan this replaces: only units with both an id and a source text can match
+    boolean contains(String id, String src) {
+      return id != null && src != null && keys.contains(List.of(id, src));
+    }
+  }
+
   public List<TranslationUnit> generateTranslations(Resource res, String lang) {
-    List<TranslationUnit> list = new ArrayList<>();
+    IndexedTranslationUnits list = new IndexedTranslationUnits();
     if (res instanceof StructureDefinition) {
       StructureDefinition sd = (StructureDefinition) res;
       generateTranslations(list, sd, lang);
       if (res.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          if (!hasInList(list, t.getId(), t.getSrcText())) {
+          if (!list.contains(t.getId(), t.getSrcText())) {
             list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
           }
         }
@@ -571,22 +592,29 @@ public class LanguageUtils {
     } else {
       CodeSystem cs = (CodeSystem) res.getUserData(UserDataNames.LANGUTILS_SOURCE_SUPPLEMENT);
       List<TranslationUnit> inputs = res.hasUserData(UserDataNames.LANGUTILS_SOURCE_TRANSLATIONS) ? (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_SOURCE_TRANSLATIONS) : new ArrayList<>();
+      // the first input with a given id is the one that's used
+      Map<String, TranslationUnit> inputsById = new HashMap<>();
+      for (TranslationUnit t : inputs) {
+        if (t.getId() != null) {
+          inputsById.putIfAbsent(t.getId(), t);
+        }
+      }
       for (ConceptDefinitionComponent cd : cs.getConceptList()) {
-        generateTranslations(list, cd, lang, inputs);
+        generateTranslations(list, cd, lang, inputsById);
       }
       if (cs.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          if (!hasInList(list, t.getId(), t.getSrcText())) {
+          if (!list.contains(t.getId(), t.getSrcText())) {
             list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
           }
         }
       }
     }
-    return list;
+    return list.list;
   }
 
-  private void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
+  private void generateTranslations(IndexedTranslationUnits list, StructureDefinition sd, String lang) {
     addToList(list, lang, sd, "StructureDefinition.name", "name", sd.getNameElement());
     addToList(list, lang, sd, "StructureDefinition.title", "title", sd.getTitleElement());
     addToList(list, lang, sd, "StructureDefinition.publisher", "publisher", sd.getPublisherElement());
@@ -624,16 +652,16 @@ public class LanguageUtils {
     }
   }
 
-  private void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
+  private void addToList(IndexedTranslationUnits list, String lang, Base ctxt, String name, String propName, DataType value) {
     if (value != null && value.hasPrimitiveValue()) {
-      if (!hasInList(list, name, value.primitiveValue())) {
+      if (!list.contains(name, value.primitiveValue())) {
         list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName, true).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
       }
     }
     
   }
 
-  private void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang, List<TranslationUnit> inputs) {
+  private void generateTranslations(IndexedTranslationUnits list, ConceptDefinitionComponent cd, String lang, Map<String, TranslationUnit> inputs) {
     // we generate translation units for the display, the definition, and any designations and extensions that we find
     // the id of the designation is the use.code (there will be a use) and for the extension, the tail of the extension URL 
     // todo: do we need to worry about name clashes? why would we, and more importantly, how would we solve that?
@@ -650,15 +678,9 @@ public class LanguageUtils {
     }
   }
 
-  private void addTranslationUnit(List<TranslationUnit> list, String id, String srcText, String lang, List<TranslationUnit> inputs) {
-    TranslationUnit existing = null;
-    for (TranslationUnit t : inputs) {
-      if (id.equals(t.getId())) {
-        existing = t;
-        break;
-      }
-    }
-    if (!hasInList(list, id, srcText)) {
+  private void addTranslationUnit(IndexedTranslationUnits list, String id, String srcText, String lang, Map<String, TranslationUnit> inputs) {
+    TranslationUnit existing = inputs.get(id);
+    if (!list.contains(id, srcText)) {
       // not sure what to do with context?
       if (existing == null) {
         list.add(new TranslationUnit(lang, id, null, srcText, null));
@@ -712,24 +734,14 @@ public class LanguageUtils {
       }
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
-      if (!hasInList(list.list, id, src)) {
-        list.add(new TranslationUnit(lang, id, context, src, tgt));
-      }
+      // no need to check for an existing unit: add() ignores one with the same id and source text
+      list.add(new TranslationUnit(lang, id, context, src, tgt));
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildList()) {
         generateTranslations(c, lang, list, npath);
       }
     }
-  }
-
-  private boolean hasInList(List<TranslationUnit> list, String id, String src) {
-    for (TranslationUnit t : list) {
-      if (t.getId() != null && t.getId().equals(id) && t.getSrcText()!= null && t.getSrcText().equals(src)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**

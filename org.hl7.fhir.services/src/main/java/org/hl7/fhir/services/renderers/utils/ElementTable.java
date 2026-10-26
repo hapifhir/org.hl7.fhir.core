@@ -516,7 +516,7 @@ public class ElementTable {
     Row row = gen.new Row();
     rows.add(row);
     if (!first) {
-      row.setTopLine("silver");
+      row.setTopLineSilver(true);
     }
     renderElementIdentity(gen, row, e);
     renderElementDefinition(gen, row, e);
@@ -540,10 +540,10 @@ public class ElementTable {
 
   public void renderElementIdentity(HierarchicalTableGenerator gen, Row row, TableElement e) {
     Cell cell = gen.new Cell();
-    cell.addCellStyle("min-width: 220px");
+    cell.setMinWidth("220px");
     row.getCells().add(cell);
     cell.setInnerTable(true);
-    cell.addText(e.getName()).addStyle("font-weight: bold");
+    cell.addText(e.getName()).styleAsBold();
     cell.addPiece(gen.new Piece("br"));
     if (!replaceCardinality) {
       cell.addText("Cardinality: "+e.min+".."+e.max);  
@@ -565,7 +565,7 @@ public class ElementTable {
 
   public void renderElementConstraints(HierarchicalTableGenerator gen, Row row, TableElement e) throws FHIRFormatError, DefinitionException, IOException {
     Cell cell = gen.new Cell();
-    cell.addCellStyle("min-width: 300px");
+    cell.setMinWidth("300px");
     row.getCells().add(cell);
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
     

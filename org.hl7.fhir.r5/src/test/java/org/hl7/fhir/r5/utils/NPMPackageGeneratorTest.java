@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
@@ -14,6 +16,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -583,5 +586,37 @@ class NPMPackageGeneratorTest {
     Assertions.assertEquals("0.1.0", dep.asString("hl7.fhir.uv.xver-r4b.r4"));
     Assertions.assertEquals(6, dep.getProperties().size());
     Assertions.assertEquals(0, gen.getDependencyWarnings().size());
+  }
+
+  @Test
+  void examplePathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    Assertions.assertEquals(100, ("package/examples/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator gen = generatorFor(minimalIg(), PackageType.IG, "5.0.0");
+    gen.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    gen.finish();
+
+    Assertions.assertTrue(gen.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/examples/QuestionnaireResponse-")));
+    Assertions.assertTrue(gen.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        gen.getCreated().toString());
+    try (InputStream input = Files.newInputStream(Path.of(gen.filename()))) {
+      Assertions.assertNotNull(NpmPackage.fromPackage(input));
+    }
+  }
+
+  @Test
+  void folderPathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "ImmunizationRecommendation-" + "x".repeat(60) + ".json";
+    Assertions.assertEquals(100, ("package/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator gen = generatorFor(minimalIg(), PackageType.IG, "5.0.0");
+    gen.addFile("package", name,
+        "{\"resourceType\":\"ImmunizationRecommendation\",\"id\":\"x\"}".getBytes(StandardCharsets.UTF_8));
+    gen.finish();
+
+    Assertions.assertTrue(gen.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/ImmunizationRecommendation-")));
+    Assertions.assertTrue(gen.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        gen.getCreated().toString());
   }
 }

@@ -203,6 +203,23 @@ public class CodeableConcept extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.codingList != null) {
+          int i = 0;
+          for (Base v : this.codingList) {
+            if (v != null) {
+              visitor.visit(this, "coding", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "coding":  return new Property("coding", "Coding", "A reference to a code defined by a terminology system.", 0, java.lang.Integer.MAX_VALUE, codingList);

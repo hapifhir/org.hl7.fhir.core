@@ -202,6 +202,17 @@ public class Period extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.start != null) {
+          visitor.visit(this, "start", -1, this.start);
+        }
+        if (this.end != null) {
+          visitor.visit(this, "end", -1, this.end);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "start":  return new Property("start", "dateTime", "The start of the period. The boundary is inclusive.", 0, 1, start);

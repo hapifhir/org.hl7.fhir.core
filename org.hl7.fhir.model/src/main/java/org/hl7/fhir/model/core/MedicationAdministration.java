@@ -351,6 +351,17 @@ public class MedicationAdministration extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "function":  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the medication administration.", 0, 1, function);
@@ -781,6 +792,29 @@ public class MedicationAdministration extends DomainResource {
           children.add(new Property("method", "CodeableConcept", "A coded value indicating the method by which the medication is intended to be or was introduced into or on the body.  This attribute will most often NOT be populated.  It is most commonly used for injections.  For example, Slow Push, Deep IV.", 0, 1, method));
           children.add(new Property("dose", "Quantity", "The amount of the medication given at one administration event.   Use this value when the administration is essentially an instantaneous event such as a swallowing a tablet or giving an injection.", 0, 1, dose));
           children.add(new Property("rate[x]", "Ratio|Quantity", "Identifies the speed with which the medication was or will be introduced into the patient.  Typically, the rate for an infusion e.g. 100 ml per 1 hour or 100 ml/hr.  May also be expressed as a rate per unit of time, e.g. 500 ml per 2 hours.  Other examples:  200 mcg/min or 200 mcg/1 minute; 1 liter/8 hours.", 0, 1, rate));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+          if (this.site != null) {
+            visitor.visit(this, "site", -1, this.site);
+          }
+          if (this.route != null) {
+            visitor.visit(this, "route", -1, this.route);
+          }
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.dose != null) {
+            visitor.visit(this, "dose", -1, this.dose);
+          }
+          if (this.rate != null) {
+            visitor.visit(this, "rate[x]", -1, this.rate);
+          }
         }
 
         @Override
@@ -2221,6 +2255,146 @@ public class MedicationAdministration extends DomainResource {
         children.add(new Property("note", "Annotation", "Extra information about the medication administration that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("dosage", "", "Describes the medication dosage information details e.g. dose, rate, site, route, etc.", 0, 1, dosage));
         children.add(new Property("eventHistory", "Reference(Provenance)", "A summary of the events of interest that have occurred, such as when the administration was verified.", 0, java.lang.Integer.MAX_VALUE, eventHistoryList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReasonList != null) {
+          int i = 0;
+          for (Base v : this.statusReasonList) {
+            if (v != null) {
+              visitor.visit(this, "statusReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.medication != null) {
+          visitor.visit(this, "medication", -1, this.medication);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.supportingInformationList != null) {
+          int i = 0;
+          for (Base v : this.supportingInformationList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.recorded != null) {
+          visitor.visit(this, "recorded", -1, this.recorded);
+        }
+        if (this.isSubPotent != null) {
+          visitor.visit(this, "isSubPotent", -1, this.isSubPotent);
+        }
+        if (this.subPotentReasonList != null) {
+          int i = 0;
+          for (Base v : this.subPotentReasonList) {
+            if (v != null) {
+              visitor.visit(this, "subPotentReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.request != null) {
+          visitor.visit(this, "request", -1, this.request);
+        }
+        if (this.deviceList != null) {
+          int i = 0;
+          for (Base v : this.deviceList) {
+            if (v != null) {
+              visitor.visit(this, "device", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dosage != null) {
+          visitor.visit(this, "dosage", -1, this.dosage);
+        }
+        if (this.eventHistoryList != null) {
+          int i = 0;
+          for (Base v : this.eventHistoryList) {
+            if (v != null) {
+              visitor.visit(this, "eventHistory", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

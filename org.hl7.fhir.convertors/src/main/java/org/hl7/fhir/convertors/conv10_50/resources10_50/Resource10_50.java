@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv10_50.resources10_50;
 import java.util.Arrays;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Extension10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Meta10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Narrative10_50;
@@ -276,16 +275,16 @@ public class Resource10_50 {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext10_50.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension(ConversionContext10_50.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension10_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension10_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -300,16 +299,16 @@ public class Resource10_50 {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext10_50.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         Extension convertExtension = new Extension();
-        advisor.handleExtension(ConversionContext10_50.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension10_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext10_50.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension10_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

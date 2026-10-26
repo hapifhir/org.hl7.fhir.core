@@ -14,8 +14,7 @@ public class BaseAdvisor_14_30 extends BaseAdvisor30<org.hl7.fhir.dstu2016may.mo
   }
 
   @Override
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) {
+  public boolean ignoreExtension(@Nonnull String url) {
     // no globally ignored extensions here.
     return false;
   }

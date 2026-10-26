@@ -693,6 +693,38 @@ public class TriggerDefinition extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subscriptionTopic != null) {
+          visitor.visit(this, "subscriptionTopic", -1, this.subscriptionTopic);
+        }
+        if (this.timing != null) {
+          visitor.visit(this, "timing[x]", -1, this.timing);
+        }
+        if (this.dataList != null) {
+          int i = 0;
+          for (Base v : this.dataList) {
+            if (v != null) {
+              visitor.visit(this, "data", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.condition != null) {
+          visitor.visit(this, "condition", -1, this.condition);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "type":  return new Property("type", "code", "The type of triggering event.", 0, 1, type);

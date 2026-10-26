@@ -209,6 +209,23 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.id != null) {
+          visitor.visit(this, "id", -1, this.id);
+        }
+        if (this.extensionList != null) {
+          int i = 0;
+          for (Base v : this.extensionList) {
+            if (v != null) {
+              visitor.visit(this, "extension", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "id":  return new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id);

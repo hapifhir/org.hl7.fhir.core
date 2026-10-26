@@ -312,6 +312,17 @@ public class Ingredient extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.manufacturer != null) {
+            visitor.visit(this, "manufacturer", -1, this.manufacturer);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "role":  return new Property("role", "code", "The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.", 0, 1, role);
@@ -585,6 +596,23 @@ public class Ingredient extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableReference(SubstanceDefinition)", "A code or full resource that represents the ingredient's substance.", 0, 1, code));
           children.add(new Property("strength", "", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength.", 0, java.lang.Integer.MAX_VALUE, strengthList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.strengthList != null) {
+            int i = 0;
+            for (Base v : this.strengthList) {
+              if (v != null) {
+                visitor.visit(this, "strength", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1276,6 +1304,47 @@ public class Ingredient extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.presentation != null) {
+            visitor.visit(this, "presentation[x]", -1, this.presentation);
+          }
+          if (this.textPresentation != null) {
+            visitor.visit(this, "textPresentation", -1, this.textPresentation);
+          }
+          if (this.concentration != null) {
+            visitor.visit(this, "concentration[x]", -1, this.concentration);
+          }
+          if (this.textConcentration != null) {
+            visitor.visit(this, "textConcentration", -1, this.textConcentration);
+          }
+          if (this.basis != null) {
+            visitor.visit(this, "basis", -1, this.basis);
+          }
+          if (this.measurementPoint != null) {
+            visitor.visit(this, "measurementPoint", -1, this.measurementPoint);
+          }
+          if (this.countryList != null) {
+            int i = 0;
+            for (Base v : this.countryList) {
+              if (v != null) {
+                visitor.visit(this, "country", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.referenceStrengthList != null) {
+            int i = 0;
+            for (Base v : this.referenceStrengthList) {
+              if (v != null) {
+                visitor.visit(this, "referenceStrength", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "presentation[x]":  return new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
@@ -1856,6 +1925,29 @@ public class Ingredient extends DomainResource {
           children.add(new Property("strength[x]", "Ratio|RatioRange|Quantity", "Strength expressed in terms of a reference substance.", 0, 1, strength));
           children.add(new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance.", 0, 1, measurementPoint));
           children.add(new Property("country", "CodeableConcept", "The country or countries for which the strength range applies.", 0, java.lang.Integer.MAX_VALUE, countryList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.substance != null) {
+            visitor.visit(this, "substance", -1, this.substance);
+          }
+          if (this.strength != null) {
+            visitor.visit(this, "strength[x]", -1, this.strength);
+          }
+          if (this.measurementPoint != null) {
+            visitor.visit(this, "measurementPoint", -1, this.measurementPoint);
+          }
+          if (this.countryList != null) {
+            int i = 0;
+            for (Base v : this.countryList) {
+              if (v != null) {
+                visitor.visit(this, "country", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2615,6 +2707,65 @@ public class Ingredient extends DomainResource {
         children.add(new Property("comment", "markdown", "A place for providing any notes that are relevant to the component, e.g. removed during process, adjusted for loss on drying.", 0, 1, comment));
         children.add(new Property("manufacturer", "", "The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.", 0, java.lang.Integer.MAX_VALUE, manufacturerList));
         children.add(new Property("substance", "", "The substance that comprises this ingredient.", 0, 1, substance));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.for_List != null) {
+          int i = 0;
+          for (Base v : this.for_List) {
+            if (v != null) {
+              visitor.visit(this, "for", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.role != null) {
+          visitor.visit(this, "role", -1, this.role);
+        }
+        if (this.functionList != null) {
+          int i = 0;
+          for (Base v : this.functionList) {
+            if (v != null) {
+              visitor.visit(this, "function", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.group != null) {
+          visitor.visit(this, "group", -1, this.group);
+        }
+        if (this.allergenicIndicator != null) {
+          visitor.visit(this, "allergenicIndicator", -1, this.allergenicIndicator);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+        if (this.manufacturerList != null) {
+          int i = 0;
+          for (Base v : this.manufacturerList) {
+            if (v != null) {
+              visitor.visit(this, "manufacturer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.substance != null) {
+          visitor.visit(this, "substance", -1, this.substance);
+        }
       }
 
       @Override

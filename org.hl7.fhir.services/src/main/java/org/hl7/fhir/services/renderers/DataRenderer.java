@@ -366,25 +366,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return lang; 
   } 
 
-  private boolean isCanonical(String path) { 
-    if (!path.endsWith(".url"))  
-      return false; 
-    String t = path.substring(0, path.length()-4); 
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t); 
-    if (sd == null) 
-      return false; 
-    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getFHIRVersion()).contains(t)) {
-      return true; 
-    } 
-    if (Utilities.existsInList(t,  
-        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem", 
-        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", 
-        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition" 
-        )) 
-      return true; 
-    return false; 
-  } 
-
   // -- 4. Language support ------------------------------------------------------ 
 
   public String gt(@SuppressWarnings("rawtypes") PrimitiveType value) { 
@@ -1026,16 +1007,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (first) first = false; else x.tx(", ");
       String url = ext.getUrl();
       if (url.equals(ExtensionDefinitions.EXT_DAR)) {
-        x.tx("Absent because : ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
-        x.tx("Null because: ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
-        x.code().tx("Text: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
-        x.code().tx("Value calculated by: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" ");
         renderExpression(status, x, wrapNC(ext.getValue()));
       } else {
         StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
@@ -1060,16 +1041,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (first) first = false; else x.tx(", ");
       String url = ext.primitiveValue("url");
       if (url.equals(ExtensionDefinitions.EXT_DAR)) {
-        x.tx("Absent because : ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
-        x.tx("Null because: ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
-        x.code().tx("Text: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
-        x.code().tx("Value calculated by: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" ");
         renderExpression(status, x, ext.child("value"));
       } else {
         StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
@@ -1544,8 +1525,66 @@ public class DataRenderer extends Renderer implements CodeResolver {
     checkRenderExtensions(status, x, cc);
   } 
 
+  /**
+   * The identifier has no value. Use the reason on the value (dataAbsentReason, nullFlavor etc) if 
+   * there is one, then a reason on the identifier itself, and otherwise just say there's no value
+   */
+  protected String displayIdentifierNoValue(ResourceWrapper ii) {
+    ResourceWrapper v = ii.child("value");
+    if (v != null && !v.hasPrimitiveValue() && !v.extensions().isEmpty()) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (ResourceWrapper ext : v.extensions()) {
+        b.append(displayNoValueExtension(ext));
+      }
+      return b.toString();
+    }
+    ResourceWrapper ext = identifierAbsentReason(ii);
+    return ext != null ? displayNoValueExtension(ext) : context.formatPhrase(RenderingI18nContext.DATA_REND_NO_VALUE);
+  }
+
+  protected void renderIdentifierNoValue(RenderingStatus status, XhtmlNode x, ResourceWrapper ii) throws FHIRFormatError, DefinitionException, IOException {
+    ResourceWrapper v = ii.child("value");
+    if (v != null && !v.hasPrimitiveValue() && !v.extensions().isEmpty()) {
+      renderPrimitiveWithNoValue(status, x, v);
+    } else {
+      ResourceWrapper ext = identifierAbsentReason(ii);
+      if (ext != null) {
+        x.tx(displayNoValueExtension(ext));
+        status.setExtensions(true);
+      } else {
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NO_VALUE));
+      }
+    }
+  }
+
+  private ResourceWrapper identifierAbsentReason(ResourceWrapper ii) {
+    if (ii.hasExtension(ExtensionDefinitions.EXT_DAR)) {
+      return ii.extension(ExtensionDefinitions.EXT_DAR);
+    } else if (ii.hasExtension(ExtensionDefinitions.EXT_NF)) {
+      return ii.extension(ExtensionDefinitions.EXT_NF);
+    } else {
+      return null;
+    }
+  }
+
+  private String displayNoValueExtension(ResourceWrapper ext) {
+    String url = ext.primitiveValue("url");
+    String v = displayDataType(ext.child("value"));
+    if (ExtensionDefinitions.EXT_DAR.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" "+v;
+    } else if (ExtensionDefinitions.EXT_NF.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" "+v;
+    } else if (ExtensionDefinitions.EXT_OT.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" "+v;
+    } else if (ExtensionDefinitions.EXT_CQF_EXP.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" "+v;
+    } else {
+      return tail(url)+": "+v;
+    }
+  }
+
   protected String displayIdentifier(ResourceWrapper ii) { 
-    String s = Utilities.noString(ii.primitiveValue("value")) ? "?ngen-9?" : ii.primitiveValue("value"); 
+    String s = Utilities.noString(ii.primitiveValue("value")) ? displayIdentifierNoValue(ii) : ii.primitiveValue("value"); 
     if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:oid:")) { 
       s = "OID:"+s.substring(8); 
     } else if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:uuid:")) { 
@@ -1616,7 +1655,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       x.tx("/"); 
     } 
-    x.tx(Utilities.noString(ii.primitiveValue("value")) ? "?ngen-9?" : ii.primitiveValue("value")); 
+    if (Utilities.noString(ii.primitiveValue("value"))) {
+      renderIdentifierNoValue(status, x, ii);
+    } else {
+      x.tx(ii.primitiveValue("value"));
+    }
 
     if (ii.has("use") || ii.has("period")) { 
       x.nbsp(); 

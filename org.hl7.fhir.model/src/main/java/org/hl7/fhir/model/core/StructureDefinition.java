@@ -692,6 +692,23 @@ public class StructureDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identity != null) {
+            visitor.visit(this, "identity", -1, this.identity);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identity":  return new Property("identity", "id", "An Internal id that is used to identify this mapping set when specific mappings are made.", 0, 1, identity);
@@ -1028,6 +1045,17 @@ public class StructureDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "Defines how to interpret the expression that defines what the context of the extension is.", 0, 1, type);
@@ -1264,6 +1292,20 @@ public class StructureDefinition extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("element", "ElementDefinition", "Captures constraints on each element within the resource.", 0, java.lang.Integer.MAX_VALUE, elementList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.elementList != null) {
+            int i = 0;
+            for (Base v : this.elementList) {
+              if (v != null) {
+                visitor.visit(this, "element", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1508,6 +1550,20 @@ public class StructureDefinition extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("element", "ElementDefinition", "Captures constraints on each element within the resource.", 0, java.lang.Integer.MAX_VALUE, elementList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.elementList != null) {
+            int i = 0;
+            for (Base v : this.elementList) {
+              if (v != null) {
+                visitor.visit(this, "element", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3369,6 +3425,146 @@ public class StructureDefinition extends CanonicalResource {
         children.add(new Property("derivation", "code", "How the type relates to the baseDefinition.", 0, 1, derivation));
         children.add(new Property("snapshot", "", "A snapshot view is expressed in a standalone form that can be used and interpreted without considering the base StructureDefinition.", 0, 1, snapshot));
         children.add(new Property("differential", "", "A differential view is expressed relative to the base StructureDefinition - a statement of differences that it applies.", 0, 1, differential));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.keywordList != null) {
+          int i = 0;
+          for (Base v : this.keywordList) {
+            if (v != null) {
+              visitor.visit(this, "keyword", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.fhirVersion != null) {
+          visitor.visit(this, "fhirVersion", -1, this.fhirVersion);
+        }
+        if (this.mappingList != null) {
+          int i = 0;
+          for (Base v : this.mappingList) {
+            if (v != null) {
+              visitor.visit(this, "mapping", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.abstract_ != null) {
+          visitor.visit(this, "abstract", -1, this.abstract_);
+        }
+        if (this.contextList != null) {
+          int i = 0;
+          for (Base v : this.contextList) {
+            if (v != null) {
+              visitor.visit(this, "context", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contextInvariantList != null) {
+          int i = 0;
+          for (Base v : this.contextInvariantList) {
+            if (v != null) {
+              visitor.visit(this, "contextInvariant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.baseDefinition != null) {
+          visitor.visit(this, "baseDefinition", -1, this.baseDefinition);
+        }
+        if (this.derivation != null) {
+          visitor.visit(this, "derivation", -1, this.derivation);
+        }
+        if (this.snapshot != null) {
+          visitor.visit(this, "snapshot", -1, this.snapshot);
+        }
+        if (this.differential != null) {
+          visitor.visit(this, "differential", -1, this.differential);
+        }
       }
 
       @Override

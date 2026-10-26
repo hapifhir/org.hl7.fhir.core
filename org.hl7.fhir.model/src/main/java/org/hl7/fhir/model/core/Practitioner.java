@@ -300,6 +300,32 @@ public class Practitioner extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.issuer != null) {
+            visitor.visit(this, "issuer", -1, this.issuer);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "An identifier that applies to this person's qualification.", 0, java.lang.Integer.MAX_VALUE, identifierList);
@@ -634,6 +660,17 @@ public class Practitioner extends DomainResource {
           super.listChildren(children);
           children.add(new Property("language", "CodeableConcept", "The language which may be used to communicate with the individual.", 0, 1, language));
           children.add(new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
         }
 
         @Override
@@ -1465,6 +1502,86 @@ public class Practitioner extends DomainResource {
         children.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photoList));
         children.add(new Property("qualification", "", "The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualificationList));
         children.add(new Property("communication", "", "A language which may be used to communicate with the practitioner, often for correspondence/administrative purposes.\r\rThe `PractitionerRole.communication` property should be used for publishing the languages that a practitioner is able to communicate with patients (on a per Organization/Role basis).", 0, java.lang.Integer.MAX_VALUE, communicationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.gender != null) {
+          visitor.visit(this, "gender", -1, this.gender);
+        }
+        if (this.birthDate != null) {
+          visitor.visit(this, "birthDate", -1, this.birthDate);
+        }
+        if (this.deceased != null) {
+          visitor.visit(this, "deceased[x]", -1, this.deceased);
+        }
+        if (this.addressList != null) {
+          int i = 0;
+          for (Base v : this.addressList) {
+            if (v != null) {
+              visitor.visit(this, "address", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.photoList != null) {
+          int i = 0;
+          for (Base v : this.photoList) {
+            if (v != null) {
+              visitor.visit(this, "photo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.qualificationList != null) {
+          int i = 0;
+          for (Base v : this.qualificationList) {
+            if (v != null) {
+              visitor.visit(this, "qualification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

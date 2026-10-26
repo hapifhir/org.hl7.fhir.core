@@ -339,6 +339,17 @@ public class Account extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.coverage != null) {
+            visitor.visit(this, "coverage", -1, this.coverage);
+          }
+          if (this.priority != null) {
+            visitor.visit(this, "priority", -1, this.priority);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "coverage":  return new Property("coverage", "Reference(Coverage)", "The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).\n\nA coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.", 0, 1, coverage);
@@ -790,6 +801,32 @@ public class Account extends DomainResource {
           children.add(new Property("responsibility", "Quantity", "The amount (as a percentage) of the charges the guarantor is responsible.", 0, 1, responsibility));
           children.add(new Property("limit", "Money", "The maximum amount the guarantee will pay.", 0, 1, limit));
           children.add(new Property("rank", "positiveInt", "The order in which guarantors will be held responsible.", 0, 1, rank));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
+          if (this.onHold != null) {
+            visitor.visit(this, "onHold", -1, this.onHold);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.account != null) {
+            visitor.visit(this, "account", -1, this.account);
+          }
+          if (this.responsibility != null) {
+            visitor.visit(this, "responsibility", -1, this.responsibility);
+          }
+          if (this.limit != null) {
+            visitor.visit(this, "limit", -1, this.limit);
+          }
+          if (this.rank != null) {
+            visitor.visit(this, "rank", -1, this.rank);
+          }
         }
 
         @Override
@@ -1414,6 +1451,41 @@ public class Account extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.condition != null) {
+            visitor.visit(this, "condition", -1, this.condition);
+          }
+          if (this.dateOfDiagnosis != null) {
+            visitor.visit(this, "dateOfDiagnosis", -1, this.dateOfDiagnosis);
+          }
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.onAdmission != null) {
+            visitor.visit(this, "onAdmission", -1, this.onAdmission);
+          }
+          if (this.packageCodeList != null) {
+            int i = 0;
+            for (Base v : this.packageCodeList) {
+              if (v != null) {
+                visitor.visit(this, "packageCode", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "sequence":  return new Property("sequence", "positiveInt", "Ranking of the diagnosis (for each type).", 0, 1, sequence);
@@ -2013,6 +2085,47 @@ public class Account extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.dateOfService != null) {
+            visitor.visit(this, "dateOfService", -1, this.dateOfService);
+          }
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.packageCodeList != null) {
+            int i = 0;
+            for (Base v : this.packageCodeList) {
+              if (v != null) {
+                visitor.visit(this, "packageCode", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.deviceList != null) {
+            int i = 0;
+            for (Base v : this.deviceList) {
+              if (v != null) {
+                visitor.visit(this, "device", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "sequence":  return new Property("sequence", "positiveInt", "Ranking of the procedure (for each type).", 0, 1, sequence);
@@ -2436,6 +2549,23 @@ public class Account extends DomainResource {
           children.add(new Property("term", "CodeableConcept", "The term of the account balances - The balance value is the amount that was outstanding for this age.", 0, 1, term));
           children.add(new Property("estimate", "boolean", "The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).", 0, 1, estimate));
           children.add(new Property("amount", "Money", "The actual balance value calculated for the age defined in the term property.", 0, 1, amount));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.aggregate != null) {
+            visitor.visit(this, "aggregate", -1, this.aggregate);
+          }
+          if (this.term != null) {
+            visitor.visit(this, "term", -1, this.term);
+          }
+          if (this.estimate != null) {
+            visitor.visit(this, "estimate", -1, this.estimate);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
         }
 
         @Override
@@ -3596,6 +3726,113 @@ public class Account extends DomainResource {
         children.add(new Property("currency", "CodeableConcept", "The default currency for the account.", 0, 1, currency));
         children.add(new Property("balance", "", "The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.", 0, java.lang.Integer.MAX_VALUE, balanceList));
         children.add(new Property("calculatedAt", "instant", "Time the balance amount was calculated.", 0, 1, calculatedAt));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.billingStatus != null) {
+          visitor.visit(this, "billingStatus", -1, this.billingStatus);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.servicePeriod != null) {
+          visitor.visit(this, "servicePeriod", -1, this.servicePeriod);
+        }
+        if (this.coversList != null) {
+          int i = 0;
+          for (Base v : this.coversList) {
+            if (v != null) {
+              visitor.visit(this, "covers", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.coverageList != null) {
+          int i = 0;
+          for (Base v : this.coverageList) {
+            if (v != null) {
+              visitor.visit(this, "coverage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.owner != null) {
+          visitor.visit(this, "owner", -1, this.owner);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.guarantorList != null) {
+          int i = 0;
+          for (Base v : this.guarantorList) {
+            if (v != null) {
+              visitor.visit(this, "guarantor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.diagnosisList != null) {
+          int i = 0;
+          for (Base v : this.diagnosisList) {
+            if (v != null) {
+              visitor.visit(this, "diagnosis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.procedureList != null) {
+          int i = 0;
+          for (Base v : this.procedureList) {
+            if (v != null) {
+              visitor.visit(this, "procedure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parent != null) {
+          visitor.visit(this, "parent", -1, this.parent);
+        }
+        if (this.currency != null) {
+          visitor.visit(this, "currency", -1, this.currency);
+        }
+        if (this.balanceList != null) {
+          int i = 0;
+          for (Base v : this.balanceList) {
+            if (v != null) {
+              visitor.visit(this, "balance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.calculatedAt != null) {
+          visitor.visit(this, "calculatedAt", -1, this.calculatedAt);
+        }
       }
 
       @Override

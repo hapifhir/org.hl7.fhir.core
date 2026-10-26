@@ -26783,6 +26783,9 @@ public class XmlParser extends XmlParserBase {
   }
 
   private boolean nameIsTypeName(XmlPullParser xpp, String prefix) {
+    // all the names below start with the prefix, so if this one does not, there is no need to try them
+    if (!xpp.getName().startsWith(prefix))
+      return false;
     if (xpp.getName().equals(prefix + "Meta"))
       return true;
     if (xpp.getName().equals(prefix + "Address"))

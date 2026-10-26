@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv50_N.resources50_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.metadata50_N.Expression50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Canonical50_N;
@@ -19,7 +20,7 @@ public class TestScript50_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.testing.TestScript tgt = new org.hl7.fhir.model.testing.TestScript();
-    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt);
+    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     if (src.hasUrl())
       tgt.setUrlElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
@@ -97,7 +98,7 @@ public class TestScript50_N {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript tgt = new org.hl7.fhir.r5.model.TestScript();
-    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt, ORIGIN_EXTENSION_URL, DESTINATION_EXTENSION_URL);
+    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt, ORIGIN_EXTENSION_URL, DESTINATION_EXTENSION_URL, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     if (src.hasUrl())
       tgt.setUrlElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())

@@ -168,6 +168,17 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.contact != null) {
+            visitor.visit(this, "contact", -1, this.contact);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Allows the contact to be classified, for example QPPV, Pharmacovigilance Enquiry Information.", 0, 1, type);
@@ -561,6 +572,35 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.productName != null) {
+            visitor.visit(this, "productName", -1, this.productName);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.partList != null) {
+            int i = 0;
+            for (Base v : this.partList) {
+              if (v != null) {
+                visitor.visit(this, "part", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.usageList != null) {
+            int i = 0;
+            for (Base v : this.usageList) {
+              if (v != null) {
+                visitor.visit(this, "usage", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "productName":  return new Property("productName", "string", "The full product name.", 0, 1, productName);
@@ -874,6 +914,17 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.part != null) {
+            visitor.visit(this, "part", -1, this.part);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "part":  return new Property("part", "string", "A fragment of a product name.", 0, 1, part);
@@ -1160,6 +1211,20 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.country != null) {
+            visitor.visit(this, "country", -1, this.country);
+          }
+          if (this.jurisdiction != null) {
+            visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+          }
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "country":  return new Property("country", "CodeableConcept", "Country code for where this name applies.", 0, 1, country);
@@ -1431,6 +1496,17 @@ public class MedicinalProductDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("product", "CodeableReference(MedicinalProductDefinition)", "Reference to another product, e.g. for linking authorised to investigational product.", 0, 1, product));
           children.add(new Property("type", "CodeableConcept", "The type of relationship, for instance branded to generic, virtual to actual product, product to development product (investigational), parallel import version.", 0, 1, type));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.product != null) {
+            visitor.visit(this, "product", -1, this.product);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
         }
 
         @Override
@@ -1767,6 +1843,29 @@ public class MedicinalProductDefinition extends DomainResource {
           children.add(new Property("effectiveDate", "Period", "Date range of applicability.", 0, 1, effectiveDate));
           children.add(new Property("organization", "Reference(Organization)", "The organization or establishment responsible for (or associated with) the particular process or step, examples include the manufacturer, importer, agent.", 0, java.lang.Integer.MAX_VALUE, organizationList));
           children.add(new Property("confidentialityIndicator", "CodeableConcept", "Specifies whether this particular business or manufacturing process is considered proprietary or confidential.", 0, 1, confidentialityIndicator));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.effectiveDate != null) {
+            visitor.visit(this, "effectiveDate", -1, this.effectiveDate);
+          }
+          if (this.organizationList != null) {
+            int i = 0;
+            for (Base v : this.organizationList) {
+              if (v != null) {
+                visitor.visit(this, "organization", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.confidentialityIndicator != null) {
+            visitor.visit(this, "confidentialityIndicator", -1, this.confidentialityIndicator);
+          }
         }
 
         @Override
@@ -2178,6 +2277,17 @@ public class MedicinalProductDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
           children.add(new Property("value[x]", "CodeableConcept|markdown|Quantity|Range|integer|date|boolean|Attachment", "A value for the characteristic.text.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -3990,6 +4100,206 @@ public class MedicinalProductDefinition extends DomainResource {
         children.add(new Property("crossReference", "", "Reference to another product, e.g. for linking authorised to investigational product, or a virtual product.", 0, java.lang.Integer.MAX_VALUE, crossReferenceList));
         children.add(new Property("operation", "", "A manufacturing or administrative process or step associated with (or performed on) the medicinal product.", 0, java.lang.Integer.MAX_VALUE, operationList));
         children.add(new Property("characteristic", "", "Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\".", 0, java.lang.Integer.MAX_VALUE, characteristicList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.domain != null) {
+          visitor.visit(this, "domain", -1, this.domain);
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusDate != null) {
+          visitor.visit(this, "statusDate", -1, this.statusDate);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.combinedPharmaceuticalDoseForm != null) {
+          visitor.visit(this, "combinedPharmaceuticalDoseForm", -1, this.combinedPharmaceuticalDoseForm);
+        }
+        if (this.routeList != null) {
+          int i = 0;
+          for (Base v : this.routeList) {
+            if (v != null) {
+              visitor.visit(this, "route", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.indication != null) {
+          visitor.visit(this, "indication", -1, this.indication);
+        }
+        if (this.legalStatusOfSupply != null) {
+          visitor.visit(this, "legalStatusOfSupply", -1, this.legalStatusOfSupply);
+        }
+        if (this.additionalMonitoringIndicator != null) {
+          visitor.visit(this, "additionalMonitoringIndicator", -1, this.additionalMonitoringIndicator);
+        }
+        if (this.specialMeasuresList != null) {
+          int i = 0;
+          for (Base v : this.specialMeasuresList) {
+            if (v != null) {
+              visitor.visit(this, "specialMeasures", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.pediatricUseIndicator != null) {
+          visitor.visit(this, "pediatricUseIndicator", -1, this.pediatricUseIndicator);
+        }
+        if (this.classificationList != null) {
+          int i = 0;
+          for (Base v : this.classificationList) {
+            if (v != null) {
+              visitor.visit(this, "classification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.marketingStatusList != null) {
+          int i = 0;
+          for (Base v : this.marketingStatusList) {
+            if (v != null) {
+              visitor.visit(this, "marketingStatus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.packagedMedicinalProductList != null) {
+          int i = 0;
+          for (Base v : this.packagedMedicinalProductList) {
+            if (v != null) {
+              visitor.visit(this, "packagedMedicinalProduct", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.comprisedOfList != null) {
+          int i = 0;
+          for (Base v : this.comprisedOfList) {
+            if (v != null) {
+              visitor.visit(this, "comprisedOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.ingredientList != null) {
+          int i = 0;
+          for (Base v : this.ingredientList) {
+            if (v != null) {
+              visitor.visit(this, "ingredient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.impurityList != null) {
+          int i = 0;
+          for (Base v : this.impurityList) {
+            if (v != null) {
+              visitor.visit(this, "impurity", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.attachedDocumentList != null) {
+          int i = 0;
+          for (Base v : this.attachedDocumentList) {
+            if (v != null) {
+              visitor.visit(this, "attachedDocument", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.masterFileList != null) {
+          int i = 0;
+          for (Base v : this.masterFileList) {
+            if (v != null) {
+              visitor.visit(this, "masterFile", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.clinicalTrialList != null) {
+          int i = 0;
+          for (Base v : this.clinicalTrialList) {
+            if (v != null) {
+              visitor.visit(this, "clinicalTrial", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.crossReferenceList != null) {
+          int i = 0;
+          for (Base v : this.crossReferenceList) {
+            if (v != null) {
+              visitor.visit(this, "crossReference", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.operationList != null) {
+          int i = 0;
+          for (Base v : this.operationList) {
+            if (v != null) {
+              visitor.visit(this, "operation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

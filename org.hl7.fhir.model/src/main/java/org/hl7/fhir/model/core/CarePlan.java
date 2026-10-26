@@ -395,6 +395,32 @@ public class CarePlan extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.performedActivityList != null) {
+            int i = 0;
+            for (Base v : this.performedActivityList) {
+              if (v != null) {
+                visitor.visit(this, "performedActivity", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.progressList != null) {
+            int i = 0;
+            for (Base v : this.progressList) {
+              if (v != null) {
+                visitor.visit(this, "progress", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.plannedActivityReference != null) {
+            visitor.visit(this, "plannedActivityReference", -1, this.plannedActivityReference);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "performedActivity":  return new Property("performedActivity", "CodeableReference(Any)", "Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, performedActivityList);
@@ -1759,6 +1785,146 @@ public class CarePlan extends DomainResource {
         children.add(new Property("goal", "Reference(Goal)", "Describes the intended objective(s) of carrying out the care plan.", 0, java.lang.Integer.MAX_VALUE, goalList));
         children.add(new Property("activity", "", "Identifies an action that has occurred or is a planned action to occur as part of the plan. For example, a medication to be used, lab tests to perform, self-monitoring that has occurred, education etc.", 0, java.lang.Integer.MAX_VALUE, activityList));
         children.add(new Property("note", "Annotation", "General notes about the care plan not covered elsewhere.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.custodian != null) {
+          visitor.visit(this, "custodian", -1, this.custodian);
+        }
+        if (this.contributorList != null) {
+          int i = 0;
+          for (Base v : this.contributorList) {
+            if (v != null) {
+              visitor.visit(this, "contributor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.careTeamList != null) {
+          int i = 0;
+          for (Base v : this.careTeamList) {
+            if (v != null) {
+              visitor.visit(this, "careTeam", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.addressesList != null) {
+          int i = 0;
+          for (Base v : this.addressesList) {
+            if (v != null) {
+              visitor.visit(this, "addresses", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.goalList != null) {
+          int i = 0;
+          for (Base v : this.goalList) {
+            if (v != null) {
+              visitor.visit(this, "goal", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.activityList != null) {
+          int i = 0;
+          for (Base v : this.activityList) {
+            if (v != null) {
+              visitor.visit(this, "activity", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -329,6 +329,23 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.reference != null) {
+          visitor.visit(this, "reference", -1, this.reference);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.identifier != null) {
+          visitor.visit(this, "identifier", -1, this.identifier);
+        }
+        if (this.display != null) {
+          visitor.visit(this, "display", -1, this.display);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "reference":  return new Property("reference", "string", "A reference to a location at which the other resource is found. The reference may be a relative reference, in which case it is relative to the service base URL, or an absolute URL that resolves to the location where the resource is found. The reference may be version specific or not. If the reference is not to a FHIR RESTful server, then it should be assumed to be version specific. Internal fragment references (start with '#') refer to contained resources.", 0, 1, reference);

@@ -1019,6 +1019,17 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value[x]", -1, this.value);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "url":  return new Property("url", "uri", "Source of the definition for the extension code - a logical name or a URL.", 0, 1, url);

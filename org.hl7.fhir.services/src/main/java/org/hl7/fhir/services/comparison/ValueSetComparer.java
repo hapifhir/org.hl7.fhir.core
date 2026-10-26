@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -603,7 +604,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     for (StructuralMatch<Element> t : csc.getExcludes().getChildren()) {
       addComposeRow(gen, model.getRows(), t, "exclude");
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addComposeRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<Element> t, String name) {
@@ -616,22 +617,22 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       if (csL.hasSystem() && csL.getSystem().equals(csR.getSystem())) {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).span(2).center());        
       } else {
-        r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-        r.getCells().add(gen.new Cell(null, null, csR.getSystem(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, csR.getSystem(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
       }
       
       if (csL.hasVersion() && csR.hasVersion()) {
         if (csL.getVersion().equals(csR.getVersion())) {
           r.getCells().add(gen.new Cell(null, null, csL.getVersion(), null, null).span(2).center());        
         } else {
-          r.getCells().add(gen.new Cell(null, null, csL.getVersion(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-          r.getCells().add(gen.new Cell(null, null, csR.getVersion(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, csL.getVersion(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, csR.getVersion(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         }
       } else if (csL.hasVersion()) {
         r.getCells().add(gen.new Cell(null, null, csL.getVersion(), null, null));        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
       } else if (csR.hasVersion()) {        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
         r.getCells().add(gen.new Cell(null, null, csR.getVersion(), null, null));        
       } else {
         r.getCells().add(missingCell(gen).span(2).center());
@@ -673,22 +674,22 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       if (csL.getCode().equals(csR.getCode())) {
         r.getCells().add(gen.new Cell(null, null, csL.getCode(), null, null).span(2).center());        
       } else {
-        r.getCells().add(gen.new Cell(null, null, csL.getCode(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-        r.getCells().add(gen.new Cell(null, null, csR.getCode(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, csL.getCode(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+        r.getCells().add(gen.new Cell(null, null, csR.getCode(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
       }
       
       if (csL.hasDisplay() && csR.hasDisplay()) {
         if (csL.getDisplay().equals(csR.getDisplay())) {
           r.getCells().add(gen.new Cell(null, null, csL.getDisplay(), null, null).span(2).center());        
         } else {
-          r.getCells().add(gen.new Cell(null, null, csL.getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-          r.getCells().add(gen.new Cell(null, null, csR.getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, csL.getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, csR.getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         }
       } else if (csL.hasDisplay()) {
         r.getCells().add(gen.new Cell(null, null, csL.getDisplay(), null, null));        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
       } else if (csR.hasDisplay()) {        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
         r.getCells().add(gen.new Cell(null, null, csR.getDisplay(), null, null));        
       } else {
         r.getCells().add(missingCell(gen).span(2).center());
@@ -802,7 +803,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     for (StructuralMatch<ValueSet.ValueSetExpansionContainsComponent> t : csc.getExpansion().getChildren()) {
       addExpansionRow(gen, model.getRows(), t, hasSystem, hasVersion, hasAbstract, hasInactive);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addExpansionRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ValueSet.ValueSetExpansionContainsComponent> t, boolean hasSystem, boolean hasVersion, boolean hasAbstract, boolean hasInactive) {
@@ -817,14 +818,14 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         if (t.getLeft().getDisplay().equals(t.getRight().getDisplay())) {
           r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).span(2).center());        
         } else {
-          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
-          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         }
       } else if (t.getLeft().hasDisplay()) {
         r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null));        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
       } else if (t.getRight().hasDisplay()) {        
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));        
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
         r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null));        
       } else {
         r.getCells().add(missingCell(gen).span(2).center());

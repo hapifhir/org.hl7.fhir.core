@@ -237,6 +237,17 @@ public class UsageContext extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value[x]", -1, this.value);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "code":  return new Property("code", "Coding", "A code that identifies the type of context being specified by this usage context.", 0, 1, code);

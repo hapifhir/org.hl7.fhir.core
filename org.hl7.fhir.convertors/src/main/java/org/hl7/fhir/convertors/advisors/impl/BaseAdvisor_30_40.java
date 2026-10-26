@@ -14,8 +14,7 @@ public class BaseAdvisor_30_40 extends BaseAdvisor40<org.hl7.fhir.dstu3.model.Ex
   }
 
   @Override
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String url) throws FHIRException {
     // no globally ignored extensions here.
     return false;
   }

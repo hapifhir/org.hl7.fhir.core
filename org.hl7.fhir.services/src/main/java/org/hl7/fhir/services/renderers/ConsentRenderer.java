@@ -23,6 +23,8 @@ import java.util.List;
 
 public class ConsentRenderer extends ResourceRenderer {
 
+  // R5 Consent.decision as cross-version modifierExtension in R4 / R4B
+  private static final String EXT_CONSENT_DECISION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Consent.decision";
 
   public ConsentRenderer(RenderingContext context) {
     super(context); 
@@ -193,7 +195,7 @@ public class ConsentRenderer extends ResourceRenderer {
       for (ResourceWrapper i : consent.childrenMN("provision", "except")) {
         renderConsentProvision(status, gen, row.getSubRows(), consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
       }
-      XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+      XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
       x.addChildNode(xn);
     } else {
       x.para().tx(context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT_DESC :  RenderingContext.CONSENT_DENY_DESC));
@@ -203,8 +205,8 @@ public class ConsentRenderer extends ResourceRenderer {
   private boolean determineBasePermit(ResourceWrapper consent) {
     if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       return "permit".equals(consent.primitiveValue("decision"));
-    } else if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
-      return true;
+    } else if (consent.hasExtension(EXT_CONSENT_DECISION)) {
+      return "permit".equals(consent.extensionString(EXT_CONSENT_DECISION));
     } else {
       return true;
     }
@@ -213,8 +215,14 @@ public class ConsentRenderer extends ResourceRenderer {
   private boolean determineItemPermit(ResourceWrapper consent, ResourceWrapper item, boolean parentPermit) {
     if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       return !parentPermit;
-    } else {
+    } else if (item.has("type")) {
       return "permit".equals(item.primitiveValue("type"));
+    } else if (consent.hasExtension(EXT_CONSENT_DECISION)) {
+      // R5 semantics: each provision is an exception to its parent
+      return !parentPermit;
+    } else {
+      // R4: the root rule has no type
+      return parentPermit;
     }
   }
 

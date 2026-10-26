@@ -218,6 +218,26 @@ public class Condition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.summary != null) {
+            visitor.visit(this, "summary", -1, this.summary);
+          }
+          if (this.assessmentList != null) {
+            int i = 0;
+            for (Base v : this.assessmentList) {
+              if (v != null) {
+                visitor.visit(this, "assessment", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "summary":  return new Property("summary", "CodeableConcept", "A simple summary of the stage such as \"Stage 3\" or \"Early Onset\". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease.", 0, 1, summary);
@@ -1342,6 +1362,98 @@ public class Condition extends DomainResource {
         children.add(new Property("stage", "", "A simple summary of the stage such as \"Stage 3\" or \"Early Onset\". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease.", 0, java.lang.Integer.MAX_VALUE, stageList));
         children.add(new Property("evidence", "CodeableReference(Any)", "Supporting evidence / manifestations that are the basis for determining the Condition.", 0, java.lang.Integer.MAX_VALUE, evidenceList));
         children.add(new Property("note", "Annotation", "Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.clinicalStatus != null) {
+          visitor.visit(this, "clinicalStatus", -1, this.clinicalStatus);
+        }
+        if (this.verificationStatus != null) {
+          visitor.visit(this, "verificationStatus", -1, this.verificationStatus);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.severity != null) {
+          visitor.visit(this, "severity", -1, this.severity);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.onset != null) {
+          visitor.visit(this, "onset[x]", -1, this.onset);
+        }
+        if (this.abatement != null) {
+          visitor.visit(this, "abatement[x]", -1, this.abatement);
+        }
+        if (this.recordedDate != null) {
+          visitor.visit(this, "recordedDate", -1, this.recordedDate);
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.asserter != null) {
+          visitor.visit(this, "asserter", -1, this.asserter);
+        }
+        if (this.stageList != null) {
+          int i = 0;
+          for (Base v : this.stageList) {
+            if (v != null) {
+              visitor.visit(this, "stage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.evidenceList != null) {
+          int i = 0;
+          for (Base v : this.evidenceList) {
+            if (v != null) {
+              visitor.visit(this, "evidence", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

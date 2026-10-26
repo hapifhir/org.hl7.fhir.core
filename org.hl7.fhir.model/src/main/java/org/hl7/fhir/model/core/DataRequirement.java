@@ -611,6 +611,29 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.searchParam != null) {
+            visitor.visit(this, "searchParam", -1, this.searchParam);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.codeList != null) {
+            int i = 0;
+            for (Base v : this.codeList) {
+              if (v != null) {
+                visitor.visit(this, "code", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "path":  return new Property("path", "string", "The code-valued attribute of the filter. The specified path SHALL be a FHIRPath resolvable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of type code, Coding, or CodeableConcept.", 0, 1, path);
@@ -1015,6 +1038,20 @@ public class DataRequirement extends DataType implements ICompositeType {
           children.add(new Property("path", "string", "The date-valued attribute of the filter. The specified path SHALL be a FHIRPath resolvable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of type date, dateTime, Period, Schedule, or Timing.", 0, 1, path));
           children.add(new Property("searchParam", "string", "A date parameter that refers to a search parameter defined on the specified type of the DataRequirement, and which searches on elements of type date, dateTime, Period, Schedule, or Timing.", 0, 1, searchParam));
           children.add(new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.searchParam != null) {
+            visitor.visit(this, "searchParam", -1, this.searchParam);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -1539,6 +1576,23 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.searchParam != null) {
+            visitor.visit(this, "searchParam", -1, this.searchParam);
+          }
+          if (this.comparator != null) {
+            visitor.visit(this, "comparator", -1, this.comparator);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "path":  return new Property("path", "string", "The attribute of the filter. The specified path SHALL be a FHIRPath resolvable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.", 0, 1, path);
@@ -1907,6 +1961,17 @@ public class DataRequirement extends DataType implements ICompositeType {
           super.listChildren(children);
           children.add(new Property("path", "string", "The attribute of the sort. The specified path must be resolvable from the type of the required data. The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements. Note that the index must be an integer constant.", 0, 1, path));
           children.add(new Property("direction", "code", "The direction of the sort, ascending or descending.", 0, 1, direction));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.direction != null) {
+            visitor.visit(this, "direction", -1, this.direction);
+          }
         }
 
         @Override
@@ -2641,6 +2706,74 @@ public class DataRequirement extends DataType implements ICompositeType {
         children.add(new Property("valueFilter", "", "Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed).", 0, java.lang.Integer.MAX_VALUE, valueFilterList));
         children.add(new Property("limit", "positiveInt", "Specifies a maximum number of results that are required (uses the _count search parameter).", 0, 1, limit));
         children.add(new Property("sort", "", "Specifies the order of the results to be returned.", 0, java.lang.Integer.MAX_VALUE, sortList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.profileList != null) {
+          int i = 0;
+          for (Base v : this.profileList) {
+            if (v != null) {
+              visitor.visit(this, "profile", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject[x]", -1, this.subject);
+        }
+        if (this.mustSupportList != null) {
+          int i = 0;
+          for (Base v : this.mustSupportList) {
+            if (v != null) {
+              visitor.visit(this, "mustSupport", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.codeFilterList != null) {
+          int i = 0;
+          for (Base v : this.codeFilterList) {
+            if (v != null) {
+              visitor.visit(this, "codeFilter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dateFilterList != null) {
+          int i = 0;
+          for (Base v : this.dateFilterList) {
+            if (v != null) {
+              visitor.visit(this, "dateFilter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.valueFilterList != null) {
+          int i = 0;
+          for (Base v : this.valueFilterList) {
+            if (v != null) {
+              visitor.visit(this, "valueFilter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.limit != null) {
+          visitor.visit(this, "limit", -1, this.limit);
+        }
+        if (this.sortList != null) {
+          int i = 0;
+          for (Base v : this.sortList) {
+            if (v != null) {
+              visitor.visit(this, "sort", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -1187,7 +1187,12 @@ public class StructureDefinitionValidator extends BaseValidator {
                 if (settings.isDebug()) {
                   e.printStackTrace();
                 }
-                ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                String id = determineId(stack.getLiteralPath(), invariant);
+                if (id == null) {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                } else {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR_WITH_ID, key, expression, e.getMessage(), id) && ok;
+                }
               }         
             }        
           }
@@ -1316,7 +1321,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             e.printStackTrace();
           }
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
-        }         
+        }
     }        
     return ok;
   }
@@ -2029,33 +2034,14 @@ public class StructureDefinitionValidator extends BaseValidator {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p) && ok;
-        } else if (!VersionUtilities.isR5Plus(context.getFHIRVersion())) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || cu.isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
-  }
-
-  private boolean isCanonicalResource(String type) {
-    if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
-      return true;
-    }
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    while (sd != null) {
-      if ("CanonicalResource".equals(sd.getType())) {
-        return true;
-      }
-      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS))) {
-        return true;
-      }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
-    }
-    return false;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {

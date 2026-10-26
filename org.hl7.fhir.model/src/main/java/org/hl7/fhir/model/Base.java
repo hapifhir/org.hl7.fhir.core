@@ -109,58 +109,88 @@ public abstract class Base implements Serializable, IBase, IElement {
    * for moving a tree (or a subtree extracted from another tree) between contexts, or giving a 
    * context-free tree one retrospectively. Passing null detaches the tree from its context 
    * entirely, ready for re-adoption elsewhere. Deliberately walks every node with no shortcuts, 
-   * since the tree may be in a mixed state - which also makes it listChildren()-slow, so it is 
-   * a migration operation, not a hot path
+   * since the tree may be in a mixed state
    */
   public void changeModelContext(IModelContext modelContext) {
     this.modelContext = modelContext;
-    List<Property> children = new ArrayList<Property>();
-    listChildren(children);
-    for (Property c : children) {
-      for (Base b : c.getValues()) {
-        if (b != null) {
-          b.changeModelContext(modelContext);
-        }
-      }
-    }
+    forEachChild((parent, name, index, child) -> {
+      child.changeModelContext(modelContext);
+      return false;
+    });
   }
 
   /**
    * Check that every node in the tree below this one carries the same model context as this 
    * one (including a uniformly null context), throwing FHIRException at the first mismatch, 
-   * with the path to the offending element. This walks the tree with the listChildren() 
-   * machinery, so it is much too slow for production paths - it exists for unit tests and 
-   * debugging the coherence invariant that the constructors, setters, BaseList, and 
-   * setModelContext cascades are meant to maintain
+   * with the path to the offending element. Nodes with no context adopt it. This is the 
+   * coherence invariant that the constructors, setters, BaseList, and setModelContext cascades 
+   * are meant to maintain. It walks the whole tree, but with forEachChild(), which costs little 
+   * next to (say) composing the tree
    */
   public void assertModelContext() throws FHIRException {
-    assertModelContext(fhirType(), modelContext);
+    assertModelContext(modelContext);
   }
 
   /** as assertModelContext(), but also requires that the tree's context IS the given one - used by the serialisers */
   public void assertModelContext(IModelContext expected) throws FHIRException {
-    assertModelContext(fhirType(), expected);
-  }
-
-  private void assertModelContext(String path, IModelContext expected) {
     if (expected == null) {
       return;
     }
-    if (this.modelContext == null) {
-      this.modelContext = expected;
-    } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
-      throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
+    try {
+      new ModelContextChecker(expected).check(this);
+    } catch (ModelContextMismatch e) {
+      throw new FHIRException("Model context mismatch at "+fhirType()+e.getPath()+": expected "+describeContext(expected)+" but found "+describeContext(e.found));
     }
-    List<Property> children = new ArrayList<Property>();
-    listChildren(children);
-    for (Property c : children) {
-      int i = 0;
-      for (Base b : c.getValues()) {
-        if (b != null) {
-          b.assertModelContext(path+"."+c.getName()+(c.isList() ? "["+i+"]" : ""), expected);
-        }
-        i++;
+  }
+
+  /**
+   * One instance per assertModelContext() call. The path to a node is only built if there is a 
+   * mismatch: the exception collects it on the way back up
+   */
+  private static class ModelContextChecker implements IModelObjectVisitor {
+    private final IModelContext expected;
+
+    private ModelContextChecker(IModelContext expected) {
+      this.expected = expected;
+    }
+
+    private void check(Base node) {
+      if (node.modelContext == null) {
+        node.modelContext = expected;
+      } else if (node.modelContext != expected && !node.modelContext.isCompatibleModelContext(expected)) {
+        throw new ModelContextMismatch(node.modelContext);
       }
+      node.forEachChild(this);
+    }
+
+    @Override
+    public boolean visit(Base parent, String name, int index, Base child) {
+      try {
+        check(child);
+      } catch (ModelContextMismatch e) {
+        e.segments.add(index == -1 ? "."+name : "."+name+"["+index+"]");
+        throw e;
+      }
+      return false;
+    }
+  }
+
+  private static class ModelContextMismatch extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+    private final transient IModelContext found;
+    private final List<String> segments = new ArrayList<>(); // innermost first
+
+    private ModelContextMismatch(IModelContext found) {
+      super(null, null, false, false); // control flow only - no stack trace
+      this.found = found;
+    }
+
+    private String getPath() {
+      StringBuilder b = new StringBuilder();
+      for (int i = segments.size() - 1; i >= 0; i--) {
+        b.append(segments.get(i));
+      }
+      return b.toString();
     }
   }
 
@@ -514,6 +544,106 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   /**
+   * Call visitor.visit() for each value of each child element of this object (but not their 
+   * children), in the same order as listChildren() - but only for values that are present, and 
+   * without building a Property for each element. Overridden by the generated classes (this 
+   * base implementation contributes nothing - Base itself has no elements). 
+   * 
+   * A class that overrides listChildren() must override this as well, and call 
+   * super.visitChildren() where listChildren() calls super.listChildren(). Callers don't call 
+   * this directly: they use forEachChild(), which falls back to listChildren() for any class 
+   * that doesn't (see visitsAllChildren())
+   */
+  protected void visitChildren(IModelObjectVisitor visitor) {
+    // nothing
+  }
+
+  /**
+   * Call visitor.visit() for each child value of this object (not their children) - see 
+   * visitChildren() and IModelObjectVisitor
+   */
+  public void forEachChild(IModelObjectVisitor visitor) {
+    if (VISITS_ALL_CHILDREN.get(getClass())) {
+      visitChildren(visitor);
+    } else {
+      visitChildrenFromList(visitor);
+    }
+  }
+
+  /**
+   * Call visitor.visit() for every descendant of this object, depth first: each child, then 
+   * (if visit() returned true) its descendants, then the next child
+   */
+  public void visitDescendants(IModelObjectVisitor visitor) {
+    forEachChild(new DescendantVisitor(visitor));
+  }
+
+  private static class DescendantVisitor implements IModelObjectVisitor {
+    private final IModelObjectVisitor visitor;
+
+    private DescendantVisitor(IModelObjectVisitor visitor) {
+      this.visitor = visitor;
+    }
+
+    @Override
+    public boolean visit(Base parent, String name, int index, Base child) {
+      if (visitor.visit(parent, name, index, child)) {
+        child.forEachChild(this);
+      }
+      return false;
+    }
+  }
+
+  /**
+   * the slow way, for classes whose visitChildren() is incomplete: walk listChildren()
+   */
+  private void visitChildrenFromList(IModelObjectVisitor visitor) {
+    List<Property> children = new ArrayList<Property>();
+    listChildren(children);
+    for (Property c : children) {
+      int i = 0;
+      for (Base b : c.getValues()) {
+        if (b != null) {
+          visitor.visit(this, c.getName(), c.isList() ? i : -1, b);
+        }
+        i++;
+      }
+    }
+  }
+
+  private static final ClassValue<Boolean> VISITS_ALL_CHILDREN = new ClassValue<Boolean>() {
+    @Override
+    protected Boolean computeValue(Class<?> type) {
+      return visitsAllChildren(type);
+    }
+  };
+
+  /**
+   * Whether visitChildren() reaches all the children that listChildren() lists, for instances of 
+   * the given class: true unless some class between it and Base overrides listChildren() without 
+   * also overriding visitChildren() - a hand-written class, or one generated before 
+   * visitChildren() existed. forEachChild() uses listChildren() for such a class. (public for 
+   * the tests that check the generated classes)
+   */
+  public static boolean visitsAllChildren(Class<?> type) {
+    for (Class<?> c = type; c != null && c != Base.class; c = c.getSuperclass()) {
+      if (declaresMethod(c, "listChildren", List.class) && !declaresMethod(c, "visitChildren", IModelObjectVisitor.class)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static boolean declaresMethod(Class<?> c, String name, Class<?> paramType) {
+    try {
+      c.getDeclaredMethod(name, paramType);
+      return true;
+    } catch (NoSuchMethodException e) {
+      return false;
+    }
+  }
+
+  /**
    * Return the current values of the named child as an immutable list, never containing nulls 
    * (and never null itself - no values is an empty list). "*" returns the values of all children. 
    * Unknown names return an empty list when checkValid is false, and throw when it is true.
@@ -521,12 +651,10 @@ public abstract class Base implements Serializable, IBase, IElement {
   public List<Base> getChildValues(String name, boolean checkValid) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     if (name.equals("*")) {
-      List<Property> children = new ArrayList<Property>();
-      listChildren(children);
-      for (Property c : children)
-        for (Base b : c.getValues())
-          if (b != null)
-            result.add(b);
+      forEachChild((parent, n, index, child) -> {
+        result.add(child);
+        return false;
+      });
     } else {
       Base[] values = getNamedValue(name, checkValid);
       if (values != null)

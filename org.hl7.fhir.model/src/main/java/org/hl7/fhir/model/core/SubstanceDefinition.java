@@ -472,6 +472,41 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.stereochemistry != null) {
+            visitor.visit(this, "stereochemistry", -1, this.stereochemistry);
+          }
+          if (this.opticalActivity != null) {
+            visitor.visit(this, "opticalActivity", -1, this.opticalActivity);
+          }
+          if (this.molecularFormula != null) {
+            visitor.visit(this, "molecularFormula", -1, this.molecularFormula);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount[x]", -1, this.amount);
+          }
+          if (this.measurementType != null) {
+            visitor.visit(this, "measurementType", -1, this.measurementType);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "role":  return new Property("role", "CodeableConcept", "Role that the moiety is playing.", 0, 1, role);
@@ -974,6 +1009,29 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.technique != null) {
+            visitor.visit(this, "technique", -1, this.technique);
+          }
+          if (this.form != null) {
+            visitor.visit(this, "form", -1, this.form);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.fileList != null) {
+            int i = 0;
+            for (Base v : this.fileList) {
+              if (v != null) {
+                visitor.visit(this, "file", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "technique":  return new Property("technique", "CodeableConcept", "The method used to elucidate the characterization of the drug substance. Example: HPLC.", 0, 1, technique);
@@ -1354,6 +1412,17 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A code expressing the type of property.", 0, 1, type);
@@ -1665,6 +1734,20 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("method", "CodeableConcept", "The method by which the molecular weight was determined.", 0, 1, method));
           children.add(new Property("type", "CodeableConcept", "Type of molecular weight such as exact, average (also known as. number average), weight average.", 0, 1, type));
           children.add(new Property("amount", "Quantity", "Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.", 0, 1, amount));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
         }
 
         @Override
@@ -2270,6 +2353,53 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.stereochemistry != null) {
+            visitor.visit(this, "stereochemistry", -1, this.stereochemistry);
+          }
+          if (this.opticalActivity != null) {
+            visitor.visit(this, "opticalActivity", -1, this.opticalActivity);
+          }
+          if (this.molecularFormula != null) {
+            visitor.visit(this, "molecularFormula", -1, this.molecularFormula);
+          }
+          if (this.molecularFormulaByMoiety != null) {
+            visitor.visit(this, "molecularFormulaByMoiety", -1, this.molecularFormulaByMoiety);
+          }
+          if (this.molecularWeight != null) {
+            visitor.visit(this, "molecularWeight", -1, this.molecularWeight);
+          }
+          if (this.techniqueList != null) {
+            int i = 0;
+            for (Base v : this.techniqueList) {
+              if (v != null) {
+                visitor.visit(this, "technique", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sourceDocumentList != null) {
+            int i = 0;
+            for (Base v : this.sourceDocumentList) {
+              if (v != null) {
+                visitor.visit(this, "sourceDocument", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.representationList != null) {
+            int i = 0;
+            for (Base v : this.representationList) {
+              if (v != null) {
+                visitor.visit(this, "representation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "stereochemistry":  return new Property("stereochemistry", "CodeableConcept", "Stereochemistry type.", 0, 1, stereochemistry);
@@ -2736,6 +2866,23 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.representation != null) {
+            visitor.visit(this, "representation", -1, this.representation);
+          }
+          if (this.format != null) {
+            visitor.visit(this, "format", -1, this.format);
+          }
+          if (this.document != null) {
+            visitor.visit(this, "document", -1, this.document);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial).", 0, 1, type);
@@ -3199,6 +3346,38 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("statusDate", "dateTime", "The date at which the code status was changed as part of the terminology maintenance.", 0, 1, statusDate));
           children.add(new Property("note", "Annotation", "Any comment can be provided in this field, if necessary.", 0, java.lang.Integer.MAX_VALUE, noteList));
           children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, sourceList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.statusDate != null) {
+            visitor.visit(this, "statusDate", -1, this.statusDate);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -4058,6 +4237,86 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
+          if (this.languageList != null) {
+            int i = 0;
+            for (Base v : this.languageList) {
+              if (v != null) {
+                visitor.visit(this, "language", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.domainList != null) {
+            int i = 0;
+            for (Base v : this.domainList) {
+              if (v != null) {
+                visitor.visit(this, "domain", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.jurisdictionList != null) {
+            int i = 0;
+            for (Base v : this.jurisdictionList) {
+              if (v != null) {
+                visitor.visit(this, "jurisdiction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.synonymList != null) {
+            int i = 0;
+            for (Base v : this.synonymList) {
+              if (v != null) {
+                visitor.visit(this, "synonym", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.translationList != null) {
+            int i = 0;
+            for (Base v : this.translationList) {
+              if (v != null) {
+                visitor.visit(this, "translation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.officialList != null) {
+            int i = 0;
+            for (Base v : this.officialList) {
+              if (v != null) {
+                visitor.visit(this, "official", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The actual name.", 0, 1, name);
@@ -4544,6 +4803,20 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("authority", "CodeableConcept", "Which authority uses this official name.", 0, 1, authority));
           children.add(new Property("status", "CodeableConcept", "The status of the official name, for example 'draft', 'active', 'retired'.", 0, 1, status));
           children.add(new Property("date", "dateTime", "Date of the official name change.", 0, 1, date));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.authority != null) {
+            visitor.visit(this, "authority", -1, this.authority);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
         }
 
         @Override
@@ -5251,6 +5524,47 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.substanceDefinition != null) {
+            visitor.visit(this, "substanceDefinition[x]", -1, this.substanceDefinition);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.isDefining != null) {
+            visitor.visit(this, "isDefining", -1, this.isDefining);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount[x]", -1, this.amount);
+          }
+          if (this.comparator != null) {
+            visitor.visit(this, "comparator", -1, this.comparator);
+          }
+          if (this.measurementType != null) {
+            visitor.visit(this, "measurementType", -1, this.measurementType);
+          }
+          if (this.interaction != null) {
+            visitor.visit(this, "interaction", -1, this.interaction);
+          }
+          if (this.organism != null) {
+            visitor.visit(this, "organism", -1, this.organism);
+          }
+          if (this.organismType != null) {
+            visitor.visit(this, "organismType", -1, this.organismType);
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "substanceDefinition[x]":  return new Property("substanceDefinition[x]", "Reference(SubstanceDefinition)|CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition);
@@ -5832,6 +6146,32 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("species", "CodeableConcept", "The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.", 0, 1, species));
           children.add(new Property("part", "CodeableConcept", "An anatomical origin of the source material within an organism.", 0, 1, part));
           children.add(new Property("countryOfOrigin", "CodeableConcept", "The country or countries where the material is harvested.", 0, java.lang.Integer.MAX_VALUE, countryOfOriginList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.genus != null) {
+            visitor.visit(this, "genus", -1, this.genus);
+          }
+          if (this.species != null) {
+            visitor.visit(this, "species", -1, this.species);
+          }
+          if (this.part != null) {
+            visitor.visit(this, "part", -1, this.part);
+          }
+          if (this.countryOfOriginList != null) {
+            int i = 0;
+            for (Base v : this.countryOfOriginList) {
+              if (v != null) {
+                visitor.visit(this, "countryOfOrigin", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -6438,6 +6778,50 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("subunit", "", "A subunit constituting the nucleic acid. Subunits are listed in decreasing length order; ties are ordered by molecular weight; identical sequences are repeated.", 0, java.lang.Integer.MAX_VALUE, subunitList));
           children.add(new Property("gene", "", "The gene that codes for this substance (typically applies to proteins and nucleic acids). Captures the gene's identity and the source organism or lineage of the gene sequence (e.g. humanised mouse, chimeric mouse-human).", 0, java.lang.Integer.MAX_VALUE, geneList));
           children.add(new Property("geneElement", "", "Information about the functional elements (promoter, enhancer, coding sequence, terminator, etc.) that make up a nucleic acid construct used in gene therapy. Each element captures its role and identity.", 0, java.lang.Integer.MAX_VALUE, geneElementList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequenceType != null) {
+            visitor.visit(this, "sequenceType", -1, this.sequenceType);
+          }
+          if (this.numberOfSubunits != null) {
+            visitor.visit(this, "numberOfSubunits", -1, this.numberOfSubunits);
+          }
+          if (this.areaOfHybridisation != null) {
+            visitor.visit(this, "areaOfHybridisation", -1, this.areaOfHybridisation);
+          }
+          if (this.oligoNucleotideType != null) {
+            visitor.visit(this, "oligoNucleotideType", -1, this.oligoNucleotideType);
+          }
+          if (this.subunitList != null) {
+            int i = 0;
+            for (Base v : this.subunitList) {
+              if (v != null) {
+                visitor.visit(this, "subunit", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.geneList != null) {
+            int i = 0;
+            for (Base v : this.geneList) {
+              if (v != null) {
+                visitor.visit(this, "gene", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.geneElementList != null) {
+            int i = 0;
+            for (Base v : this.geneElementList) {
+              if (v != null) {
+                visitor.visit(this, "geneElement", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -7118,6 +7502,47 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.subunit != null) {
+            visitor.visit(this, "subunit", -1, this.subunit);
+          }
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.length != null) {
+            visitor.visit(this, "length", -1, this.length);
+          }
+          if (this.sequenceAttachment != null) {
+            visitor.visit(this, "sequenceAttachment", -1, this.sequenceAttachment);
+          }
+          if (this.fivePrime != null) {
+            visitor.visit(this, "fivePrime", -1, this.fivePrime);
+          }
+          if (this.threePrime != null) {
+            visitor.visit(this, "threePrime", -1, this.threePrime);
+          }
+          if (this.linkageList != null) {
+            int i = 0;
+            for (Base v : this.linkageList) {
+              if (v != null) {
+                visitor.visit(this, "linkage", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sugarList != null) {
+            int i = 0;
+            for (Base v : this.sugarList) {
+              if (v != null) {
+                visitor.visit(this, "sugar", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "subunit":  return new Property("subunit", "integer", "Index of the subunit. Subunits are numbered in decreasing length order, with ties broken by molecular weight.", 0, 1, subunit);
@@ -7571,6 +7996,20 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.connectivity != null) {
+            visitor.visit(this, "connectivity", -1, this.connectivity);
+          }
+          if (this.substance != null) {
+            visitor.visit(this, "substance", -1, this.substance);
+          }
+          if (this.residueSite != null) {
+            visitor.visit(this, "residueSite", -1, this.residueSite);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "connectivity":  return new Property("connectivity", "string", "The chemistry of the linkage. For naturally occurring nucleic acids the linkage is usually a phosphate group; synthetic oligonucleotides may use phosphorothioate or other modified linkages. Linkage connectivity defaults to 3’-5’; 3’-3’ or 5’-5’ should be stated explicitly.", 0, 1, connectivity);
@@ -7854,6 +8293,17 @@ public class SubstanceDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("substance", "CodeableReference(SubstanceDefinition)", "The substance representing the sugar (or sugar-like component) of the nucleotide, expressed as a code or a reference to its SubstanceDefinition. Reference.identifier may be used to carry an external ID (e.g. ISO 11238 Substance ID) when no resolvable URL is available.", 0, 1, substance));
           children.add(new Property("residueSite", "string", "The residue positions at which this sugar applies, listed in 5’→3’ direction consistent with the base sequence.", 0, 1, residueSite));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.substance != null) {
+            visitor.visit(this, "substance", -1, this.substance);
+          }
+          if (this.residueSite != null) {
+            visitor.visit(this, "residueSite", -1, this.residueSite);
+          }
         }
 
         @Override
@@ -8154,6 +8604,26 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("sequenceOrigin", "CodeableConcept", "The species or lineage from which the gene sequence originated (e.g. human, humanised mouse, chimeric mouse-human, bacterial). For recombinant biologics, this is distinct from the production source organism.", 0, 1, sequenceOrigin));
           children.add(new Property("gene", "CodeableReference(SubstanceDefinition)", "The gene itself, expressed as a code or as a reference to the SubstanceDefinition describing the gene as a nucleic acid. Reference.identifier may be used to carry an external ID (e.g. NCBI Gene, HGNC symbol) when no resolvable URL is available.", 0, 1, gene));
           children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature for the gene information.", 0, java.lang.Integer.MAX_VALUE, sourceList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequenceOrigin != null) {
+            visitor.visit(this, "sequenceOrigin", -1, this.sequenceOrigin);
+          }
+          if (this.gene != null) {
+            visitor.visit(this, "gene", -1, this.gene);
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -8476,6 +8946,26 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "The functional role of the element within the construct, for example promoter, enhancer, silencer, terminator, or coding sequence.", 0, 1, type));
           children.add(new Property("element", "CodeableReference(SubstanceDefinition)", "The element itself, expressed as a code or as a reference to a SubstanceDefinition describing the element as a nucleic acid substance. Reference.identifier may be used to carry an external ID (e.g. addgene plasmid ID, NCBI accession) when no resolvable URL is available.", 0, 1, element));
           children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature for the gene element information.", 0, java.lang.Integer.MAX_VALUE, sourceList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.element != null) {
+            visitor.visit(this, "element", -1, this.element);
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -8985,6 +9475,47 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.class_ != null) {
+            visitor.visit(this, "class", -1, this.class_);
+          }
+          if (this.geometry != null) {
+            visitor.visit(this, "geometry", -1, this.geometry);
+          }
+          if (this.copolymerConnectivityList != null) {
+            int i = 0;
+            for (Base v : this.copolymerConnectivityList) {
+              if (v != null) {
+                visitor.visit(this, "copolymerConnectivity", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.modification != null) {
+            visitor.visit(this, "modification", -1, this.modification);
+          }
+          if (this.monomerSetList != null) {
+            int i = 0;
+            for (Base v : this.monomerSetList) {
+              if (v != null) {
+                visitor.visit(this, "monomerSet", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.repeatList != null) {
+            int i = 0;
+            for (Base v : this.repeatList) {
+              if (v != null) {
+                visitor.visit(this, "repeat", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "class":  return new Property("class", "CodeableConcept", "Overall type of the polymer.", 0, 1, class_);
@@ -9334,6 +9865,23 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.ratioType != null) {
+            visitor.visit(this, "ratioType", -1, this.ratioType);
+          }
+          if (this.startingMaterialList != null) {
+            int i = 0;
+            for (Base v : this.startingMaterialList) {
+              if (v != null) {
+                visitor.visit(this, "startingMaterial", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "ratioType":  return new Property("ratioType", "CodeableConcept", "Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.", 0, 1, ratioType);
@@ -9662,6 +10210,23 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("category", "CodeableConcept", "Substance high level category, e.g. chemical substance.", 0, 1, category));
           children.add(new Property("isDefining", "boolean", "Whether this starting material is part of what defines the polymer's unique identity.", 0, 1, isDefining));
           children.add(new Property("amount", "Quantity", "A percentage.", 0, 1, amount));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.isDefining != null) {
+            visitor.visit(this, "isDefining", -1, this.isDefining);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
         }
 
         @Override
@@ -10032,6 +10597,26 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("averageMolecularFormula", "string", "A representation of an (average) molecular formula from a polymer.", 0, 1, averageMolecularFormula));
           children.add(new Property("repeatUnitAmountType", "CodeableConcept", "How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).", 0, 1, repeatUnitAmountType));
           children.add(new Property("repeatUnit", "", "An SRU - Structural Repeat Unit.", 0, java.lang.Integer.MAX_VALUE, repeatUnitList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.averageMolecularFormula != null) {
+            visitor.visit(this, "averageMolecularFormula", -1, this.averageMolecularFormula);
+          }
+          if (this.repeatUnitAmountType != null) {
+            visitor.visit(this, "repeatUnitAmountType", -1, this.repeatUnitAmountType);
+          }
+          if (this.repeatUnitList != null) {
+            int i = 0;
+            for (Base v : this.repeatUnitList) {
+              if (v != null) {
+                visitor.visit(this, "repeatUnit", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -10498,6 +11083,38 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.unit != null) {
+            visitor.visit(this, "unit", -1, this.unit);
+          }
+          if (this.orientation != null) {
+            visitor.visit(this, "orientation", -1, this.orientation);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.degreeOfPolymerisationList != null) {
+            int i = 0;
+            for (Base v : this.degreeOfPolymerisationList) {
+              if (v != null) {
+                visitor.visit(this, "degreeOfPolymerisation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.structuralRepresentationList != null) {
+            int i = 0;
+            for (Base v : this.structuralRepresentationList) {
+              if (v != null) {
+                visitor.visit(this, "structuralRepresentation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "unit":  return new Property("unit", "string", "Identification of the structural repeat unit (SRU).", 0, 1, unit);
@@ -10930,6 +11547,23 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("average", "integer", "An average amount of polymerisation.", 0, 1, average));
           children.add(new Property("low", "integer", "A low expected limit of the amount.", 0, 1, low));
           children.add(new Property("high", "integer", "A high expected limit of the amount.", 0, 1, high));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.average != null) {
+            visitor.visit(this, "average", -1, this.average);
+          }
+          if (this.low != null) {
+            visitor.visit(this, "low", -1, this.low);
+          }
+          if (this.high != null) {
+            visitor.visit(this, "high", -1, this.high);
+          }
         }
 
         @Override
@@ -11464,6 +12098,47 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequenceType != null) {
+            visitor.visit(this, "sequenceType", -1, this.sequenceType);
+          }
+          if (this.numberOfSubunits != null) {
+            visitor.visit(this, "numberOfSubunits", -1, this.numberOfSubunits);
+          }
+          if (this.disulfideLinkageList != null) {
+            int i = 0;
+            for (Base v : this.disulfideLinkageList) {
+              if (v != null) {
+                visitor.visit(this, "disulfideLinkage", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subunitList != null) {
+            int i = 0;
+            for (Base v : this.subunitList) {
+              if (v != null) {
+                visitor.visit(this, "subunit", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.geneList != null) {
+            int i = 0;
+            for (Base v : this.geneList) {
+              if (v != null) {
+                visitor.visit(this, "gene", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.modificationType != null) {
+            visitor.visit(this, "modificationType", -1, this.modificationType);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "sequenceType":  return new Property("sequenceType", "CodeableConcept", "Whether the sequence provided is complete or partial.", 0, 1, sequenceType);
@@ -11992,6 +12667,29 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("sequenceAttachment", "Attachment", "The amino-acid sequence provided as an attached file (e.g. when too long for inline capture, or only available in non-text form such as an image).", 0, 1, sequenceAttachment));
           children.add(new Property("nTerminalModification", "CodeableReference(SubstanceDefinition)", "The molecular fragment modification at the N-terminal of the protein, expressed as a code or a reference to its SubstanceDefinition. Reference.identifier may be used to carry an external ID (e.g. ISO 11238 Substance ID) when no resolvable URL is available.", 0, 1, nTerminalModification));
           children.add(new Property("cTerminalModification", "CodeableReference(SubstanceDefinition)", "The molecular fragment modification at the C-terminal of the protein, expressed as a code or a reference to its SubstanceDefinition. Reference.identifier may be used to carry an external ID (e.g. ISO 11238 Substance ID) when no resolvable URL is available.", 0, 1, cTerminalModification));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.subunit != null) {
+            visitor.visit(this, "subunit", -1, this.subunit);
+          }
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.length != null) {
+            visitor.visit(this, "length", -1, this.length);
+          }
+          if (this.sequenceAttachment != null) {
+            visitor.visit(this, "sequenceAttachment", -1, this.sequenceAttachment);
+          }
+          if (this.nTerminalModification != null) {
+            visitor.visit(this, "nTerminalModification", -1, this.nTerminalModification);
+          }
+          if (this.cTerminalModification != null) {
+            visitor.visit(this, "cTerminalModification", -1, this.cTerminalModification);
+          }
         }
 
         @Override
@@ -13444,6 +14142,158 @@ public class SubstanceDefinition extends DomainResource {
         children.add(new Property("nucleicAcid", "", "Data items specific to nucleic acids.", 0, 1, nucleicAcid));
         children.add(new Property("polymer", "", "Data items specific to polymers.", 0, 1, polymer));
         children.add(new Property("protein", "", "Data items specific to proteins.", 0, 1, protein));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.classificationList != null) {
+          int i = 0;
+          for (Base v : this.classificationList) {
+            if (v != null) {
+              visitor.visit(this, "classification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.domain != null) {
+          visitor.visit(this, "domain", -1, this.domain);
+        }
+        if (this.gradeList != null) {
+          int i = 0;
+          for (Base v : this.gradeList) {
+            if (v != null) {
+              visitor.visit(this, "grade", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.glycosylationType != null) {
+          visitor.visit(this, "glycosylationType", -1, this.glycosylationType);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.manufacturerList != null) {
+          int i = 0;
+          for (Base v : this.manufacturerList) {
+            if (v != null) {
+              visitor.visit(this, "manufacturer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supplierList != null) {
+          int i = 0;
+          for (Base v : this.supplierList) {
+            if (v != null) {
+              visitor.visit(this, "supplier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.moietyList != null) {
+          int i = 0;
+          for (Base v : this.moietyList) {
+            if (v != null) {
+              visitor.visit(this, "moiety", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.characterizationList != null) {
+          int i = 0;
+          for (Base v : this.characterizationList) {
+            if (v != null) {
+              visitor.visit(this, "characterization", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.molecularWeightList != null) {
+          int i = 0;
+          for (Base v : this.molecularWeightList) {
+            if (v != null) {
+              visitor.visit(this, "molecularWeight", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.structure != null) {
+          visitor.visit(this, "structure", -1, this.structure);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relationshipList != null) {
+          int i = 0;
+          for (Base v : this.relationshipList) {
+            if (v != null) {
+              visitor.visit(this, "relationship", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sourceMaterial != null) {
+          visitor.visit(this, "sourceMaterial", -1, this.sourceMaterial);
+        }
+        if (this.nucleicAcid != null) {
+          visitor.visit(this, "nucleicAcid", -1, this.nucleicAcid);
+        }
+        if (this.polymer != null) {
+          visitor.visit(this, "polymer", -1, this.polymer);
+        }
+        if (this.protein != null) {
+          visitor.visit(this, "protein", -1, this.protein);
+        }
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.igs.testing;
+package org.hl7.fhir.convertors.igs.r5.testing;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.igs.VersionConvertorIGBase;

@@ -466,6 +466,17 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.when != null) {
+            visitor.visit(this, "when[x]", -1, this.when);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A coded event such as when a service is expected or a card printed.", 0, 1, type);
@@ -837,6 +848,29 @@ public class CoverageEligibilityResponse extends DomainResource {
           children.add(new Property("inforce", "boolean", "Flag indicating if the coverage provided is in-force currently if no service date(s) specified or for the whole duration of the service dates.", 0, 1, inforce));
           children.add(new Property("benefitPeriod", "Period", "The term of the benefits documented in this response.", 0, 1, benefitPeriod));
           children.add(new Property("item", "", "Benefits and optionally current balances, and authorization details by category or service.", 0, java.lang.Integer.MAX_VALUE, itemList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.coverage != null) {
+            visitor.visit(this, "coverage", -1, this.coverage);
+          }
+          if (this.inforce != null) {
+            visitor.visit(this, "inforce", -1, this.inforce);
+          }
+          if (this.benefitPeriod != null) {
+            visitor.visit(this, "benefitPeriod", -1, this.benefitPeriod);
+          }
+          if (this.itemList != null) {
+            int i = 0;
+            for (Base v : this.itemList) {
+              if (v != null) {
+                visitor.visit(this, "item", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1743,6 +1777,71 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.productOrService != null) {
+            visitor.visit(this, "productOrService", -1, this.productOrService);
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.provider != null) {
+            visitor.visit(this, "provider", -1, this.provider);
+          }
+          if (this.excluded != null) {
+            visitor.visit(this, "excluded", -1, this.excluded);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.network != null) {
+            visitor.visit(this, "network", -1, this.network);
+          }
+          if (this.unit != null) {
+            visitor.visit(this, "unit", -1, this.unit);
+          }
+          if (this.term != null) {
+            visitor.visit(this, "term", -1, this.term);
+          }
+          if (this.benefitList != null) {
+            int i = 0;
+            for (Base v : this.benefitList) {
+              if (v != null) {
+                visitor.visit(this, "benefit", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.authorizationRequired != null) {
+            visitor.visit(this, "authorizationRequired", -1, this.authorizationRequired);
+          }
+          if (this.authorizationSupportingList != null) {
+            int i = 0;
+            for (Base v : this.authorizationSupportingList) {
+              if (v != null) {
+                visitor.visit(this, "authorizationSupporting", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.authorizationUrl != null) {
+            visitor.visit(this, "authorizationUrl", -1, this.authorizationUrl);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "category":  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
@@ -2374,6 +2473,20 @@ public class CoverageEligibilityResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.allowed != null) {
+            visitor.visit(this, "allowed[x]", -1, this.allowed);
+          }
+          if (this.used != null) {
+            visitor.visit(this, "used[x]", -1, this.used);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Classification of benefit being provided.", 0, 1, type);
@@ -2704,6 +2817,23 @@ public class CoverageEligibilityResponse extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "An error code,from a specified code system, which details why the eligibility check could not be performed.", 0, 1, code));
           children.add(new Property("expression", "string", "A [simple subset of FHIRPath](fhirpath.html#simple) limited to element names, repetition indicators and the default child accessor that identifies one of the elements in the resource that caused this issue to be raised.", 0, java.lang.Integer.MAX_VALUE, expressionList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.expressionList != null) {
+            int i = 0;
+            for (Base v : this.expressionList) {
+              if (v != null) {
+                visitor.visit(this, "expression", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3786,6 +3916,92 @@ public class CoverageEligibilityResponse extends DomainResource {
         children.add(new Property("preAuthRef", "string", "A reference from the Insurer to which these services pertain to be used on further communication and as proof that the request occurred.", 0, 1, preAuthRef));
         children.add(new Property("form", "CodeableConcept", "A code for the form to be used for printing the content.", 0, 1, form));
         children.add(new Property("error", "", "Errors encountered during the processing of the request.", 0, java.lang.Integer.MAX_VALUE, errorList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.purposeList != null) {
+          int i = 0;
+          for (Base v : this.purposeList) {
+            if (v != null) {
+              visitor.visit(this, "purpose", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviced != null) {
+          visitor.visit(this, "serviced[x]", -1, this.serviced);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.requestor != null) {
+          visitor.visit(this, "requestor", -1, this.requestor);
+        }
+        if (this.request != null) {
+          visitor.visit(this, "request", -1, this.request);
+        }
+        if (this.outcome != null) {
+          visitor.visit(this, "outcome", -1, this.outcome);
+        }
+        if (this.disposition != null) {
+          visitor.visit(this, "disposition", -1, this.disposition);
+        }
+        if (this.insurer != null) {
+          visitor.visit(this, "insurer", -1, this.insurer);
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.preAuthRef != null) {
+          visitor.visit(this, "preAuthRef", -1, this.preAuthRef);
+        }
+        if (this.form != null) {
+          visitor.visit(this, "form", -1, this.form);
+        }
+        if (this.errorList != null) {
+          int i = 0;
+          for (Base v : this.errorList) {
+            if (v != null) {
+              visitor.visit(this, "error", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

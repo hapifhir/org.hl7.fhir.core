@@ -11,6 +11,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -382,7 +383,7 @@ class NPMPackageGeneratorTest {
           + "{\"name\":\"Beta\",\"url\":\"https://example.org/beta\"}]",
           JsonParser.compose(json.getJsonArray("maintainers")));
       assertEquals("https://example.org/home", json.asString("homepage"));
-      assertJsonEquals("{\"lib\":\"package\",\"example\":\"example\"}",
+      assertJsonEquals("{\"lib\":\"package\",\"example\":\"examples\"}",
           JsonParser.compose(json.getJsonObject("directories")));
       assertEquals("urn:iso:std:iso:3166#US", json.asString("jurisdiction"));
       assertJsonEquals("{\"example.peer.b\":\"2.0.0\",\"example.peer.a\":null}",
@@ -1173,6 +1174,35 @@ class NPMPackageGeneratorTest {
 
       assertTrue(warnings.isEmpty(), warnings.toString());
     });
+  }
+
+  @Test
+  void examplePathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    assertEquals(100, ("package/examples/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    finish(generator);
+
+    assertTrue(generator.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/examples/QuestionnaireResponse-")));
+    assertTrue(generator.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        generator.getCreated().toString());
+  }
+
+  @Test
+  void folderPathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "ImmunizationRecommendation-" + "x".repeat(60) + ".json";
+    assertEquals(100, ("package/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile("package", name,
+        "{\"resourceType\":\"ImmunizationRecommendation\",\"id\":\"x\"}".getBytes(StandardCharsets.UTF_8));
+    finish(generator);
+
+    assertTrue(generator.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/ImmunizationRecommendation-")));
+    assertTrue(generator.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        generator.getCreated().toString());
   }
 
   private static GuideProbe guide() {

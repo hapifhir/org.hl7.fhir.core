@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.hl7.fhir.convertors.igs.testing.TestingR5Convertor;
+import org.hl7.fhir.convertors.igs.r5.testing.TestingR5Convertor;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.igs.testing.TestingJsonParser;
 import org.hl7.fhir.r5.model.Resource;
@@ -63,7 +63,7 @@ public class TestingR5RoundTripTests {
     List<Arguments> objects = new ArrayList<>();
     for (String pid : PACKAGES) {
       NpmPackage npm = getPackage(pid);
-      for (String fn : npm.list("example")) {
+      for (String fn : npm.listExamples()) {
         if (fn.endsWith(".json") && fn.contains("-")) {
           String rt = fn.substring(0, fn.indexOf("-"));
           if (Utilities.existsInList(rt, RESOURCE_TYPES)) {
@@ -79,7 +79,7 @@ public class TestingR5RoundTripTests {
   @MethodSource("data")
   public void testRoundTrip(String name, String pid, String filename) throws IOException {
     Assumptions.assumeFalse(SUPPRESSED.containsKey(filename), () -> "suppressed: " + SUPPRESSED.get(filename));
-    byte[] source = FileUtilities.streamToBytes(getPackage(pid).load("example", filename));
+    byte[] source = FileUtilities.streamToBytes(getPackage(pid).loadExample(filename));
 
     Resource r1 = new TestingJsonParser(true, true).parse(source);
     Resource r2 = convertToR5AndBack(r1);

@@ -837,6 +837,23 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "The type of participant.", 0, 1, type);
@@ -1131,6 +1148,17 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of the parameter passed in to the test runner.", 0, 1, name);
@@ -1344,6 +1372,20 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "Action would contain either an operation or an assertion.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -1526,6 +1568,17 @@ public class TestReport extends DomainResource {
           super.listChildren(children);
           children.add(new Property("operation", "", "The operation performed.", 0, 1, operation));
           children.add(new Property("assert", "", "The results of the assertion performed on the previous operations.", 0, 1, assert_));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
         }
 
         @Override
@@ -1846,6 +1899,20 @@ public class TestReport extends DomainResource {
           children.add(new Property("result", "code", "The result of this operation.", 0, 1, result));
           children.add(new Property("message", "markdown", "An explanatory message associated with the result.", 0, 1, message));
           children.add(new Property("detail", "uri", "A link to further details on the result.", 0, 1, detail));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.message != null) {
+            visitor.visit(this, "message", -1, this.message);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail", -1, this.detail);
+          }
         }
 
         @Override
@@ -2248,6 +2315,29 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.message != null) {
+            visitor.visit(this, "message", -1, this.message);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail", -1, this.detail);
+          }
+          if (this.requirementList != null) {
+            int i = 0;
+            for (Base v : this.requirementList) {
+              if (v != null) {
+                visitor.visit(this, "requirement", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "result":  return new Property("result", "code", "The result of this assertion.", 0, 1, result);
@@ -2481,6 +2571,14 @@ public class TestReport extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.link != null) {
+            visitor.visit(this, "link[x]", -1, this.link);
+          }
         }
 
         @Override
@@ -2928,6 +3026,35 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.log != null) {
+            visitor.visit(this, "log", -1, this.log);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of this test used for tracking/logging purposes by test engines. This name links back to the test in the test script, so it must be directly linked (usually the same).", 0, 1, name);
@@ -3200,6 +3327,17 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "operation":  return new Property("operation", "@TestReport.setup.action.operation", "An operation would involve a REST request to a server.", 0, 1, operation);
@@ -3415,6 +3553,20 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "The teardown action will only contain an operation.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -3584,6 +3736,14 @@ public class TestReport extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("operation", "@TestReport.setup.action.operation", "An operation would involve a REST request to a server.", 0, 1, operation));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
         }
 
         @Override
@@ -4520,6 +4680,77 @@ public class TestReport extends DomainResource {
         children.add(new Property("teardown", "", "The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).", 0, 1, teardown));
         children.add(new Property("presentedForm", "Attachment", "A document presentation of the test outcomes such as PDF document.", 0, 1, presentedForm));
         children.add(new Property("log", "Attachment", "A log of the internal execution of the tests, which might be useful for subsequent investigations. The format is expected to be some kind of text log, or at least comprehensible in a text editor.", 0, 1, log));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifier != null) {
+          visitor.visit(this, "identifier", -1, this.identifier);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.testScript != null) {
+          visitor.visit(this, "testScript", -1, this.testScript);
+        }
+        if (this.result != null) {
+          visitor.visit(this, "result", -1, this.result);
+        }
+        if (this.score != null) {
+          visitor.visit(this, "score", -1, this.score);
+        }
+        if (this.tester != null) {
+          visitor.visit(this, "tester", -1, this.tester);
+        }
+        if (this.issued != null) {
+          visitor.visit(this, "issued", -1, this.issued);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.setup != null) {
+          visitor.visit(this, "setup", -1, this.setup);
+        }
+        if (this.testList != null) {
+          int i = 0;
+          for (Base v : this.testList) {
+            if (v != null) {
+              visitor.visit(this, "test", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.teardown != null) {
+          visitor.visit(this, "teardown", -1, this.teardown);
+        }
+        if (this.presentedForm != null) {
+          visitor.visit(this, "presentedForm", -1, this.presentedForm);
+        }
+        if (this.log != null) {
+          visitor.visit(this, "log", -1, this.log);
+        }
       }
 
       @Override

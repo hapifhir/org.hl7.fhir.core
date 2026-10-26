@@ -32,6 +32,7 @@ package org.hl7.fhir.model.utilities;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.IModelObjectVisitor;
 import org.hl7.fhir.model.Property;
 import org.hl7.fhir.utilities.FhirPublication;
 
@@ -71,6 +72,19 @@ public class Tuple extends Base {
     for (String s : properties.keySet()) {
       result.add(new Property(s, "Base", null, 0, 1, properties.get(s)));
     }    
+  }
+
+  @Override
+  protected void visitChildren(IModelObjectVisitor visitor) {
+    for (Map.Entry<String, List<Base>> e : properties.entrySet()) {
+      if (e.getValue() != null) {
+        for (Base b : e.getValue()) {
+          if (b != null) {
+            visitor.visit(this, e.getKey(), -1, b);
+          }
+        }
+      }
+    }
   }
 
   @Override

@@ -1139,6 +1139,62 @@ public class ObservationDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.context != null) {
+            visitor.visit(this, "context", -1, this.context);
+          }
+          if (this.appliesToList != null) {
+            int i = 0;
+            for (Base v : this.appliesToList) {
+              if (v != null) {
+                visitor.visit(this, "appliesTo", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sexParameterForClinicalUse != null) {
+            visitor.visit(this, "sexParameterForClinicalUse", -1, this.sexParameterForClinicalUse);
+          }
+          if (this.age != null) {
+            visitor.visit(this, "age", -1, this.age);
+          }
+          if (this.gestationalAge != null) {
+            visitor.visit(this, "gestationalAge", -1, this.gestationalAge);
+          }
+          if (this.condition != null) {
+            visitor.visit(this, "condition", -1, this.condition);
+          }
+          if (this.rangeCategory != null) {
+            visitor.visit(this, "rangeCategory", -1, this.rangeCategory);
+          }
+          if (this.range != null) {
+            visitor.visit(this, "range", -1, this.range);
+          }
+          if (this.validCodedValueSet != null) {
+            visitor.visit(this, "validCodedValueSet", -1, this.validCodedValueSet);
+          }
+          if (this.normalCodedValueSet != null) {
+            visitor.visit(this, "normalCodedValueSet", -1, this.normalCodedValueSet);
+          }
+          if (this.abnormalCodedValueSet != null) {
+            visitor.visit(this, "abnormalCodedValueSet", -1, this.abnormalCodedValueSet);
+          }
+          if (this.criticalCodedValueSet != null) {
+            visitor.visit(this, "criticalCodedValueSet", -1, this.criticalCodedValueSet);
+          }
+          if (this.interpretationList != null) {
+            int i = 0;
+            for (Base v : this.interpretationList) {
+              if (v != null) {
+                visitor.visit(this, "interpretation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "context":  return new Property("context", "CodeableConcept", "A concept defining the context for this set of qualified values.", 0, 1, context);
@@ -1788,6 +1844,41 @@ public class ObservationDefinition extends DomainResource {
           children.add(new Property("permittedDataType", "code", "The data types allowed for the value element of the instance of these component observations.", 0, java.lang.Integer.MAX_VALUE, permittedDataTypeList));
           children.add(new Property("permittedUnit", "Coding", "Units allowed for the valueQuantity element in the instance observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, permittedUnitList));
           children.add(new Property("qualifiedValue", "@ObservationDefinition.qualifiedValue", "A set of qualified values associated with a context and a set of conditions - provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValueList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.permittedDataTypeList != null) {
+            int i = 0;
+            for (Base v : this.permittedDataTypeList) {
+              if (v != null) {
+                visitor.visit(this, "permittedDataType", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.permittedUnitList != null) {
+            int i = 0;
+            for (Base v : this.permittedUnitList) {
+              if (v != null) {
+                visitor.visit(this, "permittedUnit", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.qualifiedValueList != null) {
+            int i = 0;
+            for (Base v : this.qualifiedValueList) {
+              if (v != null) {
+                visitor.visit(this, "qualifiedValue", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -4231,6 +4322,221 @@ public class ObservationDefinition extends DomainResource {
         children.add(new Property("qualifiedValue", "", "A set of qualified values associated with a context and a set of conditions - provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValueList));
         children.add(new Property("hasMember", "Reference(ObservationDefinition|Questionnaire)", "This ObservationDefinition defines a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMemberList));
         children.add(new Property("component", "", "Some observations have multiple component observations, expressed as separate code value pairs.", 0, java.lang.Integer.MAX_VALUE, componentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.derivedFromCanonicalList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromCanonicalList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFromCanonical", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.derivedFromUriList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromUriList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFromUri", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.performerType != null) {
+          visitor.visit(this, "performerType", -1, this.performerType);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.permittedDataTypeList != null) {
+          int i = 0;
+          for (Base v : this.permittedDataTypeList) {
+            if (v != null) {
+              visitor.visit(this, "permittedDataType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.multipleResultsAllowed != null) {
+          visitor.visit(this, "multipleResultsAllowed", -1, this.multipleResultsAllowed);
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.method != null) {
+          visitor.visit(this, "method", -1, this.method);
+        }
+        if (this.specimenList != null) {
+          int i = 0;
+          for (Base v : this.specimenList) {
+            if (v != null) {
+              visitor.visit(this, "specimen", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device[x]", -1, this.device);
+        }
+        if (this.supportingDeviceList != null) {
+          int i = 0;
+          for (Base v : this.supportingDeviceList) {
+            if (v != null) {
+              visitor.visit(this, "supportingDevice", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.preferredReportName != null) {
+          visitor.visit(this, "preferredReportName", -1, this.preferredReportName);
+        }
+        if (this.permittedUnitList != null) {
+          int i = 0;
+          for (Base v : this.permittedUnitList) {
+            if (v != null) {
+              visitor.visit(this, "permittedUnit", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.qualifiedValueList != null) {
+          int i = 0;
+          for (Base v : this.qualifiedValueList) {
+            if (v != null) {
+              visitor.visit(this, "qualifiedValue", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.hasMemberList != null) {
+          int i = 0;
+          for (Base v : this.hasMemberList) {
+            if (v != null) {
+              visitor.visit(this, "hasMember", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.componentList != null) {
+          int i = 0;
+          for (Base v : this.componentList) {
+            if (v != null) {
+              visitor.visit(this, "component", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

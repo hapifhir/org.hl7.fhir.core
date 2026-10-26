@@ -623,6 +623,17 @@ public class ArtifactAssessment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target[x]", -1, this.target);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The type of relationship to the related artifact.", 0, 1, type);
@@ -1312,6 +1323,68 @@ public class ArtifactAssessment extends DomainResource {
           children.add(new Property("relatesTo", "@ArtifactAssessment.relatesTo", "Relationship that this content component has with other FHIR or non-FHIR resources that already exist.", 0, java.lang.Integer.MAX_VALUE, relatesToList));
           children.add(new Property("freeToShare", "boolean", "Acceptable to publicly share the comment, classifier or rating.", 0, 1, freeToShare));
           children.add(new Property("component", "@ArtifactAssessment.content", "A component comment, classifier, or rating of the artifact.", 0, java.lang.Integer.MAX_VALUE, componentList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.summary != null) {
+            visitor.visit(this, "summary", -1, this.summary);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.classifierList != null) {
+            int i = 0;
+            for (Base v : this.classifierList) {
+              if (v != null) {
+                visitor.visit(this, "classifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.authorList != null) {
+            int i = 0;
+            for (Base v : this.authorList) {
+              if (v != null) {
+                visitor.visit(this, "author", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.pathList != null) {
+            int i = 0;
+            for (Base v : this.pathList) {
+              if (v != null) {
+                visitor.visit(this, "path", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relatesToList != null) {
+            int i = 0;
+            for (Base v : this.relatesToList) {
+              if (v != null) {
+                visitor.visit(this, "relatesTo", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.freeToShare != null) {
+            visitor.visit(this, "freeToShare", -1, this.freeToShare);
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2378,6 +2451,65 @@ public class ArtifactAssessment extends DomainResource {
         children.add(new Property("content", "", "A component comment, classifier, or rating of the artifact.", 0, java.lang.Integer.MAX_VALUE, contentList));
         children.add(new Property("workflowStatus", "code", "Indicates the workflow status of the comment or change request.", 0, 1, workflowStatus));
         children.add(new Property("disposition", "code", "Indicates the disposition of the responsible party to the comment or change request.", 0, 1, disposition));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.citeAs != null) {
+          visitor.visit(this, "citeAs", -1, this.citeAs);
+        }
+        if (this.artifact != null) {
+          visitor.visit(this, "artifact[x]", -1, this.artifact);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.contentList != null) {
+          int i = 0;
+          for (Base v : this.contentList) {
+            if (v != null) {
+              visitor.visit(this, "content", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.workflowStatus != null) {
+          visitor.visit(this, "workflowStatus", -1, this.workflowStatus);
+        }
+        if (this.disposition != null) {
+          visitor.visit(this, "disposition", -1, this.disposition);
+        }
       }
 
       @Override

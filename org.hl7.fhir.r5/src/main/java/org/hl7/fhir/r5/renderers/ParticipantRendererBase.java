@@ -32,8 +32,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 public abstract class ParticipantRendererBase extends ResourceRenderer {
 
-  protected static final int MAX_IMAGE_LENGTH = 2*1024*1024;
-
   /**
    * a label / value pair, for rows that hold two items side by side
    */
@@ -638,7 +636,9 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
 
   /**
    * How a photo can be shown. It's written to a file if there's somewhere to write it and it's a type 
-   * we know the extension for; otherwise it has to be inlined as a data: url, which is only done if it's 
+   * we know the extension for, unless this is a narrative (VALID_RESOURCE): a narrative has to stand alone, 
+   * since it travels with the resource (packages, other language pages) and a file next to the page doesn't. 
+   * Otherwise it has to be inlined as a data: url, which is only done if it's 
    * smaller than MAX_IMAGE_LENGTH. svg is never written to a file: an svg file that is opened directly 
    * can run script, where an inlined one can't
    */
@@ -647,7 +647,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
     if (ct == null || !ct.startsWith("image/") || cnt == null || cnt.length == 0) {
       return PhotoDisposition.NONE;
     }
-    if (!context.isInlineGraphics() && !Utilities.noString(context.getDestDir()) && extensionForType(ct) != null) {
+    if (!mustInlineImages() && !Utilities.noString(context.getDestDir()) && extensionForType(ct) != null) {
       return PhotoDisposition.FILE;
     }
     return cnt.length < MAX_IMAGE_LENGTH ? PhotoDisposition.INLINE : PhotoDisposition.TOO_BIG;
@@ -674,7 +674,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
         return;
       }
       case INLINE:
-        td.img("data:"+att.primitiveValue("contentType")+";base64,"+att.primitiveValue("data"), inlineAlt);
+        td.img("data:"+att.primitiveValue("contentType")+";base64,"+cleanBase64(att.primitiveValue("data")), inlineAlt);
         return;
       case TOO_BIG:
         if (tooBig == null) {

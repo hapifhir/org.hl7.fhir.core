@@ -938,6 +938,47 @@ public class Address extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+        if (this.lineList != null) {
+          int i = 0;
+          for (Base v : this.lineList) {
+            if (v != null) {
+              visitor.visit(this, "line", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.city != null) {
+          visitor.visit(this, "city", -1, this.city);
+        }
+        if (this.district != null) {
+          visitor.visit(this, "district", -1, this.district);
+        }
+        if (this.state != null) {
+          visitor.visit(this, "state", -1, this.state);
+        }
+        if (this.postalCode != null) {
+          visitor.visit(this, "postalCode", -1, this.postalCode);
+        }
+        if (this.country != null) {
+          visitor.visit(this, "country", -1, this.country);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "use":  return new Property("use", "code", "The purpose of this address.", 0, 1, use);

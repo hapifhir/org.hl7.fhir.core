@@ -422,6 +422,17 @@ public class AdverseEvent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "function":  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the actor in the adverse event, such as contributor or informant.", 0, 1, function);
@@ -733,6 +744,20 @@ public class AdverseEvent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.instance != null) {
+            visitor.visit(this, "instance", -1, this.instance);
+          }
+          if (this.causality != null) {
+            visitor.visit(this, "causality", -1, this.causality);
+          }
+          if (this.occurrence != null) {
+            visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "instance":  return new Property("instance", "CodeableReference(Immunization|Procedure|Substance|SubstanceDefinition|Medication|MedicationAdministration|MedicationStatement|Device|BiologicallyDerivedProduct|ResearchStudy)", "Identifies the actual instance of what caused the adverse event.  May be a substance, medication, medication administration, medication statement or a device.", 0, 1, instance);
@@ -1037,6 +1062,20 @@ public class AdverseEvent extends DomainResource {
           children.add(new Property("assessmentMethod", "CodeableConcept", "The method of evaluating the relatedness of the suspected entity to the event.", 0, 1, assessmentMethod));
           children.add(new Property("entityRelatedness", "CodeableConcept", "The result of the assessment regarding the relatedness of the suspected entity to the event.", 0, 1, entityRelatedness));
           children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "The author of the information on the possible cause of the event.", 0, 1, author));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.assessmentMethod != null) {
+            visitor.visit(this, "assessmentMethod", -1, this.assessmentMethod);
+          }
+          if (this.entityRelatedness != null) {
+            visitor.visit(this, "entityRelatedness", -1, this.entityRelatedness);
+          }
+          if (this.author != null) {
+            visitor.visit(this, "author", -1, this.author);
+          }
         }
 
         @Override
@@ -2543,6 +2582,155 @@ public class AdverseEvent extends DomainResource {
         children.add(new Property("mitigatingAction", "CodeableReference(Procedure|DocumentReference|MedicationAdministration|MedicationRequest)", "The ameliorating action taken after the adverse event occurred in order to reduce the extent of harm.", 0, java.lang.Integer.MAX_VALUE, mitigatingActionList));
         children.add(new Property("supportingInfo", "CodeableReference(Condition|Observation|AllergyIntolerance|FamilyMemberHistory|Immunization|Procedure|DocumentReference|MedicationAdministration|MedicationStatement|QuestionnaireResponse)", "Relevant past history for the subject. In a clinical care context, an example being a patient had an adverse event following a penicillin administration and the patient had a previously documented penicillin allergy. In a clinical trials context, an example is a bunion or rash that was present prior to the study. Additionally, the supporting item can be a document that is relevant to this instance of the adverse event that is not part of the subject's medical history. For example, a clinical note, staff list, or material safety data sheet (MSDS).  Supporting information is not a contributing factor, preventive action, or mitigating action.", 0, java.lang.Integer.MAX_VALUE, supportingInfoList));
         children.add(new Property("note", "Annotation", "Comments made about the adverse event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.actuality != null) {
+          visitor.visit(this, "actuality", -1, this.actuality);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.effect != null) {
+          visitor.visit(this, "effect[x]", -1, this.effect);
+        }
+        if (this.detected != null) {
+          visitor.visit(this, "detected", -1, this.detected);
+        }
+        if (this.recordedDate != null) {
+          visitor.visit(this, "recordedDate", -1, this.recordedDate);
+        }
+        if (this.resultingEffectList != null) {
+          int i = 0;
+          for (Base v : this.resultingEffectList) {
+            if (v != null) {
+              visitor.visit(this, "resultingEffect", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.seriousness != null) {
+          visitor.visit(this, "seriousness", -1, this.seriousness);
+        }
+        if (this.outcomeList != null) {
+          int i = 0;
+          for (Base v : this.outcomeList) {
+            if (v != null) {
+              visitor.visit(this, "outcome", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.studyList != null) {
+          int i = 0;
+          for (Base v : this.studyList) {
+            if (v != null) {
+              visitor.visit(this, "study", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.expectedInResearchStudy != null) {
+          visitor.visit(this, "expectedInResearchStudy", -1, this.expectedInResearchStudy);
+        }
+        if (this.suspectEntityList != null) {
+          int i = 0;
+          for (Base v : this.suspectEntityList) {
+            if (v != null) {
+              visitor.visit(this, "suspectEntity", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contributingFactorList != null) {
+          int i = 0;
+          for (Base v : this.contributingFactorList) {
+            if (v != null) {
+              visitor.visit(this, "contributingFactor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.preventiveActionList != null) {
+          int i = 0;
+          for (Base v : this.preventiveActionList) {
+            if (v != null) {
+              visitor.visit(this, "preventiveAction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.mitigatingActionList != null) {
+          int i = 0;
+          for (Base v : this.mitigatingActionList) {
+            if (v != null) {
+              visitor.visit(this, "mitigatingAction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -127,6 +127,20 @@ public class CDSHooksExtensions extends LogicalBase implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.extensionList != null) {
+          int i = 0;
+          for (Base v : this.extensionList) {
+            if (v != null) {
+              visitor.visit(this, "extension", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "extension":  return new Property("extension", "Base", "An extension where the name is defined by the extension definition, and the extension definition is of any type (including primitives, though the 'id' element cannot be represented for primitives)", 0, java.lang.Integer.MAX_VALUE, extensionList);

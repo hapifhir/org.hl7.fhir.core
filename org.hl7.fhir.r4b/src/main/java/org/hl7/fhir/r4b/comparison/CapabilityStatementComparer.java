@@ -3,15 +3,11 @@ package org.hl7.fhir.r4b.comparison;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r4b.context.IWorkerContext;
-import org.hl7.fhir.r4b.model.BackboneElement;
 import org.hl7.fhir.r4b.model.BooleanType;
 import org.hl7.fhir.r4b.model.CanonicalResource;
 import org.hl7.fhir.r4b.model.CanonicalType;
@@ -22,13 +18,10 @@ import org.hl7.fhir.r4b.model.CapabilityStatement.CapabilityStatementRestResourc
 import org.hl7.fhir.r4b.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
 import org.hl7.fhir.r4b.model.CapabilityStatement.CapabilityStatementRestSecurityComponent;
 import org.hl7.fhir.r4b.model.CapabilityStatement.ResourceInteractionComponent;
-import org.hl7.fhir.r4b.model.CapabilityStatement.ResourceVersionPolicy;
 import org.hl7.fhir.r4b.model.CodeType;
 import org.hl7.fhir.r4b.model.CodeableConcept;
 import org.hl7.fhir.r4b.model.Coding;
-import org.hl7.fhir.r4b.model.DataType;
 import org.hl7.fhir.r4b.model.Element;
-import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.Extension;
 import org.hl7.fhir.r4b.model.PrimitiveType;
 import org.hl7.fhir.r4b.model.Resource;
@@ -41,6 +34,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -893,7 +887,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (StructuralMatch<Element> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<Element> t,
@@ -1126,15 +1120,15 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   private Cell style(Cell cell, String left, String right, boolean isLeft) {
     if (left != null && right != null) {
       if (!left.equals(right)) {
-        cell.setStyle("background-color: " + COLOR_DIFFERENT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT);
       }
     } else if (left != null) {
       if (!isLeft) {
-        cell.setStyle("background-color: " + COLOR_NO_CELL_RIGHT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_RIGHT);
       }
     } else if (right != null) {
       if (isLeft) {
-        cell.setStyle("background-color: " + COLOR_NO_CELL_LEFT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_LEFT);
       }
     }
     return cell;

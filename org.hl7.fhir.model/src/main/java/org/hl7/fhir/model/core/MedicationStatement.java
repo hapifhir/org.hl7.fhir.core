@@ -288,6 +288,17 @@ public class MedicationStatement extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Type of the adherence for the medication.", 0, 1, code);
@@ -1359,6 +1370,110 @@ public class MedicationStatement extends DomainResource {
         children.add(new Property("relatedClinicalInformation", "Reference(Observation|Condition)", "Link to information that is relevant to a medication statement, for example, illicit drug use, gestational age, etc. This is normally not the actual indication for the medication being used - that indication would be represented with .reason.", 0, java.lang.Integer.MAX_VALUE, relatedClinicalInformationList));
         children.add(new Property("dosage", "DosageDetails", "Indicates how the medication is/was or should be taken by the patient.", 0, 1, dosage));
         children.add(new Property("adherence", "", "Indicates whether the medication is or is not being consumed or administered.", 0, 1, adherence));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.medication != null) {
+          visitor.visit(this, "medication", -1, this.medication);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.effective != null) {
+          visitor.visit(this, "effective[x]", -1, this.effective);
+        }
+        if (this.dateAsserted != null) {
+          visitor.visit(this, "dateAsserted", -1, this.dateAsserted);
+        }
+        if (this.author != null) {
+          visitor.visit(this, "author", -1, this.author);
+        }
+        if (this.informationSourceList != null) {
+          int i = 0;
+          for (Base v : this.informationSourceList) {
+            if (v != null) {
+              visitor.visit(this, "informationSource", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedClinicalInformationList != null) {
+          int i = 0;
+          for (Base v : this.relatedClinicalInformationList) {
+            if (v != null) {
+              visitor.visit(this, "relatedClinicalInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dosage != null) {
+          visitor.visit(this, "dosage", -1, this.dosage);
+        }
+        if (this.adherence != null) {
+          visitor.visit(this, "adherence", -1, this.adherence);
+        }
       }
 
       @Override

@@ -286,6 +286,23 @@ public class ResearchSubject extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.startDate != null) {
+            visitor.visit(this, "startDate", -1, this.startDate);
+          }
+          if (this.endDate != null) {
+            visitor.visit(this, "endDate", -1, this.endDate);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Identifies the aspect of the subject's journey that the state refers to.", 0, 1, code);
@@ -664,6 +681,26 @@ public class ResearchSubject extends DomainResource {
           children.add(new Property("milestone", "CodeableConcept", "A specific event in the research subject's journey through a research study.", 0, 1, milestone));
           children.add(new Property("date", "dateTime", "The date/time when this milestone event was completed.", 0, 1, date));
           children.add(new Property("reason", "CodeableConcept", "A rationale that provides additional clarification for the milestone that was captured or documented.", 0, java.lang.Integer.MAX_VALUE, reasonList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.milestone != null) {
+            visitor.visit(this, "milestone", -1, this.milestone);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.reasonList != null) {
+            int i = 0;
+            for (Base v : this.reasonList) {
+              if (v != null) {
+                visitor.visit(this, "reason", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1332,6 +1369,68 @@ public class ResearchSubject extends DomainResource {
         children.add(new Property("subjectMilestone", "", "A significant event in the progress of a ResearchSubject.", 0, java.lang.Integer.MAX_VALUE, subjectMilestoneList));
         children.add(new Property("comparisonGroup", "CodeableReference(Group)", "A group to which the subject is assigned. This group assignment is used for administration or analysis.", 0, java.lang.Integer.MAX_VALUE, comparisonGroupList));
         children.add(new Property("consent", "Reference(Consent)", "Agreement to participate in a study as well as other research agreements, e.g. to acknowledge additional risks, to agree to a protocol deviation, or to agree to more invasive validation subsidies.", 0, java.lang.Integer.MAX_VALUE, consentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.study != null) {
+          visitor.visit(this, "study", -1, this.study);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.subjectStateList != null) {
+          int i = 0;
+          for (Base v : this.subjectStateList) {
+            if (v != null) {
+              visitor.visit(this, "subjectState", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subjectMilestoneList != null) {
+          int i = 0;
+          for (Base v : this.subjectMilestoneList) {
+            if (v != null) {
+              visitor.visit(this, "subjectMilestone", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.comparisonGroupList != null) {
+          int i = 0;
+          for (Base v : this.comparisonGroupList) {
+            if (v != null) {
+              visitor.visit(this, "comparisonGroup", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.consentList != null) {
+          int i = 0;
+          for (Base v : this.consentList) {
+            if (v != null) {
+              visitor.visit(this, "consent", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

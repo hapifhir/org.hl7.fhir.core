@@ -21,6 +21,14 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import java.util.HashMap;
+import java.util.Map;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
@@ -110,6 +118,9 @@ public class NarrativeGenerationTests {
       if ("http://hl7.org/fhir/StructureDefinition/Composition".equals(url)) {
         return "http://hl7.org/fhir/composition.html|TestComposition";
       }
+      if ("http://hl7.org/fhir/StructureDefinition/SimpleQuantity".equals(url)) {
+        return "http://hl7.org/fhir/datatypes.html#SimpleQuantity|SimpleQuantity";
+      }
       throw new NotImplementedException();      
     }
 
@@ -173,6 +184,7 @@ public class NarrativeGenerationTests {
     private boolean track;
     private String register;
     private String prefix;
+    private List<String> sdViews = new ArrayList<>();
 
     public TestDetails(Element test) {
       super();
@@ -194,6 +206,16 @@ public class NarrativeGenerationTests {
       pretty = !"false".equals(test.getAttribute("pretty"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
+      String views = test.getAttribute("sdviews");
+      if (!Utilities.noString(views)) {
+        for (String v : views.split(",")) {
+          sdViews.add(v.trim());
+        }
+      }
+    }
+
+    public List<String> getSdViews() {
+      return sdViews;
     }
 
     public String getId() {
@@ -261,7 +283,7 @@ public class NarrativeGenerationTests {
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-    rc.setDestDir(Utilities.path("[tmp]", "narrative"));
+    rc.setDestDir(Utilities.path("[tmp]", "narrative5"));
     rc.setShowSummaryTable(test.isHeader());
     rc.setTrackNarrativeSource(test.isTrack());
     rc.setDefinitionsTarget("test.html");
@@ -297,8 +319,8 @@ public class NarrativeGenerationTests {
     XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
-    String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
-    String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".html");
+    String expectedFileName = CompareUtilities.tempFile("narrative5", test.getId() + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative5", test.getId() + ".html");
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
@@ -307,12 +329,16 @@ public class NarrativeGenerationTests {
     String disp = new RendererFactory().factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
     actual = disp;
-    expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");
-    actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".txt");
+    expectedFileName = CompareUtilities.tempFile("narrative5", test.getId() + ".expected.txt");
+    actualFileName = CompareUtilities.tempFile("narrative5", test.getId() + ".txt");
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     msg = new CompareUtilities().checkTextIsSame(id, expected, actual);
     Assertions.assertTrue(msg == null, "Summary Output does not match expected: "+msg);
+
+    for (String view : test.getSdViews()) {
+      checkStructureDefinitionView(id, test, (StructureDefinition) source, view, rc);
+    }
     
     //    
 //    if (test.isMeta()) {
@@ -321,11 +347,144 @@ public class NarrativeGenerationTests {
 //
 //      expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));
 //      actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-//      actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
+//      actualFileName = CompareUtilities.tempFile("narrative5", test.getId() + "-meta.actual.html");
 //      FileUtilities.stringToFile(actual, actualFileName);
 //      msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
 //      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
 //    }
   }
   
+
+  /**
+   * The narrative for a StructureDefinition only contains the differential table. The IG publisher
+   * also renders the snapshot and must-support views, which go down different paths (snapshot = true,
+   * mustSupportOnly = true, a filtered element list), and the detailed view (data dictionary) of the snapshot.
+   * sdviews="snapshot,ms,dict" renders those too, each
+   * compared against output/[id]-[view].html
+   */
+  private void checkStructureDefinitionView(String id, TestDetails test, StructureDefinition sd, String view, RenderingContext rc) throws Exception {
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(rc);
+    ResourceWrapper res = ResourceWrapper.forResource(rc.getContextUtilities(), sd);
+    String corePath = rc.getLink(KnownLinkType.SPEC, false);
+    boolean logical = sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL;
+    XhtmlNode x;
+    switch (view) {
+    case "snapshot":
+      x = sdr.generateTable(new RenderingStatus(), rc.getDefinitionsTarget(), sd, false, rc.getDestDir(), false, sd.getId(), true, corePath, "", logical, true, null, false, rc.withUniqueLocalPrefix("s"), "s", res, "S");
+      break;
+    case "ms":
+      StructureDefinition msd = sd.copy();
+      msd.getSnapshot().setElement(new MustSupportFilter(sd).getMustSupportElements());
+      x = sdr.generateTable(new RenderingStatus(), rc.getDefinitionsTarget(), msd, false, rc.getDestDir(), false, msd.getId(), true, corePath, "", logical, false, null, true, rc.withUniqueLocalPrefix("m"), "m", res, "M");
+      break;
+    case "dict":
+      x = new XhtmlNode(NodeType.Element, "div");
+      sdr.renderDict(new RenderingStatus(), sd, sd.getSnapshot().getElement(), x.table("dict", false), false, StructureDefinitionRenderer.GEN_MODE_SNAP, "", res);
+      break;
+    default:
+      throw new Error("Unknown sdview '"+view+"' in test "+id);
+    }
+    String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-" + view + ".html"));
+    String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
+    String expectedFileName = CompareUtilities.tempFile("narrative5", test.getId() + "-" + view + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative5", test.getId() + "-" + view + ".html");
+    FileUtilities.stringToFile(expected, expectedFileName);
+    FileUtilities.stringToFile(actual, actualFileName);
+    String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
+    Assertions.assertTrue(msg == null, "Output for view '"+view+"' does not match expected: "+msg);
+  }
+
+  /**
+   * Builds the element list for the must-support view the same way the IG publisher does
+   * (igtools StructureDefinitionRenderer.getMustSupportElements): must-support elements plus
+   * their ancestors, with must-support inherited from the slicer, ancestors made opaque.
+   */
+  private static class MustSupportFilter {
+    private final StructureDefinition sd;
+    private final Map<String, ElementDefinition> snapshotById = new HashMap<>();
+
+    MustSupportFilter(StructureDefinition sd) {
+      this.sd = sd;
+      for (ElementDefinition t : sd.getSnapshot().getElement()) {
+        if (t.hasId()) {
+          snapshotById.put(t.getId(), t);
+        }
+      }
+    }
+
+    List<ElementDefinition> getMustSupportElements() {
+      Map<String, ElementDefinition> mustSupport = new HashMap<>();
+      scan(mustSupport, sd.getSnapshot().getElement(), sd.getSnapshot().getElementFirstRep(), new ArrayList<>());
+      List<ElementDefinition> res = new ArrayList<>();
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (mustSupport.containsKey(ed.getId())) {
+          ElementDefinition edCopy = ed.copy();
+          edCopy.copyUserData(ed);
+          if (edCopy.hasExample()) {
+            edCopy.getExample().clear();
+          }
+          if (!isMustSupport(ed)) {
+            if (edCopy.getPath().contains(".")) {
+              edCopy.setUserData(UserDataNames.render_opaque, true);
+            }
+            edCopy.setBinding(null);
+            edCopy.getConstraint().clear();
+          }
+          edCopy.setMustSupport(false);
+          res.add(edCopy);
+        }
+      }
+      return res;
+    }
+
+    private boolean isMustSupport(ElementDefinition ed) {
+      if (ed.hasMustSupport() && ed.getMustSupport()) {
+        return true;
+      }
+      if (!ed.hasId() || !ed.getId().contains(":")) {
+        return false;
+      }
+      String[] parts = ed.getId().split("\\.");
+      for (int i = parts.length - 1; i >= 0; i--) {
+        if (parts[i].contains(":")) {
+          String[] np = parts.clone();
+          np[i] = np[i].substring(0, np[i].indexOf(":"));
+          ElementDefinition sed = snapshotById.get(String.join(".", np));
+          if (sed != null && sed != ed && isMustSupport(sed)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    private void scan(Map<String, ElementDefinition> mustSupport, List<ElementDefinition> elements, ElementDefinition element, List<ElementDefinition> parents) {
+      if (parents.isEmpty() || isMustSupport(element)) {
+        mustSupport.put(element.getId(), element);
+        for (ElementDefinition parent : parents) {
+          mustSupport.put(parent.getId(), parent);
+        }
+      }
+      for (ElementDefinition child : getChildren(elements, element)) {
+        List<ElementDefinition> np = new ArrayList<>(parents);
+        np.add(element);
+        scan(mustSupport, elements, child, np);
+      }
+    }
+
+    private List<ElementDefinition> getChildren(List<ElementDefinition> elements, ElementDefinition elem) {
+      List<ElementDefinition> res = new ArrayList<>();
+      for (int i = elements.indexOf(elem) + 1; i < elements.size(); i++) {
+        String tgt = elements.get(i).getPath();
+        if (!tgt.startsWith(elem.getPath() + ".")) {
+          break;
+        }
+        if (!tgt.substring(elem.getPath().length() + 1).contains(".")) {
+          res.add(elements.get(i));
+        }
+      }
+      return res;
+    }
+  }
+
 }

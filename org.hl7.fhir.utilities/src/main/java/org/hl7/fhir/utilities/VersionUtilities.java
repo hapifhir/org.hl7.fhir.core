@@ -807,7 +807,6 @@ public class VersionUtilities {
       res.add("CapabilityStatement");
       res.add("ChargeItemDefinition");
       res.add("Citation");
-      res.add("ClinicalUseDefinition");
       res.add("CodeSystem");
       res.add("CompartmentDefinition");
       res.add("ConceptMap");
@@ -844,7 +843,6 @@ public class VersionUtilities {
       res.add("CapabilityStatement");
       res.add("ChargeItemDefinition");
       res.add("Citation");
-      res.add("ClinicalUseDefinition");
       res.add("CodeSystem");
       res.add("CompartmentDefinition");
       res.add("ConceptMap");

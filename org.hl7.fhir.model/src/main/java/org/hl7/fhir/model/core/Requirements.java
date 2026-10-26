@@ -374,6 +374,23 @@ public class Requirements extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.keyList != null) {
+            int i = 0;
+            for (Base v : this.keyList) {
+              if (v != null) {
+                visitor.visit(this, "key", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(Requirements)", "The canonical for the Requirements resource to import statements from.", 0, 1, reference);
@@ -663,6 +680,17 @@ public class Requirements extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("reference", "canonical(ActorDefinition)", "The canonical for an actor relevant to some of the requirements.", 0, 1, reference));
           children.add(new Property("key", "id", "A unique string used to reference the actor from specific requirements.", 0, 1, key));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
         }
 
         @Override
@@ -1542,6 +1570,83 @@ public class Requirements extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.conformanceList != null) {
+            int i = 0;
+            for (Base v : this.conformanceList) {
+              if (v != null) {
+                visitor.visit(this, "conformance", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.conditionality != null) {
+            visitor.visit(this, "conditionality", -1, this.conditionality);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.categoryList != null) {
+            int i = 0;
+            for (Base v : this.categoryList) {
+              if (v != null) {
+                visitor.visit(this, "category", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.derivedFrom != null) {
+            visitor.visit(this, "derivedFrom", -1, this.derivedFrom);
+          }
+          if (this.partOf != null) {
+            visitor.visit(this, "partOf", -1, this.partOf);
+          }
+          if (this.satisfiedByList != null) {
+            int i = 0;
+            for (Base v : this.satisfiedByList) {
+              if (v != null) {
+                visitor.visit(this, "satisfiedBy", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.referenceList != null) {
+            int i = 0;
+            for (Base v : this.referenceList) {
+              if (v != null) {
+                visitor.visit(this, "reference", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.actorList != null) {
+            int i = 0;
+            for (Base v : this.actorList) {
+              if (v != null) {
+                visitor.visit(this, "actor", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "id", "Key that identifies this statement (unique within this resource).", 0, 1, key);
@@ -2052,6 +2157,17 @@ public class Requirements extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(Requirements)", "The canonical of the Requirements instance this statement is derivedFrom.", 0, 1, reference);
@@ -2342,6 +2458,17 @@ public class Requirements extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("reference", "canonical(Requirements)", "The canonical of the Requirements instance this statement is a part of.", 0, 1, reference));
           children.add(new Property("key", "id", "The key, either within this resource or the specified Requirements resource this statement is a part of.", 0, 1, key));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
         }
 
         @Override
@@ -3859,6 +3986,131 @@ public class Requirements extends CanonicalResource {
         children.add(new Property("reference", "url", "A reference to another artifact that created this set of requirements. This could be a profile, etc., or external regulation, or business requirements expressed elsewhere. This URI is intended to point to a specific web page for an artifact, not a canonical URL.  If pointing to HL7 specifications, it is best to point to the version-specific URL.", 0, java.lang.Integer.MAX_VALUE, referenceList));
         children.add(new Property("actor", "", "An actor these requirements are in regard to.", 0, java.lang.Integer.MAX_VALUE, actorList));
         children.add(new Property("statement", "", "The actual statement of conformance requirement.", 0, java.lang.Integer.MAX_VALUE, statementList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.importsList != null) {
+          int i = 0;
+          for (Base v : this.importsList) {
+            if (v != null) {
+              visitor.visit(this, "imports", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.referenceList != null) {
+          int i = 0;
+          for (Base v : this.referenceList) {
+            if (v != null) {
+              visitor.visit(this, "reference", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actorList != null) {
+          int i = 0;
+          for (Base v : this.actorList) {
+            if (v != null) {
+              visitor.visit(this, "actor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.statementList != null) {
+          int i = 0;
+          for (Base v : this.statementList) {
+            if (v != null) {
+              visitor.visit(this, "statement", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -35,16 +35,12 @@ public enum ConversionContext40_50 {
 
   private final VersionConvertorContext<VersionConvertor_40_50> context = new VersionConvertorContext<>();
 
-  public void init(VersionConvertor_40_50 versionConvertor_40_50, String path) {
-    context.init(versionConvertor_40_50, path);
+  public void init(VersionConvertor_40_50 versionConvertor_40_50) {
+    context.init(versionConvertor_40_50);
   }
 
-  public void close(String path) {
-    context.close(path);
-  }
-
-  public String path() {
-    return context.getPath();
+  public void close() {
+    context.close();
   }
 
   public VersionConvertor_40_50 getVersionConvertor_40_50() {

@@ -122,7 +122,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     for (ResourceWrapper i : q.children("item")) { 
       renderTreeItem(status, gen, row.getSubRows(), q, i, hasFlags); 
     } 
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn); 
     if (doOpts) { 
       renderOptions(q, x); 
@@ -558,7 +558,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         renderLogicItem(status, gen, model.getRows(), q, i); 
       } 
     } 
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn); 
   } 
 

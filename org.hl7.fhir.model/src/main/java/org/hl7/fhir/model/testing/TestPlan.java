@@ -204,6 +204,17 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(ActorDefinition|ImplementationGuide|StructureDefinition|CapabilityStatement|Requirements)", "A reference to what is being tested.", 0, 1, reference);
@@ -468,6 +479,17 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(TestPlan)", "The test cases.", 0, 1, reference);
@@ -729,6 +751,17 @@ public class TestPlan extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("code", "string", "The code by which the mode is identified when passed to runner. This code is used to select which suite and tests are run, and which parameters and inputs are used. Codes are entirely at the descretion of the TestPlan, but typically 'advanced' or 'general' are the kind of codes that could be used.", 0, 1, code));
           children.add(new Property("description", "string", "Description of what this mode does / why it was defined. This should explain to a tester when they should use the mode.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -1156,6 +1189,20 @@ public class TestPlan extends CanonicalResource {
           children.add(new Property("name", "string", "Name for the parameter as defined by the runner definition.", 0, 1, name));
           children.add(new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity|Expression", "The value of the parameter. If the value is an Expression, the definition of the runner describes what kind of expressions are allowed and the features/capabilities that they can make use of.", 0, 1, value));
           children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this parameter will not be used.", 0, 1, mode));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
         }
 
         @Override
@@ -1842,6 +1889,65 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.testList != null) {
+            int i = 0;
+            for (Base v : this.testList) {
+              if (v != null) {
+                visitor.visit(this, "test", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.suiteList != null) {
+            int i = 0;
+            for (Base v : this.suiteList) {
+              if (v != null) {
+                visitor.visit(this, "suite", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.planList != null) {
+            int i = 0;
+            for (Base v : this.planList) {
+              if (v != null) {
+                visitor.visit(this, "plan", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites.", 0, 1, name);
@@ -2279,6 +2385,23 @@ public class TestPlan extends CanonicalResource {
           children.add(new Property("file", "string", "A file containing a resource used in the tests.", 0, 1, file));
           children.add(new Property("resource", "Resource", "An inline resource used in the tests. How exactly it is used depends on the definition of the runner.", 0, 1, resource));
           children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this resource will not be used.", 0, 1, mode));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.file != null) {
+            visitor.visit(this, "file", -1, this.file);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
         }
 
         @Override
@@ -2934,6 +3057,59 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.expectedList != null) {
+            int i = 0;
+            for (Base v : this.expectedList) {
+              if (v != null) {
+                visitor.visit(this, "expected", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.assertionList != null) {
+            int i = 0;
+            for (Base v : this.assertionList) {
+              if (v != null) {
+                visitor.visit(this, "assertion", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name by which this test is known by in the test system. The name must be unique in the suite.", 0, 1, name);
@@ -3432,6 +3608,26 @@ public class TestPlan extends CanonicalResource {
           children.add(new Property("expression", "Expression", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner.", 0, 1, expression));
           children.add(new Property("human", "string", "A human readable description of the assertion.", 0, 1, human));
           children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this assertion will not be used.", 0, 1, mode));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.focus != null) {
+            visitor.visit(this, "focus", -1, this.focus);
+          }
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.human != null) {
+            visitor.visit(this, "human", -1, this.human);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
         }
 
         @Override
@@ -4969,6 +5165,134 @@ public class TestPlan extends CanonicalResource {
         children.add(new Property("mode", "", "A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).", 0, java.lang.Integer.MAX_VALUE, modeList));
         children.add(new Property("parameter", "", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList));
         children.add(new Property("suite", "", "A suite of tests that all share a common set up, and can be executed as a group.", 0, java.lang.Integer.MAX_VALUE, suiteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.scopeList != null) {
+          int i = 0;
+          for (Base v : this.scopeList) {
+            if (v != null) {
+              visitor.visit(this, "scope", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dependencyList != null) {
+          int i = 0;
+          for (Base v : this.dependencyList) {
+            if (v != null) {
+              visitor.visit(this, "dependency", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.runner != null) {
+          visitor.visit(this, "runner", -1, this.runner);
+        }
+        if (this.modeList != null) {
+          int i = 0;
+          for (Base v : this.modeList) {
+            if (v != null) {
+              visitor.visit(this, "mode", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.suiteList != null) {
+          int i = 0;
+          for (Base v : this.suiteList) {
+            if (v != null) {
+              visitor.visit(this, "suite", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

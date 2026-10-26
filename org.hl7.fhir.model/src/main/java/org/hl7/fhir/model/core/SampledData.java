@@ -736,6 +736,41 @@ public class SampledData extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.origin != null) {
+          visitor.visit(this, "origin", -1, this.origin);
+        }
+        if (this.interval != null) {
+          visitor.visit(this, "interval", -1, this.interval);
+        }
+        if (this.intervalUnit != null) {
+          visitor.visit(this, "intervalUnit", -1, this.intervalUnit);
+        }
+        if (this.factor != null) {
+          visitor.visit(this, "factor", -1, this.factor);
+        }
+        if (this.lowerLimit != null) {
+          visitor.visit(this, "lowerLimit", -1, this.lowerLimit);
+        }
+        if (this.upperLimit != null) {
+          visitor.visit(this, "upperLimit", -1, this.upperLimit);
+        }
+        if (this.dimensions != null) {
+          visitor.visit(this, "dimensions", -1, this.dimensions);
+        }
+        if (this.codeMap != null) {
+          visitor.visit(this, "codeMap", -1, this.codeMap);
+        }
+        if (this.offsets != null) {
+          visitor.visit(this, "offsets", -1, this.offsets);
+        }
+        if (this.data != null) {
+          visitor.visit(this, "data", -1, this.data);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "origin":  return new Property("origin", "Quantity", "The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.", 0, 1, origin);

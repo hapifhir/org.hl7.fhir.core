@@ -58,9 +58,9 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript tgt = new org.hl7.fhir.r5.model.TestScript();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
-      // the advisor will get this ignored.
+      // copyDomainResource was told to leave this extension out
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
       org.hl7.fhir.r4.model.Extension se = ext.getExtensionByUrl("conformance");
@@ -126,7 +126,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript tgt = new org.hl7.fhir.r4.model.TestScript();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())

@@ -1,14 +1,7 @@
 package org.hl7.fhir.standalone.terminology.subsumption;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -17,18 +10,16 @@ import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.model.core.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.OperationOutcome.IssueType;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.CodeSystemHierarchy;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
 import org.hl7.fhir.services.terminology.OpIssueCode;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -60,8 +51,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  */
 public class TerminologySubsumptionTester extends ValueSetProcessBase {
 
-  public static final String PARENT_PROPERTY_URI = "http://hl7.org/fhir/concept-properties#parent";
-  public static final String CHILD_PROPERTY_URI = "http://hl7.org/fhir/concept-properties#child";
+  public static final String PARENT_PROPERTY_URI = CodeSystemHierarchy.PARENT_PROPERTY_URI;
+  public static final String CHILD_PROPERTY_URI = CodeSystemHierarchy.CHILD_PROPERTY_URI;
 
   public TerminologySubsumptionTester(BaseWorkerContext context) {
     this(context, new TerminologyOperationContext(context, ValidationOptions.defaults(), "subsumption"));
@@ -136,11 +127,11 @@ public class TerminologySubsumptionTester extends ValueSetProcessBase {
       return SubsumptionOutcome.EQUIVALENT;
     }
 
-    Map<String, Set<String>> parents = getParentMap(cs);
-    if (hasAncestor(parents, cdB.getCode(), cdA.getCode())) {
+    CodeSystemHierarchy hierarchy = CodeSystemHierarchy.forCodeSystem(cs, false);
+    if (hierarchy.hasAncestor(cdB.getCode(), cdA.getCode())) {
       return SubsumptionOutcome.SUBSUMES;
     }
-    if (hasAncestor(parents, cdA.getCode(), cdB.getCode())) {
+    if (hierarchy.hasAncestor(cdA.getCode(), cdB.getCode())) {
       return SubsumptionOutcome.SUBSUMEDBY;
     }
     return SubsumptionOutcome.NOTSUBSUMED;
@@ -185,73 +176,6 @@ public class TerminologySubsumptionTester extends ValueSetProcessBase {
       }
     }
     return null;
-  }
-
-  /**
-   * Build the code -> parent codes map for the code system, from both the nested concepts and
-   * the #parent / #child properties. Note that this is built per call; if subsumption testing
-   * ever gets hot, this is the thing to cache against the CodeSystem.
-   */
-  private Map<String, Set<String>> getParentMap(CodeSystem cs) {
-    Map<String, Set<String>> parents = new HashMap<>();
-    PropertyComponent pp = CodeSystemUtilities.getPropertyDefinition(cs, "parent");
-    PropertyComponent cp = CodeSystemUtilities.getPropertyDefinition(cs, "child");
-    processConcepts(parents, cs.getConceptList(), null, pp == null ? null : pp.getCode(), cp == null ? null : cp.getCode());
-    return parents;
-  }
-
-  private void processConcepts(Map<String, Set<String>> parents, List<ConceptDefinitionComponent> list, String parentCode, String parentProperty, String childProperty) {
-    for (ConceptDefinitionComponent cd : list) {
-      if (cd.hasCode()) {
-        if (parentCode != null) {
-          addParent(parents, cd.getCode(), parentCode);
-        }
-        for (ConceptPropertyComponent p : cd.getPropertyList()) {
-          if (!p.hasValue() || !p.getValue().isPrimitive()) {
-            continue;
-          }
-          String value = p.getValue().primitiveValue();
-          if (Utilities.noString(value)) {
-            continue;
-          }
-          if (p.getCode().equals(parentProperty)) {
-            addParent(parents, cd.getCode(), value);
-          } else if (p.getCode().equals(childProperty)) {
-            addParent(parents, value, cd.getCode());
-          }
-        }
-      }
-      processConcepts(parents, cd.getConceptList(), cd.getCode(), parentProperty, childProperty);
-    }
-  }
-
-  private void addParent(Map<String, Set<String>> parents, String code, String parent) {
-    if (!code.equals(parent)) { // a concept is not its own parent, whatever it says
-      parents.computeIfAbsent(code, c -> new HashSet<>()).add(parent);
-    }
-  }
-
-  /**
-   * Walk up from code looking for ancestor. The walk is cycle safe: code systems are not
-   * supposed to contain loops, but nothing stops them, and a stack overflow is a poor way to
-   * find out.
-   */
-  private boolean hasAncestor(Map<String, Set<String>> parents, String code, String ancestor) {
-    Set<String> visited = new HashSet<>();
-    Deque<String> queue = new ArrayDeque<>();
-    queue.add(code);
-    while (!queue.isEmpty()) {
-      String c = queue.poll();
-      if (visited.add(c)) {
-        for (String p : parents.getOrDefault(c, Collections.emptySet())) {
-          if (p.equals(ancestor)) {
-            return true;
-          }
-          queue.add(p);
-        }
-      }
-    }
-    return false;
   }
 
   private SubsumptionException failUnknownCode(CodeSystem cs, String code, String path) {

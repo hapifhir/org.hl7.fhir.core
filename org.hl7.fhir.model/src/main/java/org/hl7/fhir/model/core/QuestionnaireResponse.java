@@ -571,6 +571,44 @@ public class QuestionnaireResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.definitionList != null) {
+            int i = 0;
+            for (Base v : this.definitionList) {
+              if (v != null) {
+                visitor.visit(this, "definition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+          if (this.answerList != null) {
+            int i = 0;
+            for (Base v : this.answerList) {
+              if (v != null) {
+                visitor.visit(this, "answer", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.itemList != null) {
+            int i = 0;
+            for (Base v : this.itemList) {
+              if (v != null) {
+                visitor.visit(this, "item", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "The item from the Questionnaire that corresponds to this item in the QuestionnaireResponse resource.", 0, 1, linkId);
@@ -1093,6 +1131,23 @@ public class QuestionnaireResponse extends DomainResource {
           super.listChildren(children);
           children.add(new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "The answer (or one of the answers) provided by the respondent to the question.", 0, 1, value));
           children.add(new Property("item", "@QuestionnaireResponse.item", "Nested groups and/or questions found within this particular answer.", 0, java.lang.Integer.MAX_VALUE, itemList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.itemList != null) {
+            int i = 0;
+            for (Base v : this.itemList) {
+              if (v != null) {
+                visitor.visit(this, "item", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1884,6 +1939,68 @@ public class QuestionnaireResponse extends DomainResource {
         children.add(new Property("author", "Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization|Group)", "The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.", 0, 1, author));
         children.add(new Property("source", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The individual or device that answered the questions about the subject.", 0, 1, source));
         children.add(new Property("item", "", "A group or question item from the original questionnaire for which answers are provided.", 0, java.lang.Integer.MAX_VALUE, itemList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.questionnaire != null) {
+          visitor.visit(this, "questionnaire", -1, this.questionnaire);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.authored != null) {
+          visitor.visit(this, "authored", -1, this.authored);
+        }
+        if (this.author != null) {
+          visitor.visit(this, "author", -1, this.author);
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.itemList != null) {
+          int i = 0;
+          for (Base v : this.itemList) {
+            if (v != null) {
+              visitor.visit(this, "item", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

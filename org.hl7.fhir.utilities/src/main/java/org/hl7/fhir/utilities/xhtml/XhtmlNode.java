@@ -1182,6 +1182,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;
   }
 
+  public XhtmlNode clssList(String... names) {
+    for (String name : names) {
+      if (name != null) {
+        clss(name);
+      }
+    }
+    return this;
+  }
+
+
   public void styleCells(XhtmlNode x) {
     setUserData("cells", x);    
   }

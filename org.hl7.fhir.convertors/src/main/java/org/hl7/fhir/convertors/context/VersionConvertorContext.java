@@ -1,8 +1,5 @@
 package org.hl7.fhir.convertors.context;
 
-import java.util.ArrayList;
-import java.util.Stack;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,96 +33,69 @@ import org.slf4j.LoggerFactory;
  */
 
 /**
+ * Holds the version convertor for the conversion running on the current thread. Conversions nest (a Bundle converts
+ * its entries, for example), so the context counts how many are open and forgets the convertor when the outermost one
+ * closes.
+ *
  * @param <T>
  */
 public class VersionConvertorContext<T> {
 
   private final Logger logger = LoggerFactory.getLogger(VersionConvertorContext.class);
 
+  private static class State<T> {
+    private final T versionConvertor;
+    private int depth;
+
+    private State(T versionConvertor) {
+      this.versionConvertor = versionConvertor;
+    }
+  }
+
   /**
    * Each conversion thread instantiates it's own instance of a convertor, which is stored in a {@link ThreadLocal} for
-   * access.
+   * access, along with the number of conversions open on that thread.
    */
-  private final ThreadLocal<T> threadLocalVersionConverter = new ThreadLocal<>();
+  private final ThreadLocal<State<T>> threadLocalState = new ThreadLocal<>();
 
   /**
-   * We store the current state of the path as a {@link Stack<String>}. Each Fhir type is pushed onto the stack
-   * as we progress, and popped off once converted. The conversions are traversed in a depth first manner, which
-   * makes this possible.
-   */
-  private final ThreadLocal<Stack<String>> threadLocalPath = new ThreadLocal<>();
-
-  /**
-   * Initializes the conversion context. If a context already exists, this will just add the path to the current tracked
-   * path for the conversion context.
+   * Starts a conversion. If a conversion is already running on this thread, this one is nested inside it and the
+   * convertor already set is kept.
    *
    * @param versionConvertor Instance of the version convertor context to use.
-   * @param path             Current path (i.e. String label) for the given conversion.
    */
-  public void init(T versionConvertor, String path) {
+  public void init(T versionConvertor) {
     if (versionConvertor == null) {
       throw new FHIRException("Null convertor is not allowed!");
     }
-    if (path == null) {
-      throw new FHIRException("Null path type is not allowed!");
+    State<T> state = threadLocalState.get();
+    if (state == null) {
+      state = new State<>(versionConvertor);
+      threadLocalState.set(state);
     }
-
-    if (threadLocalVersionConverter.get() == null) {
-      threadLocalVersionConverter.set(versionConvertor);
-    }
-
-    Stack<String> stack = threadLocalPath.get();
-    if (stack == null) {
-      stack = new Stack<>();
-    }
-    stack.push(path);
-    // logger.debug("Pushing path <" + path + "> onto stack. Current path -> " + String.join(",", stack));
-    threadLocalPath.set(stack);
+    state.depth++;
   }
 
   /**
-   * Closes the current path. This removes the label from the current stored path.
-   * If there is no remaining path set after this path is removed, the context convertor and path are cleared from
-   * memory.
-   *
-   * @param path {@link String} label path to add.
+   * Ends the current conversion. When the outermost conversion ends, the convertor is cleared from memory.
    */
-  public void close(String path) {
-    Stack<String> stack = threadLocalPath.get();
-    if (stack == null) {
-      throw new FHIRException("Cannot close path <" + path + ">. Reached unstable state, no stack path available.");
+  public void close() {
+    State<T> state = threadLocalState.get();
+    if (state == null) {
+      throw new FHIRException("Cannot close conversion. Reached unstable state, no conversion is open.");
     }
-    String currentPath = stack.pop();
-//    logger.debug("Popping path <" + currentPath + "> off stack. Current path -> " + String.join(",", stack));
-    if (!path.equals(currentPath)) {
-      throw new FHIRException("Reached unstable state, current path doesn't match expected path.");
+    state.depth--;
+    if (state.depth == 0) {
+      threadLocalState.remove();
     }
-    if (stack.isEmpty()) {
-      threadLocalVersionConverter.remove();
-      threadLocalPath.remove();
-    } else {
-      threadLocalPath.set(stack);
-    }
-  }
-
-  /**
-   * Will return the {@link String} corresponding to the current conversion "path".
-   * ex: "Bundle.Appointment"
-   *
-   * @return {@link ArrayList<String>}
-   */
-  public String getPath() throws FHIRException {
-    if (threadLocalPath.get() == null) {
-      throw new FHIRException("No current path is set.");
-    }
-    return String.join(".", new ArrayList<>(threadLocalPath.get()));
   }
 
   /**
    * Returns the current instance of the version convertor.
    */
   public T getVersionConvertor() {
-    T result = threadLocalVersionConverter.get();
+    State<T> state = threadLocalState.get();
+    T result = state == null ? null : state.versionConvertor;
     if (result != null && logger != null) {
 //      logger.debug(result.toString());
     }

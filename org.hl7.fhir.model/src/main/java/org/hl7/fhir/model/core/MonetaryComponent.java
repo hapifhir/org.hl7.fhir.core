@@ -450,6 +450,23 @@ public class MonetaryComponent extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.factor != null) {
+          visitor.visit(this, "factor", -1, this.factor);
+        }
+        if (this.amount != null) {
+          visitor.visit(this, "amount", -1, this.amount);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "type":  return new Property("type", "code", "The type of monetary component, what the value is to be used for and how that should be applied in its context. e.g. A surchange would increase the cost, a deduction would reduce the cost.", 0, 1, type);

@@ -720,6 +720,59 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.isDerived != null) {
+            visitor.visit(this, "isDerived", -1, this.isDerived);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.preference != null) {
+            visitor.visit(this, "preference", -1, this.preference);
+          }
+          if (this.container != null) {
+            visitor.visit(this, "container", -1, this.container);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.retentionTime != null) {
+            visitor.visit(this, "retentionTime", -1, this.retentionTime);
+          }
+          if (this.singleUse != null) {
+            visitor.visit(this, "singleUse", -1, this.singleUse);
+          }
+          if (this.rejectionCriterionList != null) {
+            int i = 0;
+            for (Base v : this.rejectionCriterionList) {
+              if (v != null) {
+                visitor.visit(this, "rejectionCriterion", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.handlingList != null) {
+            int i = 0;
+            for (Base v : this.handlingList) {
+              if (v != null) {
+                visitor.visit(this, "handling", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.testingDestinationList != null) {
+            int i = 0;
+            for (Base v : this.testingDestinationList) {
+              if (v != null) {
+                visitor.visit(this, "testingDestination", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "isDerived":  return new Property("isDerived", "boolean", "Primary of secondary specimen.", 0, 1, isDerived);
@@ -1308,6 +1361,29 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.device != null) {
+            visitor.visit(this, "device[x]", -1, this.device);
+          }
+          if (this.minimumVolume != null) {
+            visitor.visit(this, "minimumVolume[x]", -1, this.minimumVolume);
+          }
+          if (this.additiveList != null) {
+            int i = 0;
+            for (Base v : this.additiveList) {
+              if (v != null) {
+                visitor.visit(this, "additive", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.preparation != null) {
+            visitor.visit(this, "preparation", -1, this.preparation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "device[x]":  return new Property("device[x]", "CodeableConcept|canonical(DeviceDefinition)", "The type of container used to contain this kind of specimen, expressed either as a code or as a reference to a DeviceDefinition that describes the container (including its material, type, cap, description and capacity).", 0, 1, device);
@@ -1615,6 +1691,17 @@ public class SpecimenDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableReference(SubstanceDefinition)", "The type of substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, type));
           children.add(new Property("quantity", "Quantity", "The quantity of the additive substance in the container; may be volume, dimensions, or other appropriate measurements, depending on the container and additive substance type.", 0, 1, quantity));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
         }
 
         @Override
@@ -1949,6 +2036,23 @@ public class SpecimenDefinition extends DomainResource {
           children.add(new Property("temperatureRange", "Range", "The temperature interval for this set of handling instructions.", 0, 1, temperatureRange));
           children.add(new Property("maxDuration", "Duration", "The maximum time interval of preservation of the specimen with these conditions.", 0, 1, maxDuration));
           children.add(new Property("instruction", "markdown", "Additional textual instructions for the preservation or transport of the specimen. For instance, 'Protect from light exposure'.", 0, 1, instruction));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.temperatureQualifier != null) {
+            visitor.visit(this, "temperatureQualifier", -1, this.temperatureQualifier);
+          }
+          if (this.temperatureRange != null) {
+            visitor.visit(this, "temperatureRange", -1, this.temperatureRange);
+          }
+          if (this.maxDuration != null) {
+            visitor.visit(this, "maxDuration", -1, this.maxDuration);
+          }
+          if (this.instruction != null) {
+            visitor.visit(this, "instruction", -1, this.instruction);
+          }
         }
 
         @Override
@@ -3802,6 +3906,149 @@ public class SpecimenDefinition extends DomainResource {
         children.add(new Property("timeAspect", "string", "Time aspect of specimen collection (duration or offset).", 0, 1, timeAspect));
         children.add(new Property("collection", "CodeableConcept", "The action to be performed for collecting the specimen.", 0, java.lang.Integer.MAX_VALUE, collectionList));
         children.add(new Property("typeTested", "", "Specimen conditioned in a container as expected by the testing laboratory.", 0, java.lang.Integer.MAX_VALUE, typeTestedList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.derivedFromCanonicalList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromCanonicalList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFromCanonical", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.derivedFromUriList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromUriList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFromUri", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.subjectReference != null) {
+          visitor.visit(this, "subjectReference", -1, this.subjectReference);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.typeCollected != null) {
+          visitor.visit(this, "typeCollected", -1, this.typeCollected);
+        }
+        if (this.patientPreparationList != null) {
+          int i = 0;
+          for (Base v : this.patientPreparationList) {
+            if (v != null) {
+              visitor.visit(this, "patientPreparation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.timeAspect != null) {
+          visitor.visit(this, "timeAspect", -1, this.timeAspect);
+        }
+        if (this.collectionList != null) {
+          int i = 0;
+          for (Base v : this.collectionList) {
+            if (v != null) {
+              visitor.visit(this, "collection", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.typeTestedList != null) {
+          int i = 0;
+          for (Base v : this.typeTestedList) {
+            if (v != null) {
+              visitor.visit(this, "typeTested", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

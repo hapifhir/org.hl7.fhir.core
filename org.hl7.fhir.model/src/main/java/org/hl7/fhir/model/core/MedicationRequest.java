@@ -899,6 +899,47 @@ public class MedicationRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.initialFill != null) {
+            visitor.visit(this, "initialFill", -1, this.initialFill);
+          }
+          if (this.dispenseInterval != null) {
+            visitor.visit(this, "dispenseInterval", -1, this.dispenseInterval);
+          }
+          if (this.validityPeriod != null) {
+            visitor.visit(this, "validityPeriod", -1, this.validityPeriod);
+          }
+          if (this.numberOfRepeatsAllowed != null) {
+            visitor.visit(this, "numberOfRepeatsAllowed", -1, this.numberOfRepeatsAllowed);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.expectedSupplyDuration != null) {
+            visitor.visit(this, "expectedSupplyDuration", -1, this.expectedSupplyDuration);
+          }
+          if (this.dispenser != null) {
+            visitor.visit(this, "dispenser", -1, this.dispenser);
+          }
+          if (this.dispenserInstructionList != null) {
+            int i = 0;
+            for (Base v : this.dispenserInstructionList) {
+              if (v != null) {
+                visitor.visit(this, "dispenserInstruction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.doseAdministrationAid != null) {
+            visitor.visit(this, "doseAdministrationAid", -1, this.doseAdministrationAid);
+          }
+          if (this.destination != null) {
+            visitor.visit(this, "destination", -1, this.destination);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "initialFill":  return new Property("initialFill", "", "Indicates the quantity or duration for the first dispense of the medication.", 0, 1, initialFill);
@@ -1317,6 +1358,17 @@ public class MedicationRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration", -1, this.duration);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "quantity":  return new Property("quantity", "Quantity", "The amount or quantity to provide as part of the first dispense.", 0, 1, quantity);
@@ -1592,6 +1644,17 @@ public class MedicationRequest extends DomainResource {
           super.listChildren(children);
           children.add(new Property("allowed[x]", "boolean|CodeableConcept", "True if the prescriber allows a different drug to be dispensed from what was prescribed.", 0, 1, allowed));
           children.add(new Property("reason", "CodeableConcept", "Indicates the reason for the substitution, or why substitution must or must not be performed.", 0, 1, reason));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.allowed != null) {
+            visitor.visit(this, "allowed[x]", -1, this.allowed);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
         }
 
         @Override
@@ -3396,6 +3459,173 @@ public class MedicationRequest extends DomainResource {
         children.add(new Property("dispenseRequest", "", "Indicates the specific details for the dispense or medication supply part of a medication request (also known as a Medication Prescription or Medication Order).  Note that this information is not always sent with the order.  There may be in some settings (e.g. hospitals) institutional or system support for completing the dispense details in the pharmacy department.", 0, 1, dispenseRequest));
         children.add(new Property("substitution", "", "Indicates whether or not substitution can or should be part of the dispense. In some cases, substitution must happen, in other cases substitution must not happen. This block explains the prescriber's intent. If nothing is specified substitution may be done.", 0, 1, substitution));
         children.add(new Property("eventHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this resource or fulfilling request or event resources that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the resource.", 0, java.lang.Integer.MAX_VALUE, eventHistoryList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.priorPrescription != null) {
+          visitor.visit(this, "priorPrescription", -1, this.priorPrescription);
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.statusChanged != null) {
+          visitor.visit(this, "statusChanged", -1, this.statusChanged);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.doNotPerform != null) {
+          visitor.visit(this, "doNotPerform", -1, this.doNotPerform);
+        }
+        if (this.medication != null) {
+          visitor.visit(this, "medication", -1, this.medication);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.informationSourceList != null) {
+          int i = 0;
+          for (Base v : this.informationSourceList) {
+            if (v != null) {
+              visitor.visit(this, "informationSource", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.supportingInformationList != null) {
+          int i = 0;
+          for (Base v : this.supportingInformationList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authoredOn != null) {
+          visitor.visit(this, "authoredOn", -1, this.authoredOn);
+        }
+        if (this.requester != null) {
+          visitor.visit(this, "requester", -1, this.requester);
+        }
+        if (this.isRecordOfRequest != null) {
+          visitor.visit(this, "isRecordOfRequest", -1, this.isRecordOfRequest);
+        }
+        if (this.performerType != null) {
+          visitor.visit(this, "performerType", -1, this.performerType);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.deviceList != null) {
+          int i = 0;
+          for (Base v : this.deviceList) {
+            if (v != null) {
+              visitor.visit(this, "device", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.courseOfTherapyType != null) {
+          visitor.visit(this, "courseOfTherapyType", -1, this.courseOfTherapyType);
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.effectiveTiming != null) {
+          visitor.visit(this, "effectiveTiming[x]", -1, this.effectiveTiming);
+        }
+        if (this.dosageInstruction != null) {
+          visitor.visit(this, "dosageInstruction", -1, this.dosageInstruction);
+        }
+        if (this.dispenseRequest != null) {
+          visitor.visit(this, "dispenseRequest", -1, this.dispenseRequest);
+        }
+        if (this.substitution != null) {
+          visitor.visit(this, "substitution", -1, this.substitution);
+        }
+        if (this.eventHistoryList != null) {
+          int i = 0;
+          for (Base v : this.eventHistoryList) {
+            if (v != null) {
+              visitor.visit(this, "eventHistory", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

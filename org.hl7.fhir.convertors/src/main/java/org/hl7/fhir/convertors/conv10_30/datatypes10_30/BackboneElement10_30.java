@@ -9,8 +9,10 @@ public class BackboneElement10_30 {
     org.hl7.fhir.dstu3.model.BackboneElement tgt,
     String ... extensionUrlsToIgnore) throws FHIRException {
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt, extensionUrlsToIgnore);
-    for (org.hl7.fhir.dstu2.model.Extension e : src.getModifierExtension()) {
-      tgt.addModifierExtension(Extension10_30.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.dstu2.model.Extension e : src.getModifierExtension()) {
+        tgt.addModifierExtension(Extension10_30.convertExtension(e));
+      }
     }
   }
 
@@ -19,8 +21,10 @@ public class BackboneElement10_30 {
     org.hl7.fhir.dstu2.model.BackboneElement tgt,
     String ... extensionUrlsToIgnore) throws FHIRException {
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt, extensionUrlsToIgnore);
-    for (org.hl7.fhir.dstu3.model.Extension e : src.getModifierExtension()) {
-      tgt.addModifierExtension(Extension10_30.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.dstu3.model.Extension e : src.getModifierExtension()) {
+        tgt.addModifierExtension(Extension10_30.convertExtension(e));
+      }
     }
   }
 }

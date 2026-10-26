@@ -75,6 +75,55 @@ public class Renderer  {
   }
 
 
+  /**
+   * The largest image (decoded size, in bytes) that will be inlined into the output as a data: url
+   */
+  protected static final int MAX_IMAGE_LENGTH = 2*1024*1024;
+
+  /**
+   * Whether images have to be inlined as data: urls, rather than written to files alongside the
+   * output: a narrative (VALID_RESOURCE) has to stand alone, and the host may ask for inline graphics
+   */
+  protected boolean mustInlineImages() {
+    return context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics();
+  }
+
+  /**
+   * base64Binary content may contain whitespace - it's not supposed to, but readers must ignore it, and 
+   * before R5 line-wrapped content was common. A data: url shouldn't contain whitespace, so use this 
+   * on base64 content from the resource being rendered before putting it into a data: url. Base64 that 
+   * the renderers encode themselves doesn't need it. 
+   * 
+   * Removes the same whitespace that Utilities.decodeBase64 skips (space, tab, LF, VT, FF, CR). Returns 
+   * the string as is if there's no whitespace in it  
+   */
+  public static String cleanBase64(String b64) {
+    if (b64 == null) {
+      return null;
+    }
+    int len = b64.length();
+    int i = 0;
+    while (i < len && !isBase64Whitespace(b64.charAt(i))) {
+      i++;
+    }
+    if (i == len) {
+      return b64;
+    }
+    StringBuilder b = new StringBuilder(len);
+    b.append(b64, 0, i);
+    for (; i < len; i++) {
+      char ch = b64.charAt(i);
+      if (!isBase64Whitespace(ch)) {
+        b.append(ch);
+      }
+    }
+    return b.toString();
+  }
+
+  private static boolean isBase64Whitespace(char ch) {
+    return ch == ' ' || (ch >= 0x09 && ch <= 0x0D);
+  }
+
   protected String formatPhrase(String theMessage, Object... theMessageArguments) {
     return context.formatPhrase(theMessage, theMessageArguments);
   }
