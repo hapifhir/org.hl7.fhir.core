@@ -103,7 +103,7 @@ See [Translation Status](https://fhir.github.io/translation-utils/) for current 
 
 ### Prerequisites
 
-This project uses [Java](https://www.java.com) (minumum version 11), [Apache Maven](http://maven.apache.org), and [Lombok](https://projectlombok.org/) to build. You can find detailed instructions on setting up this project in your IDE [here](https://hl7.github.io/docs/core/getting-started).
+This project uses [Java](https://www.java.com) (minumum version 17), [Apache Maven](http://maven.apache.org), and [Lombok](https://projectlombok.org/) to build. You can find detailed instructions on setting up this project in your IDE [here](https://hl7.github.io/docs/core/getting-started).
 
 ### Build Commands
 
@@ -169,12 +169,10 @@ mvn install -Dmaven.test.skip
 mvn compile spotbugs:check -pl org.hl7.fhir.r5
 ```
 
-To limit analysis to a single class, or to a package:
+To limit analysis to a single class,:
 ```
 mvn compile spotbugs:check -pl org.hl7.fhir.r5 -Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.FHIRLexer
-mvn compile spotbugs:check -pl org.hl7.fhir.r5 -Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.*
 ```
-_Use `.*` to include a package, or `.-` to include a package and its subpackages. `org.hl7.fhir.validation.cli` sets `onlyAnalyze` in its own `pom.xml`, so this option has no effect on that module._
 
 To browse results in the SpotBugs GUI, run an analysis first. The GUI shows the results of the most recent run, so only issues that passed that run's threshold appear:
 ```
