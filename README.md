@@ -169,9 +169,10 @@ mvn install -Dmaven.test.skip
 mvn compile spotbugs:check -pl org.hl7.fhir.r5
 ```
 
-To limit analysis to a single class,:
+To limit analysis to a single class or package:
 ```
 mvn compile spotbugs:check -pl org.hl7.fhir.r5 -Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.FHIRLexer
+mvn compile spotbugs:check -pl org.hl7.fhir.r5 "-Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.*"
 ```
 
 To browse results in the SpotBugs GUI, run an analysis first. The GUI shows the results of the most recent run, so only issues that passed that run's threshold appear:
