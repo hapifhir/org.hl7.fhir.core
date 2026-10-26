@@ -318,6 +318,16 @@ public abstract class ResourceRenderer extends DataRenderer {
       display = type.child("display");
       actual = type.child("reference");
       id = type.child("identifier");
+      if (actual == null || !actual.hasPrimitiveValue()) {
+        // target type not allowed by the element: use the target in the alternate-reference extension, keep the outer display
+        ResourceWrapper alternate = getAlternateReference(type);
+        if (alternate != null) {
+          actual = alternate.child("reference");
+          if (display == null) {
+            display = alternate.child("display");
+          }
+        }
+      }
     } else {
       actual = type;
     }
@@ -442,6 +452,16 @@ public abstract class ResourceRenderer extends DataRenderer {
       display = type.child("display");
       actual = type.child("reference");
       id = type.child("identifier");
+      if (actual == null || !actual.hasPrimitiveValue()) {
+        // target type not allowed by the element: use the target in the alternate-reference extension, keep the outer display
+        ResourceWrapper alternate = getAlternateReference(type);
+        if (alternate != null) {
+          actual = alternate.child("reference");
+          if (display == null) {
+            display = alternate.child("display");
+          }
+        }
+      }
     } else {
       actual = type;
     }
@@ -481,6 +501,19 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
  
+  /**
+   * The target of a reference whose type is not allowed by the element, see http://hl7.org/fhir/StructureDefinition/alternate-reference
+   */
+  private ResourceWrapper getAlternateReference(ResourceWrapper reference) {
+    for (ResourceWrapper ext : reference.extensions(ExtensionDefinitions.EXT_ALTERNATE_REFERENCE)) {
+      ResourceWrapper value = ext.child("value");
+      if (value != null && "Reference".equals(value.fhirType())) {
+        return value;
+      }
+    }
+    return null;
+  }
+
   private boolean isLocalReference(String url) {
     if (url == null) {
       return false;
