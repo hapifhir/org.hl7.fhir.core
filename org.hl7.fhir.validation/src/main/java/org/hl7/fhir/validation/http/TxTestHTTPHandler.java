@@ -50,6 +50,8 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   static final List<String> DEFAULT_MODES = Collections.unmodifiableList(Arrays.asList("general", "snomed", "omop", "mimetypes", "icd-11", "icf"));
 
   /** A version of the test cases: a version, or a package label such as 'current' - never a path. */
+  @SuppressWarnings("checkstyle:patternUsage")
+  //a fixed literal reviewed here; bounded, no nested quantifiers; the input is what is matched, not the pattern
   private static final Pattern TEST_VERSION = Pattern.compile("^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$");
 
   /** The parameters fixed by setup, which a test call in a session may not pass. */
@@ -197,7 +199,10 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     if (testVersion == null) {
       testVersion = "current";
     }
-    if (!TEST_VERSION.matcher(testVersion).matches()) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: Matcher.matches() on TEST_VERSION, which is reviewed above
+    boolean versionIsValid = TEST_VERSION.matcher(testVersion).matches();
+    if (!versionIsValid) {
       throw new RequestException(400, "Invalid 'test-version' '" + testVersion + "': it is a version of the test cases (e.g. 1.9.6, or current), not a path");
     }
     if (folder != null) {
