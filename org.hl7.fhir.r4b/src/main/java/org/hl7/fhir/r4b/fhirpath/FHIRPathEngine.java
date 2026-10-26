@@ -6093,9 +6093,7 @@ public class FHIRPathEngine {
       } else {
         s = sw.substring(i1);
       }
-      if (!Utilities.noString(s)) {
-        result.add(new StringType(s).noExtensions());
-      }
+      result.add(new StringType(s).noExtensions());
     }
     return result;
   }
