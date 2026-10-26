@@ -3348,7 +3348,7 @@
   {
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.82"
+      "code" : "2.83"
     },
     {
       "code" : "2.77"

@@ -157,6 +157,7 @@ import org.hl7.fhir.validation.instance.utils.ElementInfo;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
+import org.hl7.fhir.validation.instance.utils.ImplementationGuideProfileSelector;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
@@ -432,8 +433,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ValidationContext ctxt = (ValidationContext) appContext;
       StructureDefinition sd =profileUtilities.findProfileStr(url, null);
       if (sd == null) {
-        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_, url));
+        // an extension to conformsTo() in the FHIR specification: the url can name an implementation guide (by its url or
+        // package id, either optionally versioned), meaning that the rules the IG defines for the resource apply to it
+        ImplementationGuide ig = igProfileSelector().findImplementationGuide(url);
+        if (ig == null) {
+          throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_, url));
+        }
+        return conformsToImplementationGuide(ctxt, item, ig, url);
       }
+      return conformsToStructureDefinition(ctxt, item, sd, url);
+    }
+
+    /**
+     * The item conforms to the IG unless it fails one of the profiles that the IG makes apply to it (see
+     * ImplementationGuideProfileSelector) - so with no profiles, it conforms
+     */
+    private boolean conformsToImplementationGuide(ValidationContext ctxt, Base item, ImplementationGuide ig, String url) throws FHIRException {
+      Base target = item;
+      if (item instanceof Resource) {
+        try {
+          Element e = new ObjectConverter(context).convert((Resource) item);
+          setParents(e);
+          target = e;
+        } catch (IOException e1) {
+          throw new FHIRException(e1);
+        }
+      }
+      boolean ok = true;
+      for (StructureDefinition sd : igProfileSelector().profilesFor(ig, target, settings)) {
+        ok = conformsToStructureDefinition(ctxt, target, sd, url) && ok;
+      }
+      return ok;
+    }
+
+    private boolean conformsToStructureDefinition(ValidationContext ctxt, Base item, StructureDefinition sd, String url) throws FHIRException {
       InstanceValidator self = InstanceValidator.this;
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       ValidationMode mode = new ValidationMode(ValidationInformation.ValidationReason.Expression, ValidationInformation.ProfileSource.FromExpression);
@@ -568,6 +601,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidatorHostServices validatorServices;
   private boolean securityChecks;
   private ProfileUtilities profileUtilities;
+  private ImplementationGuideProfileSelector igProfileSelector;
+
+  /** works out which profiles an IG makes apply to a resource, for conformsTo() naming an IG; made when first needed */
+  private ImplementationGuideProfileSelector igProfileSelector() {
+    if (igProfileSelector == null) {
+      igProfileSelector = new ImplementationGuideProfileSelector(context, profileUtilities);
+    }
+    return igProfileSelector;
+  }
   private boolean crumbTrails;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   private QuestionnaireMode questionnaireMode;
