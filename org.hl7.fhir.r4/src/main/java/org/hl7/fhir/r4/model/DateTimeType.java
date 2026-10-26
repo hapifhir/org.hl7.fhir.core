@@ -162,9 +162,25 @@ public class DateTimeType extends BaseDateTimeType {
 
   @Override
   public DateTimeType copy() {
-    DateTimeType ret = new DateTimeType(getValueAsString());
+    DateTimeType ret = new DateTimeType(getValueAsStringToParse());
+    if (getPrecision() == TemporalPrecisionEnum.MINUTE) {
+      ret.setPrecision(TemporalPrecisionEnum.MINUTE);
+    }
     copyValues(ret);
     return ret;
+  }
+
+  /**
+   * A FHIRPath literal such as @2015-02-04T10:00 has minute precision, which a FHIR dateTime can't
+   * have, so the parser rejects its string. Add the seconds before it is parsed again.
+   */
+  private String getValueAsStringToParse() {
+    String value = getValueAsString();
+    if (value != null && getPrecision() == TemporalPrecisionEnum.MINUTE) {
+      int seconds = value.indexOf('T') + 6;
+      value = value.substring(0, seconds) + ":00" + value.substring(seconds);
+    }
+    return value;
   }
 
   /**

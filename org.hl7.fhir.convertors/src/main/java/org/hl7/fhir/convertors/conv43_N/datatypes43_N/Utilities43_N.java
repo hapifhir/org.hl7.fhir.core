@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv43_N.datatypes43_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_N;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.CodeType;
 import org.hl7.fhir.model.core.Enumerations.FHIRTypes;
 import org.hl7.fhir.model.core.Extension;
@@ -100,6 +101,46 @@ public class Utilities43_N {
     } else if (src.hasValue()) {
       tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FHIRAllTypes.fromCode(src.getValue()));
     }
+    return tgt;
+  }
+
+  /**
+   * R4B Immunization.protocolApplied.doseNumber[x] and seriesDoses[x] are positiveInt|string choices, but
+   * CodeableConcepts in R6. The value goes into CodeableConcept.text, and the primitive's id and extensions move
+   * to the CodeableConcept - including where the element has no value at all because it only carries extensions
+   * (e.g. a data absent reason). Where the source was a positiveInt, that is recorded, so that the original type
+   * can be restored converting back
+   */
+  public static org.hl7.fhir.model.core.CodeableConcept convertPositiveIntOrStringToCodeableConcept(org.hl7.fhir.r4b.model.DataType src) throws FHIRException {
+    if (src == null) {
+      return null;
+    }
+    org.hl7.fhir.model.core.CodeableConcept tgt = new org.hl7.fhir.model.core.CodeableConcept();
+    ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt);
+    if (src.primitiveValue() != null) {
+      tgt.setText(src.primitiveValue());
+    }
+    if (src instanceof org.hl7.fhir.r4b.model.PositiveIntType) {
+      tgt.addExtension(new Extension().setUrl(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE).setValue(new CodeType("positiveInt")));
+    }
+    return tgt;
+  }
+
+  /**
+   * The other half of convertPositiveIntOrStringToCodeableConcept: rebuild the R4B choice from the R6
+   * CodeableConcept's text, using the recorded original type where there is one, and defaulting to string where
+   * there isn't
+   */
+  public static org.hl7.fhir.r4b.model.DataType convertCodeableConceptToPositiveIntOrString(org.hl7.fhir.model.core.CodeableConcept src) throws FHIRException {
+    if (src == null) {
+      return null;
+    }
+    org.hl7.fhir.r4b.model.PrimitiveType<?> tgt = "positiveInt".equals(src.getExtensionString(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE)) ?
+        new org.hl7.fhir.r4b.model.PositiveIntType() : new org.hl7.fhir.r4b.model.StringType();
+    if (src.hasText()) {
+      tgt.setValueAsString(src.getText());
+    }
+    ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt, VersionConvertorConstants.EXT_ORIGINAL_DATATYPE);
     return tgt;
   }
 

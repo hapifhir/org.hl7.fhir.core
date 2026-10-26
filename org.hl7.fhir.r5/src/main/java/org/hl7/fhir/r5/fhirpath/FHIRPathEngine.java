@@ -704,13 +704,22 @@ public class FHIRPathEngine {
       return left.equalsUsingFhirPathRules(right) == Boolean.TRUE ? 0 : 1;
     }
 
+    // compareTimes needs both values in UTC: convert copies, because left and right can be values in the resource
     if (left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      left.setTimeZoneZulu(true);
+      left = utcCopy(left);
     }
     if (right.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      right.setTimeZoneZulu(true);
+      right = utcCopy(right);
     }
     return BaseDateTimeType.compareTimes(left, right, null);
+  }
+
+  private DateTimeType utcCopy(DateTimeType value) {
+    DateTimeType copy = new DateTimeType();
+    copy.setValue(value.getValue());
+    copy.setPrecision(value.getPrecision());
+    copy.setTimeZoneZulu(true);
+    return copy;
   }
 
   private Integer compareTimeElements(Base theL, Base theR, boolean theEquivalenceTest) {
@@ -2261,7 +2270,11 @@ public class FHIRPathEngine {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          String hex = s.substring(i, Math.min(i+4, s.length()-1));
+          if (hex.length() != 4 || !hex.chars().allMatch(c -> c < 128 && Character.digit(c, 16) >= 0)) {
+            throw lexer.error("Invalid FHIRPath unicode escape \\u"+hex);
+          }
+          int uc = Integer.parseInt(hex, 16);
           b.append(Character.toString(uc));
           i = i + 3;
           break;
@@ -2645,8 +2658,9 @@ public class FHIRPathEngine {
       // != is true. A logical model type with a value (e.g. CDA ST) counts as primitive here
       return false;
     } else if (left.hasType("date", "dateTime", "instant") && right.hasType("date", "dateTime", "instant")) { 
-      var leftDate = new DateTimeType(left.primitiveValue());
-      var rightDate = new DateTimeType(right.primitiveValue());
+      // a dateTime is used as it is: its string can have minute precision, which the parser rejects
+      var leftDate = left instanceof DateTimeType ? (DateTimeType) left : new DateTimeType(left.primitiveValue());
+      var rightDate = right instanceof DateTimeType ? (DateTimeType) right : new DateTimeType(right.primitiveValue());
       return datesEqual(leftDate, rightDate);
     } else if (left.hasType("decimal") || right.hasType("decimal")) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
@@ -3564,7 +3578,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new DecimalType(d1.divide(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new DecimalType(d1.divide(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         // just return nothing
       }
@@ -3615,7 +3631,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new IntegerType(d1.divInt(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new IntegerType(d1.divInt(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         // just return nothing
       }
@@ -3655,7 +3673,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new DecimalType(d1.modulo(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new DecimalType(d1.modulo(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         throw new PathEngineException(e);
       }
@@ -5774,6 +5794,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcTake(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    if (n1.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -6923,10 +6946,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcSkip(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    if (n1.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
-    for (int i = i1; i < focus.size(); i++) {
+    for (int i = Math.max(i1, 0); i < focus.size(); i++) {
       result.add(focus.get(i));
     } 
     return result;
@@ -7113,7 +7139,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     String s = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
-    if (Utilities.isInteger(s) && Integer.parseInt(s) < focus.size()) {
+    if (Utilities.isInteger(s) && Integer.parseInt(s) >= 0 && Integer.parseInt(s) < focus.size()) {
       result.add(focus.get(Integer.parseInt(s)));
     } 
     return result;

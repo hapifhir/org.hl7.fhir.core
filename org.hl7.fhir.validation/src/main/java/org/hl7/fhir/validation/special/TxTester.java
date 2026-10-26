@@ -33,6 +33,7 @@ import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.model.testing.TestReport;
 import org.hl7.fhir.model.testing.TestReport.TestReportActionResultValueSet;
@@ -170,6 +171,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
   // from one suite can be scheduled across many threads, so each thread caches the
   // suites it happens to run - that's fine, the caches are independent.
   private final ThreadLocal<Map<String, String>> suiteCaches = ThreadLocal.withInitial(HashMap::new);
+  // Every closure test names the same closure table, so two runs against one server at
+  // the same time would add to, and reset, each other's table and fail on the versions.
+  // Each run uses its own table instead: a fresh UUID, because servers may require closure
+  // table names to be UUIDs. The expected responses don't check the name.
+  private final String closureTableName = UUID.randomUUID().toString();
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
   // who ran the tests: the start of TestReport.tester, which goes on to list the modes
@@ -1259,7 +1265,25 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * stateful - each builds on the table the previous one left - so their suite is marked
    * "sequential" and the runners run it in order on one thread, after everything else.
    */
+  /** The closure table this run uses. */
+  String closureTableName() {
+    return closureTableName;
+  }
+
+  /**
+   * Point a $closure request at this run's own closure table: replace the table name it carries
+   * with the run's name. See closureTableName.
+   */
+  static void useRunClosureTable(Parameters p, String tableName) {
+    for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
+      if ("name".equals(pp.getName()) && pp.hasValue()) {
+        pp.setValue(new StringType(tableName));
+      }
+    }
+  }
+
   private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    useRunClosureTable(p, closureTableName);
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
