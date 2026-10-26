@@ -146,6 +146,44 @@ cp org.hl7.fhir.validation.cli/target/org.hl7.fhir.validation.cli*-SNAPSHOT.jar 
 
 _This will produce `./validator_cli.jar` in the project root directory._
 
+### SpotBugs
+
+This project uses the [SpotBugs Maven plugin](https://spotbugs.github.io/spotbugs-maven-plugin/) for static analysis. The analysis settings (`threshold` and `maxRank`) are set in the root `pom.xml`. SpotBugs analyzes compiled classes, so each command below includes `compile`.
+
+To run SpotBugs on the whole project and fail the build if any issues match the `pom.xml` configuration:
+```
+mvn compile spotbugs:check -Dspotbugs.failOnError=false
+mvn spotbugs:verify
+```
+_The first command analyzes every module and lists the issues found without failing. The second reads those results and fails the build if any module has issues. Running `spotbugs:check` on its own would stop at the first failing module, and every module depends on `org.hl7.fhir.utilities`, so `--fail-at-end` doesn't help._
+
+To produce a human-readable HTML report of all issues, regardless of the `pom.xml` threshold, without failing the build:
+```
+mvn compile spotbugs:spotbugs -Dspotbugs.htmlOutput=true -Dspotbugs.threshold=Low -Dspotbugs.maxRank=20
+```
+_This produces a report for each module in `<module>/target/reports/spotbugs.html`, and a combined report for the whole project in `org.hl7.fhir.report/target/reports/spotbugs.html`._
+
+To run SpotBugs on a single module, first install the project so the module's dependencies resolve from your local Maven repository:
+```
+mvn install -Dmaven.test.skip
+mvn compile spotbugs:check -pl org.hl7.fhir.r5
+```
+
+To limit analysis to a single class, or to a package:
+```
+mvn compile spotbugs:check -pl org.hl7.fhir.r5 -Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.FHIRLexer
+mvn compile spotbugs:check -pl org.hl7.fhir.r5 -Dspotbugs.onlyAnalyze=org.hl7.fhir.r5.fhirpath.*
+```
+_Use `.*` to include a package, or `.-` to include a package and its subpackages. `org.hl7.fhir.validation.cli` sets `onlyAnalyze` in its own `pom.xml`, so this option has no effect on that module._
+
+To browse results in the SpotBugs GUI, run an analysis first. The GUI shows the results of the most recent run, so only issues that passed that run's threshold appear:
+```
+mvn compile spotbugs:spotbugs -pl org.hl7.fhir.r5 -Dspotbugs.threshold=Low -Dspotbugs.maxRank=20
+mvn spotbugs:gui -pl org.hl7.fhir.r5
+```
+
+> **Note:** As with the build commands above, PowerShell users need to escape each `-D` with a backtick.
+
 ## Releases
 
 The built binary for the FHIR command-line validator is released through [GitHub releases][Link-GithubReleases] and can be downloaded directly [here][Link-GithubZipRelease]. For instructions on using this validator visit the [FHIR Validator Confluence page][Link-ConfluenceValidator].

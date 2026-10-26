@@ -56,6 +56,8 @@
         <opentelemetry.version>1.66.0</opentelemetry.version>
         <opentelemetry-testing.version>2.32.0-alpha</opentelemetry-testing.version>
         <opentelemetry-instrumentation-annotations.version>2.32.0</opentelemetry-instrumentation-annotations.version>
+        <spotbugs.threshold>High</spotbugs.threshold>
+        <spotbugs.maxRank>9</spotbugs.maxRank>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -743,8 +745,8 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.10.4.1</version>
                 <configuration>
-                    <threshold>High</threshold>
-                    <maxRank>9</maxRank>
+                    <threshold>${spotbugs.threshold}</threshold>
+                    <maxRank>${spotbugs.maxRank}</maxRank>
                     <maxHeap>8192</maxHeap>
                 </configuration>
             </plugin>
