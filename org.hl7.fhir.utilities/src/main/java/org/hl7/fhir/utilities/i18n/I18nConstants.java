@@ -1207,6 +1207,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_NOTALLOWED = "Validation_VAL_Profile_NotAllowed";
   public static final String VALIDATION_VAL_PROFILE_NOTSLICE = "Validation_VAL_Profile_NotSlice";
   public static final String VALIDATION_VAL_PROFILE_NOTYPE = "Validation_VAL_Profile_NoType";
+  public static final String VALIDATION_VAL_PROFILE_NO_VALUE = "VALIDATION_VAL_PROFILE_NO_VALUE";
   public static final String VALIDATION_VAL_PROFILE_OTHER_VERSION = "VALIDATION_VAL_PROFILE_OTHER_VERSION";
   public static final String VALIDATION_VAL_PROFILE_OUTOFORDER = "Validation_VAL_Profile_OutOfOrder";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST = "VALIDATION_VAL_PROFILE_SIGNPOST";

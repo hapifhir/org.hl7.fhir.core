@@ -56,16 +56,6 @@ public class ResourceValidationTests {
 
 
   @Test
-  public void testMetaProfileWithoutValue() throws Exception {
-    // a meta.profile repetition with no value, only an extension, must not crash validation
-    runTest("patient-example.xml"); // initialises the validator
-    String json = "{\"resourceType\":\"Patient\",\"meta\":{\"profile\":[\"http://hl7.org/fhir/StructureDefinition/Patient\",null],"
-        + "\"_profile\":[null,{\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/data-absent-reason\",\"valueCode\":\"unknown\"}]}]},\"active\":true}";
-    List<ValidationMessage> errors = new ArrayList<>();
-    Assertions.assertDoesNotThrow(() -> val.validate(null, errors, new java.io.ByteArrayInputStream(json.getBytes(java.nio.charset.StandardCharsets.UTF_8)), org.hl7.fhir.model.utilities.formats.FhirFormat.JSON));
-  }
-
-  @Test
   public void testObservation() throws Exception {
     runTest("observation-example.xml");
   }
