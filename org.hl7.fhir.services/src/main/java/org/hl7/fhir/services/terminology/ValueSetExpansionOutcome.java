@@ -59,7 +59,7 @@ public class ValueSetExpansionOutcome {
     if (!allErrors.contains(error)) {
       allErrors.add(error);
     }
-    if (errList == null || !errList.contains(error)) {
+    if (errList != null && !errList.contains(error)) {
       errList.add(error);
     }
   }
@@ -75,7 +75,7 @@ public class ValueSetExpansionOutcome {
     if (!allErrors.contains(error)) {
       allErrors.add(error);
     }
-    if (errList == null || !errList.contains(error)) {
+    if (errList != null && !errList.contains(error)) {
       errList.add(error);
     }
     this.msgId = msgId;
@@ -86,11 +86,13 @@ public class ValueSetExpansionOutcome {
     this.valueset = null;
     this.error = error;
     this.errorClass = errorClass;
-    this.allErrors.addAll(errList);
+    if (errList != null) {
+      this.allErrors.addAll(errList);
+    }
     if (!allErrors.contains(error)) {
       allErrors.add(error);
     }
-    if (!errList.contains(error)) {     
+    if (errList != null && !errList.contains(error)) {
       errList.add(error);
     }
     this.issues = issueList;
