@@ -45,7 +45,7 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.fml.StructureMap;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS;
 import org.hl7.fhir.model.fml.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.model.utilities.formats.IParser;
@@ -765,7 +765,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       boolean match = false;
       boolean ok = true;
       for (StructureMapStructureComponent t : map.getStructureList()) {
-        if (t.getMode() == StructureMapModelMode.SOURCE) {
+        if (t.getMode() == StructureMapModelModeVS.SOURCE) {
           match = match || t.getUrl().equals(url);
           ok = ok && t.getUrl().equals(url);
         }

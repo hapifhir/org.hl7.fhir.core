@@ -597,7 +597,7 @@
     }],
     "uri" : "http://hl7.org/fhir/concept-properties",
     "version" : [{
-      "value" : "4.0.1"
+      "value" : "6.0.1"
     }]
   },
   {
@@ -607,7 +607,7 @@
     }],
     "uri" : "http://hl7.org/fhir/concept-property-type",
     "version" : [{
-      "value" : "4.0.1"
+      "value" : "6.0.1"
     }]
   },
   {
@@ -3177,7 +3177,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/admit-source",
     "version" : [{
-      "value" : "1.0.1"
+      "value" : "2.0.0"
     }]
   },
   {
@@ -4107,7 +4107,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type",
     "version" : [{
-      "value" : "1.0.1"
+      "value" : "2.0.0"
     }]
   },
   {
@@ -4195,9 +4195,19 @@
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
       "valueCode" : "complete"
     }],
-    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-clinical-impact",
     "version" : [{
       "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "version" : [{
+      "value" : "2.0.0"
     }]
   },
   {
@@ -5284,7 +5294,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-type",
     "version" : [{
-      "value" : "3.0.1"
+      "value" : "4.0.0"
     }]
   },
   {
@@ -6423,6 +6433,16 @@
       "valueCode" : "complete"
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "version" : [{
+      "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-title-38-veteran-status-codes",
     "version" : [{
       "value" : "1.0.0"
     }]

@@ -359,10 +359,10 @@ public class FmlParser extends ParserBase {
         lexer.token("type");
         lexer.token("+");
         lexer.token("types");
-        group.makeElement("typeMode").markLocation(loc).setValue(StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES.toCode());
+        group.makeElement("typeMode").markLocation(loc).setValue(StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES.toCode());
       } else {
         lexer.token("types");
-        group.makeElement("typeMode").markLocation(loc).setValue(StructureMap.StructureMapGroupTypeMode.TYPES.toCode());
+        group.makeElement("typeMode").markLocation(loc).setValue(StructureMap.StructureMapGroupTypeModeVS.TYPES.toCode());
       }
     }
     group.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
@@ -385,10 +385,10 @@ public class FmlParser extends ParserBase {
         lexer.token("<");
         lexer.token("<");
         if (lexer.hasToken("types")) {
-          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapGroupTypeMode.TYPES.toCode());
+          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapGroupTypeModeVS.TYPES.toCode());
           lexer.token("types");
         } else {
-          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES.toCode());
+          group.makeElement("typeMode").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES.toCode());
           lexer.token("type");
           lexer.token("+");
         }
@@ -481,7 +481,7 @@ public class FmlParser extends ParserBase {
       if (isSimpleSyntax(rule)) {
         rule.forceElement("source").makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
         rule.forceElement("target").makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
-        rule.forceElement("target").makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
+        rule.forceElement("target").makeElement("transform").setValue(StructureMap.StructureMapTransformVS.CREATE.toCode());
         // no dependencies - imply what is to be done based on types
       }
       if (newFmt) {
@@ -536,7 +536,7 @@ public class FmlParser extends ParserBase {
     firstSource.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
     firstTarget.makeElement("element").setValue(elementName);
     firstTarget.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
-    firstTarget.makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
+    firstTarget.makeElement("transform").setValue(StructureMap.StructureMapTransformVS.CREATE.toCode());
     while (lexer.hasToken(",")) {
       lexer.token(",");
       elements.add(lexer.take());
@@ -570,7 +570,7 @@ public class FmlParser extends ParserBase {
       newTarget.makeElement("context").setValue(targetContext);
       newTarget.makeElement("element").setValue(element);
       newTarget.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
-      newTarget.makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
+      newTarget.makeElement("transform").setValue(StructureMap.StructureMapTransformVS.CREATE.toCode());
     }
   }
 
@@ -709,7 +709,7 @@ public class FmlParser extends ParserBase {
 
     if ("(".equals(name)) {
       // inline fluentpath expression
-      target.makeElement("transform").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapTransform.EVALUATE.toCode());
+      target.makeElement("transform").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapTransformVS.EVALUATE.toCode());
       loc = lexer.getCurrentLocation();
       ExpressionNode node = fpe.parse(lexer);
       target.setUserData(StructureMapTools.MAP_EXPRESSION, node);
@@ -718,7 +718,7 @@ public class FmlParser extends ParserBase {
     } else if (lexer.hasToken("(")) {
       target.makeElement("transform").markLocation(loc).setValue(name);
       lexer.token("(");
-      if (target.getChildValue("transform").equals(StructureMap.StructureMapTransform.EVALUATE.toCode())) {
+      if (target.getChildValue("transform").equals(StructureMap.StructureMapTransformVS.EVALUATE.toCode())) {
         parseParameter(target, lexer, true);
         lexer.token(",");
         loc = lexer.getCurrentLocation();
@@ -741,7 +741,7 @@ public class FmlParser extends ParserBase {
       // COPY transform and the batch identity-transform form would have no
       // target.context to anchor on.
       if (target.hasChild("context")) {
-        target.makeElement("transform").markLocation(loc).setValue(StructureMap.StructureMapTransform.COPY.toCode());
+        target.makeElement("transform").markLocation(loc).setValue(StructureMap.StructureMapTransformVS.COPY.toCode());
         if (!isConstant) {
           loc = lexer.getCurrentLocation();
           String id = name;
@@ -788,7 +788,7 @@ public class FmlParser extends ParserBase {
       parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
       String value = lexer.readConstant("??");
       boolean containedConceptMapReference = isTarget
-          && StructureMap.StructureMapTransform.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
+          && StructureMap.StructureMapTransformVS.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
           && ref.getChildren(name).size() == 2 && value.startsWith("#");
       parameter.makeElement(r5 || containedConceptMapReference ? "valueString" : "value").setValue(value);
     } else if (r5) {
@@ -803,7 +803,7 @@ public class FmlParser extends ParserBase {
       parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
       parameter.makeElement("value").setValue(readConstant(lexer.take(), lexer));
     }
-    if (isTarget && StructureMap.StructureMapTransform.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
+    if (isTarget && StructureMap.StructureMapTransformVS.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
         && ref.getChildren(name).size() == 2) {
       Element mapUri = parameter.getNamedChild("valueString");
       if (mapUri == null) {

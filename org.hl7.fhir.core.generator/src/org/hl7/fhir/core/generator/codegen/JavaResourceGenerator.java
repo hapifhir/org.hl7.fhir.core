@@ -1931,7 +1931,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"List() { \r\n");
 		  if (!e.unbounded()) {
         write(indent+"  List<"+listGenericType+"> list = new ArrayList<"+listGenericType+">();\r\n");
-        write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
+        write(indent+"  if (this."+getElementName(e.getName(), true)+" != null) {\r\n");
         write(indent+"    list.add("+getElementName(e.getName(), true)+");\r\n");
         write(indent+"  }\r\n");
         write(indent+"  return list;\r\n");

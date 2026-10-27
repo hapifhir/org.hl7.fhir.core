@@ -835,7 +835,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
     int count = 0;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
-      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+      if (inp.getMode() == StructureMap.StructureMapInputModeVS.SOURCE)
         count++;
     }
     if (count > 1)
