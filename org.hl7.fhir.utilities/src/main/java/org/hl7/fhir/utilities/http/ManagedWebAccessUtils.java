@@ -42,12 +42,24 @@ public class ManagedWebAccessUtils {
     return null;
   }
 
+  /**
+   * Whether {@code serverUrlString}'s origin covers {@code requestUrlString}.
+   * <p/>
+   * A URL that cannot be turned into a {@link URL} - malformed, or syntactically valid but not
+   * absolute, e.g. {@code "n/a"} - is treated as not matching. Both {@link URI#create} and
+   * {@link URI#toURL()} can raise {@link IllegalArgumentException} for such input, and since this
+   * is called for every configured server on every lookup, letting one unusable entry throw would
+   * take down all authenticated web access rather than just failing to match that entry.
+   */
   public static boolean urlMatchesOrigin(String requestUrlString, String serverUrlString) {
+    if (requestUrlString == null || serverUrlString == null) {
+      return false;
+    }
     try {
       URL requestUrl = URI.create(requestUrlString).toURL();
       URL serverUrl = URI.create(serverUrlString).toURL();
       return urlMatchesOrigin(requestUrl, serverUrl);
-    } catch (MalformedURLException e) {
+    } catch (MalformedURLException | IllegalArgumentException e) {
       return false;
     }
   }
@@ -103,11 +115,20 @@ public class ManagedWebAccessUtils {
     if (!scheme.equals("https")) {
       throw new IOException("Refusing to fetch from non-https URL: " + url);
     }
+    throwExceptionIfBlockedHost(url);
+  }
+
+  /**
+   * Rejects a URL with no host, or whose host is explicitly blocked (cloud metadata services).
+   * Unlike the scheme check, this applies whatever the authentication provider allows: no
+   * configured server has a legitimate reason to be one of these hosts.
+   */
+  public static void throwExceptionIfBlockedHost(java.net.URI url) throws IOException {
     String host = url.getHost();
     if (host == null || host.isEmpty()) {
       throw new IOException("Refusing to fetch from URL with no host: " + url);
     }
-    if (explicitlyBlockedHosts.contains(host)) {
+    if (explicitlyBlockedHosts.contains(host.toLowerCase(java.util.Locale.ROOT))) {
       throw new IOException("Refusing to fetch from explicitly blocked host: " + url);
     }
   }
