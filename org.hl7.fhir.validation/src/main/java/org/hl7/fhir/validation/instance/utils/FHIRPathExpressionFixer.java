@@ -1,13 +1,37 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.hl7.fhir.utilities.VersionUtilities;
 
 public class FHIRPathExpressionFixer {
 
+  private record FixKey(String expr, String key, String version) {}
+
+  // Invariants are checked on every element, and fixing an expression is a long run of string comparisons. There is
+  // one entry per constraint in the loaded definitions; the bound only guards against unbounded growth
+  private static final int MAX_FIXED = 50000;
+  private static final Map<FixKey, String> FIXED = new ConcurrentHashMap<>();
+
+  public static String fixExpr(String expr, String key, String version) {
+    if (expr == null) {
+      return fix(expr, key, version);
+    }
+    FixKey fixKey = new FixKey(expr, key, version);
+    String retVal = FIXED.get(fixKey);
+    if (retVal == null) {
+      retVal = fix(expr, key, version);
+      if (FIXED.size() < MAX_FIXED) {
+        FIXED.put(fixKey, retVal);
+      }
+    }
+    return retVal;
+  }
 
   @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
   //False positive: .matches() occurs in FHIRPath expression string literals, not Java calls
-  public static String fixExpr(String expr, String key, String version) {
+  private static String fix(String expr, String key, String version) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
 
     boolean r5 = VersionUtilities.isR5Ver(version);
