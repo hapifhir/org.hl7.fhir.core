@@ -6958,7 +6958,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (Element profile : profiles) {
         if (profile.primitiveValue() == null) {
           // a meta.profile item with no value (e.g. only extensions) names no profile to validate against
-          warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_NO_VALUE, i);
+          warning(errors, "2026-10-28", IssueType.STRUCTURE, profile.line(), profile.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_NO_VALUE, i);
           i++;
           continue;
         }
