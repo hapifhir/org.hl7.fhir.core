@@ -77,6 +77,8 @@ import org.hl7.fhir.services.validation.*;
 import org.hl7.fhir.services.validation.constants.*;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
+import org.hl7.fhir.services.utilities.ResourceDependencyWalker;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.IniFile;
@@ -952,6 +954,133 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * CRMI {@code $package}-style operation: given a root canonical artifact, build a
+   * {@code collection} Bundle containing that artifact plus every artifact it transitively
+   * references — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition,
+   * PlanDefinition, ConceptMap, NamingSystem, etc. Core FHIR resources
+   * ({@code hl7.fhir.r5.core}) are not included.
+   *
+   * <p>Dependency discovery uses {@link ResourceDependencyWalker}. When
+   * {@code expandValueSets} is true, each ValueSet entry is replaced by its expansion
+   * (best effort — an unexpandable ValueSet is included unexpanded).</p>
+   *
+   * <p>Not implemented (a subset of the full CRMI {@code $package} parameter surface):
+   * paging ({@code count}/{@code offset}), {@code contentEndpoint}/{@code terminologyEndpoint},
+   * {@code packageOnly}, {@code manifest}, and capability-based filtering.</p>
+   *
+   * @param rootUrl         canonical URL of the root artifact to package
+   * @param expandValueSets when true, ValueSet entries are expanded
+   * @param outputFormat    format of the returned bytes (JSON or XML)
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    return packageResource(rootUrl, expandValueSets, false, outputFormat);
+  }
+
+  /**
+   * Same as {@link #packageResource(String, boolean, FhirFormat)} but with the option to
+   * also follow rule-level canonical references inside {@link org.hl7.fhir.model.fml.StructureMap}
+   * resources — notably ConceptMap URLs used by {@code translate(...)} transforms. Defaults
+   * to {@code false} on the 3-arg overload because rule-walking can pull in a long tail of
+   * additional artifacts that some callers don't want.
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, boolean includeRuleReferences, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    Resource root = context.fetchResource(Resource.class, rootUrl);
+    if (root == null) {
+      throw new FHIRException("Resource not found: " + rootUrl);
+    }
+
+    final java.util.LinkedHashSet<Resource> collected = new java.util.LinkedHashSet<>();
+    final List<String> brokenLinks = new ArrayList<>();
+    ResourceDependencyWalker walker = new ResourceDependencyWalker(context,
+        new ResourceDependencyWalker.IResourceDependencyNotifier() {
+          @Override
+          public void seeResource(Resource resource, String summaryId) {
+            collected.add(resource);
+          }
+          @Override
+          public void brokenLink(String link) {
+            brokenLinks.add(link);
+          }
+        });
+    walker.setIncludeRuleReferences(includeRuleReferences);
+    walker.walk(root);
+
+    Bundle bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.COLLECTION);
+    bundle.getMeta().setLastUpdated(new Date());
+    for (Resource r : collected) {
+      Resource toAdd = r;
+      if (expandValueSets && r instanceof ValueSet) {
+        try {
+          ValueSetExpansionOutcome outcome =
+              context.expandVS((ValueSet) r, true, false);
+          if (outcome.isOk() && outcome.getValueset() != null) {
+            toAdd = outcome.getValueset();
+          }
+        } catch (Exception e) {
+          // best effort: keep the unexpanded ValueSet if expansion fails
+        }
+      }
+      BundleEntryComponent entry = bundle.addEntry();
+      entry.setResource(toAdd);
+      if (toAdd instanceof CanonicalResource && ((CanonicalResource) toAdd).hasUrl()) {
+        entry.setFullUrl(((CanonicalResource) toAdd).getUrl());
+      } else if (toAdd.hasId()) {
+        entry.setFullUrl(toAdd.fhirType() + "/" + toAdd.getIdPart());
+      }
+    }
+    for (String broken : brokenLinks) {
+      if (isLikelyNonCanonical(broken)) {
+        log.debug("$package: ignoring non-canonical reference " + broken);
+        continue;
+      }
+      log.warn("$package: could not resolve dependency " + broken);
+    }
+
+    return serialiseBundleForVersion(bundle, outputFormat);
+  }
+
+  /**
+   * Serialise {@code bundle} in the context's own FHIR version. The model classes are
+   * version-neutral; composing through the element model with the engine's context
+   * writes the version the caller loaded (R4, R4B, R5, ...), so every entry - including
+   * the StructureMaps reached by the dependency walker - round-trips through
+   * /loadResource without loss.
+   */
+  private byte[] serialiseBundleForVersion(Bundle bundle, FhirFormat outputFormat) throws FHIRException, IOException {
+    Element e = new ObjectConverter(context).convert(bundle);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  /**
+   * URLs the dependency walker sometimes hands us that aren't FHIR canonicals — terminology
+   * concept identifiers, OIDs, UUIDs, etc. These can show up inside e.g. {@code useContext.valueReference}
+   * and trigger spurious "broken link" warnings. Drop them quietly.
+   *
+   * <p>Walker reports the URL as {@code "<url> from <pkg.id>#<version>"}; we strip the suffix
+   * before testing.</p>
+   */
+  private static boolean isLikelyNonCanonical(String brokenLinkKey) {
+    if (brokenLinkKey == null) return true;
+    String url = brokenLinkKey;
+    int idx = url.indexOf(" from ");
+    if (idx > 0) url = url.substring(0, idx);
+    if (url.startsWith("urn:oid:")) return true;
+    if (url.startsWith("urn:uuid:")) return true;
+    if (url.startsWith("urn:ietf:")) return true;
+    if (url.startsWith("mailto:")) return true;
+    if (url.startsWith("tel:")) return true;
+    if (url.startsWith("http://snomed.info/id/")) return true;          // SNOMED concept IRI
+    if (url.startsWith("http://snomed.info/sct/") && url.length() > 22  // SNOMED edition / module URI (numeric)
+        && Character.isDigit(url.charAt(22))) return true;
+    return false;
   }
 
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {

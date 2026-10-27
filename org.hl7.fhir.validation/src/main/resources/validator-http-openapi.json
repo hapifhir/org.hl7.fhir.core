@@ -34,7 +34,7 @@
     },
     {
       "name": "Profile Operations",
-      "description": "StructureDefinition operations"
+      "description": "StructureDefinition and canonical artifact operations"
     },
     {
       "name": "Resource Operations",
@@ -1073,6 +1073,91 @@
           },
           "400": {
             "description": "Missing `map` parameter.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/package": {
+      "get": {
+        "tags": [
+          "Profile Operations"
+        ],
+        "summary": "Package an artifact with its dependencies",
+        "description": "The CRMI `$package` operation: returns a `collection` Bundle holding the artifact at `url` and everything it transitively depends on - profiles, value sets, code systems, libraries, concept maps and so on. Core FHIR resources are not included, and the root artifact must already be loaded (server start up `-ig`, or `/loadIG`). Only part of the CRMI parameter surface is implemented: paging (`count`/`offset`), `contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest` and capability-based filtering are not.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Canonical URL of the root artifact to package.",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "When `true`, each ValueSet entry is replaced by its expansion. Best effort - a ValueSet that cannot be expanded is included unexpanded.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeRules",
+            "in": "query",
+            "description": "When `true`, canonical references inside StructureMap rules are followed as well - notably the ConceptMaps used by `translate(...)`. Off by default because rule-walking can pull in a long tail of extra artifacts.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format of the returned Bundle. `Accept` is not consulted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ],
+              "default": "json"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A `collection` Bundle of the artifact and its dependencies.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `url` parameter.",
             "content": {
               "application/fhir+json": {
                 "schema": {

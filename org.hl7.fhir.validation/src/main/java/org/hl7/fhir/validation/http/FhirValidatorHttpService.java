@@ -63,6 +63,7 @@ public class FhirValidatorHttpService {
     server.createContext("/snapshot", new SnapshotHTTPHandler(context, this));
     server.createContext("/narrative", new NarrativeHTTPHandler(context, this));
     server.createContext("/transform", new TransformHTTPHandler(context, this));
+    server.createContext("/package", new PackageHTTPHandler(context, this));
     server.createContext("/version", new VersionHTTPHandler(context, this));
     server.createContext("/compile", new CompileHTTPHandler(context, this));
     server.createContext("/openapi.json", new OpenApiHTTPHandler());
