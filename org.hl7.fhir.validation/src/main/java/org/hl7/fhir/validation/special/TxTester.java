@@ -914,6 +914,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
   // not run (disabled, or stopped by a mode, feature or version gate) are not counted as passes
   // or failures, just as a whole run doesn't count them; a test run more than once counts once,
   // with its last result.
+  //
+  // The caller's side of the bargain: startRun() once, before any executeTest() that should be
+  // counted; executeTest() as often as wanted, from as many threads as wanted; finishRun() once,
+  // after every executeTest() has returned. A test still running when finishRun() takes its copy
+  // of the results isn't in the reports. Calling executeTest() without startRun() is fine too -
+  // the JUnit runners do - but then nothing is recorded, and finishRun() can't be used.
 
   // Set once, by startRun(), and never reassigned. Null when the caller runs tests through
   // executeTest() without bracketing them (the JUnit runners do), in which case nothing is recorded.

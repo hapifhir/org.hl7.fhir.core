@@ -45,6 +45,15 @@ import java.util.regex.Pattern;
  * A {@code GET /txTest} with {@code server} and no {@code session} still works as it used to: it
  * makes an implicit run for that server on first use, with the current test cases. That run can
  * be ended with {@code /txTest/teardown?server=...}.
+ *
+ * <p>These endpoints are for a build pipeline, and are off unless the server was started with
+ * {@code -txTests}: they connect to the server the caller names, and write output (including to a
+ * folder the caller names) in this machine's temporary directory. When they are off, every
+ * request to them is a 404.
+ *
+ * <p>What a client must do: own its session - setup, then its tests, then one teardown, after the
+ * response to its last test has come back. Teardown ends the session first, so a test call made
+ * after it is a 404, and a test still running when it happens may be missing from the reports.
  */
 class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
@@ -115,6 +124,9 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     String path = exchange.getRequestURI().getPath();
     String method = exchange.getRequestMethod();
     try {
+      if (!fhirValidatorHttpService.isTxTestsEnabled()) {
+        throw new RequestException(404, "The terminology test endpoints are not enabled on this server (start it with -txTests to turn them on)");
+      }
       if (path.endsWith("/setup")) {
         requireMethod(method, "POST");
         setup(exchange);

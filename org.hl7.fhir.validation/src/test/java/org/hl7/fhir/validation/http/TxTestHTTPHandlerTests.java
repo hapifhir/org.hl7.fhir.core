@@ -28,6 +28,7 @@ class TxTestHTTPHandlerTests {
 
   private static final int PORT = 18093;
   private static final int NETWORK_PORT = 18094;
+  private static final int DISABLED_PORT = 18095;
   private FhirValidatorHttpService service;
   private final HttpClient client = HttpClient.newHttpClient();
 
@@ -37,7 +38,7 @@ class TxTestHTTPHandlerTests {
     SimpleWorkerContext context = mock(SimpleWorkerContext.class);
     when(context.getModelContext()).thenReturn(ModelContext.fullCoreContext());
     when(engine.getContext()).thenReturn(context);
-    service = new FhirValidatorHttpService(engine, true, PORT);
+    service = new FhirValidatorHttpService(engine, true, true, PORT);
     service.startServer();
   }
 
@@ -92,7 +93,7 @@ class TxTestHTTPHandlerTests {
   void networkModeRefusesUnconfiguredServer(String method, String path, String body) throws Exception {
     // no fhir-settings file names this server, so a network-reachable service must refuse it
     // before loading any tests or connecting to it
-    FhirValidatorHttpService network = new FhirValidatorHttpService(service.getValidationEngine(), false, NETWORK_PORT);
+    FhirValidatorHttpService network = new FhirValidatorHttpService(service.getValidationEngine(), false, true, NETWORK_PORT);
     network.startServer();
     try {
       HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + NETWORK_PORT + path));
@@ -102,6 +103,27 @@ class TxTestHTTPHandlerTests {
       assertTrue(res.body().contains("not configured in fhir-settings"), res.body());
     } finally {
       network.stop();
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource(delimiter = '|', quoteCharacter = '`', value = {
+    "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\"}",
+    "GET|/txTest?suite=a&test=b&session=x|",
+    "POST|/txTest/teardown?session=x|",
+  })
+  void offUnlessEnabled(String method, String path, String body) throws Exception {
+    // the three-argument constructor leaves the tx test endpoints off, as the command line does without -txTests
+    FhirValidatorHttpService disabled = new FhirValidatorHttpService(service.getValidationEngine(), true, DISABLED_PORT);
+    disabled.startServer();
+    try {
+      HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://localhost:" + DISABLED_PORT + path));
+      b.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+      HttpResponse<String> res = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
+      assertEquals(404, res.statusCode(), res.body());
+      assertTrue(res.body().contains("-txTests"), res.body());
+    } finally {
+      disabled.stop();
     }
   }
 

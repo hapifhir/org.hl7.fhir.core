@@ -33,6 +33,7 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | --- | --- |
 | `<port>` | Port to listen on. Must be 1-65535; anything else exits with an error. |
 | `-allowNetworkAccess` | Bind to all interfaces instead of loopback only. See [Security](#security). |
+| `-txTests` | Turn on the [terminology ecosystem test](#terminology-ecosystem-tests-txtest) endpoints (`/txTest`). Off by default. |
 | `-version` | FHIR version to load (`4.0`, `4.3`, `5.0`, ...). If not given, it is inferred. |
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
 | `-tx` | Terminology server to use; `n/a` for no terminology server. Nominating a server turns the terminology ecosystem off unless `-ecosystem` is given too. |
@@ -66,6 +67,14 @@ authentication, no authorization, no TLS and no rate limiting, and several endpo
 from the server's file system (`/loadIG` with a path) or make outbound calls (`/loadIG` with a
 package or URL, `/txTest`). If you expose the port beyond localhost, securing it is entirely
 your responsibility.
+
+`/txTest` is off unless the server is started with `-txTests`. It exists to run the terminology
+ecosystem tests from a build pipeline: it connects to the terminology server the caller names, and
+writes the expected and actual output of every test, and the reports, to a folder under the
+server's temporary directory - a folder the caller can also name. That is what a pipeline wants,
+and not something a public server should offer, so don't combine `-txTests` with
+`-allowNetworkAccess` unless the network is one you control. When the server is not bound to
+loopback, `/txTest` will only test servers configured in `fhir-settings.json` (a `403` otherwise).
 
 The server is intended for a closed environment - a build pipeline, or a developer's machine. If
 it has to be reachable from anywhere else, don't expose it directly: put it behind nginx (or an
@@ -279,7 +288,8 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 
 These run the terminology ecosystem tests (the `hl7.fhir.uv.tx-ecosystem` package) against a
 terminology server one test at a time, so that your own test framework can report a result per
-test. A run has three steps.
+test. They are for a build pipeline, and are off unless the server was started with `-txTests`;
+when they are off, every `/txTest` request is a `404`. A run has three steps.
 
 **`POST /txTest/setup`** starts a run. The body is a JSON object with the things that can't change
 during it:
@@ -332,6 +342,19 @@ The older form of `GET /txTest`, with `server` in place of `session` (and option
 naming a file in the test package, and `folder`), still works: the first call for a server makes
 an implicit run for it with the `current` test cases, and `POST /txTest/teardown?server=...` ends
 it. Runs that are never torn down last for the life of the process.
+
+What the client is expected to do:
+
+* **Own the session.** Whoever calls setup makes the test calls and the one teardown. Sessions
+  aren't protected from each other: anyone who has the session id can use it or end it.
+* **Tear down once, after the last test has returned.** Teardown ends the session before it
+  writes the reports, so a test call for the session after that is a `404`, and so is a second
+  teardown. Results are copied once, at teardown: a test still running then (possible only if a
+  client sends a test and the teardown concurrently) is not in the reports.
+* **Tear down every session you start.** A session that isn't torn down keeps its tester, and its
+  `test.log` capture, until the process ends.
+* The server handles requests one at a time, so sending test calls in parallel doesn't make a run
+  faster; it is allowed, though, and each test's result is recorded safely.
 
 Run one session at a time. Sessions are kept apart in memory, but not on disk: each run's
 `test.log` captures everything the process logs (including other sessions) until any run is torn

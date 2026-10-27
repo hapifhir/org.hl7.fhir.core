@@ -1154,7 +1154,7 @@
           "Testing"
         ],
         "summary": "Start a run of the terminology ecosystem tests against a terminology server",
-        "description": "Starts a session for running the terminology ecosystem tests (`hl7.fhir.uv.tx-ecosystem`) one at a time with `GET /txTest`. The body holds the things that can't change during a run. The server is connected to now, and its FHIR version (from `$versions`, or `/metadata`) decides the FHIR version the tests are run in - it is not a setting. End the run with `POST /txTest/teardown`, which returns the reports. Sessions that are never torn down last for the life of the process.",
+        "description": "Starts a session for running the terminology ecosystem tests (`hl7.fhir.uv.tx-ecosystem`) one at a time with `GET /txTest`. The body holds the things that can't change during a run. The server is connected to now, and its FHIR version (from `$versions`, or `/metadata`) decides the FHIR version the tests are run in - it is not a setting. End the run with `POST /txTest/teardown`, which returns the reports, once the last test has returned. Sessions that are never torn down last for the life of the process.\n\nOnly available when the server was started with `-txTests` (a `404` otherwise). When the server is not bound to loopback, only servers configured in `fhir-settings.json` can be tested (a `403` otherwise).",
         "requestBody": {
           "required": true,
           "content": {
@@ -1248,6 +1248,26 @@
               }
             }
           },
+          "403": {
+            "description": "The server is not bound to loopback, and the terminology server is not configured in fhir-settings.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The terminology test endpoints are not enabled (`-txTests`).",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
           "405": {
             "$ref": "#/components/responses/MethodNotAllowed"
           },
@@ -1270,7 +1290,7 @@
           "Testing"
         ],
         "summary": "Run one terminology ecosystem test case",
-        "description": "Runs one test in a session started with `POST /txTest/setup`. The test cases and the suite's setup resources are loaded once, and reused. A test that doesn't run - it is disabled, or gated on a mode that wasn't requested, a feature the server doesn't declare, or a FHIR version the server isn't - returns an error saying why, but is not counted in the run's results.\n\nThe older form, with `server` (and optionally `externals`, naming a file in the test package, and `folder`) in place of `session`, still works: it makes an implicit session for that server, with the `current` test cases, on its first call. That session can be ended with `POST /txTest/teardown?server=...`.",
+        "description": "Runs one test in a session started with `POST /txTest/setup`. The test cases and the suite's setup resources are loaded once, and reused. A test that doesn't run - it is disabled, or gated on a mode that wasn't requested, a feature the server doesn't declare, or a FHIR version the server isn't - returns an error saying why, but is not counted in the run's results.\n\nThe older form, with `server` (and optionally `externals`, naming a file in the test package, and `folder`) in place of `session`, still works: it makes an implicit session for that server, with the `current` test cases, on its first call. That session can be ended with `POST /txTest/teardown?server=...`.\n\nOnly available when the server was started with `-txTests` (a `404` otherwise). When the server is not bound to loopback, only servers configured in `fhir-settings.json` can be tested (a `403` otherwise).",
         "parameters": [
           {
             "name": "session",
@@ -1350,8 +1370,18 @@
               }
             }
           },
+          "403": {
+            "description": "Legacy form only: the server is not bound to loopback, and the terminology server is not configured in fhir-settings.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
           "404": {
-            "description": "The session, suite or test is not known.",
+            "description": "The session, suite or test is not known, or the terminology test endpoints are not enabled (`-txTests`).",
             "content": {
               "application/fhir+json": {
                 "schema": {
@@ -1382,7 +1412,7 @@
           "Testing"
         ],
         "summary": "End a run, and get its reports",
-        "description": "Ends the session, and returns the two reports a command line run writes: `test-results.json` and `report.json` (a FHIR `TestReport`, with a score and an overall pass/fail). Both are also written to the run's output folder. Tests that did not run are not counted; a test run more than once counts once, with its last result.",
+        "description": "Ends the session, and returns the two reports a command line run writes: `test-results.json` and `report.json` (a FHIR `TestReport`, with a score and an overall pass/fail). Both are also written to the run's output folder. Tests that did not run are not counted; a test run more than once counts once, with its last result. The session ends first: a later test call or teardown for it is a `404`, and a test still running at teardown is not in the reports.\n\nOnly available when the server was started with `-txTests` (a `404` otherwise).",
         "parameters": [
           {
             "name": "session",
@@ -1440,7 +1470,7 @@
             }
           },
           "404": {
-            "description": "The session is not known (or has already been torn down).",
+            "description": "The session is not known (or has already been torn down), or the terminology test endpoints are not enabled (`-txTests`).",
             "content": {
               "application/fhir+json": {
                 "schema": {
