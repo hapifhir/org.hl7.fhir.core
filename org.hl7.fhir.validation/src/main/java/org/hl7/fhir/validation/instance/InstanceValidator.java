@@ -3279,8 +3279,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
       else if (elementValue.length() == 0)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
-      else if (Utilities.isAllWhitespace(elementValue))
-        warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
+      else if (Utilities.isAllWhitespace(elementValue)) {
+        if (e.getFormat() == FhirFormat.XML || e.getFormat() == FhirFormat.TURTLE) {
+          warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS_XML);
+        } else {
+          hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS_OTHER);
+        }
+      }
       if (context.hasBinding() && context.getBinding().getStrength() == BindingStrength.REQUIRED) {
         // if there's a x-version extension, what we say is different
         // todo: should this be a setting?

@@ -155,8 +155,8 @@ public class VocabTests {
       outcome.getValueset().getExpansion().setTimestamp(null);
       String expected = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
       String actual = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
-      String expectedFileName = CompareUtilities.tempFile("vocab", test.getId() + ".expected.html");
-      String actualFileName = CompareUtilities.tempFile("vocab", test.getId() + ".actual.html");
+      String expectedFileName = CompareUtilities.tempFile("vocab", test.getId() + "-expected.xml");
+      String actualFileName = CompareUtilities.tempFile("vocab", test.getId() + "-target.xml");
       FileUtilities.stringToFile(expected, expectedFileName);
       FileUtilities.stringToFile(actual, actualFileName);
       String msg = new CompareUtilities().checkXMLIsSame(test.id, expectedFileName, actualFileName);

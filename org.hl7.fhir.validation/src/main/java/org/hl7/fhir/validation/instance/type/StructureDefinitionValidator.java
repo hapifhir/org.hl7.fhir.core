@@ -857,13 +857,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (snapshot && element.hasChild("slicing", false) && isTypeSlicing(element.getNamedChild("slicing", false)) && typeCharacteristics.size() > 1) {
       // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false), "can-bind", "Binding", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false), "has-length", "MaxLength", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false), "has-range", "MinValue", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false), "has-range", "MaxValue", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension", !snapshot);
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size", !snapshot);
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false), "can-bind", "Binding");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false), "has-length", "MaxLength");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false), "has-range", "MinValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false), "has-range", "MaxValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size");
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
@@ -1621,7 +1621,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return false;
   }
 
-  private void checkTypeSlicerConstraint(List<ValidationMessage> errors, NodeStack stack, String path, Map<String, Set<String>> typeCharacteristics, boolean present, String characteristic, String name, boolean isDiff) {
+  private void checkTypeSlicerConstraint(List<ValidationMessage> errors, NodeStack stack, String path, Map<String, Set<String>> typeCharacteristics, boolean present, String characteristic, String name) {
     if (present) {
       List<String> without = new ArrayList<>();
       for (Map.Entry<String, Set<String>> e : typeCharacteristics.entrySet()) {
@@ -1630,11 +1630,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       if (!without.isEmpty() && without.size() < typeCharacteristics.size()) {
-        if (isDiff) {
-          warning(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
-        } else {
-          hint(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
-        }
+        hint(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
       }
     }
   }

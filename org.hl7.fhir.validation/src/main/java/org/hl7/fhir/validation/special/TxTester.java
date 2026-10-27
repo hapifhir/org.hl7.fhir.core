@@ -871,11 +871,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
       return NOT_RUN_VERSION;
     }
     List<Resource> setup = loadSetupResources(loader, suite);
-    TestReportTestComponent tr = run != null ? run.reportTest(suite, test) : getTestReportTest(suite, test);
+    TestRun r = run;
+    TestReportTestComponent tr = r != null ? r.reportTest(suite, test) : getTestReportTest(suite, test);
 
     ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr, label);
-    if (run != null) {
-      run.record(suite, test, modes, ri.message);
+    if (r != null) {
+      r.record(suite, test, modes, ri.message);
     }
     return ri.message;
   }
@@ -914,7 +915,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
   // or failures, just as a whole run doesn't count them; a test run more than once counts once,
   // with its last result.
 
-  private TestRun run;
+  // Set once, by startRun(), and never reassigned. Null when the caller runs tests through
+  // executeTest() without bracketing them (the JUnit runners do), in which case nothing is recorded.
+  // Volatile so a thread calling executeTest() sees the run without relying on how the tester was
+  // handed to it.
+  private volatile TestRun run;
 
   private class TestRun {
     private final String date = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone();
@@ -951,11 +956,35 @@ public class TxTester implements ITerminologyRequestIdProvider {
         reportTest(suite, test);
       }
     }
+
+    /** One locked copy of everything finishRun() reports, so the reports are built from no shared state. */
+    private synchronized Snapshot snapshot() {
+      Map<String, Map<String, String>> r = new LinkedHashMap<>();
+      for (Map.Entry<String, Map<String, String>> e : results.entrySet()) {
+        r.put(e.getKey(), new LinkedHashMap<>(e.getValue()));
+      }
+      return new Snapshot(date, new TreeSet<>(modes), r, new TreeSet<>(notRun));
+    }
+  }
+
+  private static class Snapshot {
+    private final String date;
+    private final Set<String> modes;
+    private final Map<String, Map<String, String>> results;
+    private final Set<String> notRun;
+
+    private Snapshot(String date, Set<String> modes, Map<String, Map<String, String>> results, Set<String> notRun) {
+      this.date = date;
+      this.modes = modes;
+      this.results = results;
+      this.notRun = notRun;
+    }
   }
 
   private void recordNotRun(JsonObject suite, JsonObject test, Set<String> modes) {
-    if (run != null) {
-      run.recordNotRun(suite, test, modes);
+    TestRun r = run;
+    if (r != null) {
+      r.recordNotRun(suite, test, modes);
     }
   }
 
@@ -992,33 +1021,33 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * getTestReport().
    */
   public JsonObject finishRun() throws IOException, URISyntaxException {
-    if (run == null) {
+    TestRun r = run;
+    if (r == null) {
       throw new FHIRException("No run has been started");
     }
     try {
+      Snapshot s = r.snapshot();
       JsonObject json = new JsonObject();
       int total = 0;
       List<String> failed = new ArrayList<>();
-      synchronized (run) {
-        json.add("date", run.date);
-        for (Map.Entry<String, Map<String, String>> se : run.results.entrySet()) {
-          JsonObject so = new JsonObject();
-          json.forceArray("suites").add(so);
-          so.add("name", se.getKey());
-          for (Map.Entry<String, String> te : se.getValue().entrySet()) {
-            JsonObject to = new JsonObject();
-            so.forceArray("tests").add(to);
-            to.add("name", te.getKey());
-            to.add("status", te.getValue() == null ? "pass" : "fail");
-            if (te.getValue() != null) {
-              to.add("message", te.getValue());
-              failed.add(se.getKey() + "/" + te.getKey());
-            }
-            total++;
+      json.add("date", s.date);
+      for (Map.Entry<String, Map<String, String>> se : s.results.entrySet()) {
+        JsonObject so = new JsonObject();
+        json.forceArray("suites").add(so);
+        so.add("name", se.getKey());
+        for (Map.Entry<String, String> te : se.getValue().entrySet()) {
+          JsonObject to = new JsonObject();
+          so.forceArray("tests").add(to);
+          to.add("name", te.getKey());
+          to.add("status", te.getValue() == null ? "pass" : "fail");
+          if (te.getValue() != null) {
+            to.add("message", te.getValue());
+            failed.add(se.getKey() + "/" + te.getKey());
           }
+          total++;
         }
       }
-      describeRunner(run.modes);
+      describeRunner(s.modes);
       completeReport(total, failed.size());
 
       String outputDir = outputRoot();
@@ -1031,9 +1060,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
       for (ITxTesterLoader loader : loaders) {
         versions.add(loader == loaders.get(0) ? loader.version() : loader.code()+":"+loader.version());
       }
-      String m = run.modes.isEmpty() ? "[none]" : String.join("+", run.modes);
-      String nr = run.notRun.isEmpty() ? "" : "; "+run.notRun.size()+" did not run";
-      String detail = Utilities.pluralize("mode", run.modes.size())+" "+m+", tests v"+String.join(",", versions)+", runner v"+VersionUtil.getBaseVersion();
+      String m = s.modes.isEmpty() ? "[none]" : String.join("+", s.modes);
+      String nr = s.notRun.isEmpty() ? "" : "; "+s.notRun.size()+" did not run";
+      String detail = Utilities.pluralize("mode", s.modes.size())+" "+m+", tests v"+String.join(",", versions)+", runner v"+VersionUtil.getBaseVersion();
       if (failed.isEmpty()) {
         log.info(software+" passed all "+total+" HL7 terminology service tests run ("+detail+nr+")");
       } else {

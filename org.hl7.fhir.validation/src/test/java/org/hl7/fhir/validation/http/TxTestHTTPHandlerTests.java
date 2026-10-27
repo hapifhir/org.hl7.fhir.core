@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class TxTestHTTPHandlerTests {
 
   private static final int PORT = 18093;
+  private static final int NETWORK_PORT = 18094;
   private FhirValidatorHttpService service;
   private final HttpClient client = HttpClient.newHttpClient();
 
@@ -67,6 +68,7 @@ class TxTestHTTPHandlerTests {
     "GET|/txTest?suite=a&test=b&session=x||404|Unknown session 'x'",
     "POST|/txTest/teardown||400|'session'",
     "POST|/txTest/teardown?session=x||404|Unknown session 'x'",
+    "POST|/txTest/teardown?session=server:http://localhost:1||404|Unknown session 'server:http://localhost:1'",
     "POST|/txTest/teardown?server=http://localhost:1||404|No tests have been run",
     "GET|/txTest/other||404|Unknown path",
   })
@@ -80,6 +82,27 @@ class TxTestHTTPHandlerTests {
   @CsvSource({ "GET,/txTest/setup", "GET,/txTest/teardown", "POST,/txTest" })
   void wrongMethod(String method, String path) throws Exception {
     assertEquals(405, send(method, path, null).statusCode());
+  }
+
+  @ParameterizedTest
+  @CsvSource(delimiter = '|', quoteCharacter = '`', value = {
+    "POST|/txTest/setup|{\"server\":\"https://not-configured.invalid/fhir\"}",
+    "GET|/txTest?suite=a&test=b&server=https://not-configured.invalid/fhir|",
+  })
+  void networkModeRefusesUnconfiguredServer(String method, String path, String body) throws Exception {
+    // no fhir-settings file names this server, so a network-reachable service must refuse it
+    // before loading any tests or connecting to it
+    FhirValidatorHttpService network = new FhirValidatorHttpService(service.getValidationEngine(), false, NETWORK_PORT);
+    network.startServer();
+    try {
+      HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + NETWORK_PORT + path));
+      b.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+      HttpResponse<String> res = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
+      assertEquals(403, res.statusCode(), res.body());
+      assertTrue(res.body().contains("not configured in fhir-settings"), res.body());
+    } finally {
+      network.stop();
+    }
   }
 
   @Test

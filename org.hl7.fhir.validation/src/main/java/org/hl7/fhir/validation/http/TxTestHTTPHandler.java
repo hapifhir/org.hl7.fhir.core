@@ -5,10 +5,12 @@ import com.sun.net.httpserver.HttpHandler;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.utilities.http.ManagedWebAccessUtils;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 
 import java.io.IOException;
@@ -187,7 +189,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
 
     String id = UUID.randomUUID().toString();
-    ServerTxTester tester = createTester(server, json.asString("test-version"), externals, "(supplied in setup)",
+    ServerTxTester tester = createTester(server, json.asString("test-version"), externals, "external.json",
       json.asString("folder"), json.asString("tester"));
     fhirValidatorHttpService.getTxTesters().put(id, tester);
 
@@ -196,6 +198,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   }
 
   private ServerTxTester createTester(String server, String testVersion, JsonObject externals, String externalsName, String folder, String testerName) throws Exception {
+    checkServerPermitted(server);
     if (testVersion == null) {
       testVersion = "current";
     }
@@ -224,6 +227,19 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     // connecting decides the FHIR version the tests run in
     tester.startRun();
     return tester;
+  }
+
+  /**
+   * When the validator is reachable from the network, a caller may only point the tester at a server
+   * configured in fhir-settings - the same entries (and origin matching) the HTTP client uses to decide
+   * which private-network servers it will reach. This holds even when SSRF protection is turned off.
+   */
+  private void checkServerPermitted(String server) throws RequestException {
+    if (!fhirValidatorHttpService.isLoopbackOnly()
+      && ManagedWebAccessUtils.getServer(server, FhirSettings.getServers()) == null) {
+      throw new RequestException(403, "The tx test server '" + server + "' is not configured in fhir-settings; "
+        + "when the validator is not bound to loopback, only configured servers can be tested");
+    }
   }
 
   private JsonObject describe(String id, ServerTxTester tester) throws IOException {
@@ -321,6 +337,8 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     if (server == null) {
       throw new RequestException(400, "Missing required parameter 'session' (from /txTest/setup)");
     }
+    // createTester checks this too; checking here refuses the server before the externals are loaded
+    checkServerPermitted(server);
     ServerTxTester tester = fhirValidatorHttpService.getTxTesters().get(LEGACY_PREFIX + server);
     if (tester == null) {
       String externalFile = params.get("externals");
@@ -345,9 +363,13 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private ServerTxTester findSession(String session) throws RequestException {
     ServerTxTester tester = fhirValidatorHttpService.getTxTesters().get(session);
     if (tester == null || session.startsWith(LEGACY_PREFIX)) {
-      throw new RequestException(404, "Unknown session '" + session + "': start one with POST /txTest/setup (sessions end at teardown)");
+      throw unknownSession(session);
     }
     return tester;
+  }
+
+  private RequestException unknownSession(String session) {
+    return new RequestException(404, "Unknown session '" + session + "': start one with POST /txTest/setup (sessions end at teardown)");
   }
 
   /**
@@ -379,17 +401,23 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     String session = params.get("session");
     String key;
     if (session != null) {
-      findSession(session);
+      // a session id can't name a legacy tester: refuse it before removing anything
+      if (session.startsWith(LEGACY_PREFIX)) {
+        throw unknownSession(session);
+      }
       key = session;
     } else if (params.get("server") != null) {
       key = LEGACY_PREFIX + params.get("server");
-      if (!fhirValidatorHttpService.getTxTesters().containsKey(key)) {
-        throw new RequestException(404, "No tests have been run for the server '" + params.get("server") + "'");
-      }
     } else {
       throw new RequestException(400, "Missing required parameter 'session'");
     }
+    // look up and remove in one step, so two teardowns of the same session can't both get the tester
     ServerTxTester tester = fhirValidatorHttpService.getTxTesters().remove(key);
+    if (tester == null) {
+      throw session != null
+        ? unknownSession(session)
+        : new RequestException(404, "No tests have been run for the server '" + params.get("server") + "'");
+    }
     JsonObject results = tester.finishRun();
     String report = new org.hl7.fhir.model.core.formats.JsonParser(context).composeString(tester.getTestReport());
 

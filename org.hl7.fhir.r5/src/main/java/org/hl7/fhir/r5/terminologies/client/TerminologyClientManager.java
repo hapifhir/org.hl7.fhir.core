@@ -882,12 +882,13 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
       } else {
-        ecosystemfailCount = 0; 
         try {
           if (usage != null) {
             request = request + "&usage="+usage;
           }
           JsonObject json = fetchRegistryJson(request);
+          // the count is of consecutive failures: a response from the ecosystem server resets it
+          ecosystemfailCount = 0;
           for (JsonObject item : json.getJsonObjects("authoritative")) {
             if (server == null) {
               server = item.asString("url");
