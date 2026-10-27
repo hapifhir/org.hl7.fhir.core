@@ -102,6 +102,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
   }
 
+  // Base, and the R4 roots Element and Resource, are the only structures with no baseDefinition
+  private boolean isRootStructure(String url) {
+    return "http://hl7.org/fhir/StructureDefinition/Base".equals(url)
+      || "http://hl7.org/fhir/StructureDefinition/Element".equals(url)
+      || "http://hl7.org/fhir/StructureDefinition/Resource".equals(url);
+  }
+
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
 
@@ -131,6 +138,9 @@ public class StructureDefinitionValidator extends BaseValidator {
 
       sd = loadAsSD(src);
       ok = checkExtensionContext(errors, src, stack) && ok;
+      if (!isRootStructure(sd.getUrl())) {
+        ok = rule(errors, "2026-10-27", IssueType.REQUIRED, stack.getLiteralPath(), sd.hasBaseDefinition() && sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_BASE_AND_DERIVATION, sd.getUrl()) && ok;
+      }
 
       List<ElementDefinition> snapshot = sd.getSnapshot().getElementList();
       sd.setSnapshot(null);
