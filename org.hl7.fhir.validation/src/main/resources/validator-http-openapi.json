@@ -363,15 +363,6 @@
             }
           },
           {
-            "name": "checkIpsCodes",
-            "in": "query",
-            "description": "Report SNOMED CT codes that are not part of the IPS free set.",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
             "name": "maxValidationMessages",
             "in": "query",
             "description": "Stop validating once this many messages have been produced, and return what has been found so far. Values of `0` or less are ignored.",

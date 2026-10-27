@@ -185,7 +185,7 @@ public class ImplementationGuideProfileSelector {
       if (pi != null) {
         for (StructureDefinition sd : allProfiles()) {
           PackageInformation spi = sd.getSourcePackage();
-          if (spi != null && pi.getId().equals(spi.getId()) && Utilities.noString(pi.getVersion()) == Utilities.noString(spi.getVersion())
+          if (spi != null && pi.getId() != null && pi.getId().equals(spi.getId()) && Utilities.noString(pi.getVersion()) == Utilities.noString(spi.getVersion())
               && (Utilities.noString(pi.getVersion()) || pi.getVersion().equals(spi.getVersion()))) {
             list.add(sd);
           }

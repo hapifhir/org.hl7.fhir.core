@@ -556,6 +556,26 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @Deprecated
+  @JsonProperty("checkIPSCodes")
+  @SerializedName("checkIPSCodes")
+  private
+  boolean checkIPSCodes;
+
+  @Deprecated
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  @Deprecated
+  @SerializedName("checkIPSCodes")
+  @JsonProperty("checkIPSCodes")
+  public InstanceValidatorParameters setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+    return this;
+  }
   @JsonProperty("bundleValidationRules")
   @SerializedName("bundleValidationRules")
   private

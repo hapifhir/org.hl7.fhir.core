@@ -177,7 +177,6 @@ Unrecognised query parameter names are rejected. Any name not in the table below
 | `txRouting` | boolean | Report which terminology server served each request. |
 | `implicitFhirpathStringConversions` | boolean | Restore pre-5.6.48 FHIRPath string conversions. |
 | `allowDoubleQuotesInFhirpath` | boolean | Accept legacy double-quoted FHIRPath. |
-| `checkIpsCodes` | boolean | Report SNOMED CT codes outside the IPS free set. |
 | `maxValidationMessages` | integer | Stop after this many messages and return what was found. Values <= 0 ignored. |
 | `validationTimeout` | milliseconds | Stop after this long and return what was found. |
 | `codeSystemValidationSizeLimit` | integer | Max codes checked per include/group/supplement; `0` for no limit. Default 1000. |

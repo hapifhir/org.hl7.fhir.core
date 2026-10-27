@@ -256,10 +256,6 @@ paths:
           in: query
           description: Accept legacy FHIRPath statements that use double quotes.
           schema: { type: boolean, default: false }
-        - name: checkIpsCodes
-          in: query
-          description: Report SNOMED CT codes that are not part of the IPS free set.
-          schema: { type: boolean, default: false }
         - name: maxValidationMessages
           in: query
           description: >-
