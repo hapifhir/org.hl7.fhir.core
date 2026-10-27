@@ -2759,19 +2759,6 @@ public class FHIRPathEngine {
     }
   }
 
-  private DecimalType qtyToCanonicalDecimal(Quantity q) {
-    if (!"http://unitsofmeasure.org".equals(q.getSystem())) {
-      return null;
-    }
-    try {
-      Pair p = new Pair(new Decimal(q.getValue().toPlainString()), q.getCode() == null ? "1" : q.getCode());
-      Pair c = worker.getUcumService().getCanonicalForm(p);
-      return new DecimalType(c.getValue().asDecimal());
-    } catch (UcumException e) {
-      return null;
-    }
-  }
-
   private Base pairToQty(Pair p) {
     return new Quantity().setValue(new BigDecimal(p.getValue().toString())).setSystem("http://unitsofmeasure.org").setCode(p.getCode()).noExtensions();
   }
@@ -2883,6 +2870,43 @@ public class FHIRPathEngine {
 
   private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url", "xhtml"};
 
+  // null when the quantities can't be compared: different dimensions, or different units that can't be converted
+  private Integer compareQuantities(Base left, Base right) {
+    Quantity lq = makeQuantity(left);
+    Quantity rq = makeQuantity(right);
+    if (lq == null || rq == null || !lq.hasValue() || !rq.hasValue()) {
+      return null;
+    }
+    if (sameUnit(lq, rq)) {
+      return lq.getValue().compareTo(rq.getValue());
+    }
+    // only values of a normal size are converted to canonical units
+    if (worker.getUcumService() != null && Math.abs(lq.getValue().scale()) < 1000 && Math.abs(rq.getValue().scale()) < 1000) {
+      Pair dl = qtyToCanonicalPair(lq);
+      Pair dr = qtyToCanonicalPair(rq);
+      if (dl != null && dr != null && dl.getCode().equals(dr.getCode())) {
+        return dl.getValue().comparesTo(dr.getValue());
+      }
+    }
+    return null;
+  }
+
+  private boolean sameUnit(Quantity left, Quantity right) {
+    if (left.hasCode() && right.hasCode()) {
+      return left.getCode().equals(right.getCode());
+    }
+    String lu = calendarUnit(left.getUnit());
+    String ru = calendarUnit(right.getUnit());
+    return lu == null ? ru == null : lu.equals(ru);
+  }
+
+  private String calendarUnit(String unit) {
+    if (Utilities.existsInList(unit, "years", "months", "weeks", "days", "hours", "minutes", "seconds", "milliseconds")) {
+      return unit.substring(0, unit.length() - 1);
+    }
+    return unit;
+  }
+
   private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
@@ -2915,23 +2939,8 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_CANT_COMPARE, l.fhirType(), r.fhirType());
       }
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
-      List<Base> lUnit = left.get(0).getChildValues("code", true);
-      List<Base> rUnit = right.get(0).getChildValues("code", true);
-      if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opLessThan(left.get(0).getChildValues("value", true), right.get(0).getChildValues("value", true), expr);
-      } else {
-        if (worker.getUcumService() == null) {
-          return makeBoolean(false);
-        } else {
-          var lq = makeQuantity(left.get(0));
-          var rq = makeQuantity(right.get(0));
-          List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal(lq));
-          List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal(rq));
-          return opLessThan(dl, dr, expr);
-        }
-      }
+      Integer c = compareQuantities(left.get(0), right.get(0));
+      return c == null ? makeNull() : makeBoolean(c < 0);
     }
     return new ArrayList<Base>();
   }
@@ -2967,23 +2976,8 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_CANT_COMPARE, l.fhirType(), r.fhirType());
       }
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
-      List<Base> lUnit = left.get(0).getChildValues("unit", true);
-      List<Base> rUnit = right.get(0).getChildValues("unit", true);
-      if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opGreater(left.get(0).getChildValues("value", true), right.get(0).getChildValues("value", true), expr);
-      } else {
-        if (worker.getUcumService() == null) {
-          return makeBoolean(false);
-        } else {
-          var lq = makeQuantity(left.get(0));
-          var rq = makeQuantity(right.get(0));
-          List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal(lq));
-          List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal(rq));
-          return opGreater(dl, dr, expr);
-        }
-      }
+      Integer c = compareQuantities(left.get(0), right.get(0));
+      return c == null ? makeNull() : makeBoolean(c > 0);
     }
     return new ArrayList<Base>();
   }
@@ -3020,25 +3014,8 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_CANT_COMPARE, l.fhirType(), r.fhirType());
       }
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
-      List<Base> lUnits = left.get(0).getChildValues("unit", true);
-      String lunit = lUnits.size() == 1 ? lUnits.get(0).primitiveValue() : null;
-      List<Base> rUnits = right.get(0).getChildValues("unit", true);
-      String runit = rUnits.size() == 1 ? rUnits.get(0).primitiveValue() : null;
-      if ((lunit == null && runit == null) || lunit.equals(runit)) {
-        return opLessOrEqual(left.get(0).getChildValues("value", true), right.get(0).getChildValues("value", true), expr);
-      } else {
-        if (worker.getUcumService() == null) {
-          return makeBoolean(false);
-        } else {
-          var lq = makeQuantity(left.get(0));
-          var rq = makeQuantity(right.get(0));
-          List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal(lq));
-          List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal(rq));
-          return opLessOrEqual(dl, dr, expr);
-        }
-      }
+      Integer c = compareQuantities(left.get(0), right.get(0));
+      return c == null ? makeNull() : makeBoolean(c <= 0);
     }
     return new ArrayList<Base>();
   }
@@ -3075,23 +3052,8 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_CANT_COMPARE, l.fhirType(), r.fhirType());
       }
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
-      List<Base> lUnit = left.get(0).getChildValues("unit", true);
-      List<Base> rUnit = right.get(0).getChildValues("unit", true);
-      if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opGreaterOrEqual(left.get(0).getChildValues("value", true), right.get(0).getChildValues("value", true), expr);
-      } else {
-        if (worker.getUcumService() == null) {
-          return makeBoolean(false);
-        } else {
-          var lq = makeQuantity(left.get(0));
-          var rq = makeQuantity(right.get(0));
-          List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonicalDecimal(lq));
-          List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonicalDecimal(rq));
-          return opGreaterOrEqual(dl, dr, expr);
-        }
-      }
+      Integer c = compareQuantities(left.get(0), right.get(0));
+      return c == null ? makeNull() : makeBoolean(c >= 0);
     }
     return new ArrayList<Base>();
   }
