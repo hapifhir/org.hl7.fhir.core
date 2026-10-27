@@ -6274,7 +6274,16 @@ public class FHIRPathEngine {
 
   private List<Base> funcSubstring(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 0) {
+      // if there is no focus, then we don't need to do anything (including evaluate the parameter(s))
+      return result;
+    }
+
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (n1.size() == 0) {
+      // the start parameter is not present, so return an empty list)
+      return result;
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
     int i2 = -1;
     if (exp.parameterCount() == 2) {
@@ -6292,13 +6301,11 @@ public class FHIRPathEngine {
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
-        s = sw.substring(i1, Math.min(sw.length(), i1+i2));
+        s = sw.substring(i1, i1 + Math.max(0, Math.min(i2, sw.length() - i1)));
       } else {
         s = sw.substring(i1);
       }
-      if (!Utilities.noString(s)) { 
-        result.add(new StringType(s).noExtensions());
-      }
+      result.add(new StringType(s).noExtensions());
     }
     return result;
   }

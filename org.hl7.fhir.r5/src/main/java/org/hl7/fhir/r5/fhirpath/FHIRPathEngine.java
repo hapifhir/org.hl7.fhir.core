@@ -6684,13 +6684,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
-        s = sw.substring(i1, Math.min(sw.length(), i1+i2));
+        s = sw.substring(i1, i1 + Math.max(0, Math.min(i2, sw.length() - i1)));
       } else {
         s = sw.substring(i1);
       }
-      if (!Utilities.noString(s)) { 
-        result.add(new StringType(s).noExtensions());
-      }
+      result.add(new StringType(s).noExtensions());
     }
     return result;
   }
