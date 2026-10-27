@@ -56,6 +56,16 @@ public class ResourceValidationTests {
 
 
   @Test
+  public void testLogicalModelWithoutDerivation() throws Exception {
+    // a logical model with an absolute type URL and no derivation must not crash validation
+    runTest("patient-example.xml"); // initialises the validator
+    String json = "{\"resourceType\":\"StructureDefinition\",\"url\":\"http://example.org/StructureDefinition/L\",\"name\":\"L\",\"status\":\"draft\","
+        + "\"kind\":\"logical\",\"abstract\":false,\"type\":\"http://example.org/StructureDefinition/L\"}";
+    List<ValidationMessage> errors = new ArrayList<>();
+    Assertions.assertDoesNotThrow(() -> val.validate(null, errors, new java.io.ByteArrayInputStream(json.getBytes(java.nio.charset.StandardCharsets.UTF_8)), org.hl7.fhir.model.utilities.formats.FhirFormat.JSON));
+  }
+
+  @Test
   public void testObservation() throws Exception {
     runTest("observation-example.xml");
   }
