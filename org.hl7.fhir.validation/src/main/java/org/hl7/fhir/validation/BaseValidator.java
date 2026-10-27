@@ -229,6 +229,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.settings = settings;
     policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
+    @SuppressWarnings("checkstyle:patternUsage")
+    //Regex sourced from URI_REGEX_XVER template; constructed at initialization from known resource names
+    Pattern compiledUrlRegex = Pattern.compile(urlRegex);
+    urlPattern = compiledUrlRegex;
   }
 
   public BaseValidator(BaseValidator parent) {
@@ -243,6 +247,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.messagesToRemove = parent.messagesToRemove;
     this.statusWarnings = parent.statusWarnings;
     this.urlRegex = parent.urlRegex;
+    this.urlPattern = parent.urlPattern;
     this.settings = parent.settings;
     this.fetcher = parent.fetcher;
     this.policyAdvisor = parent.policyAdvisor;
@@ -290,6 +295,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   private Map<String, ValidationControl> validationControl = new HashMap<>();
 
   protected String urlRegex;
+  // urlRegex, compiled once
+  protected Pattern urlPattern;
 
   protected boolean isSuppressedValidationMessage(String path, String theMessage, Object... theMessageArguments) {
     if (policyAdvisor == null) {
@@ -1163,7 +1170,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         boolean ok = context.hasResource(Resource.class, ref);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //Regex sourced from URI_REGEX_XVER configured at initialization; known FHIR resource name alternation
-        boolean refMatchesUrl = ref.matches(urlRegex);
+        boolean refMatchesUrl = urlPattern.matcher(ref).matches();
         if (!ok && refMatchesUrl) {
           String tt = extractResourceType(ref);
           ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
@@ -1197,7 +1204,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       String u = null;
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //Regex sourced from URI_REGEX_XVER configured at initialization; known FHIR resource name alternation
-      boolean fullUrlMatchesUrl = fullUrl != null && fullUrl.matches(urlRegex);
+      boolean fullUrlMatchesUrl = fullUrl != null && urlPattern.matcher(fullUrl).matches();
       if (fullUrlMatchesUrl && fullUrl.endsWith(type + "/" + id)) {
         u = fullUrl.substring(0, fullUrl.length() - (type + "/" + id).length()) + ref;
       }

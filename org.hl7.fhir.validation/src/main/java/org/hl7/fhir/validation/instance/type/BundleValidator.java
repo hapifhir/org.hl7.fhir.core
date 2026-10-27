@@ -190,7 +190,7 @@ public class BundleValidator extends BaseValidator {
         if (Utilities.isAbsoluteUrl(fullUrl)) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //Regex sourced from URI_REGEX_XVER template; constructed at initialization from known resource names
-          boolean fullUrlMatchesRegex = fullUrl.matches(urlRegex);
+          boolean fullUrlMatchesRegex = urlPattern.matcher(fullUrl).matches();
           if (rtype != null && fullUrlMatchesRegex) {
             if (rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), id != null, I18nConstants.BUNDLE_ENTRY_URL_MATCHES_NO_ID, fullUrl)) {
               ok = rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), fullUrl.endsWith("/" + rtype + "/" + id), I18nConstants.BUNDLE_ENTRY_URL_MATCHES_TYPE_ID, fullUrl, rtype, id) && ok;
@@ -206,7 +206,7 @@ public class BundleValidator extends BaseValidator {
       if (url != null) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //Regex sourced from URI_REGEX_XVER template; constructed at initialization from known resource names
-        boolean urlMatchesRegex = url.matches(urlRegex);
+        boolean urlMatchesRegex = urlPattern.matcher(url).matches();
         if (!(!url.equals(fullUrl) || (urlMatchesRegex && url.endsWith("/" + id))) && !isV3orV2Url(url))
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE, false).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;

@@ -43,6 +43,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 import java.util.*;
 import java.util.Base64;
 
@@ -203,6 +204,27 @@ import org.w3c.dom.Document;
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
   public static final String NON_WHITESPACE_REGEX = "\\S+";
+
+  // The validator's own expressions, compiled once: matching a String against an expression compiles it on every call, and
+  // these are checked on every primitive of their type and every Bundle entry
+  @SuppressWarnings("checkstyle:patternUsage")
+  //anchored, non-overlapping alternation; FHIR dateTime format, safe
+  private static final Pattern DATETIME_FORMAT = Pattern.compile("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width, non-overlapping; FHIR time format, safe
+  private static final Pattern TIME_FORMAT = Pattern.compile("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //anchored, non-overlapping alternation; FHIR date format, safe
+  private static final Pattern DATE_FORMAT = Pattern.compile("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //anchored, non-overlapping alternation; FHIR instant format, safe
+  private static final Pattern INSTANT_FORMAT = Pattern.compile("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //simple character class, safe
+  private static final Pattern NON_WHITESPACE = Pattern.compile(NON_WHITESPACE_REGEX);
+  @SuppressWarnings("checkstyle:patternUsage")
+  //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
+  private static final Pattern URI_FORMAT = Pattern.compile(Constants.URI_REGEX);
 
   public enum MatchetypeStatus {
     Disallowed, Allowed, Required
@@ -3442,8 +3464,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR dateTime format, safe
         boolean dok = ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-            elementValue
-            .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, elementValue) && ok;
+            DATETIME_FORMAT.matcher(elementValue).matches(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, elementValue) && ok;
         if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("tz-for-time"))) {
           dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(elementValue) || hasTimeZone(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
         }
@@ -3467,7 +3488,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("time")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //fixed-width, non-overlapping; FHIR time format, safe
-        boolean timeValid = elementValue.matches("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)");
+        boolean timeValid = TIME_FORMAT.matcher(elementValue).matches();
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, timeValid, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID) && ok;
         if (ok) {
           try {
@@ -3489,7 +3510,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("date")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR date format, safe
-        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
+        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, DATE_FORMAT.matcher(elementValue).matches(),
           I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, elementValue);
         if (dok) {
           dok = checkMinMaxValueDate(errors, path, context, e, node) && dok;
@@ -3590,7 +3611,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR instant format, safe
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-            elementValue.matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, elementValue);
+            INSTANT_FORMAT.matcher(elementValue).matches(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, elementValue);
         if (dok) {
           dok = checkMinMaxValueDateTime(errors, path, context, e, node) && dok;
         }
@@ -5170,13 +5191,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //simple character class, safe
-      boolean refIsNonWhitespace = ref.matches(NON_WHITESPACE_REGEX);
+      boolean refIsNonWhitespace = NON_WHITESPACE.matcher(ref).matches();
       ok = rule(errors, "2025-05-07", IssueType.INVALID, element.line(), element.col(), path, refIsNonWhitespace, I18nConstants.REFERENCE_REF_INVALID_REF, ref) && ok;
     }
 
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //simple character class, safe
-    boolean refHasNoWhitespace = ref.matches(NON_WHITESPACE_REGEX);
+    boolean refHasNoWhitespace = NON_WHITESPACE.matcher(ref).matches();
     if (refHasNoWhitespace) {
       warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);
     }
@@ -6047,7 +6068,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else {
             @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
             //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-            boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
+            boolean fullUrlMatchesUri = URI_FORMAT.matcher(fullUrl).matches();
             if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
               stop.set(true);
             }
@@ -6092,7 +6113,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         fullUrl = entry.getChildValue(FULL_URL);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-        boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
+        boolean fullUrlMatchesUri = URI_FORMAT.matcher(fullUrl).matches();
         if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
           stop.set(true);
         } else {
