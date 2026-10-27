@@ -113,9 +113,23 @@ public class ValidationEngineOptions {
     description = """
     Terminology server URL. To run without terminology, specify 'n/a' as the URL
     By default 'https://tx.fhir.org' will be used.
+    Nominating a server here turns the terminology ecosystem off, so that all terminology
+    requests go to that server - use -ecosystem as well to keep the ecosystem on.
     """)
   @With
   public String txServer = null;
+
+  @CommandLine.Option(names = {"-ecosystem"},
+    description = """
+    Terminology ecosystem coordination server URL (the tx-reg registry the validator consults to find
+    which terminology server is authoritative for a code system or value set). To run without the
+    ecosystem, specify 'n/a' as the URL. By default 'https://ecosystem.hl7.org/tx-reg' will be used
+    when -tx is not specified; -tx n/a turns the ecosystem off too.
+    When both -tx and -ecosystem are specified, the server nominated with -tx is used in place of
+    tx.fhir.org wherever the ecosystem would refer to it.
+    """)
+  @With
+  public String ecosystem = null;
 
   @CommandLine.Option(names = {"-txLog"},
     description = """

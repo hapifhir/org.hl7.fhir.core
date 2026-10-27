@@ -687,7 +687,7 @@ public class ValidationService {
       }
     }
     final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
-    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
+    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, validationEngineParameters.getEffectiveEcosystem());
     log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(validationEngineParameters.isDoDebug());
     validationEngine.getContext().setLogger(new Slf4JLoggingService(log));

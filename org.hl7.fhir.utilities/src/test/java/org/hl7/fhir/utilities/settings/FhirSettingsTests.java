@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.settings;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -38,6 +39,20 @@ class FhirSettingsTests implements ResourceLoaderTests {
     } else {
       System.setProperty(FhirSettings.FHIR_SETTINGS_PATH, existingFhirSettingsPath);
     }
+  }
+
+  @Test
+  void testDefaultTxEcosystemFor() {
+    // the default ecosystem goes with the default terminology server, and with no other
+    String prod = FhirSettings.getTxFhirProduction();
+    String ecosystem = FhirSettings.getTxEcosystem();
+    assertEquals(ecosystem, FhirSettings.getDefaultTxEcosystemFor(prod));
+    assertEquals(ecosystem, FhirSettings.getDefaultTxEcosystemFor(prod + "/"));
+    assertEquals(ecosystem, FhirSettings.getDefaultTxEcosystemFor(prod + "/r4"));
+    assertNull(FhirSettings.getDefaultTxEcosystemFor(prod + "/r4/other"));
+    assertNull(FhirSettings.getDefaultTxEcosystemFor(prod + ".example.org"));
+    assertNull(FhirSettings.getDefaultTxEcosystemFor("https://tx.example.org/fhir"));
+    assertNull(FhirSettings.getDefaultTxEcosystemFor(null));
   }
 
   @Test

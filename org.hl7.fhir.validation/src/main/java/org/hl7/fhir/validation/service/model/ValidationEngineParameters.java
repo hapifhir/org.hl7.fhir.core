@@ -238,6 +238,43 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  /**
+   * The ecosystem coordination server (tx-reg) to consult when routing terminology
+   * requests. null means the default: the default ecosystem when txServer is the default
+   * server, and none when it isn't (FhirSettings.getDefaultTxEcosystemFor()); ignored when
+   * noEcosystem is set
+   */
+  @JsonProperty("ecosystem")
+  @SerializedName("ecosystem")
+  private
+  String ecosystem = null;
+
+  @SerializedName("ecosystem")
+  @JsonProperty("ecosystem")
+  public String getEcosystem() {
+    return ecosystem;
+  }
+
+  @SerializedName("ecosystem")
+  @JsonProperty("ecosystem")
+  public ValidationEngineParameters setEcosystem(String ecosystem) {
+    this.ecosystem = ecosystem;
+    return this;
+  }
+
+  /**
+   * The ecosystem server to actually use, after noEcosystem and the default are
+   * taken into account - null when no ecosystem is to be consulted. A txServer other
+   * than the default means no ecosystem unless one is set explicitly, so that requests
+   * meant for a server of the caller's own aren't routed on to other servers
+   */
+  public String getEffectiveEcosystem() {
+    if (noEcosystem) {
+      return null;
+    }
+    return ecosystem != null ? ecosystem : FhirSettings.getDefaultTxEcosystemFor(txServer);
+  }
+
   @JsonProperty("txLog")
   @SerializedName("txLog")
   private
@@ -572,6 +609,7 @@ public class ValidationEngineParameters {
       && Objects.equals(sv, that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
       && noEcosystem == that.noEcosystem
+      && Objects.equals(ecosystem, that.ecosystem)
       && clearTxCache == that.clearTxCache
       && checkReferences == that.checkReferences
       && noInternalCaching == that.noInternalCaching
@@ -608,6 +646,7 @@ public class ValidationEngineParameters {
       certSources,
       txServer,
       noEcosystem,
+      ecosystem,
       txLog,
       txCache,
       clearTxCache,
@@ -640,6 +679,7 @@ public class ValidationEngineParameters {
       ", certSources=" + certSources +
       ", txServer='" + txServer + '\'' +
       ", noEcosystem=" + noEcosystem +
+      ", ecosystem='" + ecosystem + '\'' +
       ", txLog='" + txLog + '\'' +
       ", txCache='" + txCache + '\'' +
       ", clearTxCache=" + clearTxCache +

@@ -72,6 +72,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   )
   private boolean allowNetworkAccess;
 
+  @CommandLine.Option(
+    names = {"-txTests"},
+    description = "Turn on the /txTest endpoints, which run the terminology ecosystem tests against a terminology server one test at a time. Intended for a build pipeline: they connect to the server the caller names and write output files to this machine's temporary directory."
+  )
+  private boolean txTests;
+
   // The remaining parameters are processed as sources
   @CommandLine.Parameters(
     description = "Source file(s) to transform",
@@ -104,6 +110,7 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
       FhirValidatorHttpService service = new FhirValidatorHttpService(
         validationEngine,
         !allowNetworkAccess,
+        txTests,
         port
       );
       service.startServer();

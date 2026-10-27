@@ -166,6 +166,18 @@ public class FHIRPathTests {
     return s;
   }
 
+  /**
+   * the test's mode, or else its group's. A group with mode="custom" holds tests of functions that aren't
+   * part of FHIRPath (see the group's description) - this engine implements them, so it runs them
+   */
+  private static String testMode(Element test) {
+    if (test.hasAttribute("mode")) {
+      return test.getAttribute("mode");
+    }
+    Node p = test.getParentNode();
+    return p instanceof Element && ((Element) p).hasAttribute("mode") ? ((Element) p).getAttribute("mode") : null;
+  }
+
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
@@ -185,7 +197,8 @@ public class FHIRPathTests {
     } else if ("execution".equals(XMLUtil.getNamedChild(test, "expression").getAttribute("invalid"))) {
       fail = TestResultType.EXECUTION;      
     };
-    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    String mode = testMode(test);
+    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(mode));
     // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
     // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
     String testContext = test.getAttribute("context");
@@ -212,7 +225,7 @@ public class FHIRPathTests {
       if (!Utilities.noString(input)) {
         res = resources.get(input);
         if (res == null) {
-          if ("cda".equals(test.getAttribute("mode"))) {
+          if ("cda".equals(mode)) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r5", input), null);            
           } else if (input.endsWith(".json")) {
             res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", input));              
@@ -246,7 +259,7 @@ public class FHIRPathTests {
     
     if (node != null) {
       try {
-        if ("element".equals(test.getAttribute("mode"))) {
+        if ("element".equals(mode)) {
           List<ValidatedFragment> e = Manager.parse(fp.getWorker(), TestingUtilities.loadTestResourceStream("r5", input), input.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML);                        
           outcome = evaluateInContext(e.get(0).getElement(), testContext, node);
         } else {

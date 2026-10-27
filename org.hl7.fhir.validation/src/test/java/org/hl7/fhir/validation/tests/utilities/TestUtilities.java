@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class TestUtilities {
 
@@ -29,7 +30,7 @@ public class TestUtilities {
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
       .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-      .withTxServer(txServer, txLog, version, usesEcosystem)
+      .withTxServer(txServer, txLog, version, usesEcosystem ? FhirSettings.getTxEcosystem() : null)
       .withThoVersion(thoVersion)
       .withExtensionsVersion(extensionsVersion)
       .fromSource(src);
@@ -85,7 +86,7 @@ public class TestUtilities {
         .withVersion(vString)
         .withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-        .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version, false)
+        .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version, null)
         .withThoVersion(Constants.THO_WORKING_VERSION)
         .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION)
         .fromSource(src);

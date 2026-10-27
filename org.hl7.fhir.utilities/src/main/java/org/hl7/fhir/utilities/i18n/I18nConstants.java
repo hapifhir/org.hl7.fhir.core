@@ -200,7 +200,6 @@ public class I18nConstants {
   public static final String CONCEPTMAP_QUALITY_TOO_MANY_CHECKS = "CONCEPTMAP_QUALITY_TOO_MANY_CHECKS";
   public static final String CONTAINED_ORPHAN_DOM3 = "CONTAINED_ORPHAN_DOM3";
   public static final String CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
-  public static final String CS_SCT_IPS_NOT_IPS = "CS_SCT_IPS_NOT_IPS";
   public static final String Could_not_match_discriminator_for_slice_in_profile = "Could_not_match_discriminator_for_slice_in_profile";
   public static final String DEFINED_IN_THE_PROFILE = "defined_in_the_profile";
   public static final String DELIMITED_VERSIONS_HAVE_EXACT_MATCH_FOR_DELIMITER____VS_ = "Delimited_versions_have_exact_match_for_delimiter____vs_";
@@ -329,6 +328,11 @@ public class I18nConstants {
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE = "FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE";
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE = "FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE";
   public static final String FHIRPATH_DISCRIMINATOR_TYPE_NONE = "FHIRPATH_DISCRIMINATOR_TYPE_NONE";
+  public static final String FHIRPATH_DOC_BOUNDS = "FHIRPATH_DOC_BOUNDS";
+  public static final String FHIRPATH_DOC_TYPE = "FHIRPATH_DOC_TYPE";
+  public static final String FHIRPATH_DOC_VALUESET = "FHIRPATH_DOC_VALUESET";
+  public static final String FHIRPATH_DOC_VALUESET_NO_ANSWER = "FHIRPATH_DOC_VALUESET_NO_ANSWER";
+  public static final String FHIRPATH_DOC_VALUESET_UNKNOWN = "FHIRPATH_DOC_VALUESET_UNKNOWN";
   public static final String FHIRPATH_FOCUS = "FHIRPATH_FOCUS";
   public static final String FHIRPATH_PARAMETER_CARD = "FHIRPATH_PARAMETER_CARD";
   public static final String FHIRPATH_HO_HOST_SERVICES = "FHIRPATH_HO_HOST_SERVICES";
@@ -1039,7 +1043,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE = "Type_Specific_Checks_DT_Primitive_Regex_Type";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT = "TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
-  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS_OTHER = "Type_Specific_Checks_DT_Primitive_WS_OTHER";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS_XML = "Type_Specific_Checks_DT_Primitive_WS_XML";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT";

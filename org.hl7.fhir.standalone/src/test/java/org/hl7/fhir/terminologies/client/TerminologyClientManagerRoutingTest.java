@@ -153,7 +153,7 @@ class TerminologyClientManagerRoutingTest {
 
   private TestManager makeManager() throws IOException {
     TestManager mgr = new TestManager();
-    mgr.setMasterClient(makeFakeClient(MAIN), true);
+    mgr.setMasterClient(makeFakeClient(MAIN), "http://main.example.org/tx-reg");
     return mgr;
   }
 

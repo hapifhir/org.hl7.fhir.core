@@ -856,6 +856,10 @@ public class LanguageUtils {
 
   public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
     boolean changed = false;
+    if (r.isResource() && ((Resource) r).hasLanguage()) {
+      // a resource inside another (bundle entry, contained, parameter) may declare its own language
+      resourceLang = ((Resource) r).getLanguage();
+    }
     if (r.isPrimitive()) {
       PrimitiveType<?> dt = (PrimitiveType<?>) r;
       if (keepTranslationsWhenTranslating) {
@@ -915,29 +919,15 @@ public class LanguageUtils {
   public XhtmlNode divForLang(XhtmlNode xhtml, String lang, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
     if (xhtml==null)
       return null;
-   
-    boolean foundLangDivs = false;
-    for (XhtmlNode div : xhtml.getChildNodes()) {
-      if ("div".equals(div.getName())) {
-        String l = div.hasAttribute("lang") ? div.getAttribute("lang") : div.getAttribute("xml:lang");
-        if (l!=null)
-          foundLangDivs = true;
-        if (lang.equals(l)) {
-          return div;
-        }       
-      }
-    }
 
-    // If the base div declares a language that matches, then the whole div is the content 
-    String l = xhtml.hasAttribute("lang") ? xhtml.getAttribute("lang") : xhtml.getAttribute("xml:lang");
-    if (lang.equals(l)) {
-      return xhtml;
+    // look for an exact match on the language first, and then for narrative in the same base language
+    // (e.g. narrative in en-US is fine for en, and vice versa) before deciding there's no narrative for the language
+    XhtmlNode res = findDivForLang(xhtml, lang, resourceLang, defaultLang, true);
+    if (res == null) {
+      res = findDivForLang(xhtml, lang, resourceLang, defaultLang, false);
     }
-    
-    // If there's no language declared at all, then the narrative is presumed to be the language the resource declares
-    // (if there is one), or the default language for the IG if the resource doesn't have a language.
-    if (!foundLangDivs && (resourceLang!=null ? lang.equals(resourceLang) : lang.equals(defaultLang))) {
-      return xhtml;
+    if (res != null) {
+      return res;
     }
     
     // If we didn't find a div for the requested language, then we'll either use narrative div for the default language
@@ -958,6 +948,52 @@ public class LanguageUtils {
     return null;
   }
   
+  private XhtmlNode findDivForLang(XhtmlNode xhtml, String lang, String resourceLang, String defaultLang, boolean exact) {
+    boolean foundLangDivs = false;
+    for (XhtmlNode div : xhtml.getChildNodes()) {
+      if ("div".equals(div.getName())) {
+        String l = div.hasAttribute("lang") ? div.getAttribute("lang") : div.getAttribute("xml:lang");
+        if (l!=null)
+          foundLangDivs = true;
+        if (sameLang(lang, l, exact)) {
+          return div;
+        }       
+      }
+    }
+
+    // If the base div declares a language that matches, then the whole div is the content 
+    String l = xhtml.hasAttribute("lang") ? xhtml.getAttribute("lang") : xhtml.getAttribute("xml:lang");
+    if (sameLang(lang, l, exact)) {
+      return xhtml;
+    }
+    
+    // If there's no language declared at all, then the narrative is presumed to be the language the resource declares
+    // (if there is one), or the default language for the IG if the resource doesn't have a language.
+    if (!foundLangDivs && sameLang(lang, resourceLang != null ? resourceLang : defaultLang, exact)) {
+      return xhtml;
+    }
+    return null;
+  }
+
+  private static boolean sameLang(String lang, String other, boolean exact) {
+    return exact ? lang.equals(other) : langsMatchPrimary(lang, other);
+  }
+
+  /**
+   * true if the two languages have the same primary language subtag - e.g. en, en-US and en-AU all match each other
+   */
+  public static boolean langsMatchPrimary(String lang1, String lang2) {
+    if (lang1 == null || lang2 == null) {
+      return false;
+    }
+    return primaryLang(lang1).equalsIgnoreCase(primaryLang(lang2));
+  }
+
+  private static String primaryLang(String lang) {
+    int i = lang.indexOf('-');
+    return i < 0 ? lang : lang.substring(0, i);
+  }
+
   public static boolean scanForGeneratedNarrative(XhtmlNode x, String lang) {
     RenderingI18nContext rc = new RenderingI18nContext();
     rc.setLocale(Locale.forLanguageTag(lang));
@@ -997,6 +1033,10 @@ public class LanguageUtils {
 
   public boolean switchLanguage(Element e, String lang, boolean markLanguage, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {
     boolean changed = false;
+    if (e.isResource() && e.hasChild("language")) {
+      // a resource inside another (bundle entry, contained, parameter) may declare its own language
+      resourceLang = e.getNamedChildValue("language");
+    }
     if (e.getProperty().isTranslatable()) {
       if (keepTranslationsWhenTranslating) {
         Element ext = getTranslationExtension(e, lang);

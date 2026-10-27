@@ -61,7 +61,6 @@ public class InstanceValidatorOptionsConvertor {
     instanceValidatorParameters.setShowTerminologyRouting(options.showTerminologyRouting);
     instanceValidatorParameters.setDoImplicitFHIRPathStringConversion(options.doImplicitFHIRPathStringConversion);
     instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(options.allowDoubleQuotesInFHIRPath);
-    instanceValidatorParameters.setCheckIPSCodes(options.checkIPSCodes);
 
     // Enum fields - null check then setter
     if (options.r5BundleRelativeReferencePolicy != null) {

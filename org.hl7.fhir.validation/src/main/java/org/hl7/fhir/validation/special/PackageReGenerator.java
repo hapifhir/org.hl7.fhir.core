@@ -46,6 +46,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.IgLoader;
 import lombok.Getter;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 /**
  * Given a package id, and an expansion parameters, 
@@ -764,7 +765,7 @@ public class PackageReGenerator {
         log.info("Load FHIR from "+core.name()+"#"+core.version());
         SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).fromPackage(core);
         TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getFHIRVersion());
-        ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, true);
+        ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, FhirSettings.getTxEcosystem());
         var loader = new IgLoader(pcm, ctxt, ctxt.getFHIRVersion());
         loader.loadPackage(tho, true);
         loader.loadPackage(npm, true);

@@ -619,4 +619,46 @@ class NPMPackageGeneratorTest {
     Assertions.assertTrue(gen.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
         gen.getCreated().toString());
   }
+  @Test
+  void longNameIsShortenedTheSameWayEveryTime() throws IOException {
+    String name = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    NPMPackageGenerator first = generatorFor(minimalIg(), PackageType.IG, "5.0.0");
+    first.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    NPMPackageGenerator second = generatorFor(minimalIg(), PackageType.IG, "5.0.0");
+    second.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    Assertions.assertEquals(first.getCreated(), second.getCreated());
+
+    // hasFile finds the shortened file, and adding it again doesn't add a second copy
+    Assertions.assertTrue(first.hasFile(NPMPackageGenerator.Category.EXAMPLE, name));
+    int count = first.getCreated().size();
+    first.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    Assertions.assertEquals(count, first.getCreated().size());
+    first.finish();
+    second.finish();
+  }
+
+  @Test
+  void shortenedNameKeepsTypeAndExtension() {
+    String name = "ValueSet-" + "x".repeat(100) + ".xml";
+    String shortName = NPMPackageGenerator.shortenForTar("package/", name);
+    Assertions.assertTrue(shortName.startsWith("ValueSet-"), shortName);
+    Assertions.assertTrue(shortName.endsWith(".xml"), shortName);
+    Assertions.assertFalse(NPMPackageGenerator.tooLongForTar("package/" + shortName), shortName);
+  }
+
+  @Test
+  void shortenedNameWithoutTypePrefix() {
+    String name = "x".repeat(100) + ".json";
+    String shortName = NPMPackageGenerator.shortenForTar("package/", name);
+    Assertions.assertEquals(32 + ".json".length(), shortName.length(), shortName);
+  }
+
+  @Test
+  void shortenedNameDropsTypePrefixInDeepFolder() {
+    String folder = "package/" + "f".repeat(50) + "/";
+    String name = "QuestionnaireResponse-" + "x".repeat(60) + ".json";
+    String shortName = NPMPackageGenerator.shortenForTar(folder, name);
+    Assertions.assertFalse(shortName.startsWith("QuestionnaireResponse-"), shortName);
+    Assertions.assertFalse(NPMPackageGenerator.tooLongForTar(folder + shortName), shortName);
+  }
 }

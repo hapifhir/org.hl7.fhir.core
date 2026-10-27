@@ -56,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class NarrativeGenerationXTests {
 
@@ -252,14 +253,14 @@ public class NarrativeGenerationXTests {
   @BeforeAll
   public static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     contexts.put("5.0", simpleContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
     simpleContext.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" ), simpleContext));
 
     simpleContext = TestingUtilities.getSharedWorkerContext("4.0.1");
-    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     contexts.put("4.0", simpleContext);
     pcm = new FilesystemPackageCacheManager.Builder().build();
     ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");

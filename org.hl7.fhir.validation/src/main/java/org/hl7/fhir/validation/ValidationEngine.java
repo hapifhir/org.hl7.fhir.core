@@ -318,7 +318,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     private final String txServer;
     private final String txLog;
     private final FhirPublication txVersion;
-    private final boolean useEcosystem;
+    private final String ecosystem;
 
     @With
     private final TimeTracker timeTracker;
@@ -338,8 +338,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @Nonnull
     private InstanceValidatorParameters defaultInstanceValidatorParameters;
 
-    private static final boolean USE_ECOSYSTEM_DEFAULT = true;
-
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
       userAgent = null;
@@ -349,14 +347,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
-      useEcosystem = USE_ECOSYSTEM_DEFAULT;
+      ecosystem = FhirSettings.getTxEcosystem();
       loggingService = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
       thoVersion = null;
       extensionsVersion = null;
       defaultInstanceValidatorParameters = new InstanceValidatorParameters();
     }
 
-    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion, InstanceValidatorParameters defaultInstanceValidatorParameters) {
+    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, String ecosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion, InstanceValidatorParameters defaultInstanceValidatorParameters) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -366,23 +364,37 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
-      this.useEcosystem = useEcosystem;
+      this.ecosystem = ecosystem;
       this.thoVersion = thoVersion;
       this.extensionsVersion = extensionsVersion;
       this.defaultInstanceValidatorParameters = defaultInstanceValidatorParameters;
    }
 
+    /**
+     * @deprecated use {@link #withTxServer(String, String, FhirPublication, String)} - true means
+     * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+     */
+    @Deprecated
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
+      return withTxServer(txServer, txLog, txVersion, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(txServer) : null);
+    }
+
+    /**
+     * @param ecosystem the ecosystem coordination server (tx-reg) consulted to route terminology
+     * requests to other servers - typically FhirSettings.getTxEcosystem() - or null to send
+     * everything to txServer
+     */
+    public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, String ecosystem) {
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, ecosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngineBuilder withNoTerminologyServer() {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, null, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngineBuilder withDefaultInstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
       final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, instanceValidatorParameters);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, ecosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, instanceValidatorParameters);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -407,7 +419,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
       engine.getContext().setPackageTracker(engine);
       if (txServer != null) {
-        engine.setTerminologyServer(txServer, txLog, txVersion, useEcosystem);
+        engine.setTerminologyServer(txServer, txLog, txVersion, ecosystem);
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
@@ -548,11 +560,35 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ep;
   }
 
+  /**
+   * @deprecated use {@link #connectToTSServer(String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String connectToTSServer(String url, String log, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
-    return connectToTSServer(url, log, null, version, useEcosystem);
+    return connectToTSServer(url, log, null, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
   }
 
+  /**
+   * @deprecated use {@link #connectToTSServer(String, String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, txCachePath, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
+  }
+
+  /**
+   * Connect to a terminology server. ecosystem is the ecosystem coordination server (tx-reg)
+   * consulted to route requests to other servers - typically FhirSettings.getTxEcosystem() -
+   * or null to send everything to the one server. A null url means no terminology server at
+   * all, and then the ecosystem is not consulted either
+   */
+  public String connectToTSServer(String url, String log, FhirPublication version, String ecosystem) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, null, version, ecosystem);
+  }
+
+  public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, String ecosystem) throws URISyntaxException, IOException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
@@ -561,7 +597,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else {
       try {
         TerminologyClientFactory factory = new TerminologyClientFactory(version);
-        context.connectToTSServer(factory, url, context.getUserAgent(), log, useEcosystem);
+        context.connectToTSServer(factory, url, context.getUserAgent(), log, ecosystem);
         return "Connected to Terminology Server at "+url;
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
@@ -1102,8 +1138,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
-
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);
@@ -1285,8 +1319,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
+  /**
+   * @deprecated use {@link #setTerminologyServer(String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String setTerminologyServer(String src, String log, FhirPublication version, boolean useEcosystem) throws FHIRException, URISyntaxException, IOException {
-    return connectToTSServer(src, log, version, useEcosystem);
+    return connectToTSServer(src, log, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(src) : null);
+  }
+
+  public String setTerminologyServer(String src, String log, FhirPublication version, String ecosystem) throws FHIRException, URISyntaxException, IOException {
+    return connectToTSServer(src, log, version, ecosystem);
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {
@@ -1786,29 +1829,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     defaultInstanceValidatorParameters.setBundleValidationRules(bundleValidationRules);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isCheckIPSCodes() {
-    return defaultInstanceValidatorParameters.isCheckIPSCodes();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setCheckIPSCodes(boolean checkIPSCodes) {
-    defaultInstanceValidatorParameters.setCheckIPSCodes(checkIPSCodes);
     return this;
   }
 

@@ -23,6 +23,7 @@ public class FhirSettingsPOJO {
   protected static final String TX_SERVER_PROD = "https://tx.fhir.org";
   protected static final String TX_SERVER_DEV = "https://tx-dev.fhir.org";
   protected static final String TX_SERVER_LOCAL = "http://local.fhir.org:3001";
+  protected static final String TX_ECOSYSTEM = "https://ecosystem.hl7.org/tx-reg";
   
   private String fhirDirectory;
   private Map<String, String> apiKeys;
@@ -46,6 +47,7 @@ public class FhirSettingsPOJO {
   private String txFhirProduction;
   private String txFhirDevelopment;
   private String txFhirLocal;
+  private String txEcosystem;
 
   private Boolean ignoreDefaultPackageServers;
 
@@ -84,6 +86,7 @@ public class FhirSettingsPOJO {
       .txFhirProduction(overlay(a.getTxFhirProduction(), b.getTxFhirProduction()))
       .txFhirDevelopment(overlay(a.getTxFhirDevelopment(), b.getTxFhirDevelopment()))
       .txFhirLocal(overlay(a.getTxFhirLocal(), b.getTxFhirLocal()))
+      .txEcosystem(overlay(a.getTxEcosystem(), b.getTxEcosystem()))
       .ignoreDefaultPackageServers(overlay(a.getIgnoreDefaultPackageServers(), b.getIgnoreDefaultPackageServers()))
       .ssrfProtectionEnabled(overlay(a.getSsrfProtectionEnabled(), b.getSsrfProtectionEnabled()))
       .servers(concat(a.getServers(), b.getServers()))
@@ -142,6 +145,7 @@ public class FhirSettingsPOJO {
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
+    txEcosystem = TX_ECOSYSTEM;
     ssrfProtectionEnabled = true;
     servers = new ArrayList<>();
     certificateSources = new ArrayList<>();

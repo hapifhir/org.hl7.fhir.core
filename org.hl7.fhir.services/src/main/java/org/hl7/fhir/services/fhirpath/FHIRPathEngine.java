@@ -1459,6 +1459,13 @@ public class FHIRPathEngine {
     return true;
   }
 
+  private boolean checkParamCountOneOf(FHIRLexer lexer, SourceLocation location, ExpressionNode exp, int count1, int count2) throws FHIRLexerException {
+    if (exp.getParameters().size() != count1 && exp.getParameters().size() != count2) {
+      throw lexer.error("The function \""+exp.getName()+"\" requires "+Integer.toString(count1)+" or "+Integer.toString(count2)+" parameters", location.toString(), location);
+    }
+    return true;
+  }
+
   private boolean checkParameters(FHIRLexer lexer, SourceLocation location, ExpressionNode exp, FunctionDetails details) throws FHIRLexerException {
     switch (exp.getFunction()) {
     case Empty: return checkParamCount(lexer, location, exp, 0);
@@ -1561,8 +1568,12 @@ public class FHIRPathEngine {
     case Precision: return checkParamCount(lexer, location, exp, 0);
     case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
       case Debug: return checkParamCount(lexer, location, exp, 0, 1);
-      case Section: return checkParamCount(lexer, location, exp, 1, 1);
-      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
+      case Section: return checkParamCountOneOf(lexer, location, exp, 2, 4);
+      case Entry: return checkParamCountOneOf(lexer, location, exp, 2, 4);
+      case EntryIn: return checkParamCountOneOf(lexer, location, exp, 1, 3);
+      case Resources: return checkParamCount(lexer, location, exp, 2, 3);
+      case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
+      case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -4320,12 +4331,32 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         return focus;
       }
       case Section: {
-        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FHIR_NS+"Composition#Composition.section");
       }
       case Entry: {
-        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.ORDERED, "Resource");
+      }
+      case EntryIn: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.ORDERED, "Resource");
+      }
+      case Resources: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.ORDERED, documentResourceType(exp, 2));
+      }
+      case ResourcesIn: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.ORDERED, documentResourceType(exp, 1));
+      }
+      case SameSubject: {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
       }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
@@ -4612,6 +4643,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Debug: return funcDebug(context, focus, exp);
       case Section: return funcSection(context, focus, exp);
       case Entry: return funcEntry(context, focus, exp);
+      case EntryIn: return funcEntryIn(context, focus, exp);
+      case Resources: return funcResources(context, focus, exp);
+      case ResourcesIn: return funcResourcesIn(context, focus, exp);
+      case SameSubject: return funcSameSubject(context, focus, exp);
 
 
     case Custom: { 
@@ -5067,14 +5102,60 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return focus;
   }
 
+  // --- document functions: see DocumentFunctions --------------------------------------------
+
+  /** the value of a parameter, or null if there aren't that many */
+  private List<Base> docParam(ExecutionContext context, ExpressionNode expr, int index) {
+    return expr.getParameters().size() > index ? execute(context, baseToList(context.thisItem), expr.getParameters().get(index), true) : null;
+  }
+
+  /** the type resources() or resourcesIn() returns: the type parameter, when it's a literal */
+  private String documentResourceType(ExpressionNode exp, int index) {
+    if (exp.getParameters().size() > index) {
+      ExpressionNode p = exp.getParameters().get(index);
+      if (p.getKind() == Kind.Constant && p.getInner() == null && p.getConstant() != null && DocumentFunctions.isTypeName(p.getConstant().primitiveValue())
+          && worker.getResourceNames().contains(p.getConstant().primitiveValue())) {
+        return p.getConstant().primitiveValue();
+      }
+    }
+    return "Resource";
+  }
+
   private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    // TODO: this method needs to be written yet
-    return null;
+    DocumentFunctions df = new DocumentFunctions(this);
+    return df.section(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
+      df.bounds("section", docParam(context, expr, 2), docParam(context, expr, 3)));
   }
 
   private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    // TODO: this method needs to be written yet
-    return null;
+    DocumentFunctions df = new DocumentFunctions(this);
+    return df.entry(context.appInfo, context.rootResource, context.focusResource, focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
+      df.bounds("entry", docParam(context, expr, 2), docParam(context, expr, 3)));
+  }
+
+  private List<Base> funcEntryIn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    String vs = df.valueSet("entryIn", docParam(context, expr, 0));
+    return df.entryIn(context.appInfo, terminologyServiceOptions, context.rootResource, context.focusResource, focus, "entryIn", vs,
+      df.bounds("entryIn", docParam(context, expr, 1), docParam(context, expr, 2)));
+  }
+
+  private List<Base> funcResources(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    return df.resources(context.rootResource, context.focusResource, focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
+      df.resourceType("resources", docParam(context, expr, 2)));
+  }
+
+  private List<Base> funcResourcesIn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    String vs = df.valueSet("resourcesIn", docParam(context, expr, 0));
+    return df.resourcesIn(context.appInfo, terminologyServiceOptions, context.rootResource, context.focusResource, focus, "resourcesIn", vs,
+      df.resourceType("resourcesIn", docParam(context, expr, 1)));
+  }
+
+  private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
+    return same == null ? new ArrayList<Base>() : makeBoolean(same);
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

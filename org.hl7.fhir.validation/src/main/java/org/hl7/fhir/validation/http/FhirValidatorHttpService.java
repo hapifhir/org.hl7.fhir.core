@@ -27,13 +27,27 @@ public class FhirValidatorHttpService {
    */
   @Getter
   private final boolean loopbackOnly;
+  /**
+   * -- GETTER --
+   *  Whether the /txTest endpoints are on. They are for running the terminology ecosystem tests
+   *  from a build pipeline: they connect to a server the caller names and write output files on
+   *  this machine, so they are off unless asked for at start up.
+   */
+  @Getter
+  private final boolean txTestsEnabled;
   private final int port;
 
-  private Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new HashMap<>();
+  // the terminology test runs in progress (see TxTestHTTPHandler), by session id
+  private final Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new java.util.concurrent.ConcurrentHashMap<>();
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, int port) {
+    this(validationEngine, loopBackOnly, false, port);
+  }
+
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port) {
     this.validationEngine = validationEngine;
     this.loopbackOnly = loopBackOnly;
+    this.txTestsEnabled = txTestsEnabled;
     this.port = port;
     ResourcePercentageLogger.setLoggingSuppressed(true);
   }
@@ -49,6 +63,9 @@ public class FhirValidatorHttpService {
       // Uses 0.0.0.0 or ::0, which can be accessed outside the local machine (see java.net.InetAddress.anyLocalAddress)
       inetSocketAddress = new InetSocketAddress(port);
       log.warn("Server has been configured to be available on all available network interfaces (loopbackOnly=false). By running in this mode you are assuming responsibility for securing access to this application.");
+    }
+    if (txTestsEnabled && !loopbackOnly) {
+      log.warn("The terminology test endpoints (/txTest) are on, and the server is reachable from the network: callers can run tests against the servers configured in fhir-settings and write output files to this machine's temporary directory. They are intended for a build pipeline, not a public server.");
     }
     server = HttpServer.create(inetSocketAddress, 0);
 

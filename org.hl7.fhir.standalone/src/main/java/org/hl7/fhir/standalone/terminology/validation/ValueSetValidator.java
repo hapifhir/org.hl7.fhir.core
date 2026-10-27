@@ -684,7 +684,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
         CodeSystem scs = context.fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
-        if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
+        // a versioned CodeSystem.supplements (url|version) has to match too, and a supplement that
+        // fetchSupplementedCodeSystem already merged must not be merged again (which would also
+        // replace the record of what has been merged with only these ones)
+        if (scs != null && CodeSystemUtilities.supplementApplies(scs, cs) && !CodeSystemUtilities.isSupplementMerged(cs, scs)) {
           additionalSupplements.add(scs);
         }
       }
@@ -1860,7 +1863,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean shouldUseThisVersion(ConceptSetComponent vsi, String system, String version) {
-    if (version == null || version.equals(vsi.getVersion())) {
+    // an include with no system (one that only imports value sets) plays no part in choosing a code
+    // system version - the imported value sets choose their own - so it is always used
+    if (version == null || system == null || version.equals(vsi.getVersion())) {
       return true;
     }
     return !hasMatchForVersion(valueset.getCompose().getIncludeList(), system, version);

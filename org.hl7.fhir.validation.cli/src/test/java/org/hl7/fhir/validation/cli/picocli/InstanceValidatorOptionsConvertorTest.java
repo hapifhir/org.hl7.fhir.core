@@ -236,12 +236,6 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
-        "checkIPSCodes flag",
-        new InstanceValidatorOptions().withCheckIPSCodes(true),
-        new InstanceValidatorParameters().setCheckIPSCodes(true)
-      ),
-
-      Arguments.arguments(
         "htmlOutput path",
         new InstanceValidatorOptions().withHtmlOutput("/tmp/output.html"),
         new InstanceValidatorParameters().setHtmlOutput("/tmp/output.html")

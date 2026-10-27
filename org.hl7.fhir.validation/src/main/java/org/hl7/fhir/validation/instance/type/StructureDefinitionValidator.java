@@ -1640,7 +1640,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       if (!without.isEmpty() && without.size() < typeCharacteristics.size()) {
-        warning(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
+        hint(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
       }
     }
   }

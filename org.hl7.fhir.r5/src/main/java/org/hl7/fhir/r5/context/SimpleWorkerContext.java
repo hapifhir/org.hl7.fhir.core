@@ -81,6 +81,7 @@ import org.hl7.fhir.utilities.MagicResources;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -367,13 +368,28 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
+  /**
+   * @deprecated use {@link #connectToTSServer(ITerminologyClientFactory5, ITerminologyClient5, String)} -
+   * true means the default ecosystem if the server is the default one, and none otherwise
+   * (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public void connectToTSServer(ITerminologyClientFactory5 factory, ITerminologyClient5 client, boolean useEcosystem) {
+    connectToTSServer(factory, client, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(client.getAddress()) : null);
+  }
+
+  /**
+   * Connect to a terminology server. ecosystemUrl is the ecosystem coordination server
+   * (tx-reg) consulted to route requests to other servers - typically
+   * FhirSettings.getTxEcosystem() - or null to use the one server for everything
+   */
+  public void connectToTSServer(ITerminologyClientFactory5 factory, ITerminologyClient5 client, String ecosystemUrl) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
     }
     try {
-      terminologyClientManager.setMasterClient(client, useEcosystem);
+      terminologyClientManager.setMasterClient(client, ecosystemUrl);
       txLog("Connect to "+client.getAddress());
     } catch (Exception e) {
       if (canRunWithoutTerminology) {
@@ -391,7 +407,22 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }      
   }
   
+  /**
+   * @deprecated use {@link #connectToTSServer(ITerminologyClientFactory5, String, String, String, String)} -
+   * true means the default ecosystem if the server is the default one, and none otherwise
+   * (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public void connectToTSServer(ITerminologyClientFactory5 factory, String address, String software, String log, boolean useEcosystem) {
+    connectToTSServer(factory, address, software, log, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(address) : null);
+  }
+
+  /**
+   * Connect to a terminology server. ecosystemUrl is the ecosystem coordination server
+   * (tx-reg) consulted to route requests to other servers - typically
+   * FhirSettings.getTxEcosystem() - or null to use the one server for everything
+   */
+  public void connectToTSServer(ITerminologyClientFactory5 factory, String address, String software, String log, String ecosystemUrl) {
     try {
       terminologyClientManager.setFactory(factory);
       if (log != null) {
@@ -407,7 +438,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
-      connectToTSServer(factory, client, useEcosystem);
+      connectToTSServer(factory, client, ecosystemUrl);
       
     } catch (Exception e) {
       e.printStackTrace();
