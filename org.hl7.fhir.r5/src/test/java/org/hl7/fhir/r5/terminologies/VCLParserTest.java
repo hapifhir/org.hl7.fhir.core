@@ -443,6 +443,16 @@ public class VCLParserTest {
   }
 
   @Test
+  @DisplayName("Parentheses nested beyond the maximum depth should fail without overflowing the stack")
+  void testParse_parenthesesNestedBeyondMaxDepth_throwsParseException() {
+    int depth = 100_000;
+    String vcl = "(".repeat(depth) + "1" + ")".repeat(depth);
+
+    VCLParser.VCLParseException e = assertThrows(VCLParser.VCLParseException.class, () -> VCLParser.parse(vcl));
+    assertTrue(e.getMessage().contains("maximum nesting depth"));
+  }
+
+  @Test
   @DisplayName("Complex multi-part expression")
   void testComplexExpression() {
     assertDoesNotThrow(() -> {

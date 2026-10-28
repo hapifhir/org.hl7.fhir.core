@@ -209,8 +209,11 @@ public class VCLParser {
   }
 
   private static class Parser {
+    private static final int MAX_NESTING_DEPTH = 100;
+
     private List<Token> tokens;
     private int pos = 0;
+    private int depth = 0;
     private ValueSet valueSet;
     private ValueSetComposeComponent compose;
 
@@ -254,6 +257,18 @@ public class VCLParser {
     }
 
     private void parseSubExpr(boolean isExclusion) throws VCLParseException {
+      if (depth >= MAX_NESTING_DEPTH) {
+        throw new VCLParseException("Expression exceeds the maximum nesting depth of " + MAX_NESTING_DEPTH, current().position);
+      }
+      depth++;
+      try {
+        parseSubExprInner(isExclusion);
+      } finally {
+        depth--;
+      }
+    }
+
+    private void parseSubExprInner(boolean isExclusion) throws VCLParseException {
       String systemUri = null;
 
       if (current().type == TokenType.OPEN && peek().type == TokenType.URI) {
