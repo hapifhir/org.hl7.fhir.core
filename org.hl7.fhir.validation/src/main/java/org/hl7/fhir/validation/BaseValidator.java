@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -96,6 +98,7 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
+import org.hl7.fhir.validation.instance.utils.ElementMemos;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
@@ -214,6 +217,44 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected ValidatorSession session;
   protected ContextUtilities cu;
 
+  // what the validator remembers about the elements it validates, for this validation and for the session (see ElementMemos)
+  protected ElementMemos<? extends ExecutionMemo> executionMemos = ElementMemos.forExecution(ExecutionMemo::new);
+  protected ElementMemos<? extends SessionMemo> sessionMemos;
+
+  // when not null, each status warning raised, with the key it was raised for. Entry workers use this so that the
+  // validation of the Bundle can keep only the first of each, in entry order, as validating on one thread would
+  protected List<StatusWarning> statusWarningLog;
+
+  public record StatusWarning(String key, ValidationMessage message) {}
+
+  private static final String SESSION_MEMOS = "validator.element.memos.";
+
+  /**
+   * What the validator remembers about an element during one validation (see {@link ElementMemos})
+   */
+  public static class ExecutionMemo {
+    // for a Bundle: its entries, indexed for resolving references
+    public final ElementMemos.Once<BundleIndex> bundleIndex = new ElementMemos.Once<>();
+    // for a resource: the ids that something inside it refers to
+    public final ElementMemos.Once<Set<String>> internalRefs = new ElementMemos.Once<>();
+  }
+
+  /**
+   * What the validator remembers about an element for the rest of the session (see {@link ElementMemos})
+   */
+  public static class SessionMemo {
+    // for a reference: a problem resolving it in its Bundle has been reported
+    public final AtomicBoolean bundleErrorReported = new AtomicBoolean();
+    // every id and narrative anchor in the element, by name
+    public final ElementMemos.Once<Map<String, List<FragmentMatch>>> fragmentIndex = new ElementMemos.Once<>();
+  }
+
+  /**
+   * The entries of a bundle, by full URL ({@code map}) and by type/id ({@code relMap}), each with and without the
+   * version
+   */
+  public record BundleIndex(Map<String, List<Element>> map, Map<String, List<Element>> relMap) {}
+
   public BaseValidator(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, ValidatorSession session) {
     super();
     this.context = context;
@@ -222,6 +263,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (this.session == null) {
       this.session = new ValidatorSession();
     }
+    this.sessionMemos = sessionMemos(this.session, SessionMemo.class, SessionMemo::new);
     this.xverManager = xverManager;
     if (this.xverManager == null) {
       this.xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
@@ -235,6 +277,9 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     super();
     this.parent = parent;
     this.session = parent.session;
+    this.sessionMemos = parent.sessionMemos;
+    this.executionMemos = parent.executionMemos;
+    this.statusWarningLog = parent.statusWarningLog;
     this.context = parent.context;
     this.cu = parent.cu;
     this.xverManager = parent.xverManager;
@@ -247,6 +292,23 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.fetcher = parent.fetcher;
     this.policyAdvisor = parent.policyAdvisor;
     this.noTerminologyChecks = parent.noTerminologyChecks;
+  }
+
+  /**
+   * The memos kept for a session, made the first time the session is used. A session is used on one thread at a
+   * time; the entries of a Bundle validated concurrently share the validating thread's memos rather than asking the
+   * session.
+   */
+  @SuppressWarnings("unchecked")
+  protected static <M extends SessionMemo> ElementMemos<M> sessionMemos(ValidatorSession session, Class<M> type, Supplier<M> maker) {
+    return (ElementMemos<M>) session.getObjects().computeIfAbsent(SESSION_MEMOS + type.getName(), k -> ElementMemos.forSession(maker));
+  }
+
+  /**
+   * Whether this is the first problem resolving the reference in its Bundle; only the first is reported
+   */
+  private boolean firstBundleError(Element reference) {
+    return sessionMemos.of(reference).bundleErrorReported.compareAndSet(false, true);
   }
 
   private boolean doingLevel(IssueSeverity error) {
@@ -1085,68 +1147,73 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return null;
   }
 
-  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
-    @SuppressWarnings("unchecked")
-    Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map);
-    @SuppressWarnings("unchecked")
-    Map<String, List<Element>> relMap = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map_reverse);
+  /**
+   * The bundle's index, built the first time it's asked for during the validation
+   */
+  protected BundleIndex bundleIndex(Element bundle, List<Element> entries) {
+    return executionMemos.of(bundle).bundleIndex.get(() -> buildBundleIndex(entries));
+  }
+
+  private BundleIndex buildBundleIndex(List<Element> entries) {
+    Map<String, List<Element>> map = new HashMap<>();
+    Map<String, List<Element>> relMap = new HashMap<>();
     List<Element> list = null;
+    for (Element entry : entries) {
+      String fu = entry.getNamedChildValue(FULL_URL, false);
+      list = map.get(fu);
+      if (list == null) {
+        list = new ArrayList<Element>();
+        map.put(fu, list);
+      }
+      list.add(entry);
 
-    if (map == null) {
-      map = new HashMap<>();
-      bundle.setUserData(UserDataNames.validator_entry_map, map);
-      relMap = new HashMap<>();
-      bundle.setUserData(UserDataNames.validator_entry_map_reverse, relMap);
-      for (Element entry : entries) {
-        String fu = entry.getNamedChildValue(FULL_URL, false);
-        list = map.get(fu);
-        if (list == null) {
-          list = new ArrayList<Element>();
-          map.put(fu, list);
-        }
-        list.add(entry);
-
-        Element resource = entry.getNamedChild(RESOURCE, false);
-        if (resource != null) {
-          String et = resource.getType();
-          String eid = resource.getNamedChildValue(ID, false);
-          String rl = null;
-          if (eid != null) {
-            rl = et+"/"+eid;
-            list = relMap.get(rl);
-            if (list == null) {
-              list = new ArrayList<Element>();
-              relMap.put(rl, list);
-            }
-            list.add(entry);
+      Element resource = entry.getNamedChild(RESOURCE, false);
+      if (resource != null) {
+        String et = resource.getType();
+        String eid = resource.getNamedChildValue(ID, false);
+        String rl = null;
+        if (eid != null) {
+          rl = et+"/"+eid;
+          list = relMap.get(rl);
+          if (list == null) {
+            list = new ArrayList<Element>();
+            relMap.put(rl, list);
           }
-          boolean versionIdPresent = resource.hasChild(META, false)
-            && resource.getNamedChild(META, false).hasChild(VERSION_ID, false)
-            && resource.getNamedChild(META, false).getNamedChild(VERSION_ID, false).hasValue();
-          if (versionIdPresent){
-            String versionId = resource.getNamedChild(META).getNamedChild(VERSION_ID).getValue();
-            String fullUrlVersioned = fu + "/_history/" + versionId;
-            List<Element> listMapVersioned = null;
-            listMapVersioned = map.get(fullUrlVersioned);
-            if (listMapVersioned == null) {
-              listMapVersioned = new ArrayList<Element>();
-              map.put(fullUrlVersioned, listMapVersioned);
+          list.add(entry);
+        }
+        boolean versionIdPresent = resource.hasChild(META, false)
+          && resource.getNamedChild(META, false).hasChild(VERSION_ID, false)
+          && resource.getNamedChild(META, false).getNamedChild(VERSION_ID, false).hasValue();
+        if (versionIdPresent){
+          String versionId = resource.getNamedChild(META).getNamedChild(VERSION_ID).getValue();
+          String fullUrlVersioned = fu + "/_history/" + versionId;
+          List<Element> listMapVersioned = null;
+          listMapVersioned = map.get(fullUrlVersioned);
+          if (listMapVersioned == null) {
+            listMapVersioned = new ArrayList<Element>();
+            map.put(fullUrlVersioned, listMapVersioned);
+          }
+          listMapVersioned.add(entry);
+          if (rl != null) {
+            String relativePathVersioned = rl + "/_history/" + versionId;
+            List<Element> listRelMapVersioned = null;
+            listRelMapVersioned = relMap.get(relativePathVersioned);
+            if (listRelMapVersioned == null) {
+              listRelMapVersioned = new ArrayList<Element>();
+              relMap.put(relativePathVersioned, listRelMapVersioned);
             }
-            listMapVersioned.add(entry);
-            if (rl != null) {
-              String relativePathVersioned = rl + "/_history/" + versionId;
-              List<Element> listRelMapVersioned = null;
-              listRelMapVersioned = relMap.get(relativePathVersioned);
-              if (listRelMapVersioned == null) {
-                listRelMapVersioned = new ArrayList<Element>();
-                relMap.put(relativePathVersioned, listRelMapVersioned);
-              }
-              listRelMapVersioned.add(entry);
-            }
+            listRelMapVersioned.add(entry);
           }
         }
       }
     }
+    return new BundleIndex(map, relMap);
+  }
+
+  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
+    BundleIndex bi = bundleIndex(bundle, entries);
+    Map<String, List<Element>> map = bi.map();
+    Map<String, List<Element>> relMap = bi.relMap();
 
     String fragment = null;
     if (ref != null && ref.contains("#")) {
@@ -1168,8 +1235,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           String tt = extractResourceType(ref);
           ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
         }
-        if (!ok && stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
-          source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+        if (!ok && stack != null && firstBundleError(source)) {
           hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
         }
         return null;
@@ -1177,17 +1243,16 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         if (fragment != null) {
           int i = countFragmentMatches(el.get(0), fragment); // todo (GDG Sept 2026): should this pass in NodeStack?
           if (i == 0) {
-            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+            firstBundleError(source);
             hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);
           } else if (i > 1) {
-            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+            firstBundleError(source);
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT, i, ref, fragment, name);
           }
         }
         return el.get(0);
       } else {
-        if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
-          source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+        if (stack != null && firstBundleError(source)) {
           rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
         }
         return null;
@@ -1206,8 +1271,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         if (el.size() == 1) {
           return el.get(0);
         } else {
-          if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
-            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+          if (stack != null && firstBundleError(source)) {
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
           }
           return null;
@@ -1230,19 +1294,18 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
               if (!VersionUtilities.isR4Plus(context.getVersion())) {
                 if (el.size() == 1) {
                   return el.get(0);
-                } else if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
-                  source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+                } else if (stack != null && firstBundleError(source)) {
                   if (u == null) {
                     rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)), fullUrl);
                   } else {
                     rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, u, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
                   }
                 }
-              } else if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+              } else if (stack != null && !sessionMemos.of(source).bundleErrorReported.get()) {
                 if (ALLOW_TRANSIENT_BASE_REFERENCES && isTransientUrl(fullUrl) && el.size() == 1 && isTransientUrl(el.get(0).getNamedChildValue(FULL_URL, false))) {
                   return el.get(0);
                 }
-                source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+                firstBundleError(source);
                 if (u == null) {
                   rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)), fullUrl);
                 } else {
@@ -1250,8 +1313,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
                 }
               }
             } else {
-              if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
-                source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
+              if (stack != null && firstBundleError(source)) {
                 hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
               }
             }
@@ -1379,21 +1441,15 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * <p>
    * This is asked once per reference, and a resource (or worse, a bundle) can hold a great many references, so 
    * rather than walk the tree looking for one fragment at a time, we walk it once and index every id and 
-   * narrative anchor in it by name. The index hangs off the element for the session, since what it describes 
-   * doesn't change while the element is being validated
+   * narrative anchor in it by name. The index is kept for the session, since what it describes doesn't change 
+   * while the element is being validated
    */
-  @SuppressWarnings("unchecked")
   protected List<FragmentMatch> findFragmentMatches(Element element, String fragment) {
-    Map<String, List<FragmentMatch>> index = null;
-    if (session.getSessionId().equals(element.getUserString(UserDataNames.VALIDATION_FRAGMENT_INDEX_ID))) {
-      index = (Map<String, List<FragmentMatch>>) element.getUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX);
-    }
-    if (index == null) {
-      index = new HashMap<String, List<FragmentMatch>>();
-      indexFragments(index, element, "");
-      element.setUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX, index);
-      element.setUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX_ID, session.getSessionId());
-    }
+    Map<String, List<FragmentMatch>> index = sessionMemos.of(element).fragmentIndex.get(() -> {
+      Map<String, List<FragmentMatch>> res = new HashMap<String, List<FragmentMatch>>();
+      indexFragments(res, element, "");
+      return res;
+    });
     List<FragmentMatch> res = index.get(fragment);
     return res == null ? new ArrayList<FragmentMatch>() : res;
   }
@@ -1814,6 +1870,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         url.startsWith("urn:oid:1.3.6.1.4.1.32473.") || url.startsWith("urn:oid:2.999.");
   }
 
+  /**
+   * Records a warning that is only raised once (see statusWarnings), for an entry worker
+   */
+  protected void logStatusWarning(String key, List<ValidationMessage> errors, int before) {
+    if (statusWarningLog != null) {
+      for (int i = before; i < errors.size(); i++) {
+        statusWarningLog.add(new StatusWarning(key, errors.get(i)));
+      }
+    }
+  }
+
   protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
     boolean ok = true;
     String vurl = ex.getVersionedUrl();
@@ -1827,18 +1894,24 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         String note = ext == null || !ext.hasValue() ? null : MarkDownProcessor.markdownToPlainText(ext.getValue().primitiveValue());
 
         statusWarnings.add(vurl+":DEPRECATED");
+        int before = errors.size();
         hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false,
           Utilities.noString(note) ? I18nConstants.MSG_DEPENDS_ON_DEPRECATED : I18nConstants.MSG_DEPENDS_ON_DEPRECATED_NOTE, type, vurl, note);
+        logStatusWarning(vurl+":DEPRECATED", errors, before);
       }
     } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
       if (!statusWarnings.contains(vurl+":WITHDRAWN")) {
         statusWarnings.add(vurl+":WITHDRAWN");
+        int before = errors.size();
         hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_WITHDRAWN, type, vurl);
+        logStatusWarning(vurl+":WITHDRAWN", errors, before);
       }
     } else if (ex.getStatus() == PublicationStatus.RETIRED) {
       if (!statusWarnings.contains(vurl+":RETIRED")) {
         statusWarnings.add(vurl+":RETIRED");
+        int before = errors.size();
         hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_RETIRED, type, vurl);
+        logStatusWarning(vurl+":RETIRED", errors, before);
       }
     } else if (false && settings.isWarnOnDraftOrExperimental() && source != null) {
       // for now, this is disabled; these warnings are just everywhere, and it's an intractible problem.
@@ -1846,12 +1919,16 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       if (ex.getExperimental() && !source.getExperimental()) {
         if (!statusWarnings.contains(vurl+":Experimental")) {
           statusWarnings.add(vurl+":Experimental");
+          int before = errors.size();
           hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_EXPERIMENTAL, type, vurl);
+          logStatusWarning(vurl+":Experimental", errors, before);
         }
       } else if (ex.getStatus() == PublicationStatus.DRAFT && source.getStatus() != PublicationStatus.DRAFT) {
         if (!statusWarnings.contains(vurl+":Draft")) {
           statusWarnings.add(vurl+":Draft");
+          int before = errors.size();
           hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DRAFT, type, vurl);
+          logStatusWarning(vurl+":Draft", errors, before);
         }
       }
     }

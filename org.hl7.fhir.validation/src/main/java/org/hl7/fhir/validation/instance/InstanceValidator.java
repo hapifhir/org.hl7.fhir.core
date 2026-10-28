@@ -45,6 +45,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.Base64;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 
@@ -172,6 +177,7 @@ import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
 import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
 import org.hl7.fhir.validation.instance.utils.ChildIterator;
 import org.hl7.fhir.validation.instance.utils.ElementInfo;
+import org.hl7.fhir.validation.instance.utils.ElementMemos;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
@@ -212,8 +218,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     BASE, MAXVS, ADDITIONAL
   }
 
-  private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
-  private static final String EXECUTION_ID = "validator.execution.id";
   private static final boolean STACK_TRACE = false;
   private static final boolean SAVE_INTERMEDIARIES = false; // set this to true to get the intermediary formats while we are waiting for a UI around this z(SHC/SHL)
   
@@ -402,8 +406,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
       ValidationContext c = (ValidationContext) appContext;
 
-      if (refContext != null && refContext.hasUserData(UserDataNames.validator_bundle_resolution)) {
-        return (Base) refContext.getUserData(UserDataNames.validator_bundle_resolution);
+      InstanceExecutionMemo refMemo = refContext instanceof Element ? instanceExecutionMemos.peek((Element) refContext) : null;
+      if (refMemo != null && refMemo.bundleResolution != null) {
+        return refMemo.bundleResolution;
       }
 
       if (c.getAppContext() instanceof Element) {
@@ -457,7 +462,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         try {
           Element e = new ObjectConverter(context).convert((Resource) item);
           setParents(e);
-          self.validateResource(new ValidationContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null,
+          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, instanceExecutionMemos), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null,
               mode, false, false);
         } catch (IOException e1) {
           throw new FHIRException(e1);
@@ -465,11 +470,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (item instanceof Element) {
         Element e = (Element) item;
         if (e.getSpecial() == SpecialElement.CONTAINED) {
-          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getGroupingResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);          
+          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getGroupingResource(), instanceExecutionMemos), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);          
         } else if (e.getSpecial() != null) {
-          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);          
+          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, e, ctxt.getRootResource(), instanceExecutionMemos), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);          
         } else {
-          self.validateResource(new ValidationContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);
+          self.validateResource(new ValidationContext(ctxt.getAppContext(), e, instanceExecutionMemos), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage), null, mode, false, false);
         }
       } else
         throw new NotImplementedException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
@@ -569,7 +574,46 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Getter private ValidationTimeout timeout = null; // Default validation time out equal to 0 seconds (disabled)
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
-  private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
+  private ResourceValidationTracker resourceTracker = new ResourceValidationTracker();
+  // the invariants already checked on each element in this validation, and what they found. Kept per validator: the
+  // validators checking the entries of a Bundle concurrently each keep their own
+  private final IdentityHashMap<Element, Map<ExecutedConstraintCacheKey, List<ValidationMessage>>> executedConstraints = new IdentityHashMap<>();
+
+  /**
+   * What InstanceValidator remembers about an element during one validation (see {@link ElementMemos})
+   */
+  private static class InstanceExecutionMemo extends ExecutionMemo {
+    // for a narrative: what checking it produced, to replay for later profiles
+    private volatile XhtmlValidationOutcome xhtmlOutcome;
+    // for a Bundle: the references in its entries have been resolved against its entries
+    private final AtomicBoolean bundleReferencesResolved = new AtomicBoolean();
+    // for a reference: the resource it resolves to in its Bundle
+    private volatile Element bundleResolution;
+  }
+
+  /**
+   * What InstanceValidator remembers about an element for the rest of the session (see {@link ElementMemos})
+   */
+  private static class InstanceSessionMemo extends SessionMemo {
+    // for a base64Binary: its encoding has been checked
+    private final AtomicBoolean base64Checked = new AtomicBoolean();
+    // for a contained resource: its id has been checked
+    private final AtomicBoolean containedIdChecked = new AtomicBoolean();
+    // for an Attachment: what its content turned out to be
+    private final ElementMemos.Once<AttachmentContent> attachmentContent = new ElementMemos.Once<>();
+  }
+
+  private ElementMemos<InstanceExecutionMemo> instanceExecutionMemos;
+  private ElementMemos<InstanceSessionMemo> instanceSessionMemos;
+
+  // where the entries of the Bundle being validated are checked concurrently (see setEntryExecutor); null to check them
+  // one after another
+  @Getter
+  private ExecutorService entryExecutor;
+  // this validator is checking entries for another validator's validation of a Bundle
+  private boolean isEntryWorker;
+  // and this is the other validator
+  private InstanceValidator entryParent;
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -619,6 +663,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
     codingObserver = new CodingsObserver(theContext, settings, xverManager, session);
     oids = new OIDUtilities();
+    instanceSessionMemos = sessionMemos(this.session, InstanceSessionMemo.class, InstanceSessionMemo::new);
+    sessionMemos = instanceSessionMemos;
+    instanceExecutionMemos = ElementMemos.forExecution(InstanceExecutionMemo::new);
+    executionMemos = instanceExecutionMemos;
   }
 
   public void initializeFromParameters(InstanceValidatorParameters parameters) {
@@ -1025,7 +1073,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long overallStartTime = System.nanoTime();
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);
       if (profiles == null || profiles.isEmpty()) {
-        validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
+        validateResource(new ValidationContext(appContext, element, instanceExecutionMemos), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
       } else {
         int i = 0;
         while (i < profiles.size()) {
@@ -1044,7 +1092,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         for (StructureDefinition defn : profiles) {
           stack.getIds().clear();
-          validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
+          validateResource(new ValidationContext(appContext, element, instanceExecutionMemos), sizeLimitedErrors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
         }
       }
       if (hintAboutNonMustSupport && !profiles.isEmpty()) {
@@ -1125,6 +1173,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
     resourceTracker.clear();
+    executedConstraints.clear();
+    instanceExecutionMemos = ElementMemos.forExecution(InstanceExecutionMemo::new);
+    executionMemos = instanceExecutionMemos;
     trackedMessages.clear();
     messagesToRemove.clear();
     executionId = UUID.randomUUID().toString();
@@ -1536,9 +1587,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return checkDisp;
   }
 
+  private static int codeTextKey(String system, String code, String text) {
+    return (system+"||"+code+"||"+text).hashCode();
+  }
+
   private void recordCodeTextCombo(NodeStack node, String path, Coding c, String text) {
     if (!c.hasDisplay() || !c.getDisplay().equals(text)) {
-      int key = (c.getSystem()+"||"+c.getCode()+"||"+text).hashCode();
+      int key = codeTextKey(c.getSystem(), c.getCode(), text);
       if (!textsToCheckKeys.contains(key)) {
         textsToCheckKeys.add(key);
         textsToCheck.add(new CodeAndTextValidationRequest(node, path, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), c.getDisplay(), text));
@@ -2983,7 +3038,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (sd.getType().equals(resource.fhirType())) {
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       ValidationMode mode = new ValidationMode(ValidationReason.Expression, ProfileSource.FromExpression);
-      validateResource(new ValidationContext(appContext, resource), valerrors, resource, resource, sd, IdStatus.OPTIONAL, new NodeStack(context, null, resource, validationLanguage), null, mode, false, false);
+      validateResource(new ValidationContext(appContext, resource, instanceExecutionMemos), valerrors, resource, resource, sd, IdStatus.OPTIONAL, new NodeStack(context, null, resource, validationLanguage), null, mode, false, false);
       boolean ok = true;
       List<ValidationMessage> record = new ArrayList<>();
       for (ValidationMessage v : valerrors) {
@@ -3511,7 +3566,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("base64Binary")) {
         if (isNotBlank(elementValue)) {
           boolean bok = true;
-          if (!session.getSessionId().equals(e.getUserString(UserDataNames.VALIDATION_FLAG_BASE64))) {
+          if (instanceSessionMemos.of(e).base64Checked.compareAndSet(false, true)) {
             bok = Base64Util.isValidBase64(elementValue);
             if (!bok) {
               String value = elementValue.length() < 100 ? elementValue : "(snip)";
@@ -3524,7 +3579,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);
               }
             }
-            e.setUserData(UserDataNames.VALIDATION_FLAG_BASE64, session.getSessionId());
           }
           if (bok && context.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE)) {
             int size = Base64Util.countBase64DecodedBytes(elementValue);
@@ -3850,9 +3904,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private static final String ADDITIONAL_RESOURCES_REGISTRY = "https://fhir.github.io/ig-registry/additional-resources.json";
+  private static final String ADDITIONAL_RESOURCES_UNCHECKABLE = ADDITIONAL_RESOURCES_REGISTRY + ":UNCHECKABLE";
   private boolean additionalResourcesTried = false;
   private Set<String> additionalResourceNames = null; // null = registry not (successfully) read; otherwise the approved additional resource names
-  private boolean additionalResourcesWarned = false;
 
   /**
    * The approved additional resources from the ig-registry - resource type names that are legal even
@@ -3860,7 +3914,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * registry could not be read (in which case the caller cannot tell whether an unknown type is a
    * valid additional resource).
    */
-  private Set<String> getApprovedAdditionalResourceNames() {
+  private synchronized Set<String> getApprovedAdditionalResourceNames() {
+    if (entryParent != null) {
+      // read once, by the validator of the Bundle
+      return entryParent.getApprovedAdditionalResourceNames();
+    }
     if (!additionalResourcesTried) {
       additionalResourcesTried = true;
       try {
@@ -3913,13 +3971,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // v is an approved additional resource (defined in an IG, not the base spec) - not an error
           return true;
         }
-        if (additional == null && !additionalResourcesWarned) {
+        if (additional == null && !statusWarnings.contains(ADDITIONAL_RESOURCES_UNCHECKABLE)) {
           // could not read the approved-additional-resources registry, so we cannot verify that v is
           // not a valid additional resource. Warn once; the error below may be a false positive
-          additionalResourcesWarned = true;
+          statusWarnings.add(ADDITIONAL_RESOURCES_UNCHECKABLE);
+          int before = errors.size();
           warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_ADDITIONAL_UNCHECKABLE, ADDITIONAL_RESOURCES_REGISTRY);
+          logStatusWarning(ADDITIONAL_RESOURCES_UNCHECKABLE, errors, before);
         }
-        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, additionalResourceNames.contains(v), I18nConstants.SD_TYPE_NOT_LOCAL, v);
+        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, additional != null && additional.contains(v), I18nConstants.SD_TYPE_NOT_LOCAL, v);
       }
     }
   }
@@ -4407,7 +4467,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * later tells us whether a contained resource is referenced by anything)
    */
   private boolean checkXhtml(ValidationContext valContext, List<ValidationMessage> errors, String path, Element e, XhtmlNode xhtml, NodeStack node, Element resource) {
-    XhtmlValidationOutcome outcome = (XhtmlValidationOutcome) e.getUserData(UserDataNames.VALIDATION_XHTML_OUTCOME);
+    InstanceExecutionMemo memo = instanceExecutionMemos.of(e);
+    XhtmlValidationOutcome outcome = memo.xhtmlOutcome;
     if (outcome == null || !outcome.isFor(executionId, path)) {
       // the same narrative can be checked at more than one path (a resource validated in place and again as the 
       // target of a reference), and the path is in the messages, so a different path means checking it again
@@ -4419,7 +4480,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Set<String> refs = new HashSet<String>(valContext.getInternalRefs());
       refs.removeAll(refsBefore);
       outcome = new XhtmlValidationOutcome(executionId, path, ok, messages, refs);
-      e.setUserData(UserDataNames.VALIDATION_XHTML_OUTCOME, outcome);
+      memo.xhtmlOutcome = outcome;
     } else {
       valContext.getInternalRefs().addAll(outcome.getInternalRefs());
     }
@@ -4844,11 +4905,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    *   is needed - a profile validated later may have a maxSize, and then it is fetched at that point
    */
   private AttachmentContent getAttachmentContent(Element element, boolean needed) {
-    AttachmentContent res = (AttachmentContent) element.getUserData(UserDataNames.VALIDATION_ATTACHMENT_CONTENT);
-    if (res == null || !session.getSessionId().equals(res.sessionId)) {
-      res = new AttachmentContent(session.getSessionId());
-      element.setUserData(UserDataNames.VALIDATION_ATTACHMENT_CONTENT, res);
+    AttachmentContent res = instanceSessionMemos.of(element).attachmentContent.get(() -> new AttachmentContent(session.getSessionId()));
+    // the content is worked out in place, by whichever thread needs it first
+    synchronized (res) {
+      return resolveAttachmentContent(element, needed, res);
     }
+  }
+
+  private AttachmentContent resolveAttachmentContent(Element element, boolean needed, AttachmentContent res) {
     if (res.resolved) {
       return res;
     }
@@ -7008,8 +7072,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void resolveBundleReferences(Element element, List<Element> bundles) throws TimeoutException {
     timeTracker.checkValidationTimeoutExceeded();
-    if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
-      element.setUserData(UserDataNames.validator_bundle_resolved, true);
+    if (instanceExecutionMemos.of(element).bundleReferencesResolved.compareAndSet(false, true)) {
       List<Element> list = new ArrayList<Element>();
       list.addAll(bundles);
       list.add(0, element);
@@ -7043,7 +7106,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           List<Element> entries = bundle.getChildren(ENTRY);
           Element tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase(), null, null, null, element, false, false);
           if (tgt != null) {
-            element.setUserData(UserDataNames.validator_bundle_resolution, tgt.getNamedChild(RESOURCE, false));
+            instanceExecutionMemos.of(element).bundleResolution = tgt.getNamedChild(RESOURCE, false);
             return;
           }
         }
@@ -7089,8 +7152,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     validationContext = defn.getVersionedUrl();
 
     boolean ok = true;
-    ResourceValidationTracker resTracker = getResourceTracker(element);
-    List<ValidationMessage> cachedErrors = resTracker.getOutcomes(defn);
+    List<ValidationMessage> cachedErrors = defn.hasSnapshot() ? resourceTracker.startValidating(element, defn) : null;
     if (cachedErrors != null) {
       for (ValidationMessage vm : cachedErrors) {
         if (!errors.contains(vm)) {
@@ -7102,17 +7164,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT, defn.getVersionedUrl())) {
       List<ValidationMessage> localErrors = new ArrayList<ValidationMessage>();
-      resTracker.startValidating(defn);
       trackUsage(defn, valContext, element);
       try {
         ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
       }
       catch (TimeoutException te) {
+        resourceTracker.abandon(element, defn);
         // Intercept exception to allow processing of any localErrors
         addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
         throw new TimeoutException(te, this.timeout.getTimeoutMillis());
       }
-      resTracker.storeOutcomes(defn, localErrors);
+      catch (RuntimeException | Error e) {
+        resourceTracker.abandon(element, defn);
+        throw e;
+      }
+      resourceTracker.storeOutcomes(element, defn, localErrors);
       addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
     } else {
       ok = false;
@@ -7307,15 +7373,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private ResourceValidationTracker getResourceTracker(Element element) {
-    ResourceValidationTracker res = resourceTracker.get(element);
-    if (res == null) {
-      res = new ResourceValidationTracker();
-      resourceTracker.put(element, res);
-    }
-    return res;
-  }
-
   private void checkLang(Element resource, NodeStack stack) {
     String lang = resource.getNamedChildValue("language", false);
     if (!Utilities.noString(lang))
@@ -7469,8 +7526,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
 
           if (special == SpecialElement.CONTAINED) {
-            if (!session.getSessionId().equals(element.getUserData(UserDataNames.validator_contained_Id))) {
-              element.setUserData(UserDataNames.validator_contained_Id, session.getSessionId());
+            if (instanceSessionMemos.of(element).containedIdChecked.compareAndSet(false, true)) {
               String id = element.getNamedChildValue("id");
               if (id == null) {
                 // this is an error handled elsewhere
@@ -7637,6 +7693,270 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
 
+  /**
+   * Check the entries of the Bundle being validated concurrently, on this executor, instead of one after another.
+   * Null, the default, checks them one after another.
+   * <p>
+   * Only the entries of the Bundle being validated are checked concurrently, each by a validator set up like this one
+   * (see {@link #configureLike}). Everything else about the Bundle happens as before, on the thread that called
+   * {@code validate()}: assigning entries to slices and profiles before the entries are checked, and the Bundle's own
+   * invariants and the Bundle-specific checks after them. What checking the entries produced is merged back in entry
+   * order, so the outcome is the same as checking them one after another, with these exceptions:
+   * <ul>
+   *   <li>Each entry is checked for duplicate element ids on its own, so an id duplicated between two entries
+   *   (outside their resources, which have their own scope for ids) is not reported.</li>
+   *   <li>Where resources refer to each other in a cycle, which of them is validated against which profile first, and
+   *   so which messages the cycle produces, depends on timing, where it depends on the order of the entries when
+   *   checking them one after another.</li>
+   *   <li>A status warning (for example, depending on a deprecated profile) about a resource that several entries
+   *   refer to can be reported where another entry used the same definition, when one thread reports it at the
+   *   other.</li>
+   * </ul>
+   * The fetcher, policy advisor, host services, usage tracker and signature services this validator was given are
+   * then called from the executor's threads, concurrently.
+   * <p>
+   * The executor must not be the one that calls {@code validate()}, since that thread waits for the entries to finish.
+   */
+  public void setEntryExecutor(ExecutorService entryExecutor) {
+    this.entryExecutor = entryExecutor;
+  }
+
+  /**
+   * A validator to check entries for this one, on another thread
+   */
+  private InstanceValidator newEntryWorker() {
+    InstanceValidator worker = new InstanceValidator(context, externalHostServices, xverManager, session, settings);
+    worker.configureLike(this);
+    worker.isEntryWorker = true;
+    worker.entryParent = this;
+    return worker;
+  }
+
+  /**
+   * Takes every setting of the other validator: everything about it that isn't the state of a validation. A new
+   * setting must be added here, or validating the entries of a Bundle concurrently will ignore it (the test
+   * InstanceValidatorEntryWorkerTest checks that every field is either copied or listed as validation state).
+   */
+  private void configureLike(InstanceValidator other) {
+    // BaseValidator
+    fetcher = other.fetcher;
+    policyAdvisor = other.policyAdvisor;
+    noTerminologyChecks = other.noTerminologyChecks;
+    getValidationControl().putAll(other.getValidationControl());
+    // InstanceValidator
+    checkDisplay = other.checkDisplay;
+    anyExtensionsAllowed = other.anyExtensionsAllowed;
+    errorForUnknownProfiles = other.errorForUnknownProfiles;
+    noInvariantChecks = other.noInvariantChecks;
+    wantInvariantInMessage = other.wantInvariantInMessage;
+    hintAboutNonMustSupport = other.hintAboutNonMustSupport;
+    showMessagesFromReferences = other.showMessagesFromReferences;
+    validationLanguage = other.validationLanguage;
+    noCheckAggregation = other.noCheckAggregation;
+    wantCheckSnapshotUnchanged = other.wantCheckSnapshotUnchanged;
+    noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
+    htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    allowComments = other.allowComments;
+    allowDoubleQuotesInFHIRPath = other.allowDoubleQuotesInFHIRPath;
+    fpe.setAllowDoubleQuotes(other.fpe.isAllowDoubleQuotes());
+    fpe.setDoImplicitStringConversion(other.fpe.isDoImplicitStringConversion());
+    igs = other.igs;
+    extensionDomains = other.extensionDomains;
+    resourceIdRule = other.resourceIdRule;
+    allowXsiLocation = other.allowXsiLocation;
+    suppressLoincSnomedMessages = other.suppressLoincSnomedMessages;
+    maxMessages = other.maxMessages;
+    timeout = other.timeout;
+    noBindingMsgSuppressed = other.noBindingMsgSuppressed;
+    noExtensibleWarnings = other.noExtensibleWarnings;
+    serverBase = other.serverBase;
+    tracker = other.tracker;
+    securityChecks = other.securityChecks;
+    crumbTrails = other.crumbTrails;
+    bundleValidationRules = other.bundleValidationRules;
+    questionnaireMode = other.questionnaireMode;
+    logProgress = other.logProgress;
+    testMode = other.testMode;
+    example = other.example;
+    signatureServices = other.signatureServices;
+    unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
+    noExperimentalContent = other.noExperimentalContent;
+    aiService = other.aiService;
+    cacheFolder = other.cacheFolder;
+    matchetypeStatus = other.matchetypeStatus;
+    codingObserver.setCheckIPSCodes(other.codingObserver.isCheckIPSCodes());
+  }
+
+  /**
+   * Step 5 of validateElement for the Bundle being validated, with its entries checked concurrently (see
+   * {@link #setEntryExecutor}). The children before the entries are checked first, and those after them last,
+   * on this thread, and each entry's outcome is merged back in entry order, so everything after the entries sees what
+   * it would if they had been checked here, one after another.
+   */
+  private boolean checkChildrenWithConcurrentEntries(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
+                                                     Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext,
+                                                     List<ElementInfo> children, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) {
+    boolean ok = true;
+    int i = 0;
+    while (i < children.size() && !ENTRY.equals(children.get(i).getName())) {
+      ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, children.get(i), extensionUrl, pct, mode) && ok;
+      i++;
+    }
+    List<Future<EntryOutcome>> outcomes = new ArrayList<>();
+    if (i < children.size()) {
+      prepareForConcurrentEntries(element);
+      EntryStart start = new EntryStart(this, valContext, validationContext, new HashMap<>(fetchCache), Set.copyOf(statusWarnings), new HashMap<>(stack.getIds()), stack.getWorkingLang(), new ConcurrentHashMap<>());
+      while (i < children.size() && ENTRY.equals(children.get(i).getName())) {
+        ElementInfo ei = children.get(i);
+        outcomes.add(entryExecutor.submit(() -> start.worker()
+          .checkEntry(start, profile, definition, resource, element, actualType, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode)));
+        i++;
+      }
+    }
+    try {
+      for (Future<EntryOutcome> next : outcomes) {
+        ok = mergeEntryOutcome(errors, valContext, join(next)) && ok;
+      }
+    } catch (RuntimeException | Error e) {
+      for (Future<EntryOutcome> next : outcomes) {
+        next.cancel(true);
+      }
+      throw e;
+    }
+    while (i < children.size()) {
+      ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, children.get(i), extensionUrl, pct, mode) && ok;
+      i++;
+    }
+    return ok;
+  }
+
+  /**
+   * What the validators checking the entries need from the validator of the Bundle, taken when the entries start,
+   * and the validators themselves: one for each thread that checks entries, made for this validation
+   */
+  private record EntryStart(InstanceValidator parent, ValidationContext valContext, String validationContext, Map<String, Element> fetchCache,
+                            Set<String> statusWarnings, Map<String, Element> ids, String workingLang, Map<Thread, InstanceValidator> workers) {
+    InstanceValidator worker() {
+      return workers.computeIfAbsent(Thread.currentThread(), t -> parent.newEntryWorker());
+    }
+  }
+
+  /**
+   * What checking an entry produced, to be merged into the validation of the Bundle
+   */
+  private record EntryOutcome(boolean ok, List<ValidationMessage> errors, List<TrackedLocationRelatedMessage> trackedMessages, List<ValidationMessage> messagesToRemove,
+                              List<StatusWarning> statusWarnings, List<CodingsObserver.CodingUsage> codings, List<CodeAndTextValidationRequest> textsToCheck,
+                              Map<String, List<ValidationMessage>> sliceRecords) {}
+
+  /**
+   * Builds, on this thread, the indexes of the element tree that are otherwise built the first time they are read, so
+   * that the threads checking the entries only ever read them
+   */
+  private static void prepareForConcurrentEntries(Element element) {
+    if (element.hasChildren()) {
+      // builds the by-name index of a large child list
+      element.getChildren().getSizeByName("");
+      for (Element child : element.getChildren()) {
+        prepareForConcurrentEntries(child);
+      }
+    }
+  }
+
+  /**
+   * Checks an entry of the Bundle another validator is validating, on behalf of that validator. Runs on an executor
+   * thread; this validator belongs to that thread for the validation.
+   */
+  private EntryOutcome checkEntry(EntryStart start, StructureDefinition profile, ElementDefinition definition, Element resource, Element element, String actualType,
+                                  boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) {
+    InstanceValidator parent = start.parent();
+    if (!parent.executionId.equals(executionId)) {
+      // the first entry this validator checks
+      executionId = parent.executionId;
+      fetchCache.putAll(start.fetchCache());
+    }
+    // the state of the validation is the parent's
+    session = parent.session;
+    instanceSessionMemos = parent.instanceSessionMemos;
+    sessionMemos = instanceSessionMemos;
+    instanceExecutionMemos = parent.instanceExecutionMemos;
+    executionMemos = instanceExecutionMemos;
+    resourceTracker = parent.resourceTracker;
+    validationContext = start.validationContext();
+    // and what this entry adds to it is collected, for the parent to merge
+    statusWarnings = new HashSet<>(start.statusWarnings());
+    statusWarningLog = new ArrayList<>();
+    trackedMessages.clear();
+    messagesToRemove.clear();
+    textsToCheck.clear();
+    textsToCheckKeys.clear();
+    codingObserver.drain();
+    timeTracker.initializeValidationTimeout(timeout == null ? 0 : timeout.getTimeoutMillis());
+
+    ValidationContext valContext = start.valContext();
+    ValidationContext entryContext = new ValidationContext(valContext.getAppContext(), valContext.getResource(), valContext.getRootResource(), valContext.getGroupingResource(), instanceExecutionMemos);
+    entryContext.setMatchetype(valContext.isMatchetype());
+    entryContext.setCheckSpecials(valContext.isCheckSpecials());
+    entryContext.setProfile(valContext.getProfile());
+    entryContext.setVersion(valContext.getVersion());
+    if (valContext.getSliceRecords() != null) {
+      entryContext.setSliceRecords(new HashMap<>());
+    }
+    NodeStack entryStack = new NodeStack(context, null, element, validationLanguage).resetIds();
+    entryStack.getIds().putAll(start.ids());
+    entryStack.setWorkingLang(start.workingLang());
+
+    List<ValidationMessage> entryErrors = new ArrayList<>();
+    boolean ok = checkChild(entryContext, entryErrors, profile, definition, resource, element, actualType, entryStack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode);
+    EntryOutcome res = new EntryOutcome(ok, entryErrors, new ArrayList<>(trackedMessages), new ArrayList<>(messagesToRemove), statusWarningLog,
+      codingObserver.drain(), new ArrayList<>(textsToCheck), entryContext.getSliceRecords());
+    statusWarningLog = null;
+    return res;
+  }
+
+  /**
+   * Merges what checking an entry produced into this validation, as if the entry had been checked on this thread
+   */
+  private boolean mergeEntryOutcome(List<ValidationMessage> errors, ValidationContext valContext, EntryOutcome outcome) {
+    List<ValidationMessage> entryErrors = outcome.errors();
+    // a status warning is only raised the first time, in entry order
+    for (StatusWarning sw : outcome.statusWarnings()) {
+      if (!statusWarnings.add(sw.key())) {
+        entryErrors.removeIf(m -> m == sw.message());
+      }
+    }
+    // on one thread, the messages of an entry's resource are merged in the same way (see startInner)
+    addMessagesReplaceExistingIfMoreSevere(errors, entryErrors);
+    trackedMessages.addAll(outcome.trackedMessages());
+    messagesToRemove.addAll(outcome.messagesToRemove());
+    for (CodeAndTextValidationRequest tt : outcome.textsToCheck()) {
+      if (textsToCheckKeys.add(codeTextKey(tt.getSystem(), tt.getCode(), tt.getText()))) {
+        textsToCheck.add(tt);
+      }
+    }
+    codingObserver.takeOver(outcome.codings());
+    if (outcome.sliceRecords() != null && valContext.getSliceRecords() != null) {
+      valContext.getSliceRecords().putAll(outcome.sliceRecords());
+    }
+    return outcome.ok();
+  }
+
+  private static <T> T join(Future<T> future) {
+    try {
+      return future.get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new FHIRException(e);
+    } catch (ExecutionException e) {
+      if (e.getCause() instanceof RuntimeException runtime) {
+        throw runtime;
+      }
+      if (e.getCause() instanceof Error error) {
+        throw error;
+      }
+      throw new FHIRException(e.getCause());
+    }
+  }
+
   private boolean validateElement(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
                                   Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
 
@@ -7699,8 +8019,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // 4. check order if any slices are ordered. (todo)
         
     // 5. inspect each child for validity
-    for (ElementInfo ei : children) {
-      ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode) && ok;
+    if (entryExecutor != null && !isEntryWorker && stack.getParent() == null && element == resource && BUNDLE.equals(element.fhirType())) {
+      ok = checkChildrenWithConcurrentEntries(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, children, extensionUrl, pct, mode) && ok;
+    } else {
+      for (ElementInfo ei : children) {
+        ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode) && ok;
+      }
     }
 
     // check type invariants (after we've sliced the children)
@@ -8251,16 +8575,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       profile.setUserData(UserDataNames.keyview_usesMustSupport, usesMustSupport);
     }
-    String elementSupported = ei.getElement().getUserString(UserDataNames.keyview_elementSupported);
-    String fixedValue = ei.getElement().getUserString(UserDataNames.keyview_hasFixed);
-    if ((elementSupported == null || !elementSupported.equals("Y")) && ei.getDefinition().getMustSupport()) {
-      if (ei.getDefinition().getMustSupport()) {
-        ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
-      }
-    } else if (elementSupported == null && !usesMustSupport.equals("Y"))
-      ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "NA");
-    if (fixedValue==null  && (ei.getDefinition().hasFixed() || ei.getDefinition().hasPattern()))
-      ei.getElement().setUserData(UserDataNames.keyview_hasFixed, "Y");
+    // read and updated together; the entries of a Bundle validated concurrently can reach the same element
+    synchronized (ei.getElement()) {
+      String elementSupported = ei.getElement().getUserString(UserDataNames.keyview_elementSupported);
+      String fixedValue = ei.getElement().getUserString(UserDataNames.keyview_hasFixed);
+      if ((elementSupported == null || !elementSupported.equals("Y")) && ei.getDefinition().getMustSupport()) {
+        if (ei.getDefinition().getMustSupport()) {
+          ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
+        }
+      } else if (elementSupported == null && !usesMustSupport.equals("Y"))
+        ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "NA");
+      if (fixedValue==null  && (ei.getDefinition().hasFixed() || ei.getDefinition().hasPattern()))
+        ei.getElement().setUserData(UserDataNames.keyview_hasFixed, "Y");
+    }
   }
 
   public boolean checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
@@ -8742,13 +9069,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || (!isInheritedProfile(profile, inv.getSource()) && !isInheritedProfile(ed.getType(), inv.getSource(), profile)) )) {
-        @SuppressWarnings("unchecked")
-        Map<ExecutedConstraintCacheKey, List<ValidationMessage>> invMap = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Map<ExecutedConstraintCacheKey, List<ValidationMessage>>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
-        if (invMap == null) {
-          invMap = new HashMap<>();
-          element.setUserData(EXECUTED_CONSTRAINT_LIST, invMap);
-          element.setUserData(EXECUTION_ID, executionId);
-        }
+        Map<ExecutedConstraintCacheKey, List<ValidationMessage>> invMap = executedConstraints.computeIfAbsent(element, k -> new HashMap<>());
         List<ValidationMessage> invErrors = null;
         // We key based on inv.expression rather than inv.key because expressions can change in derived profiles and aren't guaranteed to be consistent across profiles.
         String fixedExpr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion());
@@ -8969,14 +9290,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  /**
+   * The ids referred to from inside the resource, or null if it hasn't been validated in this validation
+   */
+  private Set<String> internalRefs(Element resource) {
+    InstanceExecutionMemo memo = instanceExecutionMemos.peek(resource);
+    return memo == null ? null : memo.internalRefs.peek();
+  }
+
   private boolean checkContainedReferences(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack) {
     boolean ok = true;
-    Set<String> baseRefs = (Set<String>) element.getUserData(ValidationContext.INTERNAL_REFERENCES_NAME);
+    Set<String> baseRefs = internalRefs(element);
     List<Element> containedList = element.getChildrenByName("contained");
     if (!containedList.isEmpty()) {
       boolean allDone = true;
       for (Element contained : containedList) {
-        allDone = allDone && contained.hasUserData(ValidationContext.INTERNAL_REFERENCES_NAME);
+        allDone = allDone && internalRefs(contained) != null;
       }
       if (allDone) {
         // We collected all the internal references in sets on the resource and the contained resources
@@ -9001,20 +9330,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isReferencedFromBase(Element contained, Set<String> baseRefs, List<Element> containedList, List<Element> ignoreList) {
     String id = contained.getIdBase();
-    if (baseRefs.contains(id)) {
+    // the sets of references are concurrent, and don't accept null; a contained resource without an id isn't in them
+    if (id != null && baseRefs.contains(id)) {
       return true;
     }
-    Set<String> irefs = (Set<String>) contained.getUserData(ValidationContext.INTERNAL_REFERENCES_NAME);
+    Set<String> irefs = internalRefs(contained);
     if (irefs.contains("")) {
       return true;
     }
     for (Element c : containedList) {
       if (c != contained && !ignoreList.contains(c)) { // ignore list is to prevent getting into an unterminated loop
-        Set<String> refs = (Set<String>) c.getUserData(ValidationContext.INTERNAL_REFERENCES_NAME);
+        Set<String> refs = internalRefs(c);
         List<Element> ignoreList2 = new ArrayList<Element>();
         ignoreList2.addAll(ignoreList);
         ignoreList2.add(c);
-        if (refs != null && refs.contains(id) && isReferencedFromBase(c, baseRefs, containedList, ignoreList2)) {
+        if (refs != null && id != null && refs.contains(id) && isReferencedFromBase(c, baseRefs, containedList, ignoreList2)) {
           return true;
         }            
       }

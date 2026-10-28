@@ -27,7 +27,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 @Slf4j
 public class CodingsObserver extends BaseValidator {
 
-  private class CodingUsage {
+  public static class CodingUsage {
 
     private NodeStack stack;
     private Coding c;
@@ -69,6 +69,24 @@ public class CodingsObserver extends BaseValidator {
   public void seeCode(NodeStack stack, Coding c) {
     list.add(new CodingUsage(stack, c));
     
+  }
+
+  /**
+   * Takes over the codings another observer has seen, and clears them there. When the entries of a Bundle are
+   * validated on other threads, each thread's validator has its own observer, and the validator of the Bundle takes
+   * over what they saw, so that {@link #finish} sees every coding in the Bundle.
+   */
+  public void takeOver(List<CodingUsage> seen) {
+    list.addAll(seen);
+  }
+
+  /**
+   * The codings seen since the last call, for {@link #takeOver} by another observer
+   */
+  public List<CodingUsage> drain() {
+    List<CodingUsage> res = new ArrayList<>(list);
+    list.clear();
+    return res;
   }
 
   public void finish(List<ValidationMessage> errors, NodeStack rootStack) {

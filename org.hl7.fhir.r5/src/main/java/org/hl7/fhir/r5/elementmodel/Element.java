@@ -743,7 +743,37 @@ public class Element extends Base implements NamedItem {
 	  }
 	}
 	
-	public void markValidation(StructureDefinition profile, ElementDefinition definition) {
+  // The validator can validate the entries of a Bundle on several threads at once, and a resource that entries refer to
+  // is then annotated by more than one of them: the definitions it matched (addDefinition, addSliceDefinition,
+  // markValidation), crumb trail messages (addMessage), and a few user data items. So these are synchronized on
+  // the element. The validator's own working state is not kept on the element (see ElementMemos in the validator).
+
+  @Override
+  public synchronized Object getUserData(String name) {
+    return super.getUserData(name);
+  }
+
+  @Override
+  public synchronized void setUserData(String name, Object value) {
+    super.setUserData(name, value);
+  }
+
+  @Override
+  public synchronized void setUserDataINN(String name, Object value) {
+    super.setUserDataINN(name, value);
+  }
+
+  @Override
+  public synchronized void clearUserData(String name) {
+    super.clearUserData(name);
+  }
+
+  @Override
+  public synchronized boolean hasUserData(String name) {
+    return super.hasUserData(name);
+  }
+
+	public synchronized void markValidation(StructureDefinition profile, ElementDefinition definition) {
 	  @SuppressWarnings("unchecked")
     List<ElementDecoration> decorations = (List<ElementDecoration>) getUserData(UserDataNames.rendering_xml_decorations);
 	  if (decorations == null) {
@@ -1314,7 +1344,7 @@ public class Element extends Base implements NamedItem {
     this.path = path;
   }  
   
-  public void addMessage(ValidationMessage vm) {
+  public synchronized void addMessage(ValidationMessage vm) {
     if (messages == null) {
       messages = new ArrayList<>();
     }
@@ -1399,7 +1429,7 @@ public class Element extends Base implements NamedItem {
   }
 
   @Override
-  public ValidationInfo addDefinition(StructureDefinition source, ElementDefinition defn, ValidationMode mode) {
+  public synchronized ValidationInfo addDefinition(StructureDefinition source, ElementDefinition defn, ValidationMode mode) {
     if (this.source != null) {
       return this.source.addDefinition(source, defn, mode);
     } else {
@@ -1755,14 +1785,14 @@ public class Element extends Base implements NamedItem {
     }
   }
 
-  public void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
+  public synchronized void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
     if (sliceDefinitions == null) {
       sliceDefinitions = new ArrayList<>();
     }
     sliceDefinitions.add(new SliceDefinition(profile, definition, slice));
   }
 
-  public boolean hasSlice(StructureDefinition sd, String sliceName) {
+  public synchronized boolean hasSlice(StructureDefinition sd, String sliceName) {
     if (sliceDefinitions != null) {
       for (SliceDefinition def : sliceDefinitions) {
         if (def.profile == sd && sliceName.equals(def.definition.getSliceName())) {

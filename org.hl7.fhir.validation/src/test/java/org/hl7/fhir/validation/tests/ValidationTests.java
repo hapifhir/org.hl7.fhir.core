@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -108,9 +110,22 @@ import org.junit.BeforeClass;
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
   public static final boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  // -Dvalidation.entryThreads=n checks the entries of Bundles concurrently, on n threads (see InstanceValidator.setEntryExecutor)
+  private static final ExecutorService ENTRY_EXECUTOR = entryExecutor(Integer.getInteger("validation.entryThreads", 0));
   private static final boolean CLONE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean REVISING_TEST_CASES = false;
+
+  private static ExecutorService entryExecutor(int threads) {
+    if (threads <= 0) {
+      return null;
+    }
+    return Executors.newFixedThreadPool(threads, r -> {
+      Thread t = new Thread(r, "validation-tests-entries");
+      t.setDaemon(true);
+      return t;
+    });
+  }
 
   @Parameters(name = "{0} (#{index})")
   public static Iterable<Object[]> data() throws IOException {
@@ -479,6 +494,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     }
 
     val.setSignatureServices(this);
+    val.setEntryExecutor(ENTRY_EXECUTOR);
     if (content.has("logical") == false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
