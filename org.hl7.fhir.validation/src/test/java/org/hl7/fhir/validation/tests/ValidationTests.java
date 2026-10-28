@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -1105,7 +1104,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
+  public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
+    if (source.startsWith("https://example.com/")) {
+      // example.com is a special case. Its failure message depends on the build machine's DNS/network to resolve it.
+      // This can return different results on different systems, so we force a placeholder error here.
+      throw new IOException("EXAMPLE_COM_PLACEHOLDER_ERROR");
+    }
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
     return res.getContent();
@@ -1130,6 +1134,10 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   public org.hl7.fhir.utilities.json.model.JsonObject fetchJWKS(String address) throws JsonException, IOException {
     if ("https://test.fhir.org/icao/.well-known/jwks.json".equals(address)) {
       return org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResourceBytes("validator", "test.fhir.org-jwks.json"));
+    } else if (address.startsWith("http://local.fhir.org:960/")) {
+      // the SHC test cases point iss at a port nothing listens on. Don't depend on the build machine's DNS resolving
+      // local.fhir.org (some CI resolvers won't return 127.0.0.1 for a public name) - fail the way the expected outcomes say
+      throw new java.net.ConnectException("Connection refused");
     } else {
       return org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(address);
     }
