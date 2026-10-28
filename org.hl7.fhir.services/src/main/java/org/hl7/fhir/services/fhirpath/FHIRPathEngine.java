@@ -2890,6 +2890,8 @@ public class FHIRPathEngine {
     if (lq == null || rq == null || !lq.hasValue() || !rq.hasValue()) {
       return null;
     }
+    lq = calendarYearsAsMonths(lq, rq);
+    rq = calendarYearsAsMonths(rq, lq);
     if (sameUnit(lq, rq)) {
       return lq.getValue().compareTo(rq.getValue());
     }
