@@ -6753,10 +6753,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     int i2 = -1;
     if (exp.parameterCount() == 2) {
       List<Base> n2 = execute(context, baseToList(context.thisItem), exp.getParameters().get(1), true);
-      if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
+      if (n2.isEmpty()) {
+        // an empty length is the same as no length
+        i2 = Integer.MAX_VALUE;
+      } else if (!n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
         return new ArrayList<Base>();
+      } else {
+        i2 = Integer.parseInt(n2.get(0).primitiveValue());
       }
-      i2 = Integer.parseInt(n2.get(0).primitiveValue());
     }
 
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
