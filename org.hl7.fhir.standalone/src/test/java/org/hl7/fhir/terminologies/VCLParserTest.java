@@ -452,6 +452,7 @@ public class VCLParserTest {
 
     VCLParser.VCLParseException e = assertThrows(VCLParser.VCLParseException.class, () -> VCLParser.parse(vcl));
     assertTrue(e.getMessage().contains("maximum nesting depth"));
+    assertTrue(e.getMessage().contains("in expression '" + "(".repeat(100) + "...'"));
   }
 
   @Test

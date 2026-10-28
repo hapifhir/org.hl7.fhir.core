@@ -210,8 +210,10 @@ public class VCLParser {
 
   private static class Parser {
     private static final int MAX_NESTING_DEPTH = 100;
+    private static final int MAX_EXPRESSION_EXCERPT_LENGTH = 100;
 
     private List<Token> tokens;
+    private final String expression;
     private int pos = 0;
     private int depth = 0;
     private ValueSet valueSet;
@@ -230,8 +232,9 @@ public class VCLParser {
       return VCL_URI + encodedVcl;
     }
 
-    public Parser(List<Token> tokens) {
+    public Parser(List<Token> tokens, String expression) {
       this.tokens = tokens;
+      this.expression = expression;
       this.valueSet = new ValueSet();
       this.valueSet.setStatus(Enumerations.PublicationStatus.DRAFT);
       this.compose = new ValueSetComposeComponent();
@@ -258,7 +261,8 @@ public class VCLParser {
 
     private void parseSubExpr(boolean isExclusion) throws VCLParseException {
       if (depth >= MAX_NESTING_DEPTH) {
-        throw new VCLParseException("Expression exceeds the maximum nesting depth of " + MAX_NESTING_DEPTH, current().position);
+        throw new VCLParseException("Expression exceeds the maximum nesting depth of " + MAX_NESTING_DEPTH
+            + " in expression '" + expressionExcerpt() + "'", current().position);
       }
       depth++;
       try {
@@ -266,6 +270,13 @@ public class VCLParser {
       } finally {
         depth--;
       }
+    }
+
+    private String expressionExcerpt() {
+      if (expression.length() <= MAX_EXPRESSION_EXCERPT_LENGTH) {
+        return expression;
+      }
+      return expression.substring(0, MAX_EXPRESSION_EXCERPT_LENGTH) + "...";
     }
 
     private void parseSubExprInner(boolean isExclusion) throws VCLParseException {
@@ -732,7 +743,7 @@ public class VCLParser {
     Lexer lexer = new Lexer(vclExpression);
     List<Token> tokens = lexer.tokenize();
 
-    Parser parser = new Parser(tokens);
+    Parser parser = new Parser(tokens, vclExpression);
     return parser.parse();
   }
 
