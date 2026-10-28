@@ -1,8 +1,10 @@
 package org.hl7.fhir.validation.instance;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -11,6 +13,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
+import org.hl7.fhir.validation.instance.utils.ElementInfo;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +33,8 @@ import static java.lang.Thread.sleep;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -82,6 +87,32 @@ class InstanceValidatorTests {
     Logger mockLogger = mock(Logger.class);
     instanceValidator.debugElement(element, mockLogger);
     verify(mockLogger, times(1)).debug("dummyName" + System.lineSeparator());
+  }
+
+  /**
+   * Profiles are shared by every thread that validates, so what the validator works out about one is kept beside it,
+   * not in its user data.
+   */
+  @Test
+  void testCheckMustSupportLeavesTheProfileAlone() {
+    when(context.getVersion()).thenReturn("5.0.1");
+    InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
+
+    StructureDefinition withoutMustSupport = new StructureDefinition();
+    ElementDefinition plain = withoutMustSupport.getSnapshot().addElement().setPath("Patient");
+    Element first = new Element("Patient");
+    instanceValidator.checkMustSupport(withoutMustSupport, new ElementInfo("Patient", first, "Patient", 0).setDefinition(withoutMustSupport, plain));
+
+    StructureDefinition withMustSupport = new StructureDefinition();
+    ElementDefinition supported = withMustSupport.getSnapshot().addElement().setPath("Patient").setMustSupport(true);
+    ElementDefinition notSupported = withMustSupport.getSnapshot().addElement().setPath("Patient.name");
+    Element second = new Element("name");
+    instanceValidator.checkMustSupport(withMustSupport, new ElementInfo("name", second, "Patient.name", 0).setDefinition(withMustSupport, notSupported));
+
+    assertEquals("NA", first.getUserString(UserDataNames.keyview_elementSupported));
+    assertNull(second.getUserString(UserDataNames.keyview_elementSupported));
+    assertFalse(withoutMustSupport.hasUserData(UserDataNames.keyview_usesMustSupport));
+    assertFalse(withMustSupport.hasUserData(UserDataNames.keyview_usesMustSupport));
   }
 
   @Test
