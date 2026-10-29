@@ -29,7 +29,7 @@ class FhirPathHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
 
     try {
-      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
       String expression = params.get("expression");
       if (expression == null || expression.trim().isEmpty()) {
         sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createError("Missing required query parameter: expression"), getAcceptHeader(exchange));

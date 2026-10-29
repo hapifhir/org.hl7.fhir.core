@@ -59,8 +59,8 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       format = determineFormat(contentType);
 
-      // Get InstanceValidatorParameters objects from query string exchange.getRequestURI().getQuery();
-      instanceValidatorParameters = getInstanceValidatorParameters(exchange.getRequestURI().getQuery());
+      // Get InstanceValidatorParameters objects from the raw query string (parse() decodes it, so it must not be decoded already)
+      instanceValidatorParameters = getInstanceValidatorParameters(exchange.getRequestURI().getRawQuery());
 
     } catch (IllegalArgumentException e) {
       OperationOutcome outcome = OperationOutcomeUtilities.createError("Operation failed: " + e.getMessage());
