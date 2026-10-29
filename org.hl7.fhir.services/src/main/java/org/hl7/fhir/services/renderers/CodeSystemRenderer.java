@@ -570,7 +570,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
-        boolean nolink = !Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
+        boolean nolink = Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
         List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
