@@ -200,13 +200,35 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
-  public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
-    String pd = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#notSelectable");
-    if (pd == null) {
-      pd = "notSelectable";
+  private static final String NOT_SELECTABLE_URI = "http://hl7.org/fhir/concept-properties#notSelectable";
+
+  /**
+   * The local codes this code system uses for the standard notSelectable concept property.
+   * A property declared with the standard uri counts whatever code it was given. A candidate
+   * code that the code system declares with a different uri is a different property, and
+   * doesn't count; a candidate code that isn't declared (or is declared with no uri) is
+   * recognised by the code alone
+   */
+  private static Set<String> notSelectableCodes(@Nonnull CodeSystem cs, String... candidates) {
+    Set<String> codes = new HashSet<>();
+    for (PropertyComponent pc : cs.getPropertyList()) {
+      if (NOT_SELECTABLE_URI.equals(pc.getUri())) {
+        codes.add(pc.getCode());
+      }
     }
+    for (String c : candidates) {
+      PropertyComponent pc = cs.getProperty(c);
+      if (pc == null || !pc.hasUri() || NOT_SELECTABLE_URI.equals(pc.getUri())) {
+        codes.add(c);
+      }
+    }
+    return codes;
+  }
+
+  public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
+    Set<String> codes = notSelectableCodes(cs, "notSelectable");
     for (ConceptPropertyComponent p : def.getPropertyList()) {
-      if (pd.equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
+      if (codes.contains(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
@@ -1177,13 +1199,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static boolean isAbstract(CodeSystem cs, ConceptDefinitionComponent def) {
+    Set<String> codes = notSelectableCodes(cs, "notSelectable", "abstract", "not-selectable");
     for (ConceptPropertyComponent p : def.getPropertyList()) {
       if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue()) {
-        if (Utilities.existsInList(p.getCode(), "abstract", "not-selectable", "notSelectable")) {
-          return true;
-        }
-        PropertyComponent pc = cs.getProperty(p.getCode());
-        if (pc != null && "http://hl7.org/fhir/concept-properties#notSelectable".equals(pc.getUri())) {
+        if (codes.contains(p.getCode())) {
           return true;
         }
       }
