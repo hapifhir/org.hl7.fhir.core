@@ -588,7 +588,16 @@ public class QuestionnaireValidator extends BaseValidator {
     BooleanHolder ok = new BooleanHolder();
     
     String text = element.getNamedChildValue("text", false);
-    ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
+    boolean textOk = Utilities.noString(text) || text.equals(qItem.getText());
+    if (!textOk && qItem.getTextElement().hasExtension(ExtensionDefinitions.EXT_TRANSLATION)) {
+      for (Extension ext : qItem.getTextElement().getExtensionsByUrl(ExtensionDefinitions.EXT_TRANSLATION)) {
+        if (ext.hasExtension("content") && ext.getExtensionByUrl("content").hasValue() && text.equals(ext.getExtensionByUrl("content").getValue().primitiveValue())) {
+          textOk = true;
+          break;
+        }
+      }
+    }
+    ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), textOk, I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
 
     List<Element> answers = new ArrayList<Element>();
     element.getNamedChildren("answer", answers);

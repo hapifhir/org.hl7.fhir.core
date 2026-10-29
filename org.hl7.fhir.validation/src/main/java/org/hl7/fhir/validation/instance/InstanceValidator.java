@@ -3475,7 +3475,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
           if (warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !Utilities.isAllWhitespace(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL, prepWSPresentation(elementValue))) {
-            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.trimWS(elementValue).equals(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(elementValue));
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.trimProhibitedWS(elementValue).equals(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(elementValue));
           }
           if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;

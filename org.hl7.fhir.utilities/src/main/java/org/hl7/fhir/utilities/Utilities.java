@@ -1939,6 +1939,28 @@ public class Utilities {
     return s.substring(start, end+1);    
   }
 
+  public static String trimProhibitedWS(String s) {
+    final String prohibitedWhitespace = " \t\n\r";
+    if (Utilities.noString(s)) {
+      return s;
+    }
+    int start = 0;
+    while (start < s.length() && prohibitedWhitespace.indexOf(s.charAt(start)) != -1) {
+      start++;      
+    }
+    if (start == s.length()) {
+      return "";
+    }
+    int end = s.length() - 1;
+    while (end >= 0 && prohibitedWhitespace.indexOf(s.charAt(end)) != -1) {
+      end--;      
+    }
+    if (start > end) {
+      return "";
+    }
+    return s.substring(start, end+1);    
+  }
+
   /**
    * Decode FHIR base64Binary content.
    *
