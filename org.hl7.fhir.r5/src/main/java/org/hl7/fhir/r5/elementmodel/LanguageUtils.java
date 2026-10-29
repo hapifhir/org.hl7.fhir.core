@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -407,7 +408,9 @@ public class LanguageUtils {
   }
 
   private Set<TranslationUnit> findTranslations(String path, String src, List<TranslationUnit> translations) {
-    Set<TranslationUnit> res = new HashSet<>();
+    // in the order they're listed: a translation unit has no hash of its own, so a HashSet would put them in a
+    // different order in every run, and with them the extensions they become
+    Set<TranslationUnit> res = new LinkedHashSet<>();
     for (TranslationUnit translation : translations) {
       if (path.equals(translation.getId()) && src.equals(translation.getSrcText())) {
         res.add(translation);
