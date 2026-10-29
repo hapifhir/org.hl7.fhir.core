@@ -7002,6 +7002,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       meta.getNamedChildren("profile", profiles);
       int i = 0;
       for (Element profile : profiles) {
+        if (profile.primitiveValue() == null) {
+          // a meta.profile item with no value (e.g. only extensions) names no profile to validate against
+          warning(errors, "2026-10-28", IssueType.STRUCTURE, profile.line(), profile.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_NO_VALUE, i);
+          i++;
+          continue;
+        }
         StructureDefinition sd = profileUtilities.findProfileStr(profile.primitiveValue(), defn);
         if (!defn.getUrl().equals(profile.primitiveValue())) {
           // is this a version specific reference? 
