@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -908,6 +909,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
+    if (element.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE) && checkContentReferenceProfileHere(element, snapshot, diffById)) {
+      ok = validateContentReferenceProfile(errors, element, stack, sd, path) && ok;
+    }
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
@@ -1138,6 +1142,58 @@ public class StructureDefinitionValidator extends BaseValidator {
       ed = base.getSnapshot().getElementById(path);
     }
     return ed;
+  }
+
+  /**
+   * contentReferenceProfile is checked once for each distinct value on an element: on the differential
+   * element that states it, and on the snapshot element if it has a different or inherited value.
+   */
+  private boolean checkContentReferenceProfileHere(Element element, boolean snapshot, Map<String, Element> diffById) {
+    if (!snapshot) {
+      return true;
+    }
+    Element diff = diffById == null ? null : diffById.get(element.getNamedChildValue("id", false));
+    Element diffExtension = diff == null ? null : diff.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    return diffExtension == null || !Objects.equals(diffExtension.getNamedChildValue("value", false),
+        element.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE).getNamedChildValue("value", false));
+  }
+
+  /**
+   * The value is a canonical URL for a profile, followed by '#' and the id of an element in that profile.
+   * A value without the canonical is not resolved against this profile: it is an error, as are a profile
+   * or an element that cannot be found. The instance validator reports the same problems when it meets
+   * the element in an instance, but they are problems of the profile and belong here, reported once.
+   */
+  private boolean validateContentReferenceProfile(List<ValidationMessage> errors, Element element, NodeStack stack, StructureDefinition sd, String path) {
+    Element extension = element.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    NodeStack eStack = stack.push(extension, element.getChildrenByName("extension").indexOf(extension), null, null);
+    Element value = extension.getNamedChild("value", false);
+    String reference = value == null ? null : value.primitiveValue();
+    String id = element.getNamedChildValue("id", false);
+    if (id == null) {
+      id = path;
+    }
+    int separator = reference == null ? -1 : reference.indexOf('#');
+    if (separator <= 0 || separator == reference.length() - 1) {
+      return rule(errors, "2026-10-16", IssueType.INVALID, eStack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_INVALID, reference, id, sd.getVersionedUrl());
+    }
+    String url = reference.substring(0, separator);
+    StructureDefinition target;
+    if (url.equals(sd.getUrl()) || url.equals(sd.getVersionedUrl())) {
+      // the profile being validated is not necessarily in the context
+      target = sd;
+    } else {
+      target = context.fetchResource(StructureDefinition.class, url, ElementModelUtilities.getVersionResolutionRules(value));
+    }
+    if (target == null) {
+      return rule(errors, "2026-10-16", IssueType.NOTFOUND, eStack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE, reference, id, sd.getVersionedUrl(), url);
+    }
+    if (!target.hasSnapshot()) {
+      // nothing to look the element up in; a missing snapshot is reported elsewhere
+      return true;
+    }
+    String eid = reference.substring(separator + 1);
+    return rule(errors, "2026-10-16", IssueType.NOTFOUND, eStack, target.getSnapshot().getElementById(eid) != null, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT, reference, id, sd.getVersionedUrl(), eid, target.getVersionedUrl());
   }
 
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
