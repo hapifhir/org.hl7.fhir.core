@@ -1214,6 +1214,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_NOTALLOWED = "Validation_VAL_Profile_NotAllowed";
   public static final String VALIDATION_VAL_PROFILE_NOTSLICE = "Validation_VAL_Profile_NotSlice";
   public static final String VALIDATION_VAL_PROFILE_NOTYPE = "Validation_VAL_Profile_NoType";
+  public static final String VALIDATION_VAL_PROFILE_NO_VALUE = "VALIDATION_VAL_PROFILE_NO_VALUE";
   public static final String VALIDATION_VAL_PROFILE_OTHER_VERSION = "VALIDATION_VAL_PROFILE_OTHER_VERSION";
   public static final String VALIDATION_VAL_PROFILE_OUTOFORDER = "Validation_VAL_Profile_OutOfOrder";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST = "VALIDATION_VAL_PROFILE_SIGNPOST";
@@ -1590,5 +1591,8 @@ public class I18nConstants {
   public static final String LIQUID_NO_SOURCE_TO_PARSE = "LIQUID_NO_SOURCE_TO_PARSE";
   public static final String JSON_PROPERTY_INVALID_ARRAY = "JSON_PROPERTY_INVALID_ARRAY";
   public static final String FHIR_RESOURCE_ID_CANT_BE_EXTENDED = "FHIR_RESOURCE_ID_CANT_BE_EXTENDED";
+  public static final String CONTENT_REFERENCE_PROFILE_INVALID = "CONTENT_REFERENCE_PROFILE_INVALID";
+  public static final String CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE = "CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE";
+  public static final String CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT = "CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT";
 
 }
