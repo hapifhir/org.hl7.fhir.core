@@ -2148,7 +2148,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
    * min and max on the slicer are about all the slices together, not each slice, so they're not rules that
    * apply to the slices. And for type slicing, the types are part of the slicing set up
    */
-  static boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
+  private boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
     for (Property p : ed.getChildren()) {
       if (hasNonEmptyValues(p) && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
           "label", "code", "slicing", "short", "definition", "comment", "requirements", "alias", "mapping", "min", "max") && !(typeSlicing && "type".equals(p.getName()))) {
