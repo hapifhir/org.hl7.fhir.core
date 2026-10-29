@@ -2182,8 +2182,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
    */
   private boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
     for (Property p : ed.children()) {
-      if (p.hasValues() && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
+      if (hasNonEmptyValues(p) && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
           "label", "code", "slicing", "short", "definition", "comment", "requirements", "alias", "mapping", "min", "max") && !(typeSlicing && "type".equals(p.getName()))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * a getter like getBase() creates an empty child when it is read, so only a value that isn't empty is a rule
+   */
+  private static boolean hasNonEmptyValues(Property p) {
+    for (Base v : p.getValues()) {
+      if (v != null && !v.isEmpty()) {
         return true;
       }
     }
