@@ -509,6 +509,24 @@ class FhirValidatorHttpServiceTest {
     }
 
     @Test
+    @DisplayName("FHIRPath - an expression with &, + and % in it is decoded once")
+    void testFhirPathEvaluationEncodedCharacters() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fhirpath?expression=" + java.net.URLEncoder.encode("Patient.name.family.first() & ' & 100%+%41'", "UTF-8")))
+        .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
+        .header("Content-Type", "application/fhir+json")
+        .header("Accept", "application/fhir+json")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("Doe & 100%+%41"), response.body());
+    }
+
+    @Test
     @DisplayName("FHIRPath - Missing expression parameter returns 400")
     void testFhirPathEvaluationMissingExpression() throws Exception {
       setUpService(getValidationEngine());
@@ -554,6 +572,118 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+      assertEquals(405, response.statusCode());
+    }
+
+    private HttpResponse<String> checkFhirPath(String type, String expression) throws Exception {
+      String query = (type == null ? "" : "type=" + java.net.URLEncoder.encode(type, "UTF-8")) +
+        (expression == null ? "" : "&expression=" + java.net.URLEncoder.encode(expression, "UTF-8"));
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fhirpath/check?" + query))
+        .header("Accept", "application/fhir+json")
+        .GET()
+        .build();
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - a good expression: no errors, and what it returns")
+    void testFhirPathCheckSuccess() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Patient", "Patient.name.family.first() & ' ' & Patient.name.given.first()");
+      assertEquals(200, response.statusCode());
+      String body = response.body();
+      assertTrue(body.contains("\"resourceType\":\"OperationOutcome\""), body);
+      assertFalse(body.contains("\"severity\":\"error\""), body);
+      assertTrue(body.contains("The expression returns a single System.String"), body);
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - an unknown element is an error")
+    void testFhirPathCheckUnknownElement() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Patient", "Patient.name.nonsense");
+      assertEquals(200, response.statusCode());
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      assertTrue(response.body().contains("nonsense"), response.body());
+      assertFalse(response.body().contains("The expression returns"), response.body());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - a syntax error is an error, with its location")
+    void testFhirPathCheckSyntaxError() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Patient", "Patient.!!invalid!!");
+      assertEquals(200, response.statusCode());
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      assertTrue(response.body().contains("operationoutcome-issue-line"), response.body());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - the document functions, and hasCoding() only on codes")
+    void testFhirPathCheckDocumentFunctions() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Bundle", "Bundle.resources('http://snomed.info/sct', '38341003', 'Condition')" +
+        ".all(sameSubject() and category.hasCoding('http://terminology.hl7.org/CodeSystem/condition-category', 'problem-list-item'))");
+      assertEquals(200, response.statusCode());
+      assertFalse(response.body().contains("\"severity\":\"error\""), response.body());
+      assertTrue(response.body().contains("The expression returns a single System.Boolean"), response.body());
+      response = checkFhirPath("Bundle", "Bundle.resources('http://snomed.info/sct', '38341003', 'Condition').subject.hasCoding('http://snomed.info/sct', '1')");
+      assertTrue(response.body().contains("can only be used on Coding or CodeableConcept"), response.body());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - Resource is abstract: the elements of any resource type check, and others don't")
+    void testFhirPathCheckAbstractResource() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Bundle", "Bundle.resources('http://snomed.info/sct', '38341003').all(category.hasCoding('http://terminology.hl7.org/CodeSystem/condition-category', 'problem-list-item'))");
+      assertFalse(response.body().contains("\"severity\":\"error\""), response.body());
+      response = checkFhirPath("Bundle", "Bundle.entry.resource.category");
+      assertFalse(response.body().contains("\"severity\":\"error\""), response.body());
+      response = checkFhirPath("Bundle", "Bundle.resources('http://snomed.info/sct', '38341003').nonsenseElement");
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - a type or an expression that is too long, or an unknown type")
+    void testFhirPathCheckBounds() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath("Patient", "Patient.name" + ".given".repeat(2000));
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("The expression is longer than 10000 characters"), response.body());
+      response = checkFhirPath("Patient".repeat(200), "name");
+      assertEquals(400, response.statusCode());
+      response = checkFhirPath("NoSuchType", "name");
+      assertEquals(200, response.statusCode());
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      response = checkFhirPath("Patient", "(".repeat(4000) + "1" + ")".repeat(4000));
+      assertTrue(response.statusCode() == 200 || response.statusCode() == 500, response.body());
+      // and the server still answers
+      response = checkFhirPath("Patient", "Patient.name.family");
+      assertEquals(200, response.statusCode());
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - type and expression are required")
+    void testFhirPathCheckMissingParameters() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = checkFhirPath(null, "Patient.name");
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: type"));
+      response = checkFhirPath("Patient", null);
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: expression"));
+    }
+
+    @Test
+    @DisplayName("FHIRPath check - only GET and POST")
+    void testFhirPathCheckMethodNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fhirpath/check?type=Patient&expression=Patient.name"))
+        .PUT(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
       assertEquals(405, response.statusCode());
     }
 
