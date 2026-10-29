@@ -41,6 +41,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  *   <li><b>resourcesIn(valueSet [, type])</b> - as resources(), with a code in the value set.</li>
  *   <li><b>sameSubject([other])</b> - whether the focus resource has the same subject (or patient) as other, or
  *   without other, as the document's Composition: see {@link #sameSubject}.</li>
+ *   <li><b>hasCoding(system, code [, version])</b> - the input is Codings or CodeableConcepts. Whether any coding
+ *   in them has that system and code (and version, when one is given): true or false, or empty when the input is
+ *   empty.</li>
  * </ul>
  *
  * min and max are both given, or neither: with neither, there's no constraint; max may be '*'.
@@ -326,6 +329,39 @@ class DocumentFunctions {
       return !isEmpty(valueA) && valueA.equals(primitive(idB, "value")) && sameString(primitive(idA, "system"), primitive(idB, "system"));
     }
     return false;
+  }
+
+  /**
+   * hasCoding(system, code [, version]): whether any Coding in the focus - Codings, and the codings of CodeableConcepts;
+   * anything else is passed over - has that system and code, and that version when one is given (a Coding with no
+   * version doesn't match one that is given). Empty when the focus is empty; otherwise true or false
+   */
+  Boolean hasCoding(List<Base> focus, String system, String code, String version) {
+    if (focus.isEmpty()) {
+      return null;
+    }
+    for (Base item : focus) {
+      if (item == null) {
+        continue;
+      }
+      if ("Coding".equals(item.fhirType())) {
+        if (codingMatches(item, system, code, version)) {
+          return true;
+        }
+      } else if ("CodeableConcept".equals(item.fhirType())) {
+        for (Base c : children(item, "coding")) {
+          if (codingMatches(c, system, code, version)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean codingMatches(Base coding, String system, String code, String version) {
+    return system != null && code != null && system.equals(primitive(coding, "system")) && code.equals(primitive(coding, "code"))
+      && (version == null || version.equals(primitive(coding, "version")));
   }
 
   /** a resource's subject or patient - null if it has neither, or more than one (R5+ Composition.subject repeats) */

@@ -1574,6 +1574,7 @@ public class FHIRPathEngine {
       case Resources: return checkParamCount(lexer, location, exp, 2, 3);
       case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
       case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
+      case HasCoding: return checkParamCount(lexer, location, exp, 2, 3);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -4358,6 +4359,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case SameSubject: {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
       }
+      case HasCoding: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        if (!focus.hasNoTypes() && !focus.hasType(worker, "Coding") && !focus.hasType(worker, "CodeableConcept")) {
+          throw makeException(exp, I18nConstants.FHIRPATH_DOC_CODING_ONLY, exp.getFunction().toCode(), focus.describe());
+        }
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -4647,6 +4656,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Resources: return funcResources(context, focus, exp);
       case ResourcesIn: return funcResourcesIn(context, focus, exp);
       case SameSubject: return funcSameSubject(context, focus, exp);
+      case HasCoding: return funcHasCoding(context, focus, exp);
 
 
     case Custom: { 
@@ -5156,6 +5166,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
     return same == null ? new ArrayList<Base>() : makeBoolean(same);
+  }
+
+  private List<Base> funcHasCoding(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    Boolean has = df.hasCoding(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)), df.string(docParam(context, expr, 2)));
+    return has == null ? new ArrayList<Base>() : makeBoolean(has);
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

@@ -1481,6 +1481,7 @@ public class FHIRPathEngine {
       case Resources: return checkParamCount(lexer, location, exp, 2, 3);
       case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
       case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
+      case HasCoding: return checkParamCount(lexer, location, exp, 2, 3);
     case Comparable: return checkParamCount(lexer, location, exp, 1);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
@@ -4038,6 +4039,14 @@ public class FHIRPathEngine {
       case SameSubject: {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
       }
+      case HasCoding: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        if (!focus.hasNoTypes() && !focus.hasType(worker, "Coding") && !focus.hasType(worker, "CodeableConcept")) {
+          throw makeException(exp, I18nConstants.FHIRPATH_DOC_CODING_ONLY, exp.getFunction().toCode(), focus.describe());
+        }
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
     case Comparable : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Encode:
@@ -4422,6 +4431,7 @@ public class FHIRPathEngine {
       case Resources: return funcResources(context, focus, exp);
       case ResourcesIn: return funcResourcesIn(context, focus, exp);
       case SameSubject: return funcSameSubject(context, focus, exp);
+      case HasCoding: return funcHasCoding(context, focus, exp);
     case Comparable : return funcComparable(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
     case ToDecimal : return funcToDecimal(context, focus, exp);
@@ -5102,6 +5112,12 @@ public class FHIRPathEngine {
   private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
     return same == null ? new ArrayList<Base>() : makeBoolean(same);
+  }
+
+  private List<Base> funcHasCoding(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    Boolean has = df.hasCoding(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)), df.string(docParam(context, expr, 2)));
+    return has == null ? new ArrayList<Base>() : makeBoolean(has);
   }
 
   private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
