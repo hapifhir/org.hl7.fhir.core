@@ -850,6 +850,9 @@
   {
     "uri" : "http://hl7.org/fhir/concept-properties",
     "version" : [{
+      "code" : "5.0.0"
+    },
+    {
       "code" : "6.0.1"
     }],
     "content" : "complete"
@@ -857,6 +860,9 @@
   {
     "uri" : "http://hl7.org/fhir/concept-property-type",
     "version" : [{
+      "code" : "5.0.0"
+    },
+    {
       "code" : "6.0.1"
     }],
     "content" : "complete"
