@@ -352,7 +352,7 @@ public class AdditionalBindingsRenderer {
       return node.clss(STYLE_UNCHANGED_CLSS).tx(newS);
     node.tx(newS);
     node.br();
-    return node.clss(STYLE_REMOVED_CLSS).tx(oldS);
+    return node.spanClss(STYLE_REMOVED_CLSS).tx(oldS);
   }
 
   private String compareHtml(String newS, String oldS) {
