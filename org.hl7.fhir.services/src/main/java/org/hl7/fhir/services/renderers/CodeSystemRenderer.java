@@ -322,7 +322,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void listConceptLanguages(CodeSystem cs, ConceptDefinitionComponent c, List<String> langs) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignationList()) {
-      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
+      if (cd.hasLanguage() && !isDefinition(cd) && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
         langs.add(cd.getLanguage());
       }
     }
