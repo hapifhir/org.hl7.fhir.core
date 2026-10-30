@@ -42,8 +42,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  *   <li><b>sameSubject([other])</b> - whether the focus resource has the same subject (or patient) as other, or
  *   without other, as the document's Composition: see {@link #sameSubject}.</li>
  *   <li><b>hasCoding(system, code [, version])</b> - the input is Codings or CodeableConcepts. Whether any coding
- *   in them has that system and code (and version, when one is given): true or false, or empty when the input is
- *   empty.</li>
+ *   in them matches: a parameter that is a string must match the coding's system, code or version precisely; a
+ *   parameter that is empty, or the version when it isn't given, is ignored. True or false, or empty when the input
+ *   is empty.</li>
  * </ul>
  *
  * min and max are both given, or neither: with neither, there's no constraint; max may be '*'.
@@ -333,8 +334,10 @@ class DocumentFunctions {
 
   /**
    * hasCoding(system, code [, version]): whether any Coding in the focus - Codings, and the codings of CodeableConcepts;
-   * anything else is passed over - has that system and code, and that version when one is given (a Coding with no
-   * version doesn't match one that is given). Empty when the focus is empty; otherwise true or false
+   * anything else is passed over - matches. A parameter that is a string must match the Coding's system, code or
+   * version precisely (so a Coding with no version doesn't match a version that is given); a parameter that is
+   * empty, or the version when it isn't given, is ignored (null here). Empty when the focus is empty; otherwise true
+   * or false
    */
   Boolean hasCoding(List<Base> focus, String system, String code, String version) {
     if (focus.isEmpty()) {
@@ -360,7 +363,8 @@ class DocumentFunctions {
   }
 
   private boolean codingMatches(Base coding, String system, String code, String version) {
-    return system != null && code != null && system.equals(primitive(coding, "system")) && code.equals(primitive(coding, "code"))
+    return (system == null || system.equals(primitive(coding, "system")))
+      && (code == null || code.equals(primitive(coding, "code")))
       && (version == null || version.equals(primitive(coding, "version")));
   }
 
