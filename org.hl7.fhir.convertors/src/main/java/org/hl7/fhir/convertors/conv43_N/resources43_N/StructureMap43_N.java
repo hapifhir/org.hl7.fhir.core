@@ -487,7 +487,7 @@ public class StructureMap43_N {
     if (src.hasDefaultValue())
       tgt.setDefaultValue(ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().convertType(src.getDefaultValueElement()));
     if (src.hasElement())
-      tgt.setElementElement(String43_N.convertString(src.getElementList().get(0)));
+      tgt.setElementElement(String43_N.convertString(src.getElementElement()));
     if (src.hasListMode())
       tgt.setListModeElement(convertStructureMapSourceListMode(src.getListModeElement()));
     if (src.hasVariable())
@@ -599,7 +599,7 @@ public class StructureMap43_N {
       tgt.setContextElement(Id43_N.convertId(src.getContextElement()));
     tgt.setContextType(org.hl7.fhir.r4b.model.StructureMap.StructureMapContextType.VARIABLE);
     if (src.hasElement())
-      tgt.setElementElement(String43_N.convertString(src.getElementList().get(0)));
+      tgt.setElementElement(String43_N.convertString(src.getElementElement()));
     if (src.hasVariable())
       tgt.setVariableElement(Id43_N.convertId(src.getVariableElement()));
     tgt.setListMode(src.getListModeList().stream()

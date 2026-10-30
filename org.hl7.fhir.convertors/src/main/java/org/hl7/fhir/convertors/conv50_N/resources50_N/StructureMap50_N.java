@@ -322,7 +322,7 @@ public class StructureMap50_N {
     if (src.hasDefaultValue())
       tgt.setDefaultValueElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getDefaultValueElement()));
     if (src.hasElement())
-      tgt.setElementElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getElementList().get(0)));
+      tgt.setElementElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getElementElement()));
     if (src.hasListMode())
       tgt.setListModeElement(convertStructureMapSourceListMode(src.getListModeElement()));
     if (src.hasVariable())
@@ -366,7 +366,7 @@ public class StructureMap50_N {
     if (src.hasContext())
       tgt.setContextElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getContextElement()));
     if (src.hasElement())
-      tgt.setElementElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getElementList().get(0)));
+      tgt.setElementElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getElementElement()));
     if (src.hasVariable())
       tgt.setVariableElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N.convertId(src.getVariableElement()));
     for (org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS> t : src.getListModeList())
