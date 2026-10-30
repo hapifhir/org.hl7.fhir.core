@@ -323,7 +323,7 @@ curl 'http://localhost:8080/txTest?session={id}&suite=SuiteName&test=TestName&mo
 | `session` | yes | - |
 | `suite` | yes | - |
 | `test` | yes | - |
-| `modes` | no | `general,snomed,omop,mimetypes,icd-11,icf` (everything except `tx.fhir.org`) |
+| `modes` | no | `general,snomed,omop,mimetypes,icd-11,icf,loinc` (everything except `tx.fhir.org`) |
 | `label` | no | none - a subfolder of the run's folder for this test's expected/actual files |
 
 A test that doesn't run - it is disabled, or gated on a mode that wasn't asked for, a feature the

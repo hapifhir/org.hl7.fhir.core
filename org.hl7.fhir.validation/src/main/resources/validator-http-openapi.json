@@ -1438,7 +1438,7 @@
           {
             "name": "modes",
             "in": "query",
-            "description": "Comma separated list of test modes. Pass every mode the server supports: a test gated on a mode that isn't passed doesn't run. Defaults to `general,snomed,omop,mimetypes,icd-11,icf` - everything except the tx.fhir.org specific tests.",
+            "description": "Comma separated list of test modes. Pass every mode the server supports: a test gated on a mode that isn't passed doesn't run. Defaults to `general,snomed,omop,mimetypes,icd-11,icf,loinc` - everything except the tx.fhir.org specific tests.",
             "schema": {
               "type": "string"
             },
