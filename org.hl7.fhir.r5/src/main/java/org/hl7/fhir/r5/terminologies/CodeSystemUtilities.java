@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -224,36 +225,41 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   private static final String NOT_SELECTABLE_URI = "http://hl7.org/fhir/concept-properties#notSelectable";
 
-  /**
-   * The local codes this code system uses for the standard notSelectable concept property.
-   * A property declared with the standard uri counts whatever code it was given. A candidate
-   * code that the code system declares with a different uri is a different property, and
-   * doesn't count; a candidate code that isn't declared (or is declared with no uri) is
-   * recognised by the code alone
-   */
-  private static Set<String> notSelectableCodes(@Nonnull CodeSystem cs, String... candidates) {
-    Set<String> codes = new HashSet<>();
-    for (PropertyComponent pc : cs.getProperty()) {
-      if (NOT_SELECTABLE_URI.equals(pc.getUri())) {
-        codes.add(pc.getCode());
-      }
-    }
-    for (String c : candidates) {
-      PropertyComponent pc = cs.getProperty(c);
-      if (pc == null || !pc.hasUri() || NOT_SELECTABLE_URI.equals(pc.getUri())) {
-        codes.add(c);
-      }
-    }
-    return codes;
-  }
+  /** the codes that are recognised as the notSelectable property when the code system doesn't say otherwise */
+  private static final Set<String> NOT_SELECTABLE_CODES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("notSelectable", "abstract", "not-selectable")));
 
+  /**
+   * Whether the concept is not selectable (aka abstract): it has a boolean property with the value true
+   * that is the code system's notSelectable property.
+   *
+   * This is on the expansion hot path, so it only looks at the code system's property declarations for
+   * the concept's boolean properties (most concepts have none) rather than working out the property codes up front
+   */
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
-    Set<String> codes = notSelectableCodes(cs, "notSelectable");
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (codes.contains(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
-        return ((BooleanType) p.getValue()).getValue();
+      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue() && isNotSelectableProperty(cs, p.getCode())) {
+        return true;
+      }
     }
     return false;
+  }
+
+  /**
+   * Whether a concept property code is the code system's code for the standard notSelectable property.
+   * A property declared with the standard uri counts whatever code it was given. A property declared
+   * with a different uri is a different property, and doesn't count, whatever its code. Otherwise
+   * (not declared, or declared with no uri) notSelectable, abstract and not-selectable are recognised
+   * by the code alone
+   */
+  private static boolean isNotSelectableProperty(@Nonnull CodeSystem cs, String code) {
+    if (code == null) {
+      return false;
+    }
+    PropertyComponent pc = cs.getProperty(code);
+    if (pc != null && pc.hasUri()) {
+      return NOT_SELECTABLE_URI.equals(pc.getUri());
+    }
+    return NOT_SELECTABLE_CODES.contains(code);
   }
 
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull String code) {
@@ -1222,18 +1228,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       }
     }
     setProperty(cs, cc, code, new StringType(comments));
-  }
-
-  public static boolean isAbstract(CodeSystem cs, ConceptDefinitionComponent def) {
-    Set<String> codes = notSelectableCodes(cs, "notSelectable", "abstract", "not-selectable");
-    for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue()) {
-        if (codes.contains(p.getCode())) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   public static boolean isLangPack(CodeSystem c) {
