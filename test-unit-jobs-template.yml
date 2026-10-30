@@ -43,7 +43,7 @@ jobs:
         - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{variables.module}} -am -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{variables.module}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'
