@@ -2719,9 +2719,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   /**
-   * Fetches the definition of an extension by searching within a given profile or globally.
-   * If the definition is found in both the profile and globally but the versions differ,
-   * it logs a message and returns the global version.
+   * Fetches the definition of an extension by searching within a given profile or globally. This will always return the global version.
+   * If the definition is found in both the profile and globally but the versions differ, a message will be logged.
    *
    * @param profile the profile within which to search for the extension definition
    * @param u the URL of the extension definition to be retrieved
