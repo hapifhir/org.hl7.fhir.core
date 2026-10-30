@@ -274,7 +274,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     // in step - so look the url up instead of scanning. Scanning made each hl7.terminology package cost
     // O(resources already loaded), which is why the THO loads got slower the later they came: the vsac
     // packages ahead of them add ~70k ValueSets that can never match this url
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && cr.getUrl() != null) {
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().isTHO() && cr.getUrl() != null) {
       List<CachedCanonicalResource<T>> sameUrl = listForUrl.get(cr.getUrl());
       if (sameUrl != null) {
         List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
@@ -712,13 +712,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public boolean has(String system, String version) {
-    if (indexedResources.containsKey(system+"|"+version) || getPinned(system, version) != null)
-      return true;
-    String mm = VersionUtilities.getMajMin(version);
-    if (mm != null)
-      return indexedResources.containsKey(system+"|"+mm) || getPinnedMajMin(system, version) != null;
-    else
-      return false;
+    // shares resolve() with get() so the two can't disagree about which versions resolve (e.g. the
+    // major.minor fallback, which only applies to unlabelled semver versions), but doesn't load the resource
+    return resolve(system, version) != null;
   }
 
   public T get(String url) {
@@ -730,22 +726,28 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public T get(String system, String version) {
+    CachedCanonicalResource<T> cr = resolve(system, version);
+    return cr == null ? null : cr.getResource();
+  }
+
+  private CachedCanonicalResource<T> resolve(String system, String version) {
 
     if (version == null) {
-      return get(system);
+      CachedCanonicalResource<T> cr = masterDefinitions.get(system);
+      return cr != null ? cr : indexedResources.get(system);
     } else {
       if (indexedResources.containsKey(system+"|"+version))
-        return indexedResources.get(system+"|"+version).getResource();
+        return indexedResources.get(system+"|"+version);
       CachedCanonicalResource<T> pinned = getPinned(system, version);
       if (pinned != null)
-        return pinned.getResource();
+        return pinned;
       if (VersionUtilities.isSemVer(version, true) && !Utilities.containsInList(version, "+", "-")) {
         String mm = VersionUtilities.getMajMin(version);
         if (mm != null && indexedResources.containsKey(system + "|" + mm))
-          return indexedResources.get(system + "|" + mm).getResource();
+          return indexedResources.get(system + "|" + mm);
         pinned = getPinnedMajMin(system, version);
         if (pinned != null)
-          return pinned.getResource();
+          return pinned;
       }
       if (VersionUtilities.isSemVerWithWildcards(version)) {
         List<CachedCanonicalResource<T>> matches = new ArrayList<>();
@@ -760,7 +762,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           if (matches.size() > 1) {
             Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
           }
-          return matches.get(matches.size() - 1).getResource();
+          return matches.get(matches.size() - 1);
         }
       }
       return null;

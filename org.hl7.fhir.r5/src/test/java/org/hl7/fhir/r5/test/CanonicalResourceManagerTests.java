@@ -20,6 +20,8 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -1685,5 +1687,18 @@ public class CanonicalResourceManagerTests {
     // normal version precedence: 4.0.1 stays the default, and both stay listed
     Assertions.assertEquals("other", mrm.get(SELFPAY).getName());
     Assertions.assertEquals(2, mrm.getForUrl(SELFPAY).size());
+  }
+
+  @ParameterizedTest
+  @ValueSource(booleans = { true, false })
+  void testUTGPinnedMajorMinorHasAgreesWithGetForLabelledVersion(boolean coreFirst) {
+    CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+      thoTestCS(SELFPAY, "4.0.1", "core"), thoTestCS(SELFPAY, "1.0.1", "tho"));
+    // has() finds the core copy pinned under SELFPAY|4.0 for a labelled version, but get() only falls back
+    // to major.minor for unlabelled versions, so a has() check followed by get() gets null
+    boolean has = mrm.has(SELFPAY, "4.0.1-ballot");
+    CodeSystem got = mrm.get(SELFPAY, "4.0.1-ballot");
+    Assertions.assertEquals(has, got != null,
+      "has() returned " + has + " but get() returned " + (got == null ? "null" : got.getName()));
   }
 }
