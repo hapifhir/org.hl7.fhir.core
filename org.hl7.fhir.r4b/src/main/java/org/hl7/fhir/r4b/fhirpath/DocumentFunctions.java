@@ -2,8 +2,10 @@ package org.hl7.fhir.r4b.fhirpath;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -14,6 +16,8 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -58,10 +62,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * terminology services can't decide, is an error.
  *
  * References in sections are resolved in the document the evaluation is on (the root resource,
- * or else the focus resource, when it's a Bundle): by fullUrl - absolute as is, relative
- * (Type/id) against the base of the Composition's fullUrl, or else by type and id - and '#id'
- * as a resource contained in the Composition. Anything else is passed to the host's
- * resolveReference().
+ * or else the focus resource, when it's a Bundle), the way the validator resolves references in
+ * a Bundle (BaseValidator.resolveInBundle): absolute by fullUrl, relative (Type/id) against the
+ * base of the Composition's fullUrl when that is a RESTful URL (and before R4, by type and id),
+ * and '#id' as a resource contained in the Composition. A reference that doesn't resolve in the
+ * document is left out. Only without a document (a Composition on its own) is a reference passed
+ * to the host's resolveReference().
  *
  * The test cases are in the FHIRPath test suite (fhir-test-cases), in a group with
  * mode="custom", which other engines need not run.
@@ -218,6 +224,10 @@ class DocumentFunctions {
       }
     }
     return true;
+  }
+
+  private String fhirVersion() {
+    return worker.getVersion();
   }
 
   private PathEngineException error(String msg, Object... args) {
@@ -477,6 +487,9 @@ class DocumentFunctions {
   /**
    * A section's entries, resolved; null if the item can't be a section (a resource or a primitive). References that can't be
    * resolved are left out.
+   *
+   * In a document, references are resolved in the document only - as the validator does for a document - and are never passed
+   * to the host. Without a document (a Composition on its own) the host's resolveReference() is used.
    */
   private List<Base> sectionEntries(Object appInfo, Base root, Base focusResource, Base section) {
     if (section == null || section.isResource() || section.isPrimitive()) {
@@ -484,13 +497,13 @@ class DocumentFunctions {
     }
     Base bundle = document(root, focusResource);
     Base comp = null;
-    String fromFullUrl = null;
+    String compFullUrl = null;
     if (bundle != null) {
       for (Base e : children(bundle, "entry")) {
         Base r = single(e, "resource");
         if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, section)) {
           comp = r;
-          fromFullUrl = primitive(e, "fullUrl");
+          compFullUrl = primitive(e, "fullUrl");
           break;
         }
       }
@@ -519,9 +532,8 @@ class DocumentFunctions {
           }
         }
       } else if (bundle != null) {
-        res = inBundle(bundle, reference, fromFullUrl);
-      }
-      if (res == null && !reference.startsWith("#") && engine.getHostServices() != null) {
+        res = inBundle(bundle, reference, comp, compFullUrl);
+      } else if (engine.getHostServices() != null) {
         try {
           res = engine.getHostServices().resolveReference(engine, appInfo, reference, null, ref);
         } catch (Exception e) {
@@ -535,103 +547,152 @@ class DocumentFunctions {
     return result;
   }
 
+  // An instance is made for one function call (see FHIRPathEngine.funcSection etc), and builds these
+  // as it needs them, so that a call on many sections doesn't walk the document again for each one
+
+  // a Composition's sections, nested ones too, by identity
+  private final Map<Base, Set<Base>> sectionsOf = new IdentityHashMap<>();
+  // a document's entries, indexed for resolving references
+  private final Map<Base, BundleIndex> bundleIndexes = new IdentityHashMap<>();
+
   private boolean containsSection(Base comp, Base section) {
-    for (Base s : allSections(comp, new ArrayList<>())) {
-      if (s == section) {
-        return true;
+    Set<Base> sections = sectionsOf.get(comp);
+    if (sections == null) {
+      sections = Collections.newSetFromMap(new IdentityHashMap<>());
+      sections.addAll(allSections(comp, new ArrayList<>()));
+      sectionsOf.put(comp, sections);
+    }
+    return sections.contains(section);
+  }
+
+  /**
+   * A document's entries, indexed as BaseValidator.resolveInBundle indexes a Bundle: by fullUrl (and by
+   * fullUrl/_history/[versionId], when the resource has a meta.versionId), and by Type/id
+   */
+  private class BundleIndex {
+    private final Map<String, List<Base>> byFullUrl = new HashMap<>();
+    private final Map<String, List<Base>> byTypeAndId = new HashMap<>();
+
+    private BundleIndex(Base bundle) {
+      for (Base e : children(bundle, "entry")) {
+        String fu = primitive(e, "fullUrl");
+        add(byFullUrl, fu, e);
+        Base r = single(e, "resource");
+        if (r != null) {
+          String id = r.getIdBase();
+          if (id != null) {
+            add(byTypeAndId, r.fhirType() + "/" + id, e);
+          }
+          Base meta = single(r, "meta");
+          String versionId = meta == null ? null : primitive(meta, "versionId");
+          if (fu != null && versionId != null) {
+            add(byFullUrl, fu + "/_history/" + versionId, e);
+          }
+        }
       }
     }
-    return false;
+
+    private void add(Map<String, List<Base>> map, String key, Base entry) {
+      if (key != null) {
+        map.computeIfAbsent(key, k -> new ArrayList<>()).add(entry);
+      }
+    }
   }
 
-  /** the base of an absolute RESTful fullUrl ([base]/Type/id[/_history/v]), or null */
-  static String baseOf(String fullUrl) {
-    if (fullUrl == null || !(fullUrl.startsWith("http://") || fullUrl.startsWith("https://"))) {
-      return null;
+  /**
+   * A reference resolved in a document, as BaseValidator.resolveInBundle resolves it (less its error reporting), or null:
+   * <ul>
+   *   <li>a fragment (#...) on the end is set aside: the resource is what is resolved</li>
+   *   <li>an absolute reference is resolved by fullUrl, and by nothing else</li>
+   *   <li>a relative reference (Type/id) is resolved against the base of the referring Composition's fullUrl, when that is
+   *   a RESTful URL (as BaseValidator's urlRegex), and before R4, by type and id</li>
+   *   <li>more than one match is no match</li>
+   * </ul>
+   */
+  private Base inBundle(Base bundle, String reference, Base comp, String compFullUrl) {
+    BundleIndex index = bundleIndexes.get(bundle);
+    if (index == null) {
+      index = new BundleIndex(bundle);
+      bundleIndexes.put(bundle, index);
     }
-    String url = stripHistory(fullUrl);
-    int slash = url.lastIndexOf('/');
-    if (slash < 0) {
-      return null;
+    String ref = reference.contains("#") ? reference.substring(0, reference.indexOf('#')) : reference;
+    if (Utilities.isAbsoluteUrl(ref)) {
+      return resourceOf(index.byFullUrl.get(ref));
     }
-    int typeSlash = url.lastIndexOf('/', slash - 1);
-    if (typeSlash < url.indexOf("://") + 3) {
-      return null;
+    String base = comp == null ? null : restfulBase(compFullUrl, comp.fhirType(), comp.getIdBase());
+    if (base != null) {
+      List<Base> el = index.byFullUrl.get(base + ref);
+      if (el != null && !el.isEmpty()) {
+        return resourceOf(el);
+      }
     }
-    String type = url.substring(typeSlash + 1, slash);
-    String id = url.substring(slash + 1);
-    return isTypeName(type) && isId(id) ? url.substring(0, typeSlash + 1) : null;
+    // BaseValidator: from R4 on, a relative reference doesn't resolve by type and id alone - it needs a RESTful base
+    int slash = ref.indexOf('/');
+    if (slash > 0 && !VersionUtilities.isR4Plus(fhirVersion())) {
+      String type = ref.substring(0, slash);
+      String rest = ref.substring(slash + 1);
+      String id = rest.contains("/") ? rest.substring(0, rest.indexOf('/')) : rest;
+      if (!id.isEmpty() && worker.getResourceNamesAsSet().contains(type)) {
+        return resourceOf(index.byTypeAndId.get(type + "/" + id));
+      }
+    }
+    return null;
   }
 
-  private static String stripHistory(String url) {
-    int h = url.lastIndexOf("/_history/");
-    return h > 0 && url.indexOf('/', h + 10) < 0 ? url.substring(0, h) : url;
+  /** the resource of the one entry found; null if there is none, or more than one */
+  private Base resourceOf(List<Base> entries) {
+    return entries == null || entries.size() != 1 ? null : single(entries.get(0), "resource");
   }
 
-  private static boolean isId(String id) {
+  /**
+   * The base a relative reference is resolved against: the referring resource's fullUrl less its own Type/id, when the
+   * fullUrl is a RESTful one - [http(s)://...]Type/id, as BaseValidator's urlRegex (URI_REGEX_XVER) has it. Null if it isn't
+   */
+  static String restfulBase(String fullUrl, String type, String id) {
+    if (fullUrl == null || type == null || id == null || !isRestfulId(id)) {
+      return null;
+    }
+    String own = type + "/" + id;
+    if (!fullUrl.endsWith(own)) {
+      return null;
+    }
+    String base = fullUrl.substring(0, fullUrl.length() - own.length());
+    if (base.isEmpty()) {
+      return base;
+    }
+    String rest;
+    if (base.startsWith("http://")) {
+      rest = base.substring(7);
+    } else if (base.startsWith("https://")) {
+      rest = base.substring(8);
+    } else {
+      return null;
+    }
+    if (!rest.isEmpty() && !rest.endsWith("/")) {
+      return null;
+    }
+    for (char ch : rest.toCharArray()) {
+      if (!(isAsciiLetterOrDigit(ch) || "\\.:%$-_/".indexOf(ch) >= 0)) {
+        return null;
+      }
+    }
+    return base;
+  }
+
+  private static boolean isRestfulId(String id) {
     if (id.isEmpty() || id.length() > 64) {
       return false;
     }
     for (char ch : id.toCharArray()) {
-      if (!(Character.isLetterOrDigit(ch) && ch < 128) && ch != '-' && ch != '.') {
+      if (!(isAsciiLetterOrDigit(ch) || ch == '-' || ch == '.')) {
         return false;
       }
     }
     return true;
   }
 
-  private static boolean hasScheme(String ref) {
-    int colon = ref.indexOf(':');
-    if (colon < 1 || !Character.isLetter(ref.charAt(0))) {
-      return false;
-    }
-    for (int i = 0; i < colon; i++) {
-      char ch = ref.charAt(i);
-      if (!(Character.isLetterOrDigit(ch) || ch == '+' || ch == '.' || ch == '-')) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /** a reference resolved in a Bundle, or null */
-  private Base inBundle(Base bundle, String reference, String fromFullUrl) {
-    String ref = stripHistory(reference);
-    List<Base> entries = children(bundle, "entry");
-    if (hasScheme(ref)) {
-      for (Base e : entries) {
-        if (ref.equals(primitive(e, "fullUrl"))) {
-          return single(e, "resource");
-        }
-      }
-      return null;
-    }
-    int slash = ref.indexOf('/');
-    if (slash < 0 || ref.indexOf('/', slash + 1) >= 0) {
-      return null;
-    }
-    String type = ref.substring(0, slash);
-    String id = ref.substring(slash + 1);
-    if (!isTypeName(type) || !isId(id)) {
-      return null;
-    }
-    String base = baseOf(fromFullUrl);
-    if (base != null) {
-      for (Base e : entries) {
-        if ((base + ref).equals(primitive(e, "fullUrl")) && single(e, "resource") != null) {
-          return single(e, "resource");
-        }
-      }
-    }
-    // no usable base: an entry with that type and id, whose fullUrl (if any) ends with it
-    for (Base e : entries) {
-      Base r = single(e, "resource");
-      String fu = primitive(e, "fullUrl");
-      if (r != null && type.equals(r.fhirType()) && id.equals(r.getIdBase()) && (fu == null || fu.endsWith("/" + ref) || baseOf(fu) == null)) {
-        return r;
-      }
-    }
-    return null;
+  private static boolean isAsciiLetterOrDigit(char ch) {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9');
   }
 
   // --- codes -------------------------------------------------------------------------------
