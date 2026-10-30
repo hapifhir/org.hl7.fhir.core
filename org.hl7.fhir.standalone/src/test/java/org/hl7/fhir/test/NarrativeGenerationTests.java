@@ -1,5 +1,7 @@
 package org.hl7.fhir.test;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -182,6 +184,7 @@ public class NarrativeGenerationTests {
     private String register;
     private String prefix;
     private List<String> sdViews = new ArrayList<>();
+    @Getter  @Setter  private boolean csProperties;
 
     public TestDetails(Element test) {
       super();
@@ -203,6 +206,7 @@ public class NarrativeGenerationTests {
       pretty = !"false".equals(test.getAttribute("pretty"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
+      csProperties = !"false".equals(test.getAttribute("cs-properties"));
       String views = test.getAttribute("sdviews");
       if (!Utilities.noString(views)) {
         for (String v : views.split(",")) {
@@ -286,6 +290,7 @@ public class NarrativeGenerationTests {
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
+    rc.setCsProperties(test.isCsProperties());
     
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
