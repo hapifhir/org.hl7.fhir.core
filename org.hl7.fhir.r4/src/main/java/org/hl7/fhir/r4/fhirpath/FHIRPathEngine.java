@@ -1146,7 +1146,11 @@ public class FHIRPathEngine {
         wrapper.setOperation(ExpressionNode.Operation.fromCode(lexer.getCurrent().substring(0, 1)));
         wrapper.setProximal(proximal);
         wrapper.setStart(lexer.getCurrentLocation().copy());
-        lexer.setCurrent(lexer.getCurrent().substring(1));
+        String unsigned = lexer.getCurrent().substring(1);
+        if (unsigned.isEmpty() || unsigned.charAt(0) < '0' || unsigned.charAt(0) > '9') {
+          throw lexer.error("Found "+lexer.getCurrent()+" expecting a number");
+        }
+        lexer.setCurrent(unsigned);
       }
       result.setConstant(processConstant(lexer));
       result.setKind(Kind.Constant);
@@ -1239,7 +1243,7 @@ public class FHIRPathEngine {
       item.setKind(Kind.Function);
       item.setFunction(ExpressionNode.Function.Item);
       item.getParameters().add(parseExpression(lexer, true, depth + 1));
-      if (!lexer.getCurrent().equals("]")) {
+      if (!"]".equals(lexer.getCurrent())) {
         throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - a \"]\" expected");
       }
       lexer.next();

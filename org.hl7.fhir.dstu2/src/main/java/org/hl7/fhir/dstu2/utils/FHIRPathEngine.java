@@ -482,8 +482,11 @@ public class FHIRPathEngine {
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     SourceLocation c = lexer.getCurrentStartLocation();
     result.setStart(lexer.getCurrentLocation().copy());
+    if (lexer.getCurrent() == null) {
+      throw lexer.error("Expression terminated unexpectedly");
+    }
     // special:
-    if (lexer.getCurrent().equals("-")) {
+    if ("-".equals(lexer.getCurrent())) {
       lexer.take();
       lexer.setCurrent("-" + lexer.getCurrent());
     }
@@ -547,7 +550,7 @@ public class FHIRPathEngine {
       item.setKind(Kind.Function);
       item.setFunction(ExpressionNode.Function.Item);
       item.getParameters().add(parseExpression(lexer, true, depth + 1));
-      if (!lexer.getCurrent().equals("]"))
+      if (!"]".equals(lexer.getCurrent()))
         throw lexer.error("The token " + lexer.getCurrent() + " is not expected here - a \"]\" expected");
       lexer.next();
       result.setInner(item);

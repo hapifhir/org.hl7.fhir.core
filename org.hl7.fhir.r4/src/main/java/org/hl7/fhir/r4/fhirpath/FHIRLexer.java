@@ -149,7 +149,7 @@ public class FHIRLexer {
       char ch = source.charAt(cursor);
       if (ch == '!' || ch == '>' || ch == '<' || ch == ':' || ch == '-' || ch == '=')  {
         cursor++;
-        if (cursor < source.length() && (source.charAt(cursor) == '=' || source.charAt(cursor) == '~' || source.charAt(cursor) == '-') || (ch == '-' && source.charAt(cursor) == '>')) 
+        if (cursor < source.length() && (source.charAt(cursor) == '=' || source.charAt(cursor) == '~' || source.charAt(cursor) == '-') || (ch == '-' && cursor < source.length() && source.charAt(cursor) == '>')) 
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '.' ) {
@@ -179,6 +179,8 @@ public class FHIRLexer {
           cursor++;
           while (cursor < source.length() && (source.charAt(cursor) != '`'))
             cursor++;
+          if (cursor == source.length())
+            throw error("Unterminated string");
           cursor++;
         } else
         while (cursor < source.length() && ((source.charAt(cursor) >= 'A' && source.charAt(cursor) <= 'Z') || (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z') || 
@@ -202,8 +204,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       } else if (ch == '{') {
         cursor++;
-        ch = source.charAt(cursor);
-        if (ch == '}')
+        if (cursor < source.length() && source.charAt(cursor) == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '"' && allowDoubleQuotes) {
@@ -267,8 +268,7 @@ public class FHIRLexer {
         current = "`"+source.substring(currentStart+1, cursor-1)+"`";
       } else if (ch == '|' && liquidMode) {
         cursor++;
-        ch = source.charAt(cursor);
-        if (ch == '|')
+        if (cursor < source.length() && source.charAt(cursor) == '|')
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '@'){
@@ -306,13 +306,13 @@ public class FHIRLexer {
           commentLocation = currentLocation.copy();
         }
         int start = cursor+2;
-        while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
+        while (cursor < source.length() - 1 && (cursor < start || !"*/".equals(source.substring(cursor, cursor+2)))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
           cursor++;        
           currentLocation.incColumn();
         }
         if (cursor >= source.length() -1) {
-          error("Unfinished comment");
+          throw error("Unfinished comment");
         } else {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
