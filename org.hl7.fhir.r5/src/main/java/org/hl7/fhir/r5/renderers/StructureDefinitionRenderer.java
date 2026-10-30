@@ -3464,12 +3464,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
     } else if (!hasNew) {
-      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     } else if (value.equalsDeep(compare)) {
-      addValueDetail(x.div().style(unchangedStyle()), value, elementName, fixed);
+      addValueDetail(x.div().clss(unchangedClass()), value, elementName, fixed);
     } else {
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
-      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     }
     return x;
   }
@@ -4325,7 +4325,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> nodes = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : nodes) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.style(unchangedStyle()); 
+            n.clss(unchangedClass());
           } 
         } 
         ndiv.addChildren(nodes); 
@@ -4344,7 +4344,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : div) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.style(removedStyle()); 
+            n.clss(removedClass());
           } 
         } 
         ndiv.br(); 
@@ -4433,24 +4433,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       x.addChildNodes(x1.getChildNodes()); 
       return true; 
     } 
-  } 
- 
-  public XhtmlNode unchanged(XhtmlNode x) { 
-    return x.span(unchangedStyle()); 
-  } 
- 
-  private String unchangedStyle() { 
-    return "color:DarkGray"; 
-  } 
- 
-  public XhtmlNode removed(XhtmlNode x) { 
-    return x.span(removedStyle()); 
-  } 
- 
-  private String removedStyle() { 
-    return "color:DarkGray;text-decoration:line-through"; 
-  } 
- 
+  }
+
+  public XhtmlNode unchanged(XhtmlNode x) {
+    return x.spanClss(unchangedClass());
+  }
+
+  private String unchangedClass() {
+    return "unchangedStyle";
+  }
+
+  public XhtmlNode removed(XhtmlNode x) {
+    return x.spanClss(removedClass());
+  }
+
+  private String removedClass() {
+    return "removedStyle";
+  }
+
   private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws FHIRException, IOException {
     boolean root = !d.getPath().contains("."); 
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension")); 

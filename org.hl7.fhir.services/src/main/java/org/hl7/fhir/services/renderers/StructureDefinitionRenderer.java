@@ -3504,12 +3504,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
     } else if (!hasNew) {
-      addValueDetail(x.div().clss(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     } else if (value.equalsDeep(compare)) {
-      addValueDetail(x.div().clss(unchangedStyle()), value, elementName, fixed);
+      addValueDetail(x.div().clss(unchangedClass()), value, elementName, fixed);
     } else {
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
-      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     }
     return x;
   }
@@ -4365,7 +4365,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> nodes = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : nodes) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.style(unchangedStyle()); 
+            n.clss(unchangedClass());
           } 
         } 
         ndiv.addChildren(nodes); 
@@ -4384,7 +4384,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : div) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.clss(removedStyle());
+            n.clss(removedClass());
           } 
         } 
         ndiv.br(); 
@@ -4476,18 +4476,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   public XhtmlNode unchanged(XhtmlNode x) { 
-    return x.spanClss(unchangedStyle());
+    return x.spanClss(unchangedClass());
   } 
  
-  private String unchangedStyle() { 
+  private String unchangedClass() {
     return "unchangedStyle";
   } 
  
   public XhtmlNode removed(XhtmlNode x) { 
-    return x.spanClss(removedStyle());
+    return x.spanClss(removedClass());
   }
  
-  private String removedStyle() { 
+  private String removedClass() {
     return "removedStyle";
   } 
  
