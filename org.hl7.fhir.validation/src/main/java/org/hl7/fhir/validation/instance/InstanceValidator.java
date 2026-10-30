@@ -2730,8 +2730,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private StructureDefinition getExtensionDefinition(StructureDefinition profile, String u) {
     StructureDefinition sd1 = profileUtilities.findProfileStr(u, profile);
     StructureDefinition sd2 = profileUtilities.findProfileStr(u, null);
-    if (sd1 != null && !StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
-      log.info("The extension definition ("+sd1.getVersion()+") for "+u+" from profile "+profile.getVUrl()+" is different to the latest ("+sd2.getVersion()+"). Using the latest");
+    if (sd1 != null) {
+      if (sd2 == null) {
+        // this can't happen, but code reviewers pick this up and get upset about the possibility
+        log.info("The extension "+u+" from profile "+profile.getVUrl()+" cannot be resolved globally");
+        return sd1;
+      } else if (!StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
+        log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+      }
     }
     return sd2;
   }
