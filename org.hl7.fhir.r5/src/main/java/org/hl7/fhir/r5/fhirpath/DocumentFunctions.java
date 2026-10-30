@@ -30,25 +30,33 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * <ul>
  *   <li><b>section(system, code [, min, max])</b> - the input is documents (Bundles) or
  *   Compositions; a document's Composition is its first Composition entry. For each, the
- *   Composition's sections, nested ones too, whose code has a coding with that system and code.</li>
+ *   Composition's sections, nested ones too, whose code has a coding that matches system and
+ *   code. min and max default to 1 and 1.</li>
  *   <li><b>entry(system, code [, min, max])</b> - the input is sections. For each, its entries,
- *   resolved, whose code has a coding with that system and code.</li>
- *   <li><b>entryIn(valueSet [, min, max])</b> - as entry(), with a code in the value set.</li>
+ *   resolved, whose code has a coding that matches system and code. min and max default to 0
+ *   and '*'.</li>
+ *   <li><b>entryIn(valueSet [, min, max])</b> - as entry(), with a code in the value set. Empty
+ *   when valueSet is empty.</li>
  *   <li><b>resources(system, code [, type])</b> - the input is documents, or anything in one. Every
- *   resource in the document whose code has a coding with that system and code, and is of the
- *   type, when one is given.</li>
- *   <li><b>resourcesIn(valueSet [, type])</b> - as resources(), with a code in the value set.</li>
+ *   resource in the document whose code has a coding that matches system and code, and is of the
+ *   type, unless type is empty or isn't given.</li>
+ *   <li><b>resourcesIn(valueSet [, type])</b> - as resources(), with a code in the value set. Empty
+ *   when valueSet is empty.</li>
  *   <li><b>sameSubject([other])</b> - whether the focus resource has the same subject (or patient) as other, or
- *   without other, as the document's Composition: see {@link #sameSubject}.</li>
+ *   without other, as the document's Composition: see {@link #sameSubject}. Empty when other is given but is
+ *   empty: only when other isn't given at all is the Composition used.</li>
  *   <li><b>hasCoding(system, code [, version])</b> - the input is Codings or CodeableConcepts. Whether any coding
  *   in them matches: a parameter that is a string must match the coding's system, code or version precisely; a
  *   parameter that is empty, or the version when it isn't given, is ignored. True or false, or empty when the input
  *   is empty.</li>
  * </ul>
  *
- * min and max are both given, or neither: with neither, there's no constraint; max may be '*'.
- * When the number found for an input item is outside min..max, that item adds nothing to the
- * output (that is not an error). A resource's code is its code, vaccineCode or medication
+ * A coding matches a system and code as in hasCoding(): a string must match precisely, and one that is
+ * empty is ignored. min and max are both given, or neither; max may be '*'. Either may be empty, and an
+ * empty one - or both, when they aren't given - takes the function's default. A parameter (other than
+ * sameSubject's other) is a single value, or empty: one that is more than one makes the result empty
+ * (when the expression is checked, a parameter that can be more than one is a warning, as for any function). When the number found
+ * for an input item is outside min..max, that item adds nothing to the output (that is not an error). A resource's code is its code, vaccineCode or medication
  * (when that's a CodeableConcept, or a CodeableReference's concept - a medication given by
  * reference isn't followed). A value set is a canonical URL, with |version or not; a code is
  * in it when any coding of the code is. A value set that can't be found, or a membership the
@@ -92,16 +100,36 @@ class DocumentFunctions {
     }
 
     static final Bounds ANY = new Bounds(0, -1);
+    static final Bounds ONE = new Bounds(1, 1);
+  }
+
+  /** a parameter that isn't given, or is empty */
+  private static boolean isOmitted(List<Base> param) {
+    return param == null || param.isEmpty();
+  }
+
+  /**
+   * whether any of a function's parameter values has more than one item. The parameters (other than sameSubject's) are
+   * each a single value, or empty: when one has more than one item, the function's result is empty
+   */
+  static boolean anyCollection(List<List<Base>> params) {
+    for (List<Base> p : params) {
+      if (p != null && p.size() > 1) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // --- parameters --------------------------------------------------------------------------
 
-  Bounds bounds(String fn, List<Base> min, List<Base> max) {
-    if (min == null) {
-      return Bounds.ANY;
-    }
-    String smin = single(min);
-    String smax = single(max);
+  /**
+   * min and max, each a parameter's value: null when it isn't given. One that is empty, or isn't given, takes the
+   * default's value
+   */
+  Bounds bounds(String fn, List<Base> min, List<Base> max, Bounds defaults) {
+    String smin = isOmitted(min) ? Integer.toString(defaults.min) : single(min);
+    String smax = isOmitted(max) ? (defaults.max < 0 ? "*" : Integer.toString(defaults.max)) : single(max);
     Integer imin = nonNegative(smin);
     Integer imax = "*".equals(smax) ? Integer.valueOf(-1) : nonNegative(smax);
     if (imin == null || imax == null || (imax >= 0 && imax < imin)) {
@@ -110,7 +138,11 @@ class DocumentFunctions {
     return new Bounds(imin, imax);
   }
 
+  /** the value set url - null when the parameter is empty (and then entryIn() and resourcesIn() are empty) */
   String valueSet(String fn, List<Base> param) {
+    if (isOmitted(param)) {
+      return null;
+    }
     String url = single(param);
     if (!isCanonical(url)) {
       throw error(I18nConstants.FHIRPATH_DOC_VALUESET, fn, url);
@@ -118,8 +150,9 @@ class DocumentFunctions {
     return url;
   }
 
+  /** the type - null (no constraint) when the parameter isn't given, or is empty */
   String resourceType(String fn, List<Base> param) {
-    if (param == null) {
+    if (isOmitted(param)) {
       return null;
     }
     String type = single(param);
@@ -244,6 +277,9 @@ class DocumentFunctions {
 
   List<Base> entryIn(Object appInfo, ValidationOptions options, Base root, Base focusResource, List<Base> focus, String fn, String url, Bounds bounds) {
     List<Base> result = new ArrayList<>();
+    if (url == null) {
+      return result;
+    }
     ValueSet vs = null;
     for (Base item : focus) {
       List<Base> entries = sectionEntries(appInfo, root, focusResource, item);
@@ -277,6 +313,9 @@ class DocumentFunctions {
 
   List<Base> resourcesIn(Object appInfo, ValidationOptions options, Base root, Base focusResource, List<Base> focus, String fn, String url, String type) {
     List<Base> result = new ArrayList<>();
+    if (url == null) {
+      return result;
+    }
     List<Base> candidates = documentResources(root, focusResource, focus, type);
     if (!candidates.isEmpty()) {
       ValueSet vs = findValueSet(appInfo, fn, url);
@@ -291,8 +330,8 @@ class DocumentFunctions {
 
   /**
    * sameSubject([other]): whether the focus resource is about the same subject as other - or, without other, as the
-   * Composition of the document the evaluation is on. The subject of a resource is its subject or its patient (no
-   * resource has both). Empty if the focus or other isn't a single resource, if either has no subject (or more than
+   * Composition of the document the evaluation is on (other given as empty is not the same as no other: the result
+   * is empty). The subject of a resource is its subject or its patient (no resource has both). Empty if the focus or other isn't a single resource, if either has no subject (or more than
    * one), or, without other, if the evaluation isn't on a document (a Bundle of type document with a Composition).
    * Otherwise true when the references are identical strings - when both have one; else when both have an identifier,
    * when the identifiers' system and value are identical; otherwise false. Exact matching, without resolving: outside
@@ -686,12 +725,13 @@ class DocumentFunctions {
     return false;
   }
 
+  /** whether the concept has a coding that matches system and code - each null (empty) to match anything */
   private boolean hasCoding(Base concept, String system, String code) {
-    if (concept == null || system == null || code == null) {
+    if (concept == null) {
       return false;
     }
     for (Base c : children(concept, "coding")) {
-      if (system.equals(primitive(c, "system")) && code.equals(primitive(c, "code"))) {
+      if (codingMatches(c, system, code, null)) {
         return true;
       }
     }

@@ -5076,6 +5076,20 @@ public class FHIRPathEngine {
     return expr.getParameters().size() > index ? execute(context, baseToList(context.thisItem), expr.getParameters().get(index), true) : null;
   }
 
+  /** the values of all the parameters given */
+  private List<List<Base>> docParams(ExecutionContext context, ExpressionNode expr) {
+    List<List<Base>> result = new ArrayList<>();
+    for (int i = 0; i < expr.getParameters().size(); i++) {
+      result.add(docParam(context, expr, i));
+    }
+    return result;
+  }
+
+  /** a parameter's value from docParams(), or null if there aren't that many */
+  private static List<Base> docParam(List<List<Base>> params, int index) {
+    return params.size() > index ? params.get(index) : null;
+  }
+
   /** the type resources() or resourcesIn() returns: the type parameter, when it's a literal */
   private String documentResourceType(ExpressionNode exp, int index) {
     if (exp.getParameters().size() > index) {
@@ -5089,35 +5103,55 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    return df.section(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
-      df.bounds("section", docParam(context, expr, 2), docParam(context, expr, 3)));
+    return df.section(focus, df.string(docParam(p, 0)), df.string(docParam(p, 1)),
+      df.bounds("section", docParam(p, 2), docParam(p, 3), DocumentFunctions.Bounds.ONE));
   }
 
   private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    return df.entry(context.appInfo, context.rootResource, context.focusResource, focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
-      df.bounds("entry", docParam(context, expr, 2), docParam(context, expr, 3)));
+    return df.entry(context.appInfo, context.rootResource, context.focusResource, focus, df.string(docParam(p, 0)), df.string(docParam(p, 1)),
+      df.bounds("entry", docParam(p, 2), docParam(p, 3), DocumentFunctions.Bounds.ANY));
   }
 
   private List<Base> funcEntryIn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    String vs = df.valueSet("entryIn", docParam(context, expr, 0));
+    String vs = df.valueSet("entryIn", docParam(p, 0));
     return df.entryIn(context.appInfo, terminologyServiceOptions, context.rootResource, context.focusResource, focus, "entryIn", vs,
-      df.bounds("entryIn", docParam(context, expr, 1), docParam(context, expr, 2)));
+      df.bounds("entryIn", docParam(p, 1), docParam(p, 2), DocumentFunctions.Bounds.ANY));
   }
 
   private List<Base> funcResources(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    return df.resources(context.rootResource, context.focusResource, focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)),
-      df.resourceType("resources", docParam(context, expr, 2)));
+    return df.resources(context.rootResource, context.focusResource, focus, df.string(docParam(p, 0)), df.string(docParam(p, 1)),
+      df.resourceType("resources", docParam(p, 2)));
   }
 
   private List<Base> funcResourcesIn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    String vs = df.valueSet("resourcesIn", docParam(context, expr, 0));
+    String vs = df.valueSet("resourcesIn", docParam(p, 0));
     return df.resourcesIn(context.appInfo, terminologyServiceOptions, context.rootResource, context.focusResource, focus, "resourcesIn", vs,
-      df.resourceType("resourcesIn", docParam(context, expr, 1)));
+      df.resourceType("resourcesIn", docParam(p, 1)));
   }
 
   private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -5126,8 +5160,12 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcHasCoding(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<List<Base>> p = docParams(context, expr);
+    if (DocumentFunctions.anyCollection(p)) {
+      return new ArrayList<Base>();
+    }
     DocumentFunctions df = new DocumentFunctions(this);
-    Boolean has = df.hasCoding(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)), df.string(docParam(context, expr, 2)));
+    Boolean has = df.hasCoding(focus, df.string(docParam(p, 0)), df.string(docParam(p, 1)), df.string(docParam(p, 2)));
     return has == null ? new ArrayList<Base>() : makeBoolean(has);
   }
 
