@@ -1964,11 +1964,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
-              c.addMarkdownNoParaClss("binding",
-                PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(),
+              c.addMarkdownNoParaWithRole("binding",
+                PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null,
                 checkForNoChangeClss(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             } else {
-              c.addMarkdownNoPara("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC));
+              c.addMarkdownNoParaWithRole("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC), null, null);
             }
           } else {
             BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
@@ -1981,7 +1981,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
               c.getPieces().add(gen.new Piece("binding", null, ": ", null));
-              c.addMarkdownNoPara("binding", PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChangeClss(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoParaWithRole("binding", PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null, checkForNoChangeClss(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             }
           }
           AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);

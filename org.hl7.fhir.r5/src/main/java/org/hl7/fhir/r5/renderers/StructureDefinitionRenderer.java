@@ -1996,9 +1996,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
-              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoParaWithRole("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null, checkForNoChangeClss(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             } else {
-              c.addMarkdownNoPara("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC));
+              c.addMarkdownNoParaWithRole("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC), null, null);
             }
           } else {
             BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
@@ -2011,7 +2011,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
               c.getPieces().add(gen.new Piece("binding", null, ": ", null));
-              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoParaWithRole("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null, checkForNoChangeClss(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             }
           }
           AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
@@ -2361,16 +2361,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       piece.styleAsDeEmphasized();
     } 
     return piece; 
-  } 
- 
-  private String checkForNoChange(Element source) { 
-    if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY;
-    } else {  
-      return null; 
-    } 
-  } 
- 
+  }
+
+  private String checkForNoChangeClss(Element source) {
+    if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+      return "xhtPieceDeEmphasized";
+    } else {
+      return null;
+    }
+  }
+
   // icons shown after a type profile when the constraints on the root of the type profile have not
   // (all) been merged into the snapshot element - see the extension type-profile-constraints.
   // In IG publisher mode, these are files in the pubpack; otherwise they are inlined
@@ -3384,9 +3384,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else {
       // the pre is wrapped in a div that is not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
       XhtmlNode div = new XhtmlNode(NodeType.Element, "div").notPretty();
-      String opacity = checkForNoChange(value);
+      String opacity = checkForNoChangeClss(value);
       if (opacity != null) {
-        div.style(opacity);
+        div.clss(opacity);
       }
       div.pre("json").addChildNode(renderValueAsJson(value, valueElementName(definition, value, null)));
       Piece p = gen.new Piece(null, null, null);
