@@ -4885,7 +4885,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private void generateSlicing(XhtmlNode tbl, StructureDefinition profile, ElementDefinition ed, ElementDefinitionSlicingComponent slicing, ElementDefinition compare, int mode, boolean strikethrough) throws IOException { 
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
      
-    x.codeWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_SLICES)+" ", ed.getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_ARE)); 
+    x.codeWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_SLICES)+" ", ed.getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_ARE)+" ");
     String newOrdered = sliceOrderString(slicing); 
     String oldOrdered = (compare==null || !compare.hasSlicing()) ? null : sliceOrderString(compare.getSlicing()); 
     compareString(x, newOrdered, slicing.getOrderedElement(), null, null, null, oldOrdered, null, mode, false, false); 
@@ -4905,7 +4905,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       var ul = x.ul(); 
       for (DiscriminatorWithStatus rc : list) { 
-        rc.render(x.li()); 
+        rc.render(ul.li());
       } 
     } else { 
       x.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_NO_DESCRIM)); 

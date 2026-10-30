@@ -119,7 +119,7 @@ public class RequirementsRenderer extends ResourceRenderer {
       if ("true".equals(stmt.primitiveValue("conditionality"))) {
         td.tx(" ");
         td.span().attribute("title", context.formatPhrase(RenderingI18nContext.REQ_CONDITIONAL_HINT))
-          .style("display: inline-block").style("background-color: #d9e0e7").style("border: 1px solid #8da1b4")
+          .style("display: inline-block").style("background-color: #fbffeb").style("border: 1px solid #8da1b4")
           .style("border-radius: 8px").style("padding: 0px 6px").style("font-size: 0.85em").style("white-space: nowrap")
           .tx(context.formatPhrase(RenderingI18nContext.REQ_CONDITIONAL));
       }

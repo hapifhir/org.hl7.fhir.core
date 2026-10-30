@@ -140,8 +140,8 @@ public class ObligationsRenderer extends Renderer {
     }
   }
 
-  private static String STYLE_UNCHANGED = "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY+";";
-  private static String STYLE_REMOVED = STYLE_UNCHANGED + "text-decoration: line-through;";
+  private static String STYLE_UNCHANGED_CLSS = "unchangedStyle";
+  private static String STYLE_REMOVED_CLSS = "removedStyle";
 
   private List<ObligationDetail> obligations = new ArrayList<>();
   private String corePath;
@@ -412,9 +412,9 @@ public class ObligationsRenderer extends Renderer {
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
       if (ob.unchanged()) {
-        tr.style(STYLE_REMOVED);
+        tr.clss(STYLE_REMOVED_CLSS);
       } else if (ob.removed) {
-        tr.style(STYLE_REMOVED);
+        tr.clss(STYLE_REMOVED_CLSS);
       }
       children.add(tr);
 
@@ -424,7 +424,7 @@ public class ObligationsRenderer extends Renderer {
         renderCodes(code.getChildNodes(), ob.getCodeList());
       if (ob.compare!=null && !ob.compare.getCodeList().isEmpty() && !ob.getCodes().equals(ob.compare.getCodes())) {
         code.br();
-        code = code.span(STYLE_UNCHANGED, null);
+        code = code.spanClss(STYLE_UNCHANGED_CLSS);
         renderCodes(code.getChildNodes(), ob.compare.getCodeList());
       }
 
@@ -441,7 +441,7 @@ public class ObligationsRenderer extends Renderer {
           }
 
           if (!existingActor)
-            actorId.style(STYLE_UNCHANGED);
+            actorId.clss(STYLE_UNCHANGED_CLSS);
           if (ad == null) {
             actorId.addText(anActor.getCanonical());
           } else {
@@ -457,7 +457,7 @@ public class ObligationsRenderer extends Renderer {
                 actorId.br();
                 firstActor = true;
               }
-              actorId = actorId.span(STYLE_REMOVED, null);
+              actorId = actorId.spanClss(STYLE_REMOVED_CLSS);
               if (compAd == null) {
                 actorId.ah(context.prefixLocalHref(compActor.toString()), compActor.toString()).tx(compActor.toString());
               } else if (compAd.hasWebPath()) {
@@ -474,7 +474,7 @@ public class ObligationsRenderer extends Renderer {
       if (hasElementId) {
         XhtmlNode elementIds = tr.td().style("font-size: 11px");
         if (ob.compare!=null && ob.elementIds.equals(ob.compare.elementIds))
-          elementIds.style(STYLE_UNCHANGED);
+          elementIds.clss(STYLE_UNCHANGED_CLSS);
         for (String eid : ob.elementIds) {
           elementIds.sep(", ");
           ElementDefinition ed = profile.getSnapshot().getElementById(eid);
@@ -494,7 +494,7 @@ public class ObligationsRenderer extends Renderer {
           for (String eid : ob.compare.elementIds) {
             if (!ob.elementIds.contains(eid)) {
               elementIds.sep(", ");
-              elementIds.span(STYLE_REMOVED, null).code().tx(eid);
+              elementIds.spanClss(STYLE_REMOVED_CLSS).code().tx(eid);
             }
           }
         }
@@ -552,18 +552,18 @@ public class ObligationsRenderer extends Renderer {
     if (oldS==null)
       return node.tx(newS);
     if (newS.equals(oldS))
-      return node.style(STYLE_UNCHANGED).tx(newS);
+      return node.clss(STYLE_UNCHANGED_CLSS).tx(newS);
     node.tx(newS);
     node.br();
-    return node.span(STYLE_REMOVED,null).tx(oldS);
+    return node.clss(STYLE_REMOVED_CLSS).tx(oldS);
   }
 
   private String compareHtml(String newS, String oldS) {
     if (oldS==null)
       return newS;
     if (newS.equals(oldS))
-      return "<span style=\"" + STYLE_UNCHANGED + "\">" + newS + "</span>";
-    return newS + "<br/><span style=\"" + STYLE_REMOVED + "\">" + oldS + "</span>";
+      return "<span class=\"" + STYLE_UNCHANGED_CLSS + "\">" + newS + "</span>";
+    return newS + "<br/><span class=\"" + STYLE_REMOVED_CLSS + "\">" + oldS + "</span>";
   }
 
   private void renderCodes(XhtmlNodeList children, List<String> codes) {

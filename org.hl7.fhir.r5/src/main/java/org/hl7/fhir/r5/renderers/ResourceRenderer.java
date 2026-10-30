@@ -1039,7 +1039,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       ResourceWrapper source = meta == null ? null : meta.child("source");
 
       if (lang != null || versionId != null || lastUpdated != null || ir != null || source != null || meta != null) {
-        XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px")
+        XhtmlNode div = x.div().style("display: inline-block").style("background-color: #fbffeb").style("padding: 6px")
             .style("margin: 4px").style("border: 1px solid #8da1b4")
             .style("border-radius: 5px").style("line-height: 60%");
 

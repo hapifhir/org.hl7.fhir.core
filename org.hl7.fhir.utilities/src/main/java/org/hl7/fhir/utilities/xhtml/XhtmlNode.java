@@ -1610,4 +1610,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     return count;
   }
+
+  public XhtmlNode unchangedStyle(boolean isUnchanged) {
+    if (isUnchanged) {
+      this.clss("unchangedStyle");
+    }
+    return this;
+  }
 }

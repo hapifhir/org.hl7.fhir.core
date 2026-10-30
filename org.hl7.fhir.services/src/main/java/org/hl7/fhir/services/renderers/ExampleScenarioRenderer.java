@@ -478,7 +478,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     XhtmlNode row = tbl.tr();
     if (step.getPause()) {
       var td = row.td().colspan(7);
-      td.style("opacity: 0.7");
+      td.clss("unchangedStyle");
       td.an(context.prefixAnchor(prefixes.get(step)));
       td.tx("Pause");
     } else {
