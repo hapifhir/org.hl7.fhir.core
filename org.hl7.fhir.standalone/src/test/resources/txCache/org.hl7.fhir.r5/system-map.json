@@ -1,3 +1,21 @@
 {
-  "registry" : "https://ecosystem.hl7.org/tx-reg"
+  "registry" : "https://ecosystem.hl7.org/tx-reg",
+  "systems" : [{
+    "system" : "http://cancer.questionnaire.org/system/code/yesno in en-AU",
+    "url" : "http://cancer.questionnaire.org/system/code/yesno",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://example.org/fhir/CodeSystem/flags in en, en-US",
+    "url" : "http://example.org/fhir/CodeSystem/flags",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://hl7.org/fhir/us/vrdr/CodeSystem/vrdr-document-section-cs in en, en-US",
+    "url" : "http://hl7.org/fhir/us/vrdr/CodeSystem/vrdr-document-section-cs",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  }]
 }
