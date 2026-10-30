@@ -335,7 +335,7 @@ public class FHIRPathEngine {
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     if (!lexer.done()) {
       throw lexer.error("Premature ExpressionNode termination at unexpected token \""+lexer.getCurrent()+"\"");
     }
@@ -372,7 +372,7 @@ public class FHIRPathEngine {
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     result.check();
     return new ExpressionNodeWithOffset(lexer.getCurrentStart(), result);    
   }
@@ -385,7 +385,7 @@ public class FHIRPathEngine {
    * @throws Exception
    */
   public ExpressionNode parse(FHIRLexer lexer) throws FHIRLexerException {
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     result.check();
     return result;    
   }
@@ -1110,7 +1110,14 @@ public class FHIRPathEngine {
     }
   }
 
-  private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
+  // bounds the parser's recursion, so that a hostile or broken expression - e.g. "(".repeat(4000) - gets a
+  // parse error, not a StackOverflowError. Real expressions don't go much deeper than 15-20
+  private static final int MAX_PARSE_DEPTH = 100;
+
+  private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal, int depth) throws FHIRLexerException {
+    if (depth > MAX_PARSE_DEPTH) {
+      throw lexer.error("The expression is nested too deeply (more than "+MAX_PARSE_DEPTH+" levels)");
+    }
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     ExpressionNode wrapper = null;
     SourceLocation c = lexer.getCurrentStartLocation().copy();
@@ -1176,7 +1183,7 @@ public class FHIRPathEngine {
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
-      result.setGroup(parseExpression(lexer, true));
+      result.setGroup(parseExpression(lexer, true, depth + 1));
       if (!")".equals(lexer.getCurrent())) {
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a \")\"");
       }
@@ -1211,7 +1218,7 @@ public class FHIRPathEngine {
         result.setFunction(f);
         lexer.next();
         while (!")".equals(lexer.getCurrent())) { 
-          result.getParameters().add(parseExpression(lexer, true));
+          result.getParameters().add(parseExpression(lexer, true, depth + 1));
           if (",".equals(lexer.getCurrent())) {
             lexer.next();
           } else if (!")".equals(lexer.getCurrent())) {
@@ -1231,7 +1238,7 @@ public class FHIRPathEngine {
       ExpressionNode item = new ExpressionNode(lexer.nextId());
       item.setKind(Kind.Function);
       item.setFunction(ExpressionNode.Function.Item);
-      item.getParameters().add(parseExpression(lexer, true));
+      item.getParameters().add(parseExpression(lexer, true, depth + 1));
       if (!lexer.getCurrent().equals("]")) {
         throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - a \"]\" expected");
       }
@@ -1241,7 +1248,7 @@ public class FHIRPathEngine {
     }
     if (".".equals(lexer.getCurrent())) {
       lexer.next();
-      focus.setInner(parseExpression(lexer, false));
+      focus.setInner(parseExpression(lexer, false, depth + 1));
     }
     result.setProximal(proximal);
     if (proximal) {
@@ -1250,7 +1257,7 @@ public class FHIRPathEngine {
         focus.setOpStart(lexer.getCurrentStartLocation());
         focus.setOpEnd(lexer.getCurrentLocation());
         lexer.next();
-        focus.setOpNext(parseExpression(lexer, false));
+        focus.setOpNext(parseExpression(lexer, false, depth + 1));
         focus = focus.getOpNext();
       }
       result = organisePrecedence(lexer, result);

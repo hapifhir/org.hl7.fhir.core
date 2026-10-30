@@ -358,4 +358,19 @@ public class FHIRPathParserTests {
   void testInvalidUnicodeEscapeIsALexerError(String expression) {
     Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
   }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"(", "a.", "where(", "a[", "iif(true, "})
+  void testDeepNestingIsALexerError(String unit) {
+    // 4000 levels would overflow the stack without the parser's depth guard
+    String expression = unit.repeat(4000) + "true";
+    FHIRLexerException e = Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
+    Assertions.assertTrue(e.getMessage().contains("nested too deeply"), e.getMessage());
+  }
+
+  @Test
+  void testModerateNestingIsFine() {
+    Assertions.assertNotNull(fp.parse("(".repeat(40) + "true" + ")".repeat(40)));
+    Assertions.assertNotNull(fp.parse("a" + ".a".repeat(40)));
+  }
 }
