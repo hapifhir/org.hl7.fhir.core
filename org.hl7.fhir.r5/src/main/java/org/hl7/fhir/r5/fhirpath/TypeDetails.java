@@ -138,7 +138,7 @@ public class TypeDetails {
 
     public String describeMin() {
       if (uri.startsWith(FP_NS)) {
-        return "System."+uri.substring(FP_NS.length());
+        return uri.substring(FP_NS.length());
       }
       if (uri.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
         return "FHIR."+uri.substring("http://hl7.org/fhir/StructureDefinition/".length());
@@ -461,7 +461,7 @@ public class TypeDetails {
   }
   
   private List<ProfiledType> sortedTypes(List<ProfiledType> types2) {
-    List<ProfiledType> list = new ArrayList<>();
+    List<ProfiledType> list = new ArrayList<>(types2);
     Collections.sort(list, new ProfiledTypeSorter());
     return list;
   }

@@ -1301,7 +1301,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     boolean inactive = (CodeSystemUtilities.isInactive(cs, cc));
     String status = CodeSystemUtilities.getStatus(cs, cc);
-    boolean abstractCode = CodeSystemUtilities.isAbstract(cs, cc);
+    boolean abstractCode = CodeSystemUtilities.isNotSelectable(cs, cc);
 
     if (abstractCode && options.isNoAbstract()) {
       String msg = context.formatMessage(I18nConstants.ABSTRACT_CODE_NOT_ALLOWED, cs.getUrl(), code.getCode());

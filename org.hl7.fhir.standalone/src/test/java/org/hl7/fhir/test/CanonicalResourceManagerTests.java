@@ -12,6 +12,8 @@ import org.hl7.fhir.utilities.npm.PackageGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -463,7 +465,8 @@ public class CanonicalResourceManagerTests {
     mrm.see(vs2, new PackageInformation("hl7.terminology.r4", "4.0.1", "4.0.1", new Date()));   
     Assertions.assertNotNull(mrm.get("https://terminology.hl7.org/ValueSet/234"));
     Assertions.assertEquals("2", mrm.get("https://terminology.hl7.org/ValueSet/234").getName());
-    Assertions.assertNull(mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
+    // the core copy isn't the default any more, but a reference that names its version still gets it
+    Assertions.assertEquals("1", mrm.get("https://terminology.hl7.org/ValueSet/234", "2.0.0").getName());
   }
   
   @Test
@@ -1544,5 +1547,156 @@ public class CanonicalResourceManagerTests {
     manager.drop("edqm");
     Assertions.assertEquals(0, manager.size());
     Assertions.assertNull(manager.get("edqm"));
+  }
+
+  // -- hl7.terminology vs the FHIR core packages ------------------------------------------------------------
+  // THO's copy is always what a reference with no version gets (versions were reset when content moved to
+  // THO, so version order can't decide). The core versions stay available to a reference that names them,
+  // unless THO provides that same version itself
+
+  private static final String SELFPAY = "http://terminology.hl7.org/CodeSystem/coverage-selfpay";
+  private static final String CPT = "http://hl7.org/fhir/concept-property-type";
+
+  private static CodeSystem thoTestCS(String url, String version, String name) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(name);
+    cs.setUrl(url);
+    cs.setVersion(version);
+    cs.setName(name);
+    return cs;
+  }
+
+  private static PackageInformation corePackage() {
+    return new PackageInformation("hl7.fhir.r4.core", "4.0.1", "4.0.1", new Date());
+  }
+
+  private static PackageInformation thoPackage() {
+    return new PackageInformation("hl7.terminology.r4", "6.0.2", "4.0.1", new Date());
+  }
+
+  private static CanonicalResourceManager<CodeSystem> thoTestManager(boolean coreFirst, CodeSystem core, CodeSystem tho) {
+    CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(false, false);
+    if (coreFirst) {
+      mrm.see(core, corePackage());
+      mrm.see(tho, thoPackage());
+    } else {
+      mrm.see(tho, thoPackage());
+      mrm.see(core, corePackage());
+    }
+    return mrm;
+  }
+
+  @Test
+  void testUTGCoreVersionKeptForPinnedReference() {
+    for (boolean coreFirst : new boolean[] { true, false }) {
+      CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+        thoTestCS(SELFPAY, "4.0.1", "core"), thoTestCS(SELFPAY, "1.0.1", "tho"));
+      // THO's is the default, though its version is lower
+      Assertions.assertEquals("tho", mrm.get(SELFPAY).getName());
+      Assertions.assertEquals("tho", mrm.get(SELFPAY, null).getName());
+      Assertions.assertEquals("tho", mrm.get(SELFPAY, "1.0.1").getName());
+      // and a reference that names the core version gets the core one
+      Assertions.assertEquals("core", mrm.get(SELFPAY, "4.0.1").getName());
+      Assertions.assertEquals("core", mrm.get(SELFPAY, "4.0").getName());
+      Assertions.assertTrue(mrm.has(SELFPAY, "4.0.1"));
+      Assertions.assertEquals("hl7.fhir.r4.core", mrm.getPackageInfo(SELFPAY, "4.0.1").getId());
+      Assertions.assertEquals("core", mrm.getByPackage(SELFPAY, "4.0.1", new ArrayList<>()).getName());
+      Assertions.assertEquals("tho", mrm.getByPackage(SELFPAY, new ArrayList<>()).getName());
+      Assertions.assertNull(mrm.get(SELFPAY, "3.0.0"));
+    }
+  }
+
+  @Test
+  void testUTGPinnedCoreVersionIsNotListed() {
+    for (boolean coreFirst : new boolean[] { true, false }) {
+      CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+        thoTestCS(SELFPAY, "4.0.1", "core"), thoTestCS(SELFPAY, "1.0.1", "tho"));
+      // it isn't one of the resources the manager has - only a version a reference can name
+      Assertions.assertEquals(1, mrm.size());
+      Assertions.assertEquals(1, mrm.getList().size());
+      Assertions.assertEquals(1, mrm.getForUrl(SELFPAY).size());
+      Assertions.assertEquals("tho", mrm.getForUrl(SELFPAY).get(0).getName());
+      // but it is one of the versions of the url
+      Assertions.assertEquals(2, mrm.getVersionList(SELFPAY).size());
+    }
+  }
+
+  @Test
+  void testUTGSameVersionIsTHOs() {
+    for (boolean coreFirst : new boolean[] { true, false }) {
+      CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+        thoTestCS(CPT, "5.0.0", "core"), thoTestCS(CPT, "5.0.0", "tho"));
+      Assertions.assertEquals("tho", mrm.get(CPT).getName());
+      Assertions.assertEquals("tho", mrm.get(CPT, "5.0.0").getName());
+      Assertions.assertEquals("tho", mrm.get(CPT, "5.0").getName());
+      Assertions.assertEquals(1, mrm.getVersionList(CPT).size());
+    }
+  }
+
+  @Test
+  void testUTGConceptPropertyType() {
+    // THO's ValueSet/concept-property-type 6.0.1 includes concept-property-type 5.0.0, which only core has
+    for (boolean coreFirst : new boolean[] { true, false }) {
+      CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+        thoTestCS(CPT, "5.0.0", "core"), thoTestCS(CPT, "6.0.1", "tho"));
+      Assertions.assertEquals("tho", mrm.get(CPT).getName());
+      Assertions.assertEquals("tho", mrm.get(CPT, "6.0.1").getName());
+      Assertions.assertEquals("core", mrm.get(CPT, "5.0.0").getName());
+    }
+  }
+
+  @Test
+  void testUTGPinnedExactVersionBeatsTHOMajorMinor() {
+    for (boolean coreFirst : new boolean[] { true, false }) {
+      CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+        thoTestCS(CPT, "5.0.0", "core"), thoTestCS(CPT, "5.0.1", "tho"));
+      // the version named exactly is the core one
+      Assertions.assertEquals("core", mrm.get(CPT, "5.0.0").getName());
+      Assertions.assertTrue(mrm.has(CPT, "5.0.0"));
+      // but 5.0 is THO's: THO has a 5.0 version, so core's isn't kept by major.minor
+      Assertions.assertEquals("tho", mrm.get(CPT, "5.0").getName());
+    }
+  }
+
+  @Test
+  void testUTGLaterTHOVersionTakesThePin() {
+    // a THO package loaded later that provides the core version takes it over
+    CanonicalResourceManager<CodeSystem> mrm = thoTestManager(true,
+      thoTestCS(CPT, "5.0.0", "core"), thoTestCS(CPT, "6.0.1", "tho"));
+    Assertions.assertEquals("core", mrm.get(CPT, "5.0.0").getName());
+    mrm.see(thoTestCS(CPT, "5.0.0", "tho5"), new PackageInformation("hl7.terminology.r4", "6.0.3", "4.0.1", new Date()));
+    Assertions.assertEquals("tho5", mrm.get(CPT, "5.0.0").getName());
+  }
+
+  @Test
+  void testUTGDropRemovesPinnedCoreVersion() {
+    CanonicalResourceManager<CodeSystem> mrm = thoTestManager(true,
+      thoTestCS(SELFPAY, "4.0.1", "core"), thoTestCS(SELFPAY, "1.0.1", "tho"));
+    mrm.drop("core");
+    Assertions.assertNull(mrm.get(SELFPAY, "4.0.1"));
+    Assertions.assertEquals("tho", mrm.get(SELFPAY).getName());
+  }
+
+  @Test
+  void testUTGNonCorePackagesUnaffected() {
+    CanonicalResourceManager<CodeSystem> mrm = new CanonicalResourceManager<>(false, false);
+    mrm.see(thoTestCS(SELFPAY, "4.0.1", "other"), new PackageInformation("some.other.package", "1.0.0", "4.0.1", new Date()));
+    mrm.see(thoTestCS(SELFPAY, "1.0.1", "tho"), thoPackage());
+    // normal version precedence: 4.0.1 stays the default, and both stay listed
+    Assertions.assertEquals("other", mrm.get(SELFPAY).getName());
+    Assertions.assertEquals(2, mrm.getForUrl(SELFPAY).size());
+  }
+
+  @ParameterizedTest
+  @ValueSource(booleans = { true, false })
+  void testUTGPinnedMajorMinorHasAgreesWithGetForLabelledVersion(boolean coreFirst) {
+    CanonicalResourceManager<CodeSystem> mrm = thoTestManager(coreFirst,
+      thoTestCS(SELFPAY, "4.0.1", "core"), thoTestCS(SELFPAY, "1.0.1", "tho"));
+    // has() finds the core copy pinned under SELFPAY|4.0 for a labelled version, but get() only falls back
+    // to major.minor for unlabelled versions, so a has() check followed by get() gets null
+    boolean has = mrm.has(SELFPAY, "4.0.1-ballot");
+    CodeSystem got = mrm.get(SELFPAY, "4.0.1-ballot");
+    Assertions.assertEquals(has, got != null,
+      "has() returned " + has + " but get() returned " + (got == null ? "null" : got.getName()));
   }
 }

@@ -2635,7 +2635,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         I18nConstants.RESOURCE_NOT_MATCHETYPE_EXTENSION, url) && ok;
     
     long t = System.nanoTime();
-    StructureDefinition ex = Utilities.isAbsoluteUrl(u) ?profileUtilities.findProfileStr(u, profile) : null;
+    StructureDefinition ex = Utilities.isAbsoluteUrl(u) ? getExtensionDefinition(profile, u) : null;
     if (ex == null) {
       ex = getXverExt(errors, path, element, url, errored);
     } else {
@@ -2643,7 +2643,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (url.contains("|")) {
       if (ex == null) {
-        ex = Utilities.isAbsoluteUrl(url) ?profileUtilities.findProfileStr(url, profile) : null;
+        ex = Utilities.isAbsoluteUrl(url) ? getExtensionDefinition(profile, url) : null;
         if (ex == null) {
           warning(errors, "2022-12-17", IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_NO_MATCH);
         } else {
@@ -2716,6 +2716,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     }
     return ok;
+  }
+
+  /**
+   * Fetches the definition of an extension by searching within a given profile or globally. This will always return the global version.
+   * If the definition is found in both the profile and globally but the versions differ, a message will be logged.
+   *
+   * @param profile the profile within which to search for the extension definition
+   * @param u the URL of the extension definition to be retrieved
+   * @return the global extension definition if found, or null if the definition does not exist
+   */
+  private StructureDefinition getExtensionDefinition(StructureDefinition profile, String u) {
+    StructureDefinition sd1 = profileUtilities.findProfileStr(u, profile);
+    StructureDefinition sd2 = profileUtilities.findProfileStr(u, null);
+    if (sd1 != null) {
+      if (sd2 == null) {
+        // this can't happen, but code reviewers pick this up and get upset about the possibility
+        log.info("The extension "+u+" from profile "+profile.getVUrl()+" cannot be resolved globally");
+        return sd1;
+      } else if (!StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
+        log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+      }
+    }
+    return sd2;
   }
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {

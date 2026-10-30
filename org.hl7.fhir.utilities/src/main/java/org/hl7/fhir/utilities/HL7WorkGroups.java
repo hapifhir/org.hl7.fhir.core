@@ -62,6 +62,7 @@ public class HL7WorkGroups {
     case "ec": return "http://www.hl7.org/Special/committees/emergencycare";
     case "fhir": return "http://www.hl7.org/Special/committees/fiwg";
     case "fmg": return "http://www.hl7.org/Special/committees/fhirmg";
+    case "fhir-pd": return "http://www.hl7.org/Special/committees/fhirmg";
     case "fm": return "http://www.hl7.org/Special/committees/fm";
     case "hsi": return "http://www.hl7.org/Special/committees/hsi";
     case "hsswg": return "http://www.hl7.org/Special/committees/hsswg";
@@ -110,6 +111,7 @@ public class HL7WorkGroups {
     case "ehr": return "Electronic Health Records";
     case "ec": return "Emergency Care";
     case "fhir": return "FHIR Infrastructure";
+    case "fhir-pd": return "FHIR Product Director";
     case "fmg": return "FHIR Management Group";
     case "fm": return "Financial Management";
     case "hsi": return "Health Standards Integration";

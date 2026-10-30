@@ -26,7 +26,7 @@ class CompileHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     try {
-      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
       String mapUri = params.get("url");
       if (mapUri == null || mapUri.trim().isEmpty()) {
         sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createError("Missing required query parameter: url"), getAcceptHeader(exchange));

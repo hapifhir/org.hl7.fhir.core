@@ -139,7 +139,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean generateProperties(XhtmlNode x, CodeSystem cs) {
-    if (cs.hasProperty()) {
+    if (cs.hasProperty() && context.isCsProperties()) {
       boolean hasRendered = false;
       boolean hasURI = false;
       boolean hasDescription = false;
@@ -258,21 +258,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
     boolean isManual = false;
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
-        isManual = true;
-      }
-    }
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (showPropertyInTable(cp, isManual)) {
-        boolean exists = false;
-        for (ConceptDefinitionComponent c : cs.getConcept()) {
-          exists = exists || conceptsHaveProperty(c, cp);
+    if (context.isCsProperties()) {
+      for (PropertyComponent cp : cs.getProperty()) {
+        if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+          isManual = true;
         }
-        if (exists) {
-          properties.add(cp);
-          if ("status".equals(cp.getCode())) {
-            ignoreStatus = true;
+      }
+      for (PropertyComponent cp : cs.getProperty()) {
+        if (showPropertyInTable(cp, isManual)) {
+          boolean exists = false;
+          for (ConceptDefinitionComponent c : cs.getConcept()) {
+            exists = exists || conceptsHaveProperty(c, cp);
+          }
+          if (exists) {
+            properties.add(cp);
+            if ("status".equals(cp.getCode())) {
+              ignoreStatus = true;
+            }
           }
         }
       }

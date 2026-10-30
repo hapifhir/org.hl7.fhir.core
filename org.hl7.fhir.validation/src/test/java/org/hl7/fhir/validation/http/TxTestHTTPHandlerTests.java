@@ -7,10 +7,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -131,5 +133,16 @@ class TxTestHTTPHandlerTests {
   void defaultModesLeaveOutTxFhirOrg() {
     assertFalse(TxTestHTTPHandler.DEFAULT_MODES.contains("tx.fhir.org"));
     assertTrue(TxTestHTTPHandler.DEFAULT_MODES.contains("general"));
+  }
+
+  @Test
+  void openApiDocumentsTheDefaultModes() throws IOException {
+    // the served spec states the defaults in prose; this catches DEFAULT_MODES changing without it
+    String spec;
+    try (InputStream in = OpenApiHTTPHandler.class.getClassLoader().getResourceAsStream(OpenApiHTTPHandler.SPEC_RESOURCE)) {
+      spec = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+    }
+    String defaults = "Defaults to `" + String.join(",", TxTestHTTPHandler.DEFAULT_MODES) + "`";
+    assertTrue(spec.contains(defaults), "validator-http-openapi.json doesn't say: " + defaults);
   }
 }

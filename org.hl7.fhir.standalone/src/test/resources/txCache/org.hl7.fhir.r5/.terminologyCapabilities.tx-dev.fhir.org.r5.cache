@@ -2378,6 +2378,10 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-clinical-impact",
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
     "content" : "complete"
   },
@@ -3227,6 +3231,10 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-title-38-veteran-status-codes",
     "content" : "complete"
   },
   {

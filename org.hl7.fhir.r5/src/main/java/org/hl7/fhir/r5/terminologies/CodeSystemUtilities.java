@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -222,16 +223,43 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
+  private static final String NOT_SELECTABLE_URI = "http://hl7.org/fhir/concept-properties#notSelectable";
+
+  /** the codes that are recognised as the notSelectable property when the code system doesn't say otherwise */
+  private static final Set<String> NOT_SELECTABLE_CODES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("notSelectable", "abstract", "not-selectable")));
+
+  /**
+   * Whether the concept is not selectable (aka abstract): it has a boolean property with the value true
+   * that is the code system's notSelectable property.
+   *
+   * This is on the expansion hot path, so it only looks at the code system's property declarations for
+   * the concept's boolean properties (most concepts have none) rather than working out the property codes up front
+   */
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
-    String pd = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#notSelectable");
-    if (pd == null) {
-      pd = "notSelectable";
-    }
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (pd.equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
-        return ((BooleanType) p.getValue()).getValue();
+      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue() && isNotSelectableProperty(cs, p.getCode())) {
+        return true;
+      }
     }
     return false;
+  }
+
+  /**
+   * Whether a concept property code is the code system's code for the standard notSelectable property.
+   * A property declared with the standard uri counts whatever code it was given. A property declared
+   * with a different uri is a different property, and doesn't count, whatever its code. Otherwise
+   * (not declared, or declared with no uri) notSelectable, abstract and not-selectable are recognised
+   * by the code alone
+   */
+  private static boolean isNotSelectableProperty(@Nonnull CodeSystem cs, String code) {
+    if (code == null) {
+      return false;
+    }
+    PropertyComponent pc = cs.getProperty(code);
+    if (pc != null && pc.hasUri()) {
+      return NOT_SELECTABLE_URI.equals(pc.getUri());
+    }
+    return NOT_SELECTABLE_CODES.contains(code);
   }
 
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull String code) {
@@ -1200,21 +1228,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       }
     }
     setProperty(cs, cc, code, new StringType(comments));
-  }
-
-  public static boolean isAbstract(CodeSystem cs, ConceptDefinitionComponent def) {
-    for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue()) {
-        if (Utilities.existsInList(p.getCode(), "abstract", "not-selectable", "notSelectable")) {
-          return true;
-        }
-        PropertyComponent pc = cs.getProperty(p.getCode());
-        if (pc != null && "http://hl7.org/fhir/concept-properties#notSelectable".equals(pc.getUri())) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   public static boolean isLangPack(CodeSystem c) {

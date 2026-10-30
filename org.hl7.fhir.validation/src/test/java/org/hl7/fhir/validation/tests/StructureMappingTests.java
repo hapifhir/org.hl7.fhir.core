@@ -170,12 +170,12 @@ public class StructureMappingTests {
     StructureMap r = new StructureMap().setUrl("testGetSourceResourceFromStructureMapDefinitionException");      
     String targetUrl = "http://example.org/StructureDefinition/testGetSourceResourceFromStructureMapDefinitionExceptionTarget";
     StructureMap.StructureMapGroupComponent g = r.addGroup();
-    g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
-    g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
+    g.addInput().setMode(StructureMap.StructureMapInputModeVS.SOURCE).setType("input");
+    g.addInput().setMode(StructureMap.StructureMapInputModeVS.SOURCE).setType("input");
     // needs to have at least 1 output parameter to pass the check for those, which returen FHIRException, not DefinitionException
-    g.addInput().setMode(StructureMap.StructureMapInputMode.TARGET).setType("input");
+    g.addInput().setMode(StructureMap.StructureMapInputModeVS.TARGET).setType("input");
     r.addStructure()
-      .setMode(StructureMap.StructureMapModelMode.TARGET)
+      .setMode(StructureMap.StructureMapModelModeVS.TARGET)
       .setUrl(targetUrl)
       .setAlias("input"); // since this isn't an actual type defintion, give it an alias so that it can link to the structure definition
     context.cacheResource(r);

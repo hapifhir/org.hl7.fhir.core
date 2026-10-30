@@ -240,6 +240,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 //      }
 
 		generateCopy(analysis, ti, false);
+		generateSetModelContext(analysis, ti, "    ");
     if (hasChildren) {
 		  generateEquals(analysis, ti, false);
 		  generateIsEmpty(analysis, ti, false);
@@ -1035,7 +1036,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           if (e.typeSummary().equals("xhtml")) {
             cn = "TypeConvertor.castToXhtml(value)";
           } else if (tn.contains("Enumeration<")) { // enumeration
-            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
+            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory("+(isR6() ? "modelContext" : "")+").fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
           } else if (e.getTypeList().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) {
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
@@ -1060,6 +1061,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+"); // "+tn+"\r\n");
         } else {
           write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
+          if (isR6() && !e.typeSummary().equals("xhtml")) {
+            write(indent+"      if (this."+getElementName(name, true)+" != null) {\r\n");
+            write(indent+"        this."+getElementName(name, true)+".setModelContext(this.modelContext);\r\n");
+            write(indent+"      }\r\n");
+          }
         }
       }
     }
@@ -1091,7 +1097,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           if (e.typeSummary().equals("xhtml")) {
             cn = "TypeConvertor.castToXhtml(value)";
           } if (tn.contains("Enumeration<")) { // enumeration
-            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
+            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory("+(isR6() ? "modelContext" : "")+").fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
           } else if (e.getTypeList().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) { 
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
@@ -1252,7 +1258,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     else if (e.unbounded()) {
       write(indent+"      return add"+upFirst(getElementName(name, false))+"();\r\n");
     } else {
-      write(indent+"      this."+getElementName(name, true)+" = new "+tn+"();\r\n");
+      write(indent+"      this."+getElementName(name, true)+" = new "+tn+"("+(isR6() ? "this.modelContext" : "")+");\r\n");
       write(indent+"      return this."+getElementName(name, true)+";\r\n");
     }
     write(indent+"    }\r\n");
@@ -1527,6 +1533,15 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
 		
 		write("  public static class "+tns+"EnumFactory implements EnumFactory<"+tns+"> {\r\n");
+		if (isR6()) {
+		  write("    private final IModelContext modelContext;\r\n");
+		  write("    public "+tns+"EnumFactory(IModelContext modelContext) {\r\n");
+		  write("      this.modelContext = modelContext;\r\n");
+		  write("    }\r\n");
+		  write("    public "+tns+"EnumFactory() {\r\n");
+		  write("      this(null);\r\n");
+		  write("    }\r\n");
+		}
 		write("    public "+tns+" fromCode(String codeString) throws IllegalArgumentException {\r\n");
 		
 		write("      if (codeString == null || \"\".equals(codeString))\r\n");
@@ -1544,15 +1559,15 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write("          if (code == null)\r\n");
     write("            return null;\r\n");
     write("          if (code.isEmpty())\r\n");
-    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
+    write("            return new Enumeration<"+tns+">("+(isR6() ? "modelContext, " : "")+"this, "+tns+".NULL, code);\r\n");
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
-    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
+    write("            return new Enumeration<"+tns+">("+(isR6() ? "modelContext, " : "")+"this, "+tns+".NULL, code);\r\n");
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
-      write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+", code);\r\n");
+      write("          return new Enumeration<"+tns+">("+(isR6() ? "modelContext, " : "")+"this, "+tns+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+escapeJavaString(tns)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
@@ -1613,6 +1628,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     generatePropertyTypeGetter(analysis, ti,"    ");
     generateChildAdder(analysis, ti,"    ");
     generateCopy(analysis, ti, true);
+    generateSetModelContext(analysis, ti, "    ");
     generateEquals(analysis, ti, true);
     generateIsEmpty(analysis, ti, true);
     generateFhirType(e.getPath());
@@ -1779,9 +1795,13 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	      if (c.unbounded()) {
 	        String ctn = c.getUserString("java.type");
 	        write("        if ("+name+"List != null) {\r\n");
-	        write("          dst."+name+"List = new ArrayList<"+ctn+">();\r\n");
-	        write("          for ("+ctn+" i : "+name+"List)\r\n");
-	        write("            dst."+name+"List.add(i.copy("+(isR6() ? "options" : "")+"));\r\n");
+	        if (isR6()) {
+	          write("          dst."+name+"List = new BaseList<"+ctn+">(dst).copyFrom("+name+"List, options);\r\n");
+	        } else {
+	          write("          dst."+name+"List = new ArrayList<"+ctn+">();\r\n");
+	          write("          for ("+ctn+" i : "+name+"List)\r\n");
+	          write("            dst."+name+"List.add(i.copy());\r\n");
+	        }
 	        write("        };\r\n");
 	      } else {
 	        if (name.endsWith("[x]"))
@@ -1796,6 +1816,57 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("      protected "+tn+" typedCopy() {\r\n");
       write("        return copy();\r\n");
       write("      }\r\n\r\n");      
+    }
+  }
+
+  private void generateSetModelContext(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    if (!isR6() || analysis.isInterface()) {
+      return;
+    }
+    List<ElementDefinition> children = ti.getChildren();
+    boolean any = false;
+    for (ElementDefinition e : children) {
+      if (!e.typeSummary().equals("xhtml")) {
+        any = true;
+      }
+    }
+    if (!any) {
+      return;
+    }
+    write(indent+"  @Override\r\n");
+    write(indent+"  public void setModelContext(IModelContext modelContext) {\r\n");
+    write(indent+"    if (this.modelContext == modelContext) {\r\n");
+    write(indent+"      return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext\r\n");
+    write(indent+"    }\r\n");
+    write(indent+"    super.setModelContext(modelContext);\r\n");
+    for (ElementDefinition e : children) {
+      if (!e.typeSummary().equals("xhtml")) {
+        String name = getElementName(e.getName().replace("[x]", ""), true);
+        if (e.unbounded()) {
+          String ctn = e.getUserString("java.type");
+          if (ctn == null && e.hasContentReference()) {
+            ctn = analysis.getName();
+          }
+          write(indent+"    if (this."+name+"List != null) {\r\n");
+          write(indent+"      for ("+ctn+" i : this."+name+"List) {\r\n");
+          write(indent+"        i.setModelContext(modelContext);\r\n");
+          write(indent+"      }\r\n");
+          write(indent+"    }\r\n");
+        } else {
+          write(indent+"    if (this."+name+" != null) {\r\n");
+          write(indent+"      this."+name+".setModelContext(modelContext);\r\n");
+          write(indent+"    }\r\n");
+        }
+      }
+    }
+    write(indent+"  }\r\n\r\n");
+  }
+
+  private String newArgs(String tn) {
+    if (isR6()) {
+      return tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext";
+    } else {
+      return tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "";
     }
   }
 
@@ -2078,13 +2149,13 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"List() { \r\n");
 		  if (!e.unbounded()) {
         write(indent+"  List<"+listGenericType+"> list = new ArrayList<"+listGenericType+">();\r\n");
-        write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
+        write(indent+"  if (this."+getElementName(e.getName(), true)+" != null) {\r\n");
         write(indent+"    list.add("+getElementName(e.getName(), true)+");\r\n");
         write(indent+"  }\r\n");
         write(indent+"  return list;\r\n");
 		  } else {
 		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+listGenericType+">();\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+listGenericType+">(this)" : "ArrayList<"+listGenericType+">()")+";\r\n");
 		    write(indent+"  return this."+getElementName(e.getName(), true)+"List;\r\n");
 		  }
 		  write(indent+"}\r\n\r\n");
@@ -2099,11 +2170,21 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write(indent+"    this."+getElementName(e.getName(), true)+" = null;\r\n");
         write(indent+"  } else if (the" + getTitle(getElementName(e.getName(), false)) + ".size() == 1) {\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = the" + getTitle(getElementName(e.getName(), false)) + ".get(0);\r\n");
+        if (isR6()) {
+          write(indent+"    if (this."+getElementName(e.getName(), true)+" != null) {\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+".setModelContext(this.modelContext);\r\n");
+          write(indent+"    }\r\n");
+        }
         write(indent+"  } else {\r\n");
         write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
         write(indent+"  }\r\n");
 		  } else {
-		    write(indent+"  this."+getElementName(e.getName(), true)+"List = the" + getTitle(getElementName(e.getName(), false)) + ";\r\n");
+		    if (isR6()) {
+		      // copy into an owned list (stamping every element) rather than aliasing the caller's list
+		      write(indent+"  this."+getElementName(e.getName(), true)+"List = new BaseList<"+listGenericType+">(this, the" + getTitle(getElementName(e.getName(), false)) + ");\r\n");
+		    } else {
+		      write(indent+"  this."+getElementName(e.getName(), true)+"List = the" + getTitle(getElementName(e.getName(), false)) + ";\r\n");
+		    }
 		  }
       write(indent+"  return this;\r\n");
 		  write(indent+"}\r\n\r\n");
@@ -2155,9 +2236,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"  }\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 		    } else {
-  		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+  		    write(indent+"  "+tn+" t = new "+tn+"("+newArgs(tn)+");\r\n");
   		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-  		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+  		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+tn+">(this)" : "ArrayList<"+tn+">()")+";\r\n");
   		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
   		    write(indent+"  return t;\r\n");
 		    }
@@ -2169,10 +2250,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		     */
 		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
-		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+		    write(indent+"  "+tn+" t = new "+tn+"("+newArgs(tn)+");\r\n");
 		    write(indent+"  t.setValue(value);\r\n");
 		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+tn+">(this)" : "ArrayList<"+tn+">()")+";\r\n");
 		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		    write(indent+"  return this;\r\n");
 		    write(indent+"}\r\n");
@@ -2213,7 +2294,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		        } else {
 		          write(indent+"  "+tn+" t = new "+tn+"();\r\n");
 		          write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		          write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		          write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+tn+">(this)" : "ArrayList<"+tn+">()")+";\r\n");
 		          write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		          write(indent+"  return t;\r\n");
 		        }
@@ -2234,7 +2315,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		        write(indent+"  if (t == null)\r\n");
 		        write(indent+"    return this;\r\n");
 		        write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		        write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		        write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+tn+">(this)" : "ArrayList<"+tn+">()")+";\r\n");
 		        write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      }
           write(indent+"  return this;\r\n");
@@ -2248,7 +2329,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		      write(indent+"  if (t == null)\r\n");
 		      write(indent+"    return this;\r\n");
 		      write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		      write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		      write(indent+"    this."+getElementName(e.getName(), true)+"List = new "+(isR6() ? "BaseList<"+tn+">(this)" : "ArrayList<"+tn+">()")+";\r\n");
 		      write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      write(indent+"  return this;\r\n");
 		      write(indent+"}\r\n");
@@ -2293,7 +2374,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
           write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+newArgs(tn)+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
           write(indent+"}\r\n");
         } else { 
@@ -2302,7 +2383,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
           write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+newArgs(tn)+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
           write(indent+"}\r\n");
         }
@@ -2318,6 +2399,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write("\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
+        if (isR6() && !"XhtmlNode".equals(tn)) {
+          // an XhtmlNode is not a Base, so it doesn't carry a model context
+          write(indent+"  if (value != null) {\r\n");
+          write(indent+"    value.setModelContext(this.modelContext);\r\n");
+          write(indent+"  }\r\n");
+        }
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
         write(indent+"}\r\n");
@@ -2355,7 +2442,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 //          write(indent+"    this."+getElementName(e.getName(), true)+" = null;\r\n");
 //          write(indent+"  else {\r\n");
 //          write(indent+"    if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-//          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+//          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+newArgs(tn)+");\r\n");
 //          write(indent+"    this."+getElementName(e.getName(), true)+".setValue("+(tn.startsWith("Enum") ? tn.substring(12, tn.length()-1)+".fromCode(value)" : "value")+");\r\n");
 //          write(indent+"  }\r\n");
 //          write(indent+"  return this;\r\n");
@@ -2375,7 +2462,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           if ("XhtmlNode".equals(tn))
             write(indent+"      this."+getElementName(e.getName(), true)+" = new XhtmlNode(NodeType.Element, \"div\"); // cc.1\r\n");
           else
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"(); // cc\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+(isR6() ? "this.modelContext" : "")+"); // cc\r\n");
         }
         write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
         write(indent+"}\r\n");
@@ -2414,6 +2501,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           }
           write("))\r\n");
           write(indent+"    throw new FHIRException(\"Not the right type for "+escapeJavaString(e.getPath())+": \"+value.fhirType());\r\n");         
+        }
+        if (isR6() && !"XhtmlNode".equals(tn)) {
+          // an XhtmlNode is not a Base, so it doesn't carry a model context
+          write(indent+"  if (value != null) {\r\n");
+          write(indent+"    value.setModelContext(this.modelContext);\r\n");
+          write(indent+"  }\r\n");
         }
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
@@ -2573,7 +2666,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     jdoc(indent, "@param value "+replaceTitle(rn, e.getDefinition()));
     write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
     if ("long".equals(simpleType) || "double".equals(simpleType)) {
-      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+newArgs(tn)+");\r\n");
       write(indent+"    this."+getElementName(e.getName(), true)+".setValue(value);\r\n");      
     } else {
       if (e.getMin() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
@@ -2585,7 +2678,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write(indent+"  else {\r\n");
       }
       write(indent+"    if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+newArgs(tn)+");\r\n");
       write(indent+"    this."+getElementName(e.getName(), true)+".setValue(value);\r\n");
       if (e.getMin() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
         write(indent+"  }\r\n");

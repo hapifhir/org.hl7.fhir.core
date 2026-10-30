@@ -238,6 +238,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     initModes.add("icd-11");
     initModes.add("icf");
     initModes.add("closure");
+    initModes.add("loinc");
     // Loader only uses the static txtests field, so a throwaway instance is fine.
     tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
     tester.initialise(initModes);
@@ -272,6 +273,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("mimetypes");
     modes.add("icf");
     modes.add("closure");
+    modes.add("loinc");
   }
 
   private void logTestSkip(String reason) {

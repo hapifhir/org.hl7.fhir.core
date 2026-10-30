@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
 class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
   /** The modes used when a test call doesn't say: everything except the server specific tx.fhir.org tests. */
-  static final List<String> DEFAULT_MODES = Collections.unmodifiableList(Arrays.asList("general", "snomed", "omop", "mimetypes", "icd-11", "icf"));
+  static final List<String> DEFAULT_MODES = Collections.unmodifiableList(Arrays.asList("general", "snomed", "omop", "mimetypes", "icd-11", "icf", "loinc"));
 
   /** A version of the test cases: a version, or a package label such as 'current' - never a path. */
   @SuppressWarnings("checkstyle:patternUsage")
@@ -274,7 +274,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   // ---- one test -----------------------------------------------------------------------------
 
   private void runTest(HttpExchange exchange) throws Exception {
-    Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+    Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
     String suiteName = params.get("suite");
     String testName = params.get("test");
     String session = params.get("session");
@@ -409,7 +409,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
    * report.json, as the command line writes them (they are written to the output folder too).
    */
   private void teardown(HttpExchange exchange) throws Exception {
-    Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+    Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
     String session = params.get("session");
     String key;
     if (session != null) {

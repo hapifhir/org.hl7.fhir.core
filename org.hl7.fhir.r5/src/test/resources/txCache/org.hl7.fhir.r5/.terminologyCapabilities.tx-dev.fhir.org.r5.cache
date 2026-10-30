@@ -851,6 +851,9 @@
     "uri" : "http://hl7.org/fhir/concept-properties",
     "version" : [{
       "code" : "5.0.0"
+    },
+    {
+      "code" : "6.0.1"
     }],
     "content" : "complete"
   },
@@ -858,6 +861,9 @@
     "uri" : "http://hl7.org/fhir/concept-property-type",
     "version" : [{
       "code" : "5.0.0"
+    },
+    {
+      "code" : "6.0.1"
     }],
     "content" : "complete"
   },
@@ -3470,7 +3476,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/admit-source",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4114,7 +4120,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4175,9 +4181,16 @@
     "content" : "complete"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-clinical-impact",
     "version" : [{
       "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "version" : [{
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4923,7 +4936,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-type",
     "version" : [{
-      "code" : "3.0.1"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
@@ -5657,6 +5670,13 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-title-38-veteran-status-codes",
     "version" : [{
       "code" : "1.0.0"
     }],

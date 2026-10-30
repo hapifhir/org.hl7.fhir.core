@@ -2,6 +2,7 @@ package org.hl7.fhir.services.renderers.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.With;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.*;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -66,6 +67,7 @@ import java.util.*;
  */
 
 public class RenderingContext extends RenderingI18nContext {
+
 
   public enum DesignationMode {
     ALL,
@@ -345,6 +347,7 @@ public class RenderingContext extends RenderingI18nContext {
   private PackageInformation pi;
   @Getter @Setter boolean showStandardsStatus;
   private boolean inferResourceConformance;
+  @Getter @Setter private boolean csProperties;
 
   /**
    * if this is true, then the rendering will be more WCAG conformant, though this is a step back for most users.
@@ -387,6 +390,7 @@ public class RenderingContext extends RenderingI18nContext {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
     crossLinkKeyGen = new KeyIssuer("xn");
+    csProperties = true;
   }
 
   public RenderingContext(IWorkerContext workerContext, RendererFactory factory, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
@@ -458,6 +462,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.wcagConformant = wcagConformant;
     
     res.getActorWhiteList().addAll(actorWhiteList);
+    res.setCsProperties(csProperties);
 
 // not sure about these    
 //    private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
@@ -1285,4 +1290,9 @@ public class RenderingContext extends RenderingI18nContext {
     this.inferResourceConformance = inferResourceConformance;
   }
 
+  public RenderingContext withCSProperties(boolean properties) {
+    RenderingContext res = copy(true);
+    res.csProperties = properties;
+    return res;
+  }
 }

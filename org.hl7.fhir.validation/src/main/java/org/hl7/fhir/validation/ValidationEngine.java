@@ -37,6 +37,11 @@ import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
+import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.services.liquid.BaseTableWrapper;
 import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
@@ -835,7 +840,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
     int count = 0;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
-      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+      if (inp.getMode() == StructureMap.StructureMapInputModeVS.SOURCE)
         count++;
     }
     if (count > 1)
@@ -884,6 +889,55 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
+  }
+
+  /**
+   * Static type checking of a FHIRPath expression, without evaluating it: the expression is parsed, then checked
+   * against the type it would be evaluated on.
+   *
+   * @param type the type the expression is evaluated on: a type name (Bundle, Coding), a path in one
+   *             (Bundle.entry), or the URL of a StructureDefinition
+   * @param expression the FHIRPath expression
+   * @return the issues found: an error if the expression doesn't parse, or doesn't check against the type; the
+   *         warnings the checking raises; and, when there's no error, information on the type the expression returns
+   */
+  public OperationOutcome checkFhirPath(String type, String expression) throws IOException {
+    List<ValidationMessage> messages = new ArrayList<>();
+    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    ExpressionNode exp = null;
+    try {
+      exp = fpe.parse(expression);
+    } catch (FHIRLexerException e) {
+      messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
+    }
+    if (exp != null) {
+      String root = Utilities.isAbsoluteUrl(type) ? null : type.contains(".") ? type.substring(0, type.indexOf('.')) : type;
+      try {
+        List<FHIRPathEngine.IssueMessage> warnings = new ArrayList<>();
+        TypeDetails td = fpe.checkOnTypes(new ValidationContext(context), root, root, List.of(type), exp, warnings);
+        for (FHIRPathEngine.IssueMessage w : warnings) {
+          messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.WARNING, w.getMessage(), null, w.getId()));
+        }
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INFORMATIONAL, ValidationMessage.IssueSeverity.INFORMATION,
+          "The expression returns " + (td == null || td.hasNoTypes() ? "nothing"
+            : (td.getCollectionStatus() == ExpressionNode.CollectionStatus.SINGLETON ? "a single " : "a collection of ") + td.describeMin()), null, null));
+      } catch (PathEngineException e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
+      } catch (FHIRException e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), null, null));
+      }
+    }
+    return OperationOutcomeUtilities.createOutcome(messages);
+  }
+
+  private ValidationMessage fhirPathIssue(ValidationMessage.IssueType type, ValidationMessage.IssueSeverity level, String message, SourceLocation location, String messageId) {
+    ValidationMessage vm = location == null
+      ? new ValidationMessage(ValidationMessage.Source.InstanceValidator, type, null, message, level)
+      : new ValidationMessage(ValidationMessage.Source.InstanceValidator, type, location.getLine(), location.getColumn(), null, message, level);
+    if (messageId != null) {
+      vm.setMessageId(messageId);
+    }
+    return vm;
   }
 
   public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,

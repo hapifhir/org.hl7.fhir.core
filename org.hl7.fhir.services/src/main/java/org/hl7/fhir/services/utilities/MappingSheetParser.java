@@ -267,24 +267,24 @@ public class MappingSheetParser {
       if (row.getDtMapping() != null) {
         src.setVariable("s");
         tgt.setVariable("t");
-        tgt.setTransform(StructureMapTransform.CREATE);
+        tgt.setTransform(StructureMapTransformVS.CREATE);
         StructureMapGroupRuleDependentComponent dep = rule.addDependent();
         dep.setName(row.getDtMapping());
         dep.addParameter().setValue(new IdType("s"));
         dep.addParameter().setValue(new IdType("t"));
       } else if (row.getVocabMapping() != null) {
-        tgt.setTransform(StructureMapTransform.TRANSLATE);
+        tgt.setTransform(StructureMapTransformVS.TRANSLATE);
         tgt.addParameter().setValue(new StringType(row.getVocabMapping()));
         tgt.addParameter().setValue(new IdType("src"));
       } else {
-        tgt.setTransform(StructureMapTransform.COPY);
+        tgt.setTransform(StructureMapTransformVS.COPY);
       }
       rule.setDocumentation(row.getComments());
       if (row.getDerived() != null) { 
         tgt = rule.addTarget();
         tgt.setContext("tgt");
         tgt.addElement(row.getDerived());
-        tgt.setTransform(StructureMapTransform.COPY);
+        tgt.setTransform(StructureMapTransformVS.COPY);
         tgt.addParameter().setValue(new StringType(row.getDerivedMapping()));
       }
     }

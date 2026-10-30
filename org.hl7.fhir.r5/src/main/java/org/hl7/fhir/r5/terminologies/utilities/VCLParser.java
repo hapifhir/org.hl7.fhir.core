@@ -261,7 +261,7 @@ public class VCLParser {
 
     private void parseSubExpr(boolean isExclusion) throws VCLParseException {
       if (depth >= MAX_NESTING_DEPTH) {
-        throw new VCLParseException("Expression exceeds the maximum nesting depth of " + MAX_NESTING_DEPTH
+        throw new VCLParseException("VCL Expression exceeds the maximum nesting depth of " + MAX_NESTING_DEPTH
             + " in expression '" + expressionExcerpt() + "'", current().position);
       }
       depth++;

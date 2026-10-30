@@ -335,7 +335,7 @@ public class FHIRPathEngine {
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     if (!lexer.done()) {
       throw lexer.error("Premature ExpressionNode termination at unexpected token \""+lexer.getCurrent()+"\"");
     }
@@ -372,7 +372,7 @@ public class FHIRPathEngine {
     if (lexer.done()) {
       throw lexer.error("Path cannot be empty");
     }
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     result.check();
     return new ExpressionNodeWithOffset(lexer.getCurrentStart(), result);    
   }
@@ -385,7 +385,7 @@ public class FHIRPathEngine {
    * @throws Exception
    */
   public ExpressionNode parse(FHIRLexer lexer) throws FHIRLexerException {
-    ExpressionNode result = parseExpression(lexer, true);
+    ExpressionNode result = parseExpression(lexer, true, 0);
     result.check();
     return result;    
   }
@@ -1110,7 +1110,14 @@ public class FHIRPathEngine {
     }
   }
 
-  private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
+  // bounds the parser's recursion, so that a hostile or broken expression - e.g. "(".repeat(4000) - gets a
+  // parse error, not a StackOverflowError. Real expressions don't go much deeper than 15-20
+  private static final int MAX_PARSE_DEPTH = 100;
+
+  private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal, int depth) throws FHIRLexerException {
+    if (depth > MAX_PARSE_DEPTH) {
+      throw lexer.error("The expression is nested too deeply (more than "+MAX_PARSE_DEPTH+" levels)");
+    }
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     ExpressionNode wrapper = null;
     SourceLocation c = lexer.getCurrentStartLocation().copy();
@@ -1139,7 +1146,11 @@ public class FHIRPathEngine {
         wrapper.setOperation(ExpressionNode.Operation.fromCode(lexer.getCurrent().substring(0, 1)));
         wrapper.setProximal(proximal);
         wrapper.setStart(lexer.getCurrentLocation().copy());
-        lexer.setCurrent(lexer.getCurrent().substring(1));
+        String unsigned = lexer.getCurrent().substring(1);
+        if (unsigned.isEmpty() || unsigned.charAt(0) < '0' || unsigned.charAt(0) > '9') {
+          throw lexer.error("Found "+lexer.getCurrent()+" expecting a number");
+        }
+        lexer.setCurrent(unsigned);
       }
       result.setConstant(processConstant(lexer));
       result.setKind(Kind.Constant);
@@ -1176,7 +1187,7 @@ public class FHIRPathEngine {
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
-      result.setGroup(parseExpression(lexer, true));
+      result.setGroup(parseExpression(lexer, true, depth + 1));
       if (!")".equals(lexer.getCurrent())) {
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a \")\"");
       }
@@ -1211,7 +1222,7 @@ public class FHIRPathEngine {
         result.setFunction(f);
         lexer.next();
         while (!")".equals(lexer.getCurrent())) { 
-          result.getParameters().add(parseExpression(lexer, true));
+          result.getParameters().add(parseExpression(lexer, true, depth + 1));
           if (",".equals(lexer.getCurrent())) {
             lexer.next();
           } else if (!")".equals(lexer.getCurrent())) {
@@ -1231,8 +1242,8 @@ public class FHIRPathEngine {
       ExpressionNode item = new ExpressionNode(lexer.nextId());
       item.setKind(Kind.Function);
       item.setFunction(ExpressionNode.Function.Item);
-      item.getParameters().add(parseExpression(lexer, true));
-      if (!lexer.getCurrent().equals("]")) {
+      item.getParameters().add(parseExpression(lexer, true, depth + 1));
+      if (!"]".equals(lexer.getCurrent())) {
         throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - a \"]\" expected");
       }
       lexer.next();
@@ -1241,7 +1252,7 @@ public class FHIRPathEngine {
     }
     if (".".equals(lexer.getCurrent())) {
       lexer.next();
-      focus.setInner(parseExpression(lexer, false));
+      focus.setInner(parseExpression(lexer, false, depth + 1));
     }
     result.setProximal(proximal);
     if (proximal) {
@@ -1250,7 +1261,7 @@ public class FHIRPathEngine {
         focus.setOpStart(lexer.getCurrentStartLocation());
         focus.setOpEnd(lexer.getCurrentLocation());
         lexer.next();
-        focus.setOpNext(parseExpression(lexer, false));
+        focus.setOpNext(parseExpression(lexer, false, depth + 1));
         focus = focus.getOpNext();
       }
       result = organisePrecedence(lexer, result);
@@ -1481,6 +1492,7 @@ public class FHIRPathEngine {
       case Resources: return checkParamCount(lexer, location, exp, 2, 3);
       case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
       case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
+      case HasCoding: return checkParamCount(lexer, location, exp, 2, 3);
     case Comparable: return checkParamCount(lexer, location, exp, 1);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
@@ -4038,6 +4050,14 @@ public class FHIRPathEngine {
       case SameSubject: {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
       }
+      case HasCoding: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
+          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        if (!focus.hasNoTypes() && !focus.hasType(worker, "Coding") && !focus.hasType(worker, "CodeableConcept")) {
+          throw makeException(exp, I18nConstants.FHIRPATH_DOC_CODING_ONLY, exp.getFunction().toCode(), focus.describe());
+        }
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
     case Comparable : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Encode:
@@ -4422,6 +4442,7 @@ public class FHIRPathEngine {
       case Resources: return funcResources(context, focus, exp);
       case ResourcesIn: return funcResourcesIn(context, focus, exp);
       case SameSubject: return funcSameSubject(context, focus, exp);
+      case HasCoding: return funcHasCoding(context, focus, exp);
     case Comparable : return funcComparable(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
     case ToDecimal : return funcToDecimal(context, focus, exp);
@@ -5102,6 +5123,12 @@ public class FHIRPathEngine {
   private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
     return same == null ? new ArrayList<Base>() : makeBoolean(same);
+  }
+
+  private List<Base> funcHasCoding(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    DocumentFunctions df = new DocumentFunctions(this);
+    Boolean has = df.hasCoding(focus, df.string(docParam(context, expr, 0)), df.string(docParam(context, expr, 1)), df.string(docParam(context, expr, 2)));
+    return has == null ? new ArrayList<Base>() : makeBoolean(has);
   }
 
   private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {

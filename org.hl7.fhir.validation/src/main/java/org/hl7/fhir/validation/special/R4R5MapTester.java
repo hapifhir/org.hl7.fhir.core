@@ -37,7 +37,7 @@ import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.fml.StructureMap;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS;
 import org.hl7.fhir.services.fml.ResolvedGroup;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -220,8 +220,8 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
         JsonObject o = json.getJsonObject(rn);
         StructureDefinition sd = context.fetchTypeDefinition(rn);
         if (sd != null) {
-          List<StructureMap> mapSrc = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.SOURCE);
-          List<StructureMap> mapTgt = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputMode.TARGET);
+          List<StructureMap> mapSrc = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputModeVS.SOURCE);
+          List<StructureMap> mapTgt = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputModeVS.TARGET);
           changed = checkMaps(sd, o.getJsonObject("r4"), "r4", "http://hl7.org/fhir/4.0", mapSrc, mapTgt, r4Examples) || changed;
           changed = checkMaps(sd, o.getJsonObject("r4b"), "r4b", "http://hl7.org/fhir/4.3", mapSrc, mapTgt, r4bExamples) || changed;
           JsonParser.compose(json, ManagedFileAccess.outStream(Utilities.path(src, "input", "_data", "conversions.json")), true);
@@ -273,8 +273,8 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   private boolean checkMaps(StructureDefinition sd, JsonObject json, String code, String ns, List<StructureMap> mapSrc, List<StructureMap> mapTgt, NpmPackage examples) throws IOException {
-    List<StructureMap> src = utils.getMapsForUrlPrefix(mapSrc, ns, StructureMapInputMode.TARGET);
-    List<StructureMap> tgt = utils.getMapsForUrlPrefix(mapTgt, ns, StructureMapInputMode.SOURCE);
+    List<StructureMap> src = utils.getMapsForUrlPrefix(mapSrc, ns, StructureMapInputModeVS.TARGET);
+    List<StructureMap> tgt = utils.getMapsForUrlPrefix(mapTgt, ns, StructureMapInputModeVS.SOURCE);
     if (src.size() + tgt.size() == 0) {
       json.set("status", "No Maps Defined");
       json.set("testColor", "#dddddd");
@@ -292,12 +292,12 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (tgt.size() == 1 && src.size() == 1) {
           StructureMap tgtM = tgt.get(0);
-          ResolvedGroup tgtG = utils.getGroupForUrl(tgtM, sd.getUrl(), StructureMapInputMode.TARGET);
-          String tgtU = utils.getInputType(tgtG, StructureMapInputMode.SOURCE);
+          ResolvedGroup tgtG = utils.getGroupForUrl(tgtM, sd.getUrl(), StructureMapInputModeVS.TARGET);
+          String tgtU = utils.getInputType(tgtG, StructureMapInputModeVS.SOURCE);
           assert tgtU.startsWith(ns);
           StructureMap srcM = src.get(0);
-          ResolvedGroup srcG = utils.getGroupForUrl(srcM, sd.getUrl(), StructureMapInputMode.SOURCE);
-          String srcU = utils.getInputType(srcG, StructureMapInputMode.TARGET);
+          ResolvedGroup srcG = utils.getGroupForUrl(srcM, sd.getUrl(), StructureMapInputModeVS.SOURCE);
+          String srcU = utils.getInputType(srcG, StructureMapInputModeVS.TARGET);
           assert srcU.startsWith(ns);
           if (!srcU.equals(tgtU)) {
             json.set("testMessage", "Maps do not round trip to same resource ("+Utilities.tail(srcU)+" -> "+Utilities.tail(tgtU)+") - can't test");            

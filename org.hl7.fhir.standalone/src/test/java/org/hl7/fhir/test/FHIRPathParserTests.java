@@ -358,4 +358,32 @@ public class FHIRPathParserTests {
   void testInvalidUnicodeEscapeIsALexerError(String expression) {
     Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
   }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"(", "a.", "where(", "a[", "iif(true, "})
+  void testDeepNestingIsALexerError(String unit) {
+    // 4000 levels would overflow the stack without the parser's depth guard
+    String expression = unit.repeat(4000) + "true";
+    FHIRLexerException e = Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
+    Assertions.assertTrue(e.getMessage().contains("nested too deeply"), e.getMessage());
+  }
+
+  @Test
+  void testModerateNestingIsFine() {
+    Assertions.assertNotNull(fp.parse("(".repeat(40) + "true" + ")".repeat(40)));
+    Assertions.assertNotNull(fp.parse("a" + ".a".repeat(40)));
+  }
+
+  // each of these used to escape the parser as an unchecked runtime exception (NPE / StringIndexOutOfBounds / NumberFormat)
+  @ParameterizedTest
+  @ValueSource(strings = {"a[1", "a[a", "{", "a {", "%`", "%`abc", "a -", "(--", "(-+", "--5", "/*/", "a /* unfinished"})
+  void testMalformedExpressionIsALexerError(String expression) {
+    Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"{}", "a.where(b = {})", "a /* comment */ .b", "a /**/ .b", "%`vs-x`", "a - 1", "-1", "a[0]"})
+  void testNearMissesStillParse(String expression) {
+    Assertions.assertNotNull(fp.parse(expression));
+  }
 }

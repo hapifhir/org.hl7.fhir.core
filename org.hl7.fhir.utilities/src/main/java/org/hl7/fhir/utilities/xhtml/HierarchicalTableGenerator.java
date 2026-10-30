@@ -421,9 +421,9 @@ public class HierarchicalTableGenerator {
         try {
           Parser parser = Parser.builder().build();
           Node document = parser.parse(md);
-          HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
+          HtmlRenderer renderer = HtmlRenderer.builder().sanitizeUrls(true).escapeHtml(true).build();
           String html = renderer.render(document);  
-          pieces.addAll(htmlToParagraphPieces(html, style));
+          pieces.addAll(htmlToParagraphPieces(html, style, null));
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -432,29 +432,29 @@ public class HierarchicalTableGenerator {
     }
     
     public Cell addMarkdownNoPara(String md) {
-      return addMarkdownNoPara(md, null);
+      return addMarkdownNoPara(md, null, null);
     }
 
-    public Cell addMarkdownNoPara(String md, String style) {
+    public Cell addMarkdownNoPara(String md, String style, String clss) {
       try {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(md);
-        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
-        String html = renderer.render(document);  
-        pieces.addAll(htmlToParagraphPieces(html, style));
+        HtmlRenderer renderer = HtmlRenderer.builder().sanitizeUrls(true).escapeHtml(true).build();
+        String html = renderer.render(document);
+        pieces.addAll(htmlToParagraphPieces(html, style, clss));
       } catch (Exception e) {
         e.printStackTrace();
       }
       return this;
     }
 
-    public Cell addMarkdownNoPara(String role, String md, String style) {
+    public Cell addMarkdownNoParaWithRole(String role, String md, String style, String clss) {
       try {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(md);
-        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
-        String html = renderer.render(document);  
-        List<Piece> hp = htmlToParagraphPieces(html, style);
+        HtmlRenderer renderer = HtmlRenderer.builder().sanitizeUrls(true).escapeHtml(true).build();
+        String html = renderer.render(document);
+        List<Piece> hp = htmlToParagraphPieces(html, style, clss);
         // Trim unwanted trailing line-breaks
         while (!hp.isEmpty() && hp.get(hp.size()-1).getTag() != null && hp.get(hp.size()-1).getTag().equals("br"))
           hp.remove(hp.size()-1);
@@ -467,8 +467,8 @@ public class HierarchicalTableGenerator {
       }
       return this;
     }
-    
-    private List<Piece> htmlToParagraphPieces(String html, String style)  {
+
+    private List<Piece> htmlToParagraphPieces(String html, String style, String clss)  {
       List<Piece> myPieces = new ArrayList<Piece>();
       try {
         XhtmlNode node = new XhtmlParser().parseFragment("<html>"+html+"</html>");
@@ -478,22 +478,22 @@ public class HierarchicalTableGenerator {
             first = false;
           } else {
             myPieces.add(new Piece("br"));
-            myPieces.add(new Piece("br"));            
+            myPieces.add(new Piece("br"));
           }
           if (c.getNodeType() == NodeType.Text) {
             if (!StringUtils.isWhitespace(c.getContent()))
-              addNode(myPieces, c, style);
+              addNode(myPieces, c, style, clss);
           } else if ("p".equals(c.getName())) {
             for (XhtmlNode g : c.getChildNodes()) {
-              addNode(myPieces, g, style);
+              addNode(myPieces, g, style, clss);
             }
           } else {
-           Piece x = new Piece(c.getName());
-           x.getChildren().addAll(c.getChildNodes());
-           if (style != null) {
-             x.addStyleXHTOK(style);
-           }
-           myPieces.add(x);            
+            Piece x = new Piece(c.getName());
+            x.getChildren().addAll(c.getChildNodes());
+            if (style != null) {
+              x.addStyleXHTOK(style);
+            }
+            myPieces.add(x);
           }
         }
       } catch (Exception e) {
@@ -502,47 +502,47 @@ public class HierarchicalTableGenerator {
 
       return myPieces;
     }
-    
+
     private List<Piece> htmlFormattingToPieces(String html) throws IOException, FHIRException {
       List<Piece> myPieces = new ArrayList<Piece>();
       if (html.contains(("<"))) {
         XhtmlNode node = new XhtmlParser().parseFragment("<p>"+html+"</p>");
         for (XhtmlNode c : node.getChildNodes()) {
-          addNode(myPieces, c, null);
+          addNode(myPieces, c, null, null);
         }
       } else
         myPieces.add(new Piece(null, html, null));        
       return myPieces;
     }
     
-    private void addNode(List<Piece> list, XhtmlNode c, String style) {
+    private void addNode(List<Piece> list, XhtmlNode c, String style, String clss) {
       if (c.getNodeType() == NodeType.Text)
-        list.add(styleIt(new Piece(null, c.getContent(), null), style));
+        list.add(styleIt(new Piece(null, c.getContent(), null), style, clss));
       else if (c.getNodeType() == NodeType.Element) {
         if (c.getName().equals("a")) {
-          list.add(styleIt(new Piece(c.getAttribute("href"), c.allText(), c.getAttribute("title")), style));                    
+          list.add(styleIt(new Piece(c.getAttribute("href"), c.allText(), c.getAttribute("title")), style, clss));
         } else if (c.getName().equals("b") || c.getName().equals("em") || c.getName().equals("strong")) {
-          list.add(styleIt(new Piece(null, c.allText(), null).styleAsBold(), style));
+          list.add(styleIt(new Piece(null, c.allText(), null).styleAsBold(), style, clss));
         } else if (c.getName().equals("code")) {
-          list.add(styleIt(new Piece(null, c.allText(), null).styleAsCode(), style));
+          list.add(styleIt(new Piece(null, c.allText(), null).styleAsCode(), style, clss));
         } else if (c.getName().equals("i")) {
-          list.add(styleIt(new Piece(null, c.allText(), null).styleAsItalic(), style));
+          list.add(styleIt(new Piece(null, c.allText(), null).styleAsItalic(), style, clss));
         } else if (c.getName().equals("pre")) {
-          Piece p = styleIt(new Piece(c.getName()).styleAsPre(), style);
+          Piece p = styleIt(new Piece(c.getName()).styleAsPre(), style, clss);
           list.add(p);
           p.getChildren().addAll(c.getChildNodes());
         } else if (c.getName().equals("ul") || c.getName().equals("ol")) {
-          Piece p = styleIt(new Piece(c.getName()), style);
+          Piece p = styleIt(new Piece(c.getName()), style, clss);
           list.add(p);
           p.getChildren().addAll(c.getChildNodes());
         } else if (c.getName().equals("i")) {
-          list.add(styleIt(new Piece(null, c.allText(), null).styleAsItalic(), style));
+          list.add(styleIt(new Piece(null, c.allText(), null).styleAsItalic(), style, clss));
         } else if (c.getName().equals("h1")||c.getName().equals("h2")||c.getName().equals("h3")||c.getName().equals("h4")) {
-          Piece p = styleIt(new Piece(c.getName()), style);
+          Piece p = styleIt(new Piece(c.getName()), style, clss);
           list.add(p);
           p.getChildren().addAll(c.getChildNodes());
         } else if (c.getName().equals("br")) {
-          list.add(styleIt(new Piece(c.getName()), style));
+          list.add(styleIt(new Piece(c.getName()), style, clss));
         } else {
           throw new Error("Not handled yet: "+c.getName());
         }
@@ -550,9 +550,12 @@ public class HierarchicalTableGenerator {
         throw new Error("Unhandled type "+c.getNodeType().toString());
     }
 
-    private Piece styleIt(Piece piece, String style) {
+    private Piece styleIt(Piece piece, String style, String clss) {
       if (style != null) {
         piece.addStyleXHTOK(style);
+      }
+      if (clss != null) {
+        piece.setClass(clss);
       }
       return piece;
     }

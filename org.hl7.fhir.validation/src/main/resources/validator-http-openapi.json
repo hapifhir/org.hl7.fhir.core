@@ -524,6 +524,132 @@
         }
       }
     },
+    "/fhirpath/check": {
+      "get": {
+        "tags": [
+          "FHIRPath"
+        ],
+        "summary": "Check a FHIRPath expression's types",
+        "description": "Static type checking of a FHIRPath expression, without evaluating it: the expression is parsed, then checked against the type it would be evaluated on. The result is an `OperationOutcome`, always with status `200` when the checking ran: an error issue when the expression doesn't parse (with its line and column) or doesn't check against the type (an unknown element, a function used on the wrong type, the wrong parameters...), a warning issue for each warning the checking raises (each with its message id), and, when there is no error, an information issue saying what type the expression returns. `POST` works the same way, with the same query parameters.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "The type the expression is evaluated on: a type name (a resource or data type), a path in a type, or the canonical URL of a StructureDefinition.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bundle"
+          },
+          {
+            "name": "expression",
+            "in": "query",
+            "required": true,
+            "description": "The FHIRPath expression to check.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bundle.entry.resource.ofType(Condition).code.coding.code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The issues found, as an `OperationOutcome`.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `type` or `expression` parameter, or one that is too long (the type may be up to 1024 characters, the expression up to 10000).",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FHIRPath"
+        ],
+        "summary": "Check a FHIRPath expression's types (POST)",
+        "description": "As `GET /fhirpath/check`: the parameters are in the query; any body is ignored.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "The type the expression is evaluated on: a type name (a resource or data type), a path in a type, or the canonical URL of a StructureDefinition.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bundle"
+          },
+          {
+            "name": "expression",
+            "in": "query",
+            "required": true,
+            "description": "The FHIRPath expression to check.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bundle.entry.resource.ofType(Condition).code.coding.code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The issues found, as an `OperationOutcome`.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `type` or `expression` parameter, or one that is too long (the type may be up to 1024 characters, the expression up to 10000).",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/matchetype": {
       "post": {
         "tags": [
@@ -1312,7 +1438,7 @@
           {
             "name": "modes",
             "in": "query",
-            "description": "Comma separated list of test modes. Pass every mode the server supports: a test gated on a mode that isn't passed doesn't run. Defaults to `general,snomed,omop,mimetypes,icd-11,icf` - everything except the tx.fhir.org specific tests.",
+            "description": "Comma separated list of test modes. Pass every mode the server supports: a test gated on a mode that isn't passed doesn't run. Defaults to `general,snomed,omop,mimetypes,icd-11,icf,loinc` - everything except the tx.fhir.org specific tests.",
             "schema": {
               "type": "string"
             },
