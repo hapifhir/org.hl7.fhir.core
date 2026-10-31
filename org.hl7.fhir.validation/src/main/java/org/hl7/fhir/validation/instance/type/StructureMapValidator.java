@@ -1520,6 +1520,12 @@ public class StructureMapValidator extends BaseValidator {
             StructureMapGroupInputComponent input = grp.getTargetGroup().getInputList().get(cc);
             String iType = resolveType(grp, input, src);
             String pname = input.getName();
+            if (input.getMode() == null) {
+              // the input has no mode (1..1, reported by the cardinality check), so there is nothing to match the parameter against
+              ok = false;
+              cc++;
+              continue;
+            }
             VariableDefn v = getParameter(errors, param, pstack, variables, input.getMode());
             if (v == null && input.getMode() == StructureMapInputModeVS.SOURCE) {
               // target can transition to the source
