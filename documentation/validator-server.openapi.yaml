@@ -307,7 +307,15 @@ paths:
             application/fhir+xml:
               schema: { type: string }
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: >-
+            A parameter was not recognised, or its value could not be parsed, or a `profile` could
+            not be resolved (`Unable to resolve profile <url>`: load the IG that defines it first,
+            with `/loadIG`).
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+            application/fhir+xml:
+              schema: { type: string }
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
@@ -337,7 +345,10 @@ paths:
             schema: { type: string }
       responses:
         '200':
-          description: Evaluation result as a `Parameters` resource.
+          description: >-
+            Evaluation result as a `Parameters` resource. When the expression doesn't parse, or
+            evaluating it fails, the response is still `200`, with an `OperationOutcome` that has
+            an error saying why.
           content:
             application/fhir+json:
               schema: { type: object }
@@ -462,7 +473,7 @@ paths:
             application/fhir+xml:
               schema: { type: string }
         '400':
-          description: Missing `profile` field.
+          description: 'Missing `profile` field, or the profile is not loaded (`Profile not found: <url>`).'
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }
@@ -689,12 +700,12 @@ paths:
             application/fhir+xml:
               schema: { type: string }
         '400':
-          description: Missing `url` parameter.
+          description: 'Missing `url` parameter, or the map is not loaded (`Unable to find map: <url>`).'
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }
         '500':
-          description: The map is not loaded, or could not be serialised.
+          description: The map could not be serialised.
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }

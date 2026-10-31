@@ -145,6 +145,8 @@ curl -X POST 'http://localhost:8080/validateResource?profile=http://hl7.org/fhir
 
 Unrecognised query parameter names are rejected. Any name not in the table below produces a
 `400` with `Unable to process param <name>=<value>`, which makes typos loud rather than silent.
+A `profile` the server can't resolve is a `400` too (`Unable to resolve profile <url>`): load the
+IG that defines it first, with `/loadIG`.
 
 | Parameter | Values | Notes |
 | --- | --- | --- |
@@ -188,7 +190,9 @@ Booleans are `true`/`false`; anything that is not `true` (case insensitive) is f
 ### POST /fhirpath
 
 Evaluates an expression against the posted resource and returns a `Parameters` resource holding
-the expression and the string form of the result.
+the expression and the string form of the result. An expression that doesn't parse, or that fails
+when it is evaluated, is still a `200`: the response is an `OperationOutcome` with an error saying
+why.
 
 ```sh
 curl -X POST 'http://localhost:8080/fhirpath?expression=Patient.name.family' \
@@ -215,7 +219,7 @@ The response is an `OperationOutcome`; no error issues means it matched.
 
 Generates conformant example data for a profile. One resource is produced per row of `data`,
 with `mappings` binding row columns to element paths. With no `data`, a single row of defaults is
-used.
+used. The profile must already be loaded: one that isn't is a `400` (`Profile not found: <url>`).
 
 ```json
 {
@@ -270,7 +274,7 @@ generated narrative in `text.div`. Both echo the format they were given.
 
 `/transform` runs a StructureMap over the posted resource; `/compile` returns the StructureMap
 the engine holds for a canonical URL. In both cases the map must already be loaded, via `-ig` at
-start up or `/loadIG`.
+start up or `/loadIG`; `/compile` with a map that isn't loaded is a `400` (`Unable to find map: <url>`).
 
 ```sh
 curl -X POST 'http://localhost:8080/transform?map=http://example.org/StructureMap/Example' \

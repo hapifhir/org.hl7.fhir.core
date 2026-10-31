@@ -326,8 +326,8 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-      // Assert
-      assertEquals(500, response.statusCode());
+      // Assert: a profile the server doesn't have is the client's error
+      assertEquals(400, response.statusCode());
 
       String actual = response.body();
       String expected = """
@@ -335,14 +335,14 @@ class FhirValidatorHttpServiceTest {
           "resourceType": "OperationOutcome",
           "text": {
             "status": "generated",
-            "div": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">Validation failed: Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient</div>"
+            "div": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient</div>"
           },
           "issue": [
             {
               "severity": "error",
-              "code": "exception",
+              "code": "not-found",
               "details": {
-                "text": "Validation failed: Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                "text": "Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
               }
             }
           ]
@@ -544,7 +544,7 @@ class FhirValidatorHttpServiceTest {
     }
 
     @Test
-    @DisplayName("FHIRPath - Invalid expression returns 500")
+    @DisplayName("FHIRPath - Invalid expression returns 200, with an OperationOutcome that has an error")
     void testFhirPathEvaluationInvalidExpression() throws Exception {
       setUpService(getValidationEngine());
 
@@ -556,8 +556,10 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-      assertEquals(500, response.statusCode());
-      assertTrue(response.body().contains("FHIRPath evaluation failed"));
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"resourceType\":\"OperationOutcome\""), response.body());
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      assertTrue(response.body().contains("FHIRPath evaluation failed"), response.body());
     }
 
     @Test
@@ -656,8 +658,12 @@ class FhirValidatorHttpServiceTest {
       response = checkFhirPath("NoSuchType", "name");
       assertEquals(200, response.statusCode());
       assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      // whatever the expression is, the answer is an OperationOutcome: here, an error that it is nested too deeply
       response = checkFhirPath("Patient", "(".repeat(4000) + "1" + ")".repeat(4000));
-      assertTrue(response.statusCode() == 200 || response.statusCode() == 500, response.body());
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"resourceType\":\"OperationOutcome\""), response.body());
+      assertTrue(response.body().contains("\"severity\":\"error\""), response.body());
+      assertTrue(response.body().contains("nested too deeply"), response.body());
       // and the server still answers
       response = checkFhirPath("Patient", "Patient.name.family");
       assertEquals(200, response.statusCode());
@@ -817,7 +823,7 @@ class FhirValidatorHttpServiceTest {
     }
 
     @Test
-    @DisplayName("TestData - Unknown profile returns 500")
+    @DisplayName("TestData - Unknown profile returns 400")
     void testTestDataUnknownProfile() throws Exception {
       setUpService(getValidationEngine());
 
@@ -831,8 +837,8 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-      assertEquals(500, response.statusCode());
-      assertTrue(response.body().contains("Profile not found"));
+      assertEquals(400, response.statusCode(), response.body());
+      assertTrue(response.body().contains("Profile not found: http://example.org/fhir/StructureDefinition/NonExistent"), response.body());
     }
 
     @Test
@@ -1176,7 +1182,7 @@ class FhirValidatorHttpServiceTest {
     }
 
     @Test
-    @DisplayName("Compile - Unknown map returns 500")
+    @DisplayName("Compile - Unknown map returns 400")
     void testCompileUnknownMap() throws Exception {
       setUpService(getValidationEngine());
 
@@ -1187,8 +1193,8 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-      assertEquals(500, response.statusCode());
-      assertTrue(response.body().contains("Compile map failed"));
+      assertEquals(400, response.statusCode(), response.body());
+      assertTrue(response.body().contains("Unable to find map: http://example.org/fhir/StructureMap/nonexistent"), response.body());
     }
 
     // ─── OpenAPI / Docs endpoint tests ───

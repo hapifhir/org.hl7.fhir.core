@@ -9,6 +9,9 @@ import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.IssueType;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
@@ -66,6 +69,14 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       OperationOutcome outcome = OperationOutcomeUtilities.createError("Operation failed: " + e.getMessage());
       sendOperationOutcome(exchange, 400, outcome, getAcceptHeader(exchange));
       return;
+    }
+    // a profile the server doesn't have is the client's mistake (load the IG that defines it first), not a failure
+    for (String profile : instanceValidatorParameters.getProfiles()) {
+      if (fhirValidatorHttpService.getValidationEngine().getContext().fetchResource(StructureDefinition.class, profile) == null) {
+        sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createOutcome("Unable to resolve profile " + profile,
+          IssueSeverity.ERROR, IssueType.NOTFOUND), getAcceptHeader(exchange));
+        return;
+      }
     }
     try {
       ByteProvider byteProvider = ByteProvider.forBytes(resourceBytes);

@@ -1,32 +1,3 @@
 {
-  "registry" : "https://ecosystem.hl7.org/tx-reg",
-  "systems" : [{
-    "system" : "http://loinc.org in en-AU",
-    "url" : "http://loinc.org",
-    "language" : "en-AU",
-    "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r4",
-    "https://tx.hl7.org.au/fhir",
-    "https://tx.ontoserver.csiro.au/fhir",
-    "https://terminologystandardsservice.ca/tx/fhir",
-    "http://tx.hl7europe.eu/r4",
-    "https://tx.fhir.ch/r4",
-    "https://tx.fhir.de/fhir",
-    "https://tx.hl7.cz/r4"]
-  },
-  {
-    "system" : "http://unitsofmeasure.org in en-AU",
-    "url" : "http://unitsofmeasure.org",
-    "language" : "en-AU",
-    "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r4",
-    "https://tx.hl7.org.au/fhir",
-    "https://tx.ontoserver.csiro.au/fhir",
-    "https://terminologystandardsservice.ca/tx/fhir",
-    "http://tx.hl7europe.eu/r4",
-    "https://tx-nordics.fhir.org/fhir/r4",
-    "https://tx.fhir.de/fhir",
-    "https://tx.hl7.cz/r4",
-    "https://nzhts.digital.health.nz/fhir"]
-  }]
+  "registry" : "https://tx.fhir.org/tx-reg"
 }

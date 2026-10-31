@@ -2,16 +2,21 @@ package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.IssueType;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
 
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handler for evaluating FHIRPath expressions against a resource.
+ * Handler for evaluating FHIRPath expressions against a resource. An expression that doesn't parse, or that fails
+ * when it is evaluated, isn't a failure of the request: the response is a 200, with an OperationOutcome that says why.
  */
 class FhirPathHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private final FhirValidatorHttpService fhirValidatorHttpService;
@@ -40,7 +45,14 @@ class FhirPathHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       FhirFormat format = determineFormat(contentType);
 
-      String result = fhirValidatorHttpService.getValidationEngine().evaluateFhirPath(resourceBytes, format, expression);
+      String result;
+      try {
+        result = fhirValidatorHttpService.getValidationEngine().evaluateFhirPath(resourceBytes, format, expression);
+      } catch (FHIRLexerException | PathEngineException e) {
+        sendOperationOutcome(exchange, 200, OperationOutcomeUtilities.createOutcome("FHIRPath evaluation failed: " + e.getMessage(),
+          IssueSeverity.ERROR, IssueType.INVALID), getAcceptHeader(exchange));
+        return;
+      }
 
       Parameters parameters = new Parameters();
       parameters.addParameter("expression", expression);

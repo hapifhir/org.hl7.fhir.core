@@ -3,6 +3,9 @@ package org.hl7.fhir.validation.http;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.IssueType;
+import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 
@@ -30,6 +33,13 @@ class CompileHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       String mapUri = params.get("url");
       if (mapUri == null || mapUri.trim().isEmpty()) {
         sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createError("Missing required query parameter: url"), getAcceptHeader(exchange));
+        return;
+      }
+
+      // a map the server doesn't have is the client's mistake (load the IG that defines it first), not a failure
+      if (fhirValidatorHttpService.getValidationEngine().getContext().fetchResource(StructureMap.class, mapUri) == null) {
+        sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createOutcome("Unable to find map: " + mapUri,
+          IssueSeverity.ERROR, IssueType.NOTFOUND), getAcceptHeader(exchange));
         return;
       }
 

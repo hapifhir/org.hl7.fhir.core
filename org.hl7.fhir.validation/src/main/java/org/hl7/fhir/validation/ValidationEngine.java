@@ -899,7 +899,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    *             (Bundle.entry), or the URL of a StructureDefinition
    * @param expression the FHIRPath expression
    * @return the issues found: an error if the expression doesn't parse, or doesn't check against the type; the
-   *         warnings the checking raises; and, when there's no error, information on the type the expression returns
+   *         warnings the checking raises; and, when there's no error, information on the type the expression returns.
+   *         Whatever the expression is, the result is an OperationOutcome: a failure in parsing or checking it is an
+   *         error issue, not an exception
    */
   public OperationOutcome checkFhirPath(String type, String expression) throws IOException {
     List<ValidationMessage> messages = new ArrayList<>();
@@ -909,6 +911,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       exp = fpe.parse(expression);
     } catch (FHIRLexerException e) {
       messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
+    } catch (RuntimeException | StackOverflowError e) {
+      messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, fhirPathFailure("parsed", e), null, null));
     }
     if (exp != null) {
       String root = Utilities.isAbsoluteUrl(type) ? null : type.contains(".") ? type.substring(0, type.indexOf('.')) : type;
@@ -925,9 +929,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
       } catch (FHIRException e) {
         messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), null, null));
+      } catch (RuntimeException | StackOverflowError e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, fhirPathFailure("checked", e), null, null));
       }
     }
     return OperationOutcomeUtilities.createOutcome(messages);
+  }
+
+  /** the message for a parsing or checking failure that isn't a (reported) error in the expression */
+  private String fhirPathFailure(String what, Throwable e) {
+    if (e instanceof StackOverflowError) {
+      return "The expression could not be " + what + ": it is too complex";
+    }
+    return "The expression could not be " + what + ": " + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());
   }
 
   private ValidationMessage fhirPathIssue(ValidationMessage.IssueType type, ValidationMessage.IssueSeverity level, String message, SourceLocation location, String messageId) {

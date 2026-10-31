@@ -23,7 +23,7 @@ public class FhirSettingsPOJO {
   protected static final String TX_SERVER_PROD = "https://tx.fhir.org";
   protected static final String TX_SERVER_DEV = "https://tx-dev.fhir.org";
   protected static final String TX_SERVER_LOCAL = "http://local.fhir.org:3001";
-  protected static final String TX_ECOSYSTEM = "https://ecosystem.hl7.org/tx-reg";
+  protected static final String TX_ECOSYSTEM = "https://tx.fhir.org/tx-reg"; // "https://ecosystem.hl7.org/tx-reg";
   
   private String fhirDirectory;
   private Map<String, String> apiKeys;
