@@ -59,4 +59,9 @@ public class ShExGeneratorR6 extends ShExGeneratorBase {
   protected String getLinkPredicate() {
     return "fhir:l";
   }
+
+  @Override
+  protected boolean supportsResourceDefinition() {
+    return true;
+  }
 }
