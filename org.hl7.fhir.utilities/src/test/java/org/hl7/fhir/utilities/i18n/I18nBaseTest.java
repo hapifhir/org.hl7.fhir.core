@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -14,13 +16,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.mockito.Mockito;
 
 class I18nBaseTest {
@@ -238,5 +247,106 @@ class I18nBaseTest {
     String enMessage = i18nInstance.formatMessage(I18nConstants.ERROR_PARSING_JSON_, "test");
     assertEquals("Error parsing JSON: test", enMessage);
 
+  }
+
+  @Test
+  @DisplayName("A message key lookup right after setLocale() loads the bundle instead of throwing.")
+  void testMessageKeyLookupAfterSetLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.ENGLISH);
+    assertFalse(testClass.messageKeyExistsForLocale(BAD_STRING_ARG));
+    testClass.setLocale(Locale.ENGLISH);
+    assertTrue(testClass.messageKeyExistsForLocale(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES));
+  }
+
+  @Test
+  @DisplayName("Setting the locale that is already set keeps the loaded bundle.")
+  void testSetSameLocaleKeepsTheLoadedBundle() {
+    AtomicInteger loads = new AtomicInteger();
+    I18nTestClass testClass = new I18nTestClass() {
+      @Override
+      protected String getMessagesSourceFileName() {
+        loads.incrementAndGet();
+        return super.getMessagesSourceFileName();
+      }
+    };
+    testClass.setLocale(Locale.GERMAN);
+    String german = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    testClass.setLocale(Locale.GERMAN);
+    assertEquals(german, testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1));
+    assertEquals(1, loads.get());
+  }
+
+  @Test
+  @Timeout(60)
+  @DisplayName("Formatting messages while another thread calls setLocale() on the same instance never fails.")
+  void testFormatMessageWhileLocaleIsSetOnAnotherThread() throws Exception {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.ENGLISH);
+    String english = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    // en and en-US are different locales with the same text, so each call still replaces the state
+    assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH, english, Locale.US));
+  }
+
+  @Test
+  @Timeout(60)
+  @DisplayName("Formatting while another thread switches between two locales gives the text of one of them.")
+  void testFormatMessageWhileLocaleSwitchesOnAnotherThread() throws Exception {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.GERMAN);
+    String german = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    testClass.setLocale(Locale.ENGLISH);
+    String english = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    assertNotEquals(english, german);
+    assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH, german, Locale.GERMAN));
+  }
+
+  @Test
+  @Timeout(60)
+  @DisplayName("Formatting while another thread switches between a locale and no locale gives the text of one of them.")
+  void testFormatMessageWhileLocaleIsClearedOnAnotherThread() throws Exception {
+    String defaultText = new I18nTestClass().formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.GERMAN);
+    String german = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    assertNull(formatWhileSettingLocale(testClass, german, Locale.GERMAN, defaultText, null));
+  }
+
+  /**
+   * Formats a message 20,000 times while a second thread keeps calling setLocale() with the
+   * given locales in turn. Returns the first problem: an exception, or a result that is not
+   * one of the expected texts.
+   */
+  private static Object formatWhileSettingLocale(I18nTestClass testClass, Object... textsAndLocales) throws InterruptedException {
+    Set<Object> texts = new HashSet<>();
+    List<Locale> locales = new ArrayList<>();
+    for (int i = 0; i < textsAndLocales.length; i += 2) {
+      texts.add(textsAndLocales[i]);
+      locales.add((Locale) textsAndLocales[i + 1]);
+    }
+    AtomicBoolean done = new AtomicBoolean(false);
+    Thread setter = new Thread(() -> {
+      int i = 0;
+      while (!done.get()) {
+        testClass.setLocale(locales.get(i++ % locales.size()));
+      }
+    });
+    setter.start();
+    try {
+      for (int i = 0; i < 20000; i++) {
+        try {
+          String result = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+          if (!texts.contains(result)) {
+            return result;
+          }
+        } catch (Throwable e) {
+          return e;
+        }
+      }
+    } finally {
+      done.set(true);
+      setter.join();
+    }
+    return null;
   }
 }
