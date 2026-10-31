@@ -53,7 +53,7 @@
         <log4jVersion>2.26.1</log4jVersion>
         <okio.version>3.18.2</okio.version>
         <surefire.native.access.arg/>
-        <opentelemetry.version>1.66.0</opentelemetry.version>
+        <opentelemetry.version>1.67.0</opentelemetry.version>
         <opentelemetry-testing.version>2.32.0-alpha</opentelemetry-testing.version>
         <opentelemetry-instrumentation-annotations.version>2.32.0</opentelemetry-instrumentation-annotations.version>
         <spotbugs.threshold>High</spotbugs.threshold>
