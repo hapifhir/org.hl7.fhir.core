@@ -205,6 +205,13 @@ public class DefinitionNavigator {
     DefinitionNavigator polymorphicDN = null;
     for (int i = indexMatches ? workingIndex + 1 : workingIndex; i < list().size(); i++) {
       String path = list().get(i).getPath();
+      // When following a contentReference, slices of the referenced element itself
+      // are siblings of that element, not children of the referencing element.
+      // The referenced master is intentionally skipped by workingIndex + 1, so skip
+      // its same-path named slices as well before walking the referenced children.
+      if (childrenFromReference && path.equals(prefix) && list().get(i).hasSliceName()) {
+        continue;
+      }
       if (path.startsWith(prefix)) {
         if (!path.substring(prefix.length()).contains(".")) {
           // immediate child
@@ -249,8 +256,22 @@ public class DefinitionNavigator {
               }
             }
           } else if (dn.current().hasSliceName()) {
-            // this is an error unless we're dealing with extensions, which are auto-sliced (for legacy reasons)
-            if (diff && "extension".equals(dn.current().getName())) {
+            // A differential may constrain a slice whose slicing declaration is inherited.
+            // In that case the local differential has no master element, but the generated
+            // snapshot does. Use a transient placeholder so the named slice can still be
+            // grouped without treating inherited snapshot constraints as local differential
+            // content.
+            ElementDefinition inheritedSlicing = diff ? makeInheritedSlicingDefinitionElement(path) : null;
+            if (inheritedSlicing != null) {
+              StructureDefinition vsd = new StructureDefinition(); // fake wrapper for placeholder element
+              vsd.getDifferential().getElement().add(inheritedSlicing);
+              DefinitionNavigator master = new DefinitionNavigator(context, vsd, diff, followTypes, 0, this.globalPath+"."+tail(path), path, names, null);
+              nameMap.put(path, master);
+              children.add(master);
+              master.slices = new ArrayList<DefinitionNavigator>();
+              master.slices.add(dn);
+            // extensions remain implicitly sliced by url for legacy reasons
+            } else if (diff && "extension".equals(dn.current().getName())) {
               StructureDefinition vsd = new StructureDefinition(); // fake wrapper for placeholder element
               vsd.getDifferential().getElement().add(makeExtensionDefinitionElement(path));
               DefinitionNavigator master = new DefinitionNavigator(context, vsd, diff, followTypes, 0, this.globalPath+"."+tail(path), path, names, null);
@@ -327,6 +348,21 @@ public class DefinitionNavigator {
       }
     }
     return -1;
+  }
+
+  private ElementDefinition makeInheritedSlicingDefinitionElement(String path) {
+    if (!structure.hasSnapshot()) {
+      return null;
+    }
+    for (ElementDefinition candidate : structure.getSnapshot().getElement()) {
+      if (path.equals(candidate.getPath()) && !candidate.hasSliceName() && candidate.hasSlicing()) {
+        ElementDefinition ed = new ElementDefinition(path);
+        ed.setUserData(UserDataNames.DN_TRANSIENT, "true");
+        ed.setSlicing(candidate.getSlicing().copy());
+        return ed;
+      }
+    }
+    return null;
   }
 
   private ElementDefinition makeExtensionDefinitionElement(String path) {
