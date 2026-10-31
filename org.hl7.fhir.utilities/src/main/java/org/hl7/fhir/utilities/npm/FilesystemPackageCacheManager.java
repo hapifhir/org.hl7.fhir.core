@@ -878,7 +878,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Package ids do not match in " + packageListUrl + ": " + id + " vs " + packageList.pid());
     for (PackageListEntry packageEntry : packageList.versions()) {
       if (version.equals(packageEntry.version())) {
-        String packageTgzUrl = ManagedWebAccess.makeSecureRef(Utilities.pathURL(packageEntry.path(), "package.tgz"));
+        String packageTgzUrl = ManagedWebAccess.makeSecureRef(Utilities.pathURL(packageEntry.binariesBase(), "package.tgz"));
         return new InputStreamWithSrc(fetchFromUrlSpecific(packageTgzUrl, true), packageTgzUrl, version);
       }
     }

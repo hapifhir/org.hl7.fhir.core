@@ -36,6 +36,21 @@ public class PackageList {
       return json.asString("path");
     }
 
+    /**
+     * @return where the release binaries of this version (package.tgz, full-ig.zip) are held, if not with its pages
+     *   at path() (e.g. the assets of a GitHub release)
+     */
+    public String binariesLocation() {
+      return json.asString("binaries-location");
+    }
+
+    /**
+     * @return the URL that the release binaries of this version are found at: binariesLocation(), or else path()
+     */
+    public String binariesBase() {
+      return json.has("binaries-location") ? binariesLocation() : path();
+    }
+
     public boolean current() {
       return json.has("current") && json.asBoolean("current");
     }

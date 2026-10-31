@@ -17,4 +17,5 @@
 * FHIRPath: new document function hasCoding(system, code [, version]) (a local extension, R4, R4B, R5 and R6): on Codings or CodeableConcepts, whether any coding has that system and code (and version, when one is given); empty when the input is empty
 * FHIRPath: lowBoundary() and highBoundary() now handle decimals with exponents (9.5e2), and no longer leave a leading zero (10.lowBoundary(0) gave 09)
 * FHIRPath: fix = and ~ for quantities with no UCUM code - two quantities without units were never equal, and the unit was ignored when only the left side had one
+* Packages: when a package isn't in the package repository and is fetched using the IG's package-list.json, get it from the version's binaries-location if it has one, instead of its path (HL7/fhir-ig-publisher#1407)
 * no changes
