@@ -835,6 +835,7 @@ public class I18nConstants {
   public static final String SM_GROUP_INPUT_TYPE_UNKNOWN_TYPE = "SM_GROUP_INPUT_TYPE_UNKNOWN_TYPE";
   public static final String SM_GROUP_NAME_DUPLICATE = "SM_GROUP_NAME_DUPLICATE";
   public static final String SM_IMPORT_NOT_FOUND = "SM_IMPORT_NOT_FOUND";
+  public static final String SM_IMPORT_NO_VALUE = "SM_IMPORT_NO_VALUE";
   public static final String SM_LIST_RULE_ID_ONLY_WHEN_SHARE = "SM_LIST_RULE_ID_ONLY_WHEN_SHARE";
   public static final String SM_MATCHING_RULEGROUP_NOT_FOUND = "SM_MATCHING_RULEGROUP_NOT_FOUND";
   public static final String SM_NAME_INVALID = "SM_NAME_INVALID";
