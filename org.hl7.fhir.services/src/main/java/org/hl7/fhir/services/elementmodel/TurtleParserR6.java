@@ -65,18 +65,34 @@ public class TurtleParserR6 extends TurtleParserBase {
   }
 
   protected String getReferenceURI(String ref) {
-    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:") || ref.startsWith("#")))
-      return "<" + ref + ">";
+    if (ref != null && ref.startsWith("#") && containerIri != null)
+      return iri(ref.length() == 1 ? containerIri : containerIri + ref);
+    else if (ref != null && (ref.startsWith("#") || hasScheme(ref)))
+      return iri(ref);
     else if (base != null && ref != null && ref.contains("/"))
-      return "<" + Utilities.appendForwardSlash(base) + ref + ">";
+      return iri(Utilities.appendForwardSlash(base) + ref);
     else if (ref != null) {
-        return "fhir:" + ref;
+        return isSimpleLocalName(ref) ? "fhir:" + ref : iri(FHIR_URI_BASE + ref);
     } else return null;
+  }
+
+  private static boolean hasScheme(String ref) {
+    return ref.matches("[A-Za-z][A-Za-z0-9+.-]*:.*");
+  }
+
+  // Only a safe ASCII subset of Turtle's PN_LOCAL can follow "fhir:"
+  private static boolean isSimpleLocalName(String ref) {
+    return ref.matches("[A-Za-z0-9_][A-Za-z0-9_-]*");
   }
 
   @Override
   protected String getReferencePredicate() {
     return FHIR_BASE_PREFIX + "l";
+  }
+
+  @Override
+  protected boolean namesContainedResources() {
+    return true;
   }
 
   @Override
@@ -131,17 +147,7 @@ public class TurtleParserR6 extends TurtleParserBase {
     if (value == null) {
       return;
     }
-    String versioned = value;
-    if (versioned.contains("|")) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] parts = versioned.split("\\|", 2);
-      String url = parts[0];
-      String version = parts[1];
-      String separator = url.contains("?") ? "&" : "?";
-      versioned = url + separator + "version=" + version;
-    }
-    String refURI = getReferenceURI(versioned);
+    String refURI = getReferenceURI("canonical".equals(type) ? versionedCanonicalToIriForm(value) : value);
     if (refURI != null) {
       t.linkedPredicate(getReferencePredicate(), refURI, linkResolver == null ? null : linkResolver.resolveType(type), null);
     }

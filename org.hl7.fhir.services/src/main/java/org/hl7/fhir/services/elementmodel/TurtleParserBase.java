@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -62,6 +65,8 @@ public abstract class TurtleParserBase extends ParserBase {
   protected String base;
   /** Type of the resource currently being composed; set in {@link #compose(Element, Turtle, String)}. */
   protected String resourceType;
+  /** IRI of the resource whose contained resources "#id" names; null if that resource has no IRI. */
+  protected String containerIri;
   private OutputStyle style;
 
   public static String FHIR_URI_BASE = "http://hl7.org/fhir/";
@@ -317,6 +322,8 @@ public abstract class TurtleParserBase extends ParserBase {
       e.populatePaths(null);
     }
     resourceType = e.getType();
+    Map<Element, String> bundleResourceUrls = new IdentityHashMap<>();
+    collectBundleResourceUrls(e, bundleResourceUrls);
 
     ttl.prefix("fhir", FHIR_URI_BASE);
     ttl.prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -331,6 +338,7 @@ public abstract class TurtleParserBase extends ParserBase {
       }
     }
     String subjId = genSubjectId(e);
+    containerIri = subjId.isEmpty() ? null : subjId.substring(1, subjId.length() - 1);
 
     Subject subject;
     if (hasModifierExtension(e)) 
@@ -343,11 +351,47 @@ public abstract class TurtleParserBase extends ParserBase {
     subject.linkedPredicate(FHIR_BASE_PREFIX + "nodeRole", FHIR_BASE_PREFIX + "treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
     for (Element child : e.getChildList()) {
-      composeElement(section, subject, child, null);
+      composeElement(section, subject, child, null, bundleResourceUrls);
+    }
+  }
+
+  private void collectBundleResourceUrls(Element element, Map<Element, String> urls) {
+    if ("Bundle".equals(element.fhirType())) {
+      Map<String, List<Element>> entriesByUrl = new HashMap<>();
+      for (Element entry : element.getChildrenByName("entry")) {
+        String fullUrl = entry.getChildValue("fullUrl");
+        Element resource = entry.getNamedChild("resource");
+        if (fullUrl != null && resource != null) {
+          entriesByUrl.computeIfAbsent(fullUrl, key -> new ArrayList<>()).add(resource);
+        }
+      }
+      for (Map.Entry<String, List<Element>> group : entriesByUrl.entrySet()) {
+        Set<String> versions = new HashSet<>();
+        for (Element resource : group.getValue()) {
+          String url = group.getKey();
+          if (group.getValue().size() > 1) {
+            Element meta = resource.getNamedChild("meta");
+            String version = meta == null ? null : meta.getChildValue("versionId");
+            if (Utilities.noString(version) || !versions.add(version)) {
+              throw new FHIRException("Cannot compose Turtle Bundle: duplicate fullUrl " + url
+                  + " requires a distinct meta.versionId on every resource");
+            }
+            url += "/_history/" + version;
+          }
+          urls.put(resource, "<" + url + ">");
+        }
+      }
+    }
+    for (Element child : element.getChildList()) {
+      collectBundleResourceUrls(child, urls);
     }
   }
 
   protected void composeResourceMetadata(Subject subject, Element resource) throws FHIRException {
+  }
+
+  protected boolean namesContainedResources() {
+    return false;
   }
 
   private boolean hasModifierExtension(Element e) {
@@ -355,18 +399,36 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   protected String getURIType(String uri) {
-    if(uri.startsWith("<" + FHIR_URI_BASE))
-      if(uri.substring(FHIR_URI_BASE.length() + 1).contains("/"))
-        return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));
+    if (uri.startsWith("<" + FHIR_URI_BASE)) {
+      int slash = uri.indexOf('/', FHIR_URI_BASE.length() + 1);
+      // A conditional reference (Type?search) identifies a search, and a fragment a contained resource, not a resource of that type
+      if (slash > 0 && uri.lastIndexOf('?', slash) < 0 && uri.indexOf('#') < 0)
+        return uri.substring(FHIR_URI_BASE.length() + 1, slash);
+    }
     return null;
   }
 
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
-      return "<" + ref + ">";
+      return iri(ref);
     else if (base != null && ref != null && ref.contains("/"))
-      return "<" + Utilities.appendForwardSlash(base) + ref + ">";
+      return iri(Utilities.appendForwardSlash(base) + ref);
     else return null;
+  }
+
+  // "|" is not a legal IRI character
+  protected static String iri(String value) {
+    return "<" + value.replace("|", "%7C") + ">";
+  }
+
+  // Only in a canonical does "|" mark a version
+  protected static String versionedCanonicalToIriForm(String value) {
+    int bar = value == null ? -1 : value.indexOf('|');
+    if (bar < 0) {
+      return value;
+    }
+    String url = value.substring(0, bar);
+    return url + (url.contains("?") ? "&" : "?") + "version=" + value.substring(bar + 1);
   }
 
   protected String getReferencePredicate() {
@@ -381,7 +443,7 @@ public abstract class TurtleParserBase extends ParserBase {
 
   protected void decoratePrimitiveValue(Complex t, Element element) {
     if (Utilities.existsInList(element.getType(), "canonical")) {
-      String refURI = getReferenceURI(element.primitiveValue());
+      String refURI = getReferenceURI(versionedCanonicalToIriForm(element.primitiveValue()));
       if (refURI != null) {
         t.linkedPredicate(getReferencePredicate(), refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
       }
@@ -409,7 +471,7 @@ public abstract class TurtleParserBase extends ParserBase {
     return b.toString();
   }
 
-  private void composeElement(Section section, Complex ctxt, Element element, Element parent) throws FHIRException {
+  private void composeElement(Section section, Complex ctxt, Element element, Element parent, Map<Element, String> bundleResourceUrls) throws FHIRException {
     //    "Extension".equals(element.getType())?
     //            (element.getProperty().getDefinition().getIsModifier()? "modifierExtension" : "extension") ; 
 
@@ -425,11 +487,15 @@ public abstract class TurtleParserBase extends ParserBase {
     }
     Complex t;
     if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null && parent.getNamedChildValue("fullUrl") != null) {
-      String url = "<"+parent.getNamedChildValue("fullUrl")+">";
-      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      String url = bundleResourceUrls.get(element);
+      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
+      t = section.subject(url);
+    } else if (element.getSpecial() == SpecialElement.CONTAINED && namesContainedResources() && element.getChildValue("id") != null) {
+      String url = iri((containerIri == null ? "" : containerIri) + "#" + element.getChildValue("id"));
+      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
       t = section.subject(url);
     } else {
-      t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
     }
     if (element.getProperty().getName().endsWith("[x]")) {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
@@ -475,8 +541,31 @@ public abstract class TurtleParserBase extends ParserBase {
       }
     }
 
-    for (Element child : element.getChildList()) {
-      composeElement(section, t, child, element);
+    String previousBase = base;
+    String previousResourceType = resourceType;
+    String previousContainerIri = containerIri;
+    try {
+      if (element.getSpecial() != null) {
+        resourceType = element.fhirType();
+      }
+      if (element.getSpecial() != null && element.getSpecial() != SpecialElement.CONTAINED && element.isResource()) {
+        String url = bundleResourceUrls.get(element);
+        containerIri = url == null ? null : url.substring(1, url.length() - 1);
+      }
+      if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null) {
+        String fullUrl = parent.getChildValue("fullUrl");
+        String suffix = "/" + element.fhirType() + "/" + element.getChildValue("id");
+        if (fullUrl != null && (fullUrl.startsWith("http://") || fullUrl.startsWith("https://")) && fullUrl.endsWith(suffix)) {
+          base = fullUrl.substring(0, fullUrl.length() - suffix.length()) + "/";
+        }
+      }
+      for (Element child : element.getChildList()) {
+        composeElement(section, t, child, element, bundleResourceUrls);
+      }
+    } finally {
+      base = previousBase;
+      resourceType = previousResourceType;
+      containerIri = previousContainerIri;
     }
   }
 
