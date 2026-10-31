@@ -1274,7 +1274,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
         } else if (test.asString("operation").equals("batch")) {
           msg = batch(test.str("name"), effectiveSetup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
-          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, false);
+        } else if (test.asString("operation").equals("cs-batch-validate")) {
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, true);
         } else if (test.asString("operation").equals("compare")) {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("subsumes")) {
@@ -1637,7 +1639,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
   }
 
-  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  /**
+   * batch-validate is ValueSet/$batch-validate-code; cs-batch-validate (cs = true) is
+   * CodeSystem/$batch-validate-code
+   */
+  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes, boolean cs) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1646,7 +1652,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     int code = 0;
     String pj;
     try {
-      Parameters po = client().batchValidateVS(p);
+      Parameters po = cs ? client().batchValidateCS(p) : client().batchValidateVS(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(po);
