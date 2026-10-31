@@ -68,13 +68,21 @@ public class TurtleParserR6 extends TurtleParserBase {
   }
 
   protected String getReferenceURI(String ref) {
-    if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:") || ref.startsWith("#")))
+    if (ref == null)
+      return null;
+    if (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:") || ref.startsWith("#"))
       return "<" + ref + ">";
-    else if (base != null && ref != null && ref.contains("/"))
+    // Any other absolute URI (mailto:, tel:, mllp:, ftp:, ...) is already a valid IRI; wrap it as
+    // such. Prepending "fhir:" would build a malformed prefixed name (the scheme colon/@ are not
+    // legal in a PN_LOCAL), which breaks Turtle parsing — e.g. "fhir:mailto:a@b.com".
+    if (ref.matches("^[a-zA-Z][a-zA-Z0-9+.-]*:.*"))
+      return "<" + ref + ">";
+    if (base != null && ref.contains("/"))
       return "<" + Utilities.appendForwardSlash(base) + ref + ">";
-    else if (ref != null) {
-        return "fhir:" + ref;
-    } else return null;
+    // Any remaining value is a relative / conditional reference (e.g. "Patient",
+    // "Patient?identifier=123"). Emit it as a relative IRI; "fhir:" + ref would build a malformed
+    // prefixed name whenever the value contains characters not legal in a local name (?, =, &, @).
+    return "<" + ref + ">";
   }
 
   @Override

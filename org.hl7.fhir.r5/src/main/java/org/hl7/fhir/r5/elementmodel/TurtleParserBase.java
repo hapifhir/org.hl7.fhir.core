@@ -370,13 +370,6 @@ public abstract class TurtleParserBase extends ParserBase {
     return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
 
-  protected String getURIType(String uri) {
-    if(uri.startsWith("<" + FHIR_URI_BASE))
-      if(uri.substring(FHIR_URI_BASE.length() + 1).contains("/"))
-        return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));
-    return null;
-  }
-
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
       return "<" + ref + ">";
@@ -447,7 +440,14 @@ public abstract class TurtleParserBase extends ParserBase {
     } else {
       t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
     }
-    if (element.getProperty().getName().endsWith("[x]")) {
+    // A value[x] (choice) element is typed in FHIR RDF only when the chosen type is a
+    // complex type (e.g. "a fhir:Quantity"); a primitive choice carries only fhir:v with
+    // its xsd datatype and NO rdf:type (per the published FHIR RDF). The element's type is
+    // pre-set here in capitalised choice-suffix form (e.g. "Canonical"), so uncapitalize
+    // before the primitive test. Emitting "a fhir:Canonical" breaks every CLOSED primitive
+    // shape in the generated schema's value[x] OR.
+    if (element.getProperty().getName().endsWith("[x]")
+        && !element.getProperty().isPrimitive(Utilities.uncapitalize(element.fhirType()))) {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     }
     if (element.getSpecial() != null)
@@ -472,24 +472,6 @@ public abstract class TurtleParserBase extends ParserBase {
 
     if (Utilities.existsInList(element.getType(), "Reference"))
       decorateReference(t, element);
-
-    if("canonical".equals(element.getType())) {
-      String refURI = element.primitiveValue();
-      if (refURI != null) {
-        String uriType = getURIType(refURI);
-        if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", FHIR_BASE_PREFIX + className(uriType));
-      }
-    }
-
-    if("Reference".equals(element.getType())) {
-      String refURI = getReferenceURI(element.getChildValue("reference"));
-      if (refURI != null) {
-        String uriType = getURIType(refURI);
-        if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", FHIR_BASE_PREFIX + className(uriType));
-      }
-    }
 
     for (Element child : element.getChildren()) {
       composeElement(section, t, child, element);
@@ -531,7 +513,7 @@ public abstract class TurtleParserBase extends ParserBase {
     if (type.equals("boolean"))
       quote = false;
     else if (type.equals("integer"))
-      quote = false;
+      xst = "^^xsd:int";  // FHIR integer is a 32-bit int (datatypes.html#integer); a bare Turtle integer is xsd:integer
     else if (type.equals("integer64"))
       xst = "^^xsd:long";	  
     else if (type.equals("unsignedInt"))
