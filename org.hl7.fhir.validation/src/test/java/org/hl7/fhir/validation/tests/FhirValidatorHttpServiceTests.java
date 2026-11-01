@@ -693,6 +693,66 @@ class FhirValidatorHttpServiceTest {
       assertEquals(405, response.statusCode());
     }
 
+    private HttpResponse<String> lookupCanonical(String url, String version, String accept) throws Exception {
+      String query = (url == null ? "" : "url=" + java.net.URLEncoder.encode(url, "UTF-8")) +
+        (version == null ? "" : "&version=" + java.net.URLEncoder.encode(version, "UTF-8"));
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/canonical?" + query))
+        .header("Accept", accept)
+        .GET()
+        .build();
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    @DisplayName("Canonical - a resource the context knows, by url, with a version, and as XML")
+    void testCanonicalFound() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", null, "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"resourceType\":\"StructureDefinition\""), response.body());
+      assertTrue(response.body().contains("\"url\":\"http://hl7.org/fhir/StructureDefinition/patient-birthPlace\""), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", "4.0.1", "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace|4.0.1", null, "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/ValueSet/administrative-gender", null, "application/fhir+xml");
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+xml"));
+      assertTrue(response.body().contains("<ValueSet"), response.body());
+    }
+
+    @Test
+    @DisplayName("Canonical - what the context doesn't know is a 404")
+    void testCanonicalNotFound() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical("http://example.org/fhir/StructureDefinition/no-such-thing", null, "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"code\":\"not-found\""), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", "9.9.9", "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+    }
+
+    @Test
+    @DisplayName("Canonical - url is required, absolute, and bounded; the version only once")
+    void testCanonicalBadRequests() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical(null, null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: url"), response.body());
+      response = lookupCanonical("StructureDefinition/patient-birthPlace", null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      response = lookupCanonical("http://example.org/" + "x".repeat(5000), null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace|4.0.1", "4.0.1", "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/canonical?url=http://hl7.org/fhir/ValueSet/administrative-gender"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+      assertEquals(405, httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+    }
+
     @Test
     @DisplayName("Matchetype - Successful comparison")
     void testMatchetypeComparisonSuccess() throws Exception {
@@ -1221,6 +1281,7 @@ class FhirValidatorHttpServiceTest {
       assertTrue(response.body().contains("/narrative"));
       assertTrue(response.body().contains("/transform"));
       assertTrue(response.body().contains("/version"));
+      assertTrue(response.body().contains("/canonical"));
       assertTrue(response.body().contains("/compile"));
     }
 
