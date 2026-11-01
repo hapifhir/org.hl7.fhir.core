@@ -1712,6 +1712,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
         for (ConceptReferenceComponent c : inc.getConceptList()) {
           c.checkNoModifiers("Code in Value Set", "expanding");
           ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConceptList(), c.getCode(), null);
+          if (def == null) {
+            // a code in a code space the code system reserves for users to define their own codes: listed, it
+            // is in the expansion (with an extension-codes supplement's display, or the code space's default)
+            def = CodeSystemUtilities.findReservedCodeConcept(cs, c.getCode());
+          }
           boolean inactive = false; // default is true if we're a fragment and
           boolean isAbstract = false;
           if (def == null) {

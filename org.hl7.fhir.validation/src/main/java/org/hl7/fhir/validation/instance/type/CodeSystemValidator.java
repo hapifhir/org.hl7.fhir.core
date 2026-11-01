@@ -17,6 +17,7 @@ import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
@@ -219,6 +220,12 @@ public class CodeSystemValidator extends BaseValidator {
               hint(errors, "2026-08-11", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_TOO_MANY_CODES, concepts.size(), codeLimit);
             }
             CanonicalPair suppCanonical = new CanonicalPair(supp);
+            // an extension-codes supplement defines codes in the code spaces the code system reserves for
+            // users (codesystem-reservedCodeSpace): those codes aren't in the code system, so they aren't checked
+            // against it. A code outside them is treated as one the code system defines (as a language
+            // pack would give it a display), with a warning that it's outside the scope of the supplement.
+            // The reserved code spaces can only be known when the code system is available here
+            boolean extensionCodes = "extension-codes".equals(cs.getExtensionString(ExtensionDefinitions.EXT_SUPPL_TYPE)) && csSupp != null;
             List<CSCodingValidationRequest> batch = new ArrayList<>();
             boolean systemOk = true;
             boolean first = true;
@@ -228,6 +235,14 @@ public class CodeSystemValidator extends BaseValidator {
                 NodeStack nstack = stack.push(concept, ce, null, null);
                 if (ce == 0) {
                   rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);
+                }
+                String ecode = concept.getChildValue("code");
+                if (extensionCodes && !Utilities.noString(ecode)) {
+                  if (CodeSystemUtilities.isInReservedCodeSpace(csSupp, ecode)) {
+                    ce++;
+                    continue;
+                  }
+                  warning(errors, "2026-10-31", IssueType.BUSINESSRULE, nstack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED, supp, ecode);
                 }
                 if (checkSupplementConcepts) {
                   // the first concept is validated on its own, to find out whether the base code system can be

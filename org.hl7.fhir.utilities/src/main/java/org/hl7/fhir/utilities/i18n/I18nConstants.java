@@ -113,6 +113,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_SUPP_CANT_CHECK = "CODESYSTEM_CS_SUPP_CANT_CHECK";
   public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
   public static final String CODESYSTEM_CS_SUPP_INVALID_CODE = "CODESYSTEM_CS_SUPP_INVALID_CODE";
+  public static final String CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED = "CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED";
   public static final String CODESYSTEM_CS_SUPP_NO_SUPP = "CODESYSTEM_CS_SUPP_NO_SUPP";
   public static final String CODESYSTEM_CS_SUPP_TOO_MANY_CODES = "CODESYSTEM_CS_SUPP_TOO_MANY_CODES";
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
@@ -214,6 +215,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
+  public static final String DISPLAY_NAME_NOT_FIXED_USE_SUPPLEMENT = "Display_Name_Not_Fixed_use_Supplement";
   public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";

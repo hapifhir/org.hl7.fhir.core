@@ -1275,6 +1275,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
     }
+    if (cc == null && !cs.hasUserData(UserDataNames.tx_cs_special)) {
+      // a code in a code space the code system reserves for users to define their own codes is valid,
+      // whether or not an extension-codes supplement defines it
+      cc = CodeSystemUtilities.findReservedCodeConcept(cs, code.getCode());
+    }
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_FRAGMENT, code.getCode(), cs.getUrl(), cs.getVersion());
@@ -1403,6 +1408,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         }
       }
+    }
+    // a code in a reserved code space: its default display is a placeholder, so another display is only
+    // noted; a display from an extension-codes supplement that is not global is not the only correct one,
+    // so another display is a warning. One from a global supplement is as if the code system defined it
+    String reservedDisplay = cc.getUserString(CodeSystemUtilities.UD_RESERVED_CODE_DISPLAY);
+    if (b.count() > 0 && CodeSystemUtilities.DISPLAY_DEFAULT.equals(reservedDisplay)) {
+      String msgId = I18nConstants.DISPLAY_NAME_NOT_FIXED_USE_SUPPLEMENT;
+      String msg = context.formatMessagePlural(b.count(), msgId, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.INFORMATION, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null, msgId)).setStatus(inactive, status);
+    } else if (b.count() > 0 && CodeSystemUtilities.DISPLAY_REFERENCED.equals(reservedDisplay)) {
+      String msgId = ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF;
+      String msg = context.formatMessagePlural(b.count(), msgId, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null, msgId)).setStatus(inactive, status);
     }
     if (b.count() > 0) {
       String msgId = ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF;

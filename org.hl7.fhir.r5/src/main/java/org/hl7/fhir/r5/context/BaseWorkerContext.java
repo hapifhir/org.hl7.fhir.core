@@ -831,7 +831,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
       List<CodeSystem> activeSupplements = new ArrayList<>();
       for (CodeSystem c : supplements) {
-        if (CodeSystemUtilities.isLangPack(c)) {
+        if (CodeSystemUtilities.isGlobalSupplement(c)) {
           activeSupplements.add(c);
         }
         if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
@@ -1324,7 +1324,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     if (items.size() > 0) {
       TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
-      Parameters resp = processBatch(tc, batch, systems, items.size());
+      Parameters resp = processBatch(tc, batch, systems, items.size(), vs == null);
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
         CodingValidationRequest requestAtIndex = items.get(i);
@@ -1371,7 +1371,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size) {
+  /**
+   * With a value set, the batch goes to ValueSet/$batch-validate-code (with the value set's url at the top
+   * level). Without one, each code is validated against its own code system, so the batch goes to
+   * CodeSystem/$batch-validate-code - just as the single code path uses CodeSystem/$validate-code when
+   * there is no value set. A ValueSet batch with no url is not a valid request, and servers reject it.
+   */
+  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size, boolean againstCodeSystems) {
     txLog("$batch validate for " + size + " codes on systems " + systems.toString());
     if (terminologyClientManager == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
@@ -1379,7 +1385,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (txLog != null) {
       txLog.clearLastId();
     }
-    Parameters resp = tc.getClient().batchValidateVS(batch);
+    Parameters resp = againstCodeSystems ? tc.getClient().batchValidateCS(batch) : tc.getClient().batchValidateVS(batch);
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
     }
