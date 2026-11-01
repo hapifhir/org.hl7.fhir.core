@@ -115,6 +115,7 @@ the HTTP status.
 | --- | --- | --- |
 | POST | `/validateResource` | Validate a resource |
 | POST | `/fhirpath` | Evaluate a FHIRPath expression against a resource |
+| GET, POST | `/fhirpath/check` | Type check a FHIRPath expression without evaluating it |
 | POST | `/matchetype` | Compare a resource against a matchetype pattern |
 | POST | `/testdata` | Generate test data for a profile |
 | POST | `/loadIG` | Load an IG into the running engine |
@@ -124,6 +125,7 @@ the HTTP status.
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
+| GET | `/canonical` | Fetch a canonical resource the engine knows, by canonical URL |
 | POST | `/txTest/setup` | Start a run of the terminology ecosystem tests against a server |
 | GET | `/txTest` | Run one terminology ecosystem test in a run |
 | POST | `/txTest/teardown` | End a run, and get its reports |
@@ -198,6 +200,28 @@ why.
 curl -X POST 'http://localhost:8080/fhirpath?expression=Patient.name.family' \
   -H 'Content-Type: application/fhir+json' \
   --data-binary @patient.json
+```
+
+### GET /fhirpath/check
+
+Static type checking of a FHIRPath expression, without evaluating it: the expression is parsed,
+then checked against the type it would be evaluated on. Both parameters are required:
+
+| Parameter | Value |
+| --- | --- |
+| `type` | The type the expression is evaluated on: a type name (a resource or data type), a path in a type, or the canonical URL of a StructureDefinition. Up to 1024 characters. |
+| `expression` | The FHIRPath expression to check. Up to 10000 characters. |
+
+The result is an `OperationOutcome`, always with status `200` when the checking ran: an error when
+the expression doesn't parse (with its line and column) or doesn't check against the type (an
+unknown element, a function used on the wrong type, the wrong parameters...), a warning for each
+warning the checking raises (each with its message id), and, when there is no error, an
+information issue saying what type the expression returns. A missing or over-long parameter is a
+`400`. `POST` works the same way, with the same query parameters; any body is ignored.
+
+```sh
+curl 'http://localhost:8080/fhirpath/check?type=Bundle&expression=Bundle.entry.resource.ofType(Condition).code.coding.code' \
+  -H 'Accept: application/fhir+json'
 ```
 
 ### POST /matchetype
@@ -286,6 +310,24 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 ```
 
 `/compile` does not check the HTTP method, so POST and other methods behave the same as GET.
+
+### GET /canonical
+
+Returns the canonical resource (StructureDefinition, ValueSet, CodeSystem...) with a canonical
+URL, as the engine's context knows it: the core package, the loaded IGs and what they depend on.
+Nothing is fetched from elsewhere. `url` must be absolute, and may carry a `|version` suffix;
+alternatively give the `version` parameter (not both). The usual version matching rules apply.
+A resource the context doesn't know is a `404` with an OperationOutcome; the format follows `Accept`.
+
+```sh
+curl 'http://localhost:8080/canonical?url=http://hl7.org/fhir/ValueSet/administrative-gender' \
+  -H 'Accept: application/fhir+json'
+```
+
+**The context is shared by all clients.** Everything loaded into it - with `-ig` at start up, or
+by any client with `/loadIG` - can be read by every client of the server, including unpublished
+content loaded from a local folder. Don't load anything into a server others can reach that they
+shouldn't see.
 
 ### Terminology ecosystem tests: /txTest
 
