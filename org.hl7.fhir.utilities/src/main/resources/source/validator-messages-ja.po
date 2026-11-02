@@ -760,6 +760,16 @@ msgstr ""
 msgid "The cache ''{0}'' expired: it went {1} without being used, and this server closes caches that have been idle for more than {2} (this one was dropped {3} ago). Every request that uses a cache resets its idle clock, so a client that keeps using a cache will not see this"
 msgstr ""
 
+# CACHE_ID_OTHER_INSTANCE
+#: CACHE_ID_OTHER_INSTANCE
+msgid "The cache ''{0}'' was issued by the server instance ''{1}'', but this is instance ''{2}''. A cache only exists on the instance that issued it, so this request reached the wrong server: either the proxy in front of these servers is not routing on the cache-id, or instance ''{1}'' is unavailable"
+msgstr ""
+
+# CACHE_ID_OTHER_INSTANCE_UNNAMED
+#: CACHE_ID_OTHER_INSTANCE_UNNAMED
+msgid "The cache ''{0}'' was issued by the server instance ''{1}'', but this server has no instance code, so it cannot have issued it. A cache only exists on the instance that issued it, so this request reached the wrong server: either the proxy in front of these servers is not routing on the cache-id, or instance ''{1}'' is unavailable"
+msgstr ""
+
 # CACHE_ID_UNKNOWN
 #: CACHE_ID_UNKNOWN
 msgid "The cache ''{0}'' was never issued by this server, and this server has no record of it ever existing. Caches are created with $cache-control?mode=start, and a cache-id is only valid on the server instance and endpoint that issued it - either it was issued somewhere else, or this server has restarted since it was issued"
@@ -784,6 +794,101 @@ msgstr "CDAテンプレート{0}は不明です"
 #: CDA_UNKNOWN_TEMPLATE_EXT
 msgid "The CDA Template {0} / {1} is not known"
 msgstr "CDAテンプレート {0} / {1} は不明です"
+
+# CLOSURE_CONCEPT_AND_VERSION
+#: CLOSURE_CONCEPT_AND_VERSION
+msgid "A $closure request can add concepts or resynchronise from a version, but not both at once"
+msgstr ""
+
+# CLOSURE_CONCEPT_INVALID
+#: CLOSURE_CONCEPT_INVALID
+msgid "Each concept added to a closure table must be a Coding with a system and a code"
+msgstr ""
+
+# CLOSURE_CONFIG_NOT_ALLOWED
+#: CLOSURE_CONFIG_NOT_ALLOWED
+msgid "The parameter ''{0}'' configures a closure table, so it can only be supplied when the table is initialised (or reset)"
+msgstr ""
+
+# CLOSURE_CONFIG_TOO_LARGE
+#: CLOSURE_CONFIG_TOO_LARGE
+msgid "The configuration supplied for this closure table (mostly the tx-resource parameters) is larger than this server will keep, which is {0} bytes"
+msgstr ""
+
+# CLOSURE_NAME_INVALID
+#: CLOSURE_NAME_INVALID
+msgid "The closure table name ''{0}'' is not valid: it must not contain white space, and must be no more than 64 characters long"
+msgstr ""
+
+# CLOSURE_NAME_NOT_UUID
+#: CLOSURE_NAME_NOT_UUID
+msgid "The closure table name ''{0}'' is not valid: this server requires closure table names to be UUIDs"
+msgstr ""
+
+# CLOSURE_NAME_REQUIRED
+#: CLOSURE_NAME_REQUIRED
+msgid "$closure requires a ''name'' parameter naming the closure table"
+msgstr ""
+
+# CLOSURE_NOT_SUPPORTED
+#: CLOSURE_NOT_SUPPORTED
+msgid "This server does not support $closure (it has to be turned on by the administrator)"
+msgstr ""
+
+# CLOSURE_PARAM_UNKNOWN
+#: CLOSURE_PARAM_UNKNOWN
+msgid "The parameter ''{0}'' is not supported by $closure on this server"
+msgstr ""
+
+# CLOSURE_POST_ONLY
+#: CLOSURE_POST_ONLY
+msgid "$closure changes the closure table held on the server, so it must be invoked with POST"
+msgstr ""
+
+# CLOSURE_RESET_AND_VERSION
+#: CLOSURE_RESET_AND_VERSION
+msgid "A $closure request can reset the closure table or resynchronise from a version, but not both at once"
+msgstr ""
+
+# CLOSURE_TABLE_BUSY
+#: CLOSURE_TABLE_BUSY
+msgid "The closure table ''{0}'' is busy with other requests. Try again shortly"
+msgstr ""
+
+# CLOSURE_TABLE_EXISTS
+#: CLOSURE_TABLE_EXISTS
+msgid "The closure table ''{0}'' already exists. To discard its content and start again, include the parameter reset = true"
+msgstr ""
+
+# CLOSURE_TABLE_UNKNOWN
+#: CLOSURE_TABLE_UNKNOWN
+msgid "The closure table ''{0}'' does not exist on this server. Initialise it first, with a $closure request that names it and has no concepts"
+msgstr ""
+
+# CLOSURE_TOO_MANY_CONCEPTS
+#: CLOSURE_TOO_MANY_CONCEPTS
+msgid "The closure table ''{0}'' can hold at most {1} concepts on this server"
+msgstr ""
+
+# CLOSURE_TOO_MANY_ENTRIES
+#: CLOSURE_TOO_MANY_ENTRIES
+msgid "Adding these concepts would put more entries into the closure table ''{0}'' than this server allows, in one request or in total"
+msgstr ""
+
+# CLOSURE_TOO_MANY_REQUEST_CONCEPTS
+#: CLOSURE_TOO_MANY_REQUEST_CONCEPTS
+msgid "A single $closure request can add at most {0} concepts on this server"
+msgstr ""
+
+# CLOSURE_TOO_MANY_TABLES
+#: CLOSURE_TOO_MANY_TABLES
+msgid "This server holds at most {0} closure tables, and has no room for another"
+msgstr ""
+
+# CLOSURE_VERSION_INVALID
+#: CLOSURE_VERSION_INVALID
+msgid "The version ''{0}'' is not valid for the closure table ''{1}'': it must be a whole number between 0 and the table''s current version, {2}"
+msgstr ""
 
 # CODESYSTEM_CONCEPT_NO_DEFINITION
 #: CODESYSTEM_CONCEPT_NO_DEFINITION
@@ -928,6 +1033,11 @@ msgstr ""
 # CODESYSTEM_NOT_CONTAINED
 #: CODESYSTEM_NOT_CONTAINED
 msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
+msgstr ""
+
+# CODESYSTEM_NOT_ENUMERABLE
+#: CODESYSTEM_NOT_ENUMERABLE
+msgid "The code system ''{0}'' cannot be expanded because its codes cannot be iterated or enumerated in any meaningful sense"
 msgstr ""
 
 # CODESYSTEM_PROPERTY_ABSOLUTE_URI
@@ -1080,6 +1190,11 @@ msgstr ""
 msgid "The code ''{0}'' differs from the correct code ''{1}'' by case. Although the code system ''{2}'' is case insensitive, implementers are strongly encouraged to use the correct case anyway"
 msgstr ""
 
+# CODE_NOT_IN_NORMAL_FORM
+#: CODE_NOT_IN_NORMAL_FORM
+msgid "The code ''{0}'' is valid, but it is not the normal form for the code system ''{2}''; the normal form is ''{1}''"
+msgstr ""
+
 # CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
 #: CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
 msgid "The source code ''{0}'' in the code system {1} cannot be checked due to special rules around the code system"
@@ -1194,6 +1309,61 @@ msgstr ""
 #: CONCEPTMAP_GROUP_TARGET_UNKNOWN
 msgid "The Target Code System {0} is not fully defined and populated, and no targetScope is specified, so the target code checking will not be performed"
 msgstr "Target Code System {0}は完全に定義されておらずデータが不足しています。また、targetScopeも指定されていないため、ソースコードのチェックは実行されません。"
+
+# CONCEPTMAP_QUALITY_EQUIVALENT_SOURCES
+#: CONCEPTMAP_QUALITY_EQUIVALENT_SOURCES
+msgid "The codes {0} and {1} are both mapped to {2} as ''equivalent'', which means that they have the same meaning"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_EQUIVALENT_TARGETS
+#: CONCEPTMAP_QUALITY_EQUIVALENT_TARGETS
+msgid "The code {0} is mapped as ''equivalent'' to both {1} and {2}, which means that they have the same meaning"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_NOMAP_REVERSE
+#: CONCEPTMAP_QUALITY_NOMAP_REVERSE
+msgid "The code {0} is marked as noMap, but the reverse map {1} maps {2} to {0} as ''{3}'', which means that {0} could be mapped to {2} as ''{4}''"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_REVERSE_INCONSISTENT
+#: CONCEPTMAP_QUALITY_REVERSE_INCONSISTENT
+msgid "The mapping from {0} to {1} is ''{2}'', so the reverse mapping from {1} to {0} should be ''{3}'', but the reverse map {4} says ''{5}''"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_REVERSE_MISSING
+#: CONCEPTMAP_QUALITY_REVERSE_MISSING
+msgid "The mapping from {0} to {1} is ''{2}'', but the reverse map {3} has no mapping from {1} to {0}"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_REVERSE_MULTIPLE
+#: CONCEPTMAP_QUALITY_REVERSE_MULTIPLE
+msgid "More than one possible reverse map was found ({0}), so the reverse mapping checks were not performed"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_SAME_SYSTEM_UNDIRECTED
+#: CONCEPTMAP_QUALITY_SAME_SYSTEM_UNDIRECTED
+msgid "This group maps the code system {0} to itself, but neither the versions nor the scopes differentiate the source from the target, so it is not a usable map"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_SCOPE_UNMAPPED
+#: CONCEPTMAP_QUALITY_SCOPE_UNMAPPED
+msgid "The code {0} is in the source scope {1} but has no mapping, is not marked as noMap, and is not covered by group.unmapped"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_SOURCE_SUBSUMPTION
+#: CONCEPTMAP_QUALITY_SOURCE_SUBSUMPTION
+msgid "The code {0} is mapped to {1} as ''equivalent'', and {2} is mapped to {1} as ''{3}'', which means that {4} should subsume {5}, but it does not"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_TARGET_SUBSUMPTION
+#: CONCEPTMAP_QUALITY_TARGET_SUBSUMPTION
+msgid "The code {0} is mapped to {1} as ''equivalent'', and to {2} as ''{3}'', which means that {4} should subsume {5}, but it does not"
+msgstr ""
+
+# CONCEPTMAP_QUALITY_TOO_MANY_CHECKS
+#: CONCEPTMAP_QUALITY_TOO_MANY_CHECKS
+msgid "There are too many subsumption checks to perform ({0}, more than the limit of {1}), so the subsumption based mapping checks were not performed"
+msgstr ""
 
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING
@@ -1329,6 +1499,11 @@ msgstr "拡張中にコードが見つかりました。しかしながら: {0}"
 #: Coding_has_no_system__cannot_validate
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!Codingにはsystemがない - 検証できません"
+
+# Coding_has_no_system_or_code__cannot_validate
+#: Coding_has_no_system_or_code__cannot_validate
+msgid "Coding has neither a system nor a code, so it cannot be validated. A system and a code should be provided"
+msgstr ""
 
 # Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
@@ -1466,6 +1641,11 @@ msgstr "制約 ''{0}'' は式 ''{1}'' を持ち、それは以前に提供され
 #: ED_INVARIANT_EXPRESSION_ERROR
 msgid "Error in constraint ''{0}'' with expression ''{1}'': {2}"
 msgstr "制約 ''{0}'' の式 ''{1}'' でエラーが発生しました: {2}"
+
+# ED_INVARIANT_EXPRESSION_ERROR_WITH_ID
+#: ED_INVARIANT_EXPRESSION_ERROR_WITH_ID
+msgid "Error in constraint ''{0}'' on element {3} with expression ''{1}'': {2}"
+msgstr ""
 
 # ED_INVARIANT_IMPOSE_DIFFERENT
 #: ED_INVARIANT_IMPOSE_DIFFERENT
@@ -1922,7 +2102,7 @@ msgstr "!!定義内でdiscriminator {0} を {2} 上で見つけたが、extensio
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #43 --"
+msgid "-- no content: do not translate #39 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプのプロファイル"
@@ -1930,7 +2110,7 @@ msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプのプロフ�
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #44 --"
+msgid "-- no content: do not translate #40 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプ"
@@ -1953,7 +2133,7 @@ msgstr "discriminatorでのofType()の使用が無効 - タイプにコードが
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #45 --"
+msgid "-- no content: do not translate #41 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "discriminatorでのresolve()の使用が無効 - {0} 可能なタイプが {1} に複数存在します (一つだけでなければならない)"
@@ -1976,7 +2156,7 @@ msgstr "discriminatorでのofType()の使用が無効 - 要素 {0} にタイプ�
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #46 --"
+msgid "-- no content: do not translate #42 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {0}のフォーカスは1つの値を持つことができますが、{0}の値があります"
@@ -1994,7 +2174,7 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #47 --"
+msgid "-- no content: do not translate #43 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {1}への左オペランドは1つの値しか持つことができませんが、{0}の値があります"
@@ -2067,7 +2247,7 @@ msgstr "FHIRPath式の評価エラー: 関数 {0} は順序付けされたコレ
 # FHIRPATH_PARAMETER_CARD
 #: FHIRPATH_PARAMETER_CARD
 msgctxt "FHIRPATH_PARAMETER_CARD"
-msgid "-- no content: do not translate #48 --"
+msgid "-- no content: do not translate #44 --"
 msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
 msgstr[0] ""
 
@@ -2078,8 +2258,9 @@ msgstr "FHIRPath式の評価エラー: 式タイプ {0} は関数 {2} のパラ�
 
 # FHIRPATH_PRIMITIVE_ONLY
 #: FHIRPATH_PRIMITIVE_ONLY
-msgid "Error evaluating FHIRPath expression: The function {0} can only be used on primitives"
-msgstr "FHIRPath式の評価エラー: 関数 {0} はプリミティブに対してのみ使用できます"
+msgid "Error evaluating FHIRPath expression: The function {1} can only be used on primitives, but this type is {2}"
+msgid_plural "Error evaluating FHIRPath expression: The function {1} can only be used on primitives, but this type is one of {2}"
+msgstr[0] "!!FHIRPath式の評価エラー: 関数 {0} はプリミティブに対してのみ使用できます"
 
 # FHIRPATH_REDEFINE_VARIABLE
 #: FHIRPATH_REDEFINE_VARIABLE
@@ -2099,7 +2280,7 @@ msgstr "resolve()の使用に問題 - {1}上のプロファイル{0}を解決で
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #49 --"
+msgid "-- no content: do not translate #45 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "discriminatorでのresolve()の使用が無効 - {1}に{0}の可能なターゲットタイププロファイルが複数存在します (一つだけでなければならない)"
@@ -2107,7 +2288,7 @@ msgstr[1] "discriminatorでのresolve()の使用が無効 - {1}に{0}の可能�
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #50 --"
+msgid "-- no content: do not translate #46 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {1}への右オペランドは1つの値しか持つことができませんが、{0}の値があります"
@@ -2177,6 +2358,11 @@ msgstr ""
 msgid "The filter \"{0} {1} {2}\" is not understood or supported"
 msgstr ""
 
+# FILTER_VALUE_UNKNOWN_CODE
+#: FILTER_VALUE_UNKNOWN_CODE
+msgid "The filter value ''{0}'' is not a code in {1}"
+msgstr ""
+
 # Fixed_Type_Checks_DT_Address_Line
 #: Fixed_Type_Checks_DT_Address_Line
 msgid "Expected {0} but found {1} line elements"
@@ -2225,6 +2411,16 @@ msgstr ""
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
+msgstr ""
+
+# ICD11_PC_NO_AXES
+#: ICD11_PC_NO_AXES
+msgid "''{0}'' cannot be postcoordinated onto ''{1}'': that concept declares no postcoordination axes"
+msgstr ""
+
+# ICD11_PC_VALUE_NOT_ON_AXIS
+#: ICD11_PC_VALUE_NOT_ON_AXIS
+msgid "''{0}'' is not a permitted value on any postcoordination axis of ''{1}''. That stem declares: {2}"
 msgstr ""
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2372,6 +2568,16 @@ msgstr ""
 #: INV_FAILED
 msgid "Constraint failed: {0}: ''{1}''"
 msgstr "!!ルール {0} が失敗しました"
+
+# INV_FAILED_ID
+#: INV_FAILED_ID
+msgid "Constraint failed: {0}: ''{1}'' at {2}"
+msgstr ""
+
+# INV_FAILED_ID_SOURCE
+#: INV_FAILED_ID_SOURCE
+msgid "Constraint failed: {0}: ''{1}'' at {2} (defined in {3})"
+msgstr ""
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
@@ -2968,6 +3174,11 @@ msgstr ""
 msgid "Reference to draft {2} {0} from {1}"
 msgstr ""
 
+# MSG_DRAFT_SRC_STATUS
+#: MSG_DRAFT_SRC_STATUS
+msgid "Reference to draft {2} {0} from {3} {4} {1}"
+msgstr ""
+
 # MSG_EXPERIMENTAL
 #: MSG_EXPERIMENTAL
 msgid "Reference to experimental {2} {0}"
@@ -3001,7 +3212,7 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #51 --"
+msgid "-- no content: do not translate #47 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "提供されたプロファイルに {0} 個の論理モデルが見つかったため、論理モデルを解析できません（一つだけでなければならず、{1}個見つかりました）"
@@ -3937,7 +4148,7 @@ msgstr "このLinkIdを持つ回答アイテムは1つだけ許可されます"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #52 --"
+msgid "-- no content: do not translate #48 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] "!!LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
 msgstr[1] ""
@@ -4247,6 +4458,21 @@ msgstr ""
 # SD_BASE_EXPERIMENTAL
 #: SD_BASE_EXPERIMENTAL
 msgid "The definition builds on ''{0}'' which is experimental, but this definition is not labeled as experimental"
+msgstr ""
+
+# SD_CARDINALITY_EMPTY
+#: SD_CARDINALITY_EMPTY
+msgid "No instance can meet the cardinality rules for {0}: the minimum {1} (from {2}) is greater than the maximum {3} (from {4})"
+msgstr ""
+
+# SD_CHILD_NOT_IN_TYPE
+#: SD_CHILD_NOT_IN_TYPE
+msgid "The element {0} is not defined by the type {1} of its parent element {2}. New elements can only be defined inside an element with an abstract type (e.g. BackboneElement); inside an element with a concrete type, the children can only constrain elements that the type already defines"
+msgstr ""
+
+# SD_CHILD_TYPE_UNCHECKABLE
+#: SD_CHILD_TYPE_UNCHECKABLE
+msgid "Unable to check whether the element {0} is defined by the type {1}, because the full definition of the type is not available"
 msgstr ""
 
 # SD_CIRCULAR_DEFINITION
@@ -4576,16 +4802,6 @@ msgstr ""
 msgid "Slicing is not allowed at ''{0}''"
 msgstr ""
 
-# SD_PATH_SLICE_INCONSISTENT_MS
-#: SD_PATH_SLICE_INCONSISTENT_MS
-msgid "The slice ''{0}'' on path ''{1}'' is not marked as ''must-support'' which is not consistent with the element that defines the slicing, where ''must-support'' is true"
-msgstr ""
-
-# SD_PATH_SLICE_INCONSISTENT_TYPE
-#: SD_PATH_SLICE_INCONSISTENT_TYPE
-msgid "The slice ''{0}'' on path ''{1}'' has type ''{2}  which is not consistent with the element that defines the slicing, which has the type(s) ''{3}''"
-msgstr ""
-
 # SD_PATH_SLICING_DEPRECATED
 #: SD_PATH_SLICING_DEPRECATED
 msgid "The discriminator type ''{0}'' is deprecated in R5+. For future compatibility, you could consider using type=value with a pattern[x] instead (if this is not an inherited slicing)"
@@ -4600,6 +4816,31 @@ msgstr ""
 #: SD_PATH_TYPE_MISMATCH
 msgid "The path {1} must start with the type of the structure {0}"
 msgstr "パス {1} は、構造 {0} のタイプで始まらなければなりません"
+
+# SD_ROOT_CHANGED
+#: SD_ROOT_CHANGED
+msgid "The property {0} on the root element {1} has the value ''{2}'' but the base has ''{3}'': this can only be changed when the derivation is ''specialization''"
+msgstr ""
+
+# SD_ROOT_PROHIBITED
+#: SD_ROOT_PROHIBITED
+msgid "The property {0} is not allowed on the root element {1}"
+msgstr ""
+
+# SD_SLICE_MAX_EXCEEDS_SLICER
+#: SD_SLICE_MAX_EXCEEDS_SLICER
+msgid "The slice definition for {0} has a maximum of {1} but the slices add up to a maximum of {2}. Check that this is what is intended"
+msgstr ""
+
+# SD_SLICE_MIN_EXCEEDS_SLICER
+#: SD_SLICE_MIN_EXCEEDS_SLICER
+msgid "The slice definition for {0} has a minimum of {1} but the slices add up to a minimum of {2}"
+msgstr ""
+
+# SD_SLICE_MIN_EXCEEDS_SLICER_MAX
+#: SD_SLICE_MIN_EXCEEDS_SLICER_MAX
+msgid "The slices of {0} need at least {1} repetitions between them (the total of their minimum cardinalities), but {0} allows at most {2}"
+msgstr ""
 
 # SD_SPECIALIZED_TYPE_MATCHES
 #: SD_SPECIALIZED_TYPE_MATCHES
@@ -4676,10 +4917,20 @@ msgstr ""
 msgid "The type ''{0}'' at {3} is a reference to ''{1}'' which needs a type parameter ''{2}'' but a type parameter is not provided for ''{2}''"
 msgstr ""
 
+# SD_TYPE_SLICER_PARTIAL_CONSTRAINT
+#: SD_TYPE_SLICER_PARTIAL_CONSTRAINT
+msgid "The {0} on the type slicer {1} applies to all its slices, but it only makes sense for some of its types, so it has no effect on the slices for {2}"
+msgstr ""
+
 # SD_VALUE_COMPLEX_FIXED
 #: SD_VALUE_COMPLEX_FIXED
 msgid "For the complex type {0}, consider using a pattern rather than a fixed value to avoid over-constraining the instance"
 msgstr "複合タイプ {0} の場合、インスタンスを過剰に制約することを避けるために、固定値ではなくパターンを使用することを検討してください"
+
+# SD_VALUE_RANGE_EMPTY
+#: SD_VALUE_RANGE_EMPTY
+msgid "No value can meet the rules for {0}: the minimum value {1} (from {2}) is greater than the maximum value {3} (from {4})"
+msgstr ""
 
 # SD_VALUE_TYPE_IILEGAL
 #: SD_VALUE_TYPE_IILEGAL
@@ -4740,6 +4991,26 @@ msgstr "文字列値には、HTMLタグが埋め込まれているように見�
 #: SLICING_CANNOT_BE_EVALUATED
 msgid "Slicing cannot be evaluated: {0}"
 msgstr "スライシングは評価できません：{0}"
+
+# SLICING_RESTATED_REDUNDANTLY
+#: SLICING_RESTATED_REDUNDANTLY
+msgid "The element at {0} defines the slicing {1}, and the element at {2} restates the same slicing, which has no effect"
+msgstr ""
+
+# SM_CONSTANT_NAME_MISSING
+#: SM_CONSTANT_NAME_MISSING
+msgid "The constant name is missing"
+msgstr ""
+
+# SM_CONSTANT_TYPE_UNDETERMINED
+#: SM_CONSTANT_TYPE_UNDETERMINED
+msgid "The {0} constant''s type could not be determined from the value {1}"
+msgstr ""
+
+# SM_CONSTANT_VALUE_MISSING
+#: SM_CONSTANT_VALUE_MISSING
+msgid "The {0} constant''s value is missing"
+msgstr ""
 
 # SM_DEPENDENT_PARAM_MODE_MISMATCH
 #: SM_DEPENDENT_PARAM_MODE_MISMATCH
@@ -4901,6 +5172,11 @@ msgstr "ターゲットパス {0}.{1} は未知のパス {2} を参照してい�
 msgid "The target path {0}.{1} refers to the path {2} which could be a reference to multiple elements ({3}). No further checking can be performed"
 msgstr "ターゲットパス {0}.{1} はパス {2} を参照していますが、これは複数の要素 ({3}) を参照する可能性があります。これ以上のチェックはできません"
 
+# SM_TARGET_PATH_TYPE_INVALID
+#: SM_TARGET_PATH_TYPE_INVALID
+msgid "The intermediate target path {0} must have a single non-primitive type that can be created. The possible types are [{1}]"
+msgstr ""
+
 # SM_TARGET_TRANSFORM_EXPRESSION_ERROR
 #: SM_TARGET_TRANSFORM_EXPRESSION_ERROR
 msgid "The FHIRPath expression passed as the evaluate parameter is invalid: {0}"
@@ -5011,6 +5287,11 @@ msgstr "ソース変数が不明なValueSet''{0}''を参照しているため、
 msgid "The target variable refers to an unknown value set ''{0}'', so this concept map can''t be checked"
 msgstr "ターゲット変数が不明なValueSet''{0}''を参照しているため、このコンセプトマップをチェックできません"
 
+# SM_TARGET_TYPE_INVALID
+#: SM_TARGET_TYPE_INVALID
+msgid "The type {0} is not valid for the target path {1}. The possible types are [{2}]"
+msgstr ""
+
 # SM_TARGET_TYPE_MULTIPLE_POSSIBLE
 #: SM_TARGET_TYPE_MULTIPLE_POSSIBLE
 msgid "Multiple types are possible here ({0}) so further type checking is not possible"
@@ -5026,15 +5307,85 @@ msgstr "ターゲットタイプが見つからなかったため、この暗黙
 msgid "The type of the target variable is not known: {0}"
 msgstr ""
 
+# SNAPSHOT_CONSTRAINT_KEY_CONFLICT
+#: SNAPSHOT_CONSTRAINT_KEY_CONFLICT
+msgid "The constraint ''{0}'' at {1} has a different expression to the constraint ''{0}'' it inherits (''{2}'' vs ''{3}''). A constraint with the same key must be the same constraint"
+msgstr ""
+
+# SNAPSHOT_DIFF_DUPLICATE_SLICE_NAME
+#: SNAPSHOT_DIFF_DUPLICATE_SLICE_NAME
+msgid "The slice name ''{0}'' is used more than once for {1} in the differential of {2}"
+msgstr ""
+
+# SNAPSHOT_DIFF_FIXED_CONFLICT
+#: SNAPSHOT_DIFF_FIXED_CONFLICT
+msgid "The {0} value at {1} ({2}) is not consistent with the fixed value inherited from the base profile ({3}), so instances that meet this profile would not meet the base profile"
+msgstr ""
+
+# SNAPSHOT_DIFF_LOOSENS
+#: SNAPSHOT_DIFF_LOOSENS
+msgid "The differential at {0} sets {1} to {2}, which is less restrictive than the inherited value {3}, so the inherited value has been kept"
+msgstr ""
+
+# SNAPSHOT_DIFF_PATTERN_CONFLICT
+#: SNAPSHOT_DIFF_PATTERN_CONFLICT
+msgid "The {0} value at {1} ({2}) does not conform to the pattern inherited from the base profile ({3}), so instances that meet this profile would not meet the base profile"
+msgstr ""
+
+# SNAPSHOT_DUPLICATE_SLICE_NAME
+#: SNAPSHOT_DUPLICATE_SLICE_NAME
+msgid "Duplicate slice name {0} on {1} ([{2}])"
+msgstr ""
+
 # SNAPSHOT_EXISTING_PROBLEM
 #: SNAPSHOT_EXISTING_PROBLEM
 msgid "The generated snapshot has a different number of elements {1} than the originally provided snapshot {0}"
 msgstr "生成されたsnapshotには、元の提供されたsnapshot{0}と要素数が異なります{1}"
 
+# SNAPSHOT_EXTENSION_SLICE_NOT_IN_EXTENSION
+#: SNAPSHOT_EXTENSION_SLICE_NOT_IN_EXTENSION
+msgid "The extension slice ''{0}'' is not one of the extensions defined by the extension ''{1}''"
+msgstr ""
+
+# SNAPSHOT_EXTENSION_SLICE_ON_SLICER
+#: SNAPSHOT_EXTENSION_SLICE_ON_SLICER
+msgid "The extension slice ''{0}'' has no profile and no fixed url, so it does not identify an extension. It has the same name as the slice ''{1}'' defined on the slicer, but slices defined on a slicer are not inherited by the slices; the extension must be defined again in each slice that refers to it"
+msgstr ""
+
+# SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED
+#: SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED
+msgid "The extension slice ''{0}'' has no profile and no fixed url, so it does not identify an extension"
+msgstr ""
+
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
 msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr "!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
+
+# SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT
+#: SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT
+msgid "The type profile {0} used at {1} has a constraint ''{2}'' on its root element with a different expression to the constraint ''{2}'' already on the element (''{3}'' vs ''{4}'')"
+msgstr ""
+
+# SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT
+#: SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT
+msgid "The type profile {0} used at {1} has a default value on its root element that does not agree with the default value already on the element"
+msgstr ""
+
+# SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT
+#: SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT
+msgid "The type profile {0} used at {1} has a {2} value on its root element that does not agree with the {3} value already on the element"
+msgstr ""
+
+# SNAPSHOT_TYPE_ROOT_SLICING
+#: SNAPSHOT_TYPE_ROOT_SLICING
+msgid "The type profile {0} used at {1} has slicing on its root element, which is not allowed"
+msgstr ""
+
+# SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE
+#: SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE
+msgid "The type profile {0} used at {1} has a {2} on its root element ({3}) that cannot be compared with the {2} already on the element ({4}), so the element''s value has been kept"
+msgstr ""
 
 # STATUS_CODE_WARNING_CODE
 #: STATUS_CODE_WARNING_CODE
@@ -6288,11 +6639,6 @@ msgstr "サポートされていない：型{2}でパターンのdiscriminator({
 msgid "Unsupported property {3} on type {2} for pattern for discriminator ({0}) for slice {1}"
 msgstr "型{2}でパターンのdiscriminator({0})のスライス{1}にサポートされていないプロパティ{3}があります"
 
-# UNSUPPORTED_SLICING_COMPLEXITY
-#: UNSUPPORTED_SLICING_COMPLEXITY
-msgid "Unsupported feature in slicing at {0}: the slicing element at path {1} has slicing {2}, and this nested slicing is not supported"
-msgstr ""
-
 # Unable_to_connect_to_terminology_server
 #: Unable_to_connect_to_terminology_server
 msgid "Unable to connect to terminology server at {1}. Error = {0}"
@@ -7096,6 +7442,11 @@ msgstr ""
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many concepts to validate ({0}, more than the limit of {1}), so each individual code has not been checked"
 msgstr "!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
+
+# VALUESET_NO_COMPOSE
+#: VALUESET_NO_COMPOSE
+msgid "The value set {0} has no compose and no expansion, so it cannot be expanded"
+msgstr ""
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING

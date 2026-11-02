@@ -246,7 +246,7 @@ public class TerminologyClientContextTests {
 
   private TerminologyClientManager managerFor(ITerminologyClient5 client) throws IOException {
     TerminologyClientManager mgr = new TerminologyClientManager(mock(ITerminologyClientFactory5.class), mock(ILoggingService.class));
-    mgr.setMasterClient(client, false);
+    mgr.setMasterClient(client, null);
     return mgr;
   }
 

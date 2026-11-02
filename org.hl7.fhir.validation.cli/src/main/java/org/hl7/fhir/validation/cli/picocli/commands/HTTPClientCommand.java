@@ -292,9 +292,6 @@ public class HTTPClientCommand implements Callable<Integer> {
     if (instanceValidatorOptions.allowDoubleQuotesInFHIRPath) {
       uriBuilder.addParameter(ParamNames.ALLOW_DOUBLE_QUOTES_IN_FHIR_PATH, "true");
     }
-    if (instanceValidatorOptions.checkIPSCodes) {
-      uriBuilder.addParameter(ParamNames.CHECK_IPS_CODES, "true");
-    }
 
     // Numeric fields
     if (instanceValidatorOptions.maxValidationMessages != null && instanceValidatorOptions.maxValidationMessages > 0) {

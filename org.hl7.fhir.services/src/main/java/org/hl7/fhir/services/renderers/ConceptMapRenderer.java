@@ -536,7 +536,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           } else {
             tr = tbl.tr();
-            tr.td().colspan(3).style("opacity: "+ HierarchicalTableGenerator.STANDARD_OPACITY).addText("\"");
+            tr.td().colspan(3).clss("xhtPieceDeEmphasized").addText("\"");
           }
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
@@ -615,7 +615,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               first = false;
             } else {
               tr = tbl.tr();
-              tr.td().style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY).tx("\"");
+              tr.td().clss("xhtPieceDeEmphasized").tx("\"");
             }
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");

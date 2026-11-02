@@ -67,7 +67,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities(address);
 
-    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
+    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, null);
 
     Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
     Mockito.verify(terminologyClient).getCapabilitiesStatement();
@@ -88,7 +88,7 @@ public class SimpleWorkerContextTests {
 
     TerminologyClientContext.setAllowNonConformantServers(true);
     
-    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
+    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, null);
 
     Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
