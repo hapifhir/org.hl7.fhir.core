@@ -46,6 +46,7 @@ import org.hl7.fhir.model.core.UriType;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -154,7 +155,7 @@ public class StructureMapUtilities {
       return false;
     if (t.hasVariable() && !AUTO_VAR_NAME.equals(t.getVariable()))
       return false;
-    if (t.hasTransform() && t.getTransform() != StructureMap.StructureMapTransform.CREATE)
+    if (t.hasTransform() && t.getTransform() != StructureMapTransformVS.CREATE)
       return false;
     // element is 0..* in R6 where it was 0..1 in R5, so this is a list of StringType, and
     // List.equals compares the StringTypes with Object.equals - which the model does not
@@ -546,7 +547,7 @@ public class StructureMapUtilities {
           b.append(rd.getName());
           b.append("(");
           boolean ifirst = true;
-          for (StructureMap.StructureMapGroupRuleTargetParameterComponent rdp : rd.getParameterList()) {
+          for (StructureMap.StructureMapGroupRuleDependentParameterComponent rdp : rd.getParameterList()) {
             if (ifirst)
               ifirst = false;
             else
@@ -607,7 +608,7 @@ public class StructureMapUtilities {
   private static boolean checkisSimple(StructureMap.StructureMapGroupRuleComponent r) {
     return
       (r.getSourceList().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
-        (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMap.StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
+        (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransformVS.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
         (r.getDependentList().size() == 0 || (r.getDependentList().size() == 1 && DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRuleList().size() == 0);
   }
 
@@ -698,13 +699,13 @@ public class StructureMapUtilities {
     if (!abbreviate && rt.hasTransform()) {
       if (rt.hasContext())
         b.append(" = ");
-      if (rt.getTransform() == StructureMap.StructureMapTransform.COPY && rt.getParameterList().size() == 1) {
+      if (rt.getTransform() == StructureMapTransformVS.COPY && rt.getParameterList().size() == 1) {
         renderTransformParam(b, rt.getParameterList().get(0));
-      } else if (rt.getTransform() == StructureMap.StructureMapTransform.EVALUATE && rt.getParameterList().size() == 1) {
+      } else if (rt.getTransform() == StructureMapTransformVS.EVALUATE && rt.getParameterList().size() == 1) {
         b.append("(");
         b.append(((StringType) rt.getParameterList().get(0).getValue()).asStringValue());
         b.append(")");
-      } else if (rt.getTransform() == StructureMap.StructureMapTransform.EVALUATE && rt.getParameterList().size() == 2) {
+      } else if (rt.getTransform() == StructureMapTransformVS.EVALUATE && rt.getParameterList().size() == 2) {
         b.append(rt.getTransform().toCode());
         b.append("(");
         b.append(((IdType) rt.getParameterList().get(0).getValue()).asStringValue());
@@ -729,10 +730,10 @@ public class StructureMapUtilities {
       b.append(" as ");
       b.append(rt.getVariable());
     }
-    for (Enumeration<StructureMap.StructureMapTargetListMode> lm : rt.getListModeList()) {
+    for (Enumeration<StructureMap.StructureMapTargetListModeVS> lm : rt.getListModeList()) {
       b.append(" ");
       b.append(lm.getValue().toCode());
-      if (lm.getValue() == StructureMap.StructureMapTargetListMode.SHARE) {
+      if (lm.getValue() == StructureMap.StructureMapTargetListModeVS.SHARE) {
         b.append(" ");
         b.append(rt.getListRuleId());
       }
@@ -743,6 +744,24 @@ public class StructureMapUtilities {
     StringBuilder b = new StringBuilder();
     renderTransformParam(b, rtp);
     return b.toString();
+  }
+
+  private static void renderTransformParam(StringBuilder b, StructureMap.StructureMapGroupRuleDependentParameterComponent rtp) {
+    try {
+      if (rtp.hasValueBooleanType())
+        b.append(rtp.getValueBooleanType().asStringValue());
+      else if (rtp.hasValueDecimalType())
+        b.append(rtp.getValueDecimalType().asStringValue());
+      else if (rtp.hasValueIdType())
+        b.append(rtp.getValueIdType().asStringValue());
+      else if (rtp.hasValueIntegerType())
+        b.append(rtp.getValueIntegerType().asStringValue());
+      else
+        b.append("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
+    } catch (FHIRException e) {
+      e.printStackTrace();
+      b.append("error!");
+    }
   }
 
   private static void renderTransformParam(StringBuilder b, StructureMap.StructureMapGroupRuleTargetParameterComponent rtp) {

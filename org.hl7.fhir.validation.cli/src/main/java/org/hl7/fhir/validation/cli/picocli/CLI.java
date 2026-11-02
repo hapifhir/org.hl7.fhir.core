@@ -121,7 +121,6 @@ public class CLI {
       if (a.equals("-ips")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#2.0.1");
         res.add("-profile");
@@ -134,7 +133,6 @@ public class CLI {
       } else if (a.equals("-ips:au")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.au.ps#current");
         res.add("-profile");
@@ -147,7 +145,6 @@ public class CLI {
       } else if (a.startsWith("-ips#")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#"+a.substring(5));
         res.add("-profile");
@@ -160,7 +157,6 @@ public class CLI {
       } else if (a.startsWith("-ips$")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
         res.add("-profile");

@@ -12,3 +12,13 @@
     public String toString() {
         return org.hl7.fhir.model.utilities.StructureMapUtilities.sourceToString(this);
     }
+
+    public StringType getElementElement() {
+      if (this.elementList == null || this.elementList.isEmpty()) {
+        return null;
+      } else if (this.elementList.size() == 1) {
+        return this.elementList.get(0);
+      } else {
+        throw new FHIRException("Cannot call getElementElement() when multiple elements exist");
+      }
+    }

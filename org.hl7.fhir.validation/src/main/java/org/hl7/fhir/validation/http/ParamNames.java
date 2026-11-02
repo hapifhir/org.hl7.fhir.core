@@ -38,7 +38,6 @@ public final class ParamNames  {
   public static final String SHOW_TERMINOLOGY_ROUTING = "txRouting";
   public static final String DO_IMPLICIT_FHIR_PATH_STRING_CONVERSION = "implicitFhirpathStringConversions";
   public static final String ALLOW_DOUBLE_QUOTES_IN_FHIR_PATH = "allowDoubleQuotesInFhirpath";
-  public static final String CHECK_IPS_CODES = "checkIpsCodes";
   public static final String MAX_VALIDATION_MESSAGES = "maxValidationMessages";
   public static final String VALIDATION_TIMEOUT = "validationTimeout";
   public static final String CODESYSTEM_VALIDATION_SIZE_LIMIT = "codeSystemValidationSizeLimit";

@@ -5408,7 +5408,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(gen.new Piece(null, ": ", null));
               c.addMarkdownNoPara(
                   PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement()).asStringValue(),
-                  checkForNoChange(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement())));
+                  checkForNoChange(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement())), null);
             }
 
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(pkp, corePath, profile,

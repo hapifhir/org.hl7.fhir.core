@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
@@ -211,6 +212,31 @@ class UtilitiesTest {
     assertEquals(1, Utilities.getDecimalPrecision("1.0"));
     assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
     assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
+  }
+
+  @ParameterizedTest(name = "unescapeJson({0}) = {1}")
+  @CsvSource(delimiter = '|', quoteCharacter = '\'', value = {
+    "\\\"a\\\" | \"a\"",
+    "\\u0041B | AB",
+    "x\\u00e9y | xéy",
+    "a\\\\b | a\\b",
+    "tab\\there | 'tab\there'",
+    "\\uD83D\\uDE00 | \uD83D\uDE00",
+  })
+  void testUnescapeJson(String json, String expected) {
+    assertEquals(expected, Utilities.unescapeJson(json));
+  }
+
+  @Test
+  void testUnescapeJsonReversesEscapeJson() {
+    String value = "say \"hi\"\\now";
+    assertEquals(value, Utilities.unescapeJson(Utilities.escapeJson(value)));
+  }
+
+  @ParameterizedTest
+  @CsvSource({"a\\", "\\u00", "\\uZZZZ", "\\u+041", "\\u-041"})
+  void testUnescapeJsonInvalidEscape(String json) {
+    Assertions.assertThrows(FHIRException.class, () -> Utilities.unescapeJson(json));
   }
 
   @ParameterizedTest(name = "highBoundary({0}, {1}) = {2}")

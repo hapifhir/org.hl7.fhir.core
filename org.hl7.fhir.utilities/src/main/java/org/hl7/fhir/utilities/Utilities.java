@@ -488,10 +488,13 @@ public class Utilities {
     while (i < json.length()) {
       if (json.charAt(i) == '\\') {
         i++;
+        if (i == json.length()) {
+          throw new FHIRException("Unterminated JSON escape at the end of the string");
+        }
         char ch = json.charAt(i);
         switch (ch) {
         case '"':
-          b.append('b');
+          b.append('"');
           break;
         case '\\':
           b.append('\\');
@@ -515,8 +518,17 @@ public class Utilities {
           b.append('\t');
           break;
         case 'u':
+          if (i + 5 > json.length()) {
+            throw new FHIRException("Incomplete JSON escape \\" + json.substring(i));
+          }
           String hex = json.substring(i + 1, i + 5);
+          for (char h : hex.toCharArray()) {
+            if (Character.digit(h, 16) < 0) {
+              throw new FHIRException("Invalid JSON escape \\u" + hex);
+            }
+          }
           b.append(Character.toString(Integer.parseInt(hex, 16)));
+          i += 4;
           break;
         default:
           throw new FHIRException("Unknown JSON escape \\" + ch);
@@ -1919,6 +1931,28 @@ public class Utilities {
     }
     int end = s.length() - 1;
     while (end >= 0 && isWhitespace(s.charAt(end))) {
+      end--;      
+    }
+    if (start > end) {
+      return "";
+    }
+    return s.substring(start, end+1);    
+  }
+
+  public static String trimProhibitedWS(String s) {
+    final String prohibitedWhitespace = " \t\n\r";
+    if (Utilities.noString(s)) {
+      return s;
+    }
+    int start = 0;
+    while (start < s.length() && prohibitedWhitespace.indexOf(s.charAt(start)) != -1) {
+      start++;      
+    }
+    if (start == s.length()) {
+      return "";
+    }
+    int end = s.length() - 1;
+    while (end >= 0 && prohibitedWhitespace.indexOf(s.charAt(end)) != -1) {
       end--;      
     }
     if (start > end) {

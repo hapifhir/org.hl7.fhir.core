@@ -236,7 +236,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     initModes.add("snomed");
     initModes.add("mimetypes");
     initModes.add("icd-11");
+    initModes.add("icf");
     initModes.add("closure");
+    initModes.add("loinc");
     // Loader only uses the static txtests field, so a throwaway instance is fine.
     tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
     tester.initialise(initModes);
@@ -269,7 +271,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("general");
     modes.add("snomed");
     modes.add("mimetypes");
+    modes.add("icf");
     modes.add("closure");
+    modes.add("loinc");
   }
 
   private void logTestSkip(String reason) {
@@ -297,7 +301,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     }
     String err = tester.executeTest(this, setup.suite, setup.test, modes);
     if (err != null) {
-      if ("n/a".equals(err) || TxTester.NOT_RUN_FEATURES.equals(err)) {
+      if (TxTester.isNotRun(err)) {
         skipped.incrementAndGet();
         err = null;
       } else {
