@@ -1964,9 +1964,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
-              c.addMarkdownNoPara("binding", PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoParaWithRole("binding",
+                PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null,
+                checkForNoChangeClss(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             } else {
-              c.addMarkdownNoPara("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC));
+              c.addMarkdownNoParaWithRole("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC), null, null);
             }
           } else {
             BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
@@ -1979,7 +1981,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
               c.getPieces().add(gen.new Piece("binding", null, ": ", null));
-              c.addMarkdownNoPara("binding", PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoParaWithRole("binding", PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), null, checkForNoChangeClss(PackageHackerRN.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             }
           }
           AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
@@ -2150,8 +2152,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
    */
   private boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
     for (Property p : ed.getChildren()) {
-      if (p.hasValues() && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
+      if (hasNonEmptyValues(p) && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
           "label", "code", "slicing", "short", "definition", "comment", "requirements", "alias", "mapping", "min", "max") && !(typeSlicing && "type".equals(p.getName()))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * a getter like getBase() creates an empty child when it is read, so only a value that isn't empty is a rule
+   */
+  private static boolean hasNonEmptyValues(Property p) {
+    for (Base v : p.getValues()) {
+      if (v != null && !v.isEmpty()) {
         return true;
       }
     }
@@ -2319,9 +2333,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return piece; 
   } 
  
-  private String checkForNoChange(Element source) { 
+  private String checkForNoChangeClss(Element source) {
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY; 
+      return "xhtPieceDeEmphasized";
     } else {  
       return null; 
     } 
@@ -2402,23 +2416,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   /**
-   * The value of the contentReferenceProfile extension has the same format as a contentReference:
-   * [canonical]#[element id], where a missing canonical means this profile
+   * The value of the contentReferenceProfile extension is a canonical URL for the profile, followed
+   * by '#' and the element id. A value without the canonical is invalid and is not resolved against this profile
    *
    * @return {href (null if it can't be resolved), text, hint}
    */
   private String[] contentReferenceProfileLink(String uri, StructureDefinition profile) {
-    if (uri == null) {
-      return new String[] {null, "?", null};
+    // a canonical URL for the profile, followed by '#' and the element id. Anything else is shown
+    // as invalid: a value without the canonical is not resolved against this profile
+    int separator = uri == null ? -1 : uri.indexOf('#');
+    if (separator <= 0 || separator == uri.length() - 1) {
+      return new String[] {null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE_INVALID, uri == null ? "?" : uri), null};
     }
-    String url = uri.contains("#") ? uri.substring(0, uri.indexOf("#")) : uri;
-    String eid = uri.contains("#") ? uri.substring(uri.indexOf("#")+1) : null;
-    StructureDefinition sd = Utilities.noString(url) ? profile : context.getProfileUtilities().findProfileStr(url, profile);
+    String url = uri.substring(0, separator);
+    String eid = uri.substring(separator + 1);
+    StructureDefinition sd = url.equals(profile.getUrl()) || url.equals(profile.getVersionedUrl()) ? profile : context.getProfileUtilities().findProfileStr(url, profile);
     if (sd == null) {
       return new String[] {null, uri, null};
     }
-    String text = eid == null ? sd.present() : sd == profile ? eid : eid+" ("+sd.present()+")";
-    String href = sd == profile ? (eid == null ? null : "#"+eid) : !sd.hasWebPath() ? null : eid == null ? sd.getWebPath() : sd.getWebPath()+"#"+eid;
+    String text = sd == profile ? eid : eid+" ("+sd.present()+")";
+    String href = sd == profile ? "#"+eid : !sd.hasWebPath() ? null : sd.getWebPath()+"#"+eid;
     return new String[] {href, text, uri};
   }
 
@@ -2473,8 +2490,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             tt.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true); 
             types.add(tt); 
           } 
-        } else { 
-          return c; 
         } 
       } 
     } 
@@ -2620,6 +2635,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
     } 
+    if (e.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+      String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(e, ExtensionDefinitions.EXT_CONTENT_PROFILE), profile);
+      c.getPieces().add(gen.new Piece(null, " ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ", null));
+      c.getPieces().add(gen.new Piece(cp[0], cp[1], cp[2]));
+      c.getPieces().add(gen.new Piece(null, ")", null));
+    }
     return c; 
   } 
  
@@ -3403,9 +3424,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else {
       // the pre is wrapped in a div that is not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
       XhtmlNode div = new XhtmlNode(NodeType.Element, "div").notPretty();
-      String opacity = checkForNoChange(value);
+      String opacity = checkForNoChangeClss(value);
       if (opacity != null) {
-        div.style(opacity);
+        div.clss(opacity);
       }
       div.pre("json").addChildNode(renderValueAsJson(value, valueElementName(definition, value, null)));
       Piece p = gen.new Piece(null, null, null);
@@ -3483,12 +3504,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
     } else if (!hasNew) {
-      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     } else if (value.equalsDeep(compare)) {
-      addValueDetail(x.div().style(unchangedStyle()), value, elementName, fixed);
+      addValueDetail(x.div().clss(unchangedClass()), value, elementName, fixed);
     } else {
       addValueDetail(renderStatus(value, x), value, elementName, fixed);
-      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+      addValueDetail(x.div().clss(removedClass()), compare, elementName, fixed);
     }
     return x;
   }
@@ -4344,7 +4365,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> nodes = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : nodes) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.style(unchangedStyle()); 
+            n.clss(unchangedClass());
           } 
         } 
         ndiv.addChildren(nodes); 
@@ -4363,7 +4384,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml); 
         for (XhtmlNode n : div) { 
           if (n.getNodeType() == NodeType.Element) { 
-            n.style(removedStyle()); 
+            n.clss(removedClass());
           } 
         } 
         ndiv.br(); 
@@ -4455,19 +4476,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   public XhtmlNode unchanged(XhtmlNode x) { 
-    return x.span(unchangedStyle()); 
+    return x.spanClss(unchangedClass());
   } 
  
-  private String unchangedStyle() { 
-    return "color:DarkGray"; 
+  private String unchangedClass() {
+    return "unchangedStyle";
   } 
  
   public XhtmlNode removed(XhtmlNode x) { 
-    return x.span(removedStyle()); 
-  } 
+    return x.spanClss(removedClass());
+  }
  
-  private String removedStyle() { 
-    return "color:DarkGray;text-decoration:line-through"; 
+  private String removedClass() {
+    return "removedStyle";
   } 
  
   private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws FHIRException, IOException {
@@ -4505,7 +4526,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), null, strikethrough, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) + d.getContentReference().substring(1)); 
       }
     } else { 
-      tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd));  
+      XhtmlNode types = describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd);
+      if (d.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        if (types == null) {
+          types = new XhtmlNode(NodeType.Element, "div");
+        }
+        String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_CONTENT_PROFILE), sd);
+        types.tx(" ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ");
+        if (cp[0] != null) {
+          types.ah(context.prefixLocalHref(cp[0]), cp[2]).tx(cp[1]);
+        } else {
+          types.tx(cp[1]);
+        }
+        types.tx(")");
+      }
+      tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, types);
     } 
     if (root && sd.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER)));
@@ -4918,7 +4953,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private void generateSlicing(XhtmlNode tbl, StructureDefinition profile, ElementDefinition ed, ElementDefinitionSlicingComponent slicing, ElementDefinition compare, int mode, boolean strikethrough) throws IOException { 
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
      
-    x.codeWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_SLICES)+" ", ed.getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_ARE)); 
+    x.codeWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_SLICES)+" ", ed.getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SET_ARE)+" ");
     String newOrdered = sliceOrderString(slicing); 
     String oldOrdered = (compare==null || !compare.hasSlicing()) ? null : sliceOrderString(compare.getSlicing()); 
     compareString(x, newOrdered, slicing.getOrderedElement(), null, null, null, oldOrdered, null, mode, false, false); 
@@ -4938,7 +4973,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       var ul = x.ul(); 
       for (DiscriminatorWithStatus rc : list) { 
-        rc.render(x.li()); 
+        rc.render(ul.li());
       } 
     } else { 
       x.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_NO_DESCRIM)); 

@@ -45,20 +45,10 @@ public class CodingsObserver extends BaseValidator {
 
   private IWorkerContext context;
   private List<CodingUsage> list = new ArrayList<>();
-  private boolean checkIPSCodes;
 
   public void seeCode(NodeStack stack, String system, String version, String code, String display) {
     seeCode(stack, new Coding().setSystem(system).setCode(code).setVersion(version).setDisplay(display));    
   }
-
-  public boolean isCheckIPSCodes() {
-    return checkIPSCodes;
-  }
-
-  public void setCheckIPSCodes(boolean checkIPSCodes) {
-    this.checkIPSCodes = checkIPSCodes;
-  }
-
 
   public void seeCode(NodeStack stack, CodeableConcept cc) {
     for (Coding c : cc.getCodingList()) {
@@ -72,46 +62,8 @@ public class CodingsObserver extends BaseValidator {
   }
 
   public void finish(List<ValidationMessage> errors, NodeStack rootStack) {
-    if (checkIPSCodes) {
-      log.info("");
-      log.info("Checking SCT codes for IPS");
-
-      Set<String> snomedCTCodes = new HashSet<>();
-      for (CodingUsage c : list) {
-        if ("http://snomed.info/sct".equals(c.c.getSystem()) && c.c.getCode() != null) {
-          snomedCTCodes.add(c.c.getCode());
-        }
-      }
-      if (!snomedCTCodes.isEmpty()) {
-        Map<String, String> nonIPSCodes = checkSCTCodes(snomedCTCodes);
-        if (!nonIPSCodes.isEmpty()) {
-          for (String s : nonIPSCodes.keySet()) {
-            hint(errors, "2023-07-25", IssueType.BUSINESSRULE, rootStack, false, I18nConstants.CS_SCT_IPS_NOT_IPS, s, nonIPSCodes.get(s));
-          }
-        }
-      }
-      log.info("Done Checking SCT codes for IPS");
-    }
+    // nothing
   }
 
-  private Map<String, String> checkSCTCodes(Set<String> codes) {
-    List<CodingValidationRequest> serverList = new ArrayList<>();
-    for (String s : codes) {      
-      serverList.add(new CodingValidationRequest(new Coding("http://snomed.info/sct", s, null)));
-    }
-
-    ValueSet vsTemp = new ValueSet();
-    vsTemp.setUrl("http://terminology.hl7.org/ValueSet/snomed-intl-ips");
-    context.validateCodeBatch(null, serverList, vsTemp);
-    // #FIXME
-    Map<String, String> results = new HashMap<>();
-    
-    for (CodingValidationRequest vr : serverList) {
-      if (!vr.getResult().isOk()) {
-        results.put(vr.getCoding().getCode(), vr.getResult().getDisplay() != null ? vr.getResult().getDisplay() : vr.getCoding().getDisplay());
-      }
-    }
-    return results;
-  }
    
 }

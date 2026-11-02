@@ -857,6 +857,12 @@ public class CodeSystemValidator extends BaseValidator {
       }     
     }
 
+    if ("classified-with".equals(hierarchyMeaning)) {
+      Element vn = cs.getNamedChild("versionNeeded", false);
+      NodeStack s = vn == null ? stack : stack.push(vn, -1, null, null);
+      warning(errors, "2026-10-17", IssueType.BUSINESSRULE, s, vn != null && "true".equals(vn.primitiveValue()), I18nConstants.CODESYSTEM_CS_CLASSIFIED_WITH_VERSION_NEEDED);
+    }
+
     warning(errors, "2024-10-03", IssueType.BUSINESSRULE, stack.getLiteralPath(), !(count == 0 && "complete".equals(content)), I18nConstants.CODESYSTEM_CS_COMPLETE_AND_EMPTY);
 
     if (cs.hasChild("count", false)) {
