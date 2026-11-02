@@ -333,7 +333,9 @@ public class ConceptMap43_N {
           return null;
       Enumeration<ConceptMapRelationship> tgt = new Enumeration<ConceptMapRelationship>(new Enumerations.ConceptMapRelationshipEnumFactory());
       ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt);
-    org.hl7.fhir.model.extensions.ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+    if (src.getValueAsString() != null && !VersionConvertorConstants.CONCEPTMAP_EQUIVALENCES_KEPT_BY_RELATIONSHIP.contains(src.getValueAsString())) {
+      org.hl7.fhir.model.extensions.ExtensionUtilities.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+    }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {

@@ -33,6 +33,7 @@ import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.model.testing.TestReport;
 import org.hl7.fhir.model.testing.TestReport.TestReportActionResultValueSet;
@@ -170,6 +171,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
   // from one suite can be scheduled across many threads, so each thread caches the
   // suites it happens to run - that's fine, the caches are independent.
   private final ThreadLocal<Map<String, String>> suiteCaches = ThreadLocal.withInitial(HashMap::new);
+  // Every closure test names the same closure table, so two runs against one server at
+  // the same time would add to, and reset, each other's table and fail on the versions.
+  // Each run uses its own table instead: a fresh UUID, because servers may require closure
+  // table names to be UUIDs. The expected responses don't check the name.
+  private final String closureTableName = UUID.randomUUID().toString();
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
   // who ran the tests: the start of TestReport.tester, which goes on to list the modes
@@ -226,10 +232,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     testReport.addParticipant().setType(TestReportParticipantTypeValueSet.SERVER).setUri(server);
     log.info("  External Strings: "+(externals != null));
     log.info("  Test  Exec Modes: "+modes.toString());
-    List<String> modeList = Utilities.sorted(modes);
-    testReport.setTester(testerName+" (modes "+String.join(", ", modeList)+")");
-    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.TESTENGINE).setUri(TEST_ENGINE_URL)
-      .setVersion(VersionUtil.getBaseVersion()).setDisplay("HL7 Ecosystem Test Runner (modes "+String.join("+", modeList)+")");
+    describeRunner(modes);
 
     if (filter != null) {
       log.info("  Filter Parameter: "+filter);
@@ -254,7 +257,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         readTests(tests, loader.version());
         versions.add(new StringPair(loader.code(), loader.version()));
         for (JsonObject suiteObj : tests.getJsonObjects("suites")) {
-          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj)) {
+          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj) && passesFeatures(suiteObj)) {
             if (suiteObj.asBoolean("disabled")) {
               // ok = true;
             } else if (suite == null || suite.equals(suiteObj.asString("name"))) {
@@ -265,13 +268,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
-      // TestReport.score is the percentage of tests passed (0..100), not a fraction. Kept to
-      // two decimal places, so a single failure in a large run doesn't round away to 100
-      int total = counter.intValue();
-      double score = total == 0 ? 0 : Math.round((total - errCount.intValue()) * 10000.0 / total) / 100.0;
-      testReport.setScore(score);
-      testReport.setResult(errCount.intValue() == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
-      testReport.setIssuedElement(instant(System.currentTimeMillis()));
+      completeReport(counter.intValue(), errCount.intValue());
 
       if (filter == null && suite == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
@@ -391,6 +388,26 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return this;
   }
 
+  /** Who ran the tests, and with which modes: TestReport.tester and the test engine participant. */
+  private void describeRunner(Set<String> modes) {
+    List<String> modeList = Utilities.sorted(modes);
+    testReport.setTester(testerName+" (modes "+String.join(", ", modeList)+")");
+    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.TESTENGINE).setUri(TEST_ENGINE_URL)
+      .setVersion(VersionUtil.getBaseVersion()).setDisplay("HL7 Ecosystem Test Runner (modes "+String.join("+", modeList)+")");
+  }
+
+  /**
+   * The overall outcome on the TestReport, once every test has run. TestReport.score is the
+   * percentage of tests passed (0..100), not a fraction. Kept to two decimal places, so a single
+   * failure in a large run doesn't round away to 100
+   */
+  private void completeReport(int total, int errors) {
+    double score = total == 0 ? 0 : Math.round((total - errors) * 10000.0 / total) / 100.0;
+    testReport.setScore(score);
+    testReport.setResult(errors == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
+    testReport.setIssuedElement(instant(System.currentTimeMillis()));
+  }
+
   /** A dateTime to the millisecond, in UTC - the default precision is only seconds. */
   private static DateTimeType instant(long ms) {
     return new DateTimeType(new Date(ms), TemporalPrecisionEnum.MILLI, TimeZone.getTimeZone("UTC"));
@@ -457,7 +474,165 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     }
     terminologyCapabilities = client().getTerminologyCapabilities();
+    features = featuresFor(capabilityStatement);
+    log.info("  Server Features: "+(features.isEmpty() ? "(none)" : String.join(", ", features)));
+    for (String f : features) {
+      testReport.addParameter().setName(f);
+    }
     return true;
+  }
+
+  // ---- features ------------------------------------------------------------------------------
+  //
+  // A suite or test can say "feature" : "a,b": it only runs when the server declares all of
+  // them. Unlike modes, which the person running the tests chooses, features come from what the
+  // server says about itself in its CapabilityStatement (see featuresFor).
+
+  public static final String FEATURE_EXTENSION = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  public static final String CODESYSTEM_AS_PARAMETER = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+
+  // operation name -> the feature declaring it gives
+  private static final String[][] OPERATION_FEATURES = {
+    { "expand", "expand" },
+    { "validate-code", "validate" },
+    { "lookup", "lookup" },
+    { "subsumes", "subsumes" },
+    { "translate", "translate" },
+    { "closure", "closure" },
+    { "related", "related" }
+  };
+
+  /** The features a suite or test can name. */
+  public static final Set<String> KNOWN_FEATURES = Collections.unmodifiableSet(new TreeSet<>(Arrays.asList(
+    "expand", "validate", "lookup", "subsumes", "translate", "closure", "related", "tx-resource")));
+
+  private Set<String> features = new TreeSet<>();
+  private final Set<String> warnedFeatures = Collections.synchronizedSet(new HashSet<>());
+
+  public Set<String> getFeatures() {
+    return features;
+  }
+
+  /**
+   * The features a server declares in its CapabilityStatement:
+   * - an operation (expand, validate, lookup, subsumes, translate, closure, related) when it
+   *   declares that operation anywhere - at system level, or on any resource - by name, or by an
+   *   OperationDefinition whose id ends with it (ValueSet-expand, CodeSystem-validate-code...)
+   * - tx-resource when it declares the CodeSystemAsParameter feature, with the value true
+   */
+  public static Set<String> featuresFor(CapabilityStatement cs) {
+    Set<String> res = new TreeSet<>();
+    if (cs == null) {
+      return res;
+    }
+    List<org.hl7.fhir.model.core.Extension> exts = new ArrayList<>();
+    exts.addAll(cs.getExtensionsByUrl(FEATURE_EXTENSION));
+    for (CapabilityStatement.CapabilityStatementRestComponent rest : cs.getRestList()) {
+      exts.addAll(rest.getExtensionsByUrl(FEATURE_EXTENSION));
+      for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : rest.getOperationList()) {
+        exts.addAll(op.getExtensionsByUrl(FEATURE_EXTENSION));
+        addOperationFeature(res, op.getName(), op.getDefinition());
+      }
+      for (CapabilityStatement.CapabilityStatementRestResourceComponent r : rest.getResourceList()) {
+        exts.addAll(r.getExtensionsByUrl(FEATURE_EXTENSION));
+        for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : r.getOperationList()) {
+          exts.addAll(op.getExtensionsByUrl(FEATURE_EXTENSION));
+          addOperationFeature(res, op.getName(), op.getDefinition());
+        }
+      }
+    }
+    for (org.hl7.fhir.model.core.Extension ext : exts) {
+      String d = null;
+      org.hl7.fhir.model.core.DataType value = null;
+      for (org.hl7.fhir.model.core.Extension sub : ext.getExtension()) {
+        if ("definition".equals(sub.getUrl()) && sub.getValue() != null) {
+          d = sub.getValue().primitiveValue();
+        } else if ("value".equals(sub.getUrl())) {
+          value = sub.getValue();
+        }
+      }
+      if (d != null && d.contains("|")) {
+        d = d.substring(0, d.indexOf("|"));
+      }
+      if (CODESYSTEM_AS_PARAMETER.equals(d) && value instanceof org.hl7.fhir.model.core.BooleanType
+          && ((org.hl7.fhir.model.core.BooleanType) value).getValue() != null
+          && ((org.hl7.fhir.model.core.BooleanType) value).booleanValue()) {
+        res.add("tx-resource");
+      }
+    }
+    return res;
+  }
+
+  private static void addOperationFeature(Set<String> res, String name, String definition) {
+    String tail = null;
+    if (definition != null) {
+      tail = definition.contains("|") ? definition.substring(0, definition.indexOf("|")) : definition;
+      tail = tail.substring(tail.lastIndexOf("/") + 1);
+    }
+    for (String[] of : OPERATION_FEATURES) {
+      if (of[0].equals(name) || (tail != null && (tail.equals(of[0]) || tail.endsWith("-" + of[0])))) {
+        res.add(of[1]);
+      }
+    }
+  }
+
+  /** The features a suite or test needs: its "feature", a comma separated list. */
+  static List<String> neededFeatures(JsonObject obj) {
+    List<String> res = new ArrayList<>();
+    if (obj != null && obj.has("feature")) {
+      // a plain comma scan - no regex
+      String src = obj.asString("feature");
+      int start = 0;
+      while (start <= src.length()) {
+        int end = src.indexOf(',', start);
+        if (end < 0) {
+          end = src.length();
+        }
+        String f = src.substring(start, end).trim();
+        if (!f.isEmpty()) {
+          res.add(f);
+        }
+        start = end + 1;
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Whether the server declares every feature the suite or test needs. A feature that isn't one
+   * of KNOWN_FEATURES (a typo in the test cases, say) is never declared, so the test doesn't run -
+   * and that is logged, once per feature, so that it doesn't just quietly disappear.
+   */
+  private boolean passesFeatures(JsonObject obj) {
+    for (String f : neededFeatures(obj)) {
+      if (!KNOWN_FEATURES.contains(f) && warnedFeatures.add(f)) {
+        log.warn("Unknown feature '"+f+"' in the test cases (known features: "+String.join(", ", KNOWN_FEATURES)+") - tests that need it will not run");
+      }
+      if (!features.contains(f)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Why a test doesn't run because of its features: what it needs, and what the server declares.
+   * Null if it isn't stopped by features.
+   */
+  public String describeFeatureGate(JsonObject suite, JsonObject test) {
+    List<String> missing = new ArrayList<>();
+    List<String> needed = new ArrayList<>(neededFeatures(suite));
+    needed.addAll(neededFeatures(test));
+    for (String f : needed) {
+      if (!features.contains(f) && !missing.contains(f)) {
+        missing.add(f);
+      }
+    }
+    if (missing.isEmpty()) {
+      return null;
+    }
+    return "it needs the feature(s) [" + String.join(", ", missing) + "], and the server only declares ["
+      + String.join(", ", features) + "]";
   }
 
   private JsonObject loadTests(ITxTesterLoader loader) throws JsonException, IOException {
@@ -652,6 +827,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return c;
   }
 
+  /** What executeTest returns for a test that didn't run because the server lacks a feature it needs. */
+  public static final String NOT_RUN_FEATURES = "n/a:features";
+
   public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     return executeTest(loader, suite, test, modes, null);
   }
@@ -669,7 +847,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw new FHIRException("Invalid test label: " + err);
       }
     }
+    if (suite.asBoolean("disabled") || test.asBoolean("disabled")) {
+      recordNotRun(suite, test, modes);
+      return NOT_RUN_DISABLED;
+    }
     if (!passesModes(suite, modes) || !passesModes(test, modes)) {
+      recordNotRun(suite, test, modes);
       return "n/a";
     }
 
@@ -677,11 +860,240 @@ public class TxTester implements ITerminologyRequestIdProvider {
     // fetches the capability statement. Worker threads construct their own
     // client lazily via client() inside the operation helpers.
     initialise(modes);
+    // features come from the server's CapabilityStatement, and the server's FHIR version from
+    // connecting to it, so these can only be checked once initialise has run
+    if (!passesFeatures(suite) || !passesFeatures(test)) {
+      recordNotRun(suite, test, modes);
+      return NOT_RUN_FEATURES;
+    }
+    if (!passesVersion(suite) || !passesVersion(test)) {
+      recordNotRun(suite, test, modes);
+      return NOT_RUN_VERSION;
+    }
     List<Resource> setup = loadSetupResources(loader, suite);
-    TestReportTestComponent tr = getTestReportTest(suite, test);
+    TestRun r = run;
+    TestReportTestComponent tr = r != null ? r.reportTest(suite, test) : getTestReportTest(suite, test);
 
     ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr, label);
+    if (r != null) {
+      r.record(suite, test, modes, ri.message);
+    }
     return ri.message;
+  }
+
+  /** What executeTest returns for a test that didn't run because it, or its suite, is disabled. */
+  public static final String NOT_RUN_DISABLED = "n/a:disabled";
+
+  /** What executeTest returns for a test that didn't run because the server's FHIR version is excluded by a version gate. */
+  public static final String NOT_RUN_VERSION = "n/a:version";
+
+  /**
+   * Whether a result from executeTest means that the test did not run at all - it is gated on a
+   * mode that wasn't asked for, a feature the server doesn't declare, or a FHIR version the server
+   * isn't, or it is disabled - as opposed to having passed (null) or failed (the failure message).
+   */
+  public static boolean isNotRun(String result) {
+    return result != null && (result.equals("n/a") || result.startsWith("n/a:"));
+  }
+
+  /** Why a test doesn't run because of its version gate. Null if it isn't stopped by one. */
+  public String describeVersionGate(JsonObject suite, JsonObject test) {
+    for (JsonObject o : new JsonObject[] { suite, test }) {
+      if (!passesVersion(o)) {
+        return "it is gated on FHIR version '" + o.asString("version") + "', and the server is FHIR version " + serverVersion;
+      }
+    }
+    return null;
+  }
+
+  // ---- runs made one test at a time ----------------------------------------------------------
+  //
+  // execute() runs everything and writes test-results.json and report.json at the end. A caller
+  // that runs the tests one at a time through executeTest() - the validator's server mode - gets
+  // the same two reports by bracketing its calls with startRun() and finishRun(). Tests that did
+  // not run (disabled, or stopped by a mode, feature or version gate) are not counted as passes
+  // or failures, just as a whole run doesn't count them; a test run more than once counts once,
+  // with its last result.
+  //
+  // The caller's side of the bargain: startRun() once, before any executeTest() that should be
+  // counted; executeTest() as often as wanted, from as many threads as wanted; finishRun() once,
+  // after every executeTest() has returned. A test still running when finishRun() takes its copy
+  // of the results isn't in the reports. Calling executeTest() without startRun() is fine too -
+  // the JUnit runners do - but then nothing is recorded, and finishRun() can't be used.
+
+  // Set once, by startRun(), and never reassigned. Null when the caller runs tests through
+  // executeTest() without bracketing them (the JUnit runners do), in which case nothing is recorded.
+  // Volatile so a thread calling executeTest() sees the run without relying on how the tester was
+  // handed to it.
+  private volatile TestRun run;
+
+  private class TestRun {
+    private final String date = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone();
+    private final Set<String> modes = new TreeSet<>();
+    // suite name -> test name -> failure message (null: passed), in the order first run
+    private final Map<String, Map<String, String>> results = new LinkedHashMap<>();
+    private final Map<String, TestReportTestComponent> reportTests = new HashMap<>();
+    private final Set<String> notRun = new TreeSet<>();
+
+    private String key(JsonObject suite, JsonObject test) {
+      return suite.asString("name") + "/" + test.asString("name");
+    }
+
+    private synchronized TestReportTestComponent reportTest(JsonObject suite, JsonObject test) {
+      TestReportTestComponent t = reportTests.get(key(suite, test));
+      if (t == null) {
+        t = getTestReportTest(suite, test);
+        reportTests.put(key(suite, test), t);
+      }
+      return t;
+    }
+
+    private synchronized void record(JsonObject suite, JsonObject test, Set<String> testModes, String message) {
+      modes.addAll(testModes);
+      notRun.remove(key(suite, test));
+      results.computeIfAbsent(suite.asString("name"), k -> new LinkedHashMap<>()).put(test.asString("name"), message);
+    }
+
+    private synchronized void recordNotRun(JsonObject suite, JsonObject test, Set<String> testModes) {
+      modes.addAll(testModes);
+      if (!results.containsKey(suite.asString("name")) || !results.get(suite.asString("name")).containsKey(test.asString("name"))) {
+        notRun.add(key(suite, test));
+        // getTestReportTest leaves a new entry as a skip
+        reportTest(suite, test);
+      }
+    }
+
+    /** One locked copy of everything finishRun() reports, so the reports are built from no shared state. */
+    private synchronized Snapshot snapshot() {
+      Map<String, Map<String, String>> r = new LinkedHashMap<>();
+      for (Map.Entry<String, Map<String, String>> e : results.entrySet()) {
+        r.put(e.getKey(), new LinkedHashMap<>(e.getValue()));
+      }
+      return new Snapshot(date, new TreeSet<>(modes), r, new TreeSet<>(notRun));
+    }
+  }
+
+  private static class Snapshot {
+    private final String date;
+    private final Set<String> modes;
+    private final Map<String, Map<String, String>> results;
+    private final Set<String> notRun;
+
+    private Snapshot(String date, Set<String> modes, Map<String, Map<String, String>> results, Set<String> notRun) {
+      this.date = date;
+      this.modes = modes;
+      this.results = results;
+      this.notRun = notRun;
+    }
+  }
+
+  private void recordNotRun(JsonObject suite, JsonObject test, Set<String> modes) {
+    TestRun r = run;
+    if (r != null) {
+      r.recordNotRun(suite, test, modes);
+    }
+  }
+
+  public boolean isRunStarted() {
+    return run != null;
+  }
+
+  /**
+   * Start a run that will be made one test at a time with executeTest(): connect to the server
+   * (which decides the FHIR version the tests are run in) and read the test cases, so that
+   * finishRun() can produce the same reports that execute() does.
+   */
+  public void startRun() throws URISyntaxException, IOException {
+    if (run != null) {
+      throw new FHIRException("A run has already been started");
+    }
+    run = new TestRun();
+    log.info("Run terminology service Tests, one test at a time");
+    log.info("  Source for tests: "+loaders.get(0).describe());
+    log.info("  Term Service Url: "+server);
+    log.info("  External Strings: "+(externals != null));
+    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.SERVER).setUri(server);
+    for (ITxTesterLoader loader : loaders) {
+      readTests(loadTests(loader), loader.version());
+    }
+    initialise(new HashSet<>());
+    log.info("  Output Directory: "+outputRoot());
+    log.info("  FHIR Version    : "+serverVersion);
+  }
+
+  /**
+   * Finish a run started with startRun(): write test-results.json and report.json to the output
+   * directory, exactly as execute() does, and return test-results.json. The TestReport is
+   * getTestReport().
+   */
+  public JsonObject finishRun() throws IOException, URISyntaxException {
+    TestRun r = run;
+    if (r == null) {
+      throw new FHIRException("No run has been started");
+    }
+    try {
+      Snapshot s = r.snapshot();
+      JsonObject json = new JsonObject();
+      int total = 0;
+      List<String> failed = new ArrayList<>();
+      json.add("date", s.date);
+      for (Map.Entry<String, Map<String, String>> se : s.results.entrySet()) {
+        JsonObject so = new JsonObject();
+        json.forceArray("suites").add(so);
+        so.add("name", se.getKey());
+        for (Map.Entry<String, String> te : se.getValue().entrySet()) {
+          JsonObject to = new JsonObject();
+          so.forceArray("tests").add(to);
+          to.add("name", te.getKey());
+          to.add("status", te.getValue() == null ? "pass" : "fail");
+          if (te.getValue() != null) {
+            to.add("message", te.getValue());
+            failed.add(se.getKey() + "/" + te.getKey());
+          }
+          total++;
+        }
+      }
+      describeRunner(s.modes);
+      completeReport(total, failed.size());
+
+      String outputDir = outputRoot();
+      FileUtilities.createDirectory(outputDir);
+      FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
+      FileUtilities.stringToFile(new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(testReport),
+        Utilities.path(outputDir, "report.json"));
+
+      List<String> versions = new ArrayList<>();
+      for (ITxTesterLoader loader : loaders) {
+        versions.add(loader == loaders.get(0) ? loader.version() : loader.code()+":"+loader.version());
+      }
+      String m = s.modes.isEmpty() ? "[none]" : String.join("+", s.modes);
+      String nr = s.notRun.isEmpty() ? "" : "; "+s.notRun.size()+" did not run";
+      String detail = Utilities.pluralize("mode", s.modes.size())+" "+m+", tests v"+String.join(",", versions)+", runner v"+VersionUtil.getBaseVersion();
+      if (failed.isEmpty()) {
+        log.info(software+" passed all "+total+" HL7 terminology service tests run ("+detail+nr+")");
+      } else {
+        log.info(software+" failed "+failed.size()+" of "+total+" HL7 terminology service tests run ("+detail+nr+")");
+        log.info("Failed Tests: "+String.join(",", failed));
+      }
+      return json;
+    } finally {
+      TxTesterLogFile.stop();
+    }
+  }
+
+  /** The URL of the server under test. */
+  public String getServer() {
+    return server;
+  }
+
+  /** The FHIR version of the server under test, once connected. */
+  public String getServerVersion() {
+    return serverVersion;
+  }
+
+  /** The server's software name and version from its CapabilityStatement, once connected (the server's URL if it doesn't say). */
+  public String getSoftware() {
+    return software;
   }
 
   private boolean passesModes(JsonObject obj, Set<String> modes) {
@@ -712,7 +1124,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       // setup (lazily started on first use per thread); we just pass the setup.
       for (JsonObject test : suite.getJsonObjects("tests")) {
         TestReportTestComponent tr = getTestReportTest(suite, test);
-        if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test)) {
+        if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test) && passesFeatures(test)) {
           if (test.asBoolean("disabled")) {
             ok = true;
           } else {
@@ -834,6 +1246,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         if (fo.exists()) {
           fo.delete();
         }
+        fo = ManagedFileAccess.file(Utilities.path(base, "comparison", fn));
+        if (fo.exists()) {
+          fo.delete();
+        }
+        currentOutput.set(new String[] { base, fn });
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
@@ -857,7 +1274,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
         } else if (test.asString("operation").equals("batch")) {
           msg = batch(test.str("name"), effectiveSetup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
-          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, false);
+        } else if (test.asString("operation").equals("cs-batch-validate")) {
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, true);
         } else if (test.asString("operation").equals("compare")) {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("subsumes")) {
@@ -887,6 +1306,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         recordResult(tr, TestReportActionResultValueSet.ERROR, e.getMessage(), start);
         return new ResultInformation(e.getMessage());
       } finally {
+        currentOutput.remove();
         // Reset headers on this thread's client so the next test run on the
         // same worker starts with a clean slate. This only matters if this
         // test set any; a plain client has no headers to clear.
@@ -912,15 +1332,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(csj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -929,15 +1344,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(csj, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(resp, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -1052,15 +1462,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1087,15 +1492,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1107,7 +1507,25 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * stateful - each builds on the table the previous one left - so their suite is marked
    * "sequential" and the runners run it in order on one thread, after everything else.
    */
+  /** The closure table this run uses. */
+  String closureTableName() {
+    return closureTableName;
+  }
+
+  /**
+   * Point a $closure request at this run's own closure table: replace the table name it carries
+   * with the run's name. See closureTableName.
+   */
+  static void useRunClosureTable(Parameters p, String tableName) {
+    for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
+      if ("name".equals(pp.getName()) && pp.hasValue()) {
+        pp.setValue(new StringType(tableName));
+      }
+    }
+  }
+
   private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    useRunClosureTable(p, closureTableName);
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1131,15 +1549,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1166,15 +1579,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1210,15 +1618,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(vsj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, vsj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1236,7 +1639,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
   }
 
-  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  /**
+   * batch-validate is ValueSet/$batch-validate-code; cs-batch-validate (cs = true) is
+   * CodeSystem/$batch-validate-code
+   */
+  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes, boolean cs) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1245,7 +1652,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     int code = 0;
     String pj;
     try {
-      Parameters po = client().batchValidateVS(p);
+      Parameters po = cs ? client().batchValidateCS(p) : client().batchValidateVS(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -1257,15 +1664,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1297,15 +1699,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1348,15 +1745,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1388,15 +1780,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1435,21 +1822,84 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(bj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, bj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
 
+
+  // where the test running on this thread writes its output: { base folder, response file name }
+  private final ThreadLocal<String[]> currentOutput = new ThreadLocal<>();
+  // the comparison copy of the externals file, by base folder
+  private final Map<String, JsonObject> comparisonMessages = new HashMap<>();
+  // the name of the externals file, which its comparison copy is given so that it can be compared
+  // with the original; the tx-ecosystem default when the caller doesn't say
+  private String externalsName = "messages-tx.fhir.org.json";
+
+  public TxTester setExternalsName(String name) {
+    if (name != null) {
+      String n = name.replace('\\', '/');
+      this.externalsName = n.substring(n.lastIndexOf('/') + 1);
+    }
+    return this;
+  }
+
+  // TEMPORARY: write the comparison for every test, passed or not. Set to false to only write it
+  // for failed tests, alongside the expected and actual files
+  private static final boolean COMPARISON_FOR_ALL_TESTS = true;
+
+  /**
+   * When a test fails, write the expected and actual responses, and the comparison form of the
+   * actual response - the actual response with what the expected response only matches by
+   * pattern ($external$, $uuid$, $instant$...) put back as those patterns, so that a diff of
+   * expected against comparison only shows what matters. The server's wording of the $external$
+   * messages goes into comparison/{externals file name}, a copy of the externals file (if there is
+   * one) with this test's messages set to what the server said.
+   */
+  private void writeTestOutput(String expFn, String expected, String actFn, String actual, Set<String> modes, boolean failed) throws IOException {
+    if (failed) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(expected, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(actual, actFn);
+    } else if (!COMPARISON_FOR_ALL_TESTS) {
+      return;
+    }
+
+    String[] output = currentOutput.get();
+    if (output == null) {
+      return;
+    }
+    try {
+      TxTesterComparison comparison = new TxTesterComparison(modes, vars());
+      org.hl7.fhir.utilities.json.model.JsonElement normalised = comparison.normalise(JsonParser.parse(expected), JsonParser.parse(actual));
+      String cmpFn = Utilities.path(output[0], "comparison", output[1]);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(cmpFn));
+      FileUtilities.stringToFile(JsonParser.compose(normalised, true), cmpFn);
+      if (!comparison.getMessages().isEmpty()) {
+        recordComparisonMessages(output[0], output[1], comparison.getMessages());
+      }
+    } catch (Exception e) {
+      // the comparison is only a convenience; the expected and actual files are written
+      log.warn("Unable to write the comparison for " + output[1] + ": " + e.getMessage());
+    }
+  }
+
+  private synchronized void recordComparisonMessages(String base, String fn, Map<String, String> messages) throws IOException {
+    JsonObject all = comparisonMessages.computeIfAbsent(base, b -> externals == null ? new JsonObject() : externals.deepCopy());
+    JsonObject entry = all.forceObject(fn);
+    for (Map.Entry<String, String> m : messages.entrySet()) {
+      entry.set(m.getKey(), m.getValue());
+    }
+    String fn2 = Utilities.path(base, "comparison", externalsName);
+    FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn2));
+    FileUtilities.stringToFile(JsonParser.compose(all, true), fn2);
+  }
 
   private Map<String, String> vars() throws URISyntaxException, IOException {
     Map<String, String> vars = new HashMap<String, String>();
@@ -1572,6 +2022,22 @@ public class TxTester implements ITerminologyRequestIdProvider {
       } else {
         load(version);
       }
+    }
+
+    private InternalTxLoader(IModelContext context) {
+      this.context = context;
+    }
+
+    /**
+     * Load the test cases from the hl7.fhir.uv.tx-ecosystem package, and only from the package:
+     * unlike the constructor, a version that happens to be the name of a local folder is not
+     * read from that folder. For callers that take the version from someone else - the
+     * validator's server mode - who must not be able to point it at the server's file system.
+     */
+    public static InternalTxLoader fromPackage(IModelContext context, String version) throws IOException {
+      InternalTxLoader loader = new InternalTxLoader(context);
+      loader.load(version);
+      return loader;
     }
 
     public InternalTxLoader(String source, boolean additional) throws IOException {

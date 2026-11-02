@@ -10,6 +10,7 @@ import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.logging.ILoggingService;
@@ -33,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * These tests talk to the real coordination server (tx-reg), but never to the terminology
  * servers themselves - the clients are fakes, so only routing is tested. The server can be
- * overridden with -Dtx.ecosystem.test.server=http://localhost:3001/r4 to test against a
+ * overridden with -Dtx.ecosystem.test.server=http://localhost:3001/r4, and the coordination
+ * server with -Dtx.ecosystem.test.registry=http://localhost:3001/tx-reg, to test against a
  * local ecosystem.
  *
  * The tests skip (with a reason) when the ecosystem is unreachable, or when the coordination
@@ -43,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TerminologyClientManagerEcosystemTest {
 
   private static final String MASTER = System.getProperty("tx.ecosystem.test.server", "http://tx.fhir.org/r4");
+  private static final String REGISTRY = System.getProperty("tx.ecosystem.test.registry", FhirSettings.getTxEcosystem());
   private static final String EDQM = "http://standardterms.edqm.eu";
   private static final String CZ_SERVER = "https://tx.hl7.cz/r4";
 
@@ -52,7 +55,7 @@ public class TerminologyClientManagerEcosystemTest {
   }
 
   private static String monitorUrl() {
-    return Utilities.pathURL(Utilities.getDirectoryForURL(MASTER), "tx-reg");
+    return REGISTRY;
   }
 
   /**
@@ -123,7 +126,7 @@ public class TerminologyClientManagerEcosystemTest {
       public void logDebugMessage(LogCategory category, String message) {
       }
     });
-    mgr.setMasterClient(makeFakeClient(MASTER), true);
+    mgr.setMasterClient(makeFakeClient(MASTER), REGISTRY);
     return mgr;
   }
 
@@ -147,8 +150,8 @@ public class TerminologyClientManagerEcosystemTest {
     assumeLanguageAwareEcosystem();
     TerminologyClientManager mgr = makeManager();
     TerminologyClientContext tc = mgr.chooseServer(null, systems(), false, "cs");
-    assertEquals(CZ_SERVER, tc.getAddress(),
-        "a Czech-language EDQM request should route to the server with the Czech language claim");
+    assertEquals("a Czech-language EDQM request should route to the server with the Czech language claim",
+        CZ_SERVER, tc.getAddress());
     assertTrue(routedAuthoritatively(mgr), "the Czech server should be chosen via its authoritative (language) claim");
   }
 

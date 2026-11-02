@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -222,16 +223,43 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
+  private static final String NOT_SELECTABLE_URI = "http://hl7.org/fhir/concept-properties#notSelectable";
+
+  /** the codes that are recognised as the notSelectable property when the code system doesn't say otherwise */
+  private static final Set<String> NOT_SELECTABLE_CODES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("notSelectable", "abstract", "not-selectable")));
+
+  /**
+   * Whether the concept is not selectable (aka abstract): it has a boolean property with the value true
+   * that is the code system's notSelectable property.
+   *
+   * This is on the expansion hot path, so it only looks at the code system's property declarations for
+   * the concept's boolean properties (most concepts have none) rather than working out the property codes up front
+   */
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
-    String pd = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#notSelectable");
-    if (pd == null) {
-      pd = "notSelectable";
-    }
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (pd.equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
-        return ((BooleanType) p.getValue()).getValue();
+      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue() && isNotSelectableProperty(cs, p.getCode())) {
+        return true;
+      }
     }
     return false;
+  }
+
+  /**
+   * Whether a concept property code is the code system's code for the standard notSelectable property.
+   * A property declared with the standard uri counts whatever code it was given. A property declared
+   * with a different uri is a different property, and doesn't count, whatever its code. Otherwise
+   * (not declared, or declared with no uri) notSelectable, abstract and not-selectable are recognised
+   * by the code alone
+   */
+  private static boolean isNotSelectableProperty(@Nonnull CodeSystem cs, String code) {
+    if (code == null) {
+      return false;
+    }
+    PropertyComponent pc = cs.getProperty(code);
+    if (pc != null && pc.hasUri()) {
+      return NOT_SELECTABLE_URI.equals(pc.getUri());
+    }
+    return NOT_SELECTABLE_CODES.contains(code);
   }
 
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull String code) {
@@ -835,10 +863,36 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return t;
   }
 
+  /**
+   * @return true if the supplement applies to this code system: CodeSystem.supplements names either
+   * the code system's url (so it applies to every version) or its url|version - the same rule as
+   * CanonicalResourceManager.getSupplements(url, version)
+   */
+  public static boolean supplementApplies(CodeSystem supplement, CodeSystem cs) {
+    return supplement.hasSupplements() && Utilities.existsInList(supplement.getSupplements(), cs.getUrl(), cs.getVersionedUrl());
+  }
+
+  /**
+   * @return true if mergeSupplements has already merged this supplement into the code system
+   */
+  public static boolean isSupplementMerged(CodeSystem cs, CodeSystem supplement) {
+    String merged = cs.getUserString(UserDataNames.tx_known_supplements);
+    if (merged == null) {
+      return false;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] mergedList = merged.split(",");
+    return Utilities.existsInList(supplement.getVersionedUrl(), mergedList);
+  }
+
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
     ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    // readers (ValueSetValidator.resolveCodeSystem, ValueSetExpander) split this on "," alone, so the
+    // separator must be a bare comma: the default ", " left every supplement after the first with a
+    // leading space, and so never matched the url it was required by (useSupplement)
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      
     }
@@ -1176,24 +1230,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     setProperty(cs, cc, code, new StringType(comments));
   }
 
-  public static boolean isAbstract(CodeSystem cs, ConceptDefinitionComponent def) {
-    for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue()) {
-        if (Utilities.existsInList(p.getCode(), "abstract", "not-selectable", "notSelectable")) {
-          return true;
-        }
-        PropertyComponent pc = cs.getProperty(p.getCode());
-        if (pc != null && "http://hl7.org/fhir/concept-properties#notSelectable".equals(pc.getUri())) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   public static boolean isLangPack(CodeSystem c) {
     Extension ext = ExtensionUtilities.getExtension(c,  ExtensionDefinitions.EXT_SUPPL_TYPE);
-    return ext != null && ext.getValue() instanceof StringType && "lang-pack".equals(((StringType) ext.getValue()).getValue());
+    // a global language pack is used whether or not it is referenced. The code was 'lang-pack' until
+    // Oct 2026; it is still accepted, so that supplements marked the old way keep working
+    return ext != null && ext.getValue() instanceof StringType
+      && Utilities.existsInList(((StringType) ext.getValue()).getValue(), "global-lang-pack", "lang-pack");
   }
 
 }
