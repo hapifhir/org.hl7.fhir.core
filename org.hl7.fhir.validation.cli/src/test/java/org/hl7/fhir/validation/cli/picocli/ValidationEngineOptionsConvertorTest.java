@@ -110,6 +110,22 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineOptions().withTxServer("http://custom-tx.org"),
         new ValidationEngineParameters().setTxServer("http://custom-tx.org").setNoEcosystem(true)
       ),
+      Arguments.of("custom txServer with ecosystem keeps the ecosystem",
+        new ValidationEngineOptions().withTxServer("http://custom-tx.org").withEcosystem("http://custom-tx.org/tx-reg"),
+        new ValidationEngineParameters().setTxServer("http://custom-tx.org").setEcosystem("http://custom-tx.org/tx-reg")
+      ),
+      Arguments.of("ecosystem alone",
+        new ValidationEngineOptions().withEcosystem("http://registry.example.org/tx-reg"),
+        new ValidationEngineParameters().setEcosystem("http://registry.example.org/tx-reg")
+      ),
+      Arguments.of("ecosystem n/a sets noEcosystem",
+        new ValidationEngineOptions().withEcosystem("n/a"),
+        new ValidationEngineParameters().setNoEcosystem(true)
+      ),
+      Arguments.of("tx n/a sets noEcosystem even with an ecosystem",
+        new ValidationEngineOptions().withTxServer("n/a").withEcosystem("http://registry.example.org/tx-reg"),
+        new ValidationEngineParameters().setTxServer(null).setNoEcosystem(true)
+      ),
       Arguments.of("txLog path",
         new ValidationEngineOptions().withTxLog("/path/to/tx.log"),
         new ValidationEngineParameters().setTxLog("/path/to/tx.log")

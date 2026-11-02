@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -60,6 +62,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class NarrativeGenerationTests {
 
@@ -185,6 +188,7 @@ public class NarrativeGenerationTests {
     private String register;
     private String prefix;
     private List<String> sdViews = new ArrayList<>();
+    @Getter @Setter private boolean csProperties;
 
     public TestDetails(Element test) {
       super();
@@ -206,6 +210,7 @@ public class NarrativeGenerationTests {
       pretty = !"false".equals(test.getAttribute("pretty"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
+      csProperties = !"false".equals(test.getAttribute("cs-properties"));
       String views = test.getAttribute("sdviews");
       if (!Utilities.noString(views)) {
         for (String v : views.split(",")) {
@@ -259,7 +264,7 @@ public class NarrativeGenerationTests {
   @BeforeAll
   static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
@@ -289,6 +294,7 @@ public class NarrativeGenerationTests {
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
+    rc.setCsProperties(test.isCsProperties());
     
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));

@@ -71,8 +71,8 @@ public class AdditionalBindingsRenderer {
     }
   }
 
-  private static String STYLE_UNCHANGED = "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY+";";
-  private static String STYLE_REMOVED = STYLE_UNCHANGED + "text-decoration: line-through;";
+  private static String STYLE_UNCHANGED_CLSS = "unchangedStyle";
+  private static String STYLE_REMOVED_CLSS = "removedStyle";
 
   private List<AdditionalBindingDetail> bindings = new ArrayList<>();
   private ProfileKnowledgeProvider pkp;
@@ -241,9 +241,9 @@ public class AdditionalBindingsRenderer {
     for (AdditionalBindingDetail binding : bindings) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
       if (binding.unchanged()) {
-        tr.style(STYLE_REMOVED);
+        tr.clss(STYLE_REMOVED_CLSS);
       } else if (binding.removed) {
-        tr.style(STYLE_REMOVED);
+        tr.clss(STYLE_REMOVED_CLSS);
       }
       children.add(tr);
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path, binding.ctxt);
@@ -253,7 +253,7 @@ public class AdditionalBindingsRenderer {
 
       XhtmlNode valueset = tr.td().style("font-size: 11px");
       if (binding.compare!=null && binding.valueSet.equals(binding.compare.valueSet))
-        valueset.style(STYLE_UNCHANGED);
+        valueset.clss(STYLE_UNCHANGED_CLSS);
       if (br.url != null) {
         XhtmlNode a = valueset.ah(context.prefixLocalHref(determineUrl(br.url)), br.uri);
         a.tx(br.display);
@@ -266,7 +266,7 @@ public class AdditionalBindingsRenderer {
       }
       if (binding.compare!=null && binding.compare.valueSet!=null && !binding.valueSet.equals(binding.compare.valueSet)) {
         valueset.br();
-        valueset = valueset.span(STYLE_REMOVED, null);
+        valueset = valueset.spanClss(STYLE_REMOVED_CLSS);
         if (compBr.url != null) {
           valueset.ah(context.prefixLocalHref(determineUrl(compBr.url)), binding.compare.valueSet).tx(compBr.display);
         } else {
@@ -280,7 +280,7 @@ public class AdditionalBindingsRenderer {
       renderPurpose(purpose, binding.purpose);
       if (binding.compare!=null && binding.compare.purpose!=null && !binding.purpose.equals(binding.compare.purpose)) {
         purpose.br();
-        purpose = purpose.span(STYLE_UNCHANGED, null);
+        purpose = purpose.spanClss(STYLE_UNCHANGED_CLSS);
         renderPurpose(purpose, binding.compare.purpose);
       }
       if (usage) {
@@ -349,18 +349,18 @@ public class AdditionalBindingsRenderer {
     if (oldS==null)
       return node.tx(newS);
     if (newS.equals(oldS))
-      return node.style(STYLE_UNCHANGED).tx(newS);
+      return node.clss(STYLE_UNCHANGED_CLSS).tx(newS);
     node.tx(newS);
     node.br();
-    return node.span(STYLE_REMOVED,null).tx(oldS);
+    return node.spanClss(STYLE_REMOVED_CLSS).tx(oldS);
   }
 
   private String compareHtml(String newS, String oldS) {
     if (oldS==null)
       return newS;
     if (newS.equals(oldS))
-      return "<span style=\"" + STYLE_UNCHANGED + "\">" + newS + "</span>";
-    return newS + "<br/><span style=\"" + STYLE_REMOVED + "\">" + oldS + "</span>";
+      return "<span class=\"" + STYLE_UNCHANGED_CLSS + "\">" + newS + "</span>";
+    return newS + "<br/><span class=\"" + STYLE_REMOVED_CLSS + "\">" + oldS + "</span>";
   }
 
   private String determineUrl(String url) {

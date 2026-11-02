@@ -161,6 +161,46 @@ public class FhirSettings {
       ? FhirSettingsPOJO.TX_SERVER_LOCAL
       : instance.fhirSettingsPOJO.getTxFhirLocal();
   }
+
+  /**
+   * The terminology ecosystem coordination server (the tx-reg registry) that the
+   * terminology client consults to find which server is authoritative for a code
+   * system or value set. This is independent of the terminology server itself.
+   */
+  public static String getTxEcosystem() {
+    getInstance();
+    return instance.fhirSettingsPOJO.getTxEcosystem() == null
+      ? FhirSettingsPOJO.TX_ECOSYSTEM
+      : instance.fhirSettingsPOJO.getTxEcosystem();
+  }
+
+  /**
+   * The ecosystem to use with a terminology server when none has been nominated explicitly: the
+   * default ecosystem (getTxEcosystem()) for the default terminology server (getTxFhirProduction(),
+   * with or without a FHIR version path such as /r4 after it), and none (null) for any other server.
+   *
+   * The ecosystem routes requests on to other servers, so a caller that nominates a terminology
+   * server of its own - a private server, say, for data that must not leave the organisation -
+   * doesn't get its requests sent anywhere else unless it nominates an ecosystem as well
+   */
+  public static String getDefaultTxEcosystemFor(String txServer) {
+    if (txServer == null) {
+      return null;
+    }
+    String prod = stripSlash(getTxFhirProduction());
+    String server = stripSlash(txServer);
+    if (server.equals(prod)) {
+      return getTxEcosystem();
+    }
+    if (server.startsWith(prod + "/") && server.indexOf('/', prod.length() + 1) < 0) {
+      return getTxEcosystem();
+    }
+    return null;
+  }
+
+  private static String stripSlash(String url) {
+    return url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
+  }
   
   private static FhirSettings instance = null;
 

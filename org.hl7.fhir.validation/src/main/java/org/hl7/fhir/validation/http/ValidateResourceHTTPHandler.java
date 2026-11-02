@@ -9,6 +9,9 @@ import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.IssueType;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
@@ -62,13 +65,21 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       format = determineFormat(contentType);
 
-      // Get InstanceValidatorParameters objects from query string exchange.getRequestURI().getQuery();
-      instanceValidatorParameters = getInstanceValidatorParameters(exchange.getRequestURI().getQuery());
+      // Get InstanceValidatorParameters objects from the raw query string (parse() decodes it, so it must not be decoded already)
+      instanceValidatorParameters = getInstanceValidatorParameters(exchange.getRequestURI().getRawQuery());
 
     } catch (IllegalArgumentException e) {
       OperationOutcome outcome = OperationOutcomeUtilities.createError("Operation failed: " + e.getMessage());
       sendOperationOutcome(exchange, 400, outcome, getAcceptHeader(exchange));
       return;
+    }
+    // a profile the server doesn't have is the client's mistake (load the IG that defines it first), not a failure
+    for (String profile : instanceValidatorParameters.getProfiles()) {
+      if (fhirValidatorHttpService.getValidationEngine().getContext().fetchResource(StructureDefinition.class, profile) == null) {
+        sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createOutcome("Unable to resolve profile " + profile,
+          IssueSeverity.ERROR, IssueType.NOTFOUND), getAcceptHeader(exchange));
+        return;
+      }
     }
     try {
       ByteProvider byteProvider = ByteProvider.forBytes(resourceBytes);
@@ -173,9 +184,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           break;
         case ParamNames.ALLOW_DOUBLE_QUOTES_IN_FHIR_PATH:
           params.setAllowDoubleQuotesInFHIRPath(Boolean.parseBoolean(pair.getValue()));
-          break;
-        case ParamNames.CHECK_IPS_CODES:
-          params.setCheckIPSCodes(Boolean.parseBoolean(pair.getValue()));
           break;
         case ParamNames.CHECK_DISPLAY:
           CheckDisplayOption checkDisplayOption = CheckDisplayOption.valueOf(pair.getValue());
