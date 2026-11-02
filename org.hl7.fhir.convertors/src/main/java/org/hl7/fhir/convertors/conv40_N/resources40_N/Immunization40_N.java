@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.Utilities40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -322,9 +323,9 @@ public class Immunization40_N {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTargetDisease())
       tgt.addTargetDisease(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(new org.hl7.fhir.model.core.CodeableConcept().setText(src.getDoseNumber().primitiveValue()));
+      tgt.setDoseNumber(Utilities40_N.convertPositiveIntOrStringToCodeableConcept(src.getDoseNumber()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(new org.hl7.fhir.model.core.CodeableConcept().setText(src.getSeriesDoses().primitiveValue()));
+      tgt.setSeriesDoses(Utilities40_N.convertPositiveIntOrStringToCodeableConcept(src.getSeriesDoses()));
     return tgt;
   }
 
@@ -340,9 +341,9 @@ public class Immunization40_N {
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getTargetDiseaseList())
       tgt.addTargetDisease(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDoseNumber().getTextElement()));
+      tgt.setDoseNumber(Utilities40_N.convertCodeableConceptToPositiveIntOrString(src.getDoseNumber()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSeriesDoses().getTextElement()));
+      tgt.setSeriesDoses(Utilities40_N.convertCodeableConceptToPositiveIntOrString(src.getSeriesDoses()));
     return tgt;
   }
 }

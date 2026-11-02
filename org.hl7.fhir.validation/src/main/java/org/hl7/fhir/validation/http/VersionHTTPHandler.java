@@ -31,7 +31,7 @@ class VersionHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
 
     try {
-      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
       String targetVersion = params.get("targetVersion");
       if (targetVersion == null || targetVersion.trim().isEmpty()) {
         sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createError("Missing required query parameter: targetVersion"), getAcceptHeader(exchange));
