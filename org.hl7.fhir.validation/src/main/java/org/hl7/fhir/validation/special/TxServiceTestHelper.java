@@ -133,9 +133,9 @@ public class TxServiceTestHelper {
 
 
       boolean option2 = false;
-      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null && expectedResponse2 != null) {
-        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
         if (diff == null) {
           option2 = true;
         }
@@ -204,9 +204,9 @@ public class TxServiceTestHelper {
       String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
 
       boolean option2 = false;
-      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null && expectedResponse2 != null) {
-        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
         if (diff == null) {
           option2 = true;
         }

@@ -416,7 +416,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (t.hasVariable() && !StructureMapTools.AUTO_VAR_NAME.equals(t.getVariable()))
       return false;
-    if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
+    if (t.hasTransform() && t.getTransform() != StructureMapTransformVS.CREATE)
       return false;
     if (s.getElementList().size() != 1 || t.getElementList().size() != 1)
       return false;
@@ -576,7 +576,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
           }
           x.color(COLOR_SYNTAX).tx("(");
           boolean ifirst = true;
-          for (StructureMapGroupRuleTargetParameterComponent rdp : rd.getParameterList()) {
+          for (StructureMapGroupRuleDependentParameterComponent rdp : rd.getParameterList()) {
             if (ifirst)
               ifirst = false;
             else
@@ -646,7 +646,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private boolean checkisSimple(StructureMapGroupRuleComponent r) {
     return
       (r.getSourceList().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
-        (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
+        (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransformVS.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
         (r.getDependentList().size() == 0 || (r.getDependentList().size() == 1 && StructureMapTools.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRuleList().size() == 0);
   }
   
@@ -716,13 +716,13 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (!abbreviate && rt.hasTransform()) {
       if (rt.hasContext())
         x.tx(" = ");
-      if (rt.getTransform() == StructureMapTransform.COPY && rt.getParameterList().size() == 1) {
+      if (rt.getTransform() == StructureMapTransformVS.COPY && rt.getParameterList().size() == 1) {
         renderTransformParam(x, rt.getParameterList().get(0));
-      } else if (rt.getTransform() == StructureMapTransform.EVALUATE && rt.getParameterList().size() == 1) {
+      } else if (rt.getTransform() == StructureMapTransformVS.EVALUATE && rt.getParameterList().size() == 1) {
         x.color(COLOR_SYNTAX).tx("(");
         x.tx(((StringType) rt.getParameterList().get(0).getValue()).asStringValue());
         x.color(COLOR_SYNTAX).tx(")");
-      } else if (rt.getTransform() == StructureMapTransform.EVALUATE && rt.getParameterList().size() == 2) {
+      } else if (rt.getTransform() == StructureMapTransformVS.EVALUATE && rt.getParameterList().size() == 2) {
         x.tx(rt.getTransform().toCode());
         x.color(COLOR_SYNTAX).tx("(");
         x.tx(((IdType) rt.getParameterList().get(0).getValue()).asStringValue());
@@ -747,10 +747,10 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.b().tx(" as ");
       x.color(COLOR_VARIABLE).tx(rt.getVariable());
     }
-    for (Enumeration<StructureMapTargetListMode> lm : rt.getListModeList()) {
+    for (Enumeration<StructureMapTargetListModeVS> lm : rt.getListModeList()) {
       x.tx(" ");
       x.b().tx(lm.getValue().toCode());
-      if (lm.getValue() == StructureMapTargetListMode.SHARE) {
+      if (lm.getValue() == StructureMapTargetListModeVS.SHARE) {
         x.tx(" ");
         x.b().tx(rt.getListRuleId());
       }
@@ -759,6 +759,24 @@ public class StructureMapRenderer extends TerminologyRenderer {
 
 
   private void renderTransformParam(XhtmlNode x,StructureMapGroupRuleTargetParameterComponent rtp) {
+    try {
+      if (rtp.hasValueBooleanType())
+        x.color(COLOR_CONST).tx(rtp.getValueBooleanType().asStringValue());
+      else if (rtp.hasValueDecimalType())
+        x.color(COLOR_CONST).tx(rtp.getValueDecimalType().asStringValue());
+      else if (rtp.hasValueIdType())
+        x.color(COLOR_VARIABLE).tx(rtp.getValueIdType().asStringValue());
+      else if (rtp.hasValueIntegerType())
+        x.color(COLOR_CONST).tx(rtp.getValueIntegerType().asStringValue());
+      else
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
+    } catch (FHIRException e) {
+      e.printStackTrace();
+      x.tx("error!");
+    }
+  }
+
+  private void renderTransformParam(XhtmlNode x,StructureMapGroupRuleDependentParameterComponent rtp) {
     try {
       if (rtp.hasValueBooleanType())
         x.color(COLOR_CONST).tx(rtp.getValueBooleanType().asStringValue());
