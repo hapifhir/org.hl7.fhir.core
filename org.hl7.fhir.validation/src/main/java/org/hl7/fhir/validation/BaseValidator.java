@@ -248,20 +248,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   private boolean doingLevel(IssueSeverity error) {
-    switch (error) {
-      case ERROR:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case FATAL:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case WARNING:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
-      case INFORMATION:
-        return settings.getLevel() == null || settings.getLevel() == ValidationLevel.HINTS;
-      case NULL:
-        return true;
-      default:
-        return true;
-    }
+    return ValidationLevel.includes(settings.getLevel(), error);
   }
 
   private boolean doingErrors() {
@@ -1164,7 +1151,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         boolean refMatchesUrl = ref.matches(urlRegex);
         if (!ok && refMatchesUrl) {
           String tt = extractResourceType(ref);
-          ok = VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(tt);
+          ok = cu.isCanonicalResource(tt);
         }
         if (!ok && stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
           source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());

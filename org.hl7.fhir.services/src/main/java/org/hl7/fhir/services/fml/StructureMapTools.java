@@ -61,7 +61,7 @@ import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.fml.StructureMap.StructureMapConstComponent;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS;
 import org.hl7.fhir.model.utilities.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -477,16 +477,16 @@ public class StructureMapTools {
     lexer.token("as");
     String doco;
     if (lexer.getCurrent().equals("source")) {
-      st.setMode(StructureMap.StructureMapModelMode.SOURCE);
+      st.setMode(StructureMap.StructureMapModelModeVS.SOURCE);
       doco = lexer.tokenWithTrailingComment("source");
     } else if (lexer.getCurrent().equals("queried")) {
-      st.setMode(StructureMap.StructureMapModelMode.QUERIED);
+      st.setMode(StructureMap.StructureMapModelModeVS.QUERIED);
       doco = lexer.tokenWithTrailingComment("queried");
     } else if (lexer.getCurrent().equals("target")) {
-      st.setMode(StructureMap.StructureMapModelMode.TARGET);
+      st.setMode(StructureMap.StructureMapModelModeVS.TARGET);
       doco = lexer.tokenWithTrailingComment("target");
     } else if (lexer.getCurrent().equals("produced")) {
-      st.setMode(StructureMap.StructureMapModelMode.PRODUCED);
+      st.setMode(StructureMap.StructureMapModelModeVS.PRODUCED);
       doco = lexer.tokenWithTrailingComment("produced");
     } else {
       throw lexer.error("Found '"+lexer.getCurrent()+"' expecting 'source', 'queried', 'target' or 'produced'");
@@ -528,10 +528,10 @@ public class StructureMapTools {
         lexer.token("type");
         lexer.token("+");
         lexer.token("types");
-        group.setTypeMode(StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES);
+        group.setTypeMode(StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES);
       } else {
         lexer.token("types");
-        group.setTypeMode(StructureMap.StructureMapGroupTypeMode.TYPES);
+        group.setTypeMode(StructureMap.StructureMapGroupTypeModeVS.TYPES);
       }
     }
     group.setName(lexer.take());
@@ -554,12 +554,12 @@ public class StructureMapTools {
         lexer.token("<");
         lexer.token("<");
         if (lexer.hasToken("types")) {
-          group.setTypeMode(StructureMap.StructureMapGroupTypeMode.TYPES);
+          group.setTypeMode(StructureMap.StructureMapGroupTypeModeVS.TYPES);
           lexer.token("types");
         } else {
           lexer.token("type");
           lexer.token("+");
-          group.setTypeMode(StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES);
+          group.setTypeMode(StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES);
         }
         lexer.token(">");
         lexer.token(">");
@@ -592,7 +592,7 @@ public class StructureMapTools {
   private void parseInput(StructureMap.StructureMapGroupComponent group, FHIRLexer lexer, boolean newFmt) throws FHIRException {
     StructureMap.StructureMapGroupInputComponent input = group.addInput();
     if (newFmt) {
-      input.setMode(StructureMap.StructureMapInputMode.fromCode(lexer.take()));
+      input.setMode(StructureMap.StructureMapInputModeVS.fromCode(lexer.take()));
     } else
       lexer.token("input");
     input.setName(lexer.take());
@@ -602,7 +602,7 @@ public class StructureMapTools {
     }
     if (!newFmt) {
       lexer.token("as");
-      input.setMode(StructureMap.StructureMapInputMode.fromCode(lexer.take()));
+      input.setMode(StructureMap.StructureMapInputModeVS.fromCode(lexer.take()));
       input.setDocumentation(lexer.getAllComments());
       lexer.skipToken(";");
     }
@@ -654,7 +654,7 @@ public class StructureMapTools {
       rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
       rule.getTargetFirstRep().addElement(elementName);
       rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
-      rule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransform.CREATE);
+      rule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransformVS.CREATE);
       while (lexer.hasToken(",")) {
         lexer.token(",");
         elements.add(lexer.take());
@@ -695,7 +695,7 @@ public class StructureMapTools {
         newRule.getTargetFirstRep().setContext(targetContext);
         newRule.getTargetFirstRep().addElement(element);
         newRule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
-        newRule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransform.CREATE);
+        newRule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransformVS.CREATE);
       }
 
     } else {
@@ -723,7 +723,7 @@ public class StructureMapTools {
       if (isSimpleSyntax(rule)) {
         rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
         rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
-        rule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransform.CREATE); // with no parameter - e.g. imply what is to be created
+        rule.getTargetFirstRep().setTransform(StructureMap.StructureMapTransformVS.CREATE); // with no parameter - e.g. imply what is to be created
         // no dependencies - imply what is to be done based on types
       }
       if (newFmt) {
@@ -821,7 +821,7 @@ public class StructureMapTools {
       }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one"))
-      source.setListMode(StructureMap.StructureMapSourceListMode.fromCode(lexer.take()));
+      source.setListMode(StructureMap.StructureMapSourceListModeVS.fromCode(lexer.take()));
 
     if (lexer.hasToken("as")) {
       lexer.take();
@@ -881,15 +881,15 @@ public class StructureMapTools {
 
     if ("(".equals(name)) {
       // inline fluentpath expression — outer `(` already consumed as `name`.
-      target.setTransform(StructureMap.StructureMapTransform.EVALUATE);
+      target.setTransform(StructureMap.StructureMapTransformVS.EVALUATE);
       ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "evaluate", false);
       target.setUserData(MAP_EXPRESSION, node);
       target.addParameter().setValue(new StringType(node.toString()));
       lexer.token(")");
     } else if (lexer.hasToken("(")) {
-      target.setTransform(StructureMap.StructureMapTransform.fromCode(name));
+      target.setTransform(StructureMap.StructureMapTransformVS.fromCode(name));
       lexer.token("(");
-      if (target.getTransform() == StructureMap.StructureMapTransform.EVALUATE) {
+      if (target.getTransform() == StructureMap.StructureMapTransformVS.EVALUATE) {
         parseParameter(target, lexer);
         lexer.token(",");
         ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "evaluate", false);
@@ -907,7 +907,7 @@ public class StructureMapTools {
       lexer.token(")");
     } else if (name != null) {
       if (target.getContext() != null) {
-        target.setTransform(StructureMap.StructureMapTransform.COPY);
+        target.setTransform(StructureMap.StructureMapTransformVS.COPY);
         if (!isConstant) {
           String id = name;
           while (lexer.hasToken(".")) {
@@ -928,17 +928,17 @@ public class StructureMapTools {
       String mode = lexer.getCurrent();
       lexer.next();
       if (mode.equals("share")) {
-        target.addListMode(StructureMap.StructureMapTargetListMode.SHARE);
+        target.addListMode(StructureMap.StructureMapTargetListModeVS.SHARE);
         if (lexer.done() || Utilities.existsInList(lexer.getCurrent(), ";", ",", "then", "}", "first", "last", "share", "single")) {
           throw lexer.error("'share' target list mode requires a listRuleId (e.g. 'share myId')");
         }
         target.setListRuleId(lexer.take());
       } else if (mode.equals("first")) {
-        target.addListMode(StructureMap.StructureMapTargetListMode.FIRST);
+        target.addListMode(StructureMap.StructureMapTargetListModeVS.FIRST);
       } else if (mode.equals("last")) {
-        target.addListMode(StructureMap.StructureMapTargetListMode.LAST);
+        target.addListMode(StructureMap.StructureMapTargetListModeVS.LAST);
       } else { // "single"
-        target.addListMode(StructureMap.StructureMapTargetListMode.SINGLE);
+        target.addListMode(StructureMap.StructureMapTargetListModeVS.SINGLE);
       }
       if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "share", "single")) {
         throw lexer.error("only one list mode is permitted on a target");
@@ -967,7 +967,7 @@ public class StructureMapTools {
       value = readConstant(lexer.take(), lexer);
     }
     target.addParameter().setValue(value);
-    if (target.getTransform() == StructureMap.StructureMapTransform.TRANSLATE && target.getParameterList().size() == 2
+    if (target.getTransform() == StructureMap.StructureMapTransformVS.TRANSLATE && target.getParameterList().size() == 2
         && value instanceof StringType && value.primitiveValue().startsWith("#")) {
       value.addExtension(ExtensionDefinitions.EXT_REFERENCES_CONTAINED,
           new Reference().setReference(value.primitiveValue()));
@@ -991,14 +991,14 @@ public class StructureMapTools {
    * The definition of the type the map creates: see {@link #getModelType}
    */
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
-    return getModelType(map, StructureMapInputMode.TARGET, StructureMap.StructureMapModelMode.TARGET);
+    return getModelType(map, StructureMapInputModeVS.TARGET, StructureMap.StructureMapModelModeVS.TARGET);
   }
 
   /**
    * The definition of the type the map reads: see {@link #getModelType}
    */
   public StructureDefinition getSourceType(StructureMap map) throws FHIRException {
-    return getModelType(map, StructureMapInputMode.SOURCE, StructureMap.StructureMapModelMode.SOURCE);
+    return getModelType(map, StructureMapInputModeVS.SOURCE, StructureMap.StructureMapModelModeVS.SOURCE);
   }
 
   /**
@@ -1012,7 +1012,7 @@ public class StructureMapTools {
    * If the input has no type, or nothing matched, it's the 'uses' declared for that mode, if there's
    * only one
    */
-  public StructureDefinition getModelType(StructureMap map, StructureMapInputMode inputMode, StructureMap.StructureMapModelMode modelMode) throws FHIRException {
+  public StructureDefinition getModelType(StructureMap map, StructureMapInputModeVS inputMode, StructureMap.StructureMapModelModeVS modelMode) throws FHIRException {
     String label = inputMode.toCode();
     if (map.getGroupList().isEmpty())
       throw new FHIRException("Unable to determine the " + label + " type: map " + map.getUrl() + " has no groups");
@@ -1123,11 +1123,11 @@ public class StructureMapTools {
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
 
     Variables vars = new Variables();
-    vars.add(VariableMode.INPUT, getInputName(g, StructureMap.StructureMapInputMode.SOURCE, "source"), source);
+    vars.add(VariableMode.INPUT, getInputName(g, StructureMap.StructureMapInputModeVS.SOURCE, "source"), source);
     if (target != null)
-      vars.add(VariableMode.OUTPUT, getInputName(g, StructureMap.StructureMapInputMode.TARGET, "target"), target);
-    else if (getInputName(g, StructureMap.StructureMapInputMode.TARGET, null) != null) {
-      String type = getInputType(g, StructureMap.StructureMapInputMode.TARGET);
+      vars.add(VariableMode.OUTPUT, getInputName(g, StructureMap.StructureMapInputModeVS.TARGET, "target"), target);
+    else if (getInputName(g, StructureMap.StructureMapInputModeVS.TARGET, null) != null) {
+      String type = getInputType(g, StructureMap.StructureMapInputModeVS.TARGET);
       throw new FHIRException("not handled yet: creating a type of " + type);
     }
 
@@ -1136,7 +1136,7 @@ public class StructureMapTools {
       ((Element) target).sort();
   }
 
-  private String getInputType(StructureMap.StructureMapGroupComponent g, StructureMap.StructureMapInputMode mode) {
+  private String getInputType(StructureMap.StructureMapGroupComponent g, StructureMap.StructureMapInputModeVS mode) {
     String type = null;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
       if (inp.getMode() == mode)
@@ -1148,7 +1148,7 @@ public class StructureMapTools {
     return type;
   }
 
-  private String getInputName(StructureMap.StructureMapGroupComponent g, StructureMap.StructureMapInputMode mode, String def) throws DefinitionException {
+  private String getInputName(StructureMap.StructureMapGroupComponent g, StructureMap.StructureMapInputModeVS mode, String def) throws DefinitionException {
     String name = null;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
       if (inp.getMode() == mode)
@@ -1200,7 +1200,7 @@ public class StructureMapTools {
           for (StructureMap.StructureMapGroupRuleDependentComponent dependent : rule.getDependentList()) {
             executeDependency(indent + "  ", context, map, v, group, dependent);
           }
-        } else if (rule.getSourceList().size() == 1 && rule.getSourceFirstRep().hasVariable() && rule.getTargetList().size() == 1 && rule.getTargetFirstRep().hasVariable() && rule.getTargetFirstRep().getTransform() == StructureMap.StructureMapTransform.CREATE && !rule.getTargetFirstRep().hasParameter()) {
+        } else if (rule.getSourceList().size() == 1 && rule.getSourceFirstRep().hasVariable() && rule.getTargetList().size() == 1 && rule.getTargetFirstRep().hasVariable() && rule.getTargetFirstRep().getTransform() == StructureMap.StructureMapTransformVS.CREATE && !rule.getTargetFirstRep().hasParameter()) {
           // simple inferred, map by type
           if (debug) {
             log(v.summary());
@@ -1235,9 +1235,9 @@ public class StructureMapTools {
     Variables v = new Variables();
     for (int i = 0; i < rg.getTargetGroup().getInputList().size(); i++) {
       StructureMap.StructureMapGroupInputComponent input = rg.getTargetGroup().getInputList().get(i);
-      StructureMap.StructureMapGroupRuleTargetParameterComponent rdp = dependent.getParameterList().get(i);
+      StructureMap.StructureMapGroupRuleDependentParameterComponent rdp = dependent.getParameterList().get(i);
       String var = rdp.getValue().primitiveValue();
-      VariableMode mode = input.getMode() == StructureMap.StructureMapInputMode.SOURCE ? VariableMode.INPUT : VariableMode.OUTPUT;
+      VariableMode mode = input.getMode() == StructureMap.StructureMapInputModeVS.SOURCE ? VariableMode.INPUT : VariableMode.OUTPUT;
       Base vv = vin.get(mode, var);
       if (vv == null && mode == VariableMode.INPUT) //* once source, always source. but target can be treated as source at user convenient
         vv = vin.get(VariableMode.OUTPUT, var);
@@ -1375,9 +1375,9 @@ public class StructureMapTools {
 
 
   private boolean matchesByType(StructureMap map, StructureMap.StructureMapGroupComponent grp, String type) throws FHIRException {
-    if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES)
+    if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES)
       return false;
-    if (grp.getInputList().size() != 2 || grp.getInputList().get(0).getMode() != StructureMap.StructureMapInputMode.SOURCE || grp.getInputList().get(1).getMode() != StructureMap.StructureMapInputMode.TARGET)
+    if (grp.getInputList().size() != 2 || grp.getInputList().get(0).getMode() != StructureMap.StructureMapInputModeVS.SOURCE || grp.getInputList().get(1).getMode() != StructureMap.StructureMapInputModeVS.TARGET)
       return false;
     return matchesType(map, type, grp.getInputList().get(0).getType());
   }
@@ -1385,7 +1385,7 @@ public class StructureMapTools {
   private boolean matchesByType(StructureMap map, StructureMap.StructureMapGroupComponent grp, String srcType, String tgtType) throws FHIRException {
     if (!grp.hasTypeMode())
       return false;
-    if (grp.getInputList().size() != 2 || grp.getInputList().get(0).getMode() != StructureMap.StructureMapInputMode.SOURCE || grp.getInputList().get(1).getMode() != StructureMap.StructureMapInputMode.TARGET)
+    if (grp.getInputList().size() != 2 || grp.getInputList().get(0).getMode() != StructureMap.StructureMapInputModeVS.SOURCE || grp.getInputList().get(1).getMode() != StructureMap.StructureMapInputModeVS.TARGET)
       return false;
     if (!grp.getInputList().get(0).hasType() || !grp.getInputList().get(1).hasType())
       return false;
@@ -1641,7 +1641,7 @@ public class StructureMapTools {
         throw new FHIRException("Rul \"" + rulePath + "\": target context not known: " + tgt.getContext());
       }
     }
-    Base v = !tgt.hasTransform() && tgt.hasListMode(StructureMap.StructureMapTargetListMode.SHARE)
+    Base v = !tgt.hasTransform() && tgt.hasListMode(StructureMap.StructureMapTargetListModeVS.SHARE)
         ? sharedVars.get(VariableMode.SHARED, tgt.getListRuleId()) : null;
     if (dest != null && v == null) {
       for (int i = 0; i < elements.size() - 1; i++) {
@@ -1677,7 +1677,7 @@ public class StructureMapTools {
         }
       }
     } else if (dest != null && v == null) {
-      if (tgt.hasListMode(StructureMap.StructureMapTargetListMode.SHARE)) {
+      if (tgt.hasListMode(StructureMap.StructureMapTargetListModeVS.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
         if (v == null) {
           v = makeTargetProperty(dest, element);
@@ -1787,7 +1787,7 @@ public class StructureMapTools {
             tn = getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString());
             // ok, now we resolve the type name against the import statements
             for (StructureMap.StructureMapStructureComponent uses : map.getStructureList()) {
-              if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET && uses.hasAlias() && tn.equals(uses.getAlias())) {
+              if (uses.getMode() == StructureMap.StructureMapModelModeVS.TARGET && uses.hasAlias() && tn.equals(uses.getAlias())) {
                 tn = uses.getUrl();
                 break;
               }
@@ -2268,7 +2268,7 @@ public class StructureMapTools {
       StructureMap.StructureMapGroupComponent start = map.getGroupList().get(0);
       for (StructureMap.StructureMapGroupInputComponent t : start.getInputList()) {
         PropertyWithType ti = resolveType(map, t.getType(), t.getMode());
-        if (t.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+        if (t.getMode() == StructureMap.StructureMapInputModeVS.SOURCE)
           vars.add(VariableMode.INPUT, t.getName(), ti);
         else
           vars.add(VariableMode.OUTPUT, t.getName(), createProfile(map, result.profiles, ti, start.getName(), start));
@@ -2296,9 +2296,9 @@ public class StructureMapTools {
     XhtmlNode xs = tr.addTag("td");
     XhtmlNode xt = tr.addTag("td");
     for (StructureMap.StructureMapGroupInputComponent inp : group.getInputList()) {
-      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+      if (inp.getMode() == StructureMap.StructureMapInputModeVS.SOURCE)
         noteInput(vars, inp, VariableMode.INPUT, xs);
-      if (inp.getMode() == StructureMap.StructureMapInputMode.TARGET)
+      if (inp.getMode() == StructureMap.StructureMapInputModeVS.TARGET)
         noteInput(vars, inp, VariableMode.OUTPUT, xt);
     }
     for (StructureMap.StructureMapGroupRuleComponent r : group.getRuleList()) {
@@ -2419,7 +2419,7 @@ public class StructureMapTools {
 
 
     TypeDetails type = null;
-    boolean implicitCopy = tgt.getTransform() == StructureMap.StructureMapTransform.CREATE && !tgt.hasParameter()
+    boolean implicitCopy = tgt.getTransform() == StructureMap.StructureMapTransformVS.CREATE && !tgt.hasParameter()
         && AUTO_VAR_NAME.equals(tv) && AUTO_VAR_NAME.equals(tgt.getVariable());
     if (implicitCopy) {
       type = vars.get(VariableMode.INPUT, tv).getProperty().getTypes();
@@ -2429,7 +2429,7 @@ public class StructureMapTools {
       type = analyseTargetType(var, element);
     }
 
-    if (tgt.getTransform() == StructureMap.StructureMapTransform.CREATE && tgt.hasParameter()) {
+    if (tgt.getTransform() == StructureMap.StructureMapTransformVS.CREATE && tgt.hasParameter()) {
       String s = getParamString(vars, tgt.getParameterList().get(0));
       if (worker.getResourceNames().contains(s))
         tw.newResource(tgt.getVariable(), s);
@@ -2671,7 +2671,7 @@ public class StructureMapTools {
       return false;
   }
 
-  private String getTransformSuffix(StructureMap.StructureMapTransform transform) {
+  private String getTransformSuffix(StructureMap.StructureMapTransformVS transform) {
     switch (transform) {
       case COPY:
         return "";
@@ -2935,10 +2935,10 @@ public class StructureMapTools {
     return prop;
   }
 
-  private PropertyWithType resolveType(StructureMap map, String type, StructureMap.StructureMapInputMode mode) throws FHIRException {
+  private PropertyWithType resolveType(StructureMap map, String type, StructureMap.StructureMapInputModeVS mode) throws FHIRException {
     for (StructureMap.StructureMapStructureComponent imp : map.getStructureList()) {
-      if ((imp.getMode() == StructureMap.StructureMapModelMode.SOURCE && mode == StructureMap.StructureMapInputMode.SOURCE) ||
-        (imp.getMode() == StructureMap.StructureMapModelMode.TARGET && mode == StructureMap.StructureMapInputMode.TARGET)) {
+      if ((imp.getMode() == StructureMap.StructureMapModelModeVS.SOURCE && mode == StructureMap.StructureMapInputModeVS.SOURCE) ||
+        (imp.getMode() == StructureMap.StructureMapModelModeVS.TARGET && mode == StructureMap.StructureMapInputModeVS.TARGET)) {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
@@ -3045,7 +3045,7 @@ public class StructureMapTools {
     this.exceptionsForChecks = exceptionsForChecks;
   }
 
-  public List<StructureMap> getMapsForUrl(List<StructureMap> maps, String url, StructureMap.StructureMapInputMode mode) {
+  public List<StructureMap> getMapsForUrl(List<StructureMap> maps, String url, StructureMap.StructureMapInputModeVS mode) {
     List<StructureMap> res = new ArrayList<>();
     for (StructureMap map : maps) {
       if (mapIsForUrl(map, url, mode)) {
@@ -3055,9 +3055,9 @@ public class StructureMapTools {
     return res;
   }
 
-  private boolean mapIsForUrl(StructureMap map, String url, StructureMap.StructureMapInputMode mode) {
+  private boolean mapIsForUrl(StructureMap map, String url, StructureMap.StructureMapInputModeVS mode) {
     for (StructureMap.StructureMapGroupComponent grp : map.getGroupList()) {
-      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeMode.NULL) {
+      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeModeVS.NULL) {
         for (StructureMap.StructureMapGroupInputComponent p : grp.getInputList()) {
           if (mode == null || mode == p.getMode()) { 
             String t = resolveInputType(p, map);
@@ -3071,7 +3071,7 @@ public class StructureMapTools {
     return false;
   }
 
-  public List<StructureMap> getMapsForUrlPrefix(List<StructureMap> maps, String url, StructureMap.StructureMapInputMode mode) {
+  public List<StructureMap> getMapsForUrlPrefix(List<StructureMap> maps, String url, StructureMap.StructureMapInputModeVS mode) {
     List<StructureMap> res = new ArrayList<>();
     for (StructureMap map : maps) {
       if (mapIsForUrlPrefix(map, url, mode)) {
@@ -3081,9 +3081,9 @@ public class StructureMapTools {
     return res;
   }
 
-  private boolean mapIsForUrlPrefix(StructureMap map, String url, StructureMap.StructureMapInputMode mode) {
+  private boolean mapIsForUrlPrefix(StructureMap map, String url, StructureMap.StructureMapInputModeVS mode) {
     for (StructureMap.StructureMapGroupComponent grp : map.getGroupList()) {
-      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeMode.NULL) {
+      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeModeVS.NULL) {
         for (StructureMap.StructureMapGroupInputComponent p : grp.getInputList()) {
           if (mode == null || mode == p.getMode()) { 
             String t = resolveInputType(p, map);
@@ -3106,9 +3106,9 @@ public class StructureMapTools {
     return null;
   }
 
-  public ResolvedGroup getGroupForUrl(StructureMap map, String url, StructureMap.StructureMapInputMode mode) {
+  public ResolvedGroup getGroupForUrl(StructureMap map, String url, StructureMap.StructureMapInputModeVS mode) {
     for (StructureMap.StructureMapGroupComponent grp : map.getGroupList()) {
-      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeMode.NULL) {
+      if (grp.getTypeMode() != StructureMap.StructureMapGroupTypeModeVS.NULL) {
         for (StructureMap.StructureMapGroupInputComponent p : grp.getInputList()) {
           if (mode == null || mode == p.getMode()) { 
             String t = resolveInputType(p, map);
@@ -3122,7 +3122,7 @@ public class StructureMapTools {
     return null;
  }
 
-  public String getInputType(ResolvedGroup grp, StructureMap.StructureMapInputMode mode) {
+  public String getInputType(ResolvedGroup grp, StructureMap.StructureMapInputModeVS mode) {
     if (grp.getTargetGroup().getInputList().size() != 2 || grp.getTargetGroup().getInputList().get(0).getMode() == grp.getTargetGroup().getInputList().get(1).getMode()) {
       return null;      
     } else if (grp.getTargetGroup().getInputList().get(0).getMode() == mode) {

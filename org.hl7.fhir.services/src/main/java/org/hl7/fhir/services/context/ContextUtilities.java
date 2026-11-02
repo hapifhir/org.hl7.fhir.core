@@ -44,6 +44,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   private List<String> canonicalResourceNames;
+  private Map<String, Boolean> canonicalResourceTypes = new java.util.concurrent.ConcurrentHashMap<>();
   private List<String> concreteResourceNames;
   private Set<String> concreteResourceNameSet;
   @Setter
@@ -196,27 +197,18 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return url;
   }
 
-  private boolean hasUrlProperty(StructureDefinition sd) {
-    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
-      if (ed.getPath().equals(sd.getType() + ".url")) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   // -- profile services ---------------------------------------------------------
 
 
   /**
-   * @return a list of the resource names that are canonical resources defined for this version
+   * @return a list of the concrete resource names that are canonical resources (see {@link #isCanonicalResource(String)})
    */
   public List<String> getCanonicalResourceNames() {
     if (canonicalResourceNames == null) {
       canonicalResourceNames = new ArrayList<>();
       Set<String> names = new HashSet<>();
       for (StructureDefinition sd : allStructures()) {
-        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && isCanonicalResource(sd.getType())) {
           names.add(sd.getType());
         }
       }
@@ -478,6 +470,56 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     while (sd != null) {
       if ("DomainResource".equals(sd.getType())) {
         return true;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
+    }
+    return false;
+  }
+
+  /**
+   * Whether the named type is a canonical resource.
+   *
+   * From R5 on, this is decided by the type hierarchy: the type is CanonicalResource, or it, its base types, or any
+   * interface they implement (structuredefinition-implements, followed through the interfaces' own base types and
+   * interfaces) is CanonicalResource. This covers additional resources and resources defined in IGs. Note that having
+   * a url element is not the test - some resources (e.g. Composition, ResearchStudy) have a url and are not canonical.
+   *
+   * Before R5 there is no CanonicalResource definition to find, so the core list for the version is used as well.
+   */
+  public boolean isCanonicalResource(String type) {
+    if (type == null) {
+      return false;
+    }
+    Boolean res = canonicalResourceTypes.get(type);
+    if (res == null) {
+      StructureDefinition sd = context.fetchTypeDefinition(type);
+      if (sd == null || !VersionUtilities.isR5Plus(context.getFHIRVersion())) {
+        res = VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type) || isCanonicalResource(sd, new HashSet<>());
+      } else {
+        res = isCanonicalResource(sd, new HashSet<>());
+      }
+      if (sd != null) {
+        // not cached when the type isn't known (yet): its definition might be loaded later
+        canonicalResourceTypes.put(type, res);
+      }
+    }
+    return res;
+  }
+
+  private boolean isCanonicalResource(StructureDefinition sd, Set<String> visited) {
+    while (sd != null && visited.add(sd.getVersionedUrl())) {
+      if ("CanonicalResource".equals(sd.getType())) {
+        return true;
+      }
+      for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+        String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
+        if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(implemented)) {
+          return true;
+        }
+        // an implemented interface such as MetadataResource can itself implement CanonicalResource
+        if (implemented != null && isCanonicalResource(context.fetchResource(StructureDefinition.class, implemented, VersionResolutionRules.defaultRule()), visited)) {
+          return true;
+        }
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     }

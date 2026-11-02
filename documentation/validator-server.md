@@ -33,9 +33,11 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | --- | --- |
 | `<port>` | Port to listen on. Must be 1-65535; anything else exits with an error. |
 | `-allowNetworkAccess` | Bind to all interfaces instead of loopback only. See [Security](#security). |
+| `-txTests` | Turn on the [terminology ecosystem test](#terminology-ecosystem-tests-txtest) endpoints (`/txTest`). Off by default. |
 | `-version` | FHIR version to load (`4.0`, `4.3`, `5.0`, ...). If not given, it is inferred. |
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
-| `-tx` | Terminology server to use; `n/a` for no terminology server. |
+| `-tx` | Terminology server to use; `n/a` for no terminology server. Nominating a server turns the terminology ecosystem off unless `-ecosystem` is given too. |
+| `-ecosystem` | Terminology ecosystem coordination server (tx-reg) to consult for routing; `n/a` to turn the ecosystem off. Default `https://ecosystem.hl7.org/tx-reg`. |
 | instance validator options | `-profile`, `-level`, `-best-practice`, `-check-display`, ... - these become the *defaults* for every request, and each can be overridden per request by a query parameter. |
 
 Any remaining positional arguments after the port are treated as sources, but in server mode
@@ -65,6 +67,25 @@ authentication, no authorization, no TLS and no rate limiting, and several endpo
 from the server's file system (`/loadIG` with a path) or make outbound calls (`/loadIG` with a
 package or URL, `/txTest`). If you expose the port beyond localhost, securing it is entirely
 your responsibility.
+
+`/txTest` is off unless the server is started with `-txTests`. It exists to run the terminology
+ecosystem tests from a build pipeline: it connects to the terminology server the caller names, and
+writes the expected and actual output of every test, and the reports, to a folder under the
+server's temporary directory - a folder the caller can also name. That is what a pipeline wants,
+and not something a public server should offer, so don't combine `-txTests` with
+`-allowNetworkAccess` unless the network is one you control. When the server is not bound to
+loopback, `/txTest` will only test servers configured in `fhir-settings.json` (a `403` otherwise).
+
+The server is intended for a closed environment - a build pipeline, or a developer's machine. If
+it has to be reachable from anywhere else, don't expose it directly: put it behind nginx (or an
+equivalent reverse proxy or API gateway) that provides TLS, authentication, and rate and request
+size limits, and restrict which endpoints are reachable to the ones you need.
+
+Outbound requests go through the validator's managed web access, so SSRF protection applies
+(non-https requests and non-public hosts are blocked) unless it has been turned off - which you
+may have to do to point `/txTest` at a terminology server on `localhost` or your own network. With
+SSRF protection off, anyone who can reach the server can make it send requests to any host it can
+reach, and see some of what comes back. See [SECURITY.md](../SECURITY.md).
 
 ## Request and response conventions
 
@@ -104,7 +125,9 @@ the HTTP status.
 | POST | `/transform` | Run a StructureMap over a resource |
 | GET | `/package` | Package an artifact with its dependencies |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
-| GET | `/txTest` | Run one terminology ecosystem test against a server |
+| POST | `/txTest/setup` | Start a run of the terminology ecosystem tests against a server |
+| GET | `/txTest` | Run one terminology ecosystem test in a run |
+| POST | `/txTest/teardown` | End a run, and get its reports |
 | POST | `/stop` | Shut the server down |
 | GET | `/openapi.json` | The OpenAPI description of this API |
 | GET | `/docs` | Swagger UI over `/openapi.json` |
@@ -123,6 +146,8 @@ curl -X POST 'http://localhost:8080/validateResource?profile=http://hl7.org/fhir
 
 Unrecognised query parameter names are rejected. Any name not in the table below produces a
 `400` with `Unable to process param <name>=<value>`, which makes typos loud rather than silent.
+A `profile` the server can't resolve is a `400` too (`Unable to resolve profile <url>`): load the
+IG that defines it first, with `/loadIG`.
 
 | Parameter | Values | Notes |
 | --- | --- | --- |
@@ -155,7 +180,6 @@ Unrecognised query parameter names are rejected. Any name not in the table below
 | `txRouting` | boolean | Report which terminology server served each request. |
 | `implicitFhirpathStringConversions` | boolean | Restore pre-5.6.48 FHIRPath string conversions. |
 | `allowDoubleQuotesInFhirpath` | boolean | Accept legacy double-quoted FHIRPath. |
-| `checkIpsCodes` | boolean | Report SNOMED CT codes outside the IPS free set. |
 | `maxValidationMessages` | integer | Stop after this many messages and return what was found. Values <= 0 ignored. |
 | `validationTimeout` | milliseconds | Stop after this long and return what was found. |
 | `codeSystemValidationSizeLimit` | integer | Max codes checked per include/group/supplement; `0` for no limit. Default 1000. |
@@ -167,7 +191,9 @@ Booleans are `true`/`false`; anything that is not `true` (case insensitive) is f
 ### POST /fhirpath
 
 Evaluates an expression against the posted resource and returns a `Parameters` resource holding
-the expression and the string form of the result.
+the expression and the string form of the result. An expression that doesn't parse, or that fails
+when it is evaluated, is still a `200`: the response is an `OperationOutcome` with an error saying
+why.
 
 ```sh
 curl -X POST 'http://localhost:8080/fhirpath?expression=Patient.name.family' \
@@ -194,7 +220,7 @@ The response is an `OperationOutcome`; no error issues means it matched.
 
 Generates conformant example data for a profile. One resource is produced per row of `data`,
 with `mappings` binding row columns to element paths. With no `data`, a single row of defaults is
-used.
+used. The profile must already be loaded: one that isn't is a `400` (`Profile not found: <url>`).
 
 ```json
 {
@@ -249,7 +275,7 @@ generated narrative in `text.div`. Both echo the format they were given.
 
 `/transform` runs a StructureMap over the posted resource; `/compile` returns the StructureMap
 the engine holds for a canonical URL. In both cases the map must already be loaded, via `-ig` at
-start up or `/loadIG`.
+start up or `/loadIG`; `/compile` with a map that isn't loaded is a `400` (`Unable to find map: <url>`).
 
 ```sh
 curl -X POST 'http://localhost:8080/transform?map=http://example.org/StructureMap/Example' \
@@ -288,27 +314,82 @@ Only part of the CRMI parameter surface is implemented: paging (`count`/`offset`
 `contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest` and capability-based filtering
 are not.
 
-### GET /txTest
+### Terminology ecosystem tests: /txTest
 
-Runs one test from the terminology ecosystem test suite against a terminology server. The test
-package (`hl7.fhir.uv.tx-ecosystem#dev`) is downloaded on first use.
+These run the terminology ecosystem tests (the `hl7.fhir.uv.tx-ecosystem` package) against a
+terminology server one test at a time, so that your own test framework can report a result per
+test. They are for a build pipeline, and are off unless the server was started with `-txTests`;
+when they are off, every `/txTest` request is a `404`. A run has three steps.
+
+**`POST /txTest/setup`** starts a run. The body is a JSON object with the things that can't change
+during it:
+
+| Property | Required | Default |
+| --- | --- | --- |
+| `server` | yes | - |
+| `test-version` | no | `current` - the version of the test cases (e.g. `1.9.6`), not a FHIR version |
+| `externals` | no | none - the *content* of an externals file, as a JSON object, not a file name |
+| `folder` | no | the server's host name - the run's folder in the temporary directory |
+| `tester` | no | `HL7 Ecosystem Test Runner` - for `TestReport.tester` |
+
+The test cases are loaded and the server is connected to at this point. The server's FHIR
+version (from `$versions`, or `/metadata`) decides the version the tests run in; it is not a
+setting. The response gives the `session` id, along with the test version that was loaded, the
+server's FHIR version, software and declared features, and the output folder.
 
 ```sh
-curl 'http://localhost:8080/txTest?suite=SuiteName&test=TestName&server=https://tx.fhir.org/r4'
+curl -X POST http://localhost:8080/txTest/setup -H 'Content-Type: application/json' \
+  -d '{"server": "https://tx.fhir.org/r4", "test-version": "1.9.6"}'
+```
+
+**`GET /txTest`** runs one test, and returns an `OperationOutcome`: no error-severity issue means
+the test passed, otherwise `details.text` is the failure message.
+
+```sh
+curl 'http://localhost:8080/txTest?session={id}&suite=SuiteName&test=TestName&modes=general,snomed'
 ```
 
 | Parameter | Required | Default |
 | --- | --- | --- |
+| `session` | yes | - |
 | `suite` | yes | - |
 | `test` | yes | - |
-| `server` | yes | - |
-| `version` | no | `5.0` |
-| `externals` | no | `messages-tx.fhir.org.json` (`.json` appended if missing) |
-| `modes` | no | `tx.fhir.org,omop,general,snomed` |
+| `modes` | no | `general,snomed,omop,mimetypes,icd-11,icf,loinc` (everything except `tx.fhir.org`) |
+| `label` | no | none - a subfolder of the run's folder for this test's expected/actual files |
 
-A tester is created per `server` value and cached for the life of the process, so `version` and
-`externals` only take effect on the first call for a given server. A disabled suite or test
-reports success without running. Missing parameters and lookup failures both come back as `500`.
+A test that doesn't run - it is disabled, or gated on a mode that wasn't asked for, a feature the
+server doesn't declare, or a FHIR version the server isn't - is an error to ask for, and the
+outcome says why; but it is not counted in the run's results. Passing a parameter that setup fixes
+(`server`, `test-version`, `externals`, `folder`, or `version`) with a session is a `400`; an
+unknown session, suite or test is a `404`.
+
+**`POST /txTest/teardown?session={id}`** ends the run, and returns the two reports the command line
+writes, as `{"session", "output", "test-results", "report"}`: `test-results.json`, and
+`report.json` - a FHIR `TestReport` with a score and an overall pass/fail. Both are written to the
+run's output folder as well. A test run more than once counts once, with its last result.
+
+The older form of `GET /txTest`, with `server` in place of `session` (and optionally `externals`,
+naming a file in the test package, and `folder`), still works: the first call for a server makes
+an implicit run for it with the `current` test cases, and `POST /txTest/teardown?server=...` ends
+it. Runs that are never torn down last for the life of the process.
+
+What the client is expected to do:
+
+* **Own the session.** Whoever calls setup makes the test calls and the one teardown. Sessions
+  aren't protected from each other: anyone who has the session id can use it or end it.
+* **Tear down once, after the last test has returned.** Teardown ends the session before it
+  writes the reports, so a test call for the session after that is a `404`, and so is a second
+  teardown. Results are copied once, at teardown: a test still running then (possible only if a
+  client sends a test and the teardown concurrently) is not in the reports.
+* **Tear down every session you start.** A session that isn't torn down keeps its tester, and its
+  `test.log` capture, until the process ends.
+* The server handles requests one at a time, so sending test calls in parallel doesn't make a run
+  faster; it is allowed, though, and each test's result is recorded safely.
+
+Run one session at a time. Sessions are kept apart in memory, but not on disk: each run's
+`test.log` captures everything the process logs (including other sessions) until any run is torn
+down, and two runs against the same host - or given the same `folder` - write to the same output
+folder, so the last teardown's reports overwrite the others.
 
 ### POST /stop
 

@@ -154,7 +154,11 @@ public class TxTestData {
   }
 
   public String loadVersion() throws JsonException, IOException {
-    if (version == null) {
+    if (version == null && npm != null) {
+      // the package's own version. tests/history.json stopped being maintained at 1.9.3 (the
+      // history is now a page in the IG), so reading it reports every later release as 1.9.3
+      return npm.version();
+    } else if (version == null) {
       return readHistory(loadBytes("history.json"));
     } else {
       return version;

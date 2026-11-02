@@ -45,6 +45,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 @Slf4j
 public class LogicalModelCodeGenerator {
@@ -102,7 +103,7 @@ public class LogicalModelCodeGenerator {
     NpmPackage coreNpm = npm;
     IContextResourceLoaderN coreLoader = loader;
     context.connectToTSServer(new TerminologyClientFactory(FhirPublication.R5), "https://tx.fhir.org",
-        "CodeGenerator", null, true);
+        "CodeGenerator", null, FhirSettings.getTxEcosystem());
     context.setExpansionParameters(new Parameters());
     
     Definitions master = new Definitions(context);

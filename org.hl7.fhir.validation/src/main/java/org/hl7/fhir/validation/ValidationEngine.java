@@ -3,7 +3,6 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,10 +37,14 @@ import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
+import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.services.liquid.BaseTableWrapper;
 import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
-import org.hl7.fhir.services.liquid.LiquidEngine;
 import org.hl7.fhir.model.core.DateTimeType;
 import org.hl7.fhir.model.core.DateType;
 import org.hl7.fhir.model.core.StringType;
@@ -120,7 +123,6 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.model.IModel;
 import org.xml.sax.SAXException;
 
 import lombok.Getter;
@@ -323,7 +325,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     private final String txServer;
     private final String txLog;
     private final FhirPublication txVersion;
-    private final boolean useEcosystem;
+    private final String ecosystem;
 
     @With
     private final TimeTracker timeTracker;
@@ -343,8 +345,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @Nonnull
     private InstanceValidatorParameters defaultInstanceValidatorParameters;
 
-    private static final boolean USE_ECOSYSTEM_DEFAULT = true;
-
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
       userAgent = null;
@@ -354,14 +354,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
-      useEcosystem = USE_ECOSYSTEM_DEFAULT;
+      ecosystem = FhirSettings.getTxEcosystem();
       loggingService = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
       thoVersion = null;
       extensionsVersion = null;
       defaultInstanceValidatorParameters = new InstanceValidatorParameters();
     }
 
-    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion, InstanceValidatorParameters defaultInstanceValidatorParameters) {
+    private ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, String ecosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion, InstanceValidatorParameters defaultInstanceValidatorParameters) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -371,23 +371,37 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
-      this.useEcosystem = useEcosystem;
+      this.ecosystem = ecosystem;
       this.thoVersion = thoVersion;
       this.extensionsVersion = extensionsVersion;
       this.defaultInstanceValidatorParameters = defaultInstanceValidatorParameters;
    }
 
+    /**
+     * @deprecated use {@link #withTxServer(String, String, FhirPublication, String)} - true means
+     * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+     */
+    @Deprecated
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
+      return withTxServer(txServer, txLog, txVersion, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(txServer) : null);
+    }
+
+    /**
+     * @param ecosystem the ecosystem coordination server (tx-reg) consulted to route terminology
+     * requests to other servers - typically FhirSettings.getTxEcosystem() - or null to send
+     * everything to txServer
+     */
+    public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, String ecosystem) {
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, ecosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngineBuilder withNoTerminologyServer() {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, null, timeTracker, true, loggingService, thoVersion, extensionsVersion, defaultInstanceValidatorParameters);
     }
 
     public ValidationEngineBuilder withDefaultInstanceValidatorParameters(InstanceValidatorParameters defaultInstanceValidatorParameters) {
       final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, instanceValidatorParameters);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, ecosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion, instanceValidatorParameters);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -412,7 +426,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
       engine.getContext().setPackageTracker(engine);
       if (txServer != null) {
-        engine.setTerminologyServer(txServer, txLog, txVersion, useEcosystem);
+        engine.setTerminologyServer(txServer, txLog, txVersion, ecosystem);
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
@@ -553,11 +567,35 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ep;
   }
 
+  /**
+   * @deprecated use {@link #connectToTSServer(String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String connectToTSServer(String url, String log, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
-    return connectToTSServer(url, log, null, version, useEcosystem);
+    return connectToTSServer(url, log, null, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
   }
 
+  /**
+   * @deprecated use {@link #connectToTSServer(String, String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, txCachePath, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
+  }
+
+  /**
+   * Connect to a terminology server. ecosystem is the ecosystem coordination server (tx-reg)
+   * consulted to route requests to other servers - typically FhirSettings.getTxEcosystem() -
+   * or null to send everything to the one server. A null url means no terminology server at
+   * all, and then the ecosystem is not consulted either
+   */
+  public String connectToTSServer(String url, String log, FhirPublication version, String ecosystem) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, null, version, ecosystem);
+  }
+
+  public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, String ecosystem) throws URISyntaxException, IOException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
@@ -566,7 +604,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else {
       try {
         TerminologyClientFactory factory = new TerminologyClientFactory(version);
-        context.connectToTSServer(factory, url, context.getUserAgent(), log, useEcosystem);
+        context.connectToTSServer(factory, url, context.getUserAgent(), log, ecosystem);
         return "Connected to Terminology Server at "+url;
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
@@ -687,6 +725,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.removeMessagesBelowLevel(messages, instanceValidatorParameters.getLevel());
+    if (validator.validatedContent != null) {
+      for (var vf : validator.validatedContent) {
+        ValidationLevel.removeMessagesBelowLevel(vf.getErrors(), instanceValidatorParameters.getLevel());
+      }
+    }
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
@@ -710,6 +754,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.removeMessagesBelowLevel(messages, instanceValidatorParameters.getLevel());
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {
@@ -797,7 +842,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
     int count = 0;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
-      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+      if (inp.getMode() == StructureMap.StructureMapInputModeVS.SOURCE)
         count++;
     }
     if (count > 1)
@@ -846,6 +891,69 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
+  }
+
+  /**
+   * Static type checking of a FHIRPath expression, without evaluating it: the expression is parsed, then checked
+   * against the type it would be evaluated on.
+   *
+   * @param type the type the expression is evaluated on: a type name (Bundle, Coding), a path in one
+   *             (Bundle.entry), or the URL of a StructureDefinition
+   * @param expression the FHIRPath expression
+   * @return the issues found: an error if the expression doesn't parse, or doesn't check against the type; the
+   *         warnings the checking raises; and, when there's no error, information on the type the expression returns.
+   *         Whatever the expression is, the result is an OperationOutcome: a failure in parsing or checking it is an
+   *         error issue, not an exception
+   */
+  public OperationOutcome checkFhirPath(String type, String expression) throws IOException {
+    List<ValidationMessage> messages = new ArrayList<>();
+    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    ExpressionNode exp = null;
+    try {
+      exp = fpe.parse(expression);
+    } catch (FHIRLexerException e) {
+      messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
+    } catch (RuntimeException | StackOverflowError e) {
+      messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, fhirPathFailure("parsed", e), null, null));
+    }
+    if (exp != null) {
+      String root = Utilities.isAbsoluteUrl(type) ? null : type.contains(".") ? type.substring(0, type.indexOf('.')) : type;
+      try {
+        List<FHIRPathEngine.IssueMessage> warnings = new ArrayList<>();
+        TypeDetails td = fpe.checkOnTypes(new ValidationContext(context), root, root, List.of(type), exp, warnings);
+        for (FHIRPathEngine.IssueMessage w : warnings) {
+          messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.WARNING, w.getMessage(), null, w.getId()));
+        }
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INFORMATIONAL, ValidationMessage.IssueSeverity.INFORMATION,
+          "The expression returns " + (td == null || td.hasNoTypes() ? "nothing"
+            : (td.getCollectionStatus() == ExpressionNode.CollectionStatus.SINGLETON ? "a single " : "a collection of ") + td.describeMin()), null, null));
+      } catch (PathEngineException e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), e.getLocation(), null));
+      } catch (FHIRException e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, e.getMessage(), null, null));
+      } catch (RuntimeException | StackOverflowError e) {
+        messages.add(fhirPathIssue(ValidationMessage.IssueType.INVALID, ValidationMessage.IssueSeverity.ERROR, fhirPathFailure("checked", e), null, null));
+      }
+    }
+    return OperationOutcomeUtilities.createOutcome(messages);
+  }
+
+  /** the message for a parsing or checking failure that isn't a (reported) error in the expression */
+  private String fhirPathFailure(String what, Throwable e) {
+    if (e instanceof StackOverflowError) {
+      return "The expression could not be " + what + ": it is too complex";
+    }
+    return "The expression could not be " + what + ": " + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());
+  }
+
+  private ValidationMessage fhirPathIssue(ValidationMessage.IssueType type, ValidationMessage.IssueSeverity level, String message, SourceLocation location, String messageId) {
+    ValidationMessage vm = location == null
+      ? new ValidationMessage(ValidationMessage.Source.InstanceValidator, type, null, message, level)
+      : new ValidationMessage(ValidationMessage.Source.InstanceValidator, type, location.getLine(), location.getColumn(), null, message, level);
+    if (messageId != null) {
+      vm.setMessageId(messageId);
+    }
+    return vm;
   }
 
   public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
@@ -1227,8 +1335,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
-
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);
@@ -1410,8 +1516,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
+  /**
+   * @deprecated use {@link #setTerminologyServer(String, String, FhirPublication, String)} - true means
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
+   */
+  @Deprecated
   public String setTerminologyServer(String src, String log, FhirPublication version, boolean useEcosystem) throws FHIRException, URISyntaxException, IOException {
-    return connectToTSServer(src, log, version, useEcosystem);
+    return connectToTSServer(src, log, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(src) : null);
+  }
+
+  public String setTerminologyServer(String src, String log, FhirPublication version, String ecosystem) throws FHIRException, URISyntaxException, IOException {
+    return connectToTSServer(src, log, version, ecosystem);
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {
@@ -1911,29 +2026,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     defaultInstanceValidatorParameters.setBundleValidationRules(bundleValidationRules);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public boolean isCheckIPSCodes() {
-    return defaultInstanceValidatorParameters.isCheckIPSCodes();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setCheckIPSCodes(boolean checkIPSCodes) {
-    defaultInstanceValidatorParameters.setCheckIPSCodes(checkIPSCodes);
     return this;
   }
 

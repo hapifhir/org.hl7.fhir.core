@@ -851,6 +851,9 @@
     "uri" : "http://hl7.org/fhir/concept-properties",
     "version" : [{
       "code" : "5.0.0"
+    },
+    {
+      "code" : "6.0.1"
     }],
     "content" : "complete"
   },
@@ -858,6 +861,9 @@
     "uri" : "http://hl7.org/fhir/concept-property-type",
     "version" : [{
       "code" : "5.0.0"
+    },
+    {
+      "code" : "6.0.1"
     }],
     "content" : "complete"
   },
@@ -3348,7 +3354,7 @@
   {
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.82"
+      "code" : "2.83"
     },
     {
       "code" : "2.77"
@@ -3380,12 +3386,6 @@
     },
     {
       "code" : "http://snomed.info/sct/900000000000207008/version/20240201"
-    },
-    {
-      "code" : "http://snomed.info/sct/2011000195101/version/20230607"
-    },
-    {
-      "code" : "http://snomed.info/sct/554471000005108/version/20260331"
     },
     {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
@@ -3476,7 +3476,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/admit-source",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4120,7 +4120,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4181,9 +4181,16 @@
     "content" : "complete"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-clinical-impact",
     "version" : [{
       "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "version" : [{
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4929,7 +4936,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-type",
     "version" : [{
-      "code" : "3.0.1"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
@@ -5663,6 +5670,13 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-title-38-veteran-status-codes",
     "version" : [{
       "code" : "1.0.0"
     }],
@@ -10001,7 +10015,7 @@
   {
     "uri" : "http://www.whocc.no/atc",
     "version" : [{
-      "code" : "2025"
+      "code" : "2026"
     }],
     "content" : "complete"
   },
@@ -10237,7 +10251,8 @@
     },
     {
       "name" : "valueSetVersion"
-    }]
+    }],
+    "textFilter" : "On code systems loaded from files and packages, a text filter ignores case, and accents on Latin, Greek and Cyrillic letters. It matches concepts whose code, display, definition or a designation contains the text. A filter of several words also matches a display or designation in which each word starts a word, in any order; for this, punctuation and spaces only separate words. The closest matches come first. Other code systems, such as SNOMED CT, LOINC and RxNorm, match text in their own way."
   },
   "validateCode" : {
     "translations" : true
