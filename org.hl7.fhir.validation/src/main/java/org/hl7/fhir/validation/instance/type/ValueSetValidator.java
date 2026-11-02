@@ -215,7 +215,7 @@ public class ValueSetValidator extends BaseValidator {
       int i = 0;
       for (Element ext : vs.getExtensions(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         Element n = ext.getExtension("name");
-        if (n != null) {
+        if (n != null && n.getNamedChildValue("value") != null) {
           Element d = ext.getExtension("documentation");
           NodeStack estack = stack.push(ext, i, null, null);
           String name = n.getNamedChildValue("value");
@@ -963,7 +963,7 @@ public class ValueSetValidator extends BaseValidator {
     List<Element> result = new ArrayList<>();
     for (Element parameter : parameters) {
       String name = parameter.getNamedChildValue("name");
-      if (!name.startsWith("used-")) {
+      if (name == null || !name.startsWith("used-")) {
         result.add(parameter);
       }
     }
