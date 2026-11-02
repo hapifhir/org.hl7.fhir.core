@@ -1,8 +1,25 @@
+parameters:
+  - name: modulesToCache
+    type: object
+    default: []
+  - name: signArtifacts
+    type: boolean
+    default: false
+  # When true, the job depends on the detect_test_cases_branch job and, if it found a branch,
+  # builds and installs that branch of fhir-test-cases into the shared Maven cache.
+  - name: detectTestCasesBranch
+    type: boolean
+    default: false
+
 jobs:
   - job: setup
     displayName: Cache Maven Artifacts and Build Targets
     pool:
       vmImage: ubuntu-latest
+    ${{ if eq(parameters.detectTestCasesBranch, true) }}:
+      dependsOn: [ 'detect_test_cases_branch' ]
+      variables:
+        TEST_CASES_BRANCH: $[ dependencies.detect_test_cases_branch.outputs['detect.testCasesBranch'] ]
     steps:
       - checkout: self
         fetchDepth: 1
@@ -19,6 +36,25 @@ jobs:
         inputs:
           targetType: 'inline'
           script: mkdir -p $(MAVEN_CACHE_FOLDER); pwd; ls -al $(MAVEN_CACHE_FOLDER)
+      - ${{ if eq(parameters.detectTestCasesBranch, true) }}:
+        # Installs the linked fhir-test-cases branch into $(MAVEN_CACHE_FOLDER) before the core build, so this
+        # job and all later jobs restoring the same cache resolve it locally. The version used is still the one
+        # set by validator_test_case_version in pom.xml; aligning it with the branch is up to the PR submitter.
+        - bash: git clone --depth 1 --branch "${TEST_CASES_BRANCH}" https://github.com/FHIR/fhir-test-cases.git "$(Agent.TempDirectory)/fhir-test-cases"
+          displayName: Clone fhir-test-cases branch $(TEST_CASES_BRANCH)
+          condition: and(succeeded(), ne(variables['TEST_CASES_BRANCH'], ''))
+        - task: Maven@4
+          displayName: Build and install fhir-test-cases branch $(TEST_CASES_BRANCH)
+          condition: and(succeeded(), ne(variables['TEST_CASES_BRANCH'], ''))
+          inputs:
+            mavenPomFile: '$(Agent.TempDirectory)/fhir-test-cases/pom.xml'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
+            mavenOptions: '-Xmx1G'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '1.17'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'install'
       - ${{ if eq(parameters.signArtifacts, true) }}:
         - template: setup-signing-tasks-template.yml
       - task: Maven@4
