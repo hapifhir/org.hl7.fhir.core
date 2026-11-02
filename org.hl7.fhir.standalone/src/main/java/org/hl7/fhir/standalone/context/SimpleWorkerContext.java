@@ -45,7 +45,7 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.fml.StructureMap;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS;
 import org.hl7.fhir.model.fml.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.model.utilities.formats.IParser;
@@ -357,13 +357,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
-  public void connectToTSServer(ITerminologyClientFactoryN factory, org.hl7.fhir.services.client.ITerminologyClientN client, boolean useEcosystem) {
+  /**
+   * Connect to a terminology server. ecosystemUrl is the ecosystem coordination server
+   * (tx-reg) consulted to route requests to other servers - typically
+   * FhirSettings.getTxEcosystem() - or null to use the one server for everything
+   */
+  public void connectToTSServer(ITerminologyClientFactoryN factory, org.hl7.fhir.services.client.ITerminologyClientN client, String ecosystemUrl) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
     }
     try {
-      terminologyClientManager.setMasterClient(client, useEcosystem);
+      terminologyClientManager.setMasterClient(client, ecosystemUrl);
       txLog("Connect to "+client.getAddress());
     } catch (Exception e) {
       if (canRunWithoutTerminology) {
@@ -381,7 +386,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }      
   }
   
-  public void connectToTSServer(ITerminologyClientFactoryN factory, String address, String software, String log, boolean useEcosystem) {
+  /**
+   * Connect to a terminology server. ecosystemUrl is the ecosystem coordination server
+   * (tx-reg) consulted to route requests to other servers - typically
+   * FhirSettings.getTxEcosystem() - or null to use the one server for everything
+   */
+  public void connectToTSServer(ITerminologyClientFactoryN factory, String address, String software, String log, String ecosystemUrl) {
     try {
       terminologyClientManager.setFactory(factory);
       if (log != null) {
@@ -397,7 +407,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
-      connectToTSServer(factory, client, useEcosystem);
+      connectToTSServer(factory, client, ecosystemUrl);
       
     } catch (Exception e) {
       e.printStackTrace();
@@ -755,7 +765,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       boolean match = false;
       boolean ok = true;
       for (StructureMapStructureComponent t : map.getStructureList()) {
-        if (t.getMode() == StructureMapModelMode.SOURCE) {
+        if (t.getMode() == StructureMapModelModeVS.SOURCE) {
           match = match || t.getUrl().equals(url);
           ok = ok && t.getUrl().equals(url);
         }

@@ -369,7 +369,7 @@ public class StructureMap50_N {
       tgt.setElementElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N.convertString(src.getElementElement()));
     if (src.hasVariable())
       tgt.setVariableElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N.convertId(src.getVariableElement()));
-    for (org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode> t : src.getListModeList())
+    for (org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS> t : src.getListModeList())
       tgt.getListMode().add(convertStructureMapTargetListMode(t));
     if (src.hasListRuleId())
       tgt.setListRuleIdElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N.convertId(src.getListRuleIdElement()));
@@ -390,7 +390,27 @@ public class StructureMap50_N {
     return tgt;
   }
 
+  public static org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleDependentParameterComponent convertStructureMapGroupRuleDependentParameterComponent(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleDependentParameterComponent tgt = new org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleDependentParameterComponent();
+    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyBackboneElement(src, tgt);
+    if (src.hasValue())
+      tgt.setValue(ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().convertType(src.getValue()));
+    return tgt;
+  }
+
   public static org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent convertStructureMapGroupRuleTargetParameterComponent(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleTargetParameterComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
+    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyBackboneElement(src, tgt);
+    if (src.hasValue())
+      tgt.setValue(ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().convertType(src.getValue()));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent convertStructureMapGroupRuleDependentParameterComponent(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleDependentParameterComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
@@ -408,7 +428,7 @@ public class StructureMap50_N {
     if (src.hasName())
       tgt.setNameElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N.convertId(src.getNameElement()));
     for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter())
-      tgt.getParameterList().add(convertStructureMapGroupRuleTargetParameterComponent(t));
+      tgt.getParameterList().add(convertStructureMapGroupRuleDependentParameterComponent(t));
     return tgt;
   }
 
@@ -419,35 +439,35 @@ public class StructureMap50_N {
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N.convertId(src.getNameElement()));
-    for (org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameterList())
-      tgt.getParameter().add(convertStructureMapGroupRuleTargetParameterComponent(t));
+    for (org.hl7.fhir.model.fml.StructureMap.StructureMapGroupRuleDependentParameterComponent t : src.getParameterList())
+      tgt.getParameter().add(convertStructureMapGroupRuleDependentParameterComponent(t));
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode> convertStructureMapGroupTypeMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS> convertStructureMapGroupTypeMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case TYPES:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode.TYPES);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS.TYPES);
           break;
         case TYPEANDTYPES:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode.TYPEANDTYPES);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS.TYPEANDTYPES);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> convertStructureMapGroupTypeMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> convertStructureMapGroupTypeMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeModeEnumFactory());
@@ -470,30 +490,30 @@ public class StructureMap50_N {
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode> convertStructureMapInputMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS> convertStructureMapInputMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case SOURCE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode.SOURCE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS.SOURCE);
           break;
         case TARGET:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode.TARGET);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS.TARGET);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode> convertStructureMapInputMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode> convertStructureMapInputMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapInputModeEnumFactory());
@@ -516,36 +536,36 @@ public class StructureMap50_N {
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode> convertStructureMapModelMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS> convertStructureMapModelMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case SOURCE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode.SOURCE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS.SOURCE);
           break;
         case QUERIED:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode.QUERIED);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS.QUERIED);
           break;
         case TARGET:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode.TARGET);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS.TARGET);
           break;
         case PRODUCED:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode.PRODUCED);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS.PRODUCED);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode> convertStructureMapModelMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode> convertStructureMapModelMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapModelModeEnumFactory());
@@ -574,39 +594,39 @@ public class StructureMap50_N {
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode> convertStructureMapSourceListMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS> convertStructureMapSourceListMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case FIRST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.FIRST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.FIRST);
           break;
         case NOTFIRST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.NOTFIRST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.NOTFIRST);
           break;
         case LAST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.LAST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.LAST);
           break;
         case NOTLAST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.NOTLAST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.NOTLAST);
           break;
         case ONLYONE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.ONLYONE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.ONLYONE);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode> convertStructureMapSourceListMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode> convertStructureMapSourceListMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapSourceListModeVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListModeEnumFactory());
@@ -638,36 +658,36 @@ public class StructureMap50_N {
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode> convertStructureMapTargetListMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS> convertStructureMapTargetListMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case FIRST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode.FIRST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS.FIRST);
           break;
         case SHARE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode.SHARE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS.SHARE);
           break;
         case LAST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode.LAST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS.LAST);
           break;
         case SINGLE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode.SINGLE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS.SINGLE);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> convertStructureMapTargetListMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> convertStructureMapTargetListMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTargetListModeVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListModeEnumFactory());
@@ -696,75 +716,75 @@ public class StructureMap50_N {
     return tgt;
   }
 
-  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransform> convertStructureMapTransform(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTransform> src) throws FHIRException {
+  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS> convertStructureMapTransform(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTransform> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransform> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapTransformEnumFactory());
+    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVSEnumFactory());
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(null);
     } else {
       switch (src.getValue()) {
         case CREATE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.CREATE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.CREATE);
           break;
         case COPY:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.COPY);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.COPY);
           break;
         case TRUNCATE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.TRUNCATE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.TRUNCATE);
           break;
         case ESCAPE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.ESCAPE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.ESCAPE);
           break;
         case CAST:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.CAST);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.CAST);
           break;
         case APPEND:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.APPEND);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.APPEND);
           break;
         case TRANSLATE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.TRANSLATE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.TRANSLATE);
           break;
         case REFERENCE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.REFERENCE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.REFERENCE);
           break;
         case DATEOP:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.DATEOP);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.DATEOP);
           break;
         case UUID:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.UUID);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.UUID);
           break;
         case POINTER:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.POINTER);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.POINTER);
           break;
         case EVALUATE:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.EVALUATE);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.EVALUATE);
           break;
         case CC:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.CC);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.CC);
           break;
         case C:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.C);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.C);
           break;
         case QTY:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.QTY);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.QTY);
           break;
         case ID:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.ID);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.ID);
           break;
         case CP:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.CP);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.CP);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransform.NULL);
+          tgt.setValue(org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS.NULL);
           break;
       }
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTransform> convertStructureMapTransform(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransform> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTransform> convertStructureMapTransform(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapTransformVS> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTransform> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapTransformEnumFactory());

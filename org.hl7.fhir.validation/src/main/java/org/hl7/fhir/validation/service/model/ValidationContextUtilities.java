@@ -102,7 +102,6 @@ public class ValidationContextUtilities {
     validationContext.setProfiles(instanceValidatorParameters.getProfiles());
     validationContext.setDoImplicitFHIRPathStringConversion(instanceValidatorParameters.isDoImplicitFHIRPathStringConversion());
     validationContext.setAllowDoubleQuotesInFHIRPath(instanceValidatorParameters.isAllowDoubleQuotesInFHIRPath());
-    validationContext.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
     validationContext.setBundleValidationRules(new ArrayList<>(instanceValidatorParameters.getBundleValidationRules()));
     validationContext.setJurisdiction(instanceValidatorParameters.getJurisdiction());
   }
@@ -237,7 +236,6 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setProfiles(validationContext.getProfiles());
     instanceValidatorParameters.setDoImplicitFHIRPathStringConversion(validationContext.isDoImplicitFHIRPathStringConversion());
     instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(validationContext.isAllowDoubleQuotesInFHIRPath());
-    instanceValidatorParameters.setCheckIPSCodes(validationContext.isCheckIPSCodes());
     instanceValidatorParameters.setBundleValidationRules(new ArrayList<>(validationContext.getBundleValidationRules()));
     instanceValidatorParameters.setJurisdiction(validationContext.getJurisdiction());
     return instanceValidatorParameters;

@@ -45,7 +45,14 @@ public class ValidationEngineOptionsConvertor {
 
     String txServer = getTxServerFromOption(options);
     validationEngineParameters.setTxServer(txServer);
-    if (options.txServer != null) {
+    // the ecosystem is on by default, but nominating a terminology server turns it off
+    // (everything goes to that server) unless an ecosystem is nominated too; -tx n/a
+    // means no terminology at all, ecosystem included
+    if ("n/a".equals(options.ecosystem) || txServer == null) {
+      validationEngineParameters.setNoEcosystem(true);
+    } else if (options.ecosystem != null) {
+      validationEngineParameters.setEcosystem(options.ecosystem);
+    } else if (options.txServer != null) {
       validationEngineParameters.setNoEcosystem(true);
     }
 
