@@ -132,6 +132,18 @@ public interface IHostApplicationServices {
    */
   public Base findContainingResource(Object appContext, Base item);
 
+  /**
+   * Use the validator to test whether the item conformsTo the profile or IG identified in URL
+   *
+   * Note: the IG part is an extension to the definition in the FHIR specification
+   *
+   * @param engine - the engine that this call is on behalf of
+   * @param appContext - the appContext passed to the engine
+   * @param item - the item to be tested for conformance to the profile or IG
+   * @param url - the URL of the profile or IG
+   * @return
+   * @throws FHIRException
+   */
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException;
 
   /*

@@ -154,6 +154,8 @@ public class FHIRLexer {
           cursor++;
           while (cursor < source.length() && (source.charAt(cursor) != '"'))
             cursor++;
+          if (cursor == source.length())
+            throw error("Unterminated string");
           cursor++;
         } else
         while (cursor < source.length() && ((source.charAt(cursor) >= 'A' && source.charAt(cursor) <= 'Z') || (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z') || 
@@ -175,8 +177,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       } else if (ch == '{') {
         cursor++;
-        ch = source.charAt(cursor);
-        if (ch == '}')
+        if (cursor < source.length() && source.charAt(cursor) == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '"'){

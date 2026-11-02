@@ -150,7 +150,7 @@ public class FHIRLexer {
       char ch = source.charAt(cursor);
       if (ch == '!' || ch == '>' || ch == '<' || ch == ':' || ch == '-' || ch == '=')  {
         cursor++;
-        if (cursor < source.length() && (source.charAt(cursor) == '=' || source.charAt(cursor) == '~' || source.charAt(cursor) == '-') || (ch == '-' && source.charAt(cursor) == '>')) 
+        if (cursor < source.length() && (source.charAt(cursor) == '=' || source.charAt(cursor) == '~' || source.charAt(cursor) == '-') || (ch == '-' && cursor < source.length() && source.charAt(cursor) == '>')) 
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '.' ) {
@@ -180,6 +180,8 @@ public class FHIRLexer {
           cursor++;
           while (cursor < source.length() && (source.charAt(cursor) != '`'))
             cursor++;
+          if (cursor == source.length())
+            throw error("Unterminated string");
           cursor++;
         } else
         while (cursor < source.length() && ((source.charAt(cursor) >= 'A' && source.charAt(cursor) <= 'Z') || (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z') || 
@@ -203,8 +205,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       } else if (ch == '{') {
         cursor++;
-        ch = source.charAt(cursor);
-        if (ch == '}')
+        if (cursor < source.length() && source.charAt(cursor) == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '"' && allowDoubleQuotes) {
@@ -268,8 +269,7 @@ public class FHIRLexer {
         current = "`"+source.substring(currentStart+1, cursor-1)+"`";
       } else if (ch == '|' && liquidMode) {
         cursor++;
-        ch = source.charAt(cursor);
-        if (ch == '|')
+        if (cursor < source.length() && source.charAt(cursor) == '|')
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '@'){
@@ -307,13 +307,13 @@ public class FHIRLexer {
           commentLocation = currentLocation.copy();
         }
         int start = cursor+2;
-        while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
+        while (cursor < source.length() - 1 && (cursor < start || !"*/".equals(source.substring(cursor, cursor+2)))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
           cursor++;        
           currentLocation.incColumn();
         }
         if (cursor >= source.length() -1) {
-          error("Unfinished comment");
+          throw error("Unfinished comment");
         } else {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
@@ -499,7 +499,11 @@ public class FHIRLexer {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          String hex = s.substring(i, Math.min(i+4, s.length()-1));
+          if (hex.length() != 4 || !hex.chars().allMatch(c -> c < 128 && Character.digit(c, 16) >= 0)) {
+            throw error("Invalid FHIRPath unicode escape \\u"+hex);
+          }
+          int uc = Integer.parseInt(hex, 16);
           b.append(Character.toString(uc));
           i = i + 3;
           break;
@@ -516,52 +520,7 @@ public class FHIRLexer {
   }
   
   public String processFixedName(String s) throws FHIRLexerException {
-    StringBuilder b = new StringBuilder();
-    int i = 1;
-    while (i < s.length()-1) {
-      char ch = s.charAt(i);
-      if (ch == '\\') {
-        i++;
-        switch (s.charAt(i)) {
-        case 't': 
-          b.append('\t');
-          break;
-        case 'r':
-          b.append('\r');
-          break;
-        case 'n': 
-          b.append('\n');
-          break;
-        case 'f': 
-          b.append('\f');
-          break;
-        case '\'':
-          b.append('\'');
-          break;
-        case '"':
-          b.append('"');
-          break;
-        case '\\': 
-          b.append('\\');
-          break;
-        case '/': 
-          b.append('/');
-          break;
-        case 'u':
-          i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 32);
-          b.append(Character.toString(uc));
-          i = i + 4;
-          break;
-        default:
-          throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
-        }
-      } else {
-        b.append(ch);
-        i++;
-      }
-    }
-    return b.toString();
+    return processConstant(s);
   }
 
   public void skipToken(String token) throws FHIRLexerException {

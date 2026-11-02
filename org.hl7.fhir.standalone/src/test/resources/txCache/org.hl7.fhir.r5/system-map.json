@@ -1,47 +1,21 @@
 {
+  "registry" : "https://ecosystem.hl7.org/tx-reg",
   "systems" : [{
-    "system" : "http://loinc.org",
-    "url" : "http://loinc.org",
+    "system" : "http://cancer.questionnaire.org/system/code/yesno in en-AU",
+    "url" : "http://cancer.questionnaire.org/system/code/yesno",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5",
-    "http://tx.hl7europe.eu/r5",
-    "https://tx.hl7.cz/r5"]
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
   },
   {
-    "system" : "http://loinc.org in en, en-US",
-    "url" : "http://loinc.org",
-    "language" : "en, en-US",
+    "system" : "http://example.org/fhir/CodeSystem/flags in en, en-US",
+    "url" : "http://example.org/fhir/CodeSystem/flags",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5",
-    "http://tx.hl7europe.eu/r5",
-    "https://tx.hl7.cz/r5"]
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
   },
   {
-    "system" : "http://loinc.org in en-AU",
-    "url" : "http://loinc.org",
-    "language" : "en-AU",
+    "system" : "http://hl7.org/fhir/us/vrdr/CodeSystem/vrdr-document-section-cs in en, en-US",
+    "url" : "http://hl7.org/fhir/us/vrdr/CodeSystem/vrdr-document-section-cs",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5",
-    "http://tx.hl7europe.eu/r5",
-    "https://tx.hl7.cz/r5"]
-  },
-  {
-    "system" : "http://unitsofmeasure.org in en-AU",
-    "url" : "http://unitsofmeasure.org",
-    "language" : "en-AU",
-    "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5",
-    "http://tx.hl7europe.eu/r5",
-    "https://tx.hl7.cz/r5"]
-  },
-  {
-    "system" : "urn:ietf:bcp:47 in en-AU",
-    "url" : "urn:ietf:bcp:47",
-    "language" : "en-AU",
-    "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5",
-    "http://tx.hl7europe.eu/r5",
-    "https://term.tehik.ee/fhir",
-    "https://tx.hl7.cz/r5"]
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
   }]
 }

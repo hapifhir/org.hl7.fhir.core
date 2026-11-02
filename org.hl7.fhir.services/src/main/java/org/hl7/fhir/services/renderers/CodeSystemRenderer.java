@@ -123,7 +123,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean generateProperties(XhtmlNode x, CodeSystem cs) {
-    if (cs.hasProperty()) {
+    if (cs.hasProperty() && context.isCsProperties()) {
       boolean hasRendered = false;
       boolean hasURI = false;
       boolean hasDescription = false;
@@ -242,21 +242,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
     boolean isManual = false;
-    for (PropertyComponent cp : cs.getPropertyList()) {
-      if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
-        isManual = true;
-      }
-    }
-    for (PropertyComponent cp : cs.getPropertyList()) {
-      if (showPropertyInTable(cp, isManual)) {
-        boolean exists = false;
-        for (ConceptDefinitionComponent c : cs.getConceptList()) {
-          exists = exists || conceptsHaveProperty(c, cp);
+    if (context.isCsProperties()) {
+      for (PropertyComponent cp : cs.getPropertyList()) {
+        if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+          isManual = true;
         }
-        if (exists) {
-          properties.add(cp);
-          if ("status".equals(cp.getCode())) {
-            ignoreStatus = true;
+      }
+      for (PropertyComponent cp : cs.getPropertyList()) {
+        if (showPropertyInTable(cp, isManual)) {
+          boolean exists = false;
+          for (ConceptDefinitionComponent c : cs.getConceptList()) {
+            exists = exists || conceptsHaveProperty(c, cp);
+          }
+          if (exists) {
+            properties.add(cp);
+            if ("status".equals(cp.getCode())) {
+              ignoreStatus = true;
+            }
           }
         }
       }
@@ -570,7 +572,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
-        boolean nolink = !Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
+        boolean nolink = Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
         List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
