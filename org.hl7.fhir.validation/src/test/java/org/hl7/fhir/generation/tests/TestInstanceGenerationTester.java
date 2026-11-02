@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 @Slf4j
 class TestInstanceGenerationTester {
@@ -44,7 +45,7 @@ class TestInstanceGenerationTester {
   void testDataFactory() throws IOException, FHIRException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     SimpleWorkerContext context = new SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
-    context.connectToTSServer(new TerminologyClientNR4.TerminologyClientR4Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    context.connectToTSServer(new TerminologyClientNR4.TerminologyClientR4Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToRNLoader(context.getModelContext(),Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderRN(), context.getFHIRVersion()));
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToRNLoader(context.getModelContext(),Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),

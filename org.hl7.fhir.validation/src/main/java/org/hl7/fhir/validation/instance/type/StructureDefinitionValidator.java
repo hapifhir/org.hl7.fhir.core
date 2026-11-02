@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -102,6 +103,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
   }
 
+  // Base, and the R4 roots Element and Resource, are the only structures with no baseDefinition
+  private boolean isRootStructure(String url) {
+    return "http://hl7.org/fhir/StructureDefinition/Base".equals(url)
+      || "http://hl7.org/fhir/StructureDefinition/Element".equals(url)
+      || "http://hl7.org/fhir/StructureDefinition/Resource".equals(url);
+  }
+
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
 
@@ -131,6 +139,9 @@ public class StructureDefinitionValidator extends BaseValidator {
 
       sd = loadAsSD(src);
       ok = checkExtensionContext(errors, src, stack) && ok;
+      if (!isRootStructure(sd.getUrl())) {
+        ok = rule(errors, "2026-10-27", IssueType.REQUIRED, stack.getLiteralPath(), sd.hasBaseDefinition() && sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_BASE_AND_DERIVATION, sd.getUrl()) && ok;
+      }
 
       List<ElementDefinition> snapshot = sd.getSnapshot().getElementList();
       sd.setSnapshot(null);
@@ -898,6 +909,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
+    if (element.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE) && checkContentReferenceProfileHere(element, snapshot, diffById)) {
+      ok = validateContentReferenceProfile(errors, element, stack, sd, path) && ok;
+    }
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
@@ -1128,6 +1142,58 @@ public class StructureDefinitionValidator extends BaseValidator {
       ed = base.getSnapshot().getElementById(path);
     }
     return ed;
+  }
+
+  /**
+   * contentReferenceProfile is checked once for each distinct value on an element: on the differential
+   * element that states it, and on the snapshot element if it has a different or inherited value.
+   */
+  private boolean checkContentReferenceProfileHere(Element element, boolean snapshot, Map<String, Element> diffById) {
+    if (!snapshot) {
+      return true;
+    }
+    Element diff = diffById == null ? null : diffById.get(element.getNamedChildValue("id", false));
+    Element diffExtension = diff == null ? null : diff.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    return diffExtension == null || !Objects.equals(diffExtension.getNamedChildValue("value", false),
+        element.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE).getNamedChildValue("value", false));
+  }
+
+  /**
+   * The value is a canonical URL for a profile, followed by '#' and the id of an element in that profile.
+   * A value without the canonical is not resolved against this profile: it is an error, as are a profile
+   * or an element that cannot be found. The instance validator reports the same problems when it meets
+   * the element in an instance, but they are problems of the profile and belong here, reported once.
+   */
+  private boolean validateContentReferenceProfile(List<ValidationMessage> errors, Element element, NodeStack stack, StructureDefinition sd, String path) {
+    Element extension = element.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    NodeStack eStack = stack.push(extension, element.getChildrenByName("extension").indexOf(extension), null, null);
+    Element value = extension.getNamedChild("value", false);
+    String reference = value == null ? null : value.primitiveValue();
+    String id = element.getNamedChildValue("id", false);
+    if (id == null) {
+      id = path;
+    }
+    int separator = reference == null ? -1 : reference.indexOf('#');
+    if (separator <= 0 || separator == reference.length() - 1) {
+      return rule(errors, "2026-10-16", IssueType.INVALID, eStack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_INVALID, reference, id, sd.getVersionedUrl());
+    }
+    String url = reference.substring(0, separator);
+    StructureDefinition target;
+    if (url.equals(sd.getUrl()) || url.equals(sd.getVersionedUrl())) {
+      // the profile being validated is not necessarily in the context
+      target = sd;
+    } else {
+      target = context.fetchResource(StructureDefinition.class, url, ElementModelUtilities.getVersionResolutionRules(value));
+    }
+    if (target == null) {
+      return rule(errors, "2026-10-16", IssueType.NOTFOUND, eStack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE, reference, id, sd.getVersionedUrl(), url);
+    }
+    if (!target.hasSnapshot()) {
+      // nothing to look the element up in; a missing snapshot is reported elsewhere
+      return true;
+    }
+    String eid = reference.substring(separator + 1);
+    return rule(errors, "2026-10-16", IssueType.NOTFOUND, eStack, target.getSnapshot().getElementById(eid) != null, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT, reference, id, sd.getVersionedUrl(), eid, target.getVersionedUrl());
   }
 
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
@@ -1630,7 +1696,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       if (!without.isEmpty() && without.size() < typeCharacteristics.size()) {
-        warning(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
+        hint(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
       }
     }
   }
@@ -2034,43 +2100,14 @@ public class StructureDefinitionValidator extends BaseValidator {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p) && ok;
-        } else if (!VersionUtilities.isR5Plus(context.getFHIRVersion())) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || cu.isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
-  }
-
-  private boolean isCanonicalResource(String type) {
-    if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
-      return true;
-    }
-    return isCanonicalResource(context.fetchTypeDefinition(type), new HashSet<>());
-  }
-
-  private boolean isCanonicalResource(StructureDefinition sd, Set<String> visited) {
-    while (sd != null && visited.add(sd.getVersionedUrl())) {
-      if ("CanonicalResource".equals(sd.getType())) {
-        return true;
-      }
-      for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
-        String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
-        if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(implemented)) {
-          return true;
-        }
-        // an implemented interface such as MetadataResource can itself implement CanonicalResource
-        if (implemented != null && isCanonicalResource(context.fetchResource(StructureDefinition.class, implemented), visited)) {
-          return true;
-        }
-      }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
-    }
-    return false;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {

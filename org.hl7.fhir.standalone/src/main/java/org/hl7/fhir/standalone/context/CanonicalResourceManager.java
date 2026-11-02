@@ -158,6 +158,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private Map<String, List<CachedCanonicalResource<T>>> supplements; // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
 
+  // Core package resources that an hl7.terminology package also provides (see see()). hl7.terminology's
+  // copy is what a reference with no version gets, so these are not in any of the indexes above - but a
+  // reference that names one of their versions (url|5.0.0) can't mean anything else, so they are kept
+  // here, by url|version, and by url|major.minor, where hl7.terminology doesn't have that version itself
+  private Map<String, CachedCanonicalResource<T>> pinnedOnly = new HashMap<>();
+
 
   public CanonicalResourceManager(boolean enforceUniqueId, boolean minimalMemory) {
     super();
@@ -203,6 +209,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.supplements.entrySet()) {
       supplements.put(entry.getKey(), new ArrayList<>(entry.getValue()));
     }
+    pinnedOnly.clear();
+    pinnedOnly.putAll(source.pinnedOnly);
   }
 
   public boolean register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
@@ -257,6 +265,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       cr.resource.setSourcePackage(cr.getPackageInfo());
     }
 
+    // a core package resource whose url hl7.terminology already provides is only for a reference that
+    // names its version (see the special case logic for UTG below, for the other load order)
+    if (isBasePackage(cr.getPackageInfo()) && cr.getUrl() != null && thoProvides(cr.getUrl())) {
+      keepForPinnedReference(cr, null);
+      return false;
+    }
+
     // -- 3. deleting existing content ---------------------------------------------------------------
     if (enforceUniqueId && indexedResources.containsKey(cr.getId())) {
       drop(cr.getId());
@@ -267,7 +282,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     // in step - so look the url up instead of scanning. Scanning made each hl7.terminology package cost
     // O(resources already loaded), which is why the THO loads got slower the later they came: the vsac
     // packages ahead of them add ~70k ValueSets that can never match this url
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && cr.getUrl() != null) {
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().isTHO() && cr.getUrl() != null) {
       List<CachedCanonicalResource<T>> sameUrl = listForUrl.get(cr.getUrl());
       if (sameUrl != null) {
         List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
@@ -278,8 +293,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
         for (CachedCanonicalResource<T> n : toDrop) {
           drop(n);
+          keepForPinnedReference(n, cr);
         }
       }
+      // a version that hl7.terminology provides is hl7.terminology's
+      unpin(cr);
     }
 //    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
 //    if (existing != null) {
@@ -566,6 +584,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public void drop(String id) {
+    pinnedOnly.values().removeIf(cr -> id.equals(cr.getId()));
     if (enforceUniqueId) {
       CachedCanonicalResource<T> cr = indexedResources.get(id);
       if (cr != null) {
@@ -585,6 +604,93 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
       }
     }
+  }
+
+  private static boolean isTHOPackage(PackageInformation packageInfo) {
+    return packageInfo != null && packageInfo.getId() != null && packageInfo.getId().startsWith("hl7.terminology");
+  }
+
+  private boolean thoProvides(String url) {
+    List<CachedCanonicalResource<T>> list = listForUrl.get(url);
+    if (list != null) {
+      for (CachedCanonicalResource<T> t : list) {
+        if (isTHOPackage(t.getPackageInfo())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Keep a core package resource that hl7.terminology also provides, for a reference that names its
+   * version: by url|version, unless hl7.terminology has that version, and by url|major.minor, unless
+   * hl7.terminology has a version with that major.minor (the latest patch is kept)
+   *
+   * @param core the core package resource
+   * @param tho the hl7.terminology resource being added, if it isn't in listForUrl yet
+   */
+  private void keepForPinnedReference(CachedCanonicalResource<T> core, CachedCanonicalResource<T> tho) {
+    String url = core.getUrl();
+    String v = core.getVersion();
+    if (url == null || v == null) {
+      return;
+    }
+    Set<String> thoVersions = new HashSet<>();
+    List<CachedCanonicalResource<T>> list = listForUrl.get(url);
+    if (list != null) {
+      for (CachedCanonicalResource<T> t : list) {
+        if (isTHOPackage(t.getPackageInfo()) && t.getVersion() != null) {
+          thoVersions.add(t.getVersion());
+        }
+      }
+    }
+    if (tho != null && tho.getVersion() != null) {
+      thoVersions.add(tho.getVersion());
+    }
+    if (!thoVersions.contains(v)) {
+      pinnedOnly.put(url + "|" + v, core);
+    }
+    String mm = VersionUtilities.getMajMin(v);
+    if (mm != null && !mm.equals(v)) {
+      boolean thoHasMM = false;
+      for (String tv : thoVersions) {
+        if (mm.equals(VersionUtilities.getMajMin(tv))) {
+          thoHasMM = true;
+        }
+      }
+      CachedCanonicalResource<T> existing = pinnedOnly.get(url + "|" + mm);
+      if (!thoHasMM && (existing == null || compareByResourceVersion(existing.getVersion(), v) < 0)) {
+        pinnedOnly.put(url + "|" + mm, core);
+      }
+    }
+  }
+
+  /**
+   * hl7.terminology now provides this version (and major.minor) of the url, so it's no longer kept
+   * for a core package resource
+   */
+  private void unpin(CachedCanonicalResource<T> tho) {
+    if (pinnedOnly.isEmpty() || tho.getUrl() == null || tho.getVersion() == null) {
+      return;
+    }
+    pinnedOnly.remove(tho.getUrl() + "|" + tho.getVersion());
+    String mm = VersionUtilities.getMajMin(tho.getVersion());
+    if (mm != null) {
+      pinnedOnly.remove(tho.getUrl() + "|" + mm);
+    }
+  }
+
+  private CachedCanonicalResource<T> getPinned(String system, String version) {
+    return pinnedOnly.isEmpty() || version == null ? null : pinnedOnly.get(system + "|" + version);
+  }
+
+  private CachedCanonicalResource<T> getPinnedMajMin(String system, String version) {
+    if (pinnedOnly.isEmpty() || version == null) {
+      return null;
+    }
+    String mm = VersionUtilities.getMajMin(version);
+    return mm == null ? null : pinnedOnly.get(system + "|" + mm);
   }
 
   private boolean isBasePackage(PackageInformation packageInfo) {
@@ -625,13 +731,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public boolean has(String system, String version) {
-    if (indexedResources.containsKey(system+"|"+version))
-      return true;
-    String mm = VersionUtilities.getMajMin(version);
-    if (mm != null)
-      return indexedResources.containsKey(system+"|"+mm);
-    else
-      return false;
+    // shares resolve() with get() so the two can't disagree about which versions resolve (e.g. the
+    // major.minor fallback, which only applies to unlabelled semver versions), but doesn't load the resource
+    return resolve(system, version) != null;
   }
 
   public T get(String url) {
@@ -643,16 +745,28 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public T get(String system, String version) {
+    CachedCanonicalResource<T> cr = resolve(system, version);
+    return cr == null ? null : cr.getResource();
+  }
+
+  private CachedCanonicalResource<T> resolve(String system, String version) {
 
     if (version == null) {
-      return get(system);
+      CachedCanonicalResource<T> cr = masterDefinitions.get(system);
+      return cr != null ? cr : indexedResources.get(system);
     } else {
       if (indexedResources.containsKey(system+"|"+version))
-        return indexedResources.get(system+"|"+version).getResource();
+        return indexedResources.get(system+"|"+version);
+      CachedCanonicalResource<T> pinned = getPinned(system, version);
+      if (pinned != null)
+        return pinned;
       if (VersionUtilities.isSemVer(version, true) && !Utilities.containsInList(version, "+", "-")) {
         String mm = VersionUtilities.getMajMin(version);
         if (mm != null && indexedResources.containsKey(system + "|" + mm))
-          return indexedResources.get(system + "|" + mm).getResource();
+          return indexedResources.get(system + "|" + mm);
+        pinned = getPinnedMajMin(system, version);
+        if (pinned != null)
+          return pinned;
       }
       if (VersionUtilities.isSemVerWithWildcards(version)) {
         List<CachedCanonicalResource<T>> matches = new ArrayList<>();
@@ -667,7 +781,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           if (matches.size() > 1) {
             Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
           }
-          return matches.get(matches.size() - 1).getResource();
+          return matches.get(matches.size() - 1);
         }
       }
       return null;
@@ -727,8 +841,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
       if (indexedResources.containsKey(system+"|"+version))
         return indexedResources.get(system+"|"+version).getResource();
+      CachedCanonicalResource<T> pinned = getPinned(system, version);
+      if (pinned != null)
+        return pinned.getResource();
       if (mm != null && indexedResources.containsKey(system+"|"+mm))
         return indexedResources.get(system+"|"+mm).getResource();
+      pinned = getPinnedMajMin(system, version);
+      if (pinned != null)
+        return pinned.getResource();
       else {
         List<CachedCanonicalResource<T>> list = listForUrl.get(system);
         if (list != null) {
@@ -769,12 +889,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (version == null) {
       return exists(system);
     } else {
-      if (indexedResources.containsKey(system+"|"+version)) {
+      if (indexedResources.containsKey(system+"|"+version) || getPinned(system, version) != null) {
         return true;
       }
       if (VersionUtilities.isSemVer(version, true) && !Utilities.containsInList(version, "+", "-")) {
         String mm = VersionUtilities.getMajMin(version);
         if (mm != null && indexedResources.containsKey(system + "|" + mm)) {
+          return true;
+        }
+        if (getPinnedMajMin(system, version) != null) {
           return true;
         }
       }
@@ -815,10 +938,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           }
         }
       }
-      if (indexedResources.containsKey(system+"|"+version)) {
+      if (indexedResources.containsKey(system+"|"+version) || getPinned(system, version) != null) {
         return true;
       }
       if (mm != null && indexedResources.containsKey(system+"|"+mm)) {
+        return true;
+      }
+      if (getPinnedMajMin(system, version) != null) {
         return true;
       }
       List<CachedCanonicalResource<T>> list = listForUrl.get(system);
@@ -839,9 +965,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     } else {
       if (indexedResources.containsKey(system+"|"+version))
         return indexedResources.get(system+"|"+version).getPackageInfo();
+      CachedCanonicalResource<T> pinned = getPinned(system, version);
+      if (pinned != null)
+        return pinned.getPackageInfo();
       String mm = VersionUtilities.getMajMin(version);
       if (mm != null && indexedResources.containsKey(system+"|"+mm))
         return indexedResources.get(system+"|"+mm).getPackageInfo();
+      pinned = getPinnedMajMin(system, version);
+      if (pinned != null)
+        return pinned.getPackageInfo();
       else
         return null;
     }
@@ -916,6 +1048,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void clear() {
     allResources.clear();
     indexedResources.clear();
+    pinnedOnly.clear();
 
   }
 
@@ -941,6 +1074,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
       }
     }
+    // the core versions that are only there for a reference that names them are still versions of the url
+    for (CachedCanonicalResource<T> t : new HashSet<>(pinnedOnly.values())) {
+      if (url.equals(t.getUrl()) && !res.contains(t.getResource())) {
+        res.add(t.getResource());
+      }
+    }
     return res;
   }
 
@@ -961,6 +1100,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void unload() {
     for (CachedCanonicalResource<T> t : allResources) {
+      t.unload();
+    }
+    for (CachedCanonicalResource<T> t : pinnedOnly.values()) {
       t.unload();
     }
 

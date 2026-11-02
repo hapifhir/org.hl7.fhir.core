@@ -11,6 +11,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -1173,6 +1174,78 @@ class NPMPackageGeneratorTest {
 
       assertTrue(warnings.isEmpty(), warnings.toString());
     });
+  }
+
+  @Test
+  void examplePathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    assertEquals(100, ("package/examples/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    finish(generator);
+
+    assertTrue(generator.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/examples/QuestionnaireResponse-")));
+    assertTrue(generator.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        generator.getCreated().toString());
+  }
+
+  @Test
+  void folderPathOfExactlyOneHundredBytesIsShortened() throws IOException {
+    String name = "ImmunizationRecommendation-" + "x".repeat(60) + ".json";
+    assertEquals(100, ("package/" + name).getBytes(StandardCharsets.UTF_8).length);
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile("package", name,
+        "{\"resourceType\":\"ImmunizationRecommendation\",\"id\":\"x\"}".getBytes(StandardCharsets.UTF_8));
+    finish(generator);
+
+    assertTrue(generator.getCreated().stream()
+        .anyMatch(p -> p.startsWith("package/ImmunizationRecommendation-")));
+    assertTrue(generator.getCreated().stream().allMatch(p -> p.getBytes(StandardCharsets.UTF_8).length < 100),
+        generator.getCreated().toString());
+  }
+
+  @Test
+  void longNameIsShortenedTheSameWayEveryTime() throws IOException {
+    String name = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    NPMPackageGenerator first = new NPMPackageGenerator(destination(), rawPackage());
+    first.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    NPMPackageGenerator second = new NPMPackageGenerator(destination(), rawPackage());
+    second.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    assertEquals(first.getCreated(), second.getCreated());
+
+    // hasFile finds the shortened file, and adding it again doesn't add a second copy
+    assertTrue(first.hasFile(NPMPackageGenerator.Category.EXAMPLE, name));
+    int count = first.getCreated().size();
+    first.addFile(NPMPackageGenerator.Category.EXAMPLE, name, "{}".getBytes(StandardCharsets.UTF_8));
+    assertEquals(count, first.getCreated().size());
+    finish(first);
+    finish(second);
+  }
+
+  @Test
+  void shortenedNameKeepsTypeAndExtension() {
+    String name = "ValueSet-" + "x".repeat(100) + ".xml";
+    String shortName = NPMPackageGenerator.shortenForTar("package/", name);
+    assertTrue(shortName.startsWith("ValueSet-"), shortName);
+    assertTrue(shortName.endsWith(".xml"), shortName);
+    assertFalse(NPMPackageGenerator.tooLongForTar("package/" + shortName), shortName);
+  }
+
+  @Test
+  void shortenedNameWithoutTypePrefix() {
+    String name = "x".repeat(100) + ".json";
+    String shortName = NPMPackageGenerator.shortenForTar("package/", name);
+    assertEquals(32 + ".json".length(), shortName.length(), shortName);
+  }
+
+  @Test
+  void shortenedNameDropsTypePrefixInDeepFolder() {
+    String folder = "package/" + "f".repeat(50) + "/";
+    String name = "QuestionnaireResponse-" + "x".repeat(60) + ".json";
+    String shortName = NPMPackageGenerator.shortenForTar(folder, name);
+    assertFalse(shortName.startsWith("QuestionnaireResponse-"), shortName);
+    assertFalse(NPMPackageGenerator.tooLongForTar(folder + shortName), shortName);
   }
 
   private static GuideProbe guide() {
