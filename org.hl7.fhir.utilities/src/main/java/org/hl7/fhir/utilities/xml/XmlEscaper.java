@@ -1,11 +1,13 @@
 package org.hl7.fhir.utilities.xml;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -13,10 +15,10 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 public class XmlEscaper {
 
   private static final int BUFFER_SIZE = 8192;
-  private static final byte[] LT = "&lt;".getBytes(StandardCharsets.UTF_8);
-  private static final byte[] GT = "&gt;".getBytes(StandardCharsets.UTF_8);
-  private static final byte[] AMP = "&amp;".getBytes(StandardCharsets.UTF_8);
-  private static final byte[] QUOT = "&quot;".getBytes(StandardCharsets.UTF_8);
+  private static final char[] LT = "&lt;".toCharArray();
+  private static final char[] GT = "&gt;".toCharArray();
+  private static final char[] AMP = "&amp;".toCharArray();
+  private static final char[] QUOT = "&quot;".toCharArray();
 
   private InputStream source;
   private OutputStream target;
@@ -61,34 +63,41 @@ public class XmlEscaper {
   }
   
   public void process() throws IOException {
-    // read and write in blocks: the target is often a bare FileOutputStream, where writing a byte at
-    // a time means a system call for every character
-    BufferedReader buffer = new BufferedReader(new InputStreamReader(source));
+    // The source is UTF-8 (the IG publisher's JSON includes), so it is decoded as UTF-8 and the
+    // result is encoded as UTF-8: not the platform default charset, and not just the low byte of
+    // each char, which mangled everything above U+00FF.
+    // Read and write in blocks: the target is often a bare FileOutputStream, where writing a byte at
+    // a time means a system call for every character. The writer carries a surrogate pair that is
+    // split across two blocks over to the next write.
+    Reader reader = new InputStreamReader(source, StandardCharsets.UTF_8);
+    Writer writer = new OutputStreamWriter(target, StandardCharsets.UTF_8);
     char[] chars = new char[BUFFER_SIZE];
-    // an escape is at most 6 bytes
-    byte[] bytes = new byte[BUFFER_SIZE * 6];
+    // an escape is at most 6 chars
+    char[] out = new char[BUFFER_SIZE * 6];
     int n;
-    while ((n = buffer.read(chars)) != -1) {
+    while ((n = reader.read(chars)) != -1) {
       int len = 0;
       for (int j = 0; j < n; j++) {
         char c = chars[j];
         if (c == '<')
-          len = put(bytes, len, LT);
+          len = put(out, len, LT);
         else if (c == '>')
-          len = put(bytes, len, GT);
+          len = put(out, len, GT);
         else if (c == '&')
-          len = put(bytes, len, AMP);
+          len = put(out, len, AMP);
         else if (c == '"')
-          len = put(bytes, len, QUOT);
+          len = put(out, len, QUOT);
         else
-          bytes[len++] = (byte) c;
+          out[len++] = c;
       }
-      target.write(bytes, 0, len);
+      writer.write(out, 0, len);
     }
+    // flush, not close: the caller owns the target
+    writer.flush();
   }
 
-  private static int put(byte[] bytes, int len, byte[] escape) {
-    System.arraycopy(escape, 0, bytes, len, escape.length);
+  private static int put(char[] out, int len, char[] escape) {
+    System.arraycopy(escape, 0, out, len, escape.length);
     return len + escape.length;
   }
 

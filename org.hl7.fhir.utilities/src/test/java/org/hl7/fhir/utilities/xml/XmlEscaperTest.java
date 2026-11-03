@@ -3,14 +3,11 @@ package org.hl7.fhir.utilities.xml;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,25 +21,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class XmlEscaperTest {
 
-  /** The escaping as it was done before, one character and one write at a time. */
-  private static byte[] reference(byte[] input) throws IOException {
-    ByteArrayOutputStream target = new ByteArrayOutputStream();
-    BufferedReader buffer = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(input)));
-    int i;
-    while ((i = buffer.read()) != -1) {
-      char c = (char) i;
-      if (c == '<')
-        target.write("&lt;".getBytes(StandardCharsets.UTF_8));
-      else if (c == '>')
-        target.write("&gt;".getBytes(StandardCharsets.UTF_8));
-      else if (c == '&')
-        target.write("&amp;".getBytes(StandardCharsets.UTF_8));
-      else if (c == '"')
-        target.write("&quot;".getBytes(StandardCharsets.UTF_8));
-      else
-        target.write((byte) i);
-    }
-    return target.toByteArray();
+  /** What the escaping should produce: the UTF-8 input with the four characters escaped, as UTF-8. */
+  private static byte[] reference(String input) {
+    return input.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").getBytes(StandardCharsets.UTF_8);
   }
 
   private static byte[] escape(byte[] input) throws IOException {
@@ -71,19 +52,23 @@ class XmlEscaperTest {
       "plain text",
       "<Patient xmlns=\"http://hl7.org/fhir\"><id value=\"a&b\"/></Patient>",
       "\r\n\t  leading and trailing whitespace  \r\n",
-      // characters that aren't ASCII are written as their low byte, as before
+      // characters that aren't ASCII come out as the same UTF-8
       "naïve café – 日本語 😀",
       // escapes either side of the read block boundary
       repeat("a", 8191) + "<&>\"" + repeat("b", 8190) + "&",
+      // a surrogate pair split across the read block boundary
+      repeat("a", 8191) + "😀" + repeat("b", 100),
+      // and one whose escaped output straddles the writer's buffer
+      repeat("&", 1638) + "日本語😀" + repeat("<", 3000),
       repeat("<&\">", 40000),
       mixed.toString());
   }
 
   @ParameterizedTest
   @MethodSource("inputs")
-  void sameBytesAsEscapingOneCharacterAtATime(String input) throws IOException {
-    byte[] bytes = input.getBytes(Charset.defaultCharset());
-    assertArrayEquals(reference(bytes), escape(bytes));
+  void escapesAndKeepsUtf8(String input) throws IOException {
+    byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
+    assertArrayEquals(reference(input), escape(bytes));
   }
 
   // some of these are larger than the 8 KB output buffer and end with a write smaller than it, which
@@ -91,12 +76,12 @@ class XmlEscaperTest {
   @ParameterizedTest
   @MethodSource("inputs")
   void convertsFiles(String input, @TempDir Path dir) throws IOException {
-    byte[] bytes = input.getBytes(Charset.defaultCharset());
+    byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
     Path source = dir.resolve("source.txt");
     Path target = dir.resolve("target.txt");
     Files.write(source, bytes);
     XmlEscaper.convert(source.toString(), target.toString());
-    assertArrayEquals(reference(bytes), Files.readAllBytes(target));
+    assertArrayEquals(reference(input), Files.readAllBytes(target));
   }
 
   @Test
@@ -115,6 +100,8 @@ class XmlEscaperTest {
     };
     InputStream source = new ByteArrayInputStream(repeat("<text & more>", 100000).getBytes(StandardCharsets.UTF_8));
     XmlEscaper.convert(source, counting);
-    assertTrue(writes[0] < 200, "expected the output to be written in blocks, but there were " + writes[0] + " writes");
+    // 2.3 MB of output: one write per byte would be millions; the writer's buffer makes it a few hundred
+    // at most (how few depends on the JDK)
+    assertTrue(writes[0] < 1000, "expected the output to be written in blocks, but there were " + writes[0] + " writes");
   }
 }
