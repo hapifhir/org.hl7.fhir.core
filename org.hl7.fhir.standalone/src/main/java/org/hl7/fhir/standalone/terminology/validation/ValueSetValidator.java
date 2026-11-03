@@ -2284,6 +2284,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInCodeEquals(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.IN)
       return codeInList(f, code);
+    else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.NOTIN)
+      return !codeInList(f, code);
     else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
       return codeInPropertyFilter(cs, f, code);
     } else if (isKnownProperty(f.getProperty())) {

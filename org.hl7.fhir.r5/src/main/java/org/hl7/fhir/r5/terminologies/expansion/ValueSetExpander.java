@@ -1875,6 +1875,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
+    } else if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty())) && fc.getOp() == FilterOperator.NOTIN) {
+      // every code except the listed ones (comma separated). Their descendants are not excluded, so the
+      // result isn't a hierarchy
+      dwc.setCanBeHierarchy(false);
+      for (ConceptDefinitionComponent def : cs.getConcept()) {
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, new CodeListFilter(allErrors, fc.getValue()), filters, exp, Integer.MAX_VALUE);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new CodeListFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp, Integer.MAX_VALUE);
+        }
+      }
     } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
       // gg; note: wtf is this: if the filter is display=v, look up the code 'v', and see if it's display is 'v'?
       dwc.setCanBeHierarchy(false);
