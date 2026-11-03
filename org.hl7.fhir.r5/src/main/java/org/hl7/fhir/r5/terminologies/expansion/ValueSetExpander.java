@@ -139,11 +139,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     public String getCode() {
       return code;
     }
+    // a token with no system (designation=es) matches a use code from any system, or a language
     public boolean matches(Coding use) {
-      return system.equals(use.getSystem()) && code.equals(use.getCode());
+      return (system == null || system.equals(use.getSystem())) && code.equals(use.getCode());
     }
     public boolean matchesLang(String language) {
-      return system.equals("urn:ietf:bcp:47") && code.equals(language);
+      return (system == null || system.equals("urn:ietf:bcp:47")) && code.equals(language);
     }
   }
 
@@ -1023,11 +1024,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("designation".equals(name)) {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
+      // a token: system|code, or a bare code, which matches a designation's language, or its use
+      // code from any system (designation=es is the same as urn:ietf:bcp:47|es)
       String[] v = value.primitiveValue().split("\\|");
-      if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
+      if (v.length == 1 && !Utilities.noString(v[0])) {
+        this.designations.add(new Token(null, v[0]));
+      } else if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
         throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
+      } else {
+        this.designations.add(new Token(v[0], v[1]));
       }
-      this.designations.add(new Token(v[0], v[1]));
       focus.getExpansion().addParameter().setName(name).setValue(new StringType(value.primitiveValue()));
     }
     if ("offset".equals(name) && value instanceof IntegerType) {
@@ -1845,6 +1851,27 @@ public class ValueSetExpander extends ValueSetProcessBase {
             excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp, 0);
           } else {
             addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp, 0);
+          }
+        }
+      }
+    } else if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty())) && fc.getOp() == FilterOperator.IN) {
+      // the listed codes (comma separated) - those the code system has
+      dwc.setCanBeHierarchy(false);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] listed = fc.getValue().split("\\,");
+      for (String v : listed) {
+        ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), v.trim());
+        if (def != null && passesOtherFilters(filters, cs, def.getCode())) {
+          for (String code : getCodesForConcept(def, expParams)) {
+            opContext.deadCheck("processFilter-in");
+            if (exclude) {
+              excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
+            } else {
+              String vstatus = determineStatus(cs, def);
+              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+                imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, vstatus);
+            }
           }
         }
       }

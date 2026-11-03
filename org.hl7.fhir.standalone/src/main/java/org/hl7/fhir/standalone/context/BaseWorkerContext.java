@@ -855,6 +855,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
 
+      // one version of each supplement: the one asked for by version, else the latest
+      activeSupplements = CodeSystemUtilities.oneVersionEach(activeSupplements, specifiedSupplements);
       if (activeSupplements.size() > 0) {
         cs = CodeSystemUtilities.mergeSupplements(cs, activeSupplements);
       }

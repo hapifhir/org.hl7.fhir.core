@@ -837,7 +837,8 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   /**
-   * @return true if mergeSupplements has already merged this supplement into the code system
+   * @return true if mergeSupplements has already merged this supplement - or another version of it -
+   * into the code system: only one version of a supplement applies (see oneVersionEach)
    */
   public static boolean isSupplementMerged(CodeSystem cs, CodeSystem supplement) {
     String merged = cs.getUserString(UserDataNames.tx_known_supplements);
@@ -847,7 +848,41 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
     String[] mergedList = merged.split(",");
-    return Utilities.existsInList(supplement.getVersionedUrl(), mergedList);
+    for (String m : mergedList) {
+      if (m.equals(supplement.getVersionedUrl()) || m.equals(supplement.getUrl()) || m.startsWith(supplement.getUrl() + "|")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Only one version of a supplement applies. When more than one version is in scope (a server's own,
+   * and another passed with the request; or one named by a value set without a version, and another
+   * asked for by version), the one asked for by version (url|version in specified) is used, else the
+   * latest
+   *
+   * @param supplements the supplements in scope, possibly several versions of one
+   * @param specified the supplements asked for (url or url|version), or null
+   * @return the supplements, one version of each
+   */
+  public static List<CodeSystem> oneVersionEach(List<CodeSystem> supplements, List<String> specified) {
+    Map<String, CodeSystem> chosen = new LinkedHashMap<>();
+    for (CodeSystem sup : supplements) {
+      CodeSystem existing = chosen.get(sup.getUrl());
+      if (existing == null) {
+        chosen.put(sup.getUrl(), sup);
+      } else {
+        boolean supAsked = specified != null && sup.hasVersion() && specified.contains(sup.getVersionedUrl());
+        boolean existingAsked = specified != null && existing.hasVersion() && specified.contains(existing.getVersionedUrl());
+        if (supAsked && !existingAsked) {
+          chosen.put(sup.getUrl(), sup);
+        } else if (!existingAsked && VersionUtilities.compareVersionsGeneral(sup.getVersion(), existing.getVersion()) > 0) {
+          chosen.put(sup.getUrl(), sup);
+        }
+      }
+    }
+    return new ArrayList<>(chosen.values());
   }
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {

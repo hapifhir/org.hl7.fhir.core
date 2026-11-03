@@ -988,7 +988,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
               res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
               res.setErrorClass(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
             }
-          } else if (!inExpansion && !inInclude) {
+          } else if (!inExpansion && (!inInclude || excludedAsInactive(info))) {
+            // an inactive code that the value set lists is not in it when inactive codes are
+            // excluded (activeOnly, or compose.inactive = false): not in the value set, as for
+            // any other way of including it
             if (!info.isFragment()) {
               String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.hasUrl() ?
                 valueset.getVersionedUrl() : "(unidentified)", "'" + code.toString() + "'");
@@ -1159,6 +1162,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
   
     return false;    
+  }
+
+  private boolean excludedAsInactive(ValidationProcessInfo info) {
+    for (OperationOutcomeIssueComponent issue : info.getIssues()) {
+      if (I18nConstants.STATUS_CODE_WARNING_CODE.equals(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean checkInclude(Coding code) {
@@ -2280,6 +2292,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInRegexFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.EQUAL)
       return codeInCodeEquals(cs, f, code);
+    else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.IN)
+      return codeInList(f, code);
     else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
       return codeInPropertyFilter(cs, f, code);
     } else if (isKnownProperty(f.getProperty())) {
@@ -2408,10 +2422,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     case CHILDOF: return codeInConceptChildOfFilter(cs, f, code);
+    case IN: return codeInList(f, code);
+    case NOTIN: return !codeInList(f, code);
     default:
       log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
+  }
+
+  // concept in / code in: the code is one of the listed codes (comma separated)
+  private boolean codeInList(ConceptSetFilterComponent f, String code) {
+    if (f.getValue() == null || code == null) {
+      return false;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] listed = f.getValue().split("\\,");
+    for (String v : listed) {
+      if (code.equals(v.trim())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean codeInCodeEquals(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
