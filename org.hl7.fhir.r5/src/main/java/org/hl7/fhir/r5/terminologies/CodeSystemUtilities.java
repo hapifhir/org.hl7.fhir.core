@@ -898,7 +898,16 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       List<CodeSystem> merged = (List<CodeSystem>) cs.getUserData(UserDataNames.CS_SUPPLEMENT_LIST);
       all.addAll(merged);
     }
-    all.addAll(supplements);
+    // each supplement is merged once, however often it is asked for (e.g. a global supplement that a request
+    // also names), and not at all if cs already has it
+    List<CodeSystem> toMerge = new ArrayList<>();
+    for (CodeSystem sup : supplements) {
+      if (!listHasSupplement(all, sup)) {
+        all.add(sup);
+        toMerge.add(sup);
+      }
+    }
+    supplements = toMerge;
     ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, all);
     // readers (ValueSetValidator.resolveCodeSystem, ValueSetExpander) split this on "," alone, so the
     // separator must be a bare comma: the default ", " left every supplement after the first with a
@@ -959,10 +968,21 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
         }
       }
-      for (ConceptDefinitionComponent t : fdef.getConcept()) {
-        mergeSupplements(ret, t, supplements, supplementIndexes);
-      }      
     }
+    // the children once, with all the supplements (not once for each supplement, which merged each
+    // supplement's content into a child as many times as there are supplements, and more below that)
+    for (ConceptDefinitionComponent t : fdef.getConcept()) {
+      mergeSupplements(ret, t, supplements, supplementIndexes);
+    }
+  }
+
+  private static boolean listHasSupplement(List<CodeSystem> list, CodeSystem sup) {
+    for (CodeSystem c : list) {
+      if (c == sup || (c.hasUrl() && c.getVersionedUrl().equals(sup.getVersionedUrl()))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static PropertyType propertyTypeForType(DataType value) {

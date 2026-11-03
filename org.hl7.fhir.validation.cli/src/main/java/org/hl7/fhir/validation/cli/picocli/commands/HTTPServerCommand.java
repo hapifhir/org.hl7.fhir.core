@@ -78,6 +78,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   )
   private boolean txTests;
 
+  @CommandLine.Option(
+    names = {"-nonce"},
+    description = "A value the server returns in an X-Validator-Nonce header on every response, so that a program that starts the server can tell it from anything else answering on the port (a server left running by an earlier process, say). Letters, digits, '.', '-' and '_', up to 128 characters. Not a secret, and not authentication."
+  )
+  private String nonce;
+
   // The remaining parameters are processed as sources
   @CommandLine.Parameters(
     description = "Source file(s) to transform",
@@ -111,7 +117,8 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
         validationEngine,
         !allowNetworkAccess,
         txTests,
-        port
+        port,
+        nonce
       );
       service.startServer();
 

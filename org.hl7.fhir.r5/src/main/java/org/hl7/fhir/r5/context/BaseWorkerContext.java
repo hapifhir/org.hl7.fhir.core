@@ -831,10 +831,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
       List<CodeSystem> activeSupplements = new ArrayList<>();
       for (CodeSystem c : supplements) {
+        // a global supplement that the request also names is only added once
         if (CodeSystemUtilities.isGlobalSupplement(c)) {
           activeSupplements.add(c);
-        }
-        if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
+        } else if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
           activeSupplements.add(c);
         }
       }

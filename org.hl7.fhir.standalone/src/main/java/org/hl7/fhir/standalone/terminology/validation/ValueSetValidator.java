@@ -1350,15 +1350,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
         isDefaultLang = true;
       }
       if (isOkLanguage(ds.getLanguage())) {
-        b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
+        b.append("'"+ds.getValue()+"'"+(ds.hasLanguage() ? " ("+ds.getLanguage()+")" : ""));
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
           if (ds.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
             String dstatus = ds.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status");
             List<String> ok = new ArrayList<>();
             ok.add(cc.getDisplay());
             for (ConceptDefinitionDesignationComponent ds1 : cc.getDesignationList()) {
-              if (isOkLanguage(ds.getLanguage()) && !ds.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
-                ok.add(ds.getValue());
+              if (isOkLanguage(ds1.getLanguage()) && !ds1.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
+                ok.add(ds1.getValue());
               }
             }
             Collections.sort(ok);

@@ -34,6 +34,7 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | `<port>` | Port to listen on. Must be 1-65535; anything else exits with an error. |
 | `-allowNetworkAccess` | Bind to all interfaces instead of loopback only. See [Security](#security). |
 | `-txTests` | Turn on the [terminology ecosystem test](#terminology-ecosystem-tests-txtest) endpoints (`/txTest`). Off by default. |
+| `-nonce` | A value the server returns in an `X-Validator-Nonce` header on every response. See [Security](#security). |
 | `-version` | FHIR version to load (`4.0`, `4.3`, `5.0`, ...). If not given, it is inferred. |
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
 | `-tx` | Terminology server to use; `n/a` for no terminology server. Nominating a server turns the terminology ecosystem off unless `-ecosystem` is given too. |
@@ -75,6 +76,13 @@ server's temporary directory - a folder the caller can also name. That is what a
 and not something a public server should offer, so don't combine `-txTests` with
 `-allowNetworkAccess` unless the network is one you control. When the server is not bound to
 loopback, `/txTest` will only test servers configured in `fhir-settings.json` (a `403` otherwise).
+
+A program that starts the server as a child process (fhir-validator-wrapper, say) can pass a
+random `-nonce` (letters, digits, `.`, `-` and `_`, up to 128 characters), and check for it in the
+`X-Validator-Nonce` header before using what answers on the port. Then it doesn't mistake
+something else for the server it started - a server left running by an earlier process, or
+another user's process that has the port. The nonce is not a secret (it is on the command line)
+and it is not authentication: it only tells the program it has reached its own server.
 
 The server is intended for a closed environment - a build pipeline, or a developer's machine. If
 it has to be reachable from anywhere else, don't expose it directly: put it behind nginx (or an

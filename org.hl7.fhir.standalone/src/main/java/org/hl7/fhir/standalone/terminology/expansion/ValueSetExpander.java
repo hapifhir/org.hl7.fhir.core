@@ -1705,6 +1705,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
           addExampleWarning(exp, cs);
         }
+        if (!CodeSystemUtilities.getReservedCodeSpaces(cs).isEmpty()) {
+          addReservedCodeSpaceWarning(exp, cs);
+        }
       }
 
       if (!inc.getConceptList().isEmpty()) {
@@ -1916,6 +1919,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
       exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED, new BooleanType(true));
       exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED_REASON, new StringType("This extension is based on a fragment of the code system "+cs.getUrl()));
 
+    }
+  }
+
+  // a code system that reserves code spaces for users to define their own codes (codesystem-reservedCodeSpace) has
+  // members that an expansion of all of it can't list - $validate-code accepts them - so the expansion isn't closed
+  private void addReservedCodeSpaceWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
+    if (!exp.hasExtension(ExtensionDefinitions.EXT_UNCLOSED)) {
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED, new BooleanType(true));
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED_REASON, new StringType("The code system '"+cs.getUrl()+"' reserves code spaces for users to define their own codes, and those codes are not in the expansion"));
     }
   }
 
