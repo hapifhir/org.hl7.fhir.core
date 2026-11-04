@@ -1722,6 +1722,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return false;
     }
     if (vsi.hasSystem()) {
+      checkSystemKnownForInference(code, vsi);
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
         String uuid = dummyValueSetUrl(vsi);
@@ -1804,6 +1805,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return false;
+  }
+
+  /**
+   * The system can only be inferred from all of the value set: if an include names a code system that isn't known,
+   * the code might be in it, so the request can't be answered (an error, not a validation result)
+   */
+  private void checkSystemKnownForInference(String code, ConceptSetComponent vsi) {
+    if (context.isNoTerminologyServer() && CodeSystemProvider.factory(vsi.getSystem()) == null && !"urn:ietf:bcp:13".equals(vsi.getSystem())
+        && resolveCodeSystem(vsi.getSystem(), vsi.getVersion(), vsi, valueset) == null) {
+      String url = vsi.hasVersion() ? vsi.getSystem() + "|" + vsi.getVersion() : vsi.getSystem();
+      String msg = context.formatMessage(I18nConstants.UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), url);
+      throw new VSCheckerException(msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, msg, OpIssueCode.NotFound, null,
+        I18nConstants.UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM), TerminologyServiceErrorClass.INTERNAL_ERROR);
+    }
   }
 
   private String filterSummary(ConceptSetComponent vsi) {

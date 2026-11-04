@@ -1125,6 +1125,8 @@ public class I18nConstants {
   public static final String UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__ = "Unable_to_handle_system__filter_with_property__";
   public static final String UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__ = "UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__";
   public static final String UNABLE_TO_INFER_CODESYSTEM = "UNABLE_TO_INFER_CODESYSTEM";
+  public static final String UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM = "UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM";
+  public static final String VALUESET_MODIFIER_EXTENSION_UNKNOWN = "VALUESET_MODIFIER_EXTENSION_UNKNOWN";
   public static final String UNABLE_TO_LOCATE_THE_PROFILE__IN_ORDER_TO_VALIDATE_AGAINST_IT = "Unable_to_locate_the_profile__in_order_to_validate_against_it";
   public static final String UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___ = "Unable_to_process_request_for_resource_for___";
   public static final String UNABLE_TO_RESOLVE_ = "Unable_to_resolve_";

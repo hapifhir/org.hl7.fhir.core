@@ -686,7 +686,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException {
     opContext.deadCheck("excludeCodes");
-    exc.checkNoModifiers("Compose.exclude", "expanding");
+    checkUnknownModifiers(exc, vspath);
+    for (int i = 0; i < exc.getFilterList().size(); i++) {
+      checkUnknownModifiers(exc.getFilterList().get(i), vspath + ".filter[" + i + "]");
+    }
     if (!excludeSpecialCase && exc.hasSystem() && exc.getConceptList().size() == 0 && exc.getFilterList().size() == 0 && exc.getValueSetList().size() == 0) {
       wc.getExcludeSystems().add(exc.getSystem());
       return;
@@ -1164,6 +1167,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return null;
   }
 
+  /**
+   * A modifier extension changes the meaning of what it's on: one this expander doesn't know means the value set
+   * can't be expanded - a problem with the value set (a 4xx), not with the server
+   */
+  private void checkUnknownModifiers(BackboneElement e, String path) {
+    if (e.hasModifierExtension()) {
+      String urls = e.getModifierExtension().stream().map(Extension::getUrl).distinct().collect(java.util.stream.Collectors.joining(", "));
+      String msg = context.formatMessage(I18nConstants.VALUESET_MODIFIER_EXTENSION_UNKNOWN, focus == null ? "" : focus.getVersionedUrl(), path, urls);
+      List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.BUSINESSRULE, path, msg, OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_MODIFIER_EXTENSION_UNKNOWN));
+      throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
+    }
+  }
+
   private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
       throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
@@ -1448,7 +1465,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     opContext.deadCheck("includeCodes");
-    inc.checkNoModifiers("Compose.include", "expanding");
+    checkUnknownModifiers(inc, vspath);
+    for (int i = 0; i < inc.getFilterList().size(); i++) {
+      checkUnknownModifiers(inc.getFilterList().get(i), vspath + ".filter[" + i + "]");
+    }
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (CanonicalType imp : inc.getValueSetList()) {
       imports.add(importValueSet(dwc, imp.getValue(), imp, exp, expParams, noInactive, valueSet));
