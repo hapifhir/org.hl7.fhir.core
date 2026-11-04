@@ -328,7 +328,10 @@ org.hl7.fhir.validation/src/test/java/org/hl7/fhir/terminology/tests/LocalTermin
 *.cache*.tmp
 
 release-notes-next.md
-
 claude/
-
 Claude outputs/
+# Claude Code: personal settings and local state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/review-state/
+.claude/agent-memory-local/

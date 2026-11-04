@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git show:*)",
+      "Bash(git merge-base:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git fetch:*)",
+      "Bash(git worktree add --detach:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh search code:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/require-pre-pr-review.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
