@@ -645,6 +645,10 @@ public class JsonParser extends ParserBase {
           if (arr2 != null && arr2.isExtraComma()) {
             logError(errors, "2022-11-26", arr2.getEnd().getLine(), arr2.getEnd().getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_COMMA_EXTRA, "Array"), IssueSeverity.ERROR);
           }
+          JsonArray empty = arr1 != null && arr1.size() == 0 ? arr1 : arr2 != null && arr2.size() == 0 ? arr2 : null;
+          if (empty != null && !property.canBeEmpty() && emptyArraysForbidden()) {
+            logError(errors, ValidationMessage.NO_RULE_DATE, line(empty), col(empty), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);
+          }
 
           for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
             JsonElement m = arrI(arr1, i);
@@ -669,6 +673,17 @@ public class JsonParser extends ParserBase {
         parseChildPrimitiveInstance(errors, element, property, name, isJsonName, npath, fpath, main == null ? null : main.getValue(), fork == null ? null : fork.getValue());
       }
     }
+  }
+
+  /**
+   * The JSON format of DSTU2, STU3, R4 and R4B says "JSON objects and arrays are never empty" (json.html, "Comparison
+   * with XML"). R5 dropped the sentence: a shorter "_element" array is padded with nulls, and an array with only null
+   * elements SHOULD be omitted. So an empty array of a primitive (or of its "_element") is an error only in those
+   * versions. (Complex elements are checked in parseChildComplex in every version.)
+   */
+  private boolean emptyArraysForbidden() {
+    String v = context.getFHIRVersion();
+    return VersionUtilities.isR2Ver(v) || VersionUtilities.isR2BVer(v) || VersionUtilities.isR3Ver(v) || VersionUtilities.isR4Ver(v) || VersionUtilities.isR4BVer(v);
   }
 
   private JsonElement arrI(JsonArray arr, int i) {
