@@ -353,7 +353,7 @@ public class StructureMapValidator extends BaseValidator {
     List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
     for (Element import_ : imports) {
-      ok = validateImport(errors, src, import_, stack.push(import_, cc, null, null)) && ok;
+      ok = validateImport(errors, src, import_, stack.push(import_, cc, null, null), cc) && ok;
       cc++;
     }
     
@@ -448,8 +448,13 @@ public class StructureMapValidator extends BaseValidator {
     return true;
   }
 
-  private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack) {
+  private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack, int index) {
     String url = import_.primitiveValue();
+    if (url == null) {
+      // an import item with no value (e.g. only extensions) names no map to resolve
+      warning(errors, "2026-10-31", IssueType.STRUCTURE, import_.line(), import_.col(), stack.getLiteralPath(), false, I18nConstants.SM_IMPORT_NO_VALUE, index);
+      return true;
+    }
     boolean ok = false;
     StructureMap map = context.fetchResource(StructureMap.class, url, ElementModelUtilities.getVersionResolutionRules(import_));
     if (map != null) {
