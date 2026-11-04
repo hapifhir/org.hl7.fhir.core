@@ -203,7 +203,7 @@ public abstract class ParserBase {
   	      return baseSd;
   	    }
   	  }
-  	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+  	  for (StructureDefinition sd : context.fetchSpecializations()) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
           if(name.equals(type) && (ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
@@ -253,13 +253,13 @@ public abstract class ParserBase {
 	    contextUtilities.generateSnapshot(base); 
 	    return base;
 	  }
-    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+    for (StructureDefinition sd : context.fetchSpecializations()) {
       if (name.equals(sd.getTypeName()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         contextUtilities.generateSnapshot(sd); 
         return sd;
       }
     }
-    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+    for (StructureDefinition sd : context.fetchSpecializations()) {
       if (name.equals(sd.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         contextUtilities.generateSnapshot(sd); 
         return sd;

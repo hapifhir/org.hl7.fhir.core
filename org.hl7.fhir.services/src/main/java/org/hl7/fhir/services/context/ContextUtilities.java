@@ -152,7 +152,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    */
   public List<String> getTypeNames() {
     Set<String> result = new HashSet<String>();
-    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+    for (StructureDefinition sd : context.fetchSpecializations()) {
       if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
         result.add(sd.getName());
     }
@@ -165,7 +165,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    */
   public Set<String> getTypeNameSet() {
     Set<String> result = new HashSet<String>();
-    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+    for (StructureDefinition sd : context.fetchSpecializations()) {
       if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION &&
         VersionUtilities.versionMatches(context.getFHIRVersion(), sd.getFhirVersion().toCode())) {
         result.add(sd.getName());
