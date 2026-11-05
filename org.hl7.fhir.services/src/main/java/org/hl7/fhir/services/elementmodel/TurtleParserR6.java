@@ -41,9 +41,15 @@ import org.hl7.fhir.utilities.turtle.Turtle.Subject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 public class TurtleParserR6 extends TurtleParserBase {
+
+  @SuppressWarnings("checkstyle:patternUsage")
+  private static final Pattern SCHEME_PATTERN = Pattern.compile("[A-Za-z][A-Za-z0-9+.-]*:.*");
+  @SuppressWarnings("checkstyle:patternUsage")
+  private static final Pattern SIMPLE_LOCAL_NAME_PATTERN = Pattern.compile("[A-Za-z0-9_][A-Za-z0-9_-]*");
 
   private final Map<String, TurtleConceptIri> conceptIriCache = new HashMap<>();
   private boolean deriveConceptIriFromNamingSystem;
@@ -76,13 +82,15 @@ public class TurtleParserR6 extends TurtleParserBase {
     } else return null;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
   private static boolean hasScheme(String ref) {
-    return ref.matches("[A-Za-z][A-Za-z0-9+.-]*:.*");
+    return SCHEME_PATTERN.matcher(ref).matches();
   }
 
   // Only a safe ASCII subset of Turtle's PN_LOCAL can follow "fhir:"
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
   private static boolean isSimpleLocalName(String ref) {
-    return ref.matches("[A-Za-z0-9_][A-Za-z0-9_-]*");
+    return SIMPLE_LOCAL_NAME_PATTERN.matcher(ref).matches();
   }
 
   @Override
