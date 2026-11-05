@@ -844,7 +844,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
     CodeSystem cs = fetchCodeSystem(system, rules, version, sourceOfReference);
     if (cs != null) {
-      List<CodeSystem> supplements = codeSystems.getSupplements(cs);
+      List<CodeSystem> supplements = new ArrayList<>(codeSystems.getSupplements(cs));
+      // getSupplements prefers supplements from the code system's own package, and only looks in other packages
+      // when there are none there. A supplement asked for by version is a candidate wherever it comes from, so
+      // that oneVersionEach can choose it over a version of the same supplement in the code system's package
+      if (specifiedSupplements != null) {
+        for (String s : specifiedSupplements) {
+          if (s.contains("|") && !hasSupplementVersion(supplements, s)) {
+            CodeSystem scs = fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
+            if (scs != null && s.equals(scs.getVersionedUrl()) && CodeSystemUtilities.supplementApplies(scs, cs)) {
+              supplements.add(scs);
+            }
+          }
+        }
+      }
       List<CodeSystem> activeSupplements = new ArrayList<>();
       for (CodeSystem c : supplements) {
         // a global supplement that the request also names is only added once
@@ -862,6 +875,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     return cs;
+  }
+
+  private boolean hasSupplementVersion(List<CodeSystem> supplements, String versionedUrl) {
+    for (CodeSystem c : supplements) {
+      if (versionedUrl.equals(c.getVersionedUrl())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override

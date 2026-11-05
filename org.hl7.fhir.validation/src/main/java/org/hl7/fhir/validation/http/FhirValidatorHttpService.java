@@ -67,9 +67,23 @@ public class FhirValidatorHttpService {
     this(validationEngine, loopBackOnly, txTestsEnabled, port, null);
   }
 
-  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port, String nonce) {
+  /**
+   * Checks a nonce before anything expensive is done with it (the CLI calls this before it loads
+   * the validation engine).
+   *
+   * @return null if the nonce is acceptable or absent, otherwise a message saying what is wrong with it
+   */
+  public static String checkNonce(String nonce) {
     if (nonce != null && !NONCE_PATTERN.matcher(nonce).matches()) {
-      throw new IllegalArgumentException("The nonce may contain only letters, digits, '.', '-' and '_', and be up to 128 characters long");
+      return "The nonce may contain only letters, digits, '.', '-' and '_', and be up to 128 characters long";
+    }
+    return null;
+  }
+
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port, String nonce) {
+    String nonceProblem = checkNonce(nonce);
+    if (nonceProblem != null) {
+      throw new IllegalArgumentException(nonceProblem);
     }
     this.validationEngine = validationEngine;
     this.loopbackOnly = loopBackOnly;
@@ -116,6 +130,8 @@ public class FhirValidatorHttpService {
     addContext("/redoc", new DocsHTTPHandler(context, DocsHTTPHandler.REDOC_HTML));
     addContext("/txTest", new TxTestHTTPHandler(context, this));
     addContext("/stop", new StopHTTPHandler(context, this));
+    // anything that none of the above match: an explicit 404 rather than the server's default, so it gets the nonce too
+    addContext("/", new NotFoundHTTPHandler(context));
 
     // Start the server
     server.setExecutor(null); // Use default executor

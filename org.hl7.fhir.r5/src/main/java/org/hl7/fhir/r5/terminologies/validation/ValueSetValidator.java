@@ -2259,7 +2259,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
 
       List<ConceptDefinitionComponent> list = cs.getConcept();
-      ok = validateCodeInConceptList(code, cs, list, allAltCodes, excluding);
+      ok = validateCodeInConceptList(code, cs, list, allAltCodes, excluding) || isReservedCodeMember(cs, vsi, code);
       if (ok && vsi.hasConcept()) {
         for (ConceptReferenceComponent cc : vsi.getConcept()) {
           if (cc.getCode().equals(code)) {
@@ -2277,7 +2277,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       } else {
         // recheck that this is a valid alternate code
-        ok = validateCodeInConceptList(code, cs, list, altCodeParams, excluding);
+        ok = validateCodeInConceptList(code, cs, list, altCodeParams, excluding) || isReservedCodeMember(cs, vsi, code);
         return ok;
       }
     }
@@ -2290,6 +2290,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else {
       return false;
     }
+  }
+
+  /**
+   * A code in a code space the code system reserves for users to define their own codes
+   * (codesystem-reservedCodeSpace) isn't one of its concepts, but it is a member of an include of all of the
+   * code system (which is why the expansion of one is marked unclosed), and of an include that lists it (the
+   * expansion lists it). A filter never selects one: reserved codes have no hierarchy or properties, and the
+   * expander doesn't include them either.
+   */
+  private boolean isReservedCodeMember(CodeSystem cs, ConceptSetComponent vsi, String code) {
+    return !vsi.hasFilter() && !cs.hasUserData(UserDataNames.tx_cs_special) && CodeSystemUtilities.isInReservedCodeSpace(cs, code);
   }
 
   private boolean codeInFilter(CodeSystem cs, String path, String system, ConceptSetFilterComponent f, String code) throws FHIRException {

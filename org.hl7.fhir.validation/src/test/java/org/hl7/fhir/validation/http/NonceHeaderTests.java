@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.http;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,7 +44,7 @@ class NonceHeaderTests {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "GET /validateResource", "GET /txTest", "GET /openapi.json", "GET /stop" })
+  @ValueSource(strings = { "GET /validateResource", "GET /txTest", "GET /openapi.json", "GET /stop", "GET /nope", "GET /" })
   void everyResponseCarriesTheNonce(String call) throws Exception {
     FhirValidatorHttpService service = new FhirValidatorHttpService(engine(), true, false, PORT, "a1b2-c3.d4_e5");
     service.startServer();
@@ -50,6 +52,17 @@ class NonceHeaderTests {
       String[] parts = call.split(" ");
       HttpResponse<String> res = send(parts[0], parts[1]);
       assertEquals("a1b2-c3.d4_e5", res.headers().firstValue(FhirValidatorHttpService.NONCE_HEADER).orElse(null), call + " -> " + res.statusCode());
+    } finally {
+      service.stop();
+    }
+  }
+
+  @Test
+  void unknownPathIsA404() throws Exception {
+    FhirValidatorHttpService service = new FhirValidatorHttpService(engine(), true, false, PORT, "a1b2-c3.d4_e5");
+    service.startServer();
+    try {
+      assertEquals(404, send("GET", "/nope").statusCode());
     } finally {
       service.stop();
     }
@@ -77,5 +90,23 @@ class NonceHeaderTests {
   @Test
   void refusesANonceThatIsTooLong() {
     assertThrows(IllegalArgumentException.class, () -> new FhirValidatorHttpService(engine(), true, false, PORT, "x".repeat(129)));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "", "has space", "line\r\nX-Injected: 1", "a/b" })
+  void checkNonceReportsANonceThatIsNotSimple(String nonce) {
+    assertNotNull(FhirValidatorHttpService.checkNonce(nonce));
+  }
+
+  @Test
+  void checkNonceLengthLimit() {
+    assertNull(FhirValidatorHttpService.checkNonce("x".repeat(128)));
+    assertNotNull(FhirValidatorHttpService.checkNonce("x".repeat(129)));
+  }
+
+  @Test
+  void checkNonceAcceptsASimpleNonceOrNone() {
+    assertNull(FhirValidatorHttpService.checkNonce("a1b2-c3.d4_e5"));
+    assertNull(FhirValidatorHttpService.checkNonce(null));
   }
 }

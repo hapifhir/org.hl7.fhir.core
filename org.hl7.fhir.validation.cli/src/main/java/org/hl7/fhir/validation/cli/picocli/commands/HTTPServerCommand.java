@@ -109,8 +109,6 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   protected Integer call(@Nonnull ValidationService validationService,
                         @Nonnull ValidationEngine validationEngine) {
     try {
-      validateServerParameters();
-
       validationEngine.setLogValidationProgress(false);
 
       FhirValidatorHttpService service = new FhirValidatorHttpService(
@@ -139,11 +137,11 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
     }
   }
 
-  private void validateServerParameters() {
-    // Validate port number
+  @Override
+  protected String checkParameters() {
     if (port <= 0 || port > 65535) {
-      log.error("Invalid port number: {}. Port must be between 1 and 65535.", port);
-      System.exit(1);
+      return "Invalid port number: " + port + ". Port must be between 1 and 65535.";
     }
+    return FhirValidatorHttpService.checkNonce(nonce);
   }
 }
