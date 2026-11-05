@@ -40,6 +40,14 @@ public class FhirValidatorHttpService {
    */
   @Getter
   private final boolean txTestsEnabled;
+  /**
+   * -- GETTER --
+   *  Whether /canonical may find and load the package that defines a canonical resource the
+   *  engine doesn't know yet. That has a caller make the server download packages and load them
+   *  into the shared engine, permanently, so it is off unless asked for at start up.
+   */
+  @Getter
+  private final boolean autoLoadPackages;
   private final int port;
 
   /** The response header that carries the nonce. */
@@ -89,6 +97,10 @@ public class FhirValidatorHttpService {
   }
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port, String nonce) {
+    this(validationEngine, loopBackOnly, txTestsEnabled, false, port, nonce);
+  }
+
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, boolean autoLoadPackages, int port, String nonce) {
     String nonceProblem = checkNonce(nonce);
     if (nonceProblem != null) {
       throw new IllegalArgumentException(nonceProblem);
@@ -96,6 +108,7 @@ public class FhirValidatorHttpService {
     this.validationEngine = validationEngine;
     this.loopbackOnly = loopBackOnly;
     this.txTestsEnabled = txTestsEnabled;
+    this.autoLoadPackages = autoLoadPackages;
     this.port = port;
     this.nonce = nonce;
     ResourcePercentageLogger.setLoggingSuppressed(true);
@@ -115,6 +128,9 @@ public class FhirValidatorHttpService {
     }
     if (txTestsEnabled && !loopbackOnly) {
       log.warn("The terminology test endpoints (/txTest) are on, and the server is reachable from the network: callers can run tests against the servers configured in fhir-settings and write output files to this machine's temporary directory. They are intended for a build pipeline, not a public server.");
+    }
+    if (autoLoadPackages && !loopbackOnly) {
+      log.warn("Package auto-loading (/canonical) is on, and the server is reachable from the network: callers can make this server download packages and load them into the engine every request uses.");
     }
     server = HttpServer.create(inetSocketAddress, 0);
 

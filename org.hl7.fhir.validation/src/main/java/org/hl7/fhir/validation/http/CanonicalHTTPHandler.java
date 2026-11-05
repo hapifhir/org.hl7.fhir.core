@@ -9,6 +9,7 @@ import org.hl7.fhir.model.core.OperationOutcome.IssueType;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.IOException;
@@ -17,8 +18,11 @@ import java.util.Map;
 /**
  * Handler for looking up a canonical resource (a StructureDefinition, ValueSet, CodeSystem...)
  * by its canonical URL: the resource as the engine's context knows it, or 404 when it doesn't.
- * Only what is already in the context (the core package, the loaded IGs, and what they bring)
- * is looked in; nothing is fetched from anywhere else.
+ * The context is looked in first (the core package, the loaded IGs, and what they bring). If it
+ * isn't there, and the server was started with package auto-loading on, the context's locator is
+ * asked to find and load the package that defines it - the same way the validator does for
+ * canonical URLs it doesn't know - unless a version was asked for: the locator can't load a
+ * particular version of a package, so that is a 404 without looking.
  */
 class CanonicalHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   static final int MAX_URL_LENGTH = 4096;
@@ -63,8 +67,22 @@ class CanonicalHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         return;
       }
       // Resource, not CanonicalResource: the context looks in all its kinds of resources for Resource
-      Resource resource = fhirValidatorHttpService.getValidationEngine().getContext()
-        .fetchResource(Resource.class, url, VersionResolutionRules.defaultRule(), version, null);
+      SimpleWorkerContext ctxt = fhirValidatorHttpService.getValidationEngine().getContext();
+      Resource resource = ctxt.fetchResource(Resource.class, url, VersionResolutionRules.defaultRule(), version, null);
+      if (resource == null && fhirValidatorHttpService.isAutoLoadPackages() && ctxt.getLocator() != null) {
+        boolean versionMatters = version != null || url.contains("|");
+        if (versionMatters) {
+          // the locator works out which package from the url alone, and loads whatever version of it it picks
+          sendOperationOutcome(exchange, 404, OperationOutcomeUtilities.createOutcome("No canonical resource is known for " + url + (version == null ? "" : " version " + version)
+              + ", and packages can't be auto-loaded for a particular version", IssueSeverity.ERROR, IssueType.NOTFOUND), getAcceptHeader(exchange));
+          return;
+        }
+        // not loaded yet: ask the locator (the StandAloneValidatorFetcher, unless the default resource
+        // fetcher is disabled) to find the package that defines it and load it into the context -
+        // the same as the context does for an unknown CodeSystem - and then look again
+        ctxt.getLocator().findResource(this, url, VersionResolutionRules.defaultRule());
+        resource = ctxt.fetchResource(Resource.class, url, VersionResolutionRules.defaultRule(), null, null);
+      }
       if (!(resource instanceof CanonicalResource)) {
         sendOperationOutcome(exchange, 404, OperationOutcomeUtilities.createOutcome("No canonical resource is known for " + url + (version == null ? "" : " version " + version),
           IssueSeverity.ERROR, IssueType.NOTFOUND), getAcceptHeader(exchange));

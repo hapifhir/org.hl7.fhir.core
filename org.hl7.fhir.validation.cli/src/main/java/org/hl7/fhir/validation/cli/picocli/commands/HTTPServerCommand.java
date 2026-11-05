@@ -79,6 +79,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   private boolean txTests;
 
   @CommandLine.Option(
+    names = {"-autoLoadPackages"},
+    description = "Let /canonical find and load the package that defines a canonical resource the server doesn't know yet (not for a particular version). Callers can then make the server download packages and load them into the engine every request uses, permanently."
+  )
+  private boolean autoLoadPackages;
+
+  @CommandLine.Option(
     names = {"-nonce"},
     description = "A value the server returns in an X-Validator-Nonce header on every response, so that a program that starts the server can tell it from anything else answering on the port (a server left running by an earlier process, say). Letters, digits, '.', '-' and '_', up to 128 characters. Not a secret, and not authentication."
   )
@@ -115,6 +121,7 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
         validationEngine,
         !allowNetworkAccess,
         txTests,
+        autoLoadPackages,
         port,
         nonce
       );

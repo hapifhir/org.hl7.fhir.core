@@ -34,6 +34,7 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | `<port>` | Port to listen on. Must be 1-65535; anything else exits with an error. |
 | `-allowNetworkAccess` | Bind to all interfaces instead of loopback only. See [Security](#security). |
 | `-txTests` | Turn on the [terminology ecosystem test](#terminology-ecosystem-tests-txtest) endpoints (`/txTest`). Off by default. |
+| `-autoLoadPackages` | Let [`/canonical`](#get-canonical) find and load the package that defines a resource the server doesn't know yet. Off by default. See [Security](#security). |
 | `-nonce` | A value the server returns in an `X-Validator-Nonce` header on every response. See [Security](#security). |
 | `-version` | FHIR version to load (`4.0`, `4.3`, `5.0`, ...). If not given, it is inferred. |
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
@@ -66,7 +67,7 @@ By default the server binds to the loopback address, so only the local machine c
 `-allowNetworkAccess` binds to all interfaces and logs a warning when it does. There is no
 authentication, no authorization, no TLS and no rate limiting, and several endpoints will read
 from the server's file system (`/loadIG` with a path) or make outbound calls (`/loadIG` with a
-package or URL, `/txTest`). If you expose the port beyond localhost, securing it is entirely
+package or URL, `/txTest`, `/canonical` with `-autoLoadPackages`). If you expose the port beyond localhost, securing it is entirely
 your responsibility.
 
 `/txTest` is off unless the server is started with `-txTests`. It exists to run the terminology
@@ -76,6 +77,12 @@ server's temporary directory - a folder the caller can also name. That is what a
 and not something a public server should offer, so don't combine `-txTests` with
 `-allowNetworkAccess` unless the network is one you control. When the server is not bound to
 loopback, `/txTest` will only test servers configured in `fhir-settings.json` (a `403` otherwise).
+
+`/canonical` only looks in what the engine already has unless the server is started with
+`-autoLoadPackages`. With it, any caller can name a canonical URL and have the server work out
+which package defines it, download that package, and load it into the engine every request uses -
+permanently, like `/loadIG`, but with nothing to say which packages are acceptable. Don't combine
+it with `-allowNetworkAccess` unless the network is one you control.
 
 A program that starts the server as a child process (fhir-validator-wrapper, say) can pass a
 random `-nonce` (letters, digits, `.`, `-` and `_`, up to 128 characters), and check for it in the
@@ -323,9 +330,15 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 
 Returns the canonical resource (StructureDefinition, ValueSet, CodeSystem...) with a canonical
 URL, as the engine's context knows it: the core package, the loaded IGs and what they depend on.
-Nothing is fetched from elsewhere. `url` must be absolute, and may carry a `|version` suffix;
-alternatively give the `version` parameter (not both). The usual version matching rules apply.
-A resource the context doesn't know is a `404` with an OperationOutcome; the format follows `Accept`.
+`url` must be absolute, and may carry a `|version` suffix; alternatively give the `version`
+parameter (not both). The usual version matching rules apply. A resource the context doesn't know
+is a `404` with an OperationOutcome; the format follows `Accept`.
+
+If the server was started with `-autoLoadPackages`, a resource the context doesn't know is looked
+for the way the validator looks for canonical URLs it doesn't know: the package that defines it is
+worked out from the URL, downloaded if it isn't in the package cache, and loaded into the engine
+(for every later request). This only works without a version: the package version can't be
+chosen, so when a version is asked for, a resource the context doesn't already have is a `404`.
 
 ```sh
 curl 'http://localhost:8080/canonical?url=http://hl7.org/fhir/ValueSet/administrative-gender' \

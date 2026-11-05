@@ -801,7 +801,14 @@ paths:
       description: >-
         Returns the canonical resource (StructureDefinition, ValueSet, CodeSystem...) with the given
         canonical URL, as the engine's context knows it: from the core package, the loaded IGs and
-        what they depend on. Nothing is fetched from elsewhere. `404` when the context doesn't know it.
+        what they depend on. `404` when the context doesn't know it.
+
+
+        If the server was started with `-autoLoadPackages` and no version is asked for, a resource
+        the context doesn't know is looked for the way the validator does: the package that defines
+        it is worked out from the URL, downloaded if need be, and loaded into the engine for every
+        later request. With a version, it is a `404` without looking, since the package version
+        can't be chosen.
 
 
         **The context is shared by all clients**: everything loaded into it - with `-ig` at start
