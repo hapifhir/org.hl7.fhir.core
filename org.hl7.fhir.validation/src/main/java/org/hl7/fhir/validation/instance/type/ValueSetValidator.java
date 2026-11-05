@@ -905,7 +905,7 @@ public class ValueSetValidator extends BaseValidator {
       vs.setVersion(null);
       vs.setExpansion(null);
       ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
-      if (vse.isOk()) {
+      if (vse.isOk() && vse.getValueset() != null) {
         Set<String> missing = new HashSet<>();
         for (ValueSet.ValueSetExpansionContainsComponent ccs : vse.getValueset().getExpansion().getContainsList()) {
           if (keys.contains(ccs.getSystem()+"#"+ccs.getCode())) {

@@ -858,7 +858,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (debug) {
         e.printStackTrace();
       }
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
+      return new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
 
@@ -1476,7 +1476,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
           } else {
             List<String> versions = new ArrayList<>();
             for (CodeSystem c : list) {
-              versions.add(c.getVersion());
+              if (c.hasVersion()) {
+                versions.add(c.getVersion());
+              }
             }
             Collections.sort(versions);
             throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP, inc.getSystem(), version, presentVersionList(versions));
