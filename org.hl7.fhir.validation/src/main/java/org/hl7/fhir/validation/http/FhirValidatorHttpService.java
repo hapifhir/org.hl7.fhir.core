@@ -44,6 +44,8 @@ public class FhirValidatorHttpService {
 
   /** The response header that carries the nonce. */
   public static final String NONCE_HEADER = "X-Validator-Nonce";
+  @SuppressWarnings("checkstyle:patternUsage")
+  //a fixed literal reviewed here: a single bounded character class, no nesting; the nonce is what is matched, not the pattern
   private static final Pattern NONCE_PATTERN = Pattern.compile("[A-Za-z0-9._-]{1,128}");
 
   /**
@@ -74,7 +76,13 @@ public class FhirValidatorHttpService {
    * @return null if the nonce is acceptable or absent, otherwise a message saying what is wrong with it
    */
   public static String checkNonce(String nonce) {
-    if (nonce != null && !NONCE_PATTERN.matcher(nonce).matches()) {
+    if (nonce == null) {
+      return null;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: Matcher.matches() on NONCE_PATTERN, which is reviewed above
+    boolean nonceIsValid = NONCE_PATTERN.matcher(nonce).matches();
+    if (!nonceIsValid) {
       return "The nonce may contain only letters, digits, '.', '-' and '_', and be up to 128 characters long";
     }
     return null;
