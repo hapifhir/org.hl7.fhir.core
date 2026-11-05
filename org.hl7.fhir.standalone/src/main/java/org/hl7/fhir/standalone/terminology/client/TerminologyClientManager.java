@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class TerminologyClientManager implements ITerminologyClientManager {
@@ -42,6 +43,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
     private String language; // the language this resolution was made for (null = no language; see Language Specific Claims in the tx ecosystem IG)
+    private boolean fallback; // the registry couldn't be asked, so this is just the master server - use it for this run, but don't persist it
     
     public ServerOptionList(String url, String address) {
       this.url = url;
@@ -160,6 +162,10 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   private ILoggingService logger;
 
   private int ecosystemfailCount;
+
+  // canonicals whose last findValueSetOnServer / findCodeSystemOnServer call failed (registry or
+  // server down, timeout, error) rather than got an answer - see lookupFailed()
+  private Set<String> failedLookups = ConcurrentHashMap.newKeySet();
 
   // Set once by shutdown(). A manager must release its hold on each server context
   // exactly once, or the holder count those contexts keep goes wrong and a shared
@@ -533,7 +539,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
-      return new ServerOptionList(url, getMasterClient().getAddress());
+      ServerOptionList ret = new ServerOptionList(url, getMasterClient().getAddress());
+      ret.fallback = ecosystemFailed();
+      return ret;
     }
     if (expParameters != null) {
       if (!url.contains("|")) {
@@ -577,7 +585,25 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
-    return new ServerOptionList(url, getMasterClient().getAddress());
+    ServerOptionList ret = new ServerOptionList(url, getMasterClient().getAddress());
+    ret.fallback = true;
+    return ret;
+  }
+
+  /**
+   * true if the ecosystem server was switched off for this run because it stopped responding
+   */
+  private boolean ecosystemFailed() {
+    return !useEcosystem && ecosystemfailCount > 3;
+  }
+
+  /**
+   * true if the last findValueSetOnServer / findCodeSystemOnServer call for this canonical
+   * failed rather than got an answer, so a null result means 'unknown', not 'not found', and
+   * shouldn't be remembered across runs
+   */
+  public boolean lookupFailed(String canonical) {
+    return failedLookups.contains(canonical);
   }
 
   private boolean checkCSAvailable(String server, String canonical) {
@@ -793,8 +819,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       for (String s : Utilities.sorted(resMap.keySet())) {
         ServerOptionList sol = resMap.get(s);
-        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
-          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        if (sol.fallback || (sol.authoritative.isEmpty() && sol.candidates.isEmpty())) {
+          continue; // a fallback or empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
         }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
@@ -846,6 +872,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   public TerminologyCache.SourcedValueSet findValueSetOnServer(String canonical) {
+    failedLookups.remove(canonical);
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
@@ -875,6 +902,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     try {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
+        if (ecosystemFailed()) {
+          failedLookups.add(canonical);
+        }
       } else {
         try {
           if (usage != null) {
@@ -917,6 +947,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
             useEcosystem = false;
             logger.logMessage("The terminology ecosystem server at "+monitorServiceURL+" is not responding; all terminology requests will go to "+getMasterClient().getAddress()+" from now on");
           }
+          // whatever the master server says, the registry wasn't asked, so don't let it be persisted
+          failedLookups.add(canonical);
           server = getMasterClient().getAddress();
         }
       }
@@ -951,6 +983,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
               return new TerminologyCache.SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
+            failedLookups.add(canonical);
             return null;
           }
         } else {
@@ -981,11 +1014,16 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      failedLookups.add(canonical);
       return null;
     }
   }
   public TerminologyCache.SourcedCodeSystem findCodeSystemOnServer(String canonical) {
+    failedLookups.remove(canonical);
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
+      if (ecosystemFailed()) {
+        failedLookups.add(canonical);
+      }
       return null;
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
@@ -1061,6 +1099,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      failedLookups.add(canonical);
       return null;
     }
   }
