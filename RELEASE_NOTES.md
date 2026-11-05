@@ -21,3 +21,4 @@
 * Narrative: the CodeSystem "Additional Language Displays" table shows the displays for each language, not translated definitions; a language that only has translated definitions gets no column
 * QuestionnaireBuilder: the answer constraint for a coded item was inverted - a required binding now gives optionsOnly, and any weaker binding optionsOrType
 * NPM package generation: getRenamedFiles() reports the files whose path was too long for a tar entry and so are in the package under a shortened name
+* R5 -> R6 conversion: read the Requirements.actor key also from the tools extension `requirements-actorkey`, as written by older IG Publisher versions (HL7/fhir-ig-publisher#1449)
