@@ -3271,14 +3271,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       }
-      Set<String> badChars = new HashSet<>();
-      for (char ch : elementValue.toCharArray()) {
+      // checked on every primitive, so only collect the characters when there are some
+      Set<String> badChars = Collections.emptySet();
+      for (int i = 0; i < elementValue.length(); i++) {
+        char ch = elementValue.charAt(i);
         if (ch < 32 && !(ch == '\r' || ch == '\n' || ch == '\t')) {
           // can't get to here with xml - the parser fails if you try
+          if (badChars.isEmpty()) {
+            badChars = new HashSet<>();
+          }
           badChars.add(Integer.toHexString(ch));
-        }        
+        }
       }
-      warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
+      warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());
     }
     
     if (valContext.isMatchetype() && elementValue.startsWith("$")) {
@@ -3471,7 +3476,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, timeValid, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID) && ok;
         if (ok) {
           try {
-            TimeType v = new ObjectConverter(getContext()).readAsTime(e);
+            TimeType v = readAsTime(e);
             ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueTimeType() || !context.getMaxValueTimeType().hasValue() || !context.getMaxValueTimeType().before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_GT, (context.hasMaxValueTimeType() ? context.getMaxValueTimeType().primitiveValue() : "")) && ok;
             ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueTimeType() || !context.getMinValueTimeType().hasValue() || !context.getMinValueTimeType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueTimeType() ? context.getMinValueTimeType().primitiveValue() : "")) && ok;
           } catch (Exception ex) {
@@ -3703,7 +3708,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkMinMaxValueDate(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node) {
     boolean dok = true;
     try {
-      DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
+      DateTimeType v = readAsDateTime(e);
       if (context.hasMaxValue()) {
         if (context.hasMaxValueDateType()) {
           dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, context.getMaxValueDateType().hasValue() ||
@@ -3752,10 +3757,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return dok;
   }
 
+  // the same as ObjectConverter.readAsDateTime and readAsTime, without building an ObjectConverter (and with it a
+  // ProfileUtilities and a FHIRPathEngine) for every date, dateTime and time
+  private static DateTimeType readAsDateTime(Element e) {
+    DateTimeType retVal = new DateTimeType();
+    retVal.setValueAsString(e.primitiveValue());
+    return retVal;
+  }
+
+  private static TimeType readAsTime(Element e) {
+    TimeType retVal = new TimeType();
+    retVal.setValueAsString(e.primitiveValue());
+    return retVal;
+  }
+
   private boolean checkMinMaxValueDateTime(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node) {
     boolean dok = true;
     try {
-      DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
+      DateTimeType v = readAsDateTime(e);
       if (context.hasMaxValue()) {
         if (context.hasMaxValueDateTimeType()) {
           dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, context.getMaxValueDateTimeType().hasValue() ||
