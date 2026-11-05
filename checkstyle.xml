@@ -40,6 +40,13 @@
                       value="Don't use JetBrains annotations use javax.annotation."/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- No Checker Framework annotations: they only arrive transitively (e.g. via guava), so they break when a dependency stops shipping them -->
+            <property name="id" value="noCheckerFramework"/>
+            <property name="format" value="org\.checkerframework\."/>
+            <property name="message"
+                      value="Don't use Checker Framework annotations, use javax.annotation.Nonnull / javax.annotation.Nullable."/>
+        </module>
+        <module name="RegexpSinglelineJava">
             <!-- No direct usage of System.out or System.err -->
             <property name="id" value="systemout"/>
             <property name="format" value="^.*System\.(out|err).*$"/>

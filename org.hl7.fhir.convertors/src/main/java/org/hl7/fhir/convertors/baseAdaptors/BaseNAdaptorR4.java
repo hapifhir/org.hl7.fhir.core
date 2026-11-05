@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.baseAdaptors;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_N;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -313,7 +314,8 @@ public class BaseNAdaptorR4 extends Base {
 
   }
 
-  private static org.hl7.fhir.r4.model.@Nullable Base getBaseAsR4(Base value) {
+  @Nullable
+  private static org.hl7.fhir.r4.model.Base getBaseAsR4(Base value) {
     org.hl7.fhir.r4.model.Base v = null;
     if (value != null) {
       if (value instanceof BaseNAdaptorR4) {

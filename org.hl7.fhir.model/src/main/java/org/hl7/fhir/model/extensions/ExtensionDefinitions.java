@@ -834,6 +834,8 @@ public class ExtensionDefinitions {
 
   // not properly defined yet
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
+  public static final String EXT_SUPPL_GLOBAL = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-global";
+  public static final String EXT_RESERVED_CODE_SPACE = "http://hl7.org/fhir/StructureDefinition/codesystem-reservedCodeSpace";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_JSON_NAME_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
