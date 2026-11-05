@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.BaseValidator.ExecutionMemo;
 
 public class ValidationContext {
 
@@ -32,23 +34,30 @@ public class ValidationContext {
   private Map<String, List<ValidationMessage>> sliceRecords;
   private Set<String> internalRefs;
   private boolean matchetype;
+  // where the internal references of each resource are kept. Null for contexts made without one, which keep them in
+  // the resource's user data, as before
+  private ElementMemos<? extends ExecutionMemo> memos;
 
   public ValidationContext(Object appContext) {
     this.appContext = appContext;
   }
 
+  /**
+   * @deprecated use {@link #ValidationContext(Object, Element, ElementMemos)}
+   */
+  @Deprecated
   public ValidationContext(Object appContext, Element element) {
-    this.appContext = appContext;
-    this.resource = element;
-    this.rootResource = element;
-    this.internalRefs = setupInternalRefs(element);
-    check();
+    this(appContext, element, element, null, null);
+  }
 
-    // no groupingResource (Bundle or Parameters)
-    dump("creating");
+  public ValidationContext(Object appContext, Element element, ElementMemos<? extends ExecutionMemo> memos) {
+    this(appContext, element, element, null, memos);
   }
 
   private Set<String> setupInternalRefs(Element element) {
+    if (memos != null) {
+      return memos.of(element).internalRefs.get(ConcurrentHashMap::newKeySet);
+    }
     Set<String> res = (Set<String>) element.getUserData(INTERNAL_REFERENCES_NAME);
     if (res == null) {
       res = new HashSet<String>();
@@ -63,21 +72,32 @@ public class ValidationContext {
     }
   }
 
+  /**
+   * @deprecated use {@link #ValidationContext(Object, Element, Element, ElementMemos)}
+   */
+  @Deprecated
   public ValidationContext(Object appContext, Element element, Element root) {
-    this.appContext = appContext;
-    this.resource = element;
-    this.rootResource = root;
-    this.internalRefs = setupInternalRefs(element);
-    check();
-    // no groupingResource (Bundle or Parameters)
-    dump("creating");
+    this(appContext, element, root, null, null);
   }
 
+  public ValidationContext(Object appContext, Element element, Element root, ElementMemos<? extends ExecutionMemo> memos) {
+    this(appContext, element, root, null, memos);
+  }
+
+  /**
+   * @deprecated use {@link #ValidationContext(Object, Element, Element, Element, ElementMemos)}
+   */
+  @Deprecated
   public ValidationContext(Object appContext, Element element, Element root, Element groupingResource) {
+    this(appContext, element, root, groupingResource, null);
+  }
+
+  public ValidationContext(Object appContext, Element element, Element root, Element groupingResource, ElementMemos<? extends ExecutionMemo> memos) {
     this.appContext = appContext;
     this.resource = element;
     this.rootResource = root;
     this.groupingResource = groupingResource;
+    this.memos = memos;
     this.internalRefs = setupInternalRefs(element);
     check();
     dump("creating");
@@ -149,6 +169,7 @@ public class ValidationContext {
 
   public ValidationContext forContained(Element element) {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.rootResource = resource;
     res.resource = element;
     res.profile = profile;
@@ -162,6 +183,7 @@ public class ValidationContext {
 
   public ValidationContext forEntry(Element element, Element groupingResource) {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.rootResource = element;
     res.resource = element;
     res.profile = profile;
@@ -175,6 +197,7 @@ public class ValidationContext {
 
   public ValidationContext forProfile(StructureDefinition profile) {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.resource = resource;
     res.rootResource = rootResource;
     res.profile = profile;
@@ -189,6 +212,7 @@ public class ValidationContext {
 
   public ValidationContext forLocalReference(StructureDefinition profile, Element resource) {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.resource = resource;
     res.rootResource = resource;
     res.profile = profile;
@@ -207,6 +231,7 @@ public class ValidationContext {
 
   public ValidationContext forRemoteReference(StructureDefinition profile, Element resource) {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.resource = resource;
     res.rootResource = resource;
     res.profile = profile;
@@ -221,6 +246,7 @@ public class ValidationContext {
 
   public ValidationContext forSlicing() {
     ValidationContext res = new ValidationContext(appContext);
+    res.memos = memos;
     res.resource = resource;
     res.rootResource = rootResource;
     res.groupingResource = groupingResource;
