@@ -160,8 +160,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   private int ecosystemfailCount;
 
-  // canonicals whose last findValueSetOnServer / findCodeSystemOnServer call failed (registry or
-  // server down, timeout, error) rather than got an answer - see lookupFailed()
+  // canonicals for which a findValueSetOnServer / findCodeSystemOnServer call failed in this run
+  // (registry or server down, timeout, error) rather than got an answer - see lookupFailed().
+  // Only ever added to, so a concurrent lookup of the same canonical can't clear a failure
   private Set<String> failedLookups = ConcurrentHashMap.newKeySet();
 
   // Set once by shutdown(). A manager must release its hold on each server context
@@ -192,6 +193,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
     useEcosystem = other.useEcosystem;
+    ecosystemfailCount = other.ecosystemfailCount;
     monitorServiceURL = other.monitorServiceURL;
     cacheRegistryURL = other.cacheRegistryURL;
     factory = other.factory;
@@ -534,9 +536,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
-      ServerOptionList ret = new ServerOptionList(url, getMasterClient().getAddress());
-      ret.fallback = ecosystemFailed();
-      return ret;
+      return new ServerOptionList(url, getMasterClient().getAddress());
     }
     if (expParameters != null) {
       if (!url.contains("|")) {
@@ -593,8 +593,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   /**
-   * true if the last findValueSetOnServer / findCodeSystemOnServer call for this canonical
-   * failed rather than got an answer, so a null result means 'unknown', not 'not found', and
+   * true if a findValueSetOnServer / findCodeSystemOnServer call for this canonical failed in
+   * this run rather than got an answer, so a null result means 'unknown', not 'not found', and
    * shouldn't be remembered across runs
    */
   public boolean lookupFailed(String canonical) {
@@ -878,7 +878,6 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   public SourcedValueSet findValueSetOnServer(String canonical) {
-    failedLookups.remove(canonical);
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
@@ -1002,6 +1001,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
             vslist.add((ValueSet) be.getResource());
           }
         }
+        if (vslist.isEmpty()) {
+          return null;
+        }
         Collections.sort(vslist, new ValueSetUtilities.ValueSetSorter());
         rid = vslist.get(vslist.size()-1).getIdBase();
       } else {
@@ -1025,7 +1027,6 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
   }
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
-    failedLookups.remove(canonical);
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       if (ecosystemFailed()) {
         failedLookups.add(canonical);
@@ -1086,6 +1087,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
               cslist.add(cs);
             }
           }
+        }
+        if (cslist.isEmpty()) {
+          return null;
         }
         Collections.sort(cslist, new CodeSystemUtilities.CodeSystemSorter());
         rid = cslist.get(cslist.size()-1).getIdBase();

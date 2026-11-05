@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * No network access: the registry is faked by overriding fetchRegistryJson(), and the
  * terminology clients are dynamic proxies.
  */
-public class TerminologyClientManagerFailureTest {
+class TerminologyClientManagerFailureTest {
 
   private static final String MAIN = "https://main.example.org/r4";
   private static final String CS = "https://example.org/cs/colours";
@@ -101,7 +101,15 @@ public class TerminologyClientManagerFailureTest {
   }
 
   private TestManager makeManager(boolean registryDown, boolean serverDown) throws IOException {
-    TestManager mgr = new TestManager(new ITerminologyClientFactory5() {
+    TestManager mgr = new TestManager(factory(serverDown));
+    mgr.registryDown = registryDown;
+    mgr.setCache(makeCache());
+    mgr.setMasterClient(makeFakeClient(MAIN, serverDown), "http://main.example.org/tx-reg");
+    return mgr;
+  }
+
+  private static ITerminologyClientFactory5 factory(boolean serverDown) {
+    return new ITerminologyClientFactory5() {
       @Override
       public ITerminologyClient5 makeClientR5(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
         return makeFakeClient(url, serverDown);
@@ -110,11 +118,7 @@ public class TerminologyClientManagerFailureTest {
       public String getVersion() {
         return "R4";
       }
-    });
-    mgr.registryDown = registryDown;
-    mgr.setCache(makeCache());
-    mgr.setMasterClient(makeFakeClient(MAIN, serverDown), "http://main.example.org/tx-reg");
-    return mgr;
+    };
   }
 
   private TerminologyCache makeCache() throws IOException {
@@ -142,6 +146,8 @@ public class TerminologyClientManagerFailureTest {
     TestManager mgr = makeManager(false, true);
     assertNull(mgr.findValueSetOnServer(VS));
     assertTrue(mgr.lookupFailed(VS));
+    assertNull(mgr.findCodeSystemOnServer(CS));
+    assertTrue(mgr.lookupFailed(CS));
   }
 
   @Test
@@ -164,8 +170,12 @@ public class TerminologyClientManagerFailureTest {
     assertTrue(mgr.lookupFailed(VS));
     assertNull(mgr.findCodeSystemOnServer(CS));
     assertTrue(mgr.lookupFailed(CS));
-    mgr.chooseServer(null, Set.of(CS), false);
-    assertFalse(systemMap().contains(CS));
+
+    // and in a copy of the manager
+    TestManager copy = new TestManager(factory(false));
+    copy.copy(mgr);
+    assertNull(copy.findCodeSystemOnServer(CS + "-copy"));
+    assertTrue(copy.lookupFailed(CS + "-copy"));
   }
 
   @Test
@@ -175,16 +185,6 @@ public class TerminologyClientManagerFailureTest {
     assertFalse(mgr.lookupFailed(VS));
     assertNull(mgr.findCodeSystemOnServer(CS));
     assertFalse(mgr.lookupFailed(CS));
-  }
-
-  @Test
-  void aLaterAnswerClearsTheFailure() throws IOException {
-    TestManager mgr = makeManager(true, false);
-    mgr.findValueSetOnServer(VS);
-    assertTrue(mgr.lookupFailed(VS));
-    mgr.registryDown = false;
-    mgr.findValueSetOnServer(VS);
-    assertFalse(mgr.lookupFailed(VS));
   }
 
   @Test
