@@ -171,6 +171,7 @@ import org.hl7.fhir.validation.instance.utils.BoundedSizeList;
 import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
 import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
 import org.hl7.fhir.validation.instance.utils.ChildIterator;
+import org.hl7.fhir.validation.instance.utils.DefinitionMemos;
 import org.hl7.fhir.validation.instance.utils.ElementInfo;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
@@ -203,6 +204,11 @@ import org.w3c.dom.Document;
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
   public static final String NON_WHITESPACE_REGEX = "\\S+";
+
+  // what is worked out from definitions, which every validator in the process shares; see DefinitionMemos
+  private static final DefinitionMemos<ElementDefinitionConstraintComponent, ExpressionNode> INVARIANT_EXPRESSIONS = new DefinitionMemos<>();
+  private static final DefinitionMemos<ElementDefinition, ExpressionNode> SLICE_EXPRESSIONS = new DefinitionMemos<>();
+  private static final DefinitionMemos<StructureDefinition, Boolean> USES_MUST_SUPPORT = new DefinitionMemos<>();
 
   public enum MatchetypeStatus {
     Disallowed, Allowed, Required
@@ -6328,7 +6334,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
-    ExpressionNode n = (ExpressionNode) ed.getUserData(UserDataNames.validator_slice_expression_cache);
+    ExpressionNode n = SLICE_EXPRESSIONS.peek(ed);
     if (n == null) {
       long t = System.nanoTime();
       // GG: this approach is flawed because it treats discriminators individually rather than collectively
@@ -6448,7 +6454,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       timeTracker.fpe(t);
       log.trace("slice "+ed.getSliceName()+" rules = "+n.toString());
-      ed.setUserData(UserDataNames.validator_slice_expression_cache, n);
+      n = SLICE_EXPRESSIONS.remember(ed, n);
     } else {
     }
 
@@ -8240,24 +8246,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkMustSupport(StructureDefinition profile, ElementInfo ei) {
-    String usesMustSupport = profile.getUserString(UserDataNames.keyview_usesMustSupport);
-    if (usesMustSupport == null) {
-      usesMustSupport = "N";
-      for (ElementDefinition pe : profile.getSnapshot().getElement()) {
-        if (pe.getMustSupport()) {
-          usesMustSupport = "Y";
-          break;
-        }
-      }
-      profile.setUserData(UserDataNames.keyview_usesMustSupport, usesMustSupport);
-    }
+    boolean usesMustSupport = USES_MUST_SUPPORT.of(profile, p -> p.getSnapshot().getElement().stream().anyMatch(ElementDefinition::getMustSupport));
     String elementSupported = ei.getElement().getUserString(UserDataNames.keyview_elementSupported);
     String fixedValue = ei.getElement().getUserString(UserDataNames.keyview_hasFixed);
     if ((elementSupported == null || !elementSupported.equals("Y")) && ei.getDefinition().getMustSupport()) {
       if (ei.getDefinition().getMustSupport()) {
         ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
       }
-    } else if (elementSupported == null && !usesMustSupport.equals("Y"))
+    } else if (elementSupported == null && !usesMustSupport)
       ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "NA");
     if (fixedValue==null  && (ei.getDefinition().hasFixed() || ei.getDefinition().hasPattern()))
       ei.getElement().setUserData(UserDataNames.keyview_hasFixed, "Y");
@@ -8799,6 +8795,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
+  /**
+   * The parsed expression of an invariant, or null if it hasn't been parsed yet. Before validating, a caller can give
+   * a constraint its own expression as the constraint's {@code validator_expression_cache} user data. The validator
+   * only reads that; what it parses itself it keeps in {@link #INVARIANT_EXPRESSIONS}, since constraints are shared
+   * by every thread that validates.
+   */
+  private static ExpressionNode parsedInvariant(ElementDefinitionConstraintComponent inv) {
+    ExpressionNode n = (ExpressionNode) inv.getUserData(UserDataNames.validator_expression_cache);
+    return n != null ? n : INVARIANT_EXPRESSIONS.peek(inv);
+  }
+
   public boolean checkInvariant(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
     if (IsExemptInvariant(path, element, inv)) {
       return true;
@@ -8809,7 +8816,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("dom-3".equals(inv.getKey())) {
       return true;
     }
-    ExpressionNode n = (ExpressionNode) inv.getUserData(UserDataNames.validator_expression_cache);
+    ExpressionNode n = parsedInvariant(inv);
     if (n == null) {
       long t = System.nanoTime();
       try {
@@ -8820,7 +8827,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return false;
       }
       timeTracker.fpe(t);
-      inv.setUserData(UserDataNames.validator_expression_cache, n);
+      n = INVARIANT_EXPRESSIONS.remember(inv, n);
     }
     
     valContext.setProfile(profile);
@@ -9146,10 +9153,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
             if (inv.hasExpression()) {
               try {
-                ExpressionNode n = (ExpressionNode) inv.getUserData(UserDataNames.validator_expression_cache);
+                ExpressionNode n = parsedInvariant(inv);
                 if (n == null) {
-                  n = fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion()));
-                  inv.setUserData(UserDataNames.validator_expression_cache, n);
+                  n = INVARIANT_EXPRESSIONS.remember(inv, fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion())));
                 }
                 fpe.check(null, "Resource", sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
               } catch (Exception e) {

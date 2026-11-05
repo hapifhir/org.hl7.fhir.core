@@ -187,11 +187,12 @@ public class MeasureValidator extends BaseValidator {
           ok = false;
         }
         if (lib != null) {
-          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
-            if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof String) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_CQL_ERROR, lib.getUrl(), lib.getUserString(MeasureContext.USER_DATA_ELM)) && ok;            
-            } else if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof Document) {
-              org.w3c.dom.Element elm = ((Document)lib.getUserData(MeasureContext.USER_DATA_ELM)).getDocumentElement();
+          Object elmOrError = mctxt.elm(lib);
+          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), elmOrError != null, I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
+            if (elmOrError instanceof String error) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_CQL_ERROR, lib.getUrl(), error) && ok;            
+            } else if (elmOrError instanceof Document document) {
+              org.w3c.dom.Element elm = document.getDocumentElement();
               if (rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), isValidElm(elm), I18nConstants.MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID, lib.getUrl(), cqlRef)) {
                 ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), hasCqlTarget(elm, cqlRef), I18nConstants.MEASURE_M_CRITERIA_CQL_NOT_FOUND, lib.getUrl(), cqlRef) && ok;
               }

@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.instance.type;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Attachment;
@@ -15,10 +17,17 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 public class MeasureContext {
 
 
+  /**
+   * @deprecated the validator no longer puts the ELM in the library's user data, since libraries are shared by every
+   * thread that validates; see {@link #elm(Library)}
+   */
+  @Deprecated
   public static final String USER_DATA_ELM = "validator.ELM";
   // Measure.group.scoring only exists from R5; before that, the CQM IG carries group level scoring in this extension
   public static final String EXT_CQM_SCORING = "http://hl7.org/fhir/uv/cqm/StructureDefinition/cqm-scoring";
   private List<Library> libs = new ArrayList<>();
+  // the parsed ELM of each library (a Document), or why it couldn't be parsed (a String)
+  private Map<Library, Object> elms = new IdentityHashMap<>();
   private Measure measure;
   private Element report;
 
@@ -35,9 +44,9 @@ public class MeasureContext {
     for (Attachment att : l.getContent()) {
       if ("application/elm+xml".equals(att.getContentType())) {
         try {
-          l.setUserData(USER_DATA_ELM, XMLUtil.parseToDom(att.getData(), true));
+          elms.put(l, XMLUtil.parseToDom(att.getData(), true));
         } catch (Exception e) {
-          l.setUserData(USER_DATA_ELM, e.getMessage());
+          elms.put(l, e.getMessage());
         }
       }
     }
@@ -69,6 +78,13 @@ public class MeasureContext {
     }
     return scoring();
   }
+  /**
+   * The library's ELM as a Document, the reason it couldn't be parsed as a String, or null if it has no ELM.
+   */
+  public Object elm(Library l) {
+    return elms.get(l);
+  }
+
   public List<Library> libraries() {
     return libs;
   }

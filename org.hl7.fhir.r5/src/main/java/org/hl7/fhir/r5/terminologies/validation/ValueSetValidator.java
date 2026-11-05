@@ -1123,6 +1123,22 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return null;
   }
 
+  /**
+   * A URL for a value set made of just this include, the same each time so that what is cached for it can be found
+   * again. It is kept in the include's user data. Value sets are shared by every thread that validates, so the
+   * include is locked while the URL is read or made.
+   */
+  private static String cachedUuid(ConceptSetComponent vsi) {
+    synchronized (vsi) {
+      String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+      if (uuid == null) {
+        uuid = UUIDUtilities.makeUuidUrn();
+        vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+      }
+      return uuid;
+    }
+  }
+
   private CodeSystem findSpecialCodeSystem(String system, String version) {
     if ("urn:ietf:rfc:3986".equals(system)) {
       CodeSystem cs = new CodeSystem();
@@ -1593,11 +1609,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
-        if (uuid == null) {
-          uuid = UUIDUtilities.makeUuidUrn();
-          vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
-        }
+        String uuid = cachedUuid(vsi);
         vsDummy.setVersion("1");
         vsDummy.setUrl(uuid);
         vsDummy.setStatus(PublicationStatus.ACTIVE);
@@ -1648,11 +1660,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           return true;
         } else {
           ValueSet vsDummy = new ValueSet();
-          String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
-          if (uuid == null) {
-            uuid = UUIDUtilities.makeUuidUrn();
-            vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
-          }
+          String uuid = cachedUuid(vsi);
           vsDummy.setVersion("1");
           vsDummy.setUrl(uuid);
           vsDummy.setStatus(PublicationStatus.ACTIVE);
