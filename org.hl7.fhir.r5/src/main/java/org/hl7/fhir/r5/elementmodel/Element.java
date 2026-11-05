@@ -229,10 +229,32 @@ public class Element extends Base implements NamedItem {
   }
 
 	public String getType() {
-		if (type == null)
-			return property.getType(name);
-		else
+		if (type == null) {
+			// Property.getType(name) works the type out from the element definition on every call, and fhirType()
+			// is called constantly, so remember it for the property and name it was worked out for
+			TypeCache cache = typeCache;
+			if (cache != null && cache.property == property && cache.name == name) {
+				return cache.type;
+			}
+			String retVal = property.getType(name);
+			typeCache = new TypeCache(property, name, retVal);
+			return retVal;
+		} else
 		  return type;
+	}
+
+	private TypeCache typeCache;
+
+	private static final class TypeCache {
+		private final Property property;
+		private final String name;
+		private final String type;
+
+		private TypeCache(Property theProperty, String theName, String theType) {
+			property = theProperty;
+			name = theName;
+			type = theType;
+		}
 	}
 
 	public String getValue() {
