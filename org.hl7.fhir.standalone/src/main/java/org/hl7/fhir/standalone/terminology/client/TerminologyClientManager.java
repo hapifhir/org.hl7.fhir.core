@@ -728,6 +728,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   public TerminologyClientContext setMasterClient(ITerminologyClientN client, String ecosystemUrl) throws IOException {
     this.monitorServiceURL = ecosystemUrl;
     this.useEcosystem = ecosystemUrl != null;
+    this.ecosystemfailCount = 0;
+    failedLookups.clear();
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     // Note: the cleared contexts are deliberately NOT released here. Releasing one
     // that turned out to be the last holder would end its cache - and if it shared

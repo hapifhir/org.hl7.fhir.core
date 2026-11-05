@@ -182,6 +182,11 @@ class TerminologyClientManagerFailureTest {
     copy.copy(mgr);
     assertNull(copy.findCodeSystemOnServer(CS + "-copy"));
     assertTrue(copy.lookupFailed(CS + "-copy"));
+
+    // a new master server starts afresh
+    mgr.setMasterClient(makeFakeClient(MAIN, false), null);
+    assertNull(mgr.findValueSetOnServer(VS));
+    assertFalse(mgr.lookupFailed(VS));
   }
 
   @Test
