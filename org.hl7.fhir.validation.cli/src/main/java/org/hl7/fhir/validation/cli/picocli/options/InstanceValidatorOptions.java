@@ -141,13 +141,6 @@ public class InstanceValidatorOptions {
     arity = "0")
   @With
   public boolean allowDoubleQuotesInFHIRPath = false;
-
-  @CommandLine.Option(names = {"-check-ips-codes"},
-    description = "Report SNOMED CT codes not part of the IPS free set",
-    arity = "0")
-  @With
-  public boolean checkIPSCodes = false;
-
   // String fields
   @CommandLine.Option(names = {"-html-output"},
     description = "A filename for the HTML presentation of the outcomes of the validation")

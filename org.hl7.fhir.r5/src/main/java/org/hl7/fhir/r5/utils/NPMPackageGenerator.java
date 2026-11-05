@@ -37,9 +37,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,12 +54,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.HexFormat;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.eclipse.jgit.ignore.IgnoreNode;
 
@@ -586,11 +591,49 @@ public class NPMPackageGenerator {
     indexer.start(indexdb);
   }
 
+  /**
+   * TarArchiveOutputStream rejects names of TarConstants.NAMELEN (100) bytes or more unless a
+   * long file mode is set.
+   */
+  static boolean tooLongForTar(String path) {
+    return path.getBytes(StandardCharsets.UTF_8).length >= TarConstants.NAMELEN;
+  }
+
+  /**
+   * Replacement for a file name that makes its path too long for a tar entry. The name is
+   * derived from a hash of the original name, not a random value, so the same file always
+   * gets the same name: hasFile() finds it, a second add is reported as a duplicate, and
+   * the package content is the same from one build to the next.
+   *
+   * Keeps the resource type prefix (the part before the first '-') and the extension when
+   * they fit.
+   */
+  static String shortenForTar(String folder, String name) {
+    String hash;
+    try {
+      byte[] digest = MessageDigest.getInstance("SHA-256").digest(name.getBytes(StandardCharsets.UTF_8));
+      hash = HexFormat.of().formatHex(digest).substring(0, 32);
+    } catch (NoSuchAlgorithmException e) {
+      throw new FHIRException(e);
+    }
+    int dot = name.lastIndexOf('.');
+    String ext = dot > 0 && name.length() - dot <= 10 ? name.substring(dot) : "";
+    int dash = name.indexOf('-');
+    String shortName = (dash > 0 ? name.substring(0, dash) + "-" : "") + hash + ext;
+    if (tooLongForTar(folder + shortName)) {
+      shortName = hash + ext;
+    }
+    if (tooLongForTar(folder + shortName)) {
+      throw new FHIRException("The folder name '" + folder + "' is too long for a package entry");
+    }
+    return shortName;
+  }
+
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
-      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
-      path = cat.getDirectory()+name;      
+    if (tooLongForTar(path)) {
+      name = shortenForTar(cat.getDirectory(), name);
+      path = cat.getDirectory()+name;
     }
       
     return created.contains(path);    
@@ -598,9 +641,9 @@ public class NPMPackageGenerator {
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
-      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
-      path = cat.getDirectory()+name;      
+    if (tooLongForTar(path)) {
+      name = shortenForTar(cat.getDirectory(), name);
+      path = cat.getDirectory()+name;
     }
       
     if (created.contains(path)) {
@@ -623,9 +666,9 @@ public class NPMPackageGenerator {
       folder = "package/"+folder;
     }
     String path = folder+"/"+name;
-    if (path.length() > 100) {
-      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
-      path = folder+"/"+name;      
+    if (tooLongForTar(path)) {
+      name = shortenForTar(folder+"/", name);
+      path = folder+"/"+name;
     }
       
     if (created.contains(path)) {
@@ -637,7 +680,7 @@ public class NPMPackageGenerator {
       tar.putArchiveEntry(entry);
       tar.write(content);
       tar.closeArchiveEntry();
-      if(folder == "package") {
+      if (folder.equals("package")) {
         indexer.seeFile(name, content);
       }
     }

@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* Do not check the values of the xml-namespace extensions (e.g. noNamespace) for URL resolution (HL7/fhir-ig-publisher#1416)
+* no changes
 
 ## Other code changes
 
-* no changes
+* R5 -> R6 conversion: read the Requirements.actor key also from the tools extension `requirements-actorkey`, as written by older IG Publisher versions (HL7/fhir-ig-publisher#1449)

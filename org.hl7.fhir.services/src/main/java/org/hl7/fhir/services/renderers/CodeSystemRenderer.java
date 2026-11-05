@@ -123,7 +123,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean generateProperties(XhtmlNode x, CodeSystem cs) {
-    if (cs.hasProperty()) {
+    if (cs.hasProperty() && context.isCsProperties()) {
       boolean hasRendered = false;
       boolean hasURI = false;
       boolean hasDescription = false;
@@ -242,21 +242,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
     boolean isManual = false;
-    for (PropertyComponent cp : cs.getPropertyList()) {
-      if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
-        isManual = true;
-      }
-    }
-    for (PropertyComponent cp : cs.getPropertyList()) {
-      if (showPropertyInTable(cp, isManual)) {
-        boolean exists = false;
-        for (ConceptDefinitionComponent c : cs.getConceptList()) {
-          exists = exists || conceptsHaveProperty(c, cp);
+    if (context.isCsProperties()) {
+      for (PropertyComponent cp : cs.getPropertyList()) {
+        if (cp.hasExtension(ExtensionDefinitions.EXT_DISPLAY_HINT)) {
+          isManual = true;
         }
-        if (exists) {
-          properties.add(cp);
-          if ("status".equals(cp.getCode())) {
-            ignoreStatus = true;
+      }
+      for (PropertyComponent cp : cs.getPropertyList()) {
+        if (showPropertyInTable(cp, isManual)) {
+          boolean exists = false;
+          for (ConceptDefinitionComponent c : cs.getConceptList()) {
+            exists = exists || conceptsHaveProperty(c, cp);
+          }
+          if (exists) {
+            properties.add(cp);
+            if ("status".equals(cp.getCode())) {
+              ignoreStatus = true;
+            }
           }
         }
       }
@@ -322,7 +324,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void listConceptLanguages(CodeSystem cs, ConceptDefinitionComponent c, List<String> langs) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignationList()) {
-      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
+      if (cd.hasLanguage() && !isDefinition(cd) && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
         langs.add(cd.getLanguage());
       }
     }
@@ -570,7 +572,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
-        boolean nolink = !Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
+        boolean nolink = Utilities.existsInList(pc.getExtensionString(ExtensionDefinitions.EXT_DISPLAY_HINT), "no-link");
         List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
@@ -670,11 +672,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     for (ConceptDefinitionDesignationComponent cd : c.getDesignationList()) {
-      if (cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+      if (cd.hasLanguage() && cd.getLanguage().equals(lang) && !isDefinition(cd)) {
         return cd.getValue();
       }
     }
     return null;
+  }
+
+  private boolean isDefinition(ConceptDefinitionDesignationComponent cd) {
+    return cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") || cd.getUse().is("http://snomed.info/sct", "900000000000550004");
   }
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
@@ -749,14 +755,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     XhtmlNode tr = t.tr();
     tr.td().addText(c.getCode());
     for (String lang : langs) {
-      ConceptDefinitionDesignationComponent d = null;
-      for (ConceptDefinitionDesignationComponent designation : c.getDesignationList()) {
-        if (designation.hasLanguage()) {
-          if (lang.equals(designation.getLanguage()))
-            d = designation;
-        }
-      }
-      tr.td().addText(d == null ? "" : d.getValue());
+      String d = getDisplay(lang, c);
+      tr.td().addText(d == null ? "" : d);
     }
   }
  

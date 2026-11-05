@@ -30,7 +30,7 @@ class TransformHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
 
     try {
-      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getQuery());
+      Map<String, String> params = parseQueryParams(exchange.getRequestURI().getRawQuery());
       String mapUri = params.get("map");
       if (mapUri == null || mapUri.trim().isEmpty()) {
         sendOperationOutcome(exchange, 400, OperationOutcomeUtilities.createError("Missing required query parameter: map"), getAcceptHeader(exchange));

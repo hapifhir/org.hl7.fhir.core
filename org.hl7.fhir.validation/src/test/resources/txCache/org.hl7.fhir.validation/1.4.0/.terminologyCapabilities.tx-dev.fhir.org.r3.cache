@@ -3250,6 +3250,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/definition-use"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-clinical-impact"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity"
   },
   {
@@ -3884,6 +3887,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-title-38-veteran-status-codes"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/usage-context-type"
