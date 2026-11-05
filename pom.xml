@@ -23,9 +23,10 @@
         <commons_io_version>2.17.0</commons_io_version>
         <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
+        <jsr305_version>3.0.2</jsr305_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
-        <validator_test_case_version>1.8.3</validator_test_case_version>
+        <validator_test_case_version>1.8.4-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.22.3</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
@@ -339,6 +340,14 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava_version}</version>
+            </dependency>
+
+            <!-- javax.annotation.Nonnull / Nullable, used throughout core. Declared explicitly
+                 so it doesn't depend on another library happening to bring it in (guava 33.x stopped) -->
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305_version}</version>
             </dependency>
 
             <dependency>

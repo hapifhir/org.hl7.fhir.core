@@ -844,22 +844,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
     CodeSystem cs = fetchCodeSystem(system, rules, version, sourceOfReference);
     if (cs != null) {
-      List<CodeSystem> supplements = codeSystems.getSupplements(cs);
+      List<CodeSystem> supplements = new ArrayList<>(codeSystems.getSupplements(cs));
+      // getSupplements prefers supplements from the code system's own package, and only looks in other packages
+      // when there are none there. A supplement asked for by version is a candidate wherever it comes from, so
+      // that oneVersionEach can choose it over a version of the same supplement in the code system's package
+      if (specifiedSupplements != null) {
+        for (String s : specifiedSupplements) {
+          if (s.contains("|") && !hasSupplementVersion(supplements, s)) {
+            CodeSystem scs = fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
+            if (scs != null && s.equals(scs.getVersionedUrl()) && CodeSystemUtilities.supplementApplies(scs, cs)) {
+              supplements.add(scs);
+            }
+          }
+        }
+      }
       List<CodeSystem> activeSupplements = new ArrayList<>();
       for (CodeSystem c : supplements) {
-        if (CodeSystemUtilities.isLangPack(c)) {
+        // a global supplement that the request also names is only added once
+        if (CodeSystemUtilities.isGlobalSupplement(c)) {
           activeSupplements.add(c);
-        }
-        if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
+        } else if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
           activeSupplements.add(c);
         }
       }
 
+      // one version of each supplement: the one asked for by version, else the latest
+      activeSupplements = CodeSystemUtilities.oneVersionEach(activeSupplements, specifiedSupplements);
       if (activeSupplements.size() > 0) {
         cs = CodeSystemUtilities.mergeSupplements(cs, activeSupplements);
       }
     }
     return cs;
+  }
+
+  private boolean hasSupplementVersion(List<CodeSystem> supplements, String versionedUrl) {
+    for (CodeSystem c : supplements) {
+      if (versionedUrl.equals(c.getVersionedUrl())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -1358,7 +1382,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         return;
       }
-      Parameters resp = processBatch(tc, batch, systems, items.size());
+      Parameters resp = processBatch(tc, batch, systems, items.size(), vs == null);
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
         CodingValidationRequest requestAtIndex = items.get(i);
@@ -1405,7 +1429,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size) {
+  /**
+   * With a value set, the batch goes to ValueSet/$batch-validate-code (with the value set's url at the top
+   * level). Without one, each code is validated against its own code system, so the batch goes to
+   * CodeSystem/$batch-validate-code - just as the single code path uses CodeSystem/$validate-code when
+   * there is no value set. A ValueSet batch with no url is not a valid request, and servers reject it.
+   */
+  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size, boolean againstCodeSystems) {
     txLog("$batch validate for " + size + " codes on systems " + systems.toString());
     if (terminologyClientManager == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
@@ -1413,7 +1443,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (txLog != null) {
       txLog.clearLastId();
     }
-    Parameters resp = tc.getClient().batchValidateVS(batch);
+    Parameters resp = againstCodeSystems ? tc.getClient().batchValidateCS(batch) : tc.getClient().batchValidateVS(batch);
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
     }

@@ -24,6 +24,12 @@
             <artifactId>hapi-fhir-base</artifactId>
         </dependency>
 
+        <!-- javax.annotation.Nonnull / Nullable for all modules: deliberately NOT optional, so it propagates -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
         <!-- Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>

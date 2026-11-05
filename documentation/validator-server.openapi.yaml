@@ -363,6 +363,91 @@ paths:
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
           $ref: '#/components/responses/ServerError'
+  /fhirpath/check:
+    get:
+      tags: [FHIRPath]
+      summary: Check a FHIRPath expression's types
+      description: >-
+        Static type checking of a FHIRPath expression, without evaluating it: the expression is
+        parsed, then checked against the type it would be evaluated on. The result is an
+        `OperationOutcome`, always with status `200` when the checking ran: an error issue when the
+        expression doesn't parse (with its line and column) or doesn't check against the type (an
+        unknown element, a function used on the wrong type, the wrong parameters...), a warning
+        issue for each warning the checking raises (each with its message id), and, when there is
+        no error, an information issue saying what type the expression returns. `POST` works the
+        same way, with the same query parameters.
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: >-
+            The type the expression is evaluated on: a type name (a resource or data type), a path
+            in a type, or the canonical URL of a StructureDefinition.
+          schema: { type: string }
+          example: Bundle
+        - name: expression
+          in: query
+          required: true
+          description: The FHIRPath expression to check.
+          schema: { type: string }
+          example: Bundle.entry.resource.ofType(Condition).code.coding.code
+      responses:
+        '200':
+          description: The issues found, as an `OperationOutcome`.
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+            application/fhir+xml:
+              schema: { type: string }
+        '400':
+          description: >-
+            Missing `type` or `expression` parameter, or one that is too long (the type may be up
+            to 1024 characters, the expression up to 10000).
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags: [FHIRPath]
+      summary: Check a FHIRPath expression's types (POST)
+      description: 'As `GET /fhirpath/check`: the parameters are in the query; any body is ignored.'
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: >-
+            The type the expression is evaluated on: a type name (a resource or data type), a path
+            in a type, or the canonical URL of a StructureDefinition.
+          schema: { type: string }
+          example: Bundle
+        - name: expression
+          in: query
+          required: true
+          description: The FHIRPath expression to check.
+          schema: { type: string }
+          example: Bundle.entry.resource.ofType(Condition).code.coding.code
+      responses:
+        '200':
+          description: The issues found, as an `OperationOutcome`.
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+            application/fhir+xml:
+              schema: { type: string }
+        '400':
+          description: >-
+            Missing `type` or `expression` parameter, or one that is too long (the type may be up
+            to 1024 characters, the expression up to 10000).
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /matchetype:
     post:
       tags: [Testing]
@@ -709,6 +794,55 @@ paths:
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }
+  /canonical:
+    get:
+      tags: [Profile Operations]
+      summary: Look up a canonical resource
+      description: >-
+        Returns the canonical resource (StructureDefinition, ValueSet, CodeSystem...) with the given
+        canonical URL, as the engine's context knows it: from the core package, the loaded IGs and
+        what they depend on. Nothing is fetched from elsewhere. `404` when the context doesn't know it.
+
+
+        **The context is shared by all clients**: everything loaded into it - with `-ig` at start
+        up, or by any client with `/loadIG` - can be read by every client of the server, including
+        unpublished content loaded from a local folder. Don't load anything into a server others
+        can reach that they shouldn't see.
+      parameters:
+        - name: url
+          in: query
+          required: true
+          description: The canonical URL (absolute), optionally with a `|version` suffix.
+          schema: { type: string }
+          example: http://hl7.org/fhir/StructureDefinition/patient-birthPlace
+        - name: version
+          in: query
+          required: false
+          description: >-
+            The version wanted, if not given as a `|version` suffix on the url (not both). Without
+            one, the version the context would use. The usual version matching rules apply.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The resource.
+          content:
+            application/fhir+json:
+              schema: { type: object }
+            application/fhir+xml:
+              schema: { type: string }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: The context doesn't know a canonical resource with that URL (and version), as an `OperationOutcome`.
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
+            application/fhir+xml:
+              schema: { type: string }
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /txTest/setup:
     post:
       tags:

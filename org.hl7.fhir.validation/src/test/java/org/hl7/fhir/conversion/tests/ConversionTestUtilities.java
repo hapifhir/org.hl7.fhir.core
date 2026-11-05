@@ -59,6 +59,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.IgLoader;
 import org.w3c.dom.Document;
@@ -510,8 +512,9 @@ public class ConversionTestUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException { 
-    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
+    String dir = getLocalTestCasesDir();
+    if (dir != null) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return ManagedFileAccess.file(n).exists();
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
@@ -530,8 +533,9 @@ public class ConversionTestUtilities {
   }
 
   public static String loadTestResource(String... paths) throws IOException {
-    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
+    String dir = getLocalTestCasesDir();
+    if (dir != null) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
       return FileUtilities.fileToString(ManagedFileAccess.file(n));
     } else {
@@ -548,14 +552,35 @@ public class ConversionTestUtilities {
     }
   }
 
+  /**
+   * The local fhir-test-cases folder to read test resources from, or null to read them from the
+   * fhir-test-cases jar on the classpath. As BaseTestingUtilities: the FHIR-TEST-CASES environment
+   * variable, then the fhir-settings fhirTestCasesPath; and then, as before, a sibling folder
+   * named fhir-test-cases (unless dont_load_from_filesystem is set)
+   */
+  private static String getLocalTestCasesDir() throws IOException {
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
+    if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
+      dir = FhirSettings.getFhirTestCasesPath();
+    }
+    if (dir != null && ManagedFileAccess.file(dir).exists()) {
+      return dir;
+    }
+    if (isTryToLoadFromFileSystem() && ManagedFileAccess.file(getUserDirFhirTestCases()).exists()) {
+      return getUserDirFhirTestCases();
+    }
+    return null;
+  }
+
   @Nonnull
   private static String getUserDirFhirTestCases() {
     return Path.of(System.getProperty("user.dir"), "..", "..", "fhir-test-cases").normalize().toString();
   }
 
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
+    String dir = getLocalTestCasesDir();
+    if (dir != null) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return ManagedFileAccess.inStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
@@ -568,8 +593,9 @@ public class ConversionTestUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+    String dir = getLocalTestCasesDir();
+    if (dir != null) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return FileUtilities.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));

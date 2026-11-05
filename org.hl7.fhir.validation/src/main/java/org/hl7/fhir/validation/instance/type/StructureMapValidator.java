@@ -1607,7 +1607,7 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       if (Utilities.existsInList(group.getChildValue("typeMode"), "types", "type-and-types")) {
         List<Element> inputs = group.getChildrenByName("input");
-        if (inputs.size() == 2 && "source".equals(inputs.get(0).getChildValue("mode")) && "source".equals(inputs.get(0).getChildValue("mode"))) {
+        if (inputs.size() == 2 && "source".equals(inputs.get(0).getChildValue("mode")) && "target".equals(inputs.get(1).getChildValue("mode"))) {
           String srcT = resolveInputType(src, inputs.get(0));
           String tgtT = resolveInputType(src, inputs.get(1));
           if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType) || sameTypes(srcT, srcUrl) && sameTypes(tgtT, tgtUrl)) {

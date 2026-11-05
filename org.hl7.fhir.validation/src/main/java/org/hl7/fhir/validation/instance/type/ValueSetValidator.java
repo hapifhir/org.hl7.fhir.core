@@ -952,7 +952,7 @@ public class ValueSetValidator extends BaseValidator {
   private Element getPropertyDefinition(Element expansion, String p) {
     for (Element defn : expansion.getChildrenByName("property")) {
       String code = defn.getNamedChildValue("code");
-      if (code.equals(p)) {
+      if (code != null && code.equals(p)) {
         return defn;
       }
     }
@@ -985,7 +985,10 @@ public class ValueSetValidator extends BaseValidator {
     for (Element parameter : parameters) {
       String name = parameter.getNamedChildValue("name");
       if (name != null && name.equals("used-codesystem")) {
-        result.add(parameter.getNamedChildValue("value"));
+        String value = parameter.getNamedChildValue("value");
+        if (value != null) {
+          result.add(value);
+        }
       }
     }
     return result;
