@@ -283,6 +283,7 @@ public class TestDataFactory {
       factory.setLog(testLog);
       factory.setTesting(testing);
       factory.setMarkProfile(details.asBoolean("mark-profile"));
+      factory.setRequiredOnly(details.asBoolean("requiredOnly"));
       String purl = details.asString( "profile");
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, purl, IWorkerContext.VersionResolutionRules.defaultRule());
       if (profile == null) {
