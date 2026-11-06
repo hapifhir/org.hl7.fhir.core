@@ -331,6 +331,10 @@ public abstract class ShExGeneratorBase {
 
   protected abstract String getLinkPredicate();
 
+  protected boolean supportsResourceDefinition() {
+    return false;
+  }
+
   protected final void applyConfiguration(ShExGeneratorConfig config) {
     doDatatypes = config.isDoDatatypes();
     withComments = config.isWithComments();
@@ -707,6 +711,13 @@ public abstract class ShExGeneratorBase {
       elements.add(tmplt(CONCEPT_REFERENCES_TEMPLATE).render());
     else if (sdn.equals("Reference"))
       elements.add(getResourceLinkTemplate());
+
+    if (sdn.equals("Resource") && supportsResourceDefinition()) {
+      String canonicalType = "@<" + getClassName("canonical") + ">";
+      elements.add("fhir:resourceDefinition " + canonicalType + "?;");
+      datatypes.add("canonical");
+      addImport(canonicalType);
+    }
 
     String root_comment = null;
 

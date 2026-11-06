@@ -67,6 +67,7 @@ public abstract class TurtleParserBase extends ParserBase {
   public static String FHIR_URI_BASE = "http://hl7.org/fhir/";
   public static String FHIR_VERSION_BASE = "http://build.fhir.org/";
   public static String FHIR_BASE_PREFIX = "fhir:";
+  public static final String FHIR_VALUE_PREDICATE = FHIR_BASE_PREFIX + "v";
 
   protected TurtleParserBase(IWorkerContext context) {
     super(context);
@@ -443,7 +444,7 @@ public abstract class TurtleParserBase extends ParserBase {
         } else {
           elementLiteral = element.getValue();
         }
-        t.linkedPredicate(FHIR_BASE_PREFIX + "v", ttlLiteral(elementLiteral, element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+        t.linkedPredicate(FHIR_VALUE_PREDICATE, ttlLiteral(elementLiteral, element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
         decoratePrimitiveValue(t, element);
     }
 

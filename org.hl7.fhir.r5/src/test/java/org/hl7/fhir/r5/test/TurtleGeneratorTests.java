@@ -24,15 +24,21 @@ import java.util.stream.Collectors;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.ParserBase.IdRenderingPolicy;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
+import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.test.TurtleGeneratorTestUtils.ParserContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -46,6 +52,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * TurtleGeneratorTests
@@ -190,6 +199,37 @@ public class TurtleGeneratorTests {
   public void testR6ClassNameHandlesEmptyInput() {
     assertThat(TurtleParserR6.getClassName(null)).isNull();
     assertThat(TurtleParserR6.getClassName("")).isEmpty();
+  }
+
+  @ParameterizedTest
+  @NullSource
+  @ValueSource(booleans = {true, false})
+  void resourceDefinitionUsesCanonicalLiteralForAdditionalResources(Boolean additionalResource) throws Exception {
+    StructureDefinition structure = new StructureDefinition();
+    structure.setUrl("http://hl7.org/fhir/StructureDefinition/SupplyRequest");
+    structure.setVersion("0.1.0-snapshot");
+    if (additionalResource != null) {
+      structure.addExtension(ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE, new BooleanType(additionalResource));
+    }
+    Element resource = new Element("SupplyRequest",
+        new Property(null, new ElementDefinition().setPath("SupplyRequest"), structure));
+    Turtle turtle = new Turtle();
+    turtle.prefix("fhir", "http://hl7.org/fhir/");
+    turtle.prefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+    Turtle.Subject subject = turtle.section("resource").triple("<http://example.org/simpleorder>", "a", "fhir:SupplyRequest");
+
+    Method composeResourceMetadata = TurtleParserR6.class.getDeclaredMethod("composeResourceMetadata", Turtle.Subject.class, Element.class);
+    composeResourceMetadata.setAccessible(true);
+    composeResourceMetadata.invoke(new TurtleParserR6(TestingUtilities.getSharedWorkerContext()), subject, resource);
+
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    turtle.commit(output, false);
+    if (Boolean.TRUE.equals(additionalResource)) {
+      assertThat(output.toString(StandardCharsets.UTF_8)).containsPattern(
+          "fhir:resourceDefinition\\s+\\[\\s*fhir:v\\s+\"http://hl7\\.org/fhir/StructureDefinition/SupplyRequest\\|0\\.1\\.0-snapshot\"\\^\\^xsd:anyURI\\s*\\]");
+    } else {
+      assertThat(output.toString(StandardCharsets.UTF_8)).doesNotContain("fhir:resourceDefinition");
+    }
   }
 
   // Not all of these are critical and can be consolidated if we want to reduce tests
