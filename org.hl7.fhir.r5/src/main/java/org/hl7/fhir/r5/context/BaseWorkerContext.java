@@ -3734,7 +3734,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         svs = txCache.getValueSet(canonical);
       } else {
         svs = terminologyClientManager.findValueSetOnServer(canonical);
-        txCache.cacheValueSet(canonical, svs);
+        txCache.cacheValueSet(canonical, svs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (svs != null) {
         String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3757,7 +3757,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else {
 
         scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        txCache.cacheCodeSystem(canonical, scs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);

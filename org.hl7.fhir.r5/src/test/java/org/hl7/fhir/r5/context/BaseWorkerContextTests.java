@@ -831,4 +831,12 @@ public class BaseWorkerContextTests {
     assertSame(cs, result);
     Mockito.verify(terminologyCache).getCodeSystem(canonical);
   }
+
+  @Test
+  void externalLookupAnswerIsPersisted() {
+    // the lookup didn't fail, so its 'not found' is kept for later runs
+    String url = "http://example.org/CodeSystem/unknown";
+    assertNull(context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule()));
+    Mockito.verify(terminologyCache).cacheCodeSystem(url, null, true);
+  }
 }
