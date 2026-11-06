@@ -163,19 +163,18 @@ public class SnapShotGenerationTests {
     public void load() throws FHIRFormatError, FileNotFoundException, IOException {
       if (ManagedFileAccess.file(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-input.json")).exists())
         source = (StructureDefinition) new JsonParser()
-            .parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-input.json")));
+            .parseFile(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-input.json"));
       else
         source = (StructureDefinition) new XmlParser()
-            .parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-input.xml")));
+            .parseFile(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-input.xml"));
       if (!fail)
-        expected = (StructureDefinition) new XmlParser().parse(
-            ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-expected.xml")));
+        expected = (StructureDefinition) new XmlParser().parseFile(TestingUtilities.resourceNameToFile("snapshot-generation", id + "-expected.xml"));
       if (!Utilities.noString(include))
         included = (StructureDefinition) new XmlParser()
-            .parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("snapshot-generation", include + ".xml")));
+            .parseFile(TestingUtilities.resourceNameToFile("snapshot-generation", include + ".xml"));
       if (!Utilities.noString(register)) {
         included = (StructureDefinition) new XmlParser()
-            .parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("snapshot-generation", register + ".xml")));
+            .parseFile(TestingUtilities.resourceNameToFile("snapshot-generation", register + ".xml"));
       }
     }
   }
@@ -456,8 +455,7 @@ public class SnapShotGenerationTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId() + "-actual.xml")),
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId() + "-actual.xml"),
         test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
@@ -504,8 +502,7 @@ public class SnapShotGenerationTests {
           .generate(output, null);
     test.output = output;
     TestingUtilities.context().cacheResource(output);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId() + "-actual.xml")),
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.resourceNameToFile("snapshot-generation", test.getId() + "-actual.xml"),
         output);
     StructureDefinition t1 = test.expected.copy();
     t1.setText(null);

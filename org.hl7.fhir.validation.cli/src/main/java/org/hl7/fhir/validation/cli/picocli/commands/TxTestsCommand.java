@@ -11,7 +11,6 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.special.TxTester;
 import picocli.CommandLine;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -158,8 +157,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       // Write report
       new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext())
         .setOutputStyle(OutputStyle.PRETTY)
-        .compose(
-          new FileOutputStream(Utilities.path(outputDir, "report.json")),
+        .composeFile(Utilities.path(outputDir, "report.json"),
           txTester.getTestReport()
         );
 

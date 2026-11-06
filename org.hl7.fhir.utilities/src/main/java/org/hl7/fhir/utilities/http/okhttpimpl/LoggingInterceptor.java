@@ -47,7 +47,17 @@ public class LoggingInterceptor implements Interceptor{
 
       // Log Response
       Response response = null;
-      response = chain.proceed(chain.request());
+      long start = System.currentTimeMillis();
+      try {
+        response = chain.proceed(chain.request());
+      } catch (IOException | RuntimeException e) {
+        // no response to log, but the request has been logged: say what became of it, or the log
+        // shows a request with no answer, and nothing about the time it took to fail
+        if (logger != null) {
+          logger.logFailure(e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : ""), System.currentTimeMillis() - start);
+        }
+        throw e;
+      }
 
       MediaType contentType = null;
       byte[] bodyBytes = null;

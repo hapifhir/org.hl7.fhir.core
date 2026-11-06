@@ -2735,7 +2735,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         log.info("The extension "+u+" from profile "+profile.getVUrl()+" cannot be resolved globally");
         return sd1;
       } else if (!StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
-        log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+        if (settings.isDebug()) {
+          log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+        }
       }
     }
     return sd2;

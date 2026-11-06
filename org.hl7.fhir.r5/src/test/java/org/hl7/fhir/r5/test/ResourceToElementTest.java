@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.OutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -28,8 +29,10 @@ public class ResourceToElementTest {
     ResourceParser p = new ResourceParser(ctxt);
     Resource res = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", filename));
     Element e = p.parse(res);
-    new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, ManagedFileAccess.outStream(src), OutputStyle.PRETTY, null);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), res);
+    try (OutputStream stream = ManagedFileAccess.outStream(src)) {
+      new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, stream, OutputStyle.PRETTY, null);
+    }
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dst, res);
     String msg = new CompareUtilities().checkXMLIsSame(filename, src, dst);
     Assertions.assertNull(msg);
   }

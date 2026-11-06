@@ -31,7 +31,6 @@ package org.hl7.fhir.r4.context;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -552,7 +551,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) throws FileNotFoundException, Exception {
     Resource r;
     try {
-      r = p.parse(ManagedFileAccess.inStream(filename));
+      r = p.parseFile(filename);
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           cacheResource(e.getResource());

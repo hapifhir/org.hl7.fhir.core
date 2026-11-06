@@ -96,7 +96,7 @@ public class ICFImporter {
     
     }
     csv.close();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dst, cs); 
   }
 
 
