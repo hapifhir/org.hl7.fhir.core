@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.misc;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +39,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
         System.out.println("Process " + f.getName());
         ValueSet vs = importValueSet(FileUtilities.fileToBytes(f));
         if (vs.getId() != null) {
-          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
+          new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json"), vs);
         }
       } catch (Exception e) {
         e.printStackTrace();

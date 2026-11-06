@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -41,8 +39,8 @@ public class CorePackageTools {
             String n = f.getName();
             System.out.println(n);
             String xn = FileUtilities.changeFileExt(n, ".xml");
-            org.hl7.fhir.dstu2016may.model.Resource r = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(ManagedFileAccess.inStream(f));
-            new org.hl7.fhir.dstu2016may.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(xml, "package", xn)), r);
+            org.hl7.fhir.dstu2016may.model.Resource r = new org.hl7.fhir.dstu2016may.formats.JsonParser().parseFile(f);
+            new org.hl7.fhir.dstu2016may.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.NORMAL).composeFile(Utilities.path(xml, "package", xn), r);
           }
         }
       }

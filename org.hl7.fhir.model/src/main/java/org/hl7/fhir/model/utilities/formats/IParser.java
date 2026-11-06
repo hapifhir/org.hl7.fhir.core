@@ -7,6 +7,8 @@ import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.formats.ParserType;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -95,6 +97,26 @@ public interface IParser {
   public Resource parseAndClose(InputStream input) throws IOException, FHIRFormatError;
 
   /**
+   * parse a resource from a file. The file is opened through ManagedFileAccess, and is always closed
+   * when parsing completes (or fails)
+   */
+  default Resource parseFile(String filename) throws IOException, FHIRFormatError {
+    try (InputStream stream = ManagedFileAccess.inStream(filename)) {
+      return parse(stream);
+    }
+  }
+
+  /**
+   * parse a resource from a file. The file is opened through ManagedFileAccess, and is always closed
+   * when parsing completes (or fails)
+   */
+  default Resource parseFile(File file) throws IOException, FHIRFormatError {
+    try (InputStream stream = ManagedFileAccess.inStream(file)) {
+      return parse(stream);
+    }
+  }
+
+  /**
    * parse content that is known to be a resource  
  * @throws UnsupportedEncodingException 
  * @throws IOException 
@@ -163,6 +185,26 @@ public interface IParser {
 	 * @throws IOException 
 	 */
 	public void compose(OutputStream stream, Resource resource) throws IOException;
+
+  /**
+   * Compose a resource to a file. The file is opened through ManagedFileAccess, and is always closed
+   * when composing completes (or fails)
+   */
+  default void composeFile(String filename, Resource resource) throws IOException {
+    try (OutputStream stream = ManagedFileAccess.outStream(filename)) {
+      compose(stream, resource);
+    }
+  }
+
+  /**
+   * Compose a resource to a file. The file is opened through ManagedFileAccess, and is always closed
+   * when composing completes (or fails)
+   */
+  default void composeFile(File file, Resource resource) throws IOException {
+    try (OutputStream stream = ManagedFileAccess.outStream(file)) {
+      compose(stream, resource);
+    }
+  }
 	
   /**
    * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)

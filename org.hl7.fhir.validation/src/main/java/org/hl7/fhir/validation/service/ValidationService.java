@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.service;
 
+import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -880,8 +881,9 @@ public class ValidationService {
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
-      Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(output, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
-          OutputStyle.PRETTY, null);
+      try (OutputStream stream = ManagedFileAccess.outStream(Utilities.path(output, ManagedFileAccess.file(ref.getRef()).getName()))) {
+        Manager.compose(validator.getContext(), e, stream, cnt.getCntType(), OutputStyle.PRETTY, null);
+      }
     }
     log.info("Done - imported "+t+" translations into "+refs.size()+ " in "+ output);
   }

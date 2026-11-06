@@ -1,8 +1,6 @@
 package org.hl7.fhir.r4b.utils;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -447,13 +445,15 @@ public class MappingSheetParser {
 
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
     MappingSheetParser parser = new MappingSheetParser();
-    parser.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv")), "v2-pid.csv");
+    try (InputStream stream = ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv"))) {
+      parser.parse(stream, "v2-pid.csv");
+    }
     ConceptMap cm = parser.getConceptMap();
     StructureMap sm = parser.getStructureMap();
     new JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "sm.json")), sm);
+        .composeFile(Utilities.path("[tmp]", "sm.json"), sm);
     new JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "cm.json")), cm);
+        .composeFile(Utilities.path("[tmp]", "cm.json"), cm);
     FileUtilities.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
     FileUtilities.stringToFile(PFX + parser.genSheet(cm) + SFX, Utilities.path("[tmp]", "map.html"));
   }

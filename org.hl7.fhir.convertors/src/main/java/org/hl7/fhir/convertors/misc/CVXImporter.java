@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -59,7 +57,7 @@ public class CVXImporter {
   }
 
   private void doUpdate(String source, String dest) throws FHIRFormatError, FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-    CodeSystem cvx = (CodeSystem) new JsonParser().parse(ManagedFileAccess.inStream(dest));
+    CodeSystem cvx = (CodeSystem) new JsonParser().parseFile(dest);
     
     String ldate = null;
     
@@ -97,7 +95,7 @@ public class CVXImporter {
     Collections.sort(cvx.getConcept(), new CVXSorter());
     cvx.setDateElement(new DateTimeType(ldate));
     cvx.setVersion(ldate.replace("-", ""));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dest), cvx);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dest, cvx);
   }
 
   private ConceptDefinitionComponent findCVXCode(CodeSystem cvx, String code) {

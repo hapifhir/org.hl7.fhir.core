@@ -29,9 +29,7 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -52,12 +50,12 @@ public class Unbundler {
 
   private static void unbundle(String src) throws FHIRFormatError, FileNotFoundException, IOException {
     String folder = FileUtilities.getDirectoryForFile(src);
-    Bundle bnd = (Bundle) new JsonParser().parse(ManagedFileAccess.inStream(src));
+    Bundle bnd = (Bundle) new JsonParser().parseFile(src);
     for (BundleEntryComponent be : bnd.getEntry()) {
       Resource r = be.getResource();
       if (r != null) {
         String tgt = Utilities.path(folder, r.fhirType() + "-" + r.getId() + ".json");
-        new JsonParser().compose(ManagedFileAccess.outStream(tgt), r);
+        new JsonParser().composeFile(tgt, r);
       }
     }
   }

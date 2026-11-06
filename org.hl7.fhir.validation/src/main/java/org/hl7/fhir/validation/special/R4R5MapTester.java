@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.special;
 
+import java.io.OutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -224,7 +225,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
           List<StructureMap> mapTgt = utils.getMapsForUrl(allMaps, sd.getUrl(), StructureMapInputModeVS.TARGET);
           changed = checkMaps(sd, o.getJsonObject("r4"), "r4", "http://hl7.org/fhir/4.0", mapSrc, mapTgt, r4Examples) || changed;
           changed = checkMaps(sd, o.getJsonObject("r4b"), "r4b", "http://hl7.org/fhir/4.3", mapSrc, mapTgt, r4bExamples) || changed;
-          JsonParser.compose(json, ManagedFileAccess.outStream(Utilities.path(src, "input", "_data", "conversions.json")), true);
+          JsonParser.compose(json, ManagedFileAccess.file(Utilities.path(src, "input", "_data", "conversions.json")), true);
         }
         log("   .. done");
       }
@@ -252,7 +253,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     log("Load "+path);
     for (File f : ManagedFileAccess.file(path).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(f)));
+        context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parseFile(f));
       }
       if (f.getName().endsWith(".fml")) {
         context.cacheResource(utils.parse(FileUtilities.fileToString(f), f.getName()));
@@ -411,13 +412,15 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private void checkSave(String id, String state, Element e) throws FHIRException, FileNotFoundException, IOException {
     if (saveProcess) {
-      new org.hl7.fhir.services.elementmodel.JsonParser(context).compose(e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "r4r5", e.fhirType()+"-"+id+"-"+state+".json")), OutputStyle.PRETTY, id);
+      try (OutputStream stream = ManagedFileAccess.outStream(Utilities.path("[tmp]", "r4r5", e.fhirType()+"-"+id+"-"+state+".json"))) {
+        new org.hl7.fhir.services.elementmodel.JsonParser(context).compose(e, stream, OutputStyle.PRETTY, id);
+      }
     }
   }
 
   private void checkSave(String id, String state, Resource r) throws FHIRException, FileNotFoundException, IOException {
     if (saveProcess) {
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "r4r5", r.fhirType()+"-"+id+"-"+state+".json")), r);
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "r4r5", r.fhirType()+"-"+id+"-"+state+".json"), r);
     }
   }
   

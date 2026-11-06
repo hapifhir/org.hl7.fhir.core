@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /*
@@ -80,7 +78,7 @@ public class NUCCConvertor {
     }
     csv.close();
     cs.sort();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "nucc.json")), cs);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "nucc.json"), cs);
   }
 
   private void processLine(CodeSystem cs, String[] values) throws FHIRFormatError {
