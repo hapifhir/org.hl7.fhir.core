@@ -101,8 +101,7 @@ public class TurtleParserR4 extends TurtleParserBase {
     }
   }
 
-  @Override
-  protected String getURIType(String uri) {
+  private String getURIType(String uri) {
     if (uri.startsWith("<" + FHIR_URI_BASE)) {
       if (uri.substring(FHIR_URI_BASE.length() + 1).contains("/")) {
         return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));

@@ -66,7 +66,10 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   protected String getLinkPredicate() {
-    return "fhir:link";
+    // The RDF-level link predicate (the IRI a value or reference resolves to) is
+    // fhir:l, matching the Turtle the publishing library emits; fhir:link is a
+    // real FHIR element name (e.g. Patient.link) and is generated separately.
+    return "fhir:l";
   }
 
   @Override
