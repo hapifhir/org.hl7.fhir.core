@@ -595,6 +595,32 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
         cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234", "5678"))).getKey());
     }
 
+    private CodeSystem codeSystem(String display) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl("http://example.org/fhir/CodeSystem/local");
+      cs.setVersion("1.0.0");
+      cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+      cs.addConcept().setCode("a").setDisplay(display);
+      return cs;
+    }
+
+    @Test
+    void testEditedCodeSystemMisses() throws IOException {
+      // a local code system (or a supplement) edited without a version change changes the expansion too
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/local");
+      vs.setVersion("1.0.0");
+      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
+
+      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A"))).getKey();
+      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A changed"))).getKey());
+      CodeSystem renarrated = codeSystem("A");
+      renarrated.setTitle("A new title");
+      renarrated.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
+      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(renarrated)).getKey());
+    }
+
     @Test
     void testLargeUnversionedDefinitionMisses() throws IOException {
       // a definition this large is left out of the key, which used to leave nothing of it there at all

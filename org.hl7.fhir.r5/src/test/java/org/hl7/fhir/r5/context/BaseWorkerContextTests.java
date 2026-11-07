@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.VersionResolutionRules;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
@@ -29,6 +30,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -645,7 +647,7 @@ public class BaseWorkerContextTests {
 
   @Test
   public void testExpandValueSetKeyHasImportedValueSets() throws IOException {
-    // vs imports a, a imports b, and b imports a again; c can't be resolved
+    // vs imports a, a imports b, and b imports a again; c can't be loaded
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
     vs.getCompose().addInclude().addValueSet("http://example.org/a");
@@ -658,13 +660,61 @@ public class BaseWorkerContextTests {
     b.getCompose().addInclude().addValueSet("http://example.org/a");
     Mockito.doReturn(a).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/a"), any(), any(), any());
     Mockito.doReturn(b).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
-    Mockito.doReturn(null).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/c"), any(), any(), any());
+    Mockito.doThrow(new FHIRException("can't load c")).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/c"), any(), any(), any());
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(List.of(a, b)));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     assertEquals(expectedExpansionResult, context.expandVS(opt, vs, new Parameters(), false));
+  }
+
+  @Test
+  public void testExpandValueSetKeyHasCodeSystemsAndSupplements() throws IOException {
+    // the content of the code systems a local definition draws on goes into the key; a stub (not-present) doesn't
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/supp"));
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    vs.getCompose().addInclude().setSystem("http://example.org/stub");
+    CodeSystem supp = new CodeSystem();
+    supp.setUrl("http://example.org/supp");
+    supp.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://example.org/cs");
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem stub = new CodeSystem();
+    stub.setUrl("http://example.org/stub");
+    stub.setContent(Enumerations.CodeSystemContentMode.NOTPRESENT);
+    Mockito.doReturn(supp).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/supp"), any(), any(), any());
+    Mockito.doReturn(cs).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), any(), any());
+    Mockito.doReturn(stub).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/stub"), any(), any(), any());
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(List.of(supp, cs)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, new Parameters(), false));
+  }
+
+  @Test
+  public void testExpandValueSetKeyHasTheExpansionParameters() throws IOException {
+    // the parameters as sent: the caller's, plus what the options add
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true).withIncompleteOk(true).withLanguage("de");
+    ArgumentCaptor<Parameters> sent = ArgumentCaptor.forClass(Parameters.class);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), sent.capture(), eq(Collections.emptyList()));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    Parameters pIn = new Parameters();
+    pIn.addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250101");
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, pIn, false));
+    Parameters key = sent.getValue();
+    assertEquals("http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250101", key.getParameter("system-version").getValue().primitiveValue());
+    assertEquals("de", key.getParameter("displayLanguage").getValue().primitiveValue());
+    assertEquals("false", key.getParameter("excludeNested").getValue().primitiveValue());
+    assertEquals("true", key.getParameter("incomplete-ok").getValue().primitiveValue());
   }
 
   @Test
@@ -721,6 +771,81 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  private static OperationOutcome serverError() {
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.TOOCOSTLY).getDetails().setText("too costly");
+    return oo;
+  }
+
+  @Test
+  void testIsServerAnswer() {
+    assertTrue(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError())));
+    assertTrue(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(404, "not found", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(500, "internal error", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(502, "bad gateway", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(408, "timeout", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(429, "too many requests", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(401, "unauthorized", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(403, "forbidden", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(407, "proxy authentication required", serverError())));
+    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(0, "no response", new java.io.IOException("reset"))));
+    assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.SocketTimeoutException("timed out"))));
+  }
+
+  /**
+   * The local expansion gives up, so the server is asked, and fails with the given exception
+   */
+  private ValueSetExpansionOutcome expandWithServerFailure(Exception failure) throws IOException {
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
+    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs), any(Parameters.class));
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(any(ValidationOptions.class));
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(eq(vs), any(Parameters.class));
+    return context.expandVS(opt, vs, new Parameters(), false);
+  }
+
+  @Test
+  void testExpandValueSetServerFailureIsNotPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(new FHIRException(new java.net.SocketTimeoutException("timed out")));
+    assertNull(res.getValueset());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandValueSetServerErrorPageIsNotPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(503, "service unavailable", serverError()));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandValueSetServerAnswerIsPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError()));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
+  }
+
+  private ValueSetExpansionOutcome expandIncludeWithServerFailure(Exception failure) {
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class));
+    Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(ValueSet.class), any(Parameters.class));
+    return context.expandVS(null, inc, true, false);
+  }
+
+  @Test
+  void testExpandIncludeServerFailureIsNotPersisted() {
+    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(503, "service unavailable", serverError()));
+    assertNull(res.getValueset());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandIncludeServerAnswerIsPersisted() {
+    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError()));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
   }
 
   @Test

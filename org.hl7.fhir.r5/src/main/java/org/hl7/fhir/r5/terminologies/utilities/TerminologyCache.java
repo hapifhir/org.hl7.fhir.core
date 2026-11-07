@@ -904,18 +904,19 @@ public class TerminologyCache {
   /**
    * The key covers what decides the expansion, not just the ValueSet's url and version: an IG edits
    * its ValueSets without changing the version, and the expansion parameters can pin a different code
-   * system version. So the key holds a digest of the ValueSet's definition (and of the ValueSets it
-   * imports, when the caller resolved them) wherever the definition itself is not part of the key,
-   * and a digest of the expansion parameters when they are given.
+   * system version. So the key holds a digest of the ValueSet's definition (and of the local resources
+   * the expansion depends on, when the caller resolved them) wherever the definition itself is not part
+   * of the key, and a digest of the expansion parameters when they are given.
    *
    * Cache files written with the older url|version key stay readable; those entries are simply no
    * longer found, so the ValueSet is expanded again once.
    *
    * @param expParameters the parameters of the $expand, or null to leave them out of the key
-   * @param imports the ValueSets this one imports (compose.include/exclude.valueSet, all the way down),
-   *    or null; ValueSets that can't be resolved are only named in the compose, which is in the key anyway
+   * @param dependencies the ValueSets this one imports (all the way down) and the CodeSystems and
+   *    supplements it draws on, or null; resources that can't be resolved are only named in the compose,
+   *    which is in the key anyway
    */
-  public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options, Parameters expParameters, List<ValueSet> imports) {
+  public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options, Parameters expParameters, List<? extends CanonicalResource> dependencies) {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
     ValueSet vsc = getVSEssense(vs);
@@ -924,13 +925,13 @@ public class TerminologyCache {
     try {
       String prefix = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "");
       String suffix = (expParameters == null ? "" : ", \"parameters\": \""+hashJson(json.composeString(expParameters))+"\"")+"}\r\n";
-      boolean hasImports = imports != null && !imports.isEmpty();
+      boolean hasDependencies = dependencies != null && !dependencies.isEmpty();
       if (vs.hasUrl() && vs.hasVersion()) {
         ct.request = prefix+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""
-          +", \"definition\": \""+definitionDigest(json, vsc, imports)+"\""+suffix;
-      } else if (tooLargeToEmbed(vsc) || hasImports) {
-        // extracted() leaves a large definition out, and an embedded one says nothing about the imports
-        ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vsc, imports)+"\""+suffix;
+          +", \"definition\": \""+definitionDigest(json, vsc, dependencies)+"\""+suffix;
+      } else if (tooLargeToEmbed(vsc) || hasDependencies) {
+        // extracted() leaves a large definition out, and an embedded one says nothing about the dependencies
+        ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vsc, dependencies)+"\""+suffix;
       } else {
         ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+suffix;
       }
@@ -945,16 +946,33 @@ public class TerminologyCache {
     return vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000;
   }
 
-  private String definitionDigest(JsonParser json, ValueSet vsc, List<ValueSet> imports) throws IOException {
+  private String definitionDigest(JsonParser json, ValueSet vsc, List<? extends CanonicalResource> dependencies) throws IOException {
     StringBuilder b = new StringBuilder(json.composeString(vsc));
-    if (imports != null) {
-      for (ValueSet imp : imports) {
-        b.append("\n").append(imp.getVersionedUrl()).append("\n").append(json.composeString(getVSEssense(imp)));
+    if (dependencies != null) {
+      for (CanonicalResource cr : dependencies) {
+        Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
+        b.append("\n").append(cr.fhirType()).append("/").append(cr.getVersionedUrl()).append("\n").append(json.composeString(essence));
       }
     }
     return hashJson(b.toString());
   }
-  
+
+  /** what of a CodeSystem decides an expansion: its content, not its narrative or metadata */
+  private CodeSystem getCSEssence(CodeSystem cs) {
+    CodeSystem csc = new CodeSystem();
+    csc.setUrl(cs.getUrl());
+    csc.setVersion(cs.getVersion());
+    csc.setLanguage(cs.getLanguage());
+    csc.setContent(cs.getContent());
+    csc.setSupplements(cs.getSupplements());
+    csc.setCaseSensitive(cs.getCaseSensitive());
+    csc.setHierarchyMeaning(cs.getHierarchyMeaning());
+    csc.getProperty().addAll(cs.getProperty());
+    csc.getFilter().addAll(cs.getFilter());
+    csc.getConcept().addAll(cs.getConcept());
+    return csc;
+  }
+
   public CacheToken generateExpandToken(String url, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
     ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";

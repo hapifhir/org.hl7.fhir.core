@@ -23,7 +23,10 @@ import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -564,18 +567,18 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       other.setTitle("A new title");
       other.setDate(new Date());
       other.getText().setStatus(org.hl7.fhir.r5.model.Narrative.NarrativeStatus.GENERATED);
-      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
-        cache.generateExpandToken(other, options(), parameters("1"), null).getKey());
+      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
+        cache.generateExpandToken(other, options(), parameters("1"), null).getRequest());
     }
 
     @Test
     void testChangedParametersMiss() throws IOException {
       TerminologyCache cache = createTerminologyCache();
       ValueSet vs = versionedValueSet("1234");
-      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
-        cache.generateExpandToken(vs, options(), parameters("2"), null).getKey());
-      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
-        cache.generateExpandToken(vs, options(), parameters("1"), null).getKey());
+      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
+        cache.generateExpandToken(vs, options(), parameters("2"), null).getRequest());
+      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
+        cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest());
     }
 
     @Test
@@ -586,14 +589,40 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       vs.setVersion("1.0.0");
       vs.getCompose().addInclude().addValueSet("http://example.org/fhir/ValueSet/test");
 
-      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getKey();
-      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234", "5678"))).getKey());
-      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getKey());
+      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getRequest();
+      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234", "5678"))).getRequest());
+      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getRequest());
 
       // the same goes for a ValueSet without a version, whose definition is otherwise in the key as it is
       vs.setVersion(null);
-      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234"))).getKey(),
-        cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234", "5678"))).getKey());
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234"))).getRequest(),
+        cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234", "5678"))).getRequest());
+    }
+
+    private CodeSystem codeSystem(String display) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl("http://example.org/fhir/CodeSystem/local");
+      cs.setVersion("1.0.0");
+      cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+      cs.addConcept().setCode("a").setDisplay(display);
+      return cs;
+    }
+
+    @Test
+    void testEditedCodeSystemMisses() throws IOException {
+      // a local code system (or a supplement) edited without a version change changes the expansion too
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/local");
+      vs.setVersion("1.0.0");
+      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
+
+      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A"))).getRequest();
+      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A changed"))).getRequest());
+      CodeSystem renarrated = codeSystem("A");
+      renarrated.setTitle("A new title");
+      renarrated.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
+      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(renarrated)).getRequest());
     }
 
     @Test
@@ -604,7 +633,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       vs.setVersion(null);
       ValueSet edited = vs.copy();
       edited.getCompose().getIncludeFirstRep().addConcept().setCode("extra");
-      assertNotEquals(cache.generateExpandToken(vs, options()).getKey(), cache.generateExpandToken(edited, options()).getKey());
+      assertNotEquals(cache.generateExpandToken(vs, options()).getRequest(), cache.generateExpandToken(edited, options()).getRequest());
     }
 
     @Test

@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -978,6 +979,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // dependent resources are still sent; the cache-id now travels as an HTTP header
     addDependentResources(opCtxt, tc, p, vs);
 
+    boolean persistent = TerminologyCache.PERMANENT;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -985,6 +987,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
+      persistent = isServerAnswer(e);
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
@@ -997,7 +1000,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persistent);
     return res;
   }
 
@@ -1043,6 +1046,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
 
     TerminologyClientContext tc = terminologyClientManager.chooseServer(url, true);
+    boolean persistent = TerminologyCache.PERMANENT;
     try {
       if (tc == null) {
         throw new FHIRException("Unable to find a server to expand '" + url + "'");
@@ -1063,9 +1067,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
+      persistent = isServerAnswer(e);
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persistent);
     return res;
   }
 
@@ -1145,7 +1150,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.setParameter("incomplete-ok", true);
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, options, p, findImportedValueSets(vs));
+    CacheToken cacheToken = txCache.generateExpandToken(vs, options, p, findExpansionDependencies(vs, p));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
@@ -1200,6 +1205,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
 
+    boolean persistent = TerminologyCache.PERMANENT;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
@@ -1212,6 +1218,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
+      persistent = isServerAnswer(e);
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
       } else {
@@ -1221,44 +1228,96 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null && res.getValueset() != null) {
       res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persistent);
     return res;
   }
 
   /**
-   * The ValueSets that vs imports (compose.include/exclude.valueSet), and the ones they import in turn,
-   * as far as they are known locally. Their definitions decide the expansion as much as vs's own does,
-   * so they are part of its cache key: an IG can edit an imported ValueSet without changing a version.
+   * Did the terminology server answer the $expand, if with an error? Only then is the outcome worth keeping
+   * in the cache for later runs. No response, a timeout, a 5xx (also an error page the client turned into an
+   * OperationOutcome), a 408 or a 429, or an authentication or access refusal (401, 403, 407, often from a
+   * proxy in between) describes the server or the network at that moment, not the ValueSet: kept in the
+   * cache file, it would be used instead of asking again in every later run.
    */
-  private List<ValueSet> findImportedValueSets(ValueSet vs) {
-    List<ValueSet> res = new ArrayList<>();
-    findImportedValueSets(vs, res, new HashSet<>());
-    return res;
+  public static boolean isServerAnswer(Exception e) {
+    if (!(e instanceof EFhirClientException) || !((EFhirClientException) e).hasServerErrors()) {
+      return false;
+    }
+    int code = ((EFhirClientException) e).getCode();
+    return code >= 400 && code < 500 && !Utilities.existsInList(code, 401, 403, 407, 408, 429);
   }
 
-  private void findImportedValueSets(ValueSet vs, List<ValueSet> res, Set<String> seen) {
+  /**
+   * The local resources the expansion of vs depends on: the ones addDependentResources sends to the server
+   * as tx-resource (the ValueSets it imports, all the way down, the complete or fragment CodeSystems it
+   * draws on, and their supplements). An IG can edit any of them without changing a version, so they are
+   * part of the expansion's cache key. Resolved the way addDependentResources resolves them, so the key
+   * describes what the server is sent.
+   */
+  public List<CanonicalResource> findExpansionDependencies(ValueSet vs, Parameters p) {
+    Map<String, CanonicalResource> res = new LinkedHashMap<>();
+    findExpansionDependencies(vs, p, res);
+    return new ArrayList<>(res.values());
+  }
+
+  private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, CanonicalResource> res) {
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        addExpansionDependency(res, fetchForKey(CodeSystem.class, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null));
+      }
+    }
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      findImportedValueSets(vs, inc, res, seen);
+      findExpansionDependencies(vs, inc, p, res);
     }
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-      findImportedValueSets(vs, inc, res, seen);
+      findExpansionDependencies(vs, inc, p, res);
     }
   }
 
-  private void findImportedValueSets(ValueSet vs, ConceptSetComponent inc, List<ValueSet> res, Set<String> seen) {
-    for (CanonicalType u : inc.getValueSet()) {
-      if (u.hasValue() && seen.add(u.getValue())) {
-        ValueSet imp;
-        try {
-          imp = fetchResourceWithException(ValueSet.class, u.getValue(), ExtensionUtilities.getVersionResolutionRules(inc), null, vs);
-        } catch (FHIRException e) {
-          imp = null; // left to the expansion to report; the canonical is in the compose, so in the key, anyway
-        }
-        if (imp != null) {
-          res.add(imp);
-          findImportedValueSets(imp, res, seen);
+  private void findExpansionDependencies(ValueSet src, ConceptSetComponent inc, Parameters p, Map<String, CanonicalResource> res) {
+    for (CanonicalType c : inc.getValueSet()) {
+      ValueSet imp = fetchForKey(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), src);
+      if (addExpansionDependency(res, imp)) {
+        findExpansionDependencies(imp, p, res);
+      }
+    }
+    String sys = inc.getSystem();
+    CodeSystem cs = fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), src);
+    if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+      addExpansionDependency(res, cs);
+    }
+    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+      addExpansionDependency(res, supp);
+    }
+    if (sys != null) {
+      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+        addExpansionDependency(res, supp);
+      }
+      if (!sys.contains("!")) {
+        String fixed = getFixedVersion(sys, p);
+        if (fixed != null) {
+          for (CodeSystem supp : codeSystems.getSupplements(fixed)) {
+            addExpansionDependency(res, supp);
+          }
         }
       }
+    }
+  }
+
+  /** false if cr is null or already there, so the caller doesn't follow it again (imports can be circular) */
+  private boolean addExpansionDependency(Map<String, CanonicalResource> res, CanonicalResource cr) {
+    return cr != null && res.putIfAbsent(cr.fhirType() + "/" + cr.getVersionedUrl(), cr) == null;
+  }
+
+  /** a resource that can't be loaded is left to the expansion to report; for the key, it is not there */
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, Resource src) {
+    if (url == null) {
+      return null;
+    }
+    try {
+      return fetchResourceWithException(type, url, rules, null, src);
+    } catch (FHIRException e) {
+      return null;
     }
   }
 
