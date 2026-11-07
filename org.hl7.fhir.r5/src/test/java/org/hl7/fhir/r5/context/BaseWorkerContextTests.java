@@ -886,6 +886,20 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  void testExpandIncludeKeyHasTheExpansionParameters() {
+    // they are sent with the include, so they are in its key: a pinned version gives a different expansion
+    Parameters ep = new Parameters();
+    ep.addParameter("system-version", new CanonicalType("http://example.org/cs|2.0"));
+    context.setExpansionParameters(ep);
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    ArgumentCaptor<Parameters> sent = ArgumentCaptor.forClass(Parameters.class);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), sent.capture(), eq(Collections.emptyList()));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    assertEquals(expectedExpansionResult, context.expandVS(null, inc, true, false));
+    assertEquals("http://example.org/cs|2.0", sent.getValue().getParameter("system-version").getValue().primitiveValue());
+  }
+
+  @Test
   void testExpandIncludeKeyHasDependencies() {
     // the expansion of a single include is persisted too, and the server is sent the supplements
     CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
