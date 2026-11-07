@@ -344,6 +344,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             c.setUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM, cs);
 
             checkCanonical(info.getIssues(), path, cs, valueset);
+            checkVersionNeeded(info.getIssues(), path+".coding["+i+"]", c, cs);
             res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
           }
           info.getIssues().addAll(res.getIssues());
@@ -495,6 +496,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
         for (OperationOutcomeIssueComponent iss : info.getIssues()) {
           lvl = IssueSeverity.max(lvl, OperationOutcomeUtilities.convert(iss.getSeverity()));
         }
+        if (valueset == null && vcc.hasCoding()) {
+          // no value set (CodeSystem $validate-code), so there's no value set membership to find the
+          // code: it's the coding that validated against its code system, the same as when there are
+          // no issues (below). The issues are warnings or less (errors are handled above)
+          Coding fc = vcc.getCodingFirstRep();
+          ConceptDefinitionComponent cd = new ConceptDefinitionComponent(fc.getCode());
+          cd.setDisplay(fc.getDisplay());
+          return setFoundStatus(new ValidationResult(lvl, info.summaryList(), fc.getSystem(), getVersion(fc), cd, fc.getDisplay(), info.getIssues()).addCodeableConcept(vcc), codingResults, firstValidCoding(codingResults));
+        }
         return new ValidationResult(lvl, null, info.getIssues());
       } else {
         String disp = lookupDisplay(foundCoding);
@@ -524,6 +534,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
    * CodeableConcept they come from the result of the coding that was returned (the first that
    * validated), not from whichever coding happened to be inactive
    */
+  /**
+   * The index of the first coding that validated, or -1 if none did
+   */
+  private int firstValidCoding(Map<Integer, ValidationResult> codingResults) {
+    int res = -1;
+    for (Map.Entry<Integer, ValidationResult> e : codingResults.entrySet()) {
+      if (e.getValue() != null && e.getValue().isOk() && (res == -1 || e.getKey() < res)) {
+        res = e.getKey();
+      }
+    }
+    return res;
+  }
+
   private ValidationResult setFoundStatus(ValidationResult res, Map<Integer, ValidationResult> codingResults, int foundIndex) {
     ValidationResult fr = codingResults.get(foundIndex);
     if (fr != null && fr.isInactive()) {
@@ -869,6 +892,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         } else {
           checkCanonical(issues, path, cs, valueset);
+          checkVersionNeeded(issues, path, code, cs);
         }
         if (cs != null && (cs.hasSupplements() || cs.getContent() == CodeSystemContentMode.SUPPLEMENT)) {
           String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getVersionedUrl());
@@ -1037,7 +1061,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.setMessage(CommaSeparatedStringBuilder.join("; ", msgs));
       } else {
         for (OperationOutcomeIssueComponent issue : issues) {
-          if (issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR && "INACTIVE_CONCEPT_FOUND".equals(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
+          if (issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR && Utilities.existsInList(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID), "INACTIVE_CONCEPT_FOUND", I18nConstants.CODESYSTEM_VERSION_NEEDED)) {
             msgs.add(issue.getDetails().getText());
           }
         }
@@ -2096,6 +2120,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return result;
+  }
+
+  /**
+   * versionNeeded = true means that a version must be specified whenever the code system is referenced.
+   * This is a check on the coding itself: a version pinned by the value set or by the parameters is
+   * specific to that context, and doesn't travel with the coding, so it makes no difference here
+   */
+  private void checkVersionNeeded(List<OperationOutcomeIssueComponent> issues, String path, Coding code, CodeSystem cs) {
+    if (cs.getVersionNeeded() && !code.hasVersion()) {
+      String msg = context.formatMessage(I18nConstants.CODESYSTEM_VERSION_NEEDED, cs.getUrl());
+      issues.addAll(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, Utilities.noString(path) ? "version" : path + ".version", msg, OpIssueCode.InvalidData, null, I18nConstants.CODESYSTEM_VERSION_NEEDED));
+    }
   }
 
   private void checkVersion(String path, @Nonnull String system, @Nonnull String version, VersionAlgorithm va, List<OperationOutcomeIssueComponent> issues) {
