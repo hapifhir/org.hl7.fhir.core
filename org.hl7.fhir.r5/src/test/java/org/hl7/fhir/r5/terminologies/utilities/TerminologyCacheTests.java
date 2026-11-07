@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Narrative;
@@ -652,6 +653,45 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
       ValueSet b = versionedValueSet("1234");
       b.setVersion(null);
+      b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getRequest(),
+        cache.generateExpandToken(vs, options(), null, List.of(b)).getRequest());
+    }
+
+    @Test
+    void testUnversionedStatusChangeMisses() throws IOException {
+      // a small definition without a version is in the key as it is; its status has to be there too
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet draft = versionedValueSet("1234");
+      draft.setVersion(null);
+      draft.setStatus(Enumerations.PublicationStatus.DRAFT);
+      ValueSet active = versionedValueSet("1234");
+      active.setVersion(null);
+      active.setStatus(Enumerations.PublicationStatus.ACTIVE);
+      assertNotEquals(cache.generateExpandToken(draft, options(), null, null).getRequest(),
+        cache.generateExpandToken(active, options(), null, null).getRequest());
+    }
+
+    @Test
+    void testUnknownStandardsStatusDoesNotThrow() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      vs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("stu"));
+      CodeSystem cs = codeSystem("A");
+      cs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("trial use "));
+      ValueSet other = versionedValueSet("1234");
+      other.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("draft"));
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(cs)).getRequest(),
+        cache.generateExpandToken(other, options(), null, List.of(cs)).getRequest());
+    }
+
+    @Test
+    void testContainedCodeSystemIsKeyedByContentNotItsUuid() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      CodeSystem a = codeSystem("A");
+      a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      CodeSystem b = codeSystem("A");
       b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
       assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getRequest(),
         cache.generateExpandToken(vs, options(), null, List.of(b)).getRequest());

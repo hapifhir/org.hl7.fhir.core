@@ -654,6 +654,45 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
+    void testUnversionedStatusChangeMisses() throws IOException {
+      // a small definition without a version is in the key as it is; its status has to be there too
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet draft = versionedValueSet("1234");
+      draft.setVersion(null);
+      draft.setStatus(Enumerations.PublicationStatus.DRAFT);
+      ValueSet active = versionedValueSet("1234");
+      active.setVersion(null);
+      active.setStatus(Enumerations.PublicationStatus.ACTIVE);
+      assertNotEquals(cache.generateExpandToken(draft, options(), null, null).getKey(),
+        cache.generateExpandToken(active, options(), null, null).getKey());
+    }
+
+    @Test
+    void testUnknownStandardsStatusDoesNotThrow() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      vs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("stu"));
+      CodeSystem cs = codeSystem("A");
+      cs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("trial use "));
+      ValueSet other = versionedValueSet("1234");
+      other.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("draft"));
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(cs)).getKey(),
+        cache.generateExpandToken(other, options(), null, List.of(cs)).getKey());
+    }
+
+    @Test
+    void testContainedCodeSystemIsKeyedByContentNotItsUuid() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      CodeSystem a = codeSystem("A");
+      a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      CodeSystem b = codeSystem("A");
+      b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getKey(),
+        cache.generateExpandToken(vs, options(), null, List.of(b)).getKey());
+    }
+
+    @Test
     void testLargeUnversionedDefinitionMisses() throws IOException {
       // a definition this large is left out of the key, which used to leave nothing of it there at all
       TerminologyCache cache = createTerminologyCache();

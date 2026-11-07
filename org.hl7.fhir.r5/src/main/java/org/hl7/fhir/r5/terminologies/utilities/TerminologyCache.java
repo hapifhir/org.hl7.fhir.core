@@ -31,6 +31,7 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -934,7 +935,7 @@ public class TerminologyCache {
         // extracted() leaves a large definition out, and an embedded one says nothing about the dependencies
         ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix;
       } else {
-        ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+suffix;
+        ct.request = prefix+", \"valueSet\" :"+extracted(json, vsc)+(hasStatus(vs) ? ", \"status\": \""+Utilities.escapeJson(statusOf(vs))+"\"" : "")+suffix;
       }
     } catch (IOException e) {
       throw new Error(e);
@@ -964,15 +965,21 @@ public class TerminologyCache {
     return hashJson(b.toString());
   }
 
-  /** an expansion warns about draft, experimental, retired, deprecated and withdrawn content */
+  private boolean hasStatus(CanonicalResource cr) {
+    return cr.hasStatus() || cr.hasExperimental() || cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS);
+  }
+
+  /** an expansion warns about draft, experimental, retired, deprecated and withdrawn content; the raw standards status, so a bad value can't throw */
   private String statusOf(CanonicalResource cr) {
-    return cr.getStatus() + "|" + cr.getExperimental() + "|" + ExtensionUtilities.getStandardsStatus(cr);
+    return cr.getStatus() + "|" + cr.getExperimental() + "|" + ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_STANDARDS_STATUS);
   }
 
   /** what of a CodeSystem decides an expansion: its content, not its narrative or metadata */
   private CodeSystem getCSEssence(CodeSystem cs) {
     CodeSystem csc = new CodeSystem();
-    csc.setUrl(cs.getUrl());
+    if (cs.hasUrl() && !cs.getUrl().startsWith("urn:uuid:")) {
+      csc.setUrl(cs.getUrl()); // a contained code system without a url is given a new urn:uuid: every run
+    }
     csc.setVersion(cs.getVersion());
     csc.setLanguage(cs.getLanguage());
     csc.setContent(cs.getContent());

@@ -951,7 +951,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical), null, findExpansionDependencies(vs, getExpansionParameters()));
+    Parameters expParameters = getExpansionParameters(); // constructParameters sends these
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical), expParameters, findExpansionDependencies(vs, expParameters));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
