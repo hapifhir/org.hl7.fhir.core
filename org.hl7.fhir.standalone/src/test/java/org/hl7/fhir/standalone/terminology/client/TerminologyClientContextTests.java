@@ -3,6 +3,7 @@ package org.hl7.fhir.standalone.terminology.client;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -15,10 +16,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.services.client.ClientHeaders;
+import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.client.ITerminologyClientN;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.IdType;
 import org.hl7.fhir.model.core.Parameters;
@@ -356,5 +364,173 @@ public class TerminologyClientContextTests {
 
     ctx.shutdown();
     verify(client, times(1)).cacheControl(eq(ITerminologyClientN.CacheControlMode.END_CACHE), isNull());
+  }
+
+  // ---- when the server no longer has the cache ----
+
+  /** A client mock that keeps its headers, as a real client does. */
+  private ITerminologyClientN headerKeepingMock(CapabilityStatement cs, List<HTTPHeader> headers) throws IOException {
+    ITerminologyClientN client = baseMock(cs);
+    when(client.addClientHeader(any())).thenAnswer(inv -> { headers.add(inv.getArgument(0)); return client; });
+    when(client.setClientHeaders(any())).thenAnswer(inv -> { headers.clear(); headers.addAll(((ClientHeaders) inv.getArgument(0)).headers()); return client; });
+    when(client.getClientHeaders()).thenAnswer(inv -> new ArrayList<>(headers));
+    return client;
+  }
+
+  private static String cacheHeader(List<HTTPHeader> headers) {
+    String v = null;
+    int n = 0;
+    for (HTTPHeader h : headers) {
+      if (TerminologyClientContext.CACHE_ID_HEADER.equals(h.getName())) {
+        v = h.getValue();
+        n++;
+      }
+    }
+    assertTrue(n <= 1, "never more than one cache-id header");
+    return v;
+  }
+
+  /** The error the server sends for a cache it doesn't have: 404, tx-issue-type cache-id-unknown. */
+  private static EFhirClientException cacheIdUnknown(String id) {
+    OperationOutcome oo = new OperationOutcome();
+    OperationOutcome.OperationOutcomeIssueComponent iss = oo.addIssue();
+    iss.setSeverity(OperationOutcome.IssueSeverity.ERROR);
+    iss.setCode(OperationOutcome.IssueType.NOTFOUND);
+    iss.getDetails().setText("The cache '" + id + "' was never issued by this server");
+    iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cache-id-unknown", null);
+    iss.addExtension("http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id", new StringType("CACHE_ID_UNKNOWN"));
+    return new EFhirClientException(404, "Server returned error code 404: The cache '" + id + "' was never issued by this server", oo);
+  }
+
+  @Test
+  public void cacheGone_forgetsWhatTheServerHad_startsANewCache_andSendsTheRequestAgain() throws IOException {
+    List<HTTPHeader> headers = new ArrayList<>();
+    ITerminologyClientN client = headerKeepingMock(capabilityStatement(true), headers);
+    when(client.cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any())).thenReturn(cacheIdResponse("one"), cacheIdResponse("two"));
+    ILoggingService logger = mock(ILoggingService.class);
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
+    ctx.getCached().add("http://example.org/ValueSet/x|1");
+
+    List<String> seen = new ArrayList<>();
+    String result = ctx.send(again -> {
+      // what the request would send by reference, and the cache it goes with
+      seen.add(again + ":" + cacheHeader(headers) + ":" + ctx.getCached().size());
+      if (!again) {
+        throw cacheIdUnknown("one");
+      }
+      return "done";
+    });
+
+    assertEquals("done", result);
+    assertEquals(List.of("false:one:1", "true:two:0"), seen, "the second time, a new cache, and nothing assumed to be in it");
+    assertEquals("two", ctx.getCacheId());
+    assertTrue(ctx.usingCache());
+    verify(client, times(2)).cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any());
+    verify(logger).logMessage(argThat(m -> m != null && m.contains("no longer has the cache one")));
+  }
+
+  @Test
+  public void cacheGoneAgain_theErrorGoesToTheCaller_afterOneNewCache() throws IOException {
+    List<HTTPHeader> headers = new ArrayList<>();
+    ITerminologyClientN client = headerKeepingMock(capabilityStatement(true), headers);
+    when(client.cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any())).thenReturn(cacheIdResponse("one"), cacheIdResponse("two"), cacheIdResponse("three"));
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, mock(ILoggingService.class));
+
+    AtomicInteger runs = new AtomicInteger();
+    EFhirClientException e = assertThrows(EFhirClientException.class, () -> ctx.send(again -> {
+      runs.incrementAndGet();
+      throw cacheIdUnknown(ctx.getCacheId());
+    }));
+    assertTrue(TerminologyClientContext.isCacheGone(e));
+    assertEquals(2, runs.get(), "once, and once again - no more");
+    verify(client, times(2)).cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any());
+  }
+
+  @Test
+  public void otherErrors_areNotRetried() throws IOException {
+    ITerminologyClientN client = baseMock(capabilityStatement(true));
+    when(client.cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any())).thenReturn(cacheIdResponse(CACHE_ID));
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, mock(ILoggingService.class));
+
+    AtomicInteger runs = new AtomicInteger();
+    assertThrows(EFhirClientException.class, () -> ctx.send(again -> {
+      runs.incrementAndGet();
+      throw new EFhirClientException(404, "Unknown code", (OperationOutcome) null);
+    }));
+    assertEquals(1, runs.get());
+    verify(client, times(1)).cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any());
+  }
+
+  @Test
+  public void noCache_errorsAreNotRetried() throws IOException {
+    ITerminologyClientN client = baseMock(capabilityStatement(false));
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, mock(ILoggingService.class));
+
+    AtomicInteger runs = new AtomicInteger();
+    assertThrows(EFhirClientException.class, () -> ctx.send(again -> {
+      runs.incrementAndGet();
+      throw cacheIdUnknown("x");
+    }));
+    assertEquals(1, runs.get(), "a client that didn't send a cache-id has no cache to replace");
+  }
+
+  @Test
+  public void newCacheCannotStart_theRequestGoesAgainWithoutACache() throws IOException {
+    List<HTTPHeader> headers = new ArrayList<>();
+    ITerminologyClientN client = headerKeepingMock(capabilityStatement(true), headers);
+    when(client.cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any())).thenReturn(cacheIdResponse("one")).thenThrow(new FHIRException("down"));
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, mock(ILoggingService.class));
+
+    String result = ctx.send(again -> {
+      if (!again) {
+        throw cacheIdUnknown("one");
+      }
+      return "inline";
+    });
+    assertEquals("inline", result);
+    assertNull(ctx.getCacheId());
+    assertFalse(ctx.usingCache(), "without a cache, everything is sent with the request");
+    assertNull(cacheHeader(headers), "and no cache-id is sent");
+  }
+
+  @Test
+  public void sharedClient_theOtherContextFollowsTheNewCache() throws IOException {
+    List<HTTPHeader> headers = new ArrayList<>();
+    ITerminologyClientN client = headerKeepingMock(capabilityStatement(true), headers);
+    when(client.cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any())).thenReturn(cacheIdResponse("one"), cacheIdResponse("two"));
+    TerminologyClientContext first = new TerminologyClientContext(client, null, true, mock(ILoggingService.class));
+    TerminologyClientContext second = new TerminologyClientContext(client, null, false, mock(ILoggingService.class));
+    assertEquals("one", second.getCacheId(), "the second context adopts the first's cache");
+    second.getCached().add("http://example.org/CodeSystem/y|2");
+
+    first.send(again -> {
+      if (!again) {
+        throw cacheIdUnknown("one");
+      }
+      return null;
+    });
+    List<String> seen = new ArrayList<>();
+    second.send(again -> {
+      seen.add(again + ":" + second.getCacheId() + ":" + second.getCached().size());
+      return null;
+    });
+    assertEquals(List.of("false:two:0"), seen, "the second context uses the new cache, and assumes nothing is in it");
+    verify(client, times(2)).cacheControl(eq(ITerminologyClientN.CacheControlMode.START_CACHE), any());
+  }
+
+  @Test
+  public void cacheDiscardedForSize_isAlsoTheCacheGone() {
+    OperationOutcome oo = new OperationOutcome();
+    OperationOutcome.OperationOutcomeIssueComponent iss = oo.addIssue();
+    iss.setCode(OperationOutcome.IssueType.TOOCOSTLY);
+    iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "too-costly", null);
+    iss.addExtension("http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id", new StringType("CACHE_ID_DISCARDED_TOO_BIG"));
+    assertTrue(TerminologyClientContext.isCacheGone(new EFhirClientException(422, "too big", oo)));
+    // a too-costly request is not
+    iss.getExtension().clear();
+    assertFalse(TerminologyClientContext.isCacheGone(new EFhirClientException(422, "too costly", oo)));
+    // nor a 404 that isn't about the cache, nor something wrapped that is
+    assertFalse(TerminologyClientContext.isCacheGone(new EFhirClientException(404, "Unknown code", (OperationOutcome) null)));
+    assertTrue(TerminologyClientContext.isCacheGone(new FHIRException("wrapped", cacheIdUnknown("x"))));
   }
 }

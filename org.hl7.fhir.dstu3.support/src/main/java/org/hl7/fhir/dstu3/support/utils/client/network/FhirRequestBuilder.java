@@ -185,7 +185,7 @@ public class FhirRequestBuilder {
     }
 
     if (error != null) {
-      throw new EFhirClientException(0, "Error from server: " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException(response.getCode(), "Error from server: " + ResourceUtilities.getErrorDescription(error), error);
     }
 
     return resource;
