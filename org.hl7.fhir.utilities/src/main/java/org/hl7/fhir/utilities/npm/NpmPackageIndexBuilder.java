@@ -43,7 +43,7 @@ public class NpmPackageIndexBuilder {
   private JsonObject index;
   private JsonArray files;
   private String dbFilename;
-  private static INpmPackageIndexBuilderDBImpl extension;
+  private INpmPackageIndexBuilderDBImpl extension; // one per builder: the publisher and the version converter build several packages or folders at once
 
   public void start(String filename) {
     index = new JsonObject();
