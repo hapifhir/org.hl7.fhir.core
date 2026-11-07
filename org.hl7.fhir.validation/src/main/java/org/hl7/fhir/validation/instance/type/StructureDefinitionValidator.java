@@ -239,6 +239,14 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (!(differentials.isEmpty() && snapshots.isEmpty())) {
           ok = checkPossibleValues(errors, sd, stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null)) && ok;
         }
+        // a profile on Observation that fixes a LOINC code: check what it allows against what LOINC says
+        if (constraint && "Observation".equals(typeName) && sd.hasSnapshot()) {
+          new ObservationProfileValidator(this).checkLoinc(errors, sd, stack);
+        }
+        // a profile that fixes SNOMED CT codes: check them against what SNOMED CT says about them
+        if (constraint && sd.hasSnapshot() && SnomedProfileValidator.TYPES.contains(typeName)) {
+          ok = new SnomedProfileValidator(this).check(errors, sd, stack) && ok;
+        }
 
         // obligation profile support
         if (src.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {

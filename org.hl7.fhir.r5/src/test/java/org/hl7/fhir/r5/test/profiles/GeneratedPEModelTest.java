@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.test.profiles;
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.TimeZone;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -66,7 +64,7 @@ public class GeneratedPEModelTest {
     Assertions.assertEquals(0, tp.getComplex().getExtensions().size());
     
     Observation tgt = tp.build(ctxt);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "pe-instance-gen.xml"), tgt);
     
     String msg = new CompareUtilities().checkXMLIsSame("PEGEN", TestingUtilities.loadTestResourceStream("r5", "profiles", "pe-instance.xml"), ManagedFileAccess.inStream(Utilities.path("[tmp]", "pe-instance-gen.xml")));
     Assertions.assertNull(msg, msg);

@@ -328,7 +328,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (vse.getValueset() != null) {
           if (cache != null) {
             FileOutputStream s = ManagedFileAccess.outStream(cacheFn);
-            newJsonParser().compose(ManagedFileAccess.outStream(cacheFn), vse.getValueset());
+            newJsonParser().composeFile(cacheFn, vse.getValueset());
             s.close();
           }
         }
@@ -360,7 +360,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private ValueSetExpansionOutcome loadFromCache(ValueSet vs, String cacheFn)
     throws FileNotFoundException, Exception {
     JsonParser parser = new JsonParser();
-    Resource r = parser.parse(ManagedFileAccess.inStream(cacheFn));
+    Resource r = parser.parseFile(cacheFn);
     if (r instanceof OperationOutcome) {
       return new ValueSetExpansionOutcome(
         ((OperationOutcome) r).getIssue().get(0).getDetails().getText(),
@@ -374,7 +374,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void saveToCache(Resource res, String cacheFn) throws FileNotFoundException, Exception {
     JsonParser parser = new JsonParser();
-    parser.compose(ManagedFileAccess.outStream(cacheFn), res);
+    parser.composeFile(cacheFn, res);
   }
 
   private String determineCacheId(ValueSet vs, boolean heirarchical) throws Exception {

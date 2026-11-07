@@ -1226,3 +1226,78 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "271649006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Systolic blood pressure (observable entity)"],"designation:900000000000013009":["Systolic blood pressure","SAP - Systolic arterial pressure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "368209003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Right upper arm structure (body structure)"],"designation:900000000000013009":["Right upper arm structure","Right upper arm","Right arm"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "109006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Anxiety disorder of childhood OR adolescence (disorder)"],"designation:900000000000013009":["Anxiety disorder of childhood OR adolescence"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "106004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of posterior carpal region (body structure)"],"designation:900000000000013009":["Structure of posterior carpal region","Posterior carpal region"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "85600001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Triacylglycerol (substance)"],"designation:900000000000013009":["Triacylglycerol","Neutral fat","Triglyceride","TG - Triglyceride"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "271649006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Systolic blood pressure (observable entity)"],"designation:900000000000013009":["Systolic blood pressure","SAP - Systolic arterial pressure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "368209003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Right upper arm structure (body structure)"],"designation:900000000000013009":["Right upper arm structure","Right upper arm","Right arm"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "109006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Anxiety disorder of childhood OR adolescence (disorder)"],"designation:900000000000013009":["Anxiety disorder of childhood OR adolescence"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "106004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of posterior carpal region (body structure)"],"designation:900000000000013009":["Structure of posterior carpal region","Posterior carpal region"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "85600001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Triacylglycerol (substance)"],"designation:900000000000013009":["Triacylglycerol","Neutral fat","Triglyceride","TG - Triglyceride"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "27113001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Body weight (observable entity)"],"designation:900000000000013009":["Body weight"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "27113001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Body weight (observable entity)"],"designation:900000000000013009":["Body weight"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "39065001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["117590005"],"designation:900000000000003001":["Burn of ear (disorder)"],"designation:900000000000013009":["Burn of ear","Burn of ear structure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "117590005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Ear structure (body structure)"],"designation:900000000000013009":["Ear structure","Ear-related structure","Ear"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "443849008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar score at 20 minutes (observable entity)"],"designation:900000000000013009":["Apgar score at 20 minutes"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------

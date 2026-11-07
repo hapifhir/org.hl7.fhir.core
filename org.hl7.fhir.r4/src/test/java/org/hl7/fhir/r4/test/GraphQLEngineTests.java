@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4.test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
     }
 
-    Resource parsedResource = !Utilities.noString(filename) ? new XmlParser().parse(ManagedFileAccess.inStream(filename))
+    Resource parsedResource = !Utilities.noString(filename) ? new XmlParser().parseFile(filename)
         : null;
 
     testResource(parsedResource, output, source);
@@ -91,7 +90,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     String filename = TestingUtilities
         .resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
 
-    Resource parsedResource = new XmlParser().parse(ManagedFileAccess.inStream(filename));
+    Resource parsedResource = new XmlParser().parseFile(filename);
     parsedResource.setId("example/_history/1");
 
     testResource(parsedResource, output, source);
@@ -137,7 +136,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     try {
       String filename = TestingUtilities.resourceNameToFile(type.toLowerCase() + '-' + id.toLowerCase() + ".xml");
       if (ManagedFileAccess.file(filename).exists())
-        return new XmlParser().parse(ManagedFileAccess.inStream(filename));
+        return new XmlParser().parseFile(filename);
       else
         return null;
     } catch (Exception e) {
@@ -162,7 +161,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         String filename = TestingUtilities
             .resourceNameToFile(parts[0].toLowerCase() + '-' + parts[1].toLowerCase() + ".xml");
         if (ManagedFileAccess.file(filename).exists())
-          return new ReferenceResolution(null, new XmlParser().parse(ManagedFileAccess.inStream(filename)));
+          return new ReferenceResolution(null, new XmlParser().parseFile(filename));
       }
       return null;
     } catch (Exception e) {
@@ -177,12 +176,12 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     try {
       if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
         matches.add(
-            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
+            new XmlParser().parseFile(TestingUtilities.resourceNameToFile("condition-example.xml")));
       else if (type.equals("Patient")) {
         matches.add(
-            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));
+            new XmlParser().parseFile(TestingUtilities.resourceNameToFile("patient-example.xml")));
         matches.add(
-            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
+            new XmlParser().parseFile(TestingUtilities.resourceNameToFile("patient-example-xds.xml")));
       }
     } catch (Exception e) {
       throw new FHIRException(e);
@@ -204,11 +203,11 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       BundleEntryComponent be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
       be.setResource(new XmlParser()
-          .parse(ManagedFileAccess.inStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml")))));
+          .parseFile(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml"))));
       be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
       be.setResource(new XmlParser()
-          .parse(ManagedFileAccess.inStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml")))));
+          .parseFile(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
       be.getSearch().setScore(0.5);
       be.getSearch().setMode(SearchEntryMode.MATCH);
       bnd.setTotal(50);

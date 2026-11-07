@@ -590,18 +590,19 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
     try {
       var client = findClientContext(server, null, false);
-      Bundle bnd = client.getClient().search("CodeSystem",
+      // (requests go through send(): if the server has lost this client's cache, a new one is started)
+      Bundle bnd = client.send(again -> client.getClient().search("CodeSystem",
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
-          : "?url=" + Utilities.escapeUrl(canonical));
+          : "?url=" + Utilities.escapeUrl(canonical)));
       if (bnd.getEntryList().size() > 0) {
         boolean ok = anyUsableCodeSystem(bnd);
         serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
-        bnd = client.getClient().search("CodeSystem",
-          "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|"))));
+        bnd = client.send(again -> client.getClient().search("CodeSystem",
+          "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))));
         if (bnd.getEntryList().size() > 0) {
           boolean ok = anyUsableCodeSystem(bnd);
           serverSupportMap.put(key, ok);
@@ -932,11 +933,12 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         serverMap.put(server, client);
       }
       client.seeUse(canonical, TerminologyClientContext.TerminologyClientContextUseType.readVS);
+      final TerminologyClientContext tcc = client;
       String criteria = canonical.contains("|") ? 
           "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
             "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
-      Bundle bnd = client.getClient().search("ValueSet", criteria);
+      Bundle bnd = tcc.send(again -> tcc.getClient().search("ValueSet", criteria));
       String rid = null;
       if (bnd.getEntryList().size() == 0) {
         if (isImplicit) {
@@ -946,7 +948,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
           p.addParameter("count", 0);
           p.addParameters(expParameters);
           try {
-            ValueSet vs = client.getClient().expandValueset(null, p);
+            ValueSet vs = tcc.send(again -> tcc.getClient().expandValueset(null, p));
             if (vs != null) {
               return new TerminologyCache.SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
@@ -973,7 +975,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (rid == null) {
         return null;
       }
-      ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
+      final String vsid = rid;
+      ValueSet vs = (ValueSet) tcc.send(again -> tcc.getClient().read("ValueSet", vsid));
       return new TerminologyCache.SourcedValueSet(server, vs);
     } catch (Exception e) {
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
@@ -1025,11 +1028,12 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         serverMap.put(server, client);
       }
       client.seeUse(canonical, TerminologyClientContext.TerminologyClientContextUseType.readCS);
+      final TerminologyClientContext tcc = client;
       String criteria = canonical.contains("|") ? 
           "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
             "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
-      Bundle bnd = client.getClient().search("CodeSystem", criteria);
+      Bundle bnd = tcc.send(again -> tcc.getClient().search("CodeSystem", criteria));
       String rid = null;
       if (bnd.getEntryList().size() == 0) {
         return null;
@@ -1053,7 +1057,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (rid == null) {
         return null;
       }
-      CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
+      final String csid = rid;
+      CodeSystem vs = (CodeSystem) tcc.send(again -> tcc.getClient().read("CodeSystem", csid));
       return new TerminologyCache.SourcedCodeSystem(server, vs);
     } catch (Exception e) {
       String msg = "Error resolving CodeSystem "+canonical+": "+e.getMessage();

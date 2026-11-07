@@ -1065,3 +1065,54 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "66493003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing theophylline (medicinal product)"],"designation:900000000000013009":["Theophylline-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "27171005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Urinalysis (procedure)"],"designation:900000000000013009":["Urinalysis","Urinalysis procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "66493003"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "66493003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing theophylline (medicinal product)"],"designation:900000000000013009":["Theophylline-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "27171005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Urinalysis (procedure)"],"designation:900000000000013009":["Urinalysis","Urinalysis procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "9290701000001101", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "27113001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Body weight (observable entity)"],"designation:900000000000013009":["Body weight"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------

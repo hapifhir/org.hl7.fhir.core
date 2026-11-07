@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.utils.formats;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,20 +46,20 @@ public class ResourceFolderVisitor {
         visit(f);
       } else if (f.getName().endsWith(".xml")) {
         try {
-          Resource res = new XmlParser().parse(ManagedFileAccess.inStream(f));
+          Resource res = new XmlParser().parseFile(f);
           if (types.isEmpty() || types.contains(res.fhirType())) {
             if (observer.visitResource(f.getAbsolutePath(), res)) {
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), res); 
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f, res); 
             }
           }
         } catch (Exception e) {
         }
       } else if (f.getName().endsWith(".json")) {
         try {
-          Resource res = new JsonParser().parse(ManagedFileAccess.inStream(f));
+          Resource res = new JsonParser().parseFile(f);
           if (types.isEmpty() || types.contains(res.fhirType())) {
             if (observer.visitResource(f.getAbsolutePath(), res)) {
-             new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), res);
+             new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f, res);
             }
           }
         } catch (Exception e) {

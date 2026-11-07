@@ -1,9 +1,7 @@
 package org.hl7.fhir.r4.test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -30,11 +28,11 @@ public class JsonDirectTests {
       File json = ManagedFileAccess.file(Utilities.path("[tmp]", "json.json"));
       File json2 = ManagedFileAccess.file(Utilities.path("[tmp]", "json2.json"));
       FileUtils.copyFile(ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish\\observation-decimal.xml"), src);
-      Observation obs = (Observation) new XmlParser().parse(ManagedFileAccess.inStream(src));
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json), obs);
-      obs = (Observation) new JsonParser().parse(ManagedFileAccess.inStream(json));
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json2), obs);
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(xml), obs);
+      Observation obs = (Observation) new XmlParser().parseFile(src);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(json, obs);
+      obs = (Observation) new JsonParser().parseFile(json);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(json2, obs);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(xml, obs);
     });
   }
 

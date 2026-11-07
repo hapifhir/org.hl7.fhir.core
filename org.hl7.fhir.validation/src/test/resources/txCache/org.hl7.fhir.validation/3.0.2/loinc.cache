@@ -773,3 +773,244 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "19935-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["L/min"],"PROPERTY":["LP6895-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6960-1"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pt",
+  "code" : "LP6960-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6960-1 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6960-1\"\n9ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n9ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.83: Code \"LP6960-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7753-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Qn",
+  "code" : "LP7753-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7753-9 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7753-9\"\n9ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n9ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.83: Code \"LP7753-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6895-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "VRat",
+  "code" : "LP6895-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6895-9 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6895-9\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.83: Code \"LP6895-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "46241-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6819-9"],"SCALE_TYP":["LP7749-7"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7749-7"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Nar",
+  "code" : "LP7749-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7749-7 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7749-7\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.83: Code \"LP7749-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2069-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mmol/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6860-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6860-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SCnc",
+  "code" : "LP6860-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6860-3 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6860-3\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6860-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "29463-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["[lb_av];kg"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6826-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "3141-9", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["[lb_av];kg"],"ORDER_OBS":["Both"],"PROPERTY":["LP6826-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6960-1"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pt",
+  "code" : "LP6960-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6960-1 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6960-1\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.83: Code \"LP6960-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7753-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Qn",
+  "code" : "LP7753-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7753-9 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7753-9\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP7753-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6826-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mass",
+  "code" : "LP6826-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6826-4 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6826-4\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6826-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

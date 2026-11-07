@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -16,7 +15,7 @@ public class JsonProcessor {
   private void process(String source) throws IOException {
     JsonObject json = JsonParser.parseObjectFromFile(source);
     process(json);
-    JsonParser.compose(json, ManagedFileAccess.outStream(source), true);
+    JsonParser.compose(json, ManagedFileAccess.file(source), true);
     
   }
 

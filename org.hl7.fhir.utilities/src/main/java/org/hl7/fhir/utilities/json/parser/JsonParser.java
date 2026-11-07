@@ -208,9 +208,9 @@ public class JsonParser {
   }
   
   public static void compose(JsonElement element, File file) throws IOException {
-    FileOutputStream fo = ManagedFileAccess.outStream(file);
-    compose(element, fo, false);
-    fo.close();
+    try (FileOutputStream fo = ManagedFileAccess.outStream(file)) {
+      compose(element, fo, false);
+    }
   }
   
   public static byte[] composeBytes(JsonElement element) {
@@ -227,9 +227,9 @@ public class JsonParser {
   }
   public static void compose(JsonElement element, File file, boolean pretty) throws IOException {
     byte[] cnt = composeBytes(element, pretty);
-    FileOutputStream fo = ManagedFileAccess.outStream(file);
-    fo.write(cnt);
-    fo.close();
+    try (FileOutputStream fo = ManagedFileAccess.outStream(file)) {
+      fo.write(cnt);
+    }
   }
 
   public static byte[] composeBytes(JsonElement element, boolean pretty) {

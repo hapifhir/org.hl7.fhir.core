@@ -307,6 +307,25 @@ public class TerminologyCache {
     
   }
   
+  /**
+   * what a server said about some of a concept's properties ($lookup with property=): their
+   * values, or null if the code isn't known
+   */
+  public static class PropertiesResult {
+
+    private final Map<String, List<String>> properties;
+
+    protected PropertiesResult(Map<String, List<String>> properties) {
+      super();
+      this.properties = properties;
+    }
+
+    public Map<String, List<String>> getProperties() {
+      return properties;
+    }
+
+  }
+
   protected SystemNameKeyGenerator getSystemNameKeyGenerator() {
     return systemNameKeyGenerator;
   }
@@ -384,6 +403,7 @@ public class TerminologyCache {
     private ValidationResult v;
     private ValueSetExpansionOutcome e;
     private SubsumesResult s;
+    private PropertiesResult p;
   }
 
   private class NamedCache {
@@ -1458,6 +1478,13 @@ public class TerminologyCache {
     } else if (cacheEntry.s != null) {
       writer.write("s: {\r\n");
       writer.write("  \"result\" : "+ cacheEntry.s.result+"\r\n}\r\n");
+    } else if (cacheEntry.p != null) {
+      writer.write("p: {\r\n");
+      if (cacheEntry.p.properties == null) {
+        writer.write("  \"unknown\" : true\r\n}\r\n");
+      } else {
+        writer.write("  \"properties\" : "+ new com.google.gson.Gson().toJson(new TreeMap<>(cacheEntry.p.properties))+"\r\n}\r\n");
+      }
     } else {
       writer.write("v: {\r\n");
       boolean first = true;
@@ -1590,6 +1617,18 @@ public class TerminologyCache {
       }
     } else if (e == 's') {
       ce.s = new SubsumesResult(o.get("result").getAsBoolean());
+    } else if (e == 'p') {
+      Map<String, List<String>> props = o.has("unknown") ? null : new HashMap<>();
+      if (props != null && o.has("properties")) {
+        for (Map.Entry<String, JsonElement> pe : o.getAsJsonObject("properties").entrySet()) {
+          List<String> values = new ArrayList<>();
+          for (JsonElement v : pe.getValue().getAsJsonArray()) {
+            values.add(v.getAsString());
+          }
+          props.put(pe.getKey(), values);
+        }
+      }
+      ce.p = new PropertiesResult(props);
     } else {
       String t = loadJS(o.get("severity"));
       IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
@@ -1912,7 +1951,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1925,7 +1964,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1943,7 +1982,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context.getModelContext()).composeFile(Utilities.path(folder, fn), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
@@ -1980,7 +2019,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context.getModelContext()).composeFile(Utilities.path(folder, fn), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
@@ -2058,6 +2097,51 @@ public class TerminologyCache {
     }
   }
 
+
+  public CacheToken generateLookupPropertiesToken(String system, String version, String code, Set<String> properties) {
+    CacheToken ct = new CacheToken();
+    ct.setName(getSystemName(system, ct.getName()));
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+    for (String p : new TreeSet<>(properties)) {
+      b.append("\"" + Utilities.escapeJson(p) + "\"");
+    }
+    ct.setRequest("{\"op\": \"lookup-properties\", \"system\" : \"" + Utilities.escapeJson(system) + "\", \"version\" : " + (version == null ? "null" : "\"" + Utilities.escapeJson(version) + "\"")
+      + ", \"code\" : \"" + Utilities.escapeJson(code) + "\", \"properties\" : [" + b + "]}");
+    ct.setKey(String.valueOf(hashJson(ct.getRequest())));
+    return ct;
+  }
+
+  /** what's cached for the token, or null if there's nothing cached */
+  public PropertiesResult getLookupProperties(CacheToken cacheToken) {
+    if (cacheToken.getKey() == null) {
+      return null;
+    }
+    synchronized (lock) {
+      requestCount++;
+      NamedCache nc = getNamedCache(cacheToken);
+      CacheEntry e = nc.map.get(cacheToken.getKey());
+      if (e == null || e.p == null) {
+        networkCount++;
+        return null;
+      } else {
+        hitCount++;
+        return e.p;
+      }
+    }
+  }
+
+  public void cacheLookupProperties(CacheToken cacheToken, Map<String, List<String>> properties, boolean persistent) {
+    if (cacheToken.getKey() != null) {
+      synchronized (lock) {
+        NamedCache nc = getNamedCache(cacheToken);
+        CacheEntry e = new CacheEntry();
+        e.request = cacheToken.getRequest();
+        e.persistent = persistent;
+        e.p = new PropertiesResult(properties);
+        store(cacheToken, persistent, nc, e);
+      }
+    }
+  }
 
   public String getReport() {
     int c = 0;
