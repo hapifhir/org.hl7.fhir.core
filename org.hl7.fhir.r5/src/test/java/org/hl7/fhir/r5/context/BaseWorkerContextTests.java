@@ -544,7 +544,7 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
 
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)), isNull(), eq(Collections.emptyList()));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
@@ -569,7 +569,7 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
 
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),argThat(new ExpansionOptionsMatcher(opt)));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)), isNull(), eq(Collections.emptyList()));
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
@@ -829,10 +829,47 @@ public class BaseWorkerContextTests {
 
   private ValueSetExpansionOutcome expandIncludeWithServerFailure(Exception failure) {
     ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), isNull(), eq(Collections.emptyList()));
     Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
     Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(ValueSet.class), any(Parameters.class));
     return context.expandVS(null, inc, true, false);
+  }
+
+  private static CodeSystem supplement(String url, String supplements) {
+    CodeSystem supp = new CodeSystem();
+    supp.setUrl(url);
+    supp.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+    supp.setSupplements(supplements);
+    return supp;
+  }
+
+  @Test
+  void testExpansionDependenciesHaveRegisteredSupplements() {
+    // the supplements known for the code system, and for the version the parameters pin it to
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    CodeSystem supp2 = supplement("http://example.org/supp2", "http://example.org/cs|2.0");
+    context.cacheResource(supp);
+    context.cacheResource(supp2);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+
+    assertEquals(List.of(supp), context.findExpansionDependencies(vs, new Parameters()));
+    assertEquals(List.of(supp), context.findExpansionDependencies(vs, null));
+    Parameters p = new Parameters();
+    p.addParameter("system-version", new CanonicalType("http://example.org/cs|2.0"));
+    assertEquals(List.of(supp, supp2), context.findExpansionDependencies(vs, p));
+  }
+
+  @Test
+  void testExpandIncludeKeyHasDependencies() {
+    // the expansion of a single include is persisted too, and the server is sent the supplements
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    context.cacheResource(supp);
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), isNull(), eq(List.of(supp)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    assertEquals(expectedExpansionResult, context.expandVS(null, inc, true, false));
   }
 
   @Test

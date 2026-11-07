@@ -30,6 +30,7 @@ package org.hl7.fhir.standalone.terminology.utilities;
  */
 
 
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -911,10 +912,10 @@ public class TerminologyCache {
       boolean hasDependencies = dependencies != null && !dependencies.isEmpty();
       if (vs.hasUrl() && vs.hasVersion()) {
         ct.setRequest(prefix+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""
-          +", \"definition\": \""+definitionDigest(json, vsc, dependencies)+"\""+suffix);
+          +", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix);
       } else if (tooLargeToEmbed(vsc) || hasDependencies) {
         // extracted() leaves a large definition out, and an embedded one says nothing about the dependencies
-        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vsc, dependencies)+"\""+suffix);
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix);
       } else {
         ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+suffix);
       }
@@ -929,15 +930,26 @@ public class TerminologyCache {
     return vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000;
   }
 
-  private String definitionDigest(JsonParser json, ValueSet vsc, List<? extends CanonicalResource> dependencies) throws IOException {
+  private String definitionDigest(JsonParser json, ValueSet vs, ValueSet vsc, List<? extends CanonicalResource> dependencies) throws IOException {
     StringBuilder b = new StringBuilder(json.composeString(vsc));
+    b.append("\n").append(statusOf(vs));
     if (dependencies != null) {
       for (CanonicalResource cr : dependencies) {
         Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
-        b.append("\n").append(cr.fhirType()).append("/").append(cr.getVersionedUrl()).append("\n").append(json.composeString(essence));
+        b.append("\n").append(cr.fhirType());
+        if (cr.hasUrl() && !cr.getUrl().startsWith("urn:uuid:")) {
+          // a contained resource without a url is given a new urn:uuid: every run
+          b.append("/").append(cr.getVersionedUrl());
+        }
+        b.append("\n").append(statusOf(cr)).append("\n").append(json.composeString(essence));
       }
     }
     return hashJson(b.toString());
+  }
+
+  /** an expansion warns about draft, experimental, retired, deprecated and withdrawn content */
+  private String statusOf(CanonicalResource cr) {
+    return cr.getStatus() + "|" + cr.getExperimental() + "|" + ExtensionUtilities.getStandardsStatus(cr);
   }
 
   /** what of a CodeSystem decides an expansion: its content, not its narrative or metadata */

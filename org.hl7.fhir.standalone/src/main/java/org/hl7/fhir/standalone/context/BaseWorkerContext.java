@@ -971,7 +971,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getIncludeList().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical), null, findExpansionDependencies(vs, getExpansionParameters()));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1288,7 +1288,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, CanonicalResource> res) {
     for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       if (ext.hasValueCanonicalType()) {
-        addExpansionDependency(res, fetchForKey(CodeSystem.class, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null));
+        addExpansionDependency(res, fetchForKey(CodeSystem.class, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null, null));
       }
     }
     for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
@@ -1301,24 +1301,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void findExpansionDependencies(ValueSet src, ConceptSetComponent inc, Parameters p, Map<String, CanonicalResource> res) {
     for (CanonicalType c : inc.getValueSetList()) {
-      ValueSet imp = fetchForKey(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), src);
+      ValueSet imp = fetchForKey(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
       if (addExpansionDependency(res, imp)) {
         findExpansionDependencies(imp, p, res);
       }
     }
     String sys = inc.getSystem();
-    CodeSystem cs = fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), src);
-    if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
-      addExpansionDependency(res, cs);
-    }
-    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
-      addExpansionDependency(res, supp);
+    // the server is sent the code system as resolved without the include's version, the local expander uses that version
+    CodeSystem cs = fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), null, src);
+    CodeSystem csv = inc.hasVersion() ? fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), src) : null;
+    for (CodeSystem c : new CodeSystem[] {cs, csv}) {
+      if (c != null && (c.getContent() == CodeSystemContentMode.COMPLETE || c.getContent() == CodeSystemContentMode.FRAGMENT)) {
+        addExpansionDependency(res, c);
+      }
+      for (CodeSystem supp : codeSystems.getSupplements(c)) {
+        addExpansionDependency(res, supp);
+      }
     }
     if (sys != null) {
       for (CodeSystem supp : codeSystems.getSupplements(sys)) {
         addExpansionDependency(res, supp);
       }
-      if (!sys.contains("!")) {
+      if (!sys.contains("!") && p != null) {
         String fixed = getFixedVersion(sys, p);
         if (fixed != null) {
           for (CodeSystem supp : codeSystems.getSupplements(fixed)) {
@@ -1335,12 +1339,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   /** a resource that can't be loaded is left to the expansion to report; for the key, it is not there */
-  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, Resource src) {
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
     if (url == null) {
       return null;
     }
     try {
-      return fetchResourceWithException(type, url, rules, null, src);
+      return fetchResourceWithException(type, url, rules, version, src);
     } catch (FHIRException e) {
       return null;
     }

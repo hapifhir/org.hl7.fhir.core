@@ -626,6 +626,38 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
+    void testDependencyStatusChangeMisses() throws IOException {
+      // the expansion warns about a draft code system, so making it active changes the expansion
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      CodeSystem draft = codeSystem("A");
+      draft.setStatus(Enumerations.PublicationStatus.DRAFT);
+      CodeSystem active = codeSystem("A");
+      active.setStatus(Enumerations.PublicationStatus.ACTIVE);
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(draft)).getRequest(),
+        cache.generateExpandToken(vs, options(), null, List.of(active)).getRequest());
+      ValueSet draftVs = versionedValueSet("1234");
+      draftVs.setStatus(Enumerations.PublicationStatus.DRAFT);
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, null).getRequest(),
+        cache.generateExpandToken(draftVs, options(), null, null).getRequest());
+    }
+
+    @Test
+    void testContainedDependencyIsKeyedByContentNotItsUuid() throws IOException {
+      // a contained ValueSet without a url is given a new urn:uuid: every run
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      ValueSet a = versionedValueSet("1234");
+      a.setVersion(null);
+      a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      ValueSet b = versionedValueSet("1234");
+      b.setVersion(null);
+      b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
+      assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getRequest(),
+        cache.generateExpandToken(vs, options(), null, List.of(b)).getRequest());
+    }
+
+    @Test
     void testLargeUnversionedDefinitionMisses() throws IOException {
       // a definition this large is left out of the key, which used to leave nothing of it there at all
       TerminologyCache cache = createTerminologyCache();
