@@ -519,16 +519,20 @@ public class TerminologyClientContextTests {
   }
 
   @Test
-  public void cacheDiscardedForSize_isAlsoTheCacheGone() {
+  public void cacheGone_isTheCodingNotTheMessageId() {
+    // a cache dropped for growing too big: 404, coded cache-id-unknown, with a message id saying why
     OperationOutcome oo = new OperationOutcome();
     OperationOutcome.OperationOutcomeIssueComponent iss = oo.addIssue();
-    iss.setCode(OperationOutcome.IssueType.TOOCOSTLY);
-    iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "too-costly", null);
+    iss.setCode(OperationOutcome.IssueType.NOTFOUND);
+    iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cache-id-unknown", null);
     iss.addExtension("http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id", new StringType("CACHE_ID_DISCARDED_TOO_BIG"));
-    assertTrue(TerminologyClientContext.isCacheGone(new EFhirClientException(422, "too big", oo)));
-    // a too-costly request is not
-    iss.getExtension().clear();
-    assertFalse(TerminologyClientContext.isCacheGone(new EFhirClientException(422, "too costly", oo)));
+    assertTrue(TerminologyClientContext.isCacheGone(new EFhirClientException(404, "too big", oo)));
+    // a request too big for any cache is too-costly: about the request, not the cache, so not retried
+    OperationOutcome tooCostly = new OperationOutcome();
+    OperationOutcome.OperationOutcomeIssueComponent iss2 = tooCostly.addIssue();
+    iss2.setCode(OperationOutcome.IssueType.TOOCOSTLY);
+    iss2.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "too-costly", null);
+    assertFalse(TerminologyClientContext.isCacheGone(new EFhirClientException(422, "too costly", tooCostly)));
     // nor a 404 that isn't about the cache, nor something wrapped that is
     assertFalse(TerminologyClientContext.isCacheGone(new EFhirClientException(404, "Unknown code", (OperationOutcome) null)));
     assertTrue(TerminologyClientContext.isCacheGone(new FHIRException("wrapped", cacheIdUnknown("x"))));

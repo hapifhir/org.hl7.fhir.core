@@ -518,11 +518,6 @@ public class TerminologyClientContext {
   // ---- when the server no longer has the cache ----
 
   private static final String TX_ISSUE_TYPE = "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type";
-  private static final String EXT_MESSAGE_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
-  // message ids that say the cache is gone, whatever the issue's code: the server dropped the cache
-  // because a request would have made it too big (FHIRsmith PR #350 - the shape is still being
-  // settled; this is the one place that knows it)
-  private static final Set<String> CACHE_GONE_MESSAGE_IDS = Set.of("CACHE_ID_DISCARDED_TOO_BIG");
 
   /**
    * A request that is sent with this context's cache, and that can be made again from scratch.
@@ -562,6 +557,9 @@ public class TerminologyClientContext {
   /**
    * Whether an error from a server says that it doesn't have the cache the request named - which is
    * about the server's state, not about the request (a 404 that doesn't mean the code is unknown).
+   * The issue is coded tx-issue-type#cache-id-unknown, whatever the reason the cache is gone (the
+   * server restarted, the cache expired or was evicted, or a request would have made it too big -
+   * FHIRsmith answers all of these the same way); the message id only says which.
    */
   public static boolean isCacheGone(Throwable t) {
     for (Throwable c = t; c != null; c = c.getCause() == c ? null : c.getCause()) {
@@ -573,11 +571,6 @@ public class TerminologyClientContext {
                 if (TX_ISSUE_TYPE.equals(cd.getSystem()) && "cache-id-unknown".equals(cd.getCode())) {
                   return true;
                 }
-              }
-            }
-            for (Extension ext : iss.getExtensionsByUrl(EXT_MESSAGE_ID)) {
-              if (ext.hasValue() && CACHE_GONE_MESSAGE_IDS.contains(ext.getValue().primitiveValue())) {
-                return true;
               }
             }
           }
