@@ -501,6 +501,132 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   }
 
+  /**
+   * An IG edits its ValueSets without changing the version; the expansion key must change with the definition
+   */
+  @Nested
+  class ExpandTokenDefinitionTests {
+
+    private ValueSet versionedValueSet(String... codes) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/test");
+      vs.setVersion("1.0.0");
+      ValueSet.ConceptSetComponent inc = vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+      for (String code : codes) {
+        inc.addConcept().setCode(code);
+      }
+      return vs;
+    }
+
+    private ExpansionOptions options() {
+      return new ExpansionOptions().withHierarchical(true).withLanguage("en");
+    }
+
+    private Parameters parameters(String snomedVersion) {
+      Parameters p = new Parameters();
+      p.addParameter("excludeNested", false);
+      p.addParameter("system-version", new CanonicalType("http://snomed.info/sct|" + snomedVersion));
+      return p;
+    }
+
+    @Test
+    void testEditedDefinitionSameVersionMisses() throws IOException {
+      TerminologyCache cache = createEmptyTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      cache.cacheExpansion(cache.generateExpandToken(vs, options(), parameters("1"), null), new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+
+      ValueSet edited = versionedValueSet("1234", "5678");
+      assertNull(cache.getExpansion(cache.generateExpandToken(edited, options(), parameters("1"), null)));
+      assertNotNull(cache.getExpansion(cache.generateExpandToken(versionedValueSet("1234"), options(), parameters("1"), null)));
+    }
+
+    @Test
+    void testUnchangedDefinitionHitsAfterReload() throws IOException {
+      Path dir = createTempCacheDirectory();
+      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      ValueSet vs = versionedValueSet("1234");
+      cacheA.cacheExpansion(cacheA.generateExpandToken(vs, options(), parameters("1"), null), new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+      cacheA.save();
+
+      // a new run: a new cache over the same folder, and a ValueSet object loaded afresh
+      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      assertNotNull(cacheB.getExpansion(cacheB.generateExpandToken(versionedValueSet("1234"), options(), parameters("1"), null)));
+      assertNull(cacheB.getExpansion(cacheB.generateExpandToken(versionedValueSet("9999"), options(), parameters("1"), null)));
+      deleteTempCacheDirectory(dir);
+    }
+
+    @Test
+    void testNarrativeAndMetadataDoNotChangeTheKey() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      ValueSet other = versionedValueSet("1234");
+      other.setTitle("A new title");
+      other.setDate(new Date());
+      other.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
+      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
+        cache.generateExpandToken(other, options(), parameters("1"), null).getKey());
+    }
+
+    @Test
+    void testChangedParametersMiss() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet("1234");
+      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
+        cache.generateExpandToken(vs, options(), parameters("2"), null).getKey());
+      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getKey(),
+        cache.generateExpandToken(vs, options(), parameters("1"), null).getKey());
+    }
+
+    @Test
+    void testEditedImportMisses() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/outer");
+      vs.setVersion("1.0.0");
+      vs.getCompose().addInclude().addValueSet("http://example.org/fhir/ValueSet/test");
+
+      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getKey();
+      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234", "5678"))).getKey());
+      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getKey());
+
+      // the same goes for a ValueSet without a version, whose definition is otherwise in the key as it is
+      vs.setVersion(null);
+      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234"))).getKey(),
+        cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234", "5678"))).getKey());
+    }
+
+    @Test
+    void testLargeUnversionedDefinitionMisses() throws IOException {
+      // a definition this large is left out of the key, which used to leave nothing of it there at all
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = versionedValueSet(IntStream.range(0, 1001).mapToObj(String::valueOf).toArray(String[]::new));
+      vs.setVersion(null);
+      ValueSet edited = vs.copy(Base.COPY_DATA);
+      edited.getCompose().getIncludeFirstRep().addConcept().setCode("extra");
+      assertNotEquals(cache.generateExpandToken(vs, options()).getKey(), cache.generateExpandToken(edited, options()).getKey());
+    }
+
+    @Test
+    void testOldFormatEntryStaysReadableButIsNotUsed() throws IOException {
+      Path dir = createTempCacheDirectory();
+      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      ValueSet vs = versionedValueSet("1234");
+      CacheToken newToken = cacheA.generateExpandToken(vs, options(), parameters("1"), null);
+      // the key as it was before the definition was part of it
+      CacheToken oldToken = new CacheToken();
+      oldToken.setName(newToken.getName());
+      oldToken.setRequest("{\"hierarchical\" : true, \"language\": \"en\", \"url\": \"http://example.org/fhir/ValueSet/test\", \"version\": \"1.0.0\"}\r\n");
+      oldToken.setKey(cacheA.hashJson(oldToken.getRequest()));
+      cacheA.cacheExpansion(oldToken, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+      cacheA.save();
+
+      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      assertNotNull(cacheB.getExpansion(oldToken));
+      assertNull(cacheB.getExpansion(cacheB.generateExpandToken(vs, options(), parameters("1"), null)));
+      deleteTempCacheDirectory(dir);
+    }
+  }
+
   @Test
   public void testGetVSEssence() throws IOException {
     ValueSet.ValueSetExpansionParameterComponent vsepc = new ValueSet.ValueSetExpansionParameterComponent().setName("dummyValueSetExpansionParameterComponent");

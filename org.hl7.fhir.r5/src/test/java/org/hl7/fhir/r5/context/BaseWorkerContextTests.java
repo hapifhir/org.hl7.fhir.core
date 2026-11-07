@@ -598,7 +598,7 @@ public class BaseWorkerContextTests {
 
       //This is the actual test. The ExpansionOptions generated should match the one above, and the rest of the test
       //should then be able to run without exception.
-      Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), argThat(new ExpansionOptionsMatcher(opt)));
+      Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), argThat(new ExpansionOptionsMatcher(opt)), any(Parameters.class), eq(Collections.emptyList()));
       Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
       Parameters pIn = new Parameters();
@@ -616,7 +616,7 @@ public class BaseWorkerContextTests {
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     Parameters pIn = new Parameters();
@@ -644,13 +644,37 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  public void testExpandValueSetKeyHasImportedValueSets() throws IOException {
+    // vs imports a, a imports b, and b imports a again; c can't be resolved
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/a");
+    vs.getCompose().addExclude().addValueSet("http://example.org/c");
+    ValueSet a = new ValueSet();
+    a.setUrl("http://example.org/a");
+    a.getCompose().addInclude().addValueSet("http://example.org/b");
+    ValueSet b = new ValueSet();
+    b.setUrl("http://example.org/b");
+    b.getCompose().addInclude().addValueSet("http://example.org/a");
+    Mockito.doReturn(a).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/a"), any(), any(), any());
+    Mockito.doReturn(b).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    Mockito.doReturn(null).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/c"), any(), any(), any());
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(List.of(a, b)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, new Parameters(), false));
+  }
+
+  @Test
   public void testExpandValueSetWithOptionsWithValueSetExpanderSimple() throws IOException {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
 
     Parameters pIn = new Parameters();
 
@@ -677,7 +701,7 @@ public class BaseWorkerContextTests {
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
 
     Parameters pIn = new Parameters();
 

@@ -832,7 +832,7 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000) {
+    if (tooLargeToEmbed(vsc)) {
       s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
@@ -881,22 +881,61 @@ public class TerminologyCache {
   }
 
   public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options) {
+    return generateExpandToken(vs, options, null, null);
+  }
+
+  /**
+   * The key covers what decides the expansion, not just the ValueSet's url and version: an IG edits
+   * its ValueSets without changing the version, and the expansion parameters can pin a different code
+   * system version. So the key holds a digest of the ValueSet's definition (and of the ValueSets it
+   * imports, when the caller resolved them) wherever the definition itself is not part of the key,
+   * and a digest of the expansion parameters when they are given.
+   *
+   * Cache files written with the older url|version key stay readable; those entries are simply no
+   * longer found, so the ValueSet is expanded again once.
+   *
+   * @param expParameters the parameters of the $expand, or null to leave them out of the key
+   * @param imports the ValueSets this one imports (compose.include/exclude.valueSet, all the way down),
+   *    or null; ValueSets that can't be resolved are only named in the compose, which is in the key anyway
+   */
+  public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options, Parameters expParameters, List<ValueSet> imports) {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
-    if (vs.hasUrl() && vs.hasVersion()) {
-      ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
-    } else {
-      ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser(context.getModelContext());
-      json.setOutputStyle(OutputStyle.PRETTY);
-      try {
-        ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
-      } catch (IOException e) {
-        throw new Error(e);
+    ValueSet vsc = getVSEssense(vs);
+    JsonParser json = new JsonParser(context.getModelContext());
+    json.setOutputStyle(OutputStyle.PRETTY);
+    try {
+      String prefix = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "");
+      String suffix = (expParameters == null ? "" : ", \"parameters\": \""+hashJson(json.composeString(expParameters))+"\"")+"}\r\n";
+      boolean hasImports = imports != null && !imports.isEmpty();
+      if (vs.hasUrl() && vs.hasVersion()) {
+        ct.setRequest(prefix+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""
+          +", \"definition\": \""+definitionDigest(json, vsc, imports)+"\""+suffix);
+      } else if (tooLargeToEmbed(vsc) || hasImports) {
+        // extracted() leaves a large definition out, and an embedded one says nothing about the imports
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vsc, imports)+"\""+suffix);
+      } else {
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+suffix);
       }
+    } catch (IOException e) {
+      throw new Error(e);
     }
     ct.setKey(String.valueOf(hashJson(ct.getRequest())));
     return ct;
+  }
+
+  private boolean tooLargeToEmbed(ValueSet vsc) {
+    return vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000;
+  }
+
+  private String definitionDigest(JsonParser json, ValueSet vsc, List<ValueSet> imports) throws IOException {
+    StringBuilder b = new StringBuilder(json.composeString(vsc));
+    if (imports != null) {
+      for (ValueSet imp : imports) {
+        b.append("\n").append(imp.getVersionedUrl()).append("\n").append(json.composeString(getVSEssense(imp)));
+      }
+    }
+    return hashJson(b.toString());
   }
   
   public CacheToken generateExpandToken(String url, ExpansionOptions options) {

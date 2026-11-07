@@ -1145,7 +1145,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.setParameter("incomplete-ok", true);
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, options);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, options, p, findImportedValueSets(vs));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
@@ -1223,6 +1223,43 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * The ValueSets that vs imports (compose.include/exclude.valueSet), and the ones they import in turn,
+   * as far as they are known locally. Their definitions decide the expansion as much as vs's own does,
+   * so they are part of its cache key: an IG can edit an imported ValueSet without changing a version.
+   */
+  private List<ValueSet> findImportedValueSets(ValueSet vs) {
+    List<ValueSet> res = new ArrayList<>();
+    findImportedValueSets(vs, res, new HashSet<>());
+    return res;
+  }
+
+  private void findImportedValueSets(ValueSet vs, List<ValueSet> res, Set<String> seen) {
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      findImportedValueSets(vs, inc, res, seen);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+      findImportedValueSets(vs, inc, res, seen);
+    }
+  }
+
+  private void findImportedValueSets(ValueSet vs, ConceptSetComponent inc, List<ValueSet> res, Set<String> seen) {
+    for (CanonicalType u : inc.getValueSet()) {
+      if (u.hasValue() && seen.add(u.getValue())) {
+        ValueSet imp;
+        try {
+          imp = fetchResourceWithException(ValueSet.class, u.getValue(), ExtensionUtilities.getVersionResolutionRules(inc), null, vs);
+        } catch (FHIRException e) {
+          imp = null; // left to the expansion to report; the canonical is in the compose, so in the key, anyway
+        }
+        if (imp != null) {
+          res.add(imp);
+          findImportedValueSets(imp, res, seen);
+        }
+      }
+    }
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
