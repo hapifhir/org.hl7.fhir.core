@@ -75,6 +75,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /*
@@ -277,6 +278,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false, minimalMemory);
   private final HashMap<String, SystemSupportInformation> supportedCodeSystems = new HashMap<>();
   private final Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
+  // "<server address> <system>" for systems that neither the context nor that server knows, as the server told us this run
+  private final Set<String> systemsUnknownHereAndOnServer = ConcurrentHashMap.newKeySet();
   private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false, minimalMemory);
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false, minimalMemory);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false, minimalMemory);
@@ -421,6 +424,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       version = other.version;
       supportedCodeSystems.putAll(other.supportedCodeSystems);
       unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
+      systemsUnknownHereAndOnServer.addAll(other.systemsUnknownHereAndOnServer);
       codeSystemsUsed.addAll(other.codeSystemsUsed);
       ucumService = other.ucumService;
       binaries.putAll(other.binaries);
@@ -1702,6 +1706,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, code.getCode(), code.getSystem()), TerminologyServiceErrorClass.NOSERVICE, issues);
     }
 
+    // a code checked against no value set, from a system that neither we nor the server know: the server's
+    // answer doesn't depend on the code, and if it has already given it in this run, the answer is the local
+    // warning, as below
+    String unknownSystemKey = vs == null && !options.isGuessSystem() && localWarning != null && !code.hasVersion() && unknownSystems.contains(code.getSystem()) ? tc.getAddress() + " " + code.getSystem() : null;
+    if (unknownSystemKey != null && systemsUnknownHereAndOnServer.contains(unknownSystemKey)) {
+      return unknownCodeSystemWarning(localWarning);
+    }
+
     String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
       txLog("$validate " + csumm + (vs == null ? "" : " for " + txCache.summary(vs)) + " on " + tc.getAddress());
@@ -1720,10 +1732,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: " + localError.trim() + ". Server Error: " + res.getMessage());
     } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
-      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
-      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
-      res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
-      return res;
+      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error.
+      // This isn't cached, but the server isn't asked about this system again in this run (above). Only a real answer
+      // gets here: a failed request is a SERVER_ERROR
+      if (unknownSystemKey != null) {
+        systemsUnknownHereAndOnServer.add(unknownSystemKey);
+      }
+      return unknownCodeSystemWarning(localWarning);
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -1732,6 +1747,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+
+  private ValidationResult unknownCodeSystemWarning(String localWarning) {
+    ValidationResult res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
+    res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
+    return res;
+  }
 
   /**
    * ask the terminology system whether parent subsumes child.
