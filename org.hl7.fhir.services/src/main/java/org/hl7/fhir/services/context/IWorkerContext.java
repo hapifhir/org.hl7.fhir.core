@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -893,6 +894,21 @@ public interface IWorkerContext {
    * @return true if it does, false if it doesn't, and null if it's not know whether it does
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
+  /**
+   * ask the terminology system for some of a concept's properties ($lookup, with a property
+   * parameter for each). The answer is remembered for the life of the context.
+   *
+   * @param properties the codes of the properties wanted - and "designation" for the active
+   *   designations, which come back as designation:{use code} (e.g. designation:900000000000003001
+   *   for a SNOMED CT fully specified name)
+   * @return the values of each of those properties that the concept has, as strings (the code,
+   *   for a code or Coding); empty if it has none of them; null if the concept couldn't be looked
+   *   up (no terminology server, an unknown code, the server failed...)
+   */
+  public default Map<String, List<String>> lookupProperties(ValidationOptions options, String system, String version, String code, Set<String> properties) {
+    return null;
+  }
 
   /**
    * return the System Support Information for the server that serves the specified code system

@@ -206,7 +206,17 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
 
   @Override
   public Parameters lookupCode(Parameters params) throws FHIRException {
-    return (Parameters) VersionConvertorFactory_30_N.convertResource(client.lookupCode((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_N.convertResource(params)));
+    try {
+      return (Parameters) VersionConvertorFactory_30_N.convertResource(client.lookupCode((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_N.convertResource(params)));
+    } catch (EFhirClientException e) {
+      // as for the other versions: callers see the status code (e.g. 404 = unknown code) whatever the version
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome)VersionConvertorFactory_30_N.convertResource(e.getServerErrors().get(0));
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), e);
+      }
+    }
   }
 
   @Override
