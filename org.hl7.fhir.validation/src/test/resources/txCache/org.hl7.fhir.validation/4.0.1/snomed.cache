@@ -8731,3 +8731,2152 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "91935009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Allergy to peanut (finding)"],"designation:900000000000013009":["Allergy to peanut","Allergy to peanuts"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "3718001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Cow\u0027s milk (substance)"],"designation:900000000000013009":["Cow\u0027s milk"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "409002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Food allergy diet (finding)"],"designation:900000000000013009":["Food allergy diet","Food intolerance diet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "437009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Abnormal composition of urine (finding)"],"designation:900000000000013009":["Abnormal composition of urine"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "9846003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Right kidney structure (body structure)"],"designation:900000000000013009":["Right kidney structure","Right kidney"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "189009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["51114001"],"designation:900000000000003001":["Excision of lesion of artery (procedure)"],"designation:900000000000013009":["Excision of lesion of artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51114001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Arterial structure (body structure)"],"designation:900000000000013009":["Arterial structure","Artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "911003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405814001":["87953007","85178008"],"designation:900000000000003001":["Removal of subarachnoid-ureteral shunt (procedure)"],"designation:900000000000013009":["Removal of subarachnoid-ureteral shunt"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "80943009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Risk factor (observable entity)"],"designation:900000000000013009":["Risk factor"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "248986005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Estimated date of conception (observable entity)"],"designation:900000000000013009":["Estimated date of conception","EDC - Estimated date of conception"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "161714006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Estimated date of delivery (observable entity)"],"designation:900000000000013009":["Estimated date of delivery","EDC - Expected date of confinement","Due date","EDD - Expected date of delivery","Estimated date of confinement","Estimated date of birth"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "161713000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Last menstrual period - First day (observable entity)"],"designation:900000000000013009":["Last menstrual period -1st day","Last menstrual period - First day"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "445872007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Length of gestation at time of procedure (observable entity)"],"designation:900000000000013009":["Length of gestation at time of procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "324252006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely azithromycin (as azithromycin dihydrate) 250 milligram/1 each conventional release oral capsule (clinical drug)"],"designation:900000000000013009":["Azithromycin (as azithromycin dihydrate) 250 mg oral capsule"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "21522001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["818983003"],"designation:900000000000003001":["Abdominal pain (finding)"],"designation:900000000000013009":["Abdominal pain","AP - Abdominal pain"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "818983003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall (body structure)"],"designation:900000000000013009":["Abdomen","Intra-abdominopelvic structure and/or anterior abdominal wall","Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall"],"designation:900000000000550004":["This is considered the most commonly used clinical variant of \u0027abdomen\u0027 and relates to the space and content within the abdominopelvic cavity plus the anterior and lateral abdominal wall. The volume is bounded by, but excludes: superiorly the thoracic diaphragm; inferiorly the pelvic diaphragm; and posteriorly the posterior wall of the abdomen proper: The pelvic component consists of the cavity of the true pelvis, which is bounded by, but excludes, the pelvic wall. Anteriorly this volume is bounded and includes the anterior abdominal (including the lateral abdominal wall)."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "122481008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["371241001"],"designation:900000000000003001":["Hammer toe (disorder)"],"designation:900000000000013009":["Hammer toe"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "371241001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Proximal interphalangeal joint structure of lesser toe (body structure)"],"designation:900000000000013009":["Proximal interphalangeal joint structure of lesser toe","Proximal interphalangeal joint structure of toe","Proximal interphalangeal joint of toe","Proximal interphalangeal joint of lesser toe"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "716186003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["No known allergy (situation)"],"designation:900000000000013009":["No known allergy","NKA - no known allergy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "59621000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Essential hypertension (disorder)"],"designation:900000000000013009":["Essential hypertension","Idiopathic hypertension","Systemic primary arterial hypertension","Primary hypertension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51840005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Systemic circulatory system structure (body structure)"],"designation:900000000000013009":["Systemic circulatory system structure","Systemic circulatory system","Greater circulation"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "90560007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Gout (disorder)"],"designation:900000000000013009":["Gout"],"designation:900000000000550004":["A disease caused by monosodium urate crystal deposition with any of the following clinical presentations (current or prior): gout flare, chronic gouty arthritis, or subcutaneous tophus."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "318913001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing cilazapril (medicinal product)"],"designation:900000000000013009":["Cilazapril-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "108575001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing lisinopril (medicinal product)"],"designation:900000000000013009":["Lisinopril-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "11847009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing naproxen (medicinal product)"],"designation:900000000000013009":["Naproxen-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "179382003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["49076000","182446003"],"designation:900000000000003001":["Arthroscopic total medial meniscectomy (procedure)"],"designation:900000000000013009":["Arthroscopic total medial meniscectomy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "82169009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of left knee region (body structure)"],"designation:900000000000013009":["Structure of left knee region","Left knee"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8874001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["49076000","49390008","10013000"],"designation:900000000000003001":["Arthroscopy of knee with medial and lateral meniscectomy (procedure)"],"designation:900000000000013009":["Arthroscopy of knee with medial and lateral meniscectomy","Endoscopic total meniscectomy of knee"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/731000124108", "code" : "763875007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing sulfonamide (product)"],"designation:900000000000013009":["Sulfonamide-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51868009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["38848004"],"designation:900000000000003001":["Ulcer of duodenum (disorder)"],"designation:900000000000013009":["Ulcer of duodenum","Duodenal ulcer disease","DUD - Duodenal ulcer disease","Duodenal ulcer","DU - Duodenal ulcer"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38848004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Duodenal structure (body structure)"],"designation:900000000000013009":["Duodenal structure","Duodenum"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "44054006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["113331007"],"designation:900000000000003001":["Diabetes mellitus type 2 (disorder)"],"designation:900000000000013009":["Type 2 diabetes mellitus","Diabetes mellitus type II","Diabetes mellitus type 2","Type II diabetes mellitus","T2DM - diabetes mellitus type 2"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "113331007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of endocrine system (body structure)"],"designation:900000000000013009":["Structure of endocrine system","Endocrine system","Endocrine structure","Endocrine system structure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "96067005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing flucloxacillin (medicinal product)"],"designation:900000000000013009":["Floxacillin-containing product","Flucloxacillin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "48546005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing diazepam (medicinal product)"],"designation:900000000000013009":["Diazepam-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "40425004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["12738006"],"designation:900000000000003001":["Postconcussion syndrome (disorder)"],"designation:900000000000013009":["Postconcussion syndrome","Post-concussion syndrome","Post-concussional syndrome","Nonpsychotic post-traumatic brain syndrome","Post-contusional encephalopathy","Post-contusional syndrome"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "12738006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Brain structure (body structure)"],"designation:900000000000013009":["Brain structure","Brain"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "237599002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["113331007"],"designation:900000000000003001":["Insulin treated type 2 diabetes mellitus (disorder)"],"designation:900000000000013009":["Insulin treated type 2 diabetes mellitus","Insulin treated Type II diabetes mellitus","Diabetes type 2 on insulin"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "1201005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Benign essential hypertension (disorder)"],"designation:900000000000013009":["Benign essential hypertension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "52910006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Anxiety disorder due to a general medical condition (disorder)"],"designation:900000000000013009":["Anxiety disorder due to a general medical condition","Anxiety disorder due to medical disorder","Anxiety disorder due to general medical condition","Secondary anxiety disorder","Secondary anxiety syndrome"],"designation:900000000000550004":["A syndrome marked by significant anxiety symptoms directly caused by a physical health condition, not classified as a mental disorder. This determination is based on the patient\u0027s history, physical examination or laboratory findings. These symptoms are not due to delirium, another mental disorder, or a psychological reaction to a severe medical diagnosis."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "5913000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["29627003"],"designation:900000000000003001":["Fracture of neck of femur (disorder)"],"designation:900000000000013009":["Fracture of neck of femur","Femoral neck fracture","NOF - fractured neck of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "29627003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Structure of neck of femur (body structure)"],"designation:900000000000013009":["Structure of neck of femur","Neck of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "126212009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing insulin glargine (medicinal product)"],"designation:900000000000013009":["Insulin glargine-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "714081009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing dulaglutide (medicinal product)"],"designation:900000000000013009":["Dulaglutide-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "109081006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing metformin (medicinal product)"],"designation:900000000000013009":["Metformin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "108537001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing amlodipine (medicinal product)"],"designation:900000000000013009":["Amlodipine-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "96309000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing losartan (medicinal product)"],"designation:900000000000013009":["Losartan-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "7947003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing aspirin (medicinal product)"],"designation:900000000000013009":["Aspirin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "25246002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing allopurinol (medicinal product)"],"designation:900000000000013009":["Allopurinol-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "265132005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["310651003"],"designation:900000000000003001":["Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device (procedure)"],"designation:900000000000013009":["Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "310651003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Bone structure of proximal femur (body structure)"],"designation:900000000000013009":["Bone structure of proximal femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "287903004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["85562004"],"designation:900000000000003001":["Suturing of hand (procedure)"],"designation:900000000000013009":["Suturing of hand"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "85562004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Hand structure (body structure)"],"designation:900000000000013009":["Hand structure","Hand"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "233588003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405814001":["64033007"],"designation:900000000000003001":["Continuous hemodiafiltration (procedure)"],"designation:900000000000013009":["Continuous hemodiafiltration","Continuous haemodiafiltration"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "64033007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Kidney structure (body structure)"],"designation:900000000000013009":["Kidney structure","Kidney","Renal structure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "324689003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely nystatin 100000 unit/1 milliliter conventional release oral suspension (clinical drug)"],"designation:900000000000013009":["Nystatin 100000 unit/mL oral suspension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "442311008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Liveborn born in hospital (situation)"],"designation:900000000000013009":["Liveborn born in hospital"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "442476006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Arterial oxygen saturation (observable entity)"],"designation:900000000000013009":["Arterial oxygen saturation","SaO2 - Arterial oxygen saturation"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "427081008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Delivered oxygen flow rate (observable entity)"],"designation:900000000000013009":["Delivered oxygen flow rate","Fresh gas flow rate"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "250774007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Inspired oxygen concentration (observable entity)"],"designation:900000000000013009":["Inspired oxygen concentration","Oxygen concentration - inspired","FIO2 - Inspired fraction of oxygen","Inspired fraction of oxygen"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "276885007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Core body temperature (observable entity)"],"designation:900000000000013009":["Core body temperature"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "276885007x", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "723961002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of left brachial artery (body structure)"],"designation:900000000000013009":["Structure of left brachial artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "252829002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["65431007"],"designation:900000000000003001":["Corneal specular microscopy (procedure)"],"designation:900000000000013009":["Corneal specular microscopy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "38102005",
+    "display" : "Cholecystectomy"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Cholecystectomy",
+  "code" : "38102005",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#38102005 (\"Cholecystectomy\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#38102005\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"38102005\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38102005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["28231008"],"designation:900000000000003001":["Cholecystectomy (procedure)"],"designation:900000000000013009":["Cholecystectomy","Excision of gallbladder","Gallbladder excision","Removal of gallbladder"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "28231008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Gallbladder structure (body structure)"],"designation:900000000000013009":["Gallbladder structure","Gallbladder","Gall bladder"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "87612001",
+    "display" : "Blood"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blood",
+  "code" : "87612001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#87612001 (\"Blood\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#87612001\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"87612001\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "87612001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood (substance)"],"designation:900000000000013009":["Blood"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "22298006",
+    "display" : "Myocardial infarction"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Myocardial infarction",
+  "code" : "22298006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#22298006 (\"Myocardial infarction\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#22298006\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"22298006\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "22298006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["74281007"],"designation:900000000000003001":["Myocardial infarction (disorder)"],"designation:900000000000013009":["Myocardial infarction","Infarction of heart","Cardiac infarction","Heart attack","Myocardial infarct","MI - myocardial infarction"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "74281007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Myocardium structure (body structure)"],"designation:900000000000013009":["Myocardium structure","Myocardium","Cardiac muscle"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "74400008",
+    "display" : "Appendicitis"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Appendicitis",
+  "code" : "74400008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#74400008 (\"Appendicitis\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#74400008\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"74400008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "74400008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["66754008"],"designation:900000000000003001":["Appendicitis (disorder)"],"designation:900000000000013009":["Appendicitis"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "66754008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Appendix structure (body structure)"],"designation:900000000000013009":["Appendix structure","Appendix","Vermiform appendix"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "69695003",
+    "display" : "Stomach structure"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Stomach structure",
+  "code" : "69695003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#69695003 (\"Stomach structure\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#69695003\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"69695003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "69695003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Stomach structure (body structure)"],"designation:900000000000013009":["Stomach structure","Stomach","Ventriculus"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "183976008",
+    "display" : "Operative procedure planned"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Operative procedure planned",
+  "code" : "183976008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#183976008 (\"Operative procedure planned\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#183976008\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"183976008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "183976008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"408730004":["397943006"],"designation:900000000000003001":["Operative procedure planned (situation)"],"designation:900000000000013009":["Operative procedure planned"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "38341003",
+    "display" : "Hypertensive disorder, systemic arterial"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hypertensive disorder",
+  "code" : "38341003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#38341003 (\"Hypertensive disorder, systemic arterial\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#38341003\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"38341003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38341003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Hypertensive disorder, systemic arterial (disorder)"],"designation:900000000000013009":["Hypertensive disorder","High blood pressure","Hypertensive vascular disease","Hypertensive vascular degeneration","Hypertension","BP - High blood pressure","Systemic arterial hypertension","HBP - High blood pressure","HT - Hypertension","High blood pressure disorder","BP+ - Hypertension","HTN - Hypertension","Hypertensive disorder, systemic arterial"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "75367002",
+    "display" : "Blood pressure"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blood pressure",
+  "code" : "75367002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#75367002 (\"Blood pressure\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#75367002\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"75367002\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "75367002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood pressure (observable entity)"],"designation:900000000000013009":["Blood pressure","BP - Blood pressure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "119297000",
+    "display" : "Blood specimen"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blood specimen",
+  "code" : "119297000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#119297000 (\"Blood specimen\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#119297000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"119297000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "119297000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood specimen (specimen)"],"designation:900000000000013009":["Blood specimen","Blood sample"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "71388002",
+    "display" : "Procedure"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Procedure",
+  "code" : "71388002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#71388002 (\"Procedure\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#71388002\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"71388002\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71388002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Procedure (procedure)"],"designation:900000000000013009":["Procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "91936005",
+    "display" : "Allergy to penicillin"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Allergy to penicillin",
+  "code" : "91936005",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#91936005 (\"Allergy to penicillin\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#91936005\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"91936005\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "91936005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Allergy to penicillin (finding)"],"designation:900000000000013009":["Allergy to penicillin","Penicillin allergy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "387517004",
+    "display" : "Paracetamol"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Acetaminophen",
+  "code" : "387517004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#387517004 (\"Paracetamol\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#387517004\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"387517004\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "387517004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Paracetamol (substance)"],"designation:900000000000013009":["Acetaminophen","Paracetamol"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "322236009",
+    "display" : "Paracetamol 500 mg oral tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Acetaminophen 500 mg oral tablet",
+  "code" : "322236009",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#322236009 (\"Paracetamol 500 mg oral tablet\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#322236009\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"322236009\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "322236009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely paracetamol 500 milligram/1 each conventional release oral tablet (clinical drug)"],"designation:900000000000013009":["Acetaminophen 500 mg oral tablet","Paracetamol 500 mg oral tablet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "1303377000",
+    "display" : "Fracture of bone of left femur"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Fracture of bone of left femur",
+  "code" : "1303377000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#1303377000 (\"Fracture of bone of left femur\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#1303377000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"1303377000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "722739008",
+    "display" : "Structure of bone of right femur"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Structure of bone of right femur",
+  "code" : "722739008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#722739008 (\"Structure of bone of right femur\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#722739008\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"722739008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "1303377000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["722738000"],"designation:900000000000003001":["Fracture of bone of left femur (disorder)"],"designation:900000000000013009":["Fracture of bone of left femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722739008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Structure of bone of right femur (body structure)"],"designation:900000000000013009":["Structure of bone of right femur","Structure of right femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722738000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of bone of left femur (body structure)"],"designation:900000000000013009":["Structure of bone of left femur","Structure of left femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "722738000",
+    "display" : "Structure of bone of left femur"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Structure of bone of left femur",
+  "code" : "722738000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#722738000 (\"Structure of bone of left femur\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#722738000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"722738000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "71620000",
+    "display" : "Fracture of femur"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Fracture of femur",
+  "code" : "71620000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#71620000 (\"Fracture of femur\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#71620000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"71620000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71620000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["71341001"],"designation:900000000000003001":["Fracture of femur (disorder)"],"designation:900000000000013009":["Fracture of femur","Fracture of thigh","Fracture of upper leg"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71341001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Bone structure of femur (body structure)"],"designation:900000000000013009":["Bone structure of femur","Femur","Structure of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "7771000",
+    "display" : "Left"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/structure-laterality-vs", "version": "5.3.0-ballot-tc1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/observation-structureLaterality|5.3.0-ballot-tc1]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Left",
+  "code" : "7771000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Analysing http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Prepare include[0]: \"(http://snomed.info/sct)(51440002,399488007,24028007,7771000)\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Validate \"[http://snomed.info/sct#7771000 (\"Left\")]\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Check \"http://snomed.info/sct#7771000\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: check code in (http://snomed.info/sct)(51440002,399488007,24028007,7771000) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot-tc1: Code \"7771000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "7771000",
+    "display" : "Left"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Left",
+  "code" : "7771000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#7771000 (\"Left\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#7771000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"7771000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "69695003:272741003=7771000"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Unknown code '69695003:272741003=7771000' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20260701' (International Edition)",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#69695003:272741003=7771000 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#69695003:272741003=7771000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"69695003:272741003=7771000\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701: Not a valid expression: The SNOMED CT concept model does not allow the attribute 272741003 |Laterality| on 69695003 |Stomach| (the attribute is only valid for concepts in 723264001 |Lateralizable body structure reference set (foundation metadata concept)|)",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code '69695003:272741003=7771000' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20260701' (International Edition)"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Not a valid expression: The SNOMED CT concept model does not allow the attribute 272741003 |Laterality| on 69695003 |Stomach| (the attribute is only valid for concepts in 723264001 |Lateralizable body structure reference set (foundation metadata concept)|)"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/900000000000207008/version/20210331", "code" : "459231000124102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "35901911000001104", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "329652003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely ibuprofen 200 milligram/1 each conventional release oral tablet (clinical drug)"],"designation:900000000000013009":["Ibuprofen 200 mg oral tablet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "39695211000001102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "56248011000036107", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "7771000",
+    "display" : "Left"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/structure-laterality-vs", "version": "5.3.0-ballot", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/observation-structureLaterality|5.3.0-ballot]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Left",
+  "code" : "7771000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Analysing http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot for validation purposes\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Prepare include[0]: \"(http://snomed.info/sct)(51440002,399488007,24028007,7771000)\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Validate \"[http://snomed.info/sct#7771000 (\"Left\")]\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Check \"http://snomed.info/sct#7771000\"\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: check code in (http://snomed.info/sct)(51440002,399488007,24028007,7771000) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/ValueSet/structure-laterality-vs|5.3.0-ballot: Code \"7771000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "318913001"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "108575001"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "11847009"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "126212009"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "714081009"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "109081006"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "108537001"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "96309000"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "7947003"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "25246002"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "387517004"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : false
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "22298006"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : false
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "322236009"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "324689003"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "329652003"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "716186003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"408729009":["1381510001"],"designation:900000000000003001":["No known allergy (situation)"],"designation:900000000000013009":["No known allergy","NKA - no known allergy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "716184000",
+    "display" : "No known latex allergy"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "No known latex allergy",
+  "code" : "716184000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "severity" : "warning",
+  "error" : "The concept '716184000' has a status of inactive and its use should be reviewed",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#716184000 (\"No known latex allergy\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#716184000\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"716184000\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '716184000' has a status of inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "716184000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["No known latex allergy (situation)"],"designation:900000000000013009":["No known latex allergy"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "160245001",
+    "display" : "No current problems or disability"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "No current problems or disability",
+  "code" : "160245001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#160245001 (\"No current problems or disability\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#160245001\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"160245001\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "160245001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"408729009":["410516002"],"designation:900000000000003001":["No current problems or disability (situation)"],"designation:900000000000013009":["No current problems or disability"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "91936005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Allergy to penicillin (finding)"],"designation:900000000000013009":["Allergy to penicillin","Penicillin allergy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "91935009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Allergy to peanut (finding)"],"designation:900000000000013009":["Allergy to peanut","Allergy to peanuts"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "3718001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Cow\u0027s milk (substance)"],"designation:900000000000013009":["Cow\u0027s milk"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "409002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Food allergy diet (finding)"],"designation:900000000000013009":["Food allergy diet","Food intolerance diet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "437009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Abnormal composition of urine (finding)"],"designation:900000000000013009":["Abnormal composition of urine"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "9846003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Right kidney structure (body structure)"],"designation:900000000000013009":["Right kidney structure","Right kidney"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "189009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["51114001"],"designation:900000000000003001":["Excision of lesion of artery (procedure)"],"designation:900000000000013009":["Excision of lesion of artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51114001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Arterial structure (body structure)"],"designation:900000000000013009":["Arterial structure","Artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "911003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405814001":["87953007","85178008"],"designation:900000000000003001":["Removal of subarachnoid-ureteral shunt (procedure)"],"designation:900000000000013009":["Removal of subarachnoid-ureteral shunt"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "80943009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Risk factor (observable entity)"],"designation:900000000000013009":["Risk factor"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "248986005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Estimated date of conception (observable entity)"],"designation:900000000000013009":["Estimated date of conception","EDC - Estimated date of conception"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "161714006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Estimated date of delivery (observable entity)"],"designation:900000000000013009":["Estimated date of delivery","EDC - Expected date of confinement","Due date","EDD - Expected date of delivery","Estimated date of confinement","Estimated date of birth"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "161713000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Last menstrual period - First day (observable entity)"],"designation:900000000000013009":["Last menstrual period -1st day","Last menstrual period - First day"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "445872007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Length of gestation at time of procedure (observable entity)"],"designation:900000000000013009":["Length of gestation at time of procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "324252006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely azithromycin (as azithromycin dihydrate) 250 milligram/1 each conventional release oral capsule (clinical drug)"],"designation:900000000000013009":["Azithromycin (as azithromycin dihydrate) 250 mg oral capsule"],"inactive":["true"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "21522001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["818983003"],"designation:900000000000003001":["Abdominal pain (finding)"],"designation:900000000000013009":["Abdominal pain","AP - Abdominal pain"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "818983003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall (body structure)"],"designation:900000000000013009":["Abdomen","Intra-abdominopelvic structure and/or anterior abdominal wall","Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall"],"designation:900000000000550004":["This is considered the most commonly used clinical variant of \u0027abdomen\u0027 and relates to the space and content within the abdominopelvic cavity plus the anterior and lateral abdominal wall. The volume is bounded by, but excludes: superiorly the thoracic diaphragm; inferiorly the pelvic diaphragm; and posteriorly the posterior wall of the abdomen proper: The pelvic component consists of the cavity of the true pelvis, which is bounded by, but excludes, the pelvic wall. Anteriorly this volume is bounded and includes the anterior abdominal (including the lateral abdominal wall)."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "122481008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["371241001"],"designation:900000000000003001":["Hammer toe (disorder)"],"designation:900000000000013009":["Hammer toe"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "371241001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Proximal interphalangeal joint structure of lesser toe (body structure)"],"designation:900000000000013009":["Proximal interphalangeal joint structure of lesser toe","Proximal interphalangeal joint structure of toe","Proximal interphalangeal joint of toe","Proximal interphalangeal joint of lesser toe"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "59621000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Essential hypertension (disorder)"],"designation:900000000000013009":["Essential hypertension","Idiopathic hypertension","Systemic primary arterial hypertension","Primary hypertension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51840005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Systemic circulatory system structure (body structure)"],"designation:900000000000013009":["Systemic circulatory system structure","Systemic circulatory system","Greater circulation"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "90560007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Gout (disorder)"],"designation:900000000000013009":["Gout"],"designation:900000000000550004":["A disease caused by monosodium urate crystal deposition with any of the following clinical presentations (current or prior): gout flare, chronic gouty arthritis, or subcutaneous tophus."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "318913001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing cilazapril (medicinal product)"],"designation:900000000000013009":["Cilazapril-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "108575001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing lisinopril (medicinal product)"],"designation:900000000000013009":["Lisinopril-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "11847009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing naproxen (medicinal product)"],"designation:900000000000013009":["Naproxen-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "179382003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["49076000","182446003"],"designation:900000000000003001":["Arthroscopic total medial meniscectomy (procedure)"],"designation:900000000000013009":["Arthroscopic total medial meniscectomy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "82169009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of left knee region (body structure)"],"designation:900000000000013009":["Structure of left knee region","Left knee"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8874001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["49076000","49390008","10013000"],"designation:900000000000003001":["Arthroscopy of knee with medial and lateral meniscectomy (procedure)"],"designation:900000000000013009":["Arthroscopy of knee with medial and lateral meniscectomy","Endoscopic total meniscectomy of knee"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/731000124108", "code" : "763875007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing sulfonamide (product)"],"designation:900000000000013009":["Sulfonamide-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "51868009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["38848004"],"designation:900000000000003001":["Ulcer of duodenum (disorder)"],"designation:900000000000013009":["Ulcer of duodenum","Duodenal ulcer disease","DUD - Duodenal ulcer disease","Duodenal ulcer","DU - Duodenal ulcer"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38848004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Duodenal structure (body structure)"],"designation:900000000000013009":["Duodenal structure","Duodenum"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "44054006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["113331007"],"designation:900000000000003001":["Diabetes mellitus type 2 (disorder)"],"designation:900000000000013009":["Type 2 diabetes mellitus","Diabetes mellitus type II","Diabetes mellitus type 2","Type II diabetes mellitus","T2DM - diabetes mellitus type 2"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "113331007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Structure of endocrine system (body structure)"],"designation:900000000000013009":["Structure of endocrine system","Endocrine system","Endocrine structure","Endocrine system structure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "96067005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing flucloxacillin (medicinal product)"],"designation:900000000000013009":["Floxacillin-containing product","Flucloxacillin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "48546005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing diazepam (medicinal product)"],"designation:900000000000013009":["Diazepam-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "40425004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["12738006"],"designation:900000000000003001":["Postconcussion syndrome (disorder)"],"designation:900000000000013009":["Postconcussion syndrome","Post-concussion syndrome","Post-concussional syndrome","Nonpsychotic post-traumatic brain syndrome","Post-contusional encephalopathy","Post-contusional syndrome"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "12738006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Brain structure (body structure)"],"designation:900000000000013009":["Brain structure","Brain"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "237599002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["113331007"],"designation:900000000000003001":["Insulin treated type 2 diabetes mellitus (disorder)"],"designation:900000000000013009":["Insulin treated type 2 diabetes mellitus","Insulin treated Type II diabetes mellitus","Diabetes type 2 on insulin"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "1201005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Benign essential hypertension (disorder)"],"designation:900000000000013009":["Benign essential hypertension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "52910006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Anxiety disorder due to a general medical condition (disorder)"],"designation:900000000000013009":["Anxiety disorder due to a general medical condition","Anxiety disorder due to medical disorder","Anxiety disorder due to general medical condition","Secondary anxiety disorder","Secondary anxiety syndrome"],"designation:900000000000550004":["A syndrome marked by significant anxiety symptoms directly caused by a physical health condition, not classified as a mental disorder. This determination is based on the patient\u0027s history, physical examination or laboratory findings. These symptoms are not due to delirium, another mental disorder, or a psychological reaction to a severe medical diagnosis."],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "5913000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["29627003"],"designation:900000000000003001":["Fracture of neck of femur (disorder)"],"designation:900000000000013009":["Fracture of neck of femur","Femoral neck fracture","NOF - fractured neck of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "29627003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Structure of neck of femur (body structure)"],"designation:900000000000013009":["Structure of neck of femur","Neck of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "126212009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing insulin glargine (medicinal product)"],"designation:900000000000013009":["Insulin glargine-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "714081009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing dulaglutide (medicinal product)"],"designation:900000000000013009":["Dulaglutide-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "109081006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing metformin (medicinal product)"],"designation:900000000000013009":["Metformin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "108537001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing amlodipine (medicinal product)"],"designation:900000000000013009":["Amlodipine-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "96309000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing losartan (medicinal product)"],"designation:900000000000013009":["Losartan-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "7947003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing aspirin (medicinal product)"],"designation:900000000000013009":["Aspirin-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "25246002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing allopurinol (medicinal product)"],"designation:900000000000013009":["Allopurinol-containing product"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "265132005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["310651003"],"designation:900000000000003001":["Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device (procedure)"],"designation:900000000000013009":["Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "310651003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Bone structure of proximal femur (body structure)"],"designation:900000000000013009":["Bone structure of proximal femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "287903004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["85562004"],"designation:900000000000003001":["Suturing of hand (procedure)"],"designation:900000000000013009":["Suturing of hand"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "85562004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Hand structure (body structure)"],"designation:900000000000013009":["Hand structure","Hand"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "233588003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405814001":["64033007"],"designation:900000000000003001":["Continuous hemodiafiltration (procedure)"],"designation:900000000000013009":["Continuous hemodiafiltration","Continuous haemodiafiltration"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "64033007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Kidney structure (body structure)"],"designation:900000000000013009":["Kidney structure","Kidney","Renal structure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "324689003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely nystatin 100000 unit/1 milliliter conventional release oral suspension (clinical drug)"],"designation:900000000000013009":["Nystatin 100000 unit/mL oral suspension"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "442311008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"408729009":["410515003"],"designation:900000000000003001":["Liveborn born in hospital (situation)"],"designation:900000000000013009":["Liveborn born in hospital"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "442476006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Arterial oxygen saturation (observable entity)"],"designation:900000000000013009":["Arterial oxygen saturation","SaO2 - Arterial oxygen saturation"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "427081008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Delivered oxygen flow rate (observable entity)"],"designation:900000000000013009":["Delivered oxygen flow rate","Fresh gas flow rate"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "250774007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Inspired oxygen concentration (observable entity)"],"designation:900000000000013009":["Inspired oxygen concentration","Oxygen concentration - inspired","FIO2 - Inspired fraction of oxygen","Inspired fraction of oxygen"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "276885007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Core body temperature (observable entity)"],"designation:900000000000013009":["Core body temperature"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "276885007x", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "723961002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of left brachial artery (body structure)"],"designation:900000000000013009":["Structure of left brachial artery"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "252829002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["65431007"],"designation:900000000000003001":["Corneal specular microscopy (procedure)"],"designation:900000000000013009":["Corneal specular microscopy"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38102005", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["28231008"],"designation:900000000000003001":["Cholecystectomy (procedure)"],"designation:900000000000013009":["Cholecystectomy","Excision of gallbladder","Gallbladder excision","Removal of gallbladder"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "28231008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Gallbladder structure (body structure)"],"designation:900000000000013009":["Gallbladder structure","Gallbladder","Gall bladder"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "87612001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood (substance)"],"designation:900000000000013009":["Blood"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "22298006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["74281007"],"designation:900000000000003001":["Myocardial infarction (disorder)"],"designation:900000000000013009":["Myocardial infarction","Infarction of heart","Cardiac infarction","Heart attack","Myocardial infarct","MI - myocardial infarction"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "74281007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Myocardium structure (body structure)"],"designation:900000000000013009":["Myocardium structure","Myocardium","Cardiac muscle"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "74400008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["66754008"],"designation:900000000000003001":["Appendicitis (disorder)"],"designation:900000000000013009":["Appendicitis"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "66754008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Appendix structure (body structure)"],"designation:900000000000013009":["Appendix structure","Appendix","Vermiform appendix"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "69695003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Stomach structure (body structure)"],"designation:900000000000013009":["Stomach structure","Stomach","Ventriculus"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "183976008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"408730004":["397943006"],"designation:900000000000003001":["Operative procedure planned (situation)"],"designation:900000000000013009":["Operative procedure planned"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "38341003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["51840005"],"designation:900000000000003001":["Hypertensive disorder, systemic arterial (disorder)"],"designation:900000000000013009":["Hypertensive disorder","High blood pressure","Hypertensive vascular disease","Hypertensive vascular degeneration","Hypertension","BP - High blood pressure","Systemic arterial hypertension","HBP - High blood pressure","HT - Hypertension","High blood pressure disorder","BP+ - Hypertension","HTN - Hypertension","Hypertensive disorder, systemic arterial"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "75367002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood pressure (observable entity)"],"designation:900000000000013009":["Blood pressure","BP - Blood pressure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "119297000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Blood specimen (specimen)"],"designation:900000000000013009":["Blood specimen","Blood sample"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71388002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Procedure (procedure)"],"designation:900000000000013009":["Procedure"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "387517004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Paracetamol (substance)"],"designation:900000000000013009":["Acetaminophen","Paracetamol"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "322236009", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely paracetamol 500 milligram/1 each conventional release oral tablet (clinical drug)"],"designation:900000000000013009":["Acetaminophen 500 mg oral tablet","Paracetamol 500 mg oral tablet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "1303377000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["722738000"],"designation:900000000000003001":["Fracture of bone of left femur (disorder)"],"designation:900000000000013009":["Fracture of bone of left femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722739008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["24028007"],"designation:900000000000003001":["Structure of bone of right femur (body structure)"],"designation:900000000000013009":["Structure of bone of right femur","Structure of right femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722738000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["7771000"],"designation:900000000000003001":["Structure of bone of left femur (body structure)"],"designation:900000000000013009":["Structure of bone of left femur","Structure of left femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71620000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"363698007":["71341001"],"designation:900000000000003001":["Fracture of femur (disorder)"],"designation:900000000000013009":["Fracture of femur","Fracture of thigh","Fracture of upper leg"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71341001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"272741003":["182353008"],"designation:900000000000003001":["Bone structure of femur (body structure)"],"designation:900000000000013009":["Bone structure of femur","Femur","Structure of femur"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/900000000000207008/version/20210331", "code" : "459231000124102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "35901911000001104", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "329652003", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Product containing precisely ibuprofen 200 milligram/1 each conventional release oral tablet (clinical drug)"],"designation:900000000000013009":["Ibuprofen 200 mg oral tablet"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "39695211000001102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "56248011000036107", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "73761001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["71854001"],"designation:900000000000003001":["Colonoscopy (procedure)"],"designation:900000000000013009":["Colonoscopy","Endoscopy of colon","Endoscopic examination of colon"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71854001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Colon structure (body structure)"],"designation:900000000000013009":["Colon structure","Colon"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "246206008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Number of lesions (observable entity)"],"designation:900000000000013009":["Number of lesions"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "300577008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Finding of lesion (finding)"],"designation:900000000000013009":["Finding of lesion","Observation of lesion","Lesion finding"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "10291000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722818007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Boston bowel preparation scale (assessment scale)"],"designation:900000000000013009":["BBPS - Boston bowel preparation scale","Boston bowel preparation scale"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8901000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8911000202100", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8891000202103", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "15991000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "372756006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Warfarin (substance)"],"designation:900000000000013009":["Warfarin"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "372756006"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : false
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "387458008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Aspirin (substance)"],"designation:900000000000013009":["Aspirin","Acetylsalicylic acid"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "subsumes", "parent" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "373873005"
+}, "child" :{
+  "system" : "http://snomed.info/sct",
+  "code" : "387458008"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+s: {
+  "result" : false
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/900000000000207008/version/20250201", "code" : "27113001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Body weight (observable entity)"],"designation:900000000000013009":["Body weight"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "73761001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"405813007":["71854001"],"designation:900000000000003001":["Colonoscopy (procedure)"],"designation:900000000000013009":["Colonoscopy","Endoscopy of colon","Endoscopic examination of colon"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "71854001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Colon structure (body structure)"],"designation:900000000000013009":["Colon structure","Colon"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "246206008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Number of lesions (observable entity)"],"designation:900000000000013009":["Number of lesions"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "300577008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Finding of lesion (finding)"],"designation:900000000000013009":["Finding of lesion","Observation of lesion","Lesion finding"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "10291000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "722818007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Boston bowel preparation scale (assessment scale)"],"designation:900000000000013009":["BBPS - Boston bowel preparation scale","Boston bowel preparation scale"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8901000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8911000202100", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "8891000202103", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "15991000202102", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "372756006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Warfarin (substance)"],"designation:900000000000013009":["Warfarin"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "387458008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Aspirin (substance)"],"designation:900000000000013009":["Aspirin","Acetylsalicylic acid"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/900000000000207008/version/20250201", "code" : "27113001", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Body weight (observable entity)"],"designation:900000000000013009":["Body weight"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : "http://snomed.info/sct/900000000000207008/version/20250201", "code" : "38266002", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Entire body as a whole (body structure)"],"designation:900000000000013009":["Entire body as a whole","Entire total body"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------

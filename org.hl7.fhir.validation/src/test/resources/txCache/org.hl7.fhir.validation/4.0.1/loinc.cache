@@ -7761,3 +7761,1586 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "59408-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"PROPERTY":["LP6831-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2708-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Both"],"PROPERTY":["LP6831-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6960-1"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pt",
+  "code" : "LP6960-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6960-1 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6960-1\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6960-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7753-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Qn",
+  "code" : "LP7753-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7753-9 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7753-9\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP7753-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6831-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "MFr",
+  "code" : "LP6831-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n20ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6831-4 (\"undefined\")]\"\n22ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6831-4\"\n25ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n25ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n25ms http://loinc.org/vs|2.83: Code \"LP6831-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "3150-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"PROPERTY":["LP6891-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6891-8"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "VFr",
+  "code" : "LP6891-8",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6891-8 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6891-8\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6891-8\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "3151-8", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["L/min"],"PROPERTY":["LP6895-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6895-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "VRat",
+  "code" : "LP6895-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6895-9 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6895-9\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6895-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "100066-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Order"],"PROPERTY":["LP6769-6"],"PanelType":["Panel"],"SCALE_TYP":["LP7747-1"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "5792-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP436123-6"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP436123-6"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SemiQn",
+  "code" : "LP436123-6",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP436123-6 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP436123-6\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP436123-6\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6827-2"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "MCnc",
+  "code" : "LP6827-2",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6827-2 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6827-2\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6827-2\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "97507-8", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP281612-4"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP281612-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "RptPeriod^mean",
+  "code" : "LP281612-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP281612-4 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP281612-4\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP281612-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "106793-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Order"],"PROPERTY":["LP6769-6"],"PanelType":["Panel"],"SCALE_TYP":["LP7747-1"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104642-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6838-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6838-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "NFr",
+  "code" : "LP6838-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6838-9 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6838-9\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.83: Code \"LP6838-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104641-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP185982-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP185982-8"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "TimeFr",
+  "code" : "LP185982-8",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP185982-8 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP185982-8\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP185982-8\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "97510-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6838-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104640-8", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP185982-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104639-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP185982-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "97506-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6838-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP190654-6"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "RptPeriod",
+  "code" : "LP190654-6",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP190654-6 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP190654-6\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP190654-6\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104638-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6838-9"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104636-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["d"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6841-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6841-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Num",
+  "code" : "LP6841-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6841-3 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6841-3\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6841-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "104637-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Observation"],"PROPERTY":["LP185982-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP190654-6"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "99504-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "46418-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP21276-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP21276-8"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "RelTime",
+  "code" : "LP21276-8",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP21276-8 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP21276-8\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP21276-8\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "77140-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["umol/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6860-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6860-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SCnc",
+  "code" : "LP6860-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6860-3 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6860-3\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6860-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "4535-1", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP217195-9"],"SCALE_TYP":["LP7751-3"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7751-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Ord",
+  "code" : "LP7751-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7751-3 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7751-3\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP7751-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "29463-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["[lb_av];kg"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6826-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6826-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mass",
+  "code" : "LP6826-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6826-4 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6826-4\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6826-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "8302-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["[in_us];cm;m"],"PROPERTY":["LP6822-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6822-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Len",
+  "code" : "LP6822-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6822-3 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6822-3\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6822-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "39156-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["kg/m2"],"PROPERTY":["LP6852-0"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6852-0"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Ratio",
+  "code" : "LP6852-0",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6852-0 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6852-0\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP6852-0\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "85354-9", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Order"],"PROPERTY":["LP6769-6"],"PanelType":["Panel"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "8480-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mm[Hg]"],"PROPERTY":["LP6847-0"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6847-0"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pres",
+  "code" : "LP6847-0",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6847-0 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6847-0\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6847-0\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "8462-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mm[Hg]"],"PROPERTY":["LP6847-0"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "883-9", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6886-8"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7750-5"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Nom",
+  "code" : "LP7750-5",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7750-5 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7750-5\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP7750-5\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "94500-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP217195-9"],"SCALE_TYP":["LP7751-3"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "3084-1", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "105992-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["{#}/wk"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6839-7"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6839-7"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "NRat",
+  "code" : "LP6839-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6839-7 (\"undefined\")]\"\n7ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6839-7\"\n10ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n10ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n10ms http://loinc.org/vs|2.83: Code \"LP6839-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "72166-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6813-2"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2951-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mmol/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6860-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "8867-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["{beats}/min;{counts}/min"],"PROPERTY":["LP6839-7"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "1988-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "8310-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["Cel"],"PROPERTY":["LP6872-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6872-8"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Temp",
+  "code" : "LP6872-8",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6872-8 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6872-8\"\n10ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n10ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n10ms http://loinc.org/vs|2.83: Code \"LP6872-8\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "9279-1", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["{breaths}/min;{counts}/min"],"PROPERTY":["LP6839-7"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "�g��", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "unknown" : true
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "10331-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6886-8"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "18684-1", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"PROPERTY":["LP6796-9"],"SCALE_TYP":["LP7754-7"],"TIME_ASPCT":["LP281591-0"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "718-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["g/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "38483-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2093-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "69548-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6813-2"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "48018-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6818-1"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "81252-9", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6818-1"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "81290-9", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6813-2"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "48002-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6886-8"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "76534-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["cm[H2O]"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6847-0"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "14933-6",
+    "display" : "Urate [Moles/volume] in Serum or Plasma"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Urate [Moles/volume] in Serum or Plasma",
+  "code" : "14933-6",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#14933-6 (\"Urate [Moles/volume] in Serum or Plasma\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#14933-6\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n7ms http://loinc.org/vs|2.83: Code \"14933-6\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "14933-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["umol/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6860-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "6690-2",
+    "display" : "Leukocytes [#/volume] in Blood by Automated count"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Leukocytes [#/volume] in Blood by Automated count",
+  "code" : "6690-2",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#6690-2 (\"Leukocytes [#/volume] in Blood by Automated count\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#6690-2\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n7ms http://loinc.org/vs|2.83: Code \"6690-2\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "6690-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["10*3/uL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6836-3"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6836-3"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "NCnc",
+  "code" : "LP6836-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6836-3 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6836-3\"\n9ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n9ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.83: Code \"LP6836-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "2345-7",
+    "display" : "Glucose [Mass/volume] in Serum or Plasma"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Glucose [Mass/volume] in Serum or Plasma",
+  "code" : "2345-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#2345-7 (\"Glucose [Mass/volume] in Serum or Plasma\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#2345-7\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"2345-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2345-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["mg/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "4548-4",
+    "display" : "Hemoglobin A1c/Hemoglobin.total in Blood"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hemoglobin A1c/Hemoglobin.total in Blood",
+  "code" : "4548-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#4548-4 (\"Hemoglobin A1c/Hemoglobin.total in Blood\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#4548-4\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n7ms http://loinc.org/vs|2.83: Code \"4548-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "4548-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["%"],"ORDER_OBS":["Both"],"PROPERTY":["LP6831-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "2157-6",
+    "display" : "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma",
+  "code" : "2157-6",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#2157-6 (\"Creatine kinase [Enzymatic activity/volume] in Serum or Plasma\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#2157-6\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n8ms http://loinc.org/vs|2.83: Code \"2157-6\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "2157-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["U/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6789-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6789-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "CCnc",
+  "code" : "LP6789-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6789-4 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6789-4\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6789-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "3016-3",
+    "display" : "Thyrotropin [Units/volume] in Serum or Plasma"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Thyrotropin [Units/volume] in Serum or Plasma",
+  "code" : "3016-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#3016-3 (\"Thyrotropin [Units/volume] in Serum or Plasma\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#3016-3\"\n9ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n9ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n9ms http://loinc.org/vs|2.83: Code \"3016-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "3016-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["m[IU]/L"],"ORDER_OBS":["Both"],"PROPERTY":["LP6773-8"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "5778-6",
+    "display" : "Color of Urine"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Color of Urine",
+  "code" : "5778-6",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#5778-6 (\"Color of Urine\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#5778-6\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"5778-6\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "5778-6", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP443403-3"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "20454-5",
+    "display" : "Protein [Presence] in Urine by Test strip"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Protein [Presence] in Urine by Test strip",
+  "code" : "20454-5",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#20454-5 (\"Protein [Presence] in Urine by Test strip\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#20454-5\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n7ms http://loinc.org/vs|2.83: Code \"20454-5\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "20454-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP217195-9"],"SCALE_TYP":["LP7751-3"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "22637-3",
+    "display" : "Pathology report final diagnosis Narrative"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pathology report final diagnosis Narrative",
+  "code" : "22637-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#22637-3 (\"Pathology report final diagnosis Narrative\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#22637-3\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"22637-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "22637-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6819-9"],"SCALE_TYP":["LP7749-7"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7749-7"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Nar",
+  "code" : "LP7749-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7749-7 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7749-7\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP7749-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "11502-2",
+    "display" : "Laboratory report"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Laboratory report",
+  "code" : "11502-2",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#11502-2 (\"Laboratory report\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#11502-2\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"11502-2\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "11502-2", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6813-2"],"SCALE_TYP":["LP32888-7"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP32888-7"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Doc",
+  "code" : "LP32888-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP32888-7 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP32888-7\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP32888-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "24323-8",
+    "display" : "Comprehensive metabolic 2000 panel - Serum or Plasma"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Comprehensive metabolic 2000 panel - Serum or Plasma",
+  "code" : "24323-8",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#24323-8 (\"Comprehensive metabolic 2000 panel - Serum or Plasma\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#24323-8\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"24323-8\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "24323-8", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Order"],"PROPERTY":["LP6769-6"],"PanelType":["Panel"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "103633-4",
+    "display" : "Chlamydia trachomatis and Neisseria gonorrhoeae and Trichomonas vaginalis [Presence] in Genital fluid by NAA with probe detection"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Chlamydia trachomatis and Neisseria gonorrhoeae and Trichomonas vaginalis [Presence] in Genital fluid by NAA with probe detection",
+  "code" : "103633-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#103633-4 (\"Chlamydia trachomatis and Neisseria gonorrhoeae and Trichomonas vaginalis [Presence] in Genital fluid by NAA with probe detection\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#103633-4\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n6ms http://loinc.org/vs|2.83: Code \"103633-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "103633-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Order"],"PROPERTY":["LP217195-9"],"SCALE_TYP":["LP7751-3"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "21482-5",
+    "display" : "Protein [Mass/volume] in 24 hour Urine"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Protein [Mass/volume] in 24 hour Urine",
+  "code" : "21482-5",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#21482-5 (\"Protein [Mass/volume] in 24 hour Urine\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#21482-5\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n7ms http://loinc.org/vs|2.83: Code \"21482-5\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "21482-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["g/dL"],"ORDER_OBS":["Both"],"PROPERTY":["LP6827-2"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6924-7"],"UNITSREQUIRED":["Y"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6924-7"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "24H",
+  "code" : "LP6924-7",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6924-7 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6924-7\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n6ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n6ms http://loinc.org/vs|2.83: Code \"LP6924-7\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3084-1",
+  "display" : "Urate [Mass/volume] in Serum or Plasma"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Urate [Mass/volume] in Serum or Plasma",
+  "code" : "3084-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#3084-1 (\"Urate [Mass/volume] in Serum or Plasma\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#3084-1\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"3084-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "88123-5", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6813-2"],"SCALE_TYP":["LP7751-3"],"TIME_ASPCT":["LP189870-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP189870-1"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "12Mo",
+  "code" : "LP189870-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP189870-1 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP189870-1\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP189870-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "10155-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"PROPERTY":["LP6817-3"],"SCALE_TYP":["LP7749-7"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : "2.83", "code" : "29463-7", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"EXAMPLE_UCUM_UNITS":["[lb_av];kg"],"ORDER_OBS":["Observation"],"PROPERTY":["LP6826-4"],"SCALE_TYP":["LP7753-9"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "code" : "LP6960-1"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Pt",
+  "code" : "LP6960-1",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org|2.83#LP6960-1 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org|2.83#LP6960-1\"\n11ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n11ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n11ms http://loinc.org/vs|2.83: Code \"LP6960-1\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "code" : "LP7753-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Qn",
+  "code" : "LP7753-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org|2.83#LP7753-9 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org|2.83#LP7753-9\"\n8ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n8ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.83: Code \"LP7753-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "code" : "LP6826-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mass",
+  "code" : "LP6826-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n7ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org|2.83#LP6826-4 (\"undefined\")]\"\n9ms http://loinc.org/vs|2.83: Check \"http://loinc.org|2.83#LP6826-4\"\n15ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n15ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n15ms http://loinc.org/vs|2.83: Code \"LP6826-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
