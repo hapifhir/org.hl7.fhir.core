@@ -1375,10 +1375,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   /**
    * Not every terminology server supports CodeSystem/$batch-validate-code (tx-nordics answers each entry with
    * "Unable to find code to validate"), and a failed entry is reported as an invalid code. So the entries that
-   * the CodeSystem batch could not answer are asked once more as a ValueSet batch, grouped by system, against the
-   * implicit value set of that system (<code>[system]?fhir_vs</code>) - which every server that does
-   * ValueSet/$batch-validate-code understands. Entries that fail again keep their original result, and a
-   * retry that fails as a whole changes nothing.
+   * the CodeSystem batch could not answer are asked once more as a ValueSet batch, grouped by value set:
+   * <ol>
+   * <li>against the implicit value set of the system (<code>[system]?fhir_vs</code>) - which every server that does
+   * ValueSet/$batch-validate-code understands for the code systems it knows as implicit;</li>
+   * <li>for what is still unanswered (tx-nordics has no implicit value set for NPU), against the value set the code
+   * system itself declares as containing all of its codes (<code>CodeSystem.valueSet</code>).</li>
+   * </ol>
+   * Entries that fail again keep their original result, and a retry that fails as a whole changes nothing.
    * <p>
    * A SNOMED CT coding that names its edition as the version (<code>http://snomed.info/sct/[module]</code>)
    * is asked against the implicit value set of that edition, because the bare <code>http://snomed.info/sct?fhir_vs</code>
@@ -1388,39 +1392,91 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isGuessSystem()) {
       return; // no system to build the implicit value set from
     }
-    Map<String, List<Integer>> failedByImplicitValueSet = new LinkedHashMap<>();
-    Map<String, String> systemOfImplicitValueSet = new HashMap<>();
+    Set<Integer> answered = new HashSet<>();
+
+    Map<String, List<Integer>> byImplicitValueSet = new LinkedHashMap<>();
     for (int i = 0; i < items.size(); i++) {
-      if (!(validations.get(i).getResource() instanceof Parameters) && items.get(i).getCoding().hasSystem()) {
-        String implicitValueSet = implicitValueSetUrl(items.get(i).getCoding());
-        systemOfImplicitValueSet.put(implicitValueSet, items.get(i).getCoding().getSystem());
-        failedByImplicitValueSet.computeIfAbsent(implicitValueSet, k -> new ArrayList<>()).add(i);
+      if (isUnansweredByBatch(items.get(i), validations.get(i))) {
+        byImplicitValueSet.computeIfAbsent(implicitValueSetUrl(items.get(i).getCoding()), k -> new ArrayList<>()).add(i);
       }
     }
-    for (Map.Entry<String, List<Integer>> group : failedByImplicitValueSet.entrySet()) {
-      String implicitValueSet = group.getKey();
-      String system = systemOfImplicitValueSet.get(implicitValueSet);
+    retryAgainstValueSets(options, tc, items, byImplicitValueSet, answered);
+
+    Map<String, List<Integer>> stillFailingBySystem = new LinkedHashMap<>();
+    for (int i = 0; i < items.size(); i++) {
+      if (isUnansweredByBatch(items.get(i), validations.get(i)) && !answered.contains(i)) {
+        stillFailingBySystem.computeIfAbsent(items.get(i).getCoding().getSystem(), k -> new ArrayList<>()).add(i);
+      }
+    }
+    Map<String, List<Integer>> byDeclaredValueSet = new LinkedHashMap<>();
+    for (Map.Entry<String, List<Integer>> group : stillFailingBySystem.entrySet()) {
+      String declared = findDeclaredAllCodesValueSet(group.getKey());
+      if (declared != null) {
+        for (int index : group.getValue()) {
+          if (!declared.equals(implicitValueSetUrl(items.get(index).getCoding()))) { // that one was just asked
+            byDeclaredValueSet.computeIfAbsent(declared, k -> new ArrayList<>()).add(index);
+          }
+        }
+      }
+    }
+    retryAgainstValueSets(options, tc, items, byDeclaredValueSet, answered);
+  }
+
+  private boolean isUnansweredByBatch(CodingValidationRequest request, ParametersParameterComponent response) {
+    return !(response.getResource() instanceof Parameters) && request.getCoding().hasSystem();
+  }
+
+  private void retryAgainstValueSets(ValidationOptions options, TerminologyClientContext tc, List<CodingValidationRequest> items, Map<String, List<Integer>> indexesByValueSet, Set<Integer> answered) {
+    for (Map.Entry<String, List<Integer>> group : indexesByValueSet.entrySet()) {
+      String valueSetUrl = group.getKey();
       List<Integer> indexes = group.getValue();
       Parameters retry = new Parameters();
-      retry.addParameter().setName("url").setValue(new UriType(implicitValueSet));
+      retry.addParameter().setName("url").setValue(new UriType(valueSetUrl));
+      Set<String> systems = new HashSet<>();
       for (int index : indexes) {
         Parameters pIn = constructParameters(options, items.get(index));
         setTerminologyOptions(options, pIn);
         retry.addParameter().setName("validation").setResource(pIn);
+        systems.add(items.get(index).getCoding().getSystem());
       }
       try {
-        Set<String> systems = new HashSet<>();
-        systems.add(system);
         Parameters resp = processBatch(tc, retry, systems, indexes.size(), false);
         List<ParametersParameterComponent> retried = resp.getParameters("validation");
         for (int k = 0; k < indexes.size(); k++) {
           if (retried.get(k).getResource() instanceof Parameters) {
             applyBatchEntry(tc, items.get(indexes.get(k)), retried.get(k), indexes.get(k));
+            answered.add(indexes.get(k));
           }
         }
       } catch (RuntimeException e) { // best effort: the CodeSystem batch results stand if the retry fails for any reason
-        txLog("Retry of " + indexes.size() + " codes against " + implicitValueSet + " failed: " + e.getMessage());
+        txLog("Retry of " + indexes.size() + " codes against " + valueSetUrl + " failed: " + e.getMessage());
       }
+    }
+  }
+
+  /**
+   * The value set a code system declares as containing all of its codes (CodeSystem.valueSet), if it can be found.
+   * An IG often carries a not-present stub of an external code system (to give it an id, a name, a page), and the
+   * stub says nothing about the value set that the terminology server's own copy declares - so a local copy
+   * without a value set does not settle the question, and the server is asked.
+   */
+  protected String findDeclaredAllCodesValueSet(String system) {
+    try {
+      CodeSystem local = fetchResource(CodeSystem.class, system, VersionResolutionRules.defaultRule());
+      if (local != null && local.hasValueSet()) {
+        return local.getValueSet();
+      }
+      TerminologyCache.SourcedCodeSystem onServer = txCache != null && txCache.hasCodeSystem(system) ? txCache.getCodeSystem(system) : null;
+      if (onServer == null) {
+        onServer = terminologyClientManager.findCodeSystemOnServer(system);
+        if (txCache != null) {
+          txCache.cacheCodeSystem(system, onServer);
+        }
+      }
+      return onServer != null && onServer.getCs().hasValueSet() ? onServer.getCs().getValueSet() : null;
+    } catch (RuntimeException e) {
+      txLog("Could not look up the code system " + system + " for its value set: " + e.getMessage());
+      return null;
     }
   }
 

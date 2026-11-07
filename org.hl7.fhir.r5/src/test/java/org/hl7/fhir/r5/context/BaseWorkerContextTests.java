@@ -965,6 +965,7 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
     // EFhirClientException is a RuntimeException, not a FHIRException
     Mockito.doThrow(new RuntimeException("HTTP 400 HAPI-0362")).when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(null).when(context).findDeclaredAllCodesValueSet(any());
 
     context.validateCodeBatch(batchOptions(), List.of(request), null, false);
 
@@ -977,9 +978,93 @@ public class BaseWorkerContextTests {
     CodingValidationRequest request = new CodingValidationRequest(coding("http://npu-terminology.org", null, "NPU27280"));
     Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
     Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(null).when(context).findDeclaredAllCodesValueSet(any());
 
     context.validateCodeBatch(batchOptions(), List.of(request), null, false);
 
+    assertFalse(request.getResult().isOk());
+    assertThat(request.getResult().getMessage()).contains("Unable to find code to validate");
+  }
+
+  private static final String NPU = "http://npu-terminology.org";
+  private static final String NPU_ALL = "http://npu-terminology.org/fhir/ValueSet/NPUFull";
+
+  @Test
+  public void testValidateCodeBatchFallsBackToTheValueSetTheCodeSystemDeclares() {
+    // tx-nordics has no implicit value set for NPU, but the NPU code system names its all-codes value set
+    CodingValidationRequest request = new CodingValidationRequest(coding(NPU, null, "NPU27280"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).doReturn(validBatchFor(request)).when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(NPU_ALL).when(context).findDeclaredAllCodesValueSet(NPU);
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient, times(2)).batchValidateVS(sent.capture());
+    assertEquals(NPU + "?fhir_vs", urlOf(sent.getAllValues().get(0)));
+    assertEquals(NPU_ALL, urlOf(sent.getAllValues().get(1)));
+    assertTrue(request.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchDeclaredValueSetStillRejectsAnInvalidCode() {
+    CodingValidationRequest good = new CodingValidationRequest(coding(NPU, null, "NPU27280"));
+    CodingValidationRequest bad = new CodingValidationRequest(coding(NPU, null, "NOPE00000"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(2)).when(terminologyClient).batchValidateCS(any());
+    Parameters answer = validBatchFor(good, bad);
+    // the server answers the bogus code with result=false, as a Parameters
+    ((Parameters) answer.getParameter().get(1).getResource()).getParameter("result").setValue(new BooleanType(false));
+    Mockito.doReturn(unsupportedCodeSystemBatch(2)).doReturn(answer).when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(NPU_ALL).when(context).findDeclaredAllCodesValueSet(NPU);
+
+    context.validateCodeBatch(batchOptions(), List.of(good, bad), null, false);
+
+    assertTrue(good.getResult().isOk());
+    assertFalse(bad.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchDoesNotLookUpTheDeclaredValueSetWhenTheImplicitOneAnswered() {
+    CodingValidationRequest request = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(request)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    Mockito.verify(context, never()).findDeclaredAllCodesValueSet(any());
+  }
+
+  @Test
+  public void testValidateCodeBatchOnlyRetriesAgainstTheDeclaredValueSetWhatIsStillUnanswered() {
+    CodingValidationRequest sct = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    CodingValidationRequest npu = new CodingValidationRequest(coding(NPU, null, "NPU27280"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(2)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(sct)).doReturn(unsupportedCodeSystemBatch(1)).doReturn(validBatchFor(npu))
+        .when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(NPU_ALL).when(context).findDeclaredAllCodesValueSet(NPU);
+
+    context.validateCodeBatch(batchOptions(), List.of(sct, npu), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient, times(3)).batchValidateVS(sent.capture());
+    assertEquals(SCT_DK + "?fhir_vs", urlOf(sent.getAllValues().get(0)));
+    assertEquals(NPU + "?fhir_vs", urlOf(sent.getAllValues().get(1)));
+    assertEquals(NPU_ALL, urlOf(sent.getAllValues().get(2)));
+    Mockito.verify(context, never()).findDeclaredAllCodesValueSet(SCT);
+    assertTrue(sct.getResult().isOk());
+    assertTrue(npu.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchKeepsTheOriginalErrorIfTheCodeSystemDeclaresNoValueSet() {
+    CodingValidationRequest request = new CodingValidationRequest(coding(NPU, null, "NPU27280"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateVS(any());
+    Mockito.doReturn(null).when(context).findDeclaredAllCodesValueSet(NPU);
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    Mockito.verify(terminologyClient, times(1)).batchValidateVS(any());
     assertFalse(request.getResult().isOk());
   }
 
@@ -995,5 +1080,42 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyClient, times(1)).batchValidateVS(any());
     Mockito.verify(terminologyClient, never()).batchValidateCS(any());
+  }
+
+  // ---- findDeclaredAllCodesValueSet: the lookup behind the CodeSystem.valueSet fallback ----
+
+  private static CodeSystem npuCodeSystem(boolean withValueSet) {
+    CodeSystem cs = new CodeSystem().setUrl(NPU).setContent(withValueSet ? Enumerations.CodeSystemContentMode.COMPLETE : Enumerations.CodeSystemContentMode.NOTPRESENT);
+    if (withValueSet) {
+      cs.setValueSet(NPU_ALL);
+    }
+    return cs;
+  }
+
+  @Test
+  public void testFindDeclaredValueSetAsksTheServerWhenTheLocalCodeSystemIsAStub() {
+    // an IG's not-present stub of an external code system carries no valueSet, and must not hide the server's
+    Mockito.doReturn(npuCodeSystem(false)).when(context).fetchResource(eq(CodeSystem.class), eq(NPU), any());
+    Mockito.doReturn(true).when(terminologyCache).hasCodeSystem(NPU);
+    Mockito.doReturn(new TerminologyCache.SourcedCodeSystem("https://tx.example.org/r4", npuCodeSystem(true))).when(terminologyCache).getCodeSystem(NPU);
+
+    assertEquals(NPU_ALL, context.findDeclaredAllCodesValueSet(NPU));
+  }
+
+  @Test
+  public void testFindDeclaredValueSetUsesTheLocalCodeSystemWhenItDeclaresOne() {
+    Mockito.doReturn(npuCodeSystem(true)).when(context).fetchResource(eq(CodeSystem.class), eq(NPU), any());
+
+    assertEquals(NPU_ALL, context.findDeclaredAllCodesValueSet(NPU));
+    Mockito.verify(terminologyCache, never()).hasCodeSystem(any());
+  }
+
+  @Test
+  public void testFindDeclaredValueSetIsNullWhenNoCodeSystemDeclaresOne() {
+    Mockito.doReturn(npuCodeSystem(false)).when(context).fetchResource(eq(CodeSystem.class), eq(NPU), any());
+    Mockito.doReturn(true).when(terminologyCache).hasCodeSystem(NPU);
+    Mockito.doReturn(new TerminologyCache.SourcedCodeSystem("https://tx.example.org/r4", npuCodeSystem(false))).when(terminologyCache).getCodeSystem(NPU);
+
+    assertNull(context.findDeclaredAllCodesValueSet(NPU));
   }
 }
