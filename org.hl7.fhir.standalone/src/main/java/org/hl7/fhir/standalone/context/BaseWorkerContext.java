@@ -1385,20 +1385,84 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters resp = processBatch(tc, batch, systems, items.size(), vs == null);
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
-        CodingValidationRequest requestAtIndex = items.get(i);
-        ParametersParameterComponent responseAtIndex = validations.get(i);
-
-        if (responseAtIndex.getResource() instanceof Parameters) {
-          checkBatchResultMatches(tc, requestAtIndex, (Parameters) responseAtIndex.getResource(), i);
-          requestAtIndex.setResult(processValidationResult((Parameters) responseAtIndex.getResource(), null, tc.getAddress()));
-          if (txCache != null) {
-            txCache.cacheValidation(requestAtIndex.getCacheToken(), requestAtIndex.getResult(), TerminologyCache.PERMANENT);
-          }
-        } else {
-          requestAtIndex.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(responseAtIndex.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
-        }
+        applyBatchEntry(tc, items.get(i), validations.get(i), i);
+      }
+      if (vs == null) {
+        retryFailedEntriesAgainstImplicitValueSets(options, tc, items, validations);
       }
     }
+  }
+
+  private void applyBatchEntry(TerminologyClientContext tc, CodingValidationRequest requestAtIndex, ParametersParameterComponent responseAtIndex, int index) {
+    if (responseAtIndex.getResource() instanceof Parameters) {
+      checkBatchResultMatches(tc, requestAtIndex, (Parameters) responseAtIndex.getResource(), index);
+      requestAtIndex.setResult(processValidationResult((Parameters) responseAtIndex.getResource(), null, tc.getAddress()));
+      if (txCache != null) {
+        txCache.cacheValidation(requestAtIndex.getCacheToken(), requestAtIndex.getResult(), TerminologyCache.PERMANENT);
+      }
+    } else {
+      requestAtIndex.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(responseAtIndex.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
+    }
+  }
+
+  /**
+   * Not every terminology server supports CodeSystem/$batch-validate-code (tx-nordics answers each entry with
+   * "Unable to find code to validate"), and a failed entry is reported as an invalid code. So the entries that
+   * the CodeSystem batch could not answer are asked once more as a ValueSet batch, grouped by system, against the
+   * implicit value set of that system (<code>[system]?fhir_vs</code>) - which every server that does
+   * ValueSet/$batch-validate-code understands. Entries that fail again keep their original result, and a
+   * retry that fails as a whole changes nothing.
+   * <p>
+   * A SNOMED CT coding that names its edition as the version (<code>http://snomed.info/sct/[module]</code>)
+   * is asked against the implicit value set of that edition, because the bare <code>http://snomed.info/sct?fhir_vs</code>
+   * is the international edition and would not know the codes of a national extension.
+   */
+  private void retryFailedEntriesAgainstImplicitValueSets(ValidationOptions options, TerminologyClientContext tc, List<CodingValidationRequest> items, List<ParametersParameterComponent> validations) {
+    if (options.isGuessSystem()) {
+      return; // no system to build the implicit value set from
+    }
+    Map<String, List<Integer>> failedByImplicitValueSet = new LinkedHashMap<>();
+    Map<String, String> systemOfImplicitValueSet = new HashMap<>();
+    for (int i = 0; i < items.size(); i++) {
+      if (!(validations.get(i).getResource() instanceof Parameters) && items.get(i).getCoding().hasSystem()) {
+        String implicitValueSet = implicitValueSetUrl(items.get(i).getCoding());
+        systemOfImplicitValueSet.put(implicitValueSet, items.get(i).getCoding().getSystem());
+        failedByImplicitValueSet.computeIfAbsent(implicitValueSet, k -> new ArrayList<>()).add(i);
+      }
+    }
+    for (Map.Entry<String, List<Integer>> group : failedByImplicitValueSet.entrySet()) {
+      String implicitValueSet = group.getKey();
+      String system = systemOfImplicitValueSet.get(implicitValueSet);
+      List<Integer> indexes = group.getValue();
+      Parameters retry = new Parameters();
+      retry.addParameter().setName("url").setValue(new UriType(implicitValueSet));
+      for (int index : indexes) {
+        Parameters pIn = constructParameters(options, items.get(index));
+        setTerminologyOptions(options, pIn);
+        retry.addParameter().setName("validation").setResource(pIn);
+      }
+      try {
+        Set<String> systems = new HashSet<>();
+        systems.add(system);
+        Parameters resp = processBatch(tc, retry, systems, indexes.size(), false);
+        List<ParametersParameterComponent> retried = resp.getParameters("validation");
+        for (int k = 0; k < indexes.size(); k++) {
+          if (retried.get(k).getResource() instanceof Parameters) {
+            applyBatchEntry(tc, items.get(indexes.get(k)), retried.get(k), indexes.get(k));
+          }
+        }
+      } catch (RuntimeException e) { // best effort: the CodeSystem batch results stand if the retry fails for any reason
+        txLog("Retry of " + indexes.size() + " codes against " + implicitValueSet + " failed: " + e.getMessage());
+      }
+    }
+  }
+
+  private String implicitValueSetUrl(Coding coding) {
+    String system = coding.getSystem();
+    if ("http://snomed.info/sct".equals(system) && coding.hasVersion() && coding.getVersion().startsWith(system + "/")) {
+      return coding.getVersion() + "?fhir_vs"; // version is the edition (module) URI, with or without a /version/ part
+    }
+    return system + "?fhir_vs";
   }
 
   /**

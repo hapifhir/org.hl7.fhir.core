@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
@@ -830,5 +831,169 @@ public class BaseWorkerContextTests {
         : context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), version);
     assertSame(cs, result);
     Mockito.verify(terminologyCache).getCodeSystem(canonical);
+  }
+
+  // ---- validateCodeBatch against servers without CodeSystem/$batch-validate-code (e.g. tx-nordics) ----
+
+  private static final String SCT = "http://snomed.info/sct";
+  private static final String SCT_DK = "http://snomed.info/sct/554471000005108";
+
+  private static Coding coding(String system, String version, String code) {
+    Coding c = new Coding().setSystem(system).setCode(code);
+    if (version != null) {
+      c.setVersion(version);
+    }
+    return c;
+  }
+
+  /** what tx-nordics answers per entry of CodeSystem/$batch-validate-code: an OperationOutcome, not a Parameters */
+  private static Parameters unsupportedCodeSystemBatch(int size) {
+    Parameters p = new Parameters();
+    for (int i = 0; i < size; i++) {
+      OperationOutcome oo = new OperationOutcome();
+      oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.PROCESSING)
+          .getDetails().setText("Unable to find code to validate (looked for coding | codeableConcept | code+system | code+inferSystem in parameters)");
+      p.addParameter().setName("validation").setResource(oo);
+    }
+    return p;
+  }
+
+  /** a ValueSet batch answer that echoes the system and code of each request, as the batch contract requires */
+  private static Parameters validBatchFor(CodingValidationRequest... requests) {
+    Parameters p = new Parameters();
+    for (CodingValidationRequest r : requests) {
+      Parameters one = new Parameters();
+      one.addParameter("result", true);
+      one.addParameter("system", new UriType(r.getCoding().getSystem()));
+      one.addParameter("code", new CodeType(r.getCoding().getCode()));
+      p.addParameter().setName("validation").setResource(one);
+    }
+    return p;
+  }
+
+  private static String urlOf(Parameters batch) {
+    Parameters.ParametersParameterComponent url = batch.getParameter("url");
+    assertNotNull(url, "the ValueSet batch must name its value set");
+    // HAPI servers (tx-nordics) answer HTTP 400 HAPI-0362 to a string where a uri is expected
+    assertInstanceOf(UriType.class, url.getValue());
+    return url.getValue().primitiveValue();
+  }
+
+  private ValidationOptions batchOptions() {
+    // the mocked expParameters answers copy() with null, which constructParameters() needs to work
+    context.expansionParameters = new AtomicReference<>(new Parameters());
+    return new ValidationOptions(FhirPublication.R5).withNoClient();
+  }
+
+  @Test
+  public void testValidateCodeBatchRetriesSnomedAgainstTheEditionOfTheCoding() {
+    CodingValidationRequest danishOnly = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    CodingValidationRequest danishToo = new CodingValidationRequest(coding(SCT, SCT_DK, "400975005"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(2)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(danishOnly, danishToo)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(danishOnly, danishToo), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient, times(1)).batchValidateVS(sent.capture());
+    // the bare http://snomed.info/sct?fhir_vs is the international edition, which does not know Danish codes
+    assertEquals(SCT_DK + "?fhir_vs", urlOf(sent.getValue()));
+    assertEquals(2, sent.getValue().getParameters("validation").size());
+    assertTrue(danishOnly.getResult().isOk());
+    assertTrue(danishToo.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchRetriesAgainstTheImplicitValueSetOfTheSystemWithoutVersion() {
+    CodingValidationRequest request = new CodingValidationRequest(coding(SCT, null, "271649006"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(request)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient).batchValidateVS(sent.capture());
+    assertEquals(SCT + "?fhir_vs", urlOf(sent.getValue()));
+    assertTrue(request.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchDoesNotTurnAVersionThatIsNotAnEditionIntoAnEditionUrl() {
+    // a plain release version is not an edition URI, and must not be glued on to the implicit value set
+    CodingValidationRequest request = new CodingValidationRequest(coding("http://loinc.org", "2.77", "718-7"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(request)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient).batchValidateVS(sent.capture());
+    assertEquals("http://loinc.org?fhir_vs", urlOf(sent.getValue()));
+  }
+
+  @Test
+  public void testValidateCodeBatchGroupsTheRetryPerImplicitValueSet() {
+    CodingValidationRequest dk = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    CodingValidationRequest international = new CodingValidationRequest(coding(SCT, null, "271649006"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(2)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(validBatchFor(dk)).doReturn(validBatchFor(international)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(dk, international), null, false);
+
+    org.mockito.ArgumentCaptor<Parameters> sent = org.mockito.ArgumentCaptor.forClass(Parameters.class);
+    Mockito.verify(terminologyClient, times(2)).batchValidateVS(sent.capture());
+    assertEquals(SCT_DK + "?fhir_vs", urlOf(sent.getAllValues().get(0)));
+    assertEquals(SCT + "?fhir_vs", urlOf(sent.getAllValues().get(1)));
+    assertTrue(dk.getResult().isOk());
+    assertTrue(international.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchDoesNotRetryWhatTheCodeSystemBatchAnswered() {
+    CodingValidationRequest request = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    Mockito.doReturn(validBatchFor(request)).when(terminologyClient).batchValidateCS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    Mockito.verify(terminologyClient, never()).batchValidateVS(any());
+    assertTrue(request.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchKeepsTheOriginalErrorIfTheRetryFails() {
+    CodingValidationRequest request = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    // EFhirClientException is a RuntimeException, not a FHIRException
+    Mockito.doThrow(new RuntimeException("HTTP 400 HAPI-0362")).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    assertFalse(request.getResult().isOk());
+    assertThat(request.getResult().getMessage()).contains("Unable to find code to validate");
+  }
+
+  @Test
+  public void testValidateCodeBatchKeepsTheOriginalErrorIfTheRetryAnswersWithAnotherError() {
+    CodingValidationRequest request = new CodingValidationRequest(coding("http://npu-terminology.org", null, "NPU27280"));
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateCS(any());
+    Mockito.doReturn(unsupportedCodeSystemBatch(1)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), null, false);
+
+    assertFalse(request.getResult().isOk());
+  }
+
+  @Test
+  public void testValidateCodeBatchWithValueSetIsNotRetried() {
+    // with a value set the batch already is a ValueSet batch: nothing falls back to anything
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://example.org/ValueSet/vs");
+    CodingValidationRequest request = new CodingValidationRequest(coding(SCT, SCT_DK, "554221000005108"));
+    Mockito.doReturn(validBatchFor(request)).when(terminologyClient).batchValidateVS(any());
+
+    context.validateCodeBatch(batchOptions(), List.of(request), vs, false);
+
+    Mockito.verify(terminologyClient, times(1)).batchValidateVS(any());
+    Mockito.verify(terminologyClient, never()).batchValidateCS(any());
   }
 }
