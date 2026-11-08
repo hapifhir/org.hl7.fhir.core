@@ -627,6 +627,23 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
+    void testSupplementGlobalFlagChangeMisses() throws IOException {
+      // whether a supplement is used without being referenced is decided by extensions on the code system itself
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/local");
+      vs.setVersion("1.0.0");
+      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
+      CodeSystem global = codeSystem("A");
+      global.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_SUPPL_GLOBAL, new org.hl7.fhir.r5.model.BooleanType(true));
+      CodeSystem notGlobal = codeSystem("A");
+      notGlobal.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_SUPPL_GLOBAL, new org.hl7.fhir.r5.model.BooleanType(false));
+
+      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), List.of(global)).getRequest(),
+        cache.generateExpandToken(vs, options(), parameters("1"), List.of(notGlobal)).getRequest());
+    }
+
+    @Test
     void testDependencyStatusChangeMisses() throws IOException {
       // the expansion warns about a draft code system, so making it active changes the expansion
       TerminologyCache cache = createTerminologyCache();

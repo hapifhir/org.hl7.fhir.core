@@ -822,7 +822,7 @@ public class BaseWorkerContextTests {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"system-version", "force-system-version"})
+  @ValueSource(strings = {"system-version", "force-system-version", "check-system-version"})
   void testExpansionDependenciesHaveThePinnedVersion(String param) {
     // the local expander uses the version the parameters pin the code system to
     CodeSystem cs1 = new CodeSystem();
@@ -866,6 +866,21 @@ public class BaseWorkerContextTests {
     List<CanonicalResource> deps = context.findExpansionDependencies(vs, p);
     assertEquals(2, deps.size(), deps.toString());
     assertTrue(deps.containsAll(List.of(b1, b2)), deps.toString());
+  }
+
+  @Test
+  void testExpansionDependenciesIgnoreAPinWithoutAValue() {
+    // a malformed parameter is left to the expansion to report, not thrown while building the key
+    ValueSet b = new ValueSet();
+    b.setUrl("http://example.org/b");
+    Mockito.doReturn(b).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/b");
+    Parameters p = new Parameters();
+    p.addParameter().setName("default-valueset-version");
+
+    assertEquals(List.of(b), context.findExpansionDependencies(vs, p));
   }
 
   @Test

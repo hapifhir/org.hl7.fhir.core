@@ -989,6 +989,7 @@ public class TerminologyCache {
     csc.getProperty().addAll(cs.getProperty());
     csc.getFilter().addAll(cs.getFilter());
     csc.getConcept().addAll(cs.getConcept());
+    csc.getExtension().addAll(cs.getExtension()); // e.g. codesystem-supplement-global decides whether a supplement is used
     return csc;
   }
 

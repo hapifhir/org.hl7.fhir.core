@@ -1258,7 +1258,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CanonicalType c : inc.getValueSet()) {
       // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
       String url = c.getValue();
-      String pinned = url == null || p == null ? url : cutils.pinValueSet(url, p);
+      String pinned = pinnedImport(url, p);
       for (String u : url == null || url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
         ValueSet imp = fetchForKey(ValueSet.class, u, ExtensionUtilities.getVersionResolutionRules(c), null, src);
         if (addExpansionDependency(res, imp)) {
@@ -1300,12 +1300,25 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  /** the versions of sys that force-system-version and system-version pin it to, as the local expander reads them */
+  /** url as default-valueset-version pins it, as ContextUtilities.pinValueSet does for the local expander, but a malformed parameter is left to the expansion to report */
+  private String pinnedImport(String url, Parameters p) {
+    if (url != null && p != null && !url.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameter()) {
+        String v = "default-valueset-version".equals(pp.getName()) && pp.hasValue() ? pp.getValue().primitiveValue() : null;
+        if (v != null && v.startsWith(url + "|")) {
+          return v;
+        }
+      }
+    }
+    return url;
+  }
+
+  /** the versions of sys that force-system-version, system-version and check-system-version pin it to, as the local expander reads them */
   private List<String> pinnedVersions(String sys, Parameters p) {
     List<String> res = new ArrayList<>();
     if (sys != null && p != null && !sys.contains("|")) {
       for (ParametersParameterComponent pp : p.getParameter()) {
-        if ("force-system-version".equalsIgnoreCase(pp.getName()) || "system-version".equalsIgnoreCase(pp.getName())) {
+        if (pp.getName() != null && Utilities.existsInList(pp.getName().toLowerCase(), "force-system-version", "system-version", "check-system-version")) {
           String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
           if (v != null && v.startsWith(sys + "|")) {
             res.add(v.substring(sys.length() + 1));
