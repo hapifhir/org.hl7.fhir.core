@@ -214,12 +214,12 @@ public class FhirRequestBuilder {
         }
       }
     } catch (IOException ioe) {
-      throw new EFhirClientException(response.getCode(), "Error reading Http Response from "+source+": "+ioe.getMessage(), ioe);
+      throw new EFhirClientException(0, "Error reading Http Response from "+source+": "+ioe.getMessage(), ioe);
     } catch (Exception e) {
-      throw new EFhirClientException(response.getCode(), "Error parsing response message from "+source+":"+e.getMessage(), e);
+      throw new EFhirClientException(0, "Error parsing response message from "+source+":"+e.getMessage(), e);
     }
     if (error != null) {
-      throw new EFhirClientException(response.getCode(), "Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException(0, "Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
     return feed;
   }

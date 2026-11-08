@@ -115,7 +115,7 @@ public class TerminologyClientNR4 implements ITerminologyClientN {
       if (e.getServerErrors().size() > 0) {
         throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), (OperationOutcome) convertResource("expandValueset", "error", e.getServerErrors().get(0)));
       } else {
-        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage());
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), e); // the cause tells a timeout or network error
       }
     }
   }

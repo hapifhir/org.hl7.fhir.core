@@ -114,13 +114,8 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
     try {
       vs2 = client.expandValueset(vs2, p2); // todo: second parameter
     } catch (EFhirClientException e) {
-      // translated like the R4 clients do, so the caller can tell an answer from the server from a failure
-      if (e.getServerErrors().size() > 0) {
-        OperationOutcome op = (OperationOutcome) VersionConvertorFactory_30_N.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
-      } else {
-        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), e);
-      }
+      // keeps the HTTP status where the caller can see it, to tell a server that is unavailable from one that answered
+      throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), e);
     }
     return (ValueSet) VersionConvertorFactory_30_N.convertResource(vs2);
   }

@@ -66,7 +66,6 @@ public class EFhirClientException extends RuntimeException {
 	
 	public EFhirClientException(int code, String message, List<OperationOutcome> serverErrors) {
 		super(message);
-		this.code = code;
 		if(serverErrors != null && serverErrors.size() > 0) {
 			errors.addAll(serverErrors);
 		}
