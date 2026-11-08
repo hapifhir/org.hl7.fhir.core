@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -697,6 +698,165 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  private static OperationOutcome serverError(OperationOutcome.IssueType type, String text) {
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(type).getDetails().setText(text);
+    return oo;
+  }
+
+  private static EFhirClientException timeout() {
+    return new EFhirClientException(0, "timed out", new java.net.SocketTimeoutException("timed out"));
+  }
+
+  private static EFhirClientException unavailable() {
+    return new EFhirClientException(503, "service unavailable", serverError(OperationOutcome.IssueType.TRANSIENT, "service unavailable"));
+  }
+
+  private static EFhirClientException unknownValueSet() {
+    return new EFhirClientException(404, "unknown value set", serverError(OperationOutcome.IssueType.NOTFOUND, "unknown value set"));
+  }
+
+  @Test
+  void testIsServerAnswer() {
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(422, "too costly", serverError(OperationOutcome.IssueType.TOOCOSTLY, "too costly"))));
+    assertTrue(BaseWorkerContext.isServerAnswer(unknownValueSet()));
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(400, "bad request", serverError(OperationOutcome.IssueType.INVALID, "bad request"))));
+    assertFalse(BaseWorkerContext.isServerAnswer(unavailable()));
+    for (int code : new int[] {500, 502, 504, 408, 429, 401, 403, 407}) {
+      assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error " + code, serverError(OperationOutcome.IssueType.EXCEPTION, "error " + code))), "HTTP " + code);
+    }
+    // a 4xx with no OperationOutcome is an error page from something in between, not an answer
+    assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(404, "not found")));
+    assertFalse(BaseWorkerContext.isServerAnswer(timeout()));
+    assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.SocketTimeoutException("timed out"))));
+    assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.UnknownHostException("tx.example.org"))));
+  }
+
+  /**
+   * The local expansion gives up, so the server is asked, and fails with the given exception
+   */
+  private ValueSetExpansionOutcome expandWithServerFailure(Exception failure) throws IOException {
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs, opt);
+    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs), any(Parameters.class));
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(any(ValidationOptions.class));
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(eq(vs), any(Parameters.class));
+    return context.expandVS(opt, vs, new Parameters(), false);
+  }
+
+  @Test
+  void testExpandValueSetServerTimeoutIsNotPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(timeout());
+    assertNull(res.getValueset());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandValueSetServerErrorIsNotPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(unavailable());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandValueSetServerAnswerIsPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandWithServerFailure(unknownValueSet());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
+  }
+
+  private ValueSetExpansionOutcome expandIncludeWithServerFailure(Exception failure) {
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class));
+    Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(ValueSet.class), any(Parameters.class));
+    return context.expandVS(null, inc, true, false);
+  }
+
+  @Test
+  void testExpandIncludeServerFailureIsNotPersisted() {
+    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(unavailable());
+    assertNull(res.getValueset());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandIncludeServerAnswerIsPersisted() {
+    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(unknownValueSet());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
+  }
+
+  private ValueSetExpansionOutcome expandUrlWithServerFailure(Exception failure) throws IOException {
+    // an https master, so chooseServer(url) finds it as is
+    Mockito.doReturn("https://tx.example.org").when(terminologyClient).getAddress();
+    context.terminologyClientManager.setMasterClient(terminologyClient, null);
+    ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+    context.expansionParameters = new AtomicReference<>(new Parameters());
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(DUMMY_URL, opt);
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(isNull(), any(Parameters.class));
+    return context.expandVS(opt, DUMMY_URL);
+  }
+
+  @Test
+  void testExpandUrlServerTimeoutIsNotPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandUrlWithServerFailure(timeout());
+    assertNull(res.getValueset());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
+  }
+
+  @Test
+  void testExpandUrlServerAnswerIsPersisted() throws IOException {
+    ValueSetExpansionOutcome res = expandUrlWithServerFailure(unknownValueSet());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
+  }
+
+  /**
+   * With a real cache: a failed $expand is answered from the cache for the rest of the run, but a new cache on the
+   * same folder (the next run) doesn't have it, while a server answer is reloaded.
+   */
+  private void expandIncludeTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    context.initTxCache(cache);
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(ValueSet.class), any(Parameters.class));
+
+    ValueSetExpansionOutcome res = context.expandVS(null, inc, true, false);
+    assertNull(res.getValueset());
+    assertSame(res, context.expandVS(null, inc, true, false));
+    Mockito.verify(terminologyClient, times(1)).expandValueset(any(ValueSet.class), any(Parameters.class));
+    cache.save();
+
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+    ValueSet vs = new ValueSet();
+    vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
+    vs.getCompose().getInclude().add(inc);
+    ValueSetExpansionOutcome reloaded = next.getExpansion(next.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true)));
+    if (expectReloaded) {
+      assertNotNull(reloaded);
+      assertEquals(res.getError(), reloaded.getError());
+    } else {
+      assertNull(reloaded);
+    }
+  }
+
+  @Test
+  void testExpandTimeoutIsNotReloaded(@org.junit.jupiter.api.io.TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(timeout(), false, folder);
+  }
+
+  @Test
+  void testExpandServerErrorIsNotReloaded(@org.junit.jupiter.api.io.TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(unavailable(), false, folder);
+  }
+
+  @Test
+  void testExpandServerAnswerIsReloaded(@org.junit.jupiter.api.io.TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(unknownValueSet(), true, folder);
   }
 
   @Test
