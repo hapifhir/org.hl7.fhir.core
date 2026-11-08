@@ -980,7 +980,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // dependent resources are still sent; the cache-id now travels as an HTTP header
     addDependentResources(opCtxt, tc, p, vs);
 
-    boolean persistent = TerminologyCache.PERMANENT;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -988,7 +987,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      persistent = isServerAnswer(e);
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
@@ -1001,7 +999,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
-    txCache.cacheExpansion(cacheToken, res, persistent);
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
   }
 
@@ -1047,7 +1045,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
 
     TerminologyClientContext tc = terminologyClientManager.chooseServer(url, true);
-    boolean persistent = TerminologyCache.PERMANENT;
     try {
       if (tc == null) {
         throw new FHIRException("Unable to find a server to expand '" + url + "'");
@@ -1068,10 +1065,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      persistent = isServerAnswer(e);
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    txCache.cacheExpansion(cacheToken, res, persistent);
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
   }
 
@@ -1206,7 +1202,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
 
-    boolean persistent = TerminologyCache.PERMANENT;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
@@ -1219,7 +1214,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
-      persistent = isServerAnswer(e);
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
       } else {
@@ -1229,23 +1223,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null && res.getValueset() != null) {
       res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
     }
-    txCache.cacheExpansion(cacheToken, res, persistent);
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
-  }
-
-  /**
-   * Did the terminology server answer the $expand, if with an error? Only then is the outcome worth keeping
-   * in the cache for later runs. No response, a timeout, a 5xx (also an error page the client turned into an
-   * OperationOutcome), a 408 or a 429, or an authentication or access refusal (401, 403, 407, often from a
-   * proxy in between) describes the server or the network at that moment, not the ValueSet: kept in the
-   * cache file, it would be used instead of asking again in every later run.
-   */
-  public static boolean isServerAnswer(Exception e) {
-    if (!(e instanceof EFhirClientException) || !((EFhirClientException) e).hasServerErrors()) {
-      return false;
-    }
-    int code = ((EFhirClientException) e).getCode();
-    return code >= 400 && code < 500 && !Utilities.existsInList(code, 401, 403, 407, 408, 429);
   }
 
   /**

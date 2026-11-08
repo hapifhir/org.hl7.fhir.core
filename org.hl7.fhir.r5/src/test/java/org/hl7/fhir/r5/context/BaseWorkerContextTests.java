@@ -773,68 +773,6 @@ public class BaseWorkerContextTests {
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
   }
 
-  private static OperationOutcome serverError() {
-    OperationOutcome oo = new OperationOutcome();
-    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.TOOCOSTLY).getDetails().setText("too costly");
-    return oo;
-  }
-
-  @Test
-  void testIsServerAnswer() {
-    assertTrue(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError())));
-    assertTrue(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(404, "not found", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(500, "internal error", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(502, "bad gateway", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(408, "timeout", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(429, "too many requests", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(401, "unauthorized", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(403, "forbidden", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(407, "proxy authentication required", serverError())));
-    assertFalse(BaseWorkerContext.isServerAnswer(new org.hl7.fhir.r5.utils.client.EFhirClientException(0, "no response", new java.io.IOException("reset"))));
-    assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.SocketTimeoutException("timed out"))));
-  }
-
-  /**
-   * The local expansion gives up, so the server is asked, and fails with the given exception
-   */
-  private ValueSetExpansionOutcome expandWithServerFailure(Exception failure) throws IOException {
-    ValueSet vs = new ValueSet();
-    vs.setUrl(DUMMY_URL);
-    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
-    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs), any(Parameters.class));
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(any(ValidationOptions.class));
-    Mockito.doThrow(failure).when(terminologyClient).expandValueset(eq(vs), any(Parameters.class));
-    return context.expandVS(opt, vs, new Parameters(), false);
-  }
-
-  @Test
-  void testExpandValueSetServerFailureIsNotPersisted() throws IOException {
-    ValueSetExpansionOutcome res = expandWithServerFailure(new FHIRException(new java.net.SocketTimeoutException("timed out")));
-    assertNull(res.getValueset());
-    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
-  }
-
-  @Test
-  void testExpandValueSetServerErrorPageIsNotPersisted() throws IOException {
-    ValueSetExpansionOutcome res = expandWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(503, "service unavailable", serverError()));
-    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
-  }
-
-  @Test
-  void testExpandValueSetServerAnswerIsPersisted() throws IOException {
-    ValueSetExpansionOutcome res = expandWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError()));
-    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
-  }
-
-  private ValueSetExpansionOutcome expandIncludeWithServerFailure(Exception failure) {
-    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), any(), eq(Collections.emptyList()));
-    Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
-    Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(ValueSet.class), any(Parameters.class));
-    return context.expandVS(null, inc, true, false);
-  }
-
   private static CodeSystem supplement(String url, String supplements) {
     CodeSystem supp = new CodeSystem();
     supp.setUrl(url);
@@ -908,19 +846,6 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), any(), eq(List.of(supp)));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
     assertEquals(expectedExpansionResult, context.expandVS(null, inc, true, false));
-  }
-
-  @Test
-  void testExpandIncludeServerFailureIsNotPersisted() {
-    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(503, "service unavailable", serverError()));
-    assertNull(res.getValueset());
-    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, false);
-  }
-
-  @Test
-  void testExpandIncludeServerAnswerIsPersisted() {
-    ValueSetExpansionOutcome res = expandIncludeWithServerFailure(new org.hl7.fhir.r5.utils.client.EFhirClientException(422, "too costly", serverError()));
-    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
   }
 
   @Test
