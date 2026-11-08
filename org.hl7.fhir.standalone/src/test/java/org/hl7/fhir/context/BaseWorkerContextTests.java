@@ -731,6 +731,20 @@ public class BaseWorkerContextTests {
     for (int code : new int[] {400, 404, 413, 414}) {
       assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error page", org.hl7.fhir.model.utilities.OperationOutcomeUtilities.createError("<html><body>" + code + " nginx</body></html>"))), "HTTP " + code + " error page");
     }
+    // an 'exception' issue with a coded detail or a message id is an answer, as the tx ecosystem tests ask for
+    OperationOutcome versionError = serverError(OperationOutcome.IssueType.EXCEPTION, "version mismatch");
+    versionError.getIssueFirstRep().getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("version-error");
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(422, "version mismatch", versionError)));
+    OperationOutcome withMessageId = serverError(OperationOutcome.IssueType.EXCEPTION, "version mismatch");
+    withMessageId.getIssueFirstRep().addExtension(org.hl7.fhir.model.extensions.ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType("VALUESET_VERSION_CHECK"));
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(422, "version mismatch", withMessageId)));
+    // one issue with a real code is enough
+    OperationOutcome mixed = serverError(OperationOutcome.IssueType.EXCEPTION, "something");
+    mixed.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails().setText("unknown value set");
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(404, "unknown value set", mixed)));
+    OperationOutcome noCode = new OperationOutcome();
+    noCode.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).getDetails().setText("no code");
+    assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(404, "no code", noCode)));
     // an error OperationOutcome that came with a 2xx is an answer too
     assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(200, "unknown value set", serverError(OperationOutcome.IssueType.NOTFOUND, "unknown value set"))));
     assertFalse(BaseWorkerContext.isServerAnswer(timeout()));

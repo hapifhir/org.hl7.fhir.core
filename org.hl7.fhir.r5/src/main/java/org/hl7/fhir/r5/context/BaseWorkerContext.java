@@ -1213,8 +1213,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * refusal (401, 403, 407, often from a proxy in between) describes the server or the network at that moment,
    * not the ValueSet: kept in the cache file, it would be used instead of asking again in every later run.
    * So does an error page that isn't FHIR (html or text from a proxy or gateway, e.g. a 404 or 413): the client
-   * turns it into an OperationOutcome whose issues are all 'exception', so only an issue with another code
-   * (not-found, too-costly, invalid etc) shows that the server itself answered.
+   * turns it into an OperationOutcome with a single 'exception' issue that has only a text. So the server itself
+   * answered only if an issue has another code (not-found, too-costly, invalid etc), or a coded detail or message
+   * id, as the tx ecosystem asks for (e.g. 'exception' with tx-issue-type#version-error).
    */
   public static boolean isServerAnswer(Exception e) {
     if (!(e instanceof EFhirClientException) || !((EFhirClientException) e).hasServerErrors()) {
@@ -1227,7 +1228,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     for (OperationOutcome oo : fe.getServerErrors()) {
       for (OperationOutcomeIssueComponent issue : oo.getIssue()) {
-        if (issue.hasCode() && issue.getCode() != OperationOutcome.IssueType.EXCEPTION) {
+        if (issue.hasCode() && (issue.getCode() != OperationOutcome.IssueType.EXCEPTION
+            || issue.getDetails().hasCoding() || issue.hasExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
           return true;
         }
       }
