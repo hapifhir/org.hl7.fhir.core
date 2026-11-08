@@ -564,7 +564,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         timeoutExpand);
       throwExceptionIfResultIsUnsuccessful(result);
     } catch (IOException e) {
-      e.printStackTrace();
+      // a timeout or network error - not an empty answer
+      throw new FHIRException(e);
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
