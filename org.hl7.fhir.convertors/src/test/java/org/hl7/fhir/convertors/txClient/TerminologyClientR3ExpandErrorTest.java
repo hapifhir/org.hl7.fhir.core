@@ -39,8 +39,12 @@ class TerminologyClientR3ExpandErrorTest {
   }
 
   private static void respondWith(int code, String json) throws Exception {
-    setFhirWebAccessor(request -> new HTTPResult(request.getUrl().toString(), code, "error", "application/fhir+json",
-      json.getBytes(StandardCharsets.UTF_8), List.of(new HTTPHeader("Content-Type", "application/fhir+json"))));
+    respondWith(code, "application/fhir+json", json);
+  }
+
+  private static void respondWith(int code, String contentType, String body) throws Exception {
+    setFhirWebAccessor(request -> new HTTPResult(request.getUrl().toString(), code, "error", contentType,
+      body.getBytes(StandardCharsets.UTF_8), List.of(new HTTPHeader("Content-Type", contentType))));
     ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.MANAGED);
   }
 
@@ -73,6 +77,18 @@ class TerminologyClientR3ExpandErrorTest {
       () -> tc.expandValueset(vs(), new org.hl7.fhir.r5.model.Parameters()));
     assertEquals(503, e.getCode());
     assertFalse(BaseWorkerContext.isServerAnswer(e));
+  }
+
+  @Test
+  void r5ClientReportsProxyErrorPage() throws Exception {
+    for (int code : new int[] {404, 413}) {
+      respondWith(code, "text/html", "<html><body><h1>" + code + "</h1>nginx</body></html>");
+      TerminologyClient5R3 tc = new TerminologyClient5R3("id", "http://tx.example.org/r3", "test");
+      org.hl7.fhir.r5.utils.client.EFhirClientException e = assertThrows(org.hl7.fhir.r5.utils.client.EFhirClientException.class,
+        () -> tc.expandValueset(vs(), new org.hl7.fhir.r5.model.Parameters()));
+      assertEquals(code, e.getCode());
+      assertFalse(BaseWorkerContext.isServerAnswer(e), "HTTP " + code);
+    }
   }
 
   @Test

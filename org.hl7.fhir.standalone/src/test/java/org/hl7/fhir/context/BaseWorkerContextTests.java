@@ -722,8 +722,9 @@ public class BaseWorkerContextTests {
     assertTrue(BaseWorkerContext.isServerAnswer(unknownValueSet()));
     assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(400, "bad request", serverError(OperationOutcome.IssueType.INVALID, "bad request"))));
     assertFalse(BaseWorkerContext.isServerAnswer(unavailable()));
-    for (int code : new int[] {500, 502, 504, 408, 429, 401, 403, 407}) {
-      assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error " + code, serverError(OperationOutcome.IssueType.EXCEPTION, "error " + code))), "HTTP " + code);
+    // these statuses aren't an answer, whatever the OperationOutcome says
+    for (int code : new int[] {0, 302, 500, 502, 504, 408, 429, 401, 403, 407}) {
+      assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error " + code, serverError(OperationOutcome.IssueType.NOTFOUND, "error " + code))), "HTTP " + code);
     }
     // a 4xx with no body isn't an answer, and nor is an error page (html, text) from a proxy or gateway in between,
     // which the client turns into an OperationOutcome with a single 'exception' issue
