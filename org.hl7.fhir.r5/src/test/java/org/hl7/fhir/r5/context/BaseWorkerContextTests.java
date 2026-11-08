@@ -823,6 +823,53 @@ public class BaseWorkerContextTests {
     assertTrue(deps.containsAll(List.of(cs1, cs2, supp1)), deps.toString());
   }
 
+  @ParameterizedTest
+  @ValueSource(strings = {"system-version", "force-system-version"})
+  void testExpansionDependenciesHaveThePinnedVersion(String param) {
+    // the local expander uses the version the parameters pin the code system to
+    CodeSystem cs1 = new CodeSystem();
+    cs1.setUrl("http://example.org/cs");
+    cs1.setVersion("1.0");
+    cs1.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem cs2 = new CodeSystem();
+    cs2.setUrl("http://example.org/cs");
+    cs2.setVersion("2.0");
+    cs2.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    Mockito.doReturn(cs2).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+    Mockito.doReturn(cs1).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), eq("1.0"), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    Parameters p = new Parameters();
+    p.addParameter(param, new CanonicalType("http://example.org/cs|1.0"));
+
+    List<CanonicalResource> deps = context.findExpansionDependencies(vs, p);
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs1, cs2)), deps.toString());
+  }
+
+  @Test
+  void testExpansionDependenciesHaveThePinnedImport() {
+    // the local expander imports the version default-valueset-version pins the ValueSet to
+    ValueSet b1 = new ValueSet();
+    b1.setUrl("http://example.org/b");
+    b1.setVersion("1");
+    ValueSet b2 = new ValueSet();
+    b2.setUrl("http://example.org/b");
+    b2.setVersion("2");
+    Mockito.doReturn(b2).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    Mockito.doReturn(b1).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b|1"), any(), any(), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/b");
+    Parameters p = new Parameters();
+    p.addParameter("default-valueset-version", new CanonicalType("http://example.org/b|1"));
+
+    List<CanonicalResource> deps = context.findExpansionDependencies(vs, p);
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(b1, b2)), deps.toString());
+  }
+
   @Test
   void testExpandIncludeKeyHasTheExpansionParameters() {
     // they are sent with the include, so they are in its key: a pinned version gives a different expansion

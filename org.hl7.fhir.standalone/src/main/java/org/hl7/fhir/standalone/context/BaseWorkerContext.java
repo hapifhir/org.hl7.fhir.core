@@ -1281,16 +1281,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void findExpansionDependencies(ValueSet src, ConceptSetComponent inc, Parameters p, Map<String, CanonicalResource> res) {
     for (CanonicalType c : inc.getValueSetList()) {
-      ValueSet imp = fetchForKey(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
-      if (addExpansionDependency(res, imp)) {
-        findExpansionDependencies(imp, p, res);
+      // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
+      String url = c.getValue();
+      String pinned = url == null || p == null ? url : cutils.pinValueSet(url, p);
+      for (String u : url == null || url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
+        ValueSet imp = fetchForKey(ValueSet.class, u, ExtensionUtilities.getVersionResolutionRules(c), null, src);
+        if (addExpansionDependency(res, imp)) {
+          findExpansionDependencies(imp, p, res);
+        }
       }
     }
     String sys = inc.getSystem();
-    // the server is sent the code system as resolved without the include's version, the local expander uses that version
-    CodeSystem cs = fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), null, src);
-    CodeSystem csv = inc.hasVersion() ? fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), src) : null;
-    for (CodeSystem c : new CodeSystem[] {cs, csv}) {
+    // the server is sent the code system as resolved without the include's version, the local expander uses that
+    // version, or the one the parameters pin it to
+    List<CodeSystem> versions = new ArrayList<>();
+    versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), null, src));
+    if (inc.hasVersion()) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), src));
+    }
+    for (String v : pinnedVersions(sys, p)) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), v, src));
+    }
+    for (CodeSystem c : versions) {
       if (c != null && (c.getContent() == CodeSystemContentMode.COMPLETE || c.getContent() == CodeSystemContentMode.FRAGMENT)) {
         addExpansionDependency(res, c);
       }
@@ -1311,6 +1323,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
+  }
+
+  /** the versions of sys that force-system-version and system-version pin it to, as the local expander reads them */
+  private List<String> pinnedVersions(String sys, Parameters p) {
+    List<String> res = new ArrayList<>();
+    if (sys != null && p != null && !sys.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        if ("force-system-version".equalsIgnoreCase(pp.getName()) || "system-version".equalsIgnoreCase(pp.getName())) {
+          String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
+          if (v != null && v.startsWith(sys + "|")) {
+            res.add(v.substring(sys.length() + 1));
+          }
+        }
+      }
+    }
+    return res;
   }
 
   /** false if cr is null or already there, so the caller doesn't follow it again (imports can be circular) */
