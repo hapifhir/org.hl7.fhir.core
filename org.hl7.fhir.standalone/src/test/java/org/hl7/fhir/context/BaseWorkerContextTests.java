@@ -839,6 +839,22 @@ public class BaseWorkerContextTests {
     }
   }
 
+  @Test
+  void testExpandUrlNoServerIsReloaded(@TempDir java.nio.file.Path folder) throws IOException {
+    // no server at all, with no failed registry call: that's an answer, kept for later runs
+    BaseWorkerContext ctx = getBaseWorkerContext();
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), ctx);
+    ctx.initTxCache(cache);
+    ctx.setExpansionParameters(new AtomicReference<>(new Parameters()));
+    ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+    ValueSetExpansionOutcome res = ctx.expandVS(opt, DUMMY_URL);
+    assertEquals(TerminologyServiceErrorClass.UNKNOWN, res.getErrorClass(), res.getError());
+    cache.save();
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString(), ctx);
+    assertNotNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
+  }
+
   private void expandValueSetTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);

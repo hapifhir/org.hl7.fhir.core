@@ -57,6 +57,7 @@ class TerminologyClientManagerFailureTest {
 
   private static class TestManager extends TerminologyClientManager {
     boolean registryDown;
+    String response = RESP;
 
     TestManager(ITerminologyClientFactoryN factory) {
       super(TestingUtilities.getSharedWorkerContext().getModelContext(), factory, new ILoggingService() {
@@ -74,7 +75,7 @@ class TerminologyClientManagerFailureTest {
       if (registryDown) {
         throw new SocketTimeoutException("Read timed out");
       }
-      return JsonParser.parseObject(RESP);
+      return JsonParser.parseObject(response);
     }
   }
 
@@ -187,6 +188,18 @@ class TerminologyClientManagerFailureTest {
     mgr.setMasterClient(makeFakeClient(MAIN, false), null);
     assertNull(mgr.findValueSetOnServer(VS));
     assertFalse(mgr.lookupFailed(VS));
+  }
+
+  @Test
+  void chooseServerFailsOnlyWhenTheRegistryDoes() throws IOException {
+    TestManager mgr = makeManager(false, false);
+    mgr.response = "{\"formatVersion\":\"1\"}";
+    // the registry says no server has it: an answer
+    assertNull(mgr.chooseServer(VS, true));
+    assertFalse(mgr.lookupFailed(VS));
+    mgr.registryDown = true;
+    assertNull(mgr.chooseServer(VS + "-2", true));
+    assertTrue(mgr.lookupFailed(VS + "-2"));
   }
 
   @Test
