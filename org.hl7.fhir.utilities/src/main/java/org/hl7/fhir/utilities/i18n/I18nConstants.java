@@ -596,6 +596,7 @@ public class I18nConstants {
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type_with_a_profile__in_profile_";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type__in_profile_";
   public static final String PROFILE_COMPLIES_WITH_BAD_ELEMENT = "PROFILE_COMPLIES_WITH_BAD_ELEMENT";
+  public static final String PROFILE_COMPLIES_WITH_BAD_TARGET = "PROFILE_COMPLIES_WITH_BAD_TARGET";
   public static final String PROFILE_COMPLIES_WITH_BAD_TYPE = "PROFILE_COMPLIES_WITH_BAD_TYPE";
   public static final String PROFILE_COMPLIES_WITH_MISSING = "PROFILE_COMPLIES_WITH_MISSING";
   public static final String PROFILE_COMPLIES_WITH_MISSING_ELEMENT = "PROFILE_COMPLIES_WITH_MISSING_ELEMENT";
@@ -610,6 +611,7 @@ public class I18nConstants {
   public static final String PROFILE_COMPLIES_WITH_SLICING_ORDER = "PROFILE_COMPLIES_WITH_SLICING_ORDER";
   public static final String PROFILE_COMPLIES_WITH_SLICING_RULES = "PROFILE_COMPLIES_WITH_SLICING_RULES";
   public static final String PROFILE_COMPLIES_WITH_SLICING_UNSLICED = "PROFILE_COMPLIES_WITH_SLICING_UNSLICED";
+  public static final String PROFILE_COMPLIES_WITH_TARGET_UNKNOWN = "PROFILE_COMPLIES_WITH_TARGET_UNKNOWN";
   public static final String PROFILE_COMPLIES_WITH_WRONG_TYPE = "PROFILE_COMPLIES_WITH_WRONG_TYPE";
   public static final String PROFILE_EXT_NOT_HERE = "Profile_EXT_Not_Here";
   public static final String PROFILE_VAL_MISSINGELEMENT = "Profile_VAL_MissingElement";

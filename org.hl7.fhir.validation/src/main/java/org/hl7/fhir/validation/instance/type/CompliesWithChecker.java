@@ -253,7 +253,7 @@ public class CompliesWithChecker {
             continue;
           }
           StructureDefinition sd2 = context.fetchResourceRaw(StructureDefinition.class, ct.asStringValue(), ExtensionUtilities.getVersionResolutionRules(ct));
-          if (sd2 == null || !conformsTo(sd2, dt1.profileUrls(), new HashSet<>())) {
+          if (sd2 == null || !conformsTo(sd2, dt1.profileUrls(), new HashSet<>(), null)) {
             return false;
           }
         }
@@ -455,6 +455,8 @@ public class CompliesWithChecker {
       for (TypeRefComponent tr : claimee.getTypeList()) {
         if (!hasType(tr, authority.getTypeList())) {
           messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.getWorkingCode()), IssueSeverity.ERROR));        
+        } else {
+          checkTargetProfiles(messages, claimeePath, tr, authority.getTypeList());
         }
         doInner = false;
       }
@@ -662,12 +664,7 @@ public class CompliesWithChecker {
 //            ok = false;
 //          }
 //        }
-        // todo: we have to check that the targets are compatible
-//        for (CanonicalType ct : tr.getTargetProfile()) {
-//          if (!t.hasTargetProfile(ct.asStringValue())) {
-//            ok = false;
-//          }
-//        }
+        // target profiles are checked separately in checkTargetProfiles
         if (ok) {
           return true;
         }
@@ -676,21 +673,64 @@ public class CompliesWithChecker {
     return false;
   }
 
+  private void checkTargetProfiles(List<ValidationMessage> messages, String claimeePath, TypeRefComponent tr, List<TypeRefComponent> types) {
+    List<String> allowed = new ArrayList<>();
+    for (TypeRefComponent t : types) {
+      if (t.getWorkingCode().equals(tr.getWorkingCode())) {
+        if (!t.hasTargetProfile()) {
+          // the claimed profile doesn't restrict the targets
+          return;
+        }
+        for (CanonicalType ct : t.getTargetProfileList()) {
+          allowed.add(ct.getValue());
+        }
+      }
+    }
+    if (allowed.isEmpty()) {
+      return;
+    }
+    if (!tr.hasTargetProfile()) {
+      // any target is allowed in this profile
+      String anyTarget = "http://hl7.org/fhir/StructureDefinition/Resource";
+      if (!allowed.contains(anyTarget)) {
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TARGET, anyTarget, tr.getWorkingCode(), CommaSeparatedStringBuilder.join(", ", allowed)), IssueSeverity.ERROR));
+      }
+    } else {
+      for (CanonicalType ct : tr.getTargetProfileList()) {
+        if (allowed.stream().anyMatch(a -> sameCanonical(ct.getValue(), a))) {
+          continue;
+        }
+        StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct));
+        List<String> unknown = new ArrayList<>();
+        if (sd == null) {
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_TARGET_UNKNOWN, ct.getValue(), ct.getValue()), IssueSeverity.WARNING));
+        } else if (!conformsTo(sd, allowed, new HashSet<>(), unknown)) {
+          if (unknown.isEmpty()) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TARGET, ct.getValue(), tr.getWorkingCode(), CommaSeparatedStringBuilder.join(", ", allowed)), IssueSeverity.ERROR));
+          } else {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_TARGET_UNKNOWN, CommaSeparatedStringBuilder.join(", ", unknown), ct.getValue()), IssueSeverity.WARNING));
+          }
+        }
+      }
+    }
+  }
+
   /**
-   * true if sd is one of the allowed profiles, or derives from, imposes or claims to comply with one of them
+   * true if sd is one of the allowed profiles, or derives from, imposes or claims to comply with one of them.
+   * Profiles that can't be found on the way are added to unknown, if it's not null
    */
-  private boolean conformsTo(StructureDefinition sd, List<String> allowed, Set<String> visited) {
+  private boolean conformsTo(StructureDefinition sd, List<String> allowed, Set<String> visited, List<String> unknown) {
     if (!visited.add(sd.getVersionedUrl())) {
       return false;
     }
     if (allowed.stream().anyMatch(a -> sameCanonical(sd.getVersionedUrl(), a))) {
       return true;
     }
-    if (sd.hasBaseDefinition() && linkConformsTo(sd.getBaseDefinition(), sd.getBaseDefinitionElement(), allowed, visited)) {
+    if (sd.hasBaseDefinition() && linkConformsTo(sd.getBaseDefinition(), sd.getBaseDefinitionElement(), allowed, visited, unknown)) {
       return true;
     }
     for (Extension ex : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE, ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
-      if (ex.getValue() != null && ex.getValue().primitiveValue() != null && linkConformsTo(ex.getValue().primitiveValue(), ex.getValue(), allowed, visited)) {
+      if (ex.getValue() != null && ex.getValue().primitiveValue() != null && linkConformsTo(ex.getValue().primitiveValue(), ex.getValue(), allowed, visited, unknown)) {
         return true;
       }
     }
@@ -700,12 +740,18 @@ public class CompliesWithChecker {
   /**
    * conformsTo for the profile at url, which is the base, an imposed or a claimed profile of another profile
    */
-  private boolean linkConformsTo(String url, Element source, List<String> allowed, Set<String> visited) {
+  private boolean linkConformsTo(String url, Element source, List<String> allowed, Set<String> visited, List<String> unknown) {
     if (allowed.stream().anyMatch(a -> sameCanonical(url, a))) {
       return true;
     }
     StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(source));
-    return sd != null && conformsTo(sd, allowed, visited);
+    if (sd == null) {
+      if (unknown != null && !unknown.contains(url)) {
+        unknown.add(url);
+      }
+      return false;
+    }
+    return conformsTo(sd, allowed, visited, unknown);
   }
 
   private boolean sameCanonical(String c1, String c2) {
