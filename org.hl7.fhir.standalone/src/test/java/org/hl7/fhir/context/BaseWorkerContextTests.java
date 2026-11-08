@@ -1013,4 +1013,34 @@ public class BaseWorkerContextTests {
     assertSame(cs, result);
     Mockito.verify(terminologyCache).getCodeSystem(canonical);
   }
+
+  @Test
+  void externalLookupAnswerIsPersisted() {
+    // the lookups didn't fail, so their 'not found' is kept for later runs
+    assertExternalLookupsCached(true);
+  }
+
+  @Test
+  void failedExternalLookupIsForThisRun() throws IOException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy policy = org.hl7.fhir.utilities.http.ManagedWebAccess.getAccessPolicy();
+    // the registry call fails with an IOException, as a timeout does
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy.PROHIBITED);
+    try {
+      context.getTerminologyClientManager().setMasterClient(terminologyClient, "http://tx-registry.example.org");
+      assertExternalLookupsCached(false);
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(policy);
+    }
+  }
+
+  private void assertExternalLookupsCached(boolean persistent) {
+    String vs = "http://example.org/ValueSet/unknown";
+    String cs = "http://example.org/CodeSystem/unknown";
+    // the server has no such value set
+    Mockito.doReturn(new Bundle()).when(terminologyClient).search(Mockito.eq("ValueSet"), Mockito.anyString());
+    assertNull(context.findTxResource(ValueSet.class, vs, VersionResolutionRules.defaultRule()));
+    assertNull(context.findTxResource(CodeSystem.class, cs, VersionResolutionRules.defaultRule()));
+    Mockito.verify(terminologyCache).cacheValueSet(vs, null, persistent);
+    Mockito.verify(terminologyCache).cacheCodeSystem(cs, null, persistent);
+  }
 }
