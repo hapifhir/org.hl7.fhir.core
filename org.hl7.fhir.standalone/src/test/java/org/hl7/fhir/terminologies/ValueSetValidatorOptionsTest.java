@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.CodeType;
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.core.Extension;
 import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -29,6 +33,7 @@ class ValueSetValidatorOptionsTest {
 
   private static final String CS_URL = "http://example.org/fhir/CodeSystem/status";
   private static final String VS_UZ_URL = "http://example.org/fhir/ValueSet/status-uz";
+  private static final String VS_DISPLAY_UZ_URL = "http://example.org/fhir/ValueSet/status-display-uz";
   private static final String VS_PLAIN_URL = "http://example.org/fhir/ValueSet/status";
 
   private SimpleWorkerContext ctxt;
@@ -37,7 +42,11 @@ class ValueSetValidatorOptionsTest {
 
   @BeforeEach
   void setUp() throws Exception {
-    ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing();
+    ctxt = newContext();
+  }
+
+  private static SimpleWorkerContext newContext() throws Exception {
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing();
     ctxt.setExpansionParameters(new Parameters());
     CodeSystem cs = new CodeSystem();
     cs.setUrl(CS_URL);
@@ -47,20 +56,30 @@ class ValueSetValidatorOptionsTest {
     cs.setContent(CodeSystemContentMode.COMPLETE);
     cs.addConcept().setCode("acc").setDisplay("Qabul qilindi").addDesignation().setLanguage("en").setValue("Accepted");
     ctxt.cacheResource(cs);
-    ctxt.cacheResource(valueSet(VS_UZ_URL, "uz"));
-    ctxt.cacheResource(valueSet(VS_PLAIN_URL, null));
+    ValueSet uz = valueSet(VS_UZ_URL);
+    uz.setLanguage("uz");
+    ctxt.cacheResource(uz);
+    // the language comes from a displayLanguage expansion parameter instead
+    ValueSet displayUz = valueSet(VS_DISPLAY_UZ_URL);
+    Extension param = displayUz.getCompose().addExtension().setUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW);
+    param.addExtension("name", new StringType("displayLanguage"));
+    param.addExtension("value", new CodeType("uz"));
+    ctxt.cacheResource(displayUz);
+    ctxt.cacheResource(valueSet(VS_PLAIN_URL));
+    return ctxt;
   }
 
-  private static ValueSet valueSet(String url, String language) {
+  private static ValueSet valueSet(String url) {
     ValueSet vs = new ValueSet();
     vs.setUrl(url);
     vs.setVersion("1");
     vs.setStatus(PublicationStatus.ACTIVE);
-    if (language != null) {
-      vs.setLanguage(language);
-    }
     vs.getCompose().addInclude().setSystem(CS_URL);
     return vs;
+  }
+
+  private ValueSet fetch(String url) {
+    return ctxt.fetchResource(ValueSet.class, url);
   }
 
   private static boolean memberOf(FHIRPathEngine fpe, CodeableConcept cc, String url) {
@@ -70,20 +89,29 @@ class ValueSetValidatorOptionsTest {
   @Test
   void validateCodeLeavesTheCallersOptionsAlone() {
     ValidationOptions options = new ValidationOptions();
-    ctxt.validateCode(options, accepted, ctxt.fetchResource(ValueSet.class, VS_UZ_URL));
+    // the value set's language still applies to its own check: "Accepted" is not the Uzbek display
+    assertFalse(ctxt.validateCode(options, accepted, fetch(VS_UZ_URL)).isOk());
     assertFalse(options.hasLanguages());
+    assertTrue(ctxt.validateCode(options, accepted, fetch(VS_PLAIN_URL)).isOk());
   }
 
   @Test
-  void memberOfIsNotAffectedByAnEarlierValueSetLanguage() {
+  void displayLanguageParameterDoesNotReplaceTheCallersLanguage() {
+    ValidationOptions options = new ValidationOptions().setLanguages("en");
+    ctxt.validateCode(options, accepted, fetch(VS_DISPLAY_UZ_URL));
+    assertEquals("en", options.getLanguages().getSource());
+  }
+
+  @Test
+  void memberOfIsNotAffectedByAnEarlierValueSetLanguage() throws Exception {
     FHIRPathEngine fpe = new FHIRPathEngine(ctxt);
     memberOf(fpe, accepted, VS_UZ_URL);
     boolean after = memberOf(fpe, accepted, VS_PLAIN_URL);
 
-    FHIRPathEngine fresh = new FHIRPathEngine(ctxt);
-    boolean onFreshEngine = memberOf(fresh, accepted, VS_PLAIN_URL);
-    assertTrue(onFreshEngine);
-    assertEquals(onFreshEngine, after);
+    // a fresh engine on its own context, so the answer can't come from the tx cache entry the first engine left
+    FHIRPathEngine fresh = new FHIRPathEngine(newContext());
+    assertTrue(memberOf(fresh, accepted, VS_PLAIN_URL));
+    assertTrue(after);
     assertNull(fpe.getTerminologyServiceOptions().getLanguages());
   }
 }
