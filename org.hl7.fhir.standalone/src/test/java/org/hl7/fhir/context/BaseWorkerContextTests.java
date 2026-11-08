@@ -725,8 +725,14 @@ public class BaseWorkerContextTests {
     for (int code : new int[] {500, 502, 504, 408, 429, 401, 403, 407}) {
       assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error " + code, serverError(OperationOutcome.IssueType.EXCEPTION, "error " + code))), "HTTP " + code);
     }
-    // a 4xx with no OperationOutcome is an error page from something in between, not an answer
+    // a 4xx with no body isn't an answer, and nor is an error page (html, text) from a proxy or gateway in between,
+    // which the client turns into an OperationOutcome with a single 'exception' issue
     assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(404, "not found")));
+    for (int code : new int[] {400, 404, 413, 414}) {
+      assertFalse(BaseWorkerContext.isServerAnswer(new EFhirClientException(code, "error page", org.hl7.fhir.model.utilities.OperationOutcomeUtilities.createError("<html><body>" + code + " nginx</body></html>"))), "HTTP " + code + " error page");
+    }
+    // an error OperationOutcome that came with a 2xx is an answer too
+    assertTrue(BaseWorkerContext.isServerAnswer(new EFhirClientException(200, "unknown value set", serverError(OperationOutcome.IssueType.NOTFOUND, "unknown value set"))));
     assertFalse(BaseWorkerContext.isServerAnswer(timeout()));
     assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.SocketTimeoutException("timed out"))));
     assertFalse(BaseWorkerContext.isServerAnswer(new FHIRException(new java.net.UnknownHostException("tx.example.org"))));
@@ -807,6 +813,20 @@ public class BaseWorkerContextTests {
   @Test
   void testExpandUrlServerAnswerIsPersisted() throws IOException {
     ValueSetExpansionOutcome res = expandUrlWithServerFailure(unknownValueSet());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
+  }
+
+  @Test
+  void testExpandUrlSuccessIsPersisted() throws IOException {
+    ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+    context.setExpansionParameters(new AtomicReference<>(new Parameters()));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(DUMMY_URL, opt);
+    Mockito.doReturn("https://tx.example.org").when(terminologyClient).getAddress();
+    context.getTerminologyClientManager().setMasterClient(terminologyClient, null);
+    ValueSet expansion = new ValueSet();
+    Mockito.doReturn(expansion).when(terminologyClient).expandValueset(isNull(), any(Parameters.class));
+    ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+    assertSame(expansion, res.getValueset());
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, res, true);
   }
 

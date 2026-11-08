@@ -1235,17 +1235,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   /**
    * Did the terminology server answer the $expand, if with an error? Only then is the outcome worth keeping
-   * in the cache for later runs. No response, a timeout, a 5xx (also an error page the client turned into an
-   * OperationOutcome), a 408 or a 429, or an authentication or access refusal (401, 403, 407, often from a
-   * proxy in between) describes the server or the network at that moment, not the ValueSet: kept in the
-   * cache file, it would be used instead of asking again in every later run.
+   * in the cache for later runs. No response, a timeout, a 5xx, a 408 or a 429, or an authentication or access
+   * refusal (401, 403, 407, often from a proxy in between) describes the server or the network at that moment,
+   * not the ValueSet: kept in the cache file, it would be used instead of asking again in every later run.
+   * So does an error page that isn't FHIR (html or text from a proxy or gateway, e.g. a 404 or 413): the client
+   * turns it into an OperationOutcome whose issues are all 'exception', so only an issue with another code
+   * (not-found, too-costly, invalid etc) shows that the server itself answered.
    */
   public static boolean isServerAnswer(Exception e) {
     if (!(e instanceof EFhirClientException) || !((EFhirClientException) e).hasServerErrors()) {
       return false;
     }
-    int code = ((EFhirClientException) e).getCode();
-    return code >= 400 && code < 500 && !Utilities.existsInList(code, 401, 403, 407, 408, 429);
+    EFhirClientException fe = (EFhirClientException) e;
+    int code = fe.getCode();
+    if (code < 200 || code >= 500 || (code >= 300 && code < 400) || Utilities.existsInList(code, 401, 403, 407, 408, 429)) {
+      return false;
+    }
+    for (OperationOutcome oo : fe.getServerErrors()) {
+      for (OperationOutcomeIssueComponent issue : oo.getIssueList()) {
+        if (issue.hasCode() && issue.getCode() != OperationOutcome.IssueType.EXCEPTION) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
