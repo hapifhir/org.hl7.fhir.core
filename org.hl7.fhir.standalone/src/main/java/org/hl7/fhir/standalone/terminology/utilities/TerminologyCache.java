@@ -918,7 +918,9 @@ public class TerminologyCache {
         // extracted() leaves a large definition out, and an embedded one says nothing about the dependencies
         ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix);
       } else {
-        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+(hasStatus(vs) ? ", \"status\": \""+Utilities.escapeJson(statusOf(vs))+"\"" : "")+suffix);
+        String supplements = namedSupplements(vs);
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+(hasStatus(vs) ? ", \"status\": \""+Utilities.escapeJson(statusOf(vs))+"\"" : "")
+          +(supplements.isEmpty() ? "" : ", \"supplements\": \""+Utilities.escapeJson(supplements)+"\"")+suffix);
       }
     } catch (IOException e) {
       throw new Error(e);
@@ -933,7 +935,7 @@ public class TerminologyCache {
 
   private String definitionDigest(JsonParser json, ValueSet vs, ValueSet vsc, List<? extends CanonicalResource> dependencies) throws IOException {
     StringBuilder b = new StringBuilder(json.composeString(vsc));
-    b.append("\n").append(statusOf(vs));
+    b.append("\n").append(statusOf(vs)).append("\n").append(namedSupplements(vs));
     if (dependencies != null) {
       for (CanonicalResource cr : dependencies) {
         Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
@@ -943,9 +945,21 @@ public class TerminologyCache {
           b.append("/").append(cr.getVersionedUrl());
         }
         b.append("\n").append(statusOf(cr)).append("\n").append(json.composeString(essence));
+        if (cr instanceof ValueSet) {
+          b.append("\n").append(namedSupplements((ValueSet) cr));
+        }
       }
     }
     return hashJson(b.toString());
+  }
+
+  /** the supplements the ValueSet names (valueset-supplement): one that isn't global is only used when it is named, and one that can't be found is an error */
+  private String namedSupplements(ValueSet vs) {
+    StringBuilder b = new StringBuilder();
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      b.append(ext.hasValue() ? ext.getValue().primitiveValue() : null).append(" ");
+    }
+    return b.toString().trim();
   }
 
   private boolean hasStatus(CanonicalResource cr) {

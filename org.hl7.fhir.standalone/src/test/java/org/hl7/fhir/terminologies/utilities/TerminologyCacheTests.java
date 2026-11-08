@@ -622,6 +622,34 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
+    void testNamedSupplementChangeMisses() throws IOException {
+      // a supplement that isn't global is only used when the ValueSet names it, and one it names but that can't be found is an error
+      TerminologyCache cache = createTerminologyCache();
+      CodeSystem supp = codeSystem("A");
+      for (boolean versioned : new boolean[] {true, false}) {
+        java.util.function.Supplier<ValueSet> make = () -> {
+          ValueSet v = new ValueSet();
+          if (versioned) {
+            v.setUrl("http://example.org/fhir/ValueSet/local");
+            v.setVersion("1.0.0");
+          }
+          v.getCompose().addInclude().setSystem("http://loinc.org");
+          return v;
+        };
+        ValueSet vs = make.get();
+        ValueSet named = make.get();
+        named.addExtension(org.hl7.fhir.model.extensions.ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/fhir/CodeSystem/local"));
+        ValueSet missing = make.get();
+        missing.addExtension(org.hl7.fhir.model.extensions.ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/fhir/CodeSystem/missing"));
+
+        assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), List.of(supp)).getRequest(),
+          cache.generateExpandToken(named, options(), parameters("1"), List.of(supp)).getRequest());
+        assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
+          cache.generateExpandToken(missing, options(), parameters("1"), null).getRequest());
+      }
+    }
+
+    @Test
     void testSupplementGlobalFlagChangeMisses() throws IOException {
       // whether a supplement is used without being referenced is decided by extensions on the code system itself
       TerminologyCache cache = createTerminologyCache();
