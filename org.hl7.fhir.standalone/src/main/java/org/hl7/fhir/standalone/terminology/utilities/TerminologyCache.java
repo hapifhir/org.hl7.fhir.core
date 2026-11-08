@@ -30,6 +30,8 @@ package org.hl7.fhir.standalone.terminology.utilities;
  */
 
 
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -832,7 +834,7 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000) {
+    if (tooLargeToEmbed(vsc)) {
       s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
@@ -881,24 +883,113 @@ public class TerminologyCache {
   }
 
   public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options) {
+    return generateExpandToken(vs, options, null, null);
+  }
+
+  /**
+   * The key covers what decides the expansion, not just the ValueSet's url and version: an IG edits
+   * its ValueSets without changing the version, and the expansion parameters can pin a different code
+   * system version. So the key holds a digest of the ValueSet's definition (and of the local resources
+   * the expansion depends on, when the caller resolved them) wherever the definition itself is not part
+   * of the key, and a digest of the expansion parameters when they are given.
+   *
+   * Cache files written with the older url|version key stay readable; those entries are simply no
+   * longer found, so the ValueSet is expanded again once.
+   *
+   * @param expParameters the parameters of the $expand, or null to leave them out of the key
+   * @param dependencies the ValueSets this one imports (all the way down) and the CodeSystems and
+   *    supplements it draws on, or null; resources that can't be resolved are only named in the compose,
+   *    which is in the key anyway
+   */
+  public CacheToken generateExpandToken(ValueSet vs, ExpansionOptions options, Parameters expParameters, List<? extends CanonicalResource> dependencies) {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
-    if (vs.hasUrl() && vs.hasVersion()) {
-      ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
-    } else {
-      ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser(context.getModelContext());
-      json.setOutputStyle(OutputStyle.PRETTY);
-      try {
-        ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
-      } catch (IOException e) {
-        throw new Error(e);
+    ValueSet vsc = getVSEssense(vs);
+    JsonParser json = new JsonParser(context.getModelContext());
+    json.setOutputStyle(OutputStyle.PRETTY);
+    try {
+      String prefix = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "");
+      String suffix = (expParameters == null ? "" : ", \"parameters\": \""+hashJson(json.composeString(expParameters))+"\"")+"}\r\n";
+      boolean hasDependencies = dependencies != null && !dependencies.isEmpty();
+      if (vs.hasUrl() && vs.hasVersion()) {
+        ct.setRequest(prefix+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""
+          +", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix);
+      } else if (tooLargeToEmbed(vsc) || hasDependencies) {
+        // extracted() leaves a large definition out, and an embedded one says nothing about the dependencies
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\""+suffix);
+      } else {
+        String supplements = namedSupplements(vs);
+        ct.setRequest(prefix+", \"valueSet\" :"+extracted(json, vsc)+(hasStatus(vs) ? ", \"status\": \""+Utilities.escapeJson(statusOf(vs))+"\"" : "")
+          +(supplements.isEmpty() ? "" : ", \"supplements\": \""+Utilities.escapeJson(supplements)+"\"")+suffix);
       }
+    } catch (IOException e) {
+      throw new Error(e);
     }
     ct.setKey(String.valueOf(hashJson(ct.getRequest())));
     return ct;
   }
-  
+
+  private boolean tooLargeToEmbed(ValueSet vsc) {
+    return vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000;
+  }
+
+  private String definitionDigest(JsonParser json, ValueSet vs, ValueSet vsc, List<? extends CanonicalResource> dependencies) throws IOException {
+    StringBuilder b = new StringBuilder(json.composeString(vsc));
+    b.append("\n").append(statusOf(vs)).append("\n").append(namedSupplements(vs));
+    if (dependencies != null) {
+      for (CanonicalResource cr : dependencies) {
+        Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
+        b.append("\n").append(cr.fhirType());
+        if (cr.hasUrl() && !cr.getUrl().startsWith("urn:uuid:")) {
+          // a contained resource without a url is given a new urn:uuid: every run
+          b.append("/").append(cr.getVersionedUrl());
+        }
+        b.append("\n").append(statusOf(cr)).append("\n").append(json.composeString(essence));
+        if (cr instanceof ValueSet) {
+          b.append("\n").append(namedSupplements((ValueSet) cr));
+        }
+      }
+    }
+    return hashJson(b.toString());
+  }
+
+  /** the supplements the ValueSet names (valueset-supplement): one that isn't global is only used when it is named, and one that can't be found is an error */
+  private String namedSupplements(ValueSet vs) {
+    StringBuilder b = new StringBuilder();
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      b.append(ext.hasValue() ? ext.getValue().primitiveValue() : null).append(" ");
+    }
+    return b.toString().trim();
+  }
+
+  private boolean hasStatus(CanonicalResource cr) {
+    return cr.hasStatus() || cr.hasExperimental() || cr.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS);
+  }
+
+  /** an expansion warns about draft, experimental, retired, deprecated and withdrawn content; the raw standards status, so a bad value can't throw */
+  private String statusOf(CanonicalResource cr) {
+    return cr.getStatus() + "|" + cr.getExperimental() + "|" + ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_STANDARDS_STATUS);
+  }
+
+  /** what of a CodeSystem decides an expansion: its content, not its narrative or metadata */
+  private CodeSystem getCSEssence(CodeSystem cs) {
+    CodeSystem csc = new CodeSystem(cs.getModelContext());
+    if (cs.hasUrl() && !cs.getUrl().startsWith("urn:uuid:")) {
+      csc.setUrl(cs.getUrl()); // a contained code system without a url is given a new urn:uuid: every run
+    }
+    csc.setVersion(cs.getVersion());
+    csc.setLanguage(cs.getLanguage());
+    csc.setContent(cs.getContent());
+    csc.setSupplements(cs.getSupplements());
+    csc.setCaseSensitive(cs.getCaseSensitive());
+    csc.setHierarchyMeaning(cs.getHierarchyMeaning());
+    csc.getPropertyList().addAll(cs.getPropertyList());
+    csc.getFilterList().addAll(cs.getFilterList());
+    csc.getConceptList().addAll(cs.getConceptList());
+    csc.getExtensionList().addAll(cs.getExtensionList()); // e.g. codesystem-supplement-global decides whether a supplement is used
+    return csc;
+  }
+
   public CacheToken generateExpandToken(String url, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
     ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n");

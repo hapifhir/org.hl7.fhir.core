@@ -971,7 +971,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getIncludeList().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
+    Parameters expParameters = getExpansionParameters(); // constructParameters sends these
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical), expParameters, findExpansionDependencies(vs, expParameters));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1166,7 +1167,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.setParameter("incomplete-ok", true);
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, options);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, options, p, findExpansionDependencies(vs, p));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
@@ -1249,6 +1250,125 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * The local resources the expansion of vs depends on: the ones addDependentResources sends to the server
+   * as tx-resource (the ValueSets it imports, all the way down, the complete or fragment CodeSystems it
+   * draws on, and their supplements). An IG can edit any of them without changing a version, so they are
+   * part of the expansion's cache key. Resolved the way addDependentResources resolves them, so the key
+   * describes what the server is sent.
+   */
+  public List<CanonicalResource> findExpansionDependencies(ValueSet vs, Parameters p) {
+    Map<String, CanonicalResource> res = new LinkedHashMap<>();
+    findExpansionDependencies(vs, p, res);
+    return new ArrayList<>(res.values());
+  }
+
+  private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, CanonicalResource> res) {
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        addExpansionDependency(res, fetchForKey(CodeSystem.class, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null, null));
+      }
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+      findExpansionDependencies(vs, inc, p, res);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
+      findExpansionDependencies(vs, inc, p, res);
+    }
+  }
+
+  private void findExpansionDependencies(ValueSet src, ConceptSetComponent inc, Parameters p, Map<String, CanonicalResource> res) {
+    for (CanonicalType c : inc.getValueSetList()) {
+      // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
+      String url = c.getValue();
+      String pinned = pinnedImport(url, p);
+      for (String u : url == null || url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
+        ValueSet imp = fetchForKey(ValueSet.class, u, ExtensionUtilities.getVersionResolutionRules(c), null, src);
+        if (addExpansionDependency(res, imp)) {
+          findExpansionDependencies(imp, p, res);
+        }
+      }
+    }
+    String sys = inc.getSystem();
+    // the server is sent the code system as resolved without the include's version, the local expander uses that
+    // version, or the one the parameters pin it to
+    List<CodeSystem> versions = new ArrayList<>();
+    versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), null, src));
+    if (inc.hasVersion()) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), src));
+    }
+    for (String v : pinnedVersions(sys, p)) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), v, src));
+    }
+    for (CodeSystem c : versions) {
+      if (c != null && (c.getContent() == CodeSystemContentMode.COMPLETE || c.getContent() == CodeSystemContentMode.FRAGMENT)) {
+        addExpansionDependency(res, c);
+      }
+      for (CodeSystem supp : codeSystems.getSupplements(c)) {
+        addExpansionDependency(res, supp);
+      }
+    }
+    if (sys != null) {
+      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+        addExpansionDependency(res, supp);
+      }
+      if (!sys.contains("!") && p != null) {
+        String fixed = getFixedVersion(sys, p);
+        if (fixed != null) {
+          for (CodeSystem supp : codeSystems.getSupplements(fixed)) {
+            addExpansionDependency(res, supp);
+          }
+        }
+      }
+    }
+  }
+
+  /** url as default-valueset-version pins it, as ContextUtilities.pinValueSet does for the local expander, but a malformed parameter is left to the expansion to report */
+  private String pinnedImport(String url, Parameters p) {
+    if (url != null && p != null && !url.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        String v = "default-valueset-version".equals(pp.getName()) && pp.hasValue() ? pp.getValue().primitiveValue() : null;
+        if (v != null && v.startsWith(url + "|")) {
+          return v;
+        }
+      }
+    }
+    return url;
+  }
+
+  /** the versions of sys that force-system-version, system-version and check-system-version pin it to, as the local expander reads them */
+  private List<String> pinnedVersions(String sys, Parameters p) {
+    List<String> res = new ArrayList<>();
+    if (sys != null && p != null && !sys.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        if (pp.getName() != null && Utilities.existsInList(pp.getName().toLowerCase(), "force-system-version", "system-version", "check-system-version")) {
+          String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
+          if (v != null && v.startsWith(sys + "|")) {
+            res.add(v.substring(sys.length() + 1));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /** false if cr is null or already there, so the caller doesn't follow it again (imports can be circular) */
+  private boolean addExpansionDependency(Map<String, CanonicalResource> res, CanonicalResource cr) {
+    return cr != null && res.putIfAbsent(cr.fhirType() + "/" + cr.getVersionedUrl(), cr) == null;
+  }
+
+  /** a resource that can't be loaded is left to the expansion to report; for the key, it is not there */
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
+    if (url == null) {
+      return null;
+    }
+    try {
+      return fetchResourceWithException(type, url, rules, version, src);
+    } catch (FHIRException e) {
+      return null;
+    }
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
