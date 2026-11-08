@@ -2,6 +2,7 @@ package org.hl7.fhir.terminologies.client;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
@@ -81,6 +82,11 @@ class TerminologyClientManagerFailureTest {
 
   // serverDown: every search fails; otherwise every search is answered with an empty bundle (not found)
   private static ITerminologyClientN makeFakeClient(final String address, final boolean serverDown) {
+    return makeFakeClient(address, serverDown, false);
+  }
+
+  // expandDown: every $expand fails; otherwise it is answered with nothing
+  private static ITerminologyClientN makeFakeClient(final String address, final boolean serverDown, final boolean expandDown) {
     return (ITerminologyClientN) Proxy.newProxyInstance(TerminologyClientManagerFailureTest.class.getClassLoader(),
         new Class<?>[] { ITerminologyClientN.class }, (proxy, method, args) -> {
       switch (method.getName()) {
@@ -94,6 +100,11 @@ class TerminologyClientManagerFailureTest {
           throw new SocketTimeoutException("Read timed out");
         }
         return new Bundle();
+      case "expandValueset":
+        if (expandDown) {
+          throw new SocketTimeoutException("Read timed out");
+        }
+        return null;
       case "toString": return "fake client: " + address;
       case "equals": return proxy == args[0];
       case "hashCode": return System.identityHashCode(proxy);
@@ -226,5 +237,19 @@ class TerminologyClientManagerFailureTest {
     assertFalse(next.hasCodeSystem(CS));
     assertTrue(next.hasValueSet(VS + "-known"));
     assertTrue(next.hasCodeSystem(CS + "-known"));
+  }
+
+  @Test
+  void implicitValueSetExpandFailureIsAFailedLookup() throws IOException {
+    // not on the server, so it's $expand-ed to see if the server can do it
+    String sct = "http://snomed.info/sct?fhir_vs=isa/123";
+    TestManager mgr = makeManager(false, false);
+    mgr.setExpansionParameters(new Parameters());
+    assertNull(mgr.findValueSetOnServer(sct));
+    assertFalse(mgr.lookupFailed(sct));
+
+    mgr.setMasterClient(makeFakeClient(MAIN, false, true), "http://main.example.org/tx-reg");
+    assertNull(mgr.findValueSetOnServer(sct));
+    assertTrue(mgr.lookupFailed(sct));
   }
 }
