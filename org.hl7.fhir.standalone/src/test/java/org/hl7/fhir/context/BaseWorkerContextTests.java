@@ -815,6 +815,30 @@ public class BaseWorkerContextTests {
     expandUrlTwiceThenReload(failure, true, folder);
   }
 
+  @Test
+  void testExpandUrlRegistryDownIsForThisRun(@TempDir java.nio.file.Path folder) throws IOException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy policy = org.hl7.fhir.utilities.http.ManagedWebAccess.getAccessPolicy();
+    // the registry call fails with an IOException, as a timeout does, so there's no server to ask
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy.PROHIBITED);
+    try {
+      // before the real cache, which can't save the mock's capabilities
+      context.getTerminologyClientManager().setMasterClient(terminologyClient, "http://tx-registry.example.org");
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), context);
+      context.initTxCache(cache);
+      context.setExpansionParameters(new AtomicReference<>(new Parameters()));
+      ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+      ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+      assertEquals(TerminologyServiceErrorClass.SERVER_ERROR, res.getErrorClass(), res.getError());
+      assertSame(res, context.expandVS(opt, DUMMY_URL));
+      cache.save();
+      TerminologyCache next = new TerminologyCache(new Object(), folder.toString(), context);
+      assertNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(policy);
+    }
+  }
+
   private void expandValueSetTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);

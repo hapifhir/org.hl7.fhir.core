@@ -92,13 +92,24 @@ class TerminologyClientExpandErrorTest {
     return new TerminologyClient5R4("id", "http://tx.example.org/r4", "test");
   }
 
+  private static ITerminologyClientN nr3() throws Exception {
+    return new TerminologyClientNR3(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r3", "test");
+  }
+
+  private static ITerminologyClientN nr4() throws Exception {
+    return new TerminologyClientNR4(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r4", "test");
+  }
+
   @ParameterizedTest
   @ValueSource(ints = {408, 429, 502, 503, 504})
   void unavailableStatusIsServerUnavailable(int code) throws Exception {
-    respondWith(code, "text/html", "<html><body>" + code + "</body></html>");
-    assertTrue(BaseWorkerContext.isServerUnavailable(expand(r3())), "R3");
-    assertTrue(BaseWorkerContext.isServerUnavailable(expand(r4())), "R4");
-    assertEquals(code, status(expand(new TerminologyClientNR3(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r3", "test"))));
+    for (String contentType : new String[] {"text/html", "application/fhir+json"}) {
+      respondWith(code, contentType, contentType.contains("json") ? ERROR : "<html><body>" + code + "</body></html>");
+      assertTrue(BaseWorkerContext.isServerUnavailable(expand(r3())), "R3 " + contentType);
+      assertTrue(BaseWorkerContext.isServerUnavailable(expand(r4())), "R4 " + contentType);
+      assertEquals(code, status(expand(nr3())), "NR3 " + contentType);
+      assertEquals(code, status(expand(nr4())), "NR4 " + contentType);
+    }
   }
 
   @ParameterizedTest
@@ -107,7 +118,8 @@ class TerminologyClientExpandErrorTest {
     respondWith(code, "application/fhir+json", ERROR);
     assertFalse(BaseWorkerContext.isServerUnavailable(expand(r3())), "R3");
     assertFalse(BaseWorkerContext.isServerUnavailable(expand(r4())), "R4");
-    assertEquals(code, status(expand(new TerminologyClientNR3(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r3", "test"))));
+    assertEquals(code, status(expand(nr3())));
+    assertEquals(code, status(expand(nr4())));
     // the R3 client fails to parse an error page or broken json with an IOException, but there was a response, so
     // its status decides
     respondWith(code, "text/html", "<html><body>" + code + "</body></html>");
@@ -123,10 +135,7 @@ class TerminologyClientExpandErrorTest {
   void networkFailureIsServerUnavailable(int version) throws Exception {
     failToConnect();
     assertTrue(BaseWorkerContext.isServerUnavailable(expand(version == 3 ? r3() : r4())));
-    ITerminologyClientN n = version == 3
-      ? new TerminologyClientNR3(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r3", "test")
-      : new TerminologyClientNR4(org.hl7.fhir.model.ModelContext.fullCoreContext(), "id", "http://tx.example.org/r4", "test");
-    Exception e = expand(n);
+    Exception e = expand(version == 3 ? nr3() : nr4());
     assertTrue(hasNetworkCause(e), e.toString());
     assertEquals(0, status(e));
   }

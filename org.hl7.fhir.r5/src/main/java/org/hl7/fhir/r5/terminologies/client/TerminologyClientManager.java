@@ -447,6 +447,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, vs, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      // no server because the registry couldn't be asked, not because none has it
+      failedLookups.add(vs);
     }
     return null; 
   }
@@ -593,9 +595,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   /**
-   * true if a findValueSetOnServer / findCodeSystemOnServer call for this canonical failed in
-   * this run rather than got an answer, so a null result means 'unknown', not 'not found', and
-   * shouldn't be remembered across runs
+   * true if a findValueSetOnServer / findCodeSystemOnServer / chooseServer(url) call for this canonical
+   * failed in this run rather than got an answer, so a null result means 'unknown', not 'not found',
+   * and shouldn't be remembered across runs
    */
   public boolean lookupFailed(String canonical) {
     return failedLookups.contains(canonical);

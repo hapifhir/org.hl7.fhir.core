@@ -1062,7 +1062,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) ? TerminologyServiceErrorClass.SERVER_ERROR : TerminologyServiceErrorClass.UNKNOWN;
+      boolean registryFailed = tc == null && terminologyClientManager.lookupFailed(url);
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) || registryFailed ? TerminologyServiceErrorClass.SERVER_ERROR : TerminologyServiceErrorClass.UNKNOWN;
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
