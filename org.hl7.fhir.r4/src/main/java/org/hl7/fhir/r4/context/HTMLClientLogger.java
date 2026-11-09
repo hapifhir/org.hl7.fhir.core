@@ -97,6 +97,15 @@ public class HTMLClientLogger implements ToolingClientLogger {
     file.println("</pre>");
   }
 
+  @Override
+  public void logFailure(String error, long elapsed) {
+    if (file == null)
+      return;
+    file.println("<pre>");
+    file.println("No Response ("+Utilities.escapeXml(Utilities.describeDuration(elapsed))+"): "+Utilities.escapeXml(error));
+    file.println("</pre>");
+  }
+
   public String getLastId() {
     return lastId;
   }

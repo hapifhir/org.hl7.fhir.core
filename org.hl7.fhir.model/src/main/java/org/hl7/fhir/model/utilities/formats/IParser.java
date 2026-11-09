@@ -94,8 +94,6 @@ public interface IParser {
    */
   public Resource parse(InputStream input) throws IOException, FHIRFormatError;
 
-  public Resource parseAndClose(InputStream input) throws IOException, FHIRFormatError;
-
   /**
    * parse a resource from a file. The file is opened through ManagedFileAccess, and is always closed
    * when parsing completes (or fails)

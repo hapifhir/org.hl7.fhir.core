@@ -33,7 +33,6 @@ package org.hl7.fhir.dstu3.support.context;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -327,9 +326,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           .expand(vs, expProfile.setExcludeNested(!heirarchical));
         if (vse.getValueset() != null) {
           if (cache != null) {
-            FileOutputStream s = ManagedFileAccess.outStream(cacheFn);
             newJsonParser().composeFile(cacheFn, vse.getValueset());
-            s.close();
           }
         }
         return vse;

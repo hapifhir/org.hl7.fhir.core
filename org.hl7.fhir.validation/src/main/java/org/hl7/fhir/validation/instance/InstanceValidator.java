@@ -2736,7 +2736,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return sd1;
       } else if (!StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
         if (settings.isDebug()) {
-          log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+          log.debug("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
         }
       }
     }
