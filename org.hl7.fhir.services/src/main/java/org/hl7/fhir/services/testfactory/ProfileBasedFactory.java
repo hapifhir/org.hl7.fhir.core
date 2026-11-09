@@ -584,9 +584,9 @@ public class ProfileBasedFactory {
   /**
    * The literal value of a mapping entry or part, if it has one. A value is stringified whatever
    * its JSON type - a number or boolean gives its literal, an object or array its JSON text - so
-   * an author never has to quote. An empty string suppresses the element, the same as an entry
-   * with no expression. An entry with both a value and an expression is a mistake, and is
-   * reported rather than one silently winning.
+   * an author never has to quote. An empty string, or a JSON null, suppresses the element, the
+   * same as an entry with no expression. An entry with both a value and an expression is a
+   * mistake, and is reported rather than one silently winning.
    */
   private String literalValue(JsonObject entry, String what) {
     if (!entry.has("value")) {
@@ -596,6 +596,9 @@ public class ProfileBasedFactory {
       throw new FHIRException("The mapping "+what+" has both a 'value' and an 'expression'; use one or the other");
     }
     JsonElement v = entry.get("value");
+    if (v.isJsonNull()) {
+      return ""; // null is "no value", so it suppresses, like ""; asString() would give the text "null"
+    }
     return v.isJsonPrimitive() ? v.asString() : org.hl7.fhir.utilities.json.parser.JsonParser.compose(v, false);
   }
 
