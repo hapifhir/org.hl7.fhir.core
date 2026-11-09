@@ -135,13 +135,13 @@ public class ProfileBasedFactory {
   protected void populateByProfile(Element element, PEDefinition definition, int level, String path, Map<String, String> values) throws SQLException, IOException {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
+        if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
           // requiredOnly prunes at the resource's top level only. Deeper optional elements are
           // left to the normal path, which already drops the ones that end up with no content.
           if (requiredOnly && level == 0 && pe.min() == 0 && !pe.hasFixedValue() && !hasMappingFor(pe)
               && (values == null || !values.containsKey(pe.schemaName()))) {
             continue;
           }
-        if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
           populateElement(element, pe, level, path, values);
         }
       }

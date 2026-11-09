@@ -235,8 +235,8 @@ used. The profile must already be loaded: one that isn't is a `400` (`Profile no
 ```
 
 `bundle` is compared as the *string* `"true"`, so a JSON boolean `true` does not switch it on.
-`requiredOnly` works the same way, and restricts generation to the elements the profile makes
-mandatory at the resource's top level.
+`requiredOnly` set to `true` or `"true"` restricts generation to the elements the profile makes
+mandatory at the resource's top level. Any other value, and absence, generates the full profile.
 
 ### POST /loadIG
 
