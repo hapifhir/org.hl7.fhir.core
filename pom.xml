@@ -22,7 +22,7 @@
         <commons_compress_version>1.27.1</commons_compress_version>
         <commons_io_version>2.17.0</commons_io_version>
         <commons_text_version>1.15.0</commons_text_version>
-        <guava_version>33.7.2-jre</guava_version>
+        <guava_version>33.8.0-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
         <validator_test_case_version>1.8.4</validator_test_case_version>
@@ -53,9 +53,12 @@
         <log4jVersion>2.26.1</log4jVersion>
         <okio.version>3.18.2</okio.version>
         <surefire.native.access.arg/>
-        <opentelemetry.version>1.67.0</opentelemetry.version>
-        <opentelemetry-testing.version>2.32.0-alpha</opentelemetry-testing.version>
-        <opentelemetry-instrumentation-annotations.version>2.32.0</opentelemetry-instrumentation-annotations.version>
+        <!-- OpenTelemetry: overrides the parent's (hapi-fhir) properties, which set the
+             version of its instrumentation BOM import and its explicitly managed otel artifacts -->
+        <otel_instrumentation.version>2.33.1</otel_instrumentation.version>
+        <otel_agent_for_testing.version>${otel_instrumentation.version}-alpha</otel_agent_for_testing.version>
+        <otel_api.version>1.68.0-alpha</otel_api.version>
+        <opentelemetry-bom.version>1.68.0</opentelemetry-bom.version>
         <spotbugs.threshold>High</spotbugs.threshold>
         <spotbugs.maxRank>9</spotbugs.maxRank>
     </properties>
@@ -378,7 +381,14 @@
                 <artifactId>thymeleaf</artifactId>
                 <version>3.1.5.RELEASE</version>
             </dependency>
-			
+
+            <!-- Used in thymeleaf, managed to resolve vulnerability -->
+            <dependency>
+                <groupId>ognl</groupId>
+                <artifactId>ognl</artifactId>
+                <version>3.4.17</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.codelibs</groupId>
                 <artifactId>xpp3</artifactId>
@@ -428,31 +438,15 @@
                 <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
                 <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
             </dependency>
-            <!-- OpenTelemetry - this is inherited through our parent pom and is not used internally -->
-            <dependency>
-                <groupId>io.opentelemetry.javaagent</groupId>
-                <artifactId>opentelemetry-testing-common</artifactId>
-                <version>${opentelemetry-testing.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.opentelemetry.javaagent</groupId>
-                <artifactId>opentelemetry-agent-for-testing</artifactId>
-                <version>${opentelemetry-testing.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.opentelemetry.instrumentation</groupId>
-                <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-                <version>${opentelemetry-instrumentation-annotations.version}</version>
-            </dependency>
+            <!-- OpenTelemetry - this is inherited through our parent pom and is not used internally.
+                 The parent's instrumentation BOM pins core otel (api/context/common) to an older version;
+                 importing the core BOM here brings those up to ${opentelemetry-bom.version}. -->
             <dependency>
                 <groupId>io.opentelemetry</groupId>
-                <artifactId>opentelemetry-api</artifactId>
-                <version>${opentelemetry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.opentelemetry</groupId>
-                <artifactId>opentelemetry-context</artifactId>
-                <version>${opentelemetry.version}</version>
+                <artifactId>opentelemetry-bom</artifactId>
+                <version>${opentelemetry-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
