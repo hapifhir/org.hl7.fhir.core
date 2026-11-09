@@ -109,25 +109,9 @@ public class PackageClient {
     JsonObject json;
     try {
       // registries answer an unknown package with 404, so a list without versions isn't kept
-      json = answers == null ? fetchJson(url) : answers.get(url, () -> fetchJson(url), j -> j.hasObject("versions"));
-      JsonObject versions = json.getJsonObject("versions");
-      boolean hasDates = true;
-      if (versions != null) {
-        for (JsonProperty v : versions.getProperties()) {
-          JsonObject obj = versions.getJsonObject(v.getName());
-          Instant d = getInstantFromPackageDate(obj);
-          if (d == null) {
-            hasDates = false;
-          }
-          res.add(new PackageInfo(obj.asString("Name", "name"),
-            obj.asString("Version", "version"),
-            obj.asString("FhirVersion", "fhirVersion"),
-            obj.asString("Description", "description"),
-            obj.asString("url"),
-            obj.asString("canonical"),
-            address, d));
-        }
-      }
+      json = answers == null ? fetchJson(url) : answers.get(url, () -> fetchJson(url),
+        j -> j.hasObject("versions") && canRead(() -> readVersions(j, new ArrayList<>())));
+      boolean hasDates = readVersions(json, res);
       if (hasDates) {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(true));
       } else {
@@ -137,6 +121,31 @@ public class PackageClient {
       log.warn("Error fetching "+url+": "+e.getMessage());
     }
     return res;    
+  }
+
+  /**
+   * @return whether every version has a date
+   */
+  private boolean readVersions(JsonObject json, List<PackageInfo> res) {
+    JsonObject versions = json.getJsonObject("versions");
+    boolean hasDates = true;
+    if (versions != null) {
+      for (JsonProperty v : versions.getProperties()) {
+        JsonObject obj = versions.getJsonObject(v.getName());
+        Instant d = getInstantFromPackageDate(obj);
+        if (d == null) {
+          hasDates = false;
+        }
+        res.add(new PackageInfo(obj.asString("Name", "name"),
+          obj.asString("Version", "version"),
+          obj.asString("FhirVersion", "fhirVersion"),
+          obj.asString("Description", "description"),
+          obj.asString("url"),
+          obj.asString("canonical"),
+          address, d));
+      }
+    }
+    return hasDates;
   }
 
   @Nullable
@@ -186,21 +195,9 @@ public class PackageClient {
     List<PackageInfo> res = new ArrayList<>();
     try {
       String url = Utilities.pathURL(address, "catalog?") + params;
-      JsonArray json = answer(url, () -> fetchJsonArray(url));
-      boolean hasDates = true;
-      for (JsonObject obj : json.asJsonObjects()) {
-        Instant d = obj.has("date") ? obj.asDate("date") : null;
-        if (d == null) {
-          hasDates = false;
-        }
-        res.add(new PackageInfo(obj.asString("Name", "name"),
-          obj.asString("Version", "version"),
-          obj.asString("FhirVersion", "fhirVersion"),
-          obj.asString("Description", "description"),
-          obj.asString("url"),
-          obj.asString("canonical"),
-          address, d));
-      }
+      JsonArray json = answers == null ? fetchJsonArray(url) : answers.get(url, () -> fetchJsonArray(url),
+        j -> canRead(() -> readCatalog(j, new ArrayList<>())));
+      boolean hasDates = readCatalog(json, res);
       if (exactMatch) {
         if (!Utilities.noString(name)) {
           res.removeIf(pi -> !name.equals(pi.getId()));
@@ -217,6 +214,39 @@ public class PackageClient {
     } catch (IOException e1) {
     }
     return res;
+  }
+
+  /**
+   * @return whether every package has a date
+   */
+  private boolean readCatalog(JsonArray json, List<PackageInfo> res) {
+    boolean hasDates = true;
+    for (JsonObject obj : json.asJsonObjects()) {
+      Instant d = obj.has("date") ? obj.asDate("date") : null;
+      if (d == null) {
+        hasDates = false;
+      }
+      res.add(new PackageInfo(obj.asString("Name", "name"),
+        obj.asString("Version", "version"),
+        obj.asString("FhirVersion", "fhirVersion"),
+        obj.asString("Description", "description"),
+        obj.asString("url"),
+        obj.asString("canonical"),
+        address, d));
+    }
+    return hasDates;
+  }
+
+  /**
+   * whether an answer can be read without an error; one that can't isn't kept
+   */
+  private static boolean canRead(Runnable read) {
+    try {
+      read.run();
+      return true;
+    } catch (RuntimeException e) {
+      return false;
+    }
   }
 
   public Date getNewPackages(Date lastCalled, List<PackageInfo> updates) {
@@ -246,10 +276,6 @@ public class PackageClient {
   private JsonArray fetchJsonArray(String source) throws IOException {
     String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     return (JsonArray) JsonParser.parse(src);
-  }
-
-  private <T> T answer(String url, RegistryAnswerCache.Fetcher<T> fetcher) throws IOException {
-    return answers == null ? fetcher.fetch() : answers.get(url, fetcher);
   }
 
   public String url(String id, String v) {

@@ -124,11 +124,12 @@ class RegistryAnswerCacheTests {
   }
 
   private FilesystemPackageCacheManager packageCacheManager(RegistryAnswerCache answers) throws IOException {
+    // the cache first: the other withers must pass it on
     return new FilesystemPackageCacheManager.Builder()
+      .withRegistryAnswerCache(answers)
       .withTestingCacheFolder()
       .withPackageServers(List.of(packageServer()))
       .withCiBuildClient(new CIBuildClient(root(), TTL, false))
-      .withRegistryAnswerCache(answers)
       .build();
   }
 
@@ -271,6 +272,29 @@ class RegistryAnswerCacheTests {
   }
 
   @Test
+  void versionListThatCantBeReadIsAskedAgain() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    registry.versions = "{\"versions\": {\"1.0.0\": \"x\"}}";
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).isEmpty();
+    registry.versions = VERSIONS;
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).hasSize(2);
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).hasSize(2);
+    assertEquals(2, registry.count("/" + PACKAGE_ID));
+  }
+
+  @Test
+  void catalogThatCantBeReadIsAskedAgain() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    registry.catalog = CATALOG.replace("\"version\"", "\"date\": \"20241130003105\", \"version\"");
+    // as without answers, the error is thrown to the caller
+    assertThrows(RuntimeException.class, () -> new PackageClient(packageServer(), answers).search(null, PACKAGE_CANONICAL, null, false, null, true));
+    registry.catalog = CATALOG;
+    assertThat(new PackageClient(packageServer(), answers).search(null, PACKAGE_CANONICAL, null, false, null, true)).hasSize(1);
+    assertThat(new PackageClient(packageServer(), answers).search(null, PACKAGE_CANONICAL, null, false, null, true)).hasSize(1);
+    assertEquals(2, registry.count("/catalog?"));
+  }
+
+  @Test
   void unparseableAnswerIsAskedAgain() throws IOException {
     RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
     registry.catalog = "[{";
@@ -327,6 +351,7 @@ class RegistryAnswerCacheTests {
       assertEquals(PACKAGE_ID, pcm.getPackageId(PACKAGE_CANONICAL));
       assertEquals(CI_PACKAGE_ID, pcm.getPackageId(IG_URL));
       assertEquals("2.0.0", pcm.getLatestVersion(PACKAGE_ID, true));
+      assertEquals("2.0.0", pcm.getLatestVersion(PACKAGE_ID, "2.0.x"));
     }
     // the catalog is searched for each canonical; the IG url isn't there, so it's found in the CI build list
     assertEquals(2, registry.count("/catalog?"));
@@ -341,9 +366,10 @@ class RegistryAnswerCacheTests {
       assertEquals(PACKAGE_ID, pcm.getPackageId(PACKAGE_CANONICAL));
       assertEquals(CI_PACKAGE_ID, pcm.getPackageId(IG_URL));
       assertEquals("2.0.0", pcm.getLatestVersion(PACKAGE_ID, true));
+      assertEquals("2.0.0", pcm.getLatestVersion(PACKAGE_ID, "2.0.x"));
     }
     assertEquals(4, registry.count("/catalog?"));
     assertEquals(2, registry.count("/ig/qas.json"));
-    assertEquals(2, registry.count("/" + PACKAGE_ID));
+    assertEquals(4, registry.count("/" + PACKAGE_ID));
   }
 }
