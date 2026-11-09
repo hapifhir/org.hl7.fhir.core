@@ -272,6 +272,20 @@ class RegistryAnswerCacheTests {
   }
 
   @Test
+  void keptAnswerIsWhatTheRegistrySaidNotWhatACallerFiltered() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    registry.versions = VERSIONS.replace("}}}", "}, \"2.1.0-ballot\": {\"name\": \"" + PACKAGE_ID + "\", \"version\": \"2.1.0-ballot\"}}}");
+    assertEquals("2.0.0", new PackageClient(packageServer(), answers).getLatestVersion(PACKAGE_ID, true));
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).extracting(PackageInfo::getVersion).contains("2.1.0-ballot");
+    assertEquals(1, registry.count("/" + PACKAGE_ID));
+
+    registry.catalog = CATALOG.replace("}]", "}, {\"name\": \"" + OTHER_PACKAGE_ID + "\", \"version\": \"0.1.0\", \"canonical\": \"" + PACKAGE_CANONICAL + "/other\"}]");
+    assertThat(new PackageClient(packageServer(), answers).search(null, PACKAGE_CANONICAL, null, false, null, true)).hasSize(1);
+    assertThat(new PackageClient(packageServer(), answers).search(null, PACKAGE_CANONICAL, null, false, null, false)).hasSize(2);
+    assertEquals(1, registry.count("/catalog?"));
+  }
+
+  @Test
   void versionListThatCantBeReadIsAskedAgain() throws IOException {
     RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
     registry.versions = "{\"versions\": {\"1.0.0\": \"x\"}}";
