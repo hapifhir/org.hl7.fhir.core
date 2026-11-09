@@ -1301,3 +1301,18 @@ p: {
   "properties" : {"designation:900000000000003001":["Apgar score at 20 minutes (observable entity)"],"designation:900000000000013009":["Apgar score at 20 minutes"],"inactive":["false"]}
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "249227004", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar color score (observable entity)"],"designation:900000000000013009":["Apgar color score","Apgar colour score","Apgar appearance score"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "249223000", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar heart rate score (observable entity)"],"designation:900000000000013009":["Apgar heart rate score","Apgar pulse rate score"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "249226008", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar response to stimulus score (observable entity)"],"designation:900000000000013009":["Apgar response to stimulus score","Apgar grimace score"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
