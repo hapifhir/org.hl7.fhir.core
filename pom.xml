@@ -22,7 +22,7 @@
         <commons_compress_version>1.27.1</commons_compress_version>
         <commons_io_version>2.17.0</commons_io_version>
         <commons_text_version>1.15.0</commons_text_version>
-        <guava_version>33.7.2-jre</guava_version>
+        <guava_version>33.8.0-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
         <validator_test_case_version>1.8.4</validator_test_case_version>
@@ -378,7 +378,14 @@
                 <artifactId>thymeleaf</artifactId>
                 <version>3.1.5.RELEASE</version>
             </dependency>
-			
+
+            <!-- Used in thymeleaf, managed to resolve vulnerability -->
+            <dependency>
+                <groupId>ognl</groupId>
+                <artifactId>ognl</artifactId>
+                <version>3.4.17</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.codelibs</groupId>
                 <artifactId>xpp3</artifactId>
