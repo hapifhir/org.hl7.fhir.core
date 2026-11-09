@@ -41,13 +41,30 @@ public class CIBuildClient {
    **/
   private final Map<String, String> ciPackageUrls = new HashMap<>();
 
+  /**
+   * if not null, the list of IG builds is read from it while it has it, and the server's list is kept in it
+   */
+  private final RegistryAnswerCache answers;
+
   public CIBuildClient() {
    this(DEFAULT_ROOT_URL, DEFAULT_CI_QUERY_INTERVAL, false);
   }
 
   public CIBuildClient(String rootUrl, long ciQueryInterval, boolean silent) {
+    this(rootUrl, ciQueryInterval, null);
+  }
+
+  private CIBuildClient(String rootUrl, long ciQueryInterval, RegistryAnswerCache answers) {
     this.rootUrl = rootUrl;
     this.ciQueryInterval = ciQueryInterval;
+    this.answers = answers;
+  }
+
+  /**
+   * @return a new client for the same server that shares the list of IG builds through answers
+   */
+  CIBuildClient withAnswers(RegistryAnswerCache answers) {
+    return new CIBuildClient(rootUrl, ciQueryInterval, answers);
   }
 
   String getPackageId(String canonical) {
@@ -154,10 +171,7 @@ public class CIBuildClient {
 
   private void updateFromCIServer() throws IOException {
     try {
-      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
-      res.checkThrowException();
-
-      ciBuildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
+      ciBuildInfo = answers == null ? fetchBuildInfo() : answers.get(rootUrl + "/ig/qas.json", this::fetchBuildInfo);
 
       List<BuildRecord> builds = new ArrayList<>();
 
@@ -182,6 +196,12 @@ public class CIBuildClient {
     } finally {
       ciLastQueriedTimeStamp = System.currentTimeMillis();
     }
+  }
+
+  private JsonArray fetchBuildInfo() throws IOException {
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    return (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
   }
 
   private String getRepo(String path) {

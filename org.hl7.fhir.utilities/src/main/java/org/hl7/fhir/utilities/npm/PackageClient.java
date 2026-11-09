@@ -38,12 +38,22 @@ public class PackageClient {
 
   private PackageServer server;
   private String address;
+  private final RegistryAnswerCache answers;
 
 
   public PackageClient(PackageServer server) {
+    this(server, null);
+  }
+
+  /**
+   * @param answers if not null, catalog searches and version lists are answered from it while it has them, and
+   *                the server's answers are kept in it
+   */
+  public PackageClient(PackageServer server, @Nullable RegistryAnswerCache answers) {
     super();
     this.server = server;
     address = this.server.getUrl();
+    this.answers = answers;
   }
 
   public boolean exists(String id, String ver) throws IOException {
@@ -98,7 +108,7 @@ public class PackageClient {
     List<PackageInfo> res = new ArrayList<>();
     JsonObject json;
     try {
-      json = fetchJson(url);
+      json = answer(url, () -> fetchJson(url));
       JsonObject versions = json.getJsonObject("versions");
       boolean hasDates = true;
       if (versions != null) {
@@ -174,7 +184,8 @@ public class PackageClient {
     }
     List<PackageInfo> res = new ArrayList<>();
     try {
-      JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+ params);
+      String url = Utilities.pathURL(address, "catalog?") + params;
+      JsonArray json = answer(url, () -> fetchJsonArray(url));
       boolean hasDates = true;
       for (JsonObject obj : json.asJsonObjects()) {
         Instant d = obj.has("date") ? obj.asDate("date") : null;
@@ -234,6 +245,10 @@ public class PackageClient {
   private JsonArray fetchJsonArray(String source) throws IOException {
     String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     return (JsonArray) JsonParser.parse(src);
+  }
+
+  private <T> T answer(String url, RegistryAnswerCache.Fetcher<T> fetcher) throws IOException {
+    return answers == null ? fetcher.fetch() : answers.get(url, fetcher);
   }
 
   public String url(String id, String v) {

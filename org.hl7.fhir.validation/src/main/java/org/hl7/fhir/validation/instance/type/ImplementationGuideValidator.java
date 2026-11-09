@@ -20,6 +20,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
 import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.npm.PackageServer;
+import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
@@ -31,6 +32,13 @@ import javax.annotation.Nonnull;
 public class ImplementationGuideValidator extends BaseValidator {
 
   private static final int DATE_WARNING_CUTOFF = 3;
+
+  /**
+   * The IG resource is validated in every build of a watch session, so what the package registries and
+   * build.fhir.org answer about its dependencies is kept for an hour, as long as CIBuildClient keeps its list of
+   * IG builds. A request that fails isn't kept.
+   */
+  private static final RegistryAnswerCache REGISTRY_ANSWERS = new RegistryAnswerCache(60 * 60 * 1000L);
 
   public ImplementationGuideValidator(BaseValidator parent) {
     super(parent);
@@ -85,7 +93,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     try {
       ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ElementModelUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withRegistryAnswerCache(REGISTRY_ANSWERS).build();
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(uri);
         String canonical = pcm.getPackageUrl(packageId);
@@ -119,7 +127,7 @@ public class ImplementationGuideValidator extends BaseValidator {
         }
         if (settings.isForPublication()) { 
           try {
-            PackageClient pc = new PackageClient(PackageServer.primaryServer());
+            PackageClient pc = new PackageClient(PackageServer.primaryServer(), REGISTRY_ANSWERS);
             List<PackageInfo> list = pc.getVersions(packageId);
             Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
             String lver = pcm.getLatestVersion(packageId, true);
