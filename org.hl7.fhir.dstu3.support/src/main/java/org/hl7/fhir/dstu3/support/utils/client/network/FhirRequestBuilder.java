@@ -178,9 +178,9 @@ public class FhirRequestBuilder {
           error = (OperationOutcome) resource;
         }
       } catch (IOException ioe) {
-        throw new EFhirClientException(0, "Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
+        throw new EFhirClientException(response.getCode(), "Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
       } catch (Exception e) {
-        throw new EFhirClientException(0, "Error parsing response message from "+source+": " + e.getMessage(), e);
+        throw new EFhirClientException(response.getCode(), "Error parsing response message from "+source+": " + e.getMessage(), e);
       }
     }
 

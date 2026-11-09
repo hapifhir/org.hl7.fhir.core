@@ -986,7 +986,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     } catch (Exception e) {
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
-      if (e instanceof EFhirClientException) {
+      if (isServerUnavailable(e)) {
+        errorClass = TerminologyServiceErrorClass.SERVER_ERROR;
+      } else if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
         if (fhirClientException.hasServerErrors()) {
           errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerErrors().get(0));
@@ -1063,7 +1065,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+      boolean registryFailed = tc == null && terminologyClientManager.lookupFailed(url);
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) || registryFailed ? TerminologyServiceErrorClass.SERVER_ERROR : TerminologyServiceErrorClass.UNKNOWN;
+      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1212,10 +1216,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) ? TerminologyServiceErrorClass.SERVER_ERROR : res.getErrorClass();
       if (res != null && !res.isFromServer()) {
-        res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
+        res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", errorClass, false);
       } else {
-        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), res.getErrorClass(), allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     if (res != null && res.getValueset() != null) {
@@ -1223,6 +1228,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * Did the $expand fail because the server couldn't be reached just then, rather than with an answer from it? That's
+   * no response at all (a timeout or a network error), or a 408, 429, 502, 503 or 504. Those get SERVER_ERROR, which
+   * TerminologyCache.store() keeps for this run only (#2524). Anything else the server returned, a 500 included, is
+   * its answer, and is cached for later runs as before.
+   */
+  public static boolean isServerUnavailable(Throwable e) {
+    boolean noResponse = false;
+    for (Throwable t = e; t != null; t = t.getCause()) {
+      if (t instanceof EFhirClientException && ((EFhirClientException) t).getCode() > 0) {
+        // there was a response, so its status decides
+        return Utilities.existsInList(((EFhirClientException) t).getCode(), 408, 429, 502, 503, 504);
+      }
+      if (t instanceof IOException) {
+        noResponse = true;
+      }
+    }
+    return noResponse;
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
@@ -3745,7 +3770,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         svs = txCache.getValueSet(canonical);
       } else {
         svs = terminologyClientManager.findValueSetOnServer(canonical);
-        txCache.cacheValueSet(canonical, svs);
+        txCache.cacheValueSet(canonical, svs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (svs != null) {
         String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3768,7 +3793,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else {
 
         scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        txCache.cacheCodeSystem(canonical, scs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
