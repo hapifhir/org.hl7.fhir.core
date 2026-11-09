@@ -17,6 +17,7 @@ import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
@@ -201,6 +202,7 @@ public class CodeSystemValidator extends BaseValidator {
 
       CodeSystem csSupp = null;
       if ("supplement".equals(content) || supp != null) {      
+        checkSupplementLanguages(errors, cs, stack);
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
           if (context.getTxSupportInfo(supp, null).isSupported()) {
             csSupp = context.fetchCodeSystem(supp, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
@@ -212,22 +214,44 @@ public class CodeSystemValidator extends BaseValidator {
 
 
             }
-            List<Element> concepts = cs.getChildrenByName("concept");
+            // all the concepts, the nested ones too: a code nested in another concept in a supplement must be in the
+            // code system just as much as one at the top level
+            List<Element> concepts = new ArrayList<>();
+            List<NodeStack> conceptStacks = new ArrayList<>();
+            listSupplementConcepts(cs, stack, concepts, conceptStacks);
             int codeLimit = settings.getCodeSystemValidationSizeLimit();
             boolean checkSupplementConcepts = codeLimit == 0 || concepts.size() <= codeLimit;
             if (!checkSupplementConcepts) {
               hint(errors, "2026-08-11", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_TOO_MANY_CODES, concepts.size(), codeLimit);
             }
             CanonicalPair suppCanonical = new CanonicalPair(supp);
+            // an extension-codes supplement defines codes in the code spaces the code system reserves for
+            // users (codesystem-reservedCodeSpace): those codes aren't in the code system, so they aren't checked
+            // against it. A code outside them is treated as one the code system defines (as a language
+            // pack would give it a display), with a warning that it's outside the scope of the supplement.
+            // The reserved code spaces can only be known when the code system is available here
+            boolean extensionCodes = "extension-codes".equals(cs.getExtensionString(ExtensionDefinitions.EXT_SUPPL_TYPE)) && csSupp != null;
+            // no hierarchy (subsumption) is ever defined in a reserved code space, so a supplement can't nest codes
+            // from one, at any level
+            if (csSupp != null && !CodeSystemUtilities.getReservedCodeSpaces(csSupp).isEmpty()) {
+              checkReservedCodeHierarchy(errors, cs, stack, csSupp, supp, false);
+            }
             List<CSCodingValidationRequest> batch = new ArrayList<>();
             boolean systemOk = true;
             boolean first = true;
-            int ce = 0;
             try {
-              for (Element concept : concepts) {
-                NodeStack nstack = stack.push(concept, ce, null, null);
+              for (int ce = 0; ce < concepts.size(); ce++) {
+                Element concept = concepts.get(ce);
+                NodeStack nstack = conceptStacks.get(ce);
                 if (ce == 0) {
                   rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);
+                }
+                String ecode = concept.getChildValue("code");
+                if (extensionCodes && !Utilities.noString(ecode)) {
+                  if (CodeSystemUtilities.isInReservedCodeSpace(csSupp, ecode)) {
+                    continue;
+                  }
+                  warning(errors, "2026-10-31", IssueType.BUSINESSRULE, nstack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED, supp, ecode);
                 }
                 if (checkSupplementConcepts) {
                   // the first concept is validated on its own, to find out whether the base code system can be
@@ -250,7 +274,6 @@ public class CodeSystemValidator extends BaseValidator {
                     }
                   }
                 }
-                ce++;
               }
               ok = executeSupplementBatch(errors, batch, supp, options) && ok;
             } catch (Exception e) {
@@ -944,6 +967,68 @@ public class CodeSystemValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  /**
+   * A supplement that doesn't say what language it is in (CodeSystem.language): its displays, and its
+   * designations with no language, are correct displays in every language - which may not be what the
+   * author meant, so say so.
+   */
+  private void checkSupplementLanguages(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+    if (!Utilities.noString(cs.getNamedChildValue("language", false))) {
+      return;
+    }
+    int noLanguage = countSupplementDisplays(cs);
+    if (noLanguage > 0) {
+      warning(errors, "2026-11-02", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_NO_LANGUAGE, noLanguage);
+    }
+  }
+
+  // the displays and the designations with no language, in all the concepts
+  private int countSupplementDisplays(Element parent) {
+    int res = 0;
+    for (Element concept : parent.getChildrenByName("concept")) {
+      if (!Utilities.noString(concept.getNamedChildValue("display", false))) {
+        res++;
+      }
+      for (Element d : concept.getChildrenByName("designation")) {
+        if (Utilities.noString(d.getNamedChildValue("language", false))) {
+          res++;
+        }
+      }
+      res = res + countSupplementDisplays(concept);
+    }
+    return res;
+  }
+
+  // the concepts of a supplement, depth first, with the stack for each
+  private void listSupplementConcepts(Element parent, NodeStack stack, List<Element> concepts, List<NodeStack> stacks) {
+    int i = 0;
+    for (Element concept : parent.getChildrenByName("concept")) {
+      NodeStack cstack = stack.push(concept, i, null, null);
+      concepts.add(concept);
+      stacks.add(cstack);
+      listSupplementConcepts(concept, cstack, concepts, stacks);
+      i++;
+    }
+  }
+
+  /**
+   * A code in a code space that the base code system reserves for users (codesystem-reservedCodeSpace) has no
+   * hierarchy: there is no subsumption in a reserved code space. So in a supplement, such a code shouldn't be
+   * nested in another concept, or have concepts nested in it.
+   */
+  private void checkReservedCodeHierarchy(List<ValidationMessage> errors, Element parent, NodeStack stack, CodeSystem csSupp, String supp, boolean nested) {
+    int i = 0;
+    for (Element concept : parent.getChildrenByName("concept")) {
+      NodeStack cstack = stack.push(concept, i, null, null);
+      String code = concept.getNamedChildValue("code", false);
+      if (!Utilities.noString(code) && (nested || concept.hasChildren("concept")) && CodeSystemUtilities.isInReservedCodeSpace(csSupp, code)) {
+        warning(errors, "2026-11-02", IssueType.BUSINESSRULE, cstack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY, code, supp);
+      }
+      checkReservedCodeHierarchy(errors, concept, cstack, csSupp, supp, true);
+      i++;
+    }
   }
 
   private int countConcepts(Element cs) {

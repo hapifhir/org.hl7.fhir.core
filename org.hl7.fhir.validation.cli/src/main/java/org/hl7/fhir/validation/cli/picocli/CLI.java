@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.hl7.fhir.validation.cli.JavaSystemProxyParamSetter.verifyProxySystemProperties;
 
@@ -68,7 +70,8 @@ public class CLI {
     return commandLine.getExecutionStrategy().execute(parseResult);
   }
 
-  private static String[] replaceDeprecatedArgs(String[] args) {
+  // package-private for CLITests
+  static String[] replaceDeprecatedArgs(String[] args) {
     Map<String, String> argMap = new HashMap<>();
     argMap.put("-install", "install");
     argMap.put("-compare", "compare");
@@ -99,15 +102,30 @@ public class CLI {
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
+    // the commands the old mode options became. Once the command line names a command, a
+    // later old mode option is an option of that command instead - e.g. 'server 9096 -txTests',
+    // where -txTests turns on the server's /txTest endpoints, and is not the txTests command
+    Set<String> commands = new HashSet<>();
+    for (String v : argMap.values()) {
+      if (!v.startsWith("-")) {
+        commands.add(v);
+      }
+    }
+    boolean commandSeen = false;
     String[] newArgs = new String[args.length];
     for (int i = 0; i < args.length; i++) {
+      String newArg = args[i];
       if (argMap.containsKey(args[i])) {
-        final String newArg = argMap.get(args[i]);
-        log.warn("The option '{}' is no longer in use. Using '{}' ", args[i], newArg);
-        newArgs[i] = newArg;
-      } else {
-        newArgs[i] = args[i];
+        final String mapped = argMap.get(args[i]);
+        if (!(commandSeen && commands.contains(mapped))) {
+          log.warn("The option '{}' is no longer in use. Using '{}' ", args[i], mapped);
+          newArg = mapped;
+        }
       }
+      if (commands.contains(newArg)) {
+        commandSeen = true;
+      }
+      newArgs[i] = newArg;
     }
 
     newArgs = insertCodeGenIfNecessary(newArgs);

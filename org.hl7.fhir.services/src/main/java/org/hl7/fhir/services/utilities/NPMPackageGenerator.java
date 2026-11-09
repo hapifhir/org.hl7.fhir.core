@@ -96,6 +96,21 @@ public class NPMPackageGenerator {
     return created;
   }
 
+  // files whose path was too long for a tar entry, and so are in the package under another name:
+  // original path -> the path they have in the package
+  private Map<String, String> renamed = new LinkedHashMap<>();
+
+  /**
+   * The files that are in the package under a different name than the one they were added with,
+   * because their path was too long for a tar entry (see shortenForTar): the original path (with
+   * the package/ prefix), and the path in the package. Anything that finds such a file by its
+   * name won't find it - that matters for the files outside the package's resource folders (tests,
+   * other...), which nothing indexes.
+   */
+  public Map<String, String> getRenamedFiles() {
+    return renamed;
+  }
+
   private TarArchiveOutputStream tar;
   private ByteArrayOutputStream OutputStream;
   private BufferedOutputStream bufferedOutputStream;
@@ -400,8 +415,10 @@ public class NPMPackageGenerator {
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
     if (tooLongForTar(path)) {
+      String original = path;
       name = shortenForTar(cat.getDirectory(), name);
       path = cat.getDirectory()+name;
+      renamed.put(original, path);
     }
       
     if (created.contains(path)) {
@@ -425,8 +442,10 @@ public class NPMPackageGenerator {
     }
     String path = folder+"/"+name;
     if (tooLongForTar(path)) {
+      String original = path;
       name = shortenForTar(folder+"/", name);
       path = folder+"/"+name;
+      renamed.put(original, path);
     }
       
     if (created.contains(path)) {

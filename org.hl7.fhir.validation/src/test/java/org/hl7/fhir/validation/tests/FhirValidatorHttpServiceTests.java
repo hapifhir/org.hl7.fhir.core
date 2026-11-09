@@ -7,6 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.Enumerations;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -125,12 +127,16 @@ class FhirValidatorHttpServiceTest {
     }
 
     void setUpService(ValidationEngine validationEngine) throws URISyntaxException, IOException, InterruptedException {
+      setUpService(validationEngine, false);
+    }
+
+    void setUpService(ValidationEngine validationEngine, boolean autoLoadPackages) throws URISyntaxException, IOException, InterruptedException {
       // Initialize ValidationEngine
       validationEngine.getContext().setAllowLoadingDuplicates(true);
 
       // Connect to terminology server
       validationEngine.connectToTSServer("https://tx.fhir.org/r4", null, FhirPublication.fromCode(validationEngine.getVersion()), FhirSettings.getTxEcosystem());
-      service = new FhirValidatorHttpService(validationEngine, true, TEST_PORT);
+      service = new FhirValidatorHttpService(validationEngine, true, false, autoLoadPackages, TEST_PORT, null);
       service.startServer();
       httpClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(10))
@@ -693,6 +699,123 @@ class FhirValidatorHttpServiceTest {
       assertEquals(405, response.statusCode());
     }
 
+    private HttpResponse<String> lookupCanonical(String url, String version, String accept) throws Exception {
+      String query = (url == null ? "" : "url=" + java.net.URLEncoder.encode(url, "UTF-8")) +
+        (version == null ? "" : "&version=" + java.net.URLEncoder.encode(version, "UTF-8"));
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/canonical?" + query))
+        .header("Accept", accept)
+        .GET()
+        .build();
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    @DisplayName("Canonical - a resource the context knows, by url, with a version, and as XML")
+    void testCanonicalFound() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", null, "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"resourceType\":\"StructureDefinition\""), response.body());
+      assertTrue(response.body().contains("\"url\":\"http://hl7.org/fhir/StructureDefinition/patient-birthPlace\""), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", "4.0.1", "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace|4.0.1", null, "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/ValueSet/administrative-gender", null, "application/fhir+xml");
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+xml"));
+      assertTrue(response.body().contains("<ValueSet"), response.body());
+    }
+
+    @Test
+    @DisplayName("Canonical - what the context doesn't know is a 404")
+    void testCanonicalNotFound() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical("http://example.org/fhir/StructureDefinition/no-such-thing", null, "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"code\":\"not-found\""), response.body());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace", "9.9.9", "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+    }
+
+    /** a locator that records what it is asked for, and can only find http://example.org/fhir/ValueSet/located */
+    private java.util.List<String> installStubLocator(ValidationEngine engine) {
+      java.util.List<String> asked = new java.util.ArrayList<>();
+      engine.getContext().setLocator((caller, url, rules) -> {
+        asked.add(url);
+        if (url.equals("http://example.org/fhir/ValueSet/located")) {
+          ValueSet vs = new ValueSet(engine.getContext().getModelContext());
+          vs.setId("located");
+          vs.setUrl("http://example.org/fhir/ValueSet/located");
+          vs.setVersion("1.0.0");
+          vs.setName("Located");
+          vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
+          engine.getContext().cacheResource(vs);
+        }
+      });
+      return asked;
+    }
+
+    @Test
+    @DisplayName("Canonical - with -autoLoadPackages, what the context doesn't know is asked of the locator, which can load it")
+    void testCanonicalAutoLoad() throws Exception {
+      ValidationEngine engine = getValidationEngine();
+      java.util.List<String> asked = installStubLocator(engine);
+      setUpService(engine, true);
+      // a version matters: the locator can't honour it, so it isn't asked
+      HttpResponse<String> response = lookupCanonical("http://example.org/fhir/ValueSet/located", "1.0.0", "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertTrue(response.body().contains("particular version"), response.body());
+      response = lookupCanonical("http://example.org/fhir/ValueSet/located|1.0.0", null, "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertTrue(asked.isEmpty(), asked.toString());
+      // no version: the locator is asked, and loads it
+      response = lookupCanonical("http://example.org/fhir/ValueSet/located", null, "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      assertTrue(response.body().contains("\"url\":\"http://example.org/fhir/ValueSet/located\""), response.body());
+      assertEquals(java.util.List.of("http://example.org/fhir/ValueSet/located"), asked);
+      // now it's in the context, the locator isn't asked again - and a version can be asked for
+      response = lookupCanonical("http://example.org/fhir/ValueSet/located", "1.0.0", "application/fhir+json");
+      assertEquals(200, response.statusCode(), response.body());
+      assertEquals(1, asked.size());
+      // what the locator can't find is still a 404
+      response = lookupCanonical("http://example.org/fhir/ValueSet/not-located", null, "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertEquals("http://example.org/fhir/ValueSet/not-located", asked.get(1));
+    }
+
+    @Test
+    @DisplayName("Canonical - without -autoLoadPackages, the locator is never asked")
+    void testCanonicalNoAutoLoad() throws Exception {
+      ValidationEngine engine = getValidationEngine();
+      java.util.List<String> asked = installStubLocator(engine);
+      setUpService(engine);
+      HttpResponse<String> response = lookupCanonical("http://example.org/fhir/ValueSet/located", null, "application/fhir+json");
+      assertEquals(404, response.statusCode(), response.body());
+      assertTrue(asked.isEmpty(), asked.toString());
+    }
+
+    @Test
+    @DisplayName("Canonical - url is required, absolute, and bounded; the version only once")
+    void testCanonicalBadRequests() throws Exception {
+      setUpService(getValidationEngine());
+      HttpResponse<String> response = lookupCanonical(null, null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: url"), response.body());
+      response = lookupCanonical("StructureDefinition/patient-birthPlace", null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      response = lookupCanonical("http://example.org/" + "x".repeat(5000), null, "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      response = lookupCanonical("http://hl7.org/fhir/StructureDefinition/patient-birthPlace|4.0.1", "4.0.1", "application/fhir+json");
+      assertEquals(400, response.statusCode());
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/canonical?url=http://hl7.org/fhir/ValueSet/administrative-gender"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+      assertEquals(405, httpClient.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+    }
+
     @Test
     @DisplayName("Matchetype - Successful comparison")
     void testMatchetypeComparisonSuccess() throws Exception {
@@ -1221,6 +1344,7 @@ class FhirValidatorHttpServiceTest {
       assertTrue(response.body().contains("/narrative"));
       assertTrue(response.body().contains("/transform"));
       assertTrue(response.body().contains("/version"));
+      assertTrue(response.body().contains("/canonical"));
       assertTrue(response.body().contains("/compile"));
     }
 

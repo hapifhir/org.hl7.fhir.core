@@ -139,11 +139,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     public String getCode() {
       return code;
     }
+    // a token with no system (designation=es) matches a use code from any system, or a language
     public boolean matches(Coding use) {
-      return system.equals(use.getSystem()) && code.equals(use.getCode());
+      return (system == null || system.equals(use.getSystem())) && code.equals(use.getCode());
     }
     public boolean matchesLang(String language) {
-      return system.equals("urn:ietf:bcp:47") && code.equals(language);
+      return (system == null || system.equals("urn:ietf:bcp:47")) && code.equals(language);
     }
   }
 
@@ -695,7 +696,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException {
     opContext.deadCheck("excludeCodes");
-    exc.checkNoModifiers("Compose.exclude", "expanding");
+    checkUnknownModifiers(exc, vspath);
+    for (int i = 0; i < exc.getFilter().size(); i++) {
+      checkUnknownModifiers(exc.getFilter().get(i), vspath + ".filter[" + i + "]");
+    }
     if (!excludeSpecialCase && exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0 && exc.getValueSet().size() == 0) {
       wc.getExcludeSystems().add(exc.getSystem());
       return;
@@ -868,7 +872,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (debug) {
         e.printStackTrace();
       }
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
+      return new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
 
@@ -1023,11 +1027,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("designation".equals(name)) {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
+      // a token: system|code, or a bare code, which matches a designation's language, or its use
+      // code from any system (designation=es is the same as urn:ietf:bcp:47|es)
       String[] v = value.primitiveValue().split("\\|");
-      if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
+      if (v.length == 1 && !Utilities.noString(v[0])) {
+        this.designations.add(new Token(null, v[0]));
+      } else if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
         throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
+      } else {
+        this.designations.add(new Token(v[0], v[1]));
       }
-      this.designations.add(new Token(v[0], v[1]));
       focus.getExpansion().addParameter().setName(name).setValue(new StringType(value.primitiveValue()));
     }
     if ("offset".equals(name) && value instanceof IntegerType) {
@@ -1166,6 +1175,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
         return v;
     }
     return null;
+  }
+
+  /**
+   * A modifier extension changes the meaning of what it's on: one this expander doesn't know means the value set
+   * can't be expanded - a problem with the value set (a 4xx), not with the server
+   */
+  private void checkUnknownModifiers(BackboneElement e, String path) {
+    if (e.hasModifierExtension()) {
+      String urls = e.getModifierExtension().stream().map(Extension::getUrl).distinct().collect(java.util.stream.Collectors.joining(", "));
+      String msg = context.formatMessage(I18nConstants.VALUESET_MODIFIER_EXTENSION_UNKNOWN, focus == null ? "" : focus.getVersionedUrl(), path, urls);
+      List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.BUSINESSRULE, path, msg, OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_MODIFIER_EXTENSION_UNKNOWN));
+      throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
+    }
   }
 
   private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
@@ -1452,7 +1475,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet, String vspath) throws OperationIsTooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     opContext.deadCheck("includeCodes");
-    inc.checkNoModifiers("Compose.include", "expanding");
+    checkUnknownModifiers(inc, vspath);
+    for (int i = 0; i < inc.getFilter().size(); i++) {
+      checkUnknownModifiers(inc.getFilter().get(i), vspath + ".filter[" + i + "]");
+    }
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (CanonicalType imp : inc.getValueSet()) {
       imports.add(importValueSet(dwc, imp.getValue(), imp, exp, expParams, noInactive, valueSet));
@@ -1486,7 +1512,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
           } else {
             List<String> versions = new ArrayList<>();
             for (CodeSystem c : list) {
-              versions.add(c.getVersion());
+              if (c.hasVersion()) {
+                versions.add(c.getVersion());
+              }
             }
             Collections.sort(versions);
             throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP, inc.getSystem(), version, presentVersionList(versions));
@@ -1715,6 +1743,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
           addExampleWarning(exp, cs);
         }
+        if (!CodeSystemUtilities.getReservedCodeSpaces(cs).isEmpty()) {
+          addReservedCodeSpaceWarning(exp, cs);
+        }
       }
 
       if (!inc.getConcept().isEmpty()) {
@@ -1722,6 +1753,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
         for (ConceptReferenceComponent c : inc.getConcept()) {
           c.checkNoModifiers("Code in Value Set", "expanding");
           ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
+          if (def == null) {
+            // a code in a code space the code system reserves for users to define their own codes: listed, it
+            // is in the expansion (with an extension-codes supplement's display, or the code space's default)
+            def = CodeSystemUtilities.findReservedCodeConcept(cs, c.getCode());
+          }
           boolean inactive = false; // default is true if we're a fragment and
           boolean isAbstract = false;
           if (def == null) {
@@ -1840,6 +1876,38 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
+    } else if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty())) && fc.getOp() == FilterOperator.IN) {
+      // the listed codes (comma separated) - those the code system has
+      dwc.setCanBeHierarchy(false);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] listed = fc.getValue().split("\\,");
+      for (String v : listed) {
+        ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), v.trim());
+        if (def != null && passesOtherFilters(filters, cs, def.getCode())) {
+          for (String code : getCodesForConcept(def, expParams)) {
+            opContext.deadCheck("processFilter-in");
+            if (exclude) {
+              excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
+            } else {
+              String vstatus = determineStatus(cs, def);
+              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+                imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, vstatus);
+            }
+          }
+        }
+      }
+    } else if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty())) && fc.getOp() == FilterOperator.NOTIN) {
+      // every code except the listed ones (comma separated). Their descendants are not excluded, so the
+      // result isn't a hierarchy
+      dwc.setCanBeHierarchy(false);
+      for (ConceptDefinitionComponent def : cs.getConcept()) {
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, new CodeListFilter(allErrors, fc.getValue()), filters, exp, Integer.MAX_VALUE);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new CodeListFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp, Integer.MAX_VALUE);
+        }
+      }
     } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
       // gg; note: wtf is this: if the filter is display=v, look up the code 'v', and see if it's display is 'v'?
       dwc.setCanBeHierarchy(false);
@@ -1921,6 +1989,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
       exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED, new BooleanType(true));
       exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED_REASON, new StringType("This extension is based on a fragment of the code system "+cs.getUrl()));
 
+    }
+  }
+
+  // a code system that reserves code spaces for users to define their own codes (codesystem-reservedCodeSpace) has
+  // members that an expansion of all of it can't list - $validate-code accepts them - so the expansion isn't closed
+  private void addReservedCodeSpaceWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
+    if (!exp.hasExtension(ExtensionDefinitions.EXT_UNCLOSED)) {
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED, new BooleanType(true));
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED_REASON, new StringType("The code system '"+cs.getUrl()+"' reserves code spaces for users to define their own codes, and those codes are not in the expansion"));
     }
   }
 

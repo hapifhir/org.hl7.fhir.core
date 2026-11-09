@@ -77,6 +77,7 @@ public class EFhirClientException extends RuntimeException {
 	
 	public EFhirClientException(int code, String message, Exception cause) {
 		super(message, cause);
+		this.code = code;
 	}
 	
 	/**
@@ -88,6 +89,7 @@ public class EFhirClientException extends RuntimeException {
 	 */
 	public EFhirClientException(int code, String message, OperationOutcome serverError) {
 		super(message);
+		this.code = code;
 		if(serverError != null) {
 			errors.add(serverError);
 		}

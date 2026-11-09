@@ -113,6 +113,9 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_SUPP_CANT_CHECK = "CODESYSTEM_CS_SUPP_CANT_CHECK";
   public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
   public static final String CODESYSTEM_CS_SUPP_INVALID_CODE = "CODESYSTEM_CS_SUPP_INVALID_CODE";
+  public static final String CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED = "CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED";
+  public static final String CODESYSTEM_CS_SUPP_NO_LANGUAGE = "CODESYSTEM_CS_SUPP_NO_LANGUAGE";
+  public static final String CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY = "CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY";
   public static final String CODESYSTEM_CS_SUPP_NO_SUPP = "CODESYSTEM_CS_SUPP_NO_SUPP";
   public static final String CODESYSTEM_CS_SUPP_TOO_MANY_CODES = "CODESYSTEM_CS_SUPP_TOO_MANY_CODES";
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
@@ -214,6 +217,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
+  public static final String DISPLAY_NAME_NOT_FIXED_USE_SUPPLEMENT = "Display_Name_Not_Fixed_use_Supplement";
   public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
@@ -835,6 +839,7 @@ public class I18nConstants {
   public static final String SM_GROUP_INPUT_TYPE_UNKNOWN_TYPE = "SM_GROUP_INPUT_TYPE_UNKNOWN_TYPE";
   public static final String SM_GROUP_NAME_DUPLICATE = "SM_GROUP_NAME_DUPLICATE";
   public static final String SM_IMPORT_NOT_FOUND = "SM_IMPORT_NOT_FOUND";
+  public static final String SM_IMPORT_NO_VALUE = "SM_IMPORT_NO_VALUE";
   public static final String SM_LIST_RULE_ID_ONLY_WHEN_SHARE = "SM_LIST_RULE_ID_ONLY_WHEN_SHARE";
   public static final String SM_MATCHING_RULEGROUP_NOT_FOUND = "SM_MATCHING_RULEGROUP_NOT_FOUND";
   public static final String SM_NAME_INVALID = "SM_NAME_INVALID";
@@ -1121,6 +1126,8 @@ public class I18nConstants {
   public static final String UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__ = "Unable_to_handle_system__filter_with_property__";
   public static final String UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__ = "UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__";
   public static final String UNABLE_TO_INFER_CODESYSTEM = "UNABLE_TO_INFER_CODESYSTEM";
+  public static final String UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM = "UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM";
+  public static final String VALUESET_MODIFIER_EXTENSION_UNKNOWN = "VALUESET_MODIFIER_EXTENSION_UNKNOWN";
   public static final String UNABLE_TO_LOCATE_THE_PROFILE__IN_ORDER_TO_VALIDATE_AGAINST_IT = "Unable_to_locate_the_profile__in_order_to_validate_against_it";
   public static final String UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___ = "Unable_to_process_request_for_resource_for___";
   public static final String UNABLE_TO_RESOLVE_ = "Unable_to_resolve_";

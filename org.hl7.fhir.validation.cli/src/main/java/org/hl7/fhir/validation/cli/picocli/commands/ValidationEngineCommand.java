@@ -38,8 +38,23 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
     return validationEngineParameters;
   }
 
+  /**
+   * Checks the command's own parameters. Called before the validation engine is loaded, which is
+   * slow, so that a bad parameter is reported straight away.
+   *
+   * @return null if the parameters are fine, otherwise a message saying what is wrong
+   */
+  protected String checkParameters() {
+    return null;
+  }
+
   @Override
   public Integer call() {
+    String problem = checkParameters();
+    if (problem != null) {
+      log.error(problem);
+      return 1;
+    }
 
     // Install any editor-supplied PO overlays before anything else loads — the
     // validation engine and message bundles latch on first access.
