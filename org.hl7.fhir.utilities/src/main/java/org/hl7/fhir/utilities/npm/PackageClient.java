@@ -108,7 +108,8 @@ public class PackageClient {
     List<PackageInfo> res = new ArrayList<>();
     JsonObject json;
     try {
-      json = answer(url, () -> fetchJson(url));
+      // registries answer an unknown package with 404, so a list without versions isn't kept
+      json = answers == null ? fetchJson(url) : answers.get(url, () -> fetchJson(url), j -> j.hasObject("versions"));
       JsonObject versions = json.getJsonObject("versions");
       boolean hasDates = true;
       if (versions != null) {

@@ -43,6 +43,9 @@ class RegistryAnswerCacheTests {
   private static final String VERSIONS = "{\"name\": \"" + PACKAGE_ID + "\", \"versions\": {"
     + "\"1.0.0\": {\"name\": \"" + PACKAGE_ID + "\", \"version\": \"1.0.0\"},"
     + "\"2.0.0\": {\"name\": \"" + PACKAGE_ID + "\", \"version\": \"2.0.0\"}}}";
+  private static final String OTHER_PACKAGE_ID = "example.fhir.uv.other";
+  private static final String OTHER_VERSIONS = "{\"name\": \"" + OTHER_PACKAGE_ID + "\", \"versions\": {"
+    + "\"0.1.0\": {\"name\": \"" + OTHER_PACKAGE_ID + "\", \"version\": \"0.1.0\"}}}";
   private static final String QAS = "[{\"url\": \"" + IG_URL + "\", \"package-id\": \"" + CI_PACKAGE_ID + "\","
     + " \"date\": \"Sat, 30 Nov, 2024 00:31:05 +0000\", \"repo\": \"Example/ci/branches/main/qa.json\"}]";
 
@@ -51,6 +54,8 @@ class RegistryAnswerCacheTests {
     final List<String> paths = Collections.synchronizedList(new ArrayList<>());
     volatile boolean down;
     volatile String catalog = CATALOG;
+    volatile String versions = VERSIONS;
+    volatile String qas = QAS;
 
     @Nonnull
     @Override
@@ -63,9 +68,11 @@ class RegistryAnswerCacheTests {
       if (path.startsWith("/catalog?")) {
         return json(catalog);
       } else if (path.equals("/" + PACKAGE_ID)) {
-        return json(VERSIONS);
+        return json(versions);
+      } else if (path.equals("/" + OTHER_PACKAGE_ID)) {
+        return json(OTHER_VERSIONS);
       } else if (path.startsWith("/ig/qas.json")) {
-        return json(QAS);
+        return json(qas);
       }
       return new MockResponse().setResponseCode(404);
     }
@@ -151,6 +158,14 @@ class RegistryAnswerCacheTests {
   }
 
   @Test
+  void answerThatCantBeUsedIsNotKept() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    assertEquals("", answers.get("q", () -> "", a -> !a.isEmpty()));
+    assertEquals("a", answers.get("q", () -> "a", a -> !a.isEmpty()));
+    assertEquals("a", answers.get("q", () -> "b", a -> !a.isEmpty()));
+  }
+
+  @Test
   void failureIsNotKept() throws IOException {
     RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
     IOException failure = assertThrows(IOException.class, () -> answers.get("q", () -> {
@@ -224,6 +239,38 @@ class RegistryAnswerCacheTests {
   }
 
   @Test
+  void versionListsAreKeptPerPackage() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    for (int i = 0; i < 2; i++) {
+      PackageClient client = new PackageClient(packageServer(), answers);
+      assertThat(client.getVersions(PACKAGE_ID)).extracting(PackageInfo::getVersion).containsExactlyInAnyOrder("1.0.0", "2.0.0");
+      assertThat(client.getVersions(OTHER_PACKAGE_ID)).extracting(PackageInfo::getVersion).containsExactly("0.1.0");
+    }
+    assertEquals(1, registry.count("/" + PACKAGE_ID));
+    assertEquals(1, registry.count("/" + OTHER_PACKAGE_ID));
+  }
+
+  @Test
+  void unknownPackageIsAskedAgain() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    for (int i = 0; i < 2; i++) {
+      assertThat(new PackageClient(packageServer(), answers).getVersions("example.fhir.uv.unknown")).isEmpty();
+    }
+    assertThat(registry.count("/example.fhir.uv.unknown")).isGreaterThanOrEqualTo(2);
+  }
+
+  @Test
+  void versionListWithoutVersionsIsAskedAgain() throws IOException {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    registry.versions = "{\"error\": \"try later\"}";
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).isEmpty();
+    registry.versions = VERSIONS;
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).hasSize(2);
+    assertThat(new PackageClient(packageServer(), answers).getVersions(PACKAGE_ID)).hasSize(2);
+    assertEquals(2, registry.count("/" + PACKAGE_ID));
+  }
+
+  @Test
   void unparseableAnswerIsAskedAgain() throws IOException {
     RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
     registry.catalog = "[{";
@@ -256,6 +303,20 @@ class RegistryAnswerCacheTests {
     assertEquals(CI_PACKAGE_ID, template.withAnswers(answers).getPackageId(IG_URL));
     assertEquals(CI_PACKAGE_ID, template.withAnswers(answers).getPackageId(IG_URL));
     assertEquals(whileDown + 1, registry.count("/ig/qas.json"));
+  }
+
+  @Test
+  void ciListThatCantBeReadIsAskedAgain() {
+    RegistryAnswerCache answers = new RegistryAnswerCache(TTL);
+    CIBuildClient template = new CIBuildClient(root(), TTL, false);
+    registry.qas = QAS.replace("Example/ci/branches/main/qa.json", "noslash");
+    // as without answers, the list is used although it can't be read
+    assertEquals(CI_PACKAGE_ID, template.withAnswers(answers).getPackageId(IG_URL));
+    long whileBroken = registry.count("/ig/qas.json");
+    registry.qas = QAS;
+    assertEquals(IG_URL, template.withAnswers(answers).getPackageUrl(CI_PACKAGE_ID));
+    assertEquals(IG_URL, template.withAnswers(answers).getPackageUrl(CI_PACKAGE_ID));
+    assertEquals(whileBroken + 1, registry.count("/ig/qas.json"));
   }
 
   @Test

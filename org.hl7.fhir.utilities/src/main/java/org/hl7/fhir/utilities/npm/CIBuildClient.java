@@ -171,20 +171,9 @@ public class CIBuildClient {
 
   private void updateFromCIServer() throws IOException {
     try {
-      ciBuildInfo = answers == null ? fetchBuildInfo() : answers.get(rootUrl + "/ig/qas.json", this::fetchBuildInfo);
+      ciBuildInfo = answers == null ? fetchBuildInfo() : answers.get(rootUrl + "/ig/qas.json", this::fetchBuildInfo, this::canRead);
 
-      List<BuildRecord> builds = new ArrayList<>();
-
-      for (JsonElement n : ciBuildInfo) {
-        JsonObject j = (JsonObject) n;
-        if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
-          String packageUrl = j.asString("url");
-          if (packageUrl.contains("/ImplementationGuide/"))
-            packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
-          builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
-        }
-      }
-      Collections.sort(builds, new BuildRecordSorter());
+      List<BuildRecord> builds = readBuilds(ciBuildInfo);
       for (BuildRecord build : builds) {
         if (!ciPackageUrls.containsKey(build.getPackageId())) {
           ciPackageUrls.put(build.getPackageId(), rootUrl + "/ig/" + build.getRepo());
@@ -195,6 +184,30 @@ public class CIBuildClient {
       throw e;
     } finally {
       ciLastQueriedTimeStamp = System.currentTimeMillis();
+    }
+  }
+
+  private List<BuildRecord> readBuilds(JsonArray info) {
+    List<BuildRecord> builds = new ArrayList<>();
+    for (JsonElement n : info) {
+      JsonObject j = (JsonObject) n;
+      if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
+        String packageUrl = j.asString("url");
+        if (packageUrl.contains("/ImplementationGuide/"))
+          packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
+        builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
+      }
+    }
+    Collections.sort(builds, new BuildRecordSorter());
+    return builds;
+  }
+
+  private boolean canRead(JsonArray info) {
+    try {
+      readBuilds(info);
+      return true;
+    } catch (RuntimeException e) {
+      return false;
     }
   }
 
