@@ -8,7 +8,9 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -469,6 +471,146 @@ public class BaseWorkerContextTests {
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult),eq(true));
+  }
+
+  private static final String UNKNOWN_SYSTEM = "http://example.org/unknown-system";
+
+  /**
+   * Set up a code from a system that neither the context nor the server knows, as the renderers ask
+   * for displays: no value set, and the local check throws to the server
+   */
+  private ValidationOptions setUpUnknownSystem() {
+    ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), isNull(), any());
+    AtomicReference<Set<String>> unknownSystems = new AtomicReference<>();
+    Mockito.doAnswer(inv -> {
+      unknownSystems.set(inv.getArgument(0));
+      return null;
+    }).when(valueSetCheckerSimple).setUnknownSystems(any());
+    Mockito.doAnswer(inv -> {
+      unknownSystems.get().add(UNKNOWN_SYSTEM);
+      throw new VSCheckerException("A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated", new ArrayList<>(), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+    }).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
+    return validationOptions;
+  }
+
+  private static ValidationResult unknownSystemAnswer() {
+    ValidationResult res = new ValidationResult(ValidationMessage.IssueSeverity.ERROR, "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found", TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, new ArrayList<>());
+    res.setUnknownSystems(new HashSet<>(Set.of(UNKNOWN_SYSTEM)));
+    return res;
+  }
+
+  @Test
+  void unknownCodeSystemIsOnlyAskedAboutOnce() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    ValidationResult first = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    ValidationResult second = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+    ValidationResult third = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    Mockito.verify(context, times(1)).validateOnServer2(any(), isNull(), any(), any(), any());
+    // the local warning, as without the shortcut
+    String localWarning = "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated";
+    assertEquals(localWarning, first.getMessage());
+    assertEquals("Local Warning: " + localWarning + ". Server Error: " + localWarning, first.getDiagnostics());
+    for (ValidationResult res : List.of(first, second, third)) {
+      assertEquals(ValidationMessage.IssueSeverity.WARNING, res.getSeverity());
+      assertEquals(first.getMessage(), res.getMessage());
+      assertEquals(first.getDiagnostics(), res.getDiagnostics());
+      assertNull(res.getErrorClass());
+    }
+    // the answer is held for this run only: it isn't put in the terminology cache
+    Mockito.verify(terminologyCache, times(0)).cacheValidation(any(), any(), anyBoolean());
+  }
+
+  @Test
+  void failedRequestAboutUnknownCodeSystemIsAskedAgain() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doThrow(new FHIRException("Read timed out")).doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    ValidationResult failed = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    assertEquals(TerminologyServiceErrorClass.SERVER_ERROR, failed.getErrorClass());
+    ValidationResult answered = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+    assertEquals(ValidationMessage.IssueSeverity.WARNING, answered.getSeverity());
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    // the real answer is remembered
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "c", null), null, null);
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemIsAskedAgainForAVersion() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null).setVersion("1.0"), null, null);
+
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  private ValueSet unknownSystemValueSet(ValidationOptions validationOptions, ValueSetValidator checker) {
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("http://example.org/vs");
+    valueSet.getCompose().addInclude().setSystem(UNKNOWN_SYSTEM);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"));
+    Mockito.doReturn(checker).when(context).constructValueSetCheckerSimple(any(), same(valueSet), any());
+    return valueSet;
+  }
+
+  @Test
+  void unknownCodeSystemWithAValueSetKeepsTheError() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    ValueSet valueSet = unknownSystemValueSet(validationOptions, valueSetCheckerSimple);
+    ValidationResult res = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), valueSet, null);
+
+    assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, res.getErrorClass());
+    Mockito.verify(context, Mockito.never()).validateOnServer2(any(), same(valueSet), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemWithoutALocalCheckKeepsTheError() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    // no local check, so no local warning to give
+    ValidationOptions noClient = validationOptions.withNoClient();
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"));
+    ValidationResult res = context.validateCode(noClient, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+
+    assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, res.getErrorClass());
+    Mockito.verify(context, times(1)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemFirstSeenWithAValueSetGetsTheWarningWithoutOne() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    // checked against a value set first: the local check hands it to the server, which doesn't know the
+    // system, so the system is recorded as unsupported
+    ValueSetValidator valueSetChecker = Mockito.mock(ValueSetValidator.class);
+    Mockito.doThrow(new FHIRException(ValueSetValidator.NO_TRY_THE_SERVER)).when(valueSetChecker).validateCode(eq("Coding"), any(Coding.class));
+    ValueSet valueSet = unknownSystemValueSet(validationOptions, valueSetChecker);
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), same(valueSet), any(), any(), any());
+    ValidationResult withValueSet = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), valueSet, null);
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, withValueSet.getErrorClass());
+
+    // then against no value set: the warning the server would have given, without asking it
+    ValidationResult res = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+
+    String localWarning = "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated";
+    assertEquals(ValidationMessage.IssueSeverity.WARNING, res.getSeverity());
+    assertEquals(localWarning, res.getMessage());
+    assertEquals("Local Warning: " + localWarning + ". Server Error: " + localWarning, res.getDiagnostics());
+    assertNull(res.getErrorClass());
+    Mockito.verify(context, Mockito.never()).validateOnServer2(any(), isNull(), any(), any(), any());
   }
 
   @Test
