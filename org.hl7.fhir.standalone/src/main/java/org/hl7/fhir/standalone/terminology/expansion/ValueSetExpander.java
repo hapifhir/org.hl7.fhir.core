@@ -502,7 +502,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
       String vstatus = determineStatus(vsSrc, focus);
-      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), focus.getVersion(), code, focus.getDisplay(), langDisplay, parent,
+      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), focus.hasVersion() ? focus.getVersion() : usedVersion(vsSrc.getExpansion(), focus.getSystem()), code, focus.getDisplay(), langDisplay, parent,
            convert(focus.getDesignationList()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false,
         vsProps, makeCSProps(focus.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null), null, focus.getPropertyList(), null, focus.getExtension(), exp, vstatus);
       if (np == null) {
@@ -812,6 +812,37 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (!done) {
       excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
     }
+  }
+
+  /**
+   * An expansion only reports versions in contains when they differ, so a code from a server
+   * expansion usually arrives without one - and then its key wouldn't match the exclusion keys,
+   * which do have versions (see excludeImportedCode). If the expansion used a single version
+   * of the code system, that's the version of the code; if it used several, it can't be known
+   */
+  private String usedVersion(ValueSetExpansionComponent src, String system) {
+    String res = null;
+    if (src != null && system != null) {
+      for (ValueSetExpansionParameterComponent p : src.getParameterList()) {
+        if ("used-codesystem".equals(p.getName()) && p.hasValue()) {
+          String v = p.getValue().primitiveValue();
+          if (v != null && v.startsWith(system + "|")) {
+            if (res != null) {
+              return null;
+            }
+            res = v.substring(system.length() + 1);
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * the parameters a server reports about what it did (as opposed to the parameters of the request, which it echoes)
+   */
+  private boolean isExpansionResultParameter(String name) {
+    return name.startsWith("used-") || name.startsWith("warning-") || "version".equals(name);
   }
 
   private boolean existsInParams(List<ValueSetExpansionParameterComponent> params, String name, DataType value) {
@@ -1653,7 +1684,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
       sources.add(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
     }
-    if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
+    if (vs.hasUrl() && (vs.hasVersion() || REPORT_VERSION_ANYWAY)) { // the value set is our wrapper around a single include, and has no url of its own
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameterList(), "used-valueset", u)) {
         exp.getParameterList().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
@@ -1666,7 +1697,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       dwc.setNoTotal(true);
     }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameterList()) {
-      if (!existsInParams(exp.getParameterList(), p.getName(), p.getValue())) {
+      // the value set we sent is just a wrapper around this one include: the parameters the server echoes from
+      // that request (excludeNested, count, etc.) aren't inputs to this expansion, so only the results are kept
+      if (isExpansionResultParameter(p.getName()) && !existsInParams(exp.getParameterList(), p.getName(), p.getValue())) {
         exp.getParameterList().add(p);
       }
     }
