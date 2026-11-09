@@ -128,7 +128,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   public ValueSetValidator(BaseWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
-    this.options = options;
+    // a copy, since checkValueSetOptions() sets the value set's language on it, which must not leak to the caller
+    this.options = options.copy();
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
     this.registry = registry;

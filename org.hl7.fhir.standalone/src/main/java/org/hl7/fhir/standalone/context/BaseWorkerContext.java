@@ -1694,6 +1694,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
+      if (vs == null && localWarning != null) {
+        // the answer the server gives for a code from a system that neither we nor it know
+        return unknownCodeSystemWarning(localWarning);
+      }
       // this is the same answer we already got for this code system, so it is reported the same way:
       // against the system, which is the part that could not be resolved, and not against the coding.
       // Without the expression it lands on the element instead, and reads as a second, different problem.
@@ -1741,10 +1745,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: " + localError.trim() + ". Server Error: " + res.getMessage());
     } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
-      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
-      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
-      res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
-      return res;
+      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error.
+      // This isn't cached, but the server isn't asked about this system again in this run. Only a real answer
+      // gets here: a failed request is a SERVER_ERROR
+      updateUnsupportedCodeSystems(res, code, codeKey);
+      return unknownCodeSystemWarning(localWarning);
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -1753,6 +1758,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+
+  private ValidationResult unknownCodeSystemWarning(String localWarning) {
+    ValidationResult res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
+    res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
+    return res;
+  }
 
   /**
    * ask the terminology system whether parent subsumes child.
