@@ -30,6 +30,8 @@ package org.hl7.fhir.standalone.terminology.utilities;
  */
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -93,6 +95,9 @@ import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 @Slf4j
 public class TerminologyCache {
+
+  // writes the properties of a $lookup result into the cache files - without escaping <, >, = and ', so they stay readable
+  private static final Gson PROPERTIES_GSON = new GsonBuilder().disableHtmlEscaping().create();
 
   // TODO (thread-safety): locking in this class is inconsistent. The validation / expansion /
   // subsumption read+write paths (getValidation, cacheValidation, getExpansion, cacheExpansion,
@@ -1491,7 +1496,7 @@ public class TerminologyCache {
       if (cacheEntry.p.properties == null) {
         writer.write("  \"unknown\" : true\r\n}\r\n");
       } else {
-        writer.write("  \"properties\" : "+ new com.google.gson.Gson().toJson(new TreeMap<>(cacheEntry.p.properties))+"\r\n}\r\n");
+        writer.write("  \"properties\" : "+ PROPERTIES_GSON.toJson(new TreeMap<>(cacheEntry.p.properties))+"\r\n}\r\n");
       }
     } else {
       writer.write("v: {\r\n");
