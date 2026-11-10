@@ -293,7 +293,11 @@ public class SnomedRules {
     return props == null ? null : new Concept(code, version, display, props);
   }
 
-  // reviewed: a fixed pattern with no nested repetition, so it runs in linear time on any input
+  // reviewed: a fixed pattern with no nested repetition, but the adjacent \s* runs around the optional
+  // |term|s backtrack, so it isn't linear on pathological input - lateralityRefinement only runs it on
+  // strings up to MAX_LATERALITY_EXPRESSION long
+  private static final int MAX_LATERALITY_EXPRESSION = 200;
+
   @SuppressWarnings("checkstyle:patternUsage")
   private static final Pattern LATERALITY_REFINEMENT = Pattern.compile("^\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*:\\s*" + LATERALITY + "\\s*(\\|[^|]*\\|)?\\s*=\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*$");
 
@@ -303,7 +307,7 @@ public class SnomedRules {
    */
   @SuppressWarnings("checkstyle:stringImplicitPatternUsage") // the match below uses the reviewed LATERALITY_REFINEMENT
   public static String[] lateralityRefinement(String expression) {
-    if (expression == null || !expression.contains(":")) {
+    if (expression == null || expression.length() > MAX_LATERALITY_EXPRESSION || !expression.contains(":")) {
       return null;
     }
     Matcher m = LATERALITY_REFINEMENT.matcher(expression);

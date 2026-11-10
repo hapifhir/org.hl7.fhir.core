@@ -36,6 +36,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
@@ -43,6 +44,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 
 
+@Slf4j
 public class HTMLClientLogger implements ToolingClientLogger {
 
   private PrintStream file;
@@ -99,6 +101,9 @@ public class HTMLClientLogger implements ToolingClientLogger {
 
   @Override
   public void logFailure(String error, long elapsed) {
+
+    log.debug(" txlog fail: " +error+" after "+elapsed+"ms");
+
     if (file == null)
       return;
     file.println("<pre>");
