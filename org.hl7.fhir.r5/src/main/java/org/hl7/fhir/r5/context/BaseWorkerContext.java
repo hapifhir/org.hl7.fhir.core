@@ -1234,6 +1234,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           fp.getParameter().clear();
           fp.getParameter().addAll(given);
         }
+        if (ImplicitValueSets.isSentByUrl(fvs)) {
+          // the server knows this value set by its url (#2784)
+          fp.setParameter("url", new UriType(fvs.getUrl()));
+          return tc.getClient().expandValueset(null, fp);
+        }
         addDependentResources(null, tc, fp, fvs);
         return tc.getClient().expandValueset(fvs, fp);
       });
@@ -2180,7 +2185,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (vs.hasVersion()) {
           pin.addParameter().setName("valueSetVersion").setValue(new StringType(vs.getVersion()));
         }
-      } else if (options.getVsAsUrl()) {
+      } else if (options.getVsAsUrl() || ImplicitValueSets.isSentByUrl(vs)) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
         if (vs.hasCompose() && vs.hasExpansion()) {
@@ -2265,7 +2270,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
-      if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
+      // an implicit value set the server knows by its url isn't sent (#2784)
+      if (vs != null && !ImplicitValueSets.isSentByUrl(vs) && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
       }
