@@ -311,7 +311,7 @@ public class Resource40_N {
     if (src instanceof org.hl7.fhir.model.core.DetectedIssue)
       return DetectedIssue40_N.convertDetectedIssue((org.hl7.fhir.model.core.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.model.core.DeviceDefinition)
-      return VersionConvertorFactory_40_50.convertResource(VersionConvertorFactory_50_N.convertResource((org.hl7.fhir.model.core.DeviceDefinition) src));
+      return VersionConvertorFactory_40_50.convertResource(VersionConvertorFactory_50_N.convertResource(src));
     if (src instanceof org.hl7.fhir.model.core.Device)
       return Device40_N.convertDevice((org.hl7.fhir.model.core.Device) src);
     if (src instanceof org.hl7.fhir.model.core.DeviceMetric)
