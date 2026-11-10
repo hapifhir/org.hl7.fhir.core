@@ -1005,12 +1005,11 @@ public class BaseWorkerContextTests {
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
     vs.getCompose().addInclude().setSystem("http://example.org/cs");
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
-    // the local expansion gives up, so the server is asked
-    Mockito.doReturn(new ValueSetExpansionOutcome("not expanded locally", TerminologyServiceErrorClass.UNKNOWN, false))
-      .when(valueSetExpanderSimple).expand(eq(vs), any(Parameters.class));
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(any(ValidationOptions.class));
+    // there's no local code system, so the include is server side: the whole value set goes straight to the
+    // server, without trying to expand it locally first (fhir-ig-publisher#1469)
     expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, vs, new Parameters(), false),
       cache -> cache.generateExpandToken(vs, opt));
+    Mockito.verify(context, Mockito.never()).constructValueSetExpanderSimple(any(ValidationOptions.class));
   }
 
   @ParameterizedTest

@@ -9344,3 +9344,59 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "version" : "2.83",
+      "filter" : [{
+        "property" : "parent",
+        "op" : "=",
+        "value" : "80764-4"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "urn:uuid:15018a34-5a52-4ffb-a069-fb609a969b51",
+  "name" : "PAIN_TREATMENT_PLAN",
+  "title" : "Pain treatment plan",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2023-05-25T18:08:12-06:00",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "url",
+      "value" : "https://www.securityrisksolutions.com"
+    }]
+  }],
+  "expansion" : {
+    "identifier" : "urn:uuid:5535d20c-797e-4574-842d-34a5b1b0c5e8",
+    "timestamp" : "2026-11-09T20:32:28.457Z",
+    "total" : 0,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

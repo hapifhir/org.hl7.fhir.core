@@ -2720,3 +2720,392 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "44851-4"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mycobacterium sp # 2 identified in Specimen by Organism specific culture",
+  "code" : "44851-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#44851-4 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#44851-4\"\n5ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n5ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n5ms http://loinc.org/vs|2.83: Code \"44851-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "33270-0"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Microscopic observation [Identifier] in Buffy Coat by Light microscopy",
+  "code" : "33270-0",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#33270-0 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#33270-0\"\n4ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n4ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n4ms http://loinc.org/vs|2.83: Code \"33270-0\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "44851-4", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6850-4"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "33270-0", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6850-4"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "44851-4"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-loinc-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0 for validation purposes\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[0]: \"(http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE)\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[1]: \"(http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE)\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[0]: \"(http://loinc.org)(44851-4,44852-2,44854-8,44855-5)\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[1]: \"(http://loinc.org)(COMPONENT=LP442509-8)\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Validate \"[http://loinc.org#44851-4 (\"undefined\")]\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Check \"http://loinc.org#44851-4\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n408ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter METHOD_TYP = LP6429-7),SYSTEM = LP7735-6),PROPERTY = LP6850-4),STATUS = ACTIVE): Code \"44851-4\" found in http://loinc.org|2.83\n409ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(44851-4,44852-2,44854-8,44855-5) at CodeableConcept.coding[0]\n409ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Code \"44851-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#44851-4' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "33270-0"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-loinc-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[0]: \"(http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[1]: \"(http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[0]: \"(http://loinc.org)(44851-4,44852-2,44854-8,44855-5)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[1]: \"(http://loinc.org)(COMPONENT=LP442509-8)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Validate \"[http://loinc.org#33270-0 (\"undefined\")]\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Check \"http://loinc.org#33270-0\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n387ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter METHOD_TYP = LP6429-7),SYSTEM = LP7735-6),PROPERTY = LP6850-4),STATUS = ACTIVE): Code \"33270-0\" not found in http://loinc.org|2.83\n387ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n388ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n772ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter CLASS = LP7819-8),PROPERTY = LP6850-4),METHOD_TYP = LP6398-4),STATUS = ACTIVE): Code \"33270-0\" found in http://loinc.org|2.83\n773ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(44851-4,44852-2,44854-8,44855-5) at CodeableConcept.coding[0]\n773ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(COMPONENT=LP442509-8) at CodeableConcept.coding[0]\n831ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter COMPONENT = LP442509-8: Code \"33270-0\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#33270-0' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "105604-3"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Aeromonas sp identified in Specimen by Organism specific culture",
+  "code" : "105604-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#105604-3 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#105604-3\"\n3ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n3ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n3ms http://loinc.org/vs|2.83: Code \"105604-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "10347-3"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Babesia microti identified in Blood by Light microscopy",
+  "code" : "10347-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#10347-3 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#10347-3\"\n3ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n3ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at CodeableConcept.coding[0]\n3ms http://loinc.org/vs|2.83: Code \"10347-3\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "105604-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Observation"],"PROPERTY":["LP6850-4"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"],"UNITSREQUIRED":["N"]}
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://loinc.org", "version" : null, "code" : "10347-3", "properties" : ["EXAMPLE_UCUM_UNITS", "ORDER_OBS", "PROPERTY", "PanelType", "SCALE_TYP", "TIME_ASPCT", "UNITSREQUIRED"]}####
+p: {
+  "properties" : {"ORDER_OBS":["Both"],"PROPERTY":["LP6850-4"],"SCALE_TYP":["LP7750-5"],"TIME_ASPCT":["LP6960-1"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "105604-3"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-loinc-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Aeromonas sp identified in Specimen by Organism specific culture",
+  "code" : "105604-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[0]: \"(http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[1]: \"(http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[0]: \"(http://loinc.org)(44851-4,44852-2,44854-8,44855-5)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[1]: \"(http://loinc.org)(COMPONENT=LP442509-8)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Validate \"[http://loinc.org#105604-3 (\"undefined\")]\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Check \"http://loinc.org#105604-3\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n449ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter METHOD_TYP = LP6429-7),SYSTEM = LP7735-6),PROPERTY = LP6850-4),STATUS = ACTIVE): Code \"105604-3\" found in http://loinc.org|2.83\n450ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(44851-4,44852-2,44854-8,44855-5) at CodeableConcept.coding[0]\n450ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(COMPONENT=LP442509-8) at CodeableConcept.coding[0]\n507ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter COMPONENT = LP442509-8: Code \"105604-3\" not found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "10347-3"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-loinc-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Babesia microti identified in Blood by Light microscopy",
+  "code" : "10347-3",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[0]: \"(http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare include[1]: \"(http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[0]: \"(http://loinc.org)(44851-4,44852-2,44854-8,44855-5)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Prepare exclude[1]: \"(http://loinc.org)(COMPONENT=LP442509-8)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: \"http://loinc.org|2.83\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Validate \"[http://loinc.org#10347-3 (\"undefined\")]\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Check \"http://loinc.org#10347-3\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(METHOD_TYP=LP6429-7,SYSTEM=LP7735-6,PROPERTY=LP6850-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n398ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter METHOD_TYP = LP6429-7),SYSTEM = LP7735-6),PROPERTY = LP6850-4),STATUS = ACTIVE): Code \"10347-3\" not found in http://loinc.org|2.83\n399ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: CodeSystem found: http://loinc.org|2.83 for http://loinc.org\n399ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code in (http://loinc.org)(CLASS=LP7819-8,PROPERTY=LP6850-4,METHOD_TYP=LP6398-4,STATUS=ACTIVE) at CodeableConcept.coding[0]\n825ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter CLASS = LP7819-8),PROPERTY = LP6850-4),METHOD_TYP = LP6398-4),STATUS = ACTIVE): Code \"10347-3\" found in http://loinc.org|2.83\n825ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(44851-4,44852-2,44854-8,44855-5) at CodeableConcept.coding[0]\n825ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: check code not in (http://loinc.org)(COMPONENT=LP442509-8) at CodeableConcept.coding[0]\n883ms http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc|1.0.0: Filter COMPONENT = LP442509-8: Code \"10347-3\" not found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "parent",
+        "op" : "=",
+        "value" : "LP43571-6"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "meta" : {
+    "profile" : ["http://hl7.org/fhir/StructureDefinition/shareablevalueset"]
+  },
+  "url" : "urn:uuid:5750105f-3955-47a6-b6f6-cec57028e9a7",
+  "name" : "LOINC Codes for Cholesterol in Serum/Plasma",
+  "status" : "draft",
+  "experimental" : true,
+  "date" : "2015-06-22",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "url",
+      "value" : "http://hl7.org/fhir"
+    }]
+  }],
+  "expansion" : {
+    "identifier" : "urn:uuid:358c8729-ef45-4c67-8032-968e625387d8",
+    "timestamp" : "2026-11-09T20:34:11.145Z",
+    "total" : 0,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "warning-experimental",
+      "valueUri" : "urn:uuid:5750105f-3955-47a6-b6f6-cec57028e9a7"
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

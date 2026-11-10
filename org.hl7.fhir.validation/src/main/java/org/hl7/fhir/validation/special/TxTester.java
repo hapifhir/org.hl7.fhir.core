@@ -2041,6 +2041,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
 
     public InternalTxLoader(String source, boolean additional) throws IOException {
+      this.context = ModelContext.fullCoreContext(); // loadResource() needs it: -input failed with 'modelContext must not be null'
       this.additional = additional;
       File f = ManagedFileAccess.file(source);
       if (f.exists() && f.isDirectory()) {

@@ -1014,3 +1014,4783 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "44851-4"
+      },
+      {
+        "code" : "44852-2"
+      },
+      {
+        "code" : "44854-8"
+      },
+      {
+        "code" : "44855-5"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:263aa30f-0402-4e30-9e23-f5db0ff430bb",
+    "timestamp" : "2026-11-09T18:59:29.485Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "44851-4",
+      "display" : "Mycobacterium sp # 2 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44852-2",
+      "display" : "Mycobacterium sp # 3 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44854-8",
+      "display" : "Mycobacterium sp # 4 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44855-5",
+      "display" : "Mycobacterium sp # 5 identified in Specimen by Organism specific culture"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "COMPONENT",
+        "op" : "=",
+        "value" : "LP442509-8"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:606aba9d-3588-4b00-a799-e2e2b76f4c9a",
+    "timestamp" : "2026-11-09T18:59:29.698Z",
+    "total" : 502,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "property" : [{
+      "code" : "status",
+      "uri" : "http://hl7.org/fhir/concept-properties#status"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "101879-5",
+      "display" : "Osmolality of Arterial blood by calculated by sum of electrolytes"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "101880-3",
+      "display" : "Osmolality of Venous blood by calculated by sum of electrolytes"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10333-3",
+      "display" : "Appearance of Cerebrospinal Fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10335-8",
+      "display" : "Color of Cerebrospinal Fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10355-6",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Wright Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10357-2",
+      "display" : "Microscopic observation [Identifier] in Wound by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "103655-7",
+      "display" : "Color of Spun Pleural fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "103656-5",
+      "display" : "Color of Spun Peritoneal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "103657-3",
+      "display" : "Color of Spun Pericardial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "104490-8",
+      "display" : "Appearance in Blood product unit"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "104866-9",
+      "display" : "Microscopic observation [Identifier] in Cervix by Cyto stain.thin prep.computer assisted"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "105059-0",
+      "display" : "Microscopic observation [Identifier] in Specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10524-7",
+      "display" : "Microscopic observation [Identifier] in Cervix by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10525-4",
+      "display" : "Microscopic observation [Identifier] in Specimen by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10526-2",
+      "display" : "Microscopic observation [Identifier] in Sputum by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10527-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10569-2",
+      "display" : "Color of Semen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10637-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Night blue stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10688-0",
+      "display" : "Microscopic observation [Identifier] in Hair by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10689-8",
+      "display" : "Microscopic observation [Identifier] in Nail by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107167-9",
+      "display" : "Microscopic observation [Presence] in Sputum tracheal aspirate by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107589-4",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107590-2",
+      "display" : "Microscopic observation [Identifier] in Drain by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107591-0",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107592-8",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107593-6",
+      "display" : "Microscopic observation [Identifier] in Bronchoalveolar lavage by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107594-4",
+      "display" : "Microscopic observation [Identifier] in Bronchoalveolar aspirate by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107598-5",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107599-3",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107600-9",
+      "display" : "Microscopic observation [Identifier] in Pus by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107601-7",
+      "display" : "Microscopic observation [Identifier] in Lymph node by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107602-5",
+      "display" : "Microscopic observation [Identifier] in Aspirate by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10763-1",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Sudan black stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10764-9",
+      "display" : "Microscopic observation [Identifier] in Sputum by Silver stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10765-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10766-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Alcian blue stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10767-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Alcian blue stain.sulfated"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10768-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Alcian blue stain.with periodic acid-Schiff"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10769-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Alizarin red S stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10770-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Argentaffin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10772-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Azure-eosin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10773-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Basic fuchsin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10774-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Bielschowsky stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10775-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Bleach stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10776-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Bodian stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10777-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Brown and Brenn stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10778-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Butyrate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10779-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Carmine stain.Best"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10780-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Chloracetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10781-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Churukian-Schenk stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10782-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Congo red stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10783-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Crystal violet stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10784-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Esterase stain.non-specific"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10785-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Fite-Faraco stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10787-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Gridley stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10788-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Hansel stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10789-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Hematoxylin-eosin-Harris regressive stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10790-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Hematoxylin-eosin-Mayers progressive stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10791-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Mallory-Heidenhain stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10792-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methenamine silver stain.Jones"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10793-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methyl green stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10794-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methyl green-pyronine Y stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10795-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methyl violet stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10796-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Mucicarmine stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10797-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Neutral red stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10798-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Oil red O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10799-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Pentachrome stain.Movat"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10800-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Periodic acid-Schiff stain with diastase digestion"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10801-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Phosphotungstic acid Hematoxylin (PTAH) Stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10802-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Prussian blue stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10803-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Quinacrine fluorescent stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10804-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Reticulin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10805-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Safranin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10806-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Schmorl stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10807-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Sevier-Munger stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10808-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Silver impregnation stain.Dieterle"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10809-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Silver stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10810-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Fontana-Masson stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10811-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Silver stain.Grimelius"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10812-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Steiner stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10813-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Sudan black stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10814-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Supravital stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10815-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Tetrachrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10817-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Trichrome stain.Gomori-Wheatley"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10818-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Trichrome stain.Masson modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10819-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Wade stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10856-3",
+      "display" : "Microscopic observation [Identifier] in Genital mucus by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11016-3",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Esterase stain.non-specific"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11017-1",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Chloracetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11018-9",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Peroxidase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11019-7",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Sudan black B stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11020-5",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Tartrate-resistant acid phosphatase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11021-3",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Terminal deoxynucleotidyl transferase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11068-4",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11069-2",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11070-0",
+      "display" : "Microscopic observation [Identifier] in Urine by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11134-4",
+      "display" : "Appearance of Spun Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11135-1",
+      "display" : "Appearance of Spun Cerebral spinal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "111514-6",
+      "display" : "Microscopic observation [Identifier] in Fistula by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "111555-9",
+      "display" : "Microscopic observation [Presence] in Bronchoalveolar aspirate by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11158-3",
+      "display" : "Appearance of Serum"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11272-2",
+      "display" : "MCV [Entitic mean volume] in Cord blood by Automated count"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "112887-5",
+      "display" : "Microscopic observation [Identifier] in Penis by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "113008-7",
+      "display" : "Microscopic observation [Identifier] in Drain by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11476-9",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11477-7",
+      "display" : "Microscopic observation [Identifier] in Sputum by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11478-5",
+      "display" : "Microscopic observation [Identifier] in Stool by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11479-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11480-1",
+      "display" : "Microscopic observation [Identifier] in Urine by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11545-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "11546-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Other stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "12235-8",
+      "display" : "Microscopic observation [Identifier] in Urine sediment by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13509-5",
+      "display" : "Microscopic observation [Identifier] in Blood by Crystal violet stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13510-3",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Myeloperoxidase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13512-9",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Butyrate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14132-5",
+      "display" : "Color of Gastric fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14317-2",
+      "display" : "Microscopic observation [Identifier] in Genital specimen by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14318-0",
+      "display" : "Microscopic observation [Identifier] in Cervix by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14319-8",
+      "display" : "Microscopic observation [Identifier] in Vaginal fluid by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14345-3",
+      "display" : "Specific gravity of Amniotic fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14346-1",
+      "display" : "Specific gravity of Cerebrospinal Fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14347-9",
+      "display" : "Specific gravity of Gastric fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14348-7",
+      "display" : "Specific gravity of Peritoneal fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14349-5",
+      "display" : "Specific gravity of Pleural fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14350-3",
+      "display" : "Specific gravity of Synovial fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14351-1",
+      "display" : "Specific gravity of Stool by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14352-9",
+      "display" : "Specific gravity of Water by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14353-7",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14354-5",
+      "display" : "Microscopic observation [Identifier] in Wound by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14355-2",
+      "display" : "Microscopic observation [Identifier] in Cervix by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14356-0",
+      "display" : "Microscopic observation [Identifier] in Vaginal fluid by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14357-8",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14358-6",
+      "display" : "Microscopic observation [Identifier] in Aspirate by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14359-4",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14360-2",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14361-0",
+      "display" : "Microscopic observation [Identifier] in Vaginal fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14362-8",
+      "display" : "Microscopic observation [Identifier] in Throat by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14363-6",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14364-4",
+      "display" : "Microscopic observation [Identifier] in Eye by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14365-1",
+      "display" : "Microscopic observation [Identifier] in Ear by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14617-5",
+      "display" : "Appearance of Pericardial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14618-3",
+      "display" : "Appearance of Stone"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14619-1",
+      "display" : "Appearance of Plasma"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14620-9",
+      "display" : "Appearance of Pleural fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14621-7",
+      "display" : "Appearance of Peritoneal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14660-5",
+      "display" : "Color of Peritoneal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14661-3",
+      "display" : "Color of Pericardial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14662-1",
+      "display" : "Color of Pleural fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14664-7",
+      "display" : "Color of Synovial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14725-6",
+      "display" : "[Type] of Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14841-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Iron hematoxylin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14842-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Kinyoun iron hematoxylin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "15200-9",
+      "display" : "Osmolality of Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "16400-4",
+      "display" : "Appearance of Seminal plasma"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17281-7",
+      "display" : "Microscopic observation [Identifier] in Sputum by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17598-4",
+      "display" : "Specific gravity of Synovial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17794-9",
+      "display" : "Osmolality of Hyperal solution"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18182-6",
+      "display" : "Osmolality of Serum or Plasma by calculated by sum of electrolytes"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18326-9",
+      "display" : "Microscopic observation [Identifier] in Cervix by Other stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18327-7",
+      "display" : "Microscopic observation [Identifier] in Duodenal fluid by Other stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18328-5",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Other stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18497-8",
+      "display" : "Microscopic observation [Identifier] in Thyroid fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18498-6",
+      "display" : "Microscopic observation [Identifier] in Breast fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18499-4",
+      "display" : "Microscopic observation [Identifier] in Nipple discharge by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18500-9",
+      "display" : "Microscopic observation [Identifier] in Cervix by Cyto stain.thin prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18501-7",
+      "display" : "Microscopic observation [Identifier] in Buccal smear by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18502-5",
+      "display" : "Microscopic observation [Identifier] in Deep tissue fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "18503-3",
+      "display" : "Microscopic observation [Identifier] in Superficial tissue fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "1887-9",
+      "display" : "Appearance of Amniotic fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "19765-7",
+      "display" : "Microscopic observation [Identifier] in Cervical or vaginal smear or scraping by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "19766-5",
+      "display" : "Microscopic observation [Identifier] in Cervical or vaginal smear or scraping by Cyto stain Narrative"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20431-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20881-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Electron microscopy thin sectiion"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20882-7",
+      "display" : "Microscopic observation [Identifier] in Stool by Electron microscopy negative stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20883-5",
+      "display" : "Microscopic observation [Identifier] in Urine by Dark field examination"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20884-3",
+      "display" : "Microscopic observation [Identifier] in Stool by Dark field examination"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20885-0",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Dark field examination"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "21021-1",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "21022-9",
+      "display" : "Microscopic observation [Identifier] in Dialysis fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "21391-8",
+      "display" : "Microscopic observation [Identifier] in Bone by Acid phosphatase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "23901-2",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "24002-8",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2689-8",
+      "display" : "Osmolality of Amniotic fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2690-6",
+      "display" : "Osmolality of Pleural fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2691-4",
+      "display" : "Osmolality of Peritoneal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2692-2",
+      "display" : "Osmolality of Serum or Plasma"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2693-0",
+      "display" : "Osmolality of Stool"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2694-8",
+      "display" : "Osmolality of 24 hour Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2695-5",
+      "display" : "Osmolality of Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2696-3",
+      "display" : "Osmolality of Specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "27112-2",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29605-3",
+      "display" : "Appearance of Synovial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29606-1",
+      "display" : "Appearance of Gastric fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29636-8",
+      "display" : "Appearance of Stool"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2964-5",
+      "display" : "Specific gravity of Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2965-2",
+      "display" : "Specific gravity of Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "2966-0",
+      "display" : "Specific gravity of 24 hour Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29776-2",
+      "display" : "Microscopic observation [Identifier] in Blood by Brilliant cresyl blue"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "30428-7",
+      "display" : "MCV [Entitic mean volume] in Red Blood Cells"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31187-8",
+      "display" : "Microscopic observation [Identifier] in Lymph node fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31188-6",
+      "display" : "Microscopic observation [Identifier] in Kidney fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31189-4",
+      "display" : "Microscopic observation [Identifier] in Neck mass fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31190-2",
+      "display" : "Microscopic observation [Identifier] in Salivary gland fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31191-0",
+      "display" : "Microscopic observation [Identifier] in Prostate fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31192-8",
+      "display" : "Microscopic observation [Identifier] in Liver fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31193-6",
+      "display" : "Microscopic observation [Identifier] in Pancreas fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31194-4",
+      "display" : "Microscopic observation [Identifier] in Submandibular fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31195-1",
+      "display" : "Microscopic observation [Identifier] in Soft tissue fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31196-9",
+      "display" : "Microscopic observation [Identifier] in Abdomen fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31197-7",
+      "display" : "Microscopic observation [Identifier] in Pelvis fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31198-5",
+      "display" : "Microscopic observation [Identifier] in Parotid fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "31199-3",
+      "display" : "Microscopic observation [Identifier] in Lung fine needle aspirate by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32026-7",
+      "display" : "Microscopic observation [Identifier] in Nose by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32151-3",
+      "display" : "Microscopic observation [Identifier] in Vaginal fluid by Non-gynecological cytology method"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32168-7",
+      "display" : "Color of Spun Cerebral spinal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32186-9",
+      "display" : "Microscopic observation [Identifier] in Penis by Tzanck smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32187-7",
+      "display" : "Microscopic observation [Identifier] in Skin by Tzanck smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32188-5",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32189-3",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32190-1",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32699-1",
+      "display" : "Microscopic observation [Identifier] in Blood by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32700-7",
+      "display" : "Microscopic observation [Identifier] in Blood by Malaria smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32785-8",
+      "display" : "Microscopic observation [Identifier] in Specimen by Non-gynecological cytology method"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32798-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Oil red O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32802-1",
+      "display" : "Color of Bronchial specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32803-9",
+      "display" : "Appearance of Bronchial specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32811-2",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Iron hematoxylin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32812-0",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Oil red O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32814-6",
+      "display" : "Microscopic observation [Identifier] in Specimen by Chloracetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32815-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Sudan black B stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32816-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Terminal deoxynucleotidyl transferase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32817-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Myeloperoxidase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32818-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32824-5",
+      "display" : "Microscopic observation [Identifier] in Specimen by Tartrate-resistant acid phosphatase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33270-0",
+      "display" : "Microscopic observation [Identifier] in Buffy Coat by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33271-8",
+      "display" : "Microscopic observation [Identifier] in Blood by Malaria thin smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33455-7",
+      "display" : "Appearance of Sputum"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33511-7",
+      "display" : "Appearance of Specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33512-5",
+      "display" : "Color of Specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33513-3",
+      "display" : "Specific gravity of Specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33675-0",
+      "display" : "Microscopic observation [Identifier] in Specimen by Esterase stain.combined"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33699-0",
+      "display" : "Microscopic observation [Identifier] in Specimen by Malachite green stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "34166-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Electron microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "34959-7",
+      "display" : "Microscopic observation [Identifier] in Blood by Myeloperoxidase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "35347-4",
+      "display" : "Microscopic observation [Identifier] in Specimen by Immunofluorescence"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "35414-2",
+      "display" : "Specific gravity of Body fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "35737-6",
+      "display" : "Microscopic observation [Identifier] in Amniotic fluid by Nile blue prusside"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38196-2",
+      "display" : "Appearance of Blood"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38386-9",
+      "display" : "Color of Amniotic fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38519-5",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Prussian blue stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "39086-4",
+      "display" : "Microscopic observation [Identifier] in Vaginal fluid by Cyto stain.thin prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40606-6",
+      "display" : "Appearance of Peritoneal dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "41280-9",
+      "display" : "Appearance of Spun Synovial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "42209-7",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "42210-5",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43417-5",
+      "display" : "Microscopic observation [Identifier] in Esophageal brushing by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43427-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Rapid stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43741-8",
+      "display" : "Temperature of Semen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44098-2",
+      "display" : "Microscopic observation [Identifier] in Specimen by Wayson stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44933-0",
+      "display" : "Specific gravity of 24 hour Urine by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "45043-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Tzanck smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "47282-9",
+      "display" : "MCV [Entitic mean volume] in Cord blood"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48148-1",
+      "display" : "Osmolality of Urine by calculated by sum of electrolytes"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48712-4",
+      "display" : "Microscopic observation [Identifier] in Genital specimen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48722-3",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Crystal violet stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "49001-1",
+      "display" : "Osmolality of Sweat"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "49050-8",
+      "display" : "Microscopic observation [Identifier] in Endocervical brush by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "49959-0",
+      "display" : "Specific gravity of Urine by Adjustment to pH 7.4"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "50389-6",
+      "display" : "Microscopic observation [Identifier] in Bronchial brush by Cyto stain.thin prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "50553-7",
+      "display" : "Color of Urine by Auto"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "50562-8",
+      "display" : "Specific gravity of Urine by Refractometry automated"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "50668-3",
+      "display" : "Microscopic observation in Specimen by Electron microscopy Narrative"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51617-9",
+      "display" : "Color of Dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51700-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Lactophenol blue"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51714-4",
+      "display" : "Microscopic observation [Identifier] in Blood by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52812-5",
+      "display" : "Appearance of Spun Dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52813-3",
+      "display" : "Appearance of Spun Pleural fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52814-1",
+      "display" : "Appearance of Spun Peritoneal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52820-8",
+      "display" : "Appearance of Spun Pericardial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53326-5",
+      "display" : "Specific gravity of Urine by Automated test strip"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53522-9",
+      "display" : "Microscopic observation [Identifier] in Bronchial specimen by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53555-9",
+      "display" : "Specific gravity of Red Blood Cells"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53733-2",
+      "display" : "Color of Spun Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53785-2",
+      "display" : "Microscopic observation [Identifier] in Urine by Wright stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53786-0",
+      "display" : "Microscopic observation [Identifier] in Stool by Wright stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53904-9",
+      "display" : "Microscopic observation [Identifier] in Sputum by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53905-6",
+      "display" : "Microscopic observation [Identifier] in Urine by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53906-4",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53907-2",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53910-6",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53912-2",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53913-0",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53914-8",
+      "display" : "Microscopic observation [Identifier] in Endometrium by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53915-5",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53916-3",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53918-9",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55222-4",
+      "display" : "Microscopic observation [Identifier] in Aspirate by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55600-1",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55601-9",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55602-7",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55603-5",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55604-3",
+      "display" : "Microscopic observation [Identifier] in Endometrium by Cyto stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "55960-9",
+      "display" : "Osmolality of Dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "57372-5",
+      "display" : "Osmolality of 12 hour Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5767-9",
+      "display" : "Appearance of Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5778-6",
+      "display" : "Color of Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "57835-1",
+      "display" : "Appearance of Dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "57851-8",
+      "display" : "Microscopic observation [Identifier] in Urethra by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5810-7",
+      "display" : "Specific gravity of Urine by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5811-5",
+      "display" : "Specific gravity of Urine by Test strip"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "58681-8",
+      "display" : "Temperature of Urine"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "58942-4",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "58943-2",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "58944-0",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "58945-7",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "59474-7",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Acridine orange stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "60027-0",
+      "display" : "Specific gravity of Pericardial fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "61192-1",
+      "display" : "Color of Pleural fluid from Fetus"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "62242-3",
+      "display" : "MCV [Entitic mean volume] in Red Blood Cells from Fetus by Automated count"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "63433-7",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "638-7",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by India ink prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "inactive" : true,
+      "code" : "639-5",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by KOH preparation",
+      "property" : [{
+        "code" : "status",
+        "valueCode" : "DISCOURAGED"
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "640-3",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "641-1",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "642-9",
+      "display" : "Microscopic observation [Identifier] in Gastric fluid by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "643-7",
+      "display" : "Microscopic observation [Identifier] in Pus by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "644-5",
+      "display" : "Microscopic observation [Identifier] in Skin by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "645-2",
+      "display" : "Microscopic observation [Identifier] in Sputum by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "646-0",
+      "display" : "Microscopic observation [Identifier] in Sputum by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6464-2",
+      "display" : "Microscopic observation [Identifier] in Cervix by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6465-9",
+      "display" : "Microscopic observation [Identifier] in Duodenal fluid by Trichrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6466-7",
+      "display" : "Microscopic observation [Identifier] in Duodenal fluid by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6467-5",
+      "display" : "Microscopic observation [Identifier] in Genital fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6468-3",
+      "display" : "Microscopic observation [Identifier] in Sputum by Calcofluor white"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6469-1",
+      "display" : "Microscopic observation [Identifier] in Stool by Trichrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6470-9",
+      "display" : "Microscopic observation [Identifier] in Stool by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6471-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Other stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6472-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Calcofluor white"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6473-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Trichrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6474-1",
+      "display" : "Microscopic observation [Identifier] in Urethra by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "647-8",
+      "display" : "Microscopic observation [Identifier] in Sputum by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "648-6",
+      "display" : "Microscopic observation [Identifier] in Sputum by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "649-4",
+      "display" : "Microscopic observation [Identifier] in Stool by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "650-2",
+      "display" : "Microscopic observation [Identifier] in Urine by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "651-0",
+      "display" : "Microscopic observation [Identifier] in Urine by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "652-8",
+      "display" : "Microscopic observation [Identifier] in Urine by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "653-6",
+      "display" : "Microscopic observation [Identifier] in Urine by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "654-4",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "655-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "656-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "657-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Acridine orange stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "658-5",
+      "display" : "Microscopic observation [Identifier] in Specimen by Calcofluor white"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "659-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Carbol-fuchsin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "660-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Dark field examination"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6607-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Dark field examination"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "661-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Dry mount"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "662-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "663-5",
+      "display" : "Microscopic observation [Identifier] in Specimen by Gimenez stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "664-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "665-0",
+      "display" : "Microscopic observation [Identifier] in Specimen by Hematoxylin and eosin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6655-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6656-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acid fast stain.Kinyoun modified"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6657-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6658-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Acridine orange stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6659-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Carbol-fuchsin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6661-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Dry mount"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6662-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6663-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Gimenez stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6664-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6665-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Hematoxylin and eosin stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6666-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by India ink prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6667-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "666-8",
+      "display" : "Microscopic observation [Identifier] in Specimen by India ink prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6668-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by M'Fadyean stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6669-6",
+      "display" : "Microscopic observation [Identifier] in Tissue by Macchiavello stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6670-4",
+      "display" : "Microscopic observation [Identifier] in Tissue by Malaria smear"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6671-2",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methenamine silver nitrate stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6672-0",
+      "display" : "Microscopic observation [Identifier] in Tissue by Methylene blue stain.Loeffler"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6673-8",
+      "display" : "Microscopic observation [Identifier] in Tissue by Neisser stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "66746-9",
+      "display" : "Specimen type"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6675-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Periodic acid-Schiff stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "667-6",
+      "display" : "Microscopic observation [Identifier] in Specimen by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6677-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6678-7",
+      "display" : "Microscopic observation [Identifier] in Tissue by Toluidine blue O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6679-5",
+      "display" : "Microscopic observation [Identifier] in Tissue by Warthin-Starry stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6680-3",
+      "display" : "Microscopic observation [Identifier] in Tissue by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6681-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Wright stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6682-9",
+      "display" : "Microscopic observation [Identifier] in Tissue by Wright Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "668-4",
+      "display" : "Microscopic observation [Identifier] in Specimen by M'Fadyean stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "669-2",
+      "display" : "Microscopic observation [Identifier] in Specimen by Macchiavello stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "670-0",
+      "display" : "Microscopic observation [Identifier] in Specimen by Methenamine silver nitrate stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "671-8",
+      "display" : "Microscopic observation [Identifier] in Specimen by Methylene blue stain.Loeffler"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "672-6",
+      "display" : "Microscopic observation [Identifier] in Specimen by Neisser stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "674-2",
+      "display" : "Microscopic observation [Identifier] in Specimen by Periodic acid-Schiff stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "676-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Rhodamine-auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "677-5",
+      "display" : "Microscopic observation [Identifier] in Specimen by Toluidine blue O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "678-3",
+      "display" : "Microscopic observation [Identifier] in Specimen by Trichrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "679-1",
+      "display" : "Microscopic observation [Identifier] in Specimen by Warthin-Starry stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "680-9",
+      "display" : "Microscopic observation [Identifier] in Specimen by Wet preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "681-7",
+      "display" : "Microscopic observation [Identifier] in Specimen by Wright stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6824-7",
+      "display" : "Color of Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "682-5",
+      "display" : "Microscopic observation [Identifier] in Specimen by Wright Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68383-9",
+      "display" : "Microscopic observation [Identifier] in Body fluid by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68384-7",
+      "display" : "Specific gravity of Pericardial fluid by Refractometry"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68436-5",
+      "display" : "Appearance of Vitreous fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68455-5",
+      "display" : "Appearance of Spun Vitreous fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68958-8",
+      "display" : "Microscopic observation [Identifier] in Urine by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68971-1",
+      "display" : "Color of Vitreous fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "72357-7",
+      "display" : "Microscopic observation [Presence] in Specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "72408-8",
+      "display" : "Microscopic observation [Identifier] in Anal by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "73694-2",
+      "display" : "Microscopic observation [Identifier] in Blood by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "75222-0",
+      "display" : "Microscopic observation [Identifier] in Throat by Alberts stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76082-7",
+      "display" : "Microscopic observation [Identifier] in Bronchoalveolar lavage by Methenamine silver nitrate stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76083-5",
+      "display" : "Microscopic observation [Presence] in Bronchoalveolar lavage by Acid fast stain.Ziehl-Neelsen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "77653-4",
+      "display" : "Microscopic observation [Identifier] in Anorectal Cyto stain.thin prep"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "787-2",
+      "display" : "MCV [Entitic mean volume] in Red Blood Cells by Automated count"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "80661-2",
+      "display" : "Color of Peritoneal dialysis fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "81423-6",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Acetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "81424-4",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Toluidine blue O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "81425-1",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Oil red O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "81426-9",
+      "display" : "Microscopic observation [Identifier] in Venous blood by Acetate esterase stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "81427-7",
+      "display" : "Microscopic observation [Identifier] in Venous blood by Oil red O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "8250-3",
+      "display" : "Microscopic observation [Identifier] in Stool by Electron microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "86242-5",
+      "display" : "Color of Nasal fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "86243-3",
+      "display" : "Color of Sputum"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87243-2",
+      "display" : "Microscopic observation [Presence] in Specimen by Auramine fluorochrome stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87728-2",
+      "display" : "Description of swab specimen Narrative"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87965-0",
+      "display" : "Microscopic observation [Identifier] in Cerebrospinal Fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87966-8",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87967-6",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87968-4",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87969-2",
+      "display" : "Microscopic observation [Identifier] in Blood by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87970-0",
+      "display" : "Microscopic observation [Identifier] in Amniotic fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87971-8",
+      "display" : "Microscopic observation [Identifier] in Amniotic fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87972-6",
+      "display" : "Microscopic observation [Identifier] in Sinus by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87973-4",
+      "display" : "Microscopic observation [Identifier] in Semen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87974-2",
+      "display" : "Microscopic observation [Identifier] in Burn by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87975-9",
+      "display" : "Microscopic observation [Identifier] in Isolate by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "87999-9",
+      "display" : "Microscopic observation [Identifier] in Contact lens by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88000-5",
+      "display" : "Microscopic observation [Identifier] in Pleural fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88001-3",
+      "display" : "Microscopic observation [Identifier] in Peritoneal dialysis fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88144-1",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88145-8",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88146-6",
+      "display" : "Microscopic observation [Identifier] in Placenta by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88147-4",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88148-2",
+      "display" : "Microscopic observation [Identifier] in Genital specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88149-0",
+      "display" : "Microscopic observation [Identifier] in Nasopharynx by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88150-8",
+      "display" : "Microscopic observation [Identifier] in Ocular fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88151-6",
+      "display" : "Microscopic observation [Identifier] in Wound by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88152-4",
+      "display" : "Microscopic observation [Identifier] in Cervix by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88153-2",
+      "display" : "Microscopic observation [Identifier] in Bone marrow by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88154-0",
+      "display" : "Microscopic observation [Identifier] in Sinus by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88155-7",
+      "display" : "Microscopic observation [Identifier] in Ocular fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88156-5",
+      "display" : "Microscopic observation [Identifier] in Amniotic fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88157-3",
+      "display" : "Microscopic observation [Identifier] in Semen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88158-1",
+      "display" : "Microscopic observation [Identifier] in Ocular fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88159-9",
+      "display" : "Microscopic observation [Identifier] in Aspirate by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88170-6",
+      "display" : "Microscopic observation [Identifier] in Cornea or Conjunctiva by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88171-4",
+      "display" : "Microscopic observation [Presence] in Cornea or Conjunctiva by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88172-2",
+      "display" : "Microscopic observation [Presence] in Isolate by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88173-0",
+      "display" : "Microscopic observation [Presence] in Pleural fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88231-6",
+      "display" : "Microscopic observation [Identifier] in Bile fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88234-0",
+      "display" : "Microscopic observation [Presence] in Synovial fluid by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88235-7",
+      "display" : "Microscopic observation [Identifier] in Synovial fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88336-3",
+      "display" : "Microscopic observation [Interpretation] of Ear specimen Narrative"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88366-0",
+      "display" : "Microscopic observation [Presence] in Vomitus by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88631-7",
+      "display" : "Microscopic observation [Presence] in Lower respiratory specimen by Acid fast stain.Kinyoun"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88632-5",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88633-3",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88634-1",
+      "display" : "Microscopic observation [Identifier] in Saliva (oral fluid) by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88635-8",
+      "display" : "Microscopic observation [Identifier] in Vomitus by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88684-6",
+      "display" : "Microscopic observation [Identifier] in Aspirate by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88685-3",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by KOH preparation"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89582-1",
+      "display" : "Microscopic observation [Identifier] in Cervix by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89657-1",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by Toluidine blue O stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89658-9",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by Methenamine silver nitrate stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89659-7",
+      "display" : "Microscopic observation [Identifier] in Implanted device by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89660-5",
+      "display" : "Microscopic observation [Identifier] in Implanted device by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89661-3",
+      "display" : "Microscopic observation [Identifier] in Upper respiratory specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "89662-1",
+      "display" : "Microscopic observation [Identifier] in Lower respiratory specimen by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90261-9",
+      "display" : "Microscopic observation [Identifier] in Bile fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90262-7",
+      "display" : "Microscopic observation [Identifier] in Bile fluid by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90263-5",
+      "display" : "Microscopic observation [Identifier] in Milk by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90267-6",
+      "display" : "Microscopic observation [Identifier] in Pericardial fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90268-4",
+      "display" : "Microscopic observation [Identifier] in Peritoneal fluid by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90269-2",
+      "display" : "Microscopic observation [Identifier] in Milk by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90282-5",
+      "display" : "Microscopic observation [Identifier] in Catheter tip by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90296-5",
+      "display" : "Microscopic observation [Identifier] in Skin by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91808-6",
+      "display" : "Microscopic observation [Identifier] in Upper respiratory specimen by Gram stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91850-8",
+      "display" : "Microscopic observation [Identifier] in Genital specimen by Giemsa stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "925-8",
+      "display" : "Blood product disposition [Type]"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "933-2",
+      "display" : "Blood product type"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9335-1",
+      "display" : "Appearance of Body fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "936-5",
+      "display" : "Blood product unit [Identifier]"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9397-1",
+      "display" : "Color of Stool"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "94543-6",
+      "display" : "Microscopic observation [Identifier] in Skin by Acid fast stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "94843-0",
+      "display" : "Osmolality of Urine from Fetus"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "96035-1",
+      "display" : "Microscopic observation [Identifier] in Tissue by Alcian blue stain.with hyaluronidase"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "96713-3",
+      "display" : "Microscopic observation [Identifier] in Body fluid by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "96715-8",
+      "display" : "Color of Prostatic fluid"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9786-5",
+      "display" : "Microscopic observation [Identifier] in Blood or Marrow by Periodic acid-Schiff stain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9796-4",
+      "display" : "Color of Stone"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "METHOD_TYP",
+        "op" : "=",
+        "value" : "LP6429-7"
+      },
+      {
+        "property" : "SYSTEM",
+        "op" : "=",
+        "value" : "LP7735-6"
+      },
+      {
+        "property" : "PROPERTY",
+        "op" : "=",
+        "value" : "LP6850-4"
+      },
+      {
+        "property" : "STATUS",
+        "op" : "=",
+        "value" : "ACTIVE"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:49679d3e-4d60-444b-9643-82f2df5f7ff6",
+    "timestamp" : "2026-11-09T18:59:30.478Z",
+    "total" : 68,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "100899-4",
+      "display" : "Enterobacteriaceae.extended spectrum beta lactamase resistance phenotype [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "100907-5",
+      "display" : "Vancomycin resistant enterococcus [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "105604-3",
+      "display" : "Aeromonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10639-3",
+      "display" : "Thermophilic Actinomycetes identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10716-9",
+      "display" : "Schistosoma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107595-1",
+      "display" : "Spore [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17520-8",
+      "display" : "Respiratory syncytial virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17530-7",
+      "display" : "Retrovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17563-8",
+      "display" : "Salmonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17576-0",
+      "display" : "Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20445-3",
+      "display" : "Herpes virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20966-8",
+      "display" : "Staphylococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "24409-5",
+      "display" : "Brachyspira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29885-1",
+      "display" : "Actinobacillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32368-3",
+      "display" : "Ureaplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38353-9",
+      "display" : "Streptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38354-7",
+      "display" : "Bartonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38376-0",
+      "display" : "Cryptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40436-8",
+      "display" : "Parainfluenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40684-3",
+      "display" : "Acinetobacter sp multidrug resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "42255-0",
+      "display" : "Salmonella and Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43365-6",
+      "display" : "Nocardia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43387-0",
+      "display" : "Neisseria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43979-4",
+      "display" : "Aspergillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44089-1",
+      "display" : "Escherichia coli O157:H7 [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44798-7",
+      "display" : "Burkholderia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44851-4",
+      "display" : "Mycobacterium sp # 2 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44852-2",
+      "display" : "Mycobacterium sp # 3 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44854-8",
+      "display" : "Mycobacterium sp # 4 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44855-5",
+      "display" : "Mycobacterium sp # 5 identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48873-4",
+      "display" : "Ehrlichia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51710-2",
+      "display" : "Leishmania sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "543-9",
+      "display" : "Mycobacterium sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "552-0",
+      "display" : "Brucella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "555-3",
+      "display" : "Candida sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "560-3",
+      "display" : "Chlamydia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "567-8",
+      "display" : "Diphtheria identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5843-8",
+      "display" : "Enterovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5859-4",
+      "display" : "Herpes simplex virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "593-4",
+      "display" : "Legionella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "594-2",
+      "display" : "Leptospira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "62454-4",
+      "display" : "Herpes simplex virus and Varicella zoster virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6310-7",
+      "display" : "Arbovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6317-2",
+      "display" : "Bordetella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6323-0",
+      "display" : "Borrelia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6332-1",
+      "display" : "Campylobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6406-3",
+      "display" : "Flavivirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6431-1",
+      "display" : "HIV identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6486-5",
+      "display" : "Mycoplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6539-1",
+      "display" : "Rabies virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6546-6",
+      "display" : "Rickettsia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6547-4",
+      "display" : "Rotavirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6581-3",
+      "display" : "Vibrio sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6594-6",
+      "display" : "Amoeba identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6600-1",
+      "display" : "Haemophilus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6604-3",
+      "display" : "Influenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6609-2",
+      "display" : "Listeria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68458-9",
+      "display" : "Trichomonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "686-6",
+      "display" : "Respiratory Mycoplasma identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "687-4",
+      "display" : "Mycoplasma sp and Ureaplasma sp [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "69410-9",
+      "display" : "Haemophilus influenzae [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "701-3",
+      "display" : "Yersinia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "73907-8",
+      "display" : "Polio virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90003-5",
+      "display" : "Acinetobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "94151-8",
+      "display" : "Bacteria.carbapenem resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9781-6",
+      "display" : "Acanthamoeba sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9782-4",
+      "display" : "Adenovirus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9816-0",
+      "display" : "Actinomyces sp identified in Specimen by Organism specific culture"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "CLASS",
+        "op" : "=",
+        "value" : "LP7819-8"
+      },
+      {
+        "property" : "PROPERTY",
+        "op" : "=",
+        "value" : "LP6850-4"
+      },
+      {
+        "property" : "METHOD_TYP",
+        "op" : "=",
+        "value" : "LP6398-4"
+      },
+      {
+        "property" : "STATUS",
+        "op" : "=",
+        "value" : "ACTIVE"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:92c3bcf9-4e74-48e6-b818-24975fda32bd",
+    "timestamp" : "2026-11-09T18:59:31.136Z",
+    "total" : 37,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "10347-3",
+      "display" : "Babesia microti identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106047-4",
+      "display" : "Ova and parasites identified in Bronchoalveolar lavage by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106048-2",
+      "display" : "Ova and parasites identified in Aspirate by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10658-3",
+      "display" : "Cyanobacterium identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10661-7",
+      "display" : "Dinoflagellate identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10692-2",
+      "display" : "Mushroom.toxic identified in Food by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10693-0",
+      "display" : "Mushroom.toxic identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10704-5",
+      "display" : "Ova and parasites identified in Stool by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10708-6",
+      "display" : "Toxic Plant identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10715-1",
+      "display" : "Schistosoma sp identified in Urine sediment by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10729-2",
+      "display" : "Trypanosoma sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10855-5",
+      "display" : "Ova and parasites identified in Duodenal fluid or Gastric fluid by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10857-1",
+      "display" : "Microsporidia identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13319-9",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13320-7",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13325-6",
+      "display" : "Bartonella sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13326-4",
+      "display" : "Pneumocystis sp identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14839-5",
+      "display" : "Trypanosoma sp identified in Buffy Coat by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17784-0",
+      "display" : "Parasite identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20933-8",
+      "display" : "Parasite identified in Serum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32206-5",
+      "display" : "Plasmodium sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "33270-0",
+      "display" : "Microscopic observation [Identifier] in Buffy Coat by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "41451-6",
+      "display" : "Plasmodium stage [Identifier] in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52107-0",
+      "display" : "Bacterial capsule [Identifier] in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52794-5",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52795-2",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53609-4",
+      "display" : "Parasite identified in Bone marrow by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6674-6",
+      "display" : "Ova and parasites identified in Tissue by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "673-4",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "74037-3",
+      "display" : "Transmissible spongiform encephalopathy [Identifier] in Brain by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76699-8",
+      "display" : "Filaria identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76767-3",
+      "display" : "Schistosoma sp identified in Semen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88337-1",
+      "display" : "Mite identified in Ear by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91768-2",
+      "display" : "Ova and parasites identified in Sputum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91826-8",
+      "display" : "Ova and parasites identified in Lower respiratory specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9787-3",
+      "display" : "Sarcoptes scabiei identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "98026-8",
+      "display" : "Parasite identified in Prostatic fluid by Light microscopy"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/uv/sdc/Questionnaire/questionnaire-sdc-profile-example-render--contained[0]: ValueSet (ContainedResource/Questionnaire.contained[0]): native = ValueSet -> ValueSet[null]",
+  "title" : "Timing of harm assessment [AHRQ]",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:346f3472-9606-4cab-aa0a-d5376343d5f6",
+    "timestamp" : "2026-11-09T20:15:31.605Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "LIST",
+        "op" : "=",
+        "value" : "LL715-4"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://loinc.org/vs/LL715-4",
+  "name" : "LOINCAnswersLL715-4",
+  "title" : "LOINC Answer Codes for LL715-4",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:507306a4-d3f3-4b41-b6a7-38f198a0ae79",
+    "timestamp" : "2026-11-09T20:15:31.818Z",
+    "total" : 8,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA11165-0",
+      "display" : "Platelet anisocytosis"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11168-4",
+      "display" : "Platelet clump"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11167-6",
+      "display" : "Platelet large fragments"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11166-8",
+      "display" : "Platelet satellitism"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11169-2",
+      "display" : "Platelets.agranular"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11170-0",
+      "display" : "Platelets.giant"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11172-6",
+      "display" : "Platelets.large"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11171-8",
+      "display" : "Platelets.small"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:298e118a-a24e-46b9-81ea-bf0bbd00f2ef",
+    "timestamp" : "2026-11-09T20:15:32.086Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "5932-9",
+        "display" : "Cholesterol [Presence] in Blood by Test strip"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/ValueSet/example-intensional-inc-1",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:2e70ee55-c5ca-4168-8f31-493a99d3b018",
+    "timestamp" : "2026-11-09T20:15:32.533Z",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "5932-9",
+      "display" : "Cholesterol [Presence] in Blood by Test strip"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6557-8",
+        "display" : "No verbal response (>2yrs); no vocal response (<=2yrs)"
+      },
+      {
+        "code" : "LA6558-6",
+        "display" : "Incomprehensible sounds"
+      },
+      {
+        "code" : "LA6559-4",
+        "display" : "Inappropriate words"
+      },
+      {
+        "code" : "LA6560-2",
+        "display" : "Confused"
+      },
+      {
+        "code" : "LA6561-0",
+        "display" : "Oriented"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[1]: ValueSet (ContainedResource/Questionnaire.contained[1]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL356-7"
+  }],
+  "name" : "GCS Verbal Value Set",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:b0f877da-d895-404e-a8a7-88f2038d12f9",
+    "timestamp" : "2026-11-09T20:15:32.890Z",
+    "total" : 5,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6557-8",
+      "display" : "No verbal response (>2 yrs); no vocal response (<=2 yrs)"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6558-6",
+      "display" : "Incomprehensible sounds"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6559-4",
+      "display" : "Inappropriate words"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6560-2",
+      "display" : "Confused"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6561-0",
+      "display" : "Oriented"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6562-8",
+        "display" : "No motor response"
+      },
+      {
+        "code" : "LA6563-6",
+        "display" : "Extension to pain"
+      },
+      {
+        "code" : "LA6564-4",
+        "display" : "Flexion to pain"
+      },
+      {
+        "code" : "LA6565-1",
+        "display" : "Withdrawl from pain"
+      },
+      {
+        "code" : "LA6566-9",
+        "display" : "Localizing pain"
+      },
+      {
+        "code" : "LA6567-7",
+        "display" : "Obeys commands"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[0]: ValueSet (ContainedResource/Questionnaire.contained[0]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL357-5"
+  }],
+  "name" : "GCS Motor Value Set",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:69e1c712-c6b9-48b2-a411-8ba48a821cc4",
+    "timestamp" : "2026-11-09T20:15:33.103Z",
+    "total" : 6,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6562-8",
+      "display" : "No motor response"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6563-6",
+      "display" : "Extension to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6564-4",
+      "display" : "Flexion to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6565-1",
+      "display" : "Withdrawal from pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6566-9",
+      "display" : "Localizing pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6567-7",
+      "display" : "Obeys commands"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6553-7",
+        "display" : "No eye opening"
+      },
+      {
+        "code" : "LA6554-5",
+        "display" : "Eye opening to pain"
+      },
+      {
+        "code" : "LA6555-2",
+        "display" : "Eye opening to verbal command"
+      },
+      {
+        "code" : "LA6556-0",
+        "display" : "Eyes open spontaneously"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[2]: ValueSet (ContainedResource/Questionnaire.contained[2]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL355-9"
+  }],
+  "name" : "GCS Eye Value Set",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:ae864db5-e851-4fed-b522-81bacb0dbebd",
+    "timestamp" : "2026-11-09T20:15:33.314Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6553-7",
+      "display" : "No eye opening"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6554-5",
+      "display" : "Eye opening to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6555-2",
+      "display" : "Eye opening to verbal command"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6556-0",
+      "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6562-8",
+        "display" : "No motor response"
+      },
+      {
+        "code" : "LA6563-6",
+        "display" : "Extension to pain"
+      },
+      {
+        "code" : "LA6564-4",
+        "display" : "Flexion to pain"
+      },
+      {
+        "code" : "LA6565-1",
+        "display" : "Withdrawl from pain"
+      },
+      {
+        "code" : "LA6566-9",
+        "display" : "Localizing pain"
+      },
+      {
+        "code" : "LA6567-7",
+        "display" : "Obeys commands"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:b1330d7c-7bf6-40c2-9017-d135ab6e8840",
+    "timestamp" : "2026-11-09T20:15:33.525Z",
+    "total" : 6,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6562-8",
+      "display" : "No motor response"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6563-6",
+      "display" : "Extension to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6564-4",
+      "display" : "Flexion to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6565-1",
+      "display" : "Withdrawal from pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6566-9",
+      "display" : "Localizing pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6567-7",
+      "display" : "Obeys commands"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6557-8",
+        "display" : "No verbal response (>2yrs); no vocal response (<=2yrs)"
+      },
+      {
+        "code" : "LA6558-6",
+        "display" : "Incomprehensible sounds"
+      },
+      {
+        "code" : "LA6559-4",
+        "display" : "Inappropriate words"
+      },
+      {
+        "code" : "LA6560-2",
+        "display" : "Confused"
+      },
+      {
+        "code" : "LA6561-0",
+        "display" : "Oriented"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:1e5b2d6e-50d8-4684-8816-98cdcfef8547",
+    "timestamp" : "2026-11-09T20:15:33.738Z",
+    "total" : 5,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6557-8",
+      "display" : "No verbal response (>2 yrs); no vocal response (<=2 yrs)"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6558-6",
+      "display" : "Incomprehensible sounds"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6559-4",
+      "display" : "Inappropriate words"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6560-2",
+      "display" : "Confused"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6561-0",
+      "display" : "Oriented"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "language": "en", "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6553-7",
+        "display" : "No eye opening"
+      },
+      {
+        "code" : "LA6554-5",
+        "display" : "Eye opening to pain"
+      },
+      {
+        "code" : "LA6555-2",
+        "display" : "Eye opening to verbal command"
+      },
+      {
+        "code" : "LA6556-0",
+        "display" : "Eyes open spontaneously"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:84f58367-410c-4e21-a5e1-8b758fbe2aaa",
+    "timestamp" : "2026-11-09T20:15:33.948Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "displayLanguage",
+      "valueCode" : "en"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6553-7",
+      "display" : "No eye opening"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6554-5",
+      "display" : "Eye opening to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6555-2",
+      "display" : "Eye opening to verbal command"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6556-0",
+      "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0"}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc",
+  "version" : "1.0.0",
+  "name" : "VSExcludeLoinc",
+  "title" : "Exclude from LOINC",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2026-11-10",
+  "expansion" : {
+    "identifier" : "urn:uuid:483d3cd3-0c14-4090-916b-c51c1d9fcc57",
+    "timestamp" : "2026-11-09T19:54:52.524Z",
+    "total" : 100,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "100899-4",
+      "display" : "Enterobacteriaceae.extended spectrum beta lactamase resistance phenotype [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "100907-5",
+      "display" : "Vancomycin resistant enterococcus [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "105604-3",
+      "display" : "Aeromonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10639-3",
+      "display" : "Thermophilic Actinomycetes identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10716-9",
+      "display" : "Schistosoma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107595-1",
+      "display" : "Spore [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17520-8",
+      "display" : "Respiratory syncytial virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17530-7",
+      "display" : "Retrovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17563-8",
+      "display" : "Salmonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17576-0",
+      "display" : "Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20445-3",
+      "display" : "Herpes virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20966-8",
+      "display" : "Staphylococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "24409-5",
+      "display" : "Brachyspira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29885-1",
+      "display" : "Actinobacillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32368-3",
+      "display" : "Ureaplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38353-9",
+      "display" : "Streptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38354-7",
+      "display" : "Bartonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38376-0",
+      "display" : "Cryptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40436-8",
+      "display" : "Parainfluenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40684-3",
+      "display" : "Acinetobacter sp multidrug resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "42255-0",
+      "display" : "Salmonella and Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43365-6",
+      "display" : "Nocardia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43387-0",
+      "display" : "Neisseria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43979-4",
+      "display" : "Aspergillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44089-1",
+      "display" : "Escherichia coli O157:H7 [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44798-7",
+      "display" : "Burkholderia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48873-4",
+      "display" : "Ehrlichia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51710-2",
+      "display" : "Leishmania sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "543-9",
+      "display" : "Mycobacterium sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "552-0",
+      "display" : "Brucella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "555-3",
+      "display" : "Candida sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "560-3",
+      "display" : "Chlamydia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "567-8",
+      "display" : "Diphtheria identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5843-8",
+      "display" : "Enterovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5859-4",
+      "display" : "Herpes simplex virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "593-4",
+      "display" : "Legionella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "594-2",
+      "display" : "Leptospira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "62454-4",
+      "display" : "Herpes simplex virus and Varicella zoster virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6310-7",
+      "display" : "Arbovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6317-2",
+      "display" : "Bordetella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6323-0",
+      "display" : "Borrelia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6332-1",
+      "display" : "Campylobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6406-3",
+      "display" : "Flavivirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6431-1",
+      "display" : "HIV identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6486-5",
+      "display" : "Mycoplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6539-1",
+      "display" : "Rabies virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6546-6",
+      "display" : "Rickettsia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6547-4",
+      "display" : "Rotavirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6581-3",
+      "display" : "Vibrio sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6594-6",
+      "display" : "Amoeba identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6600-1",
+      "display" : "Haemophilus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6604-3",
+      "display" : "Influenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6609-2",
+      "display" : "Listeria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68458-9",
+      "display" : "Trichomonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "686-6",
+      "display" : "Respiratory Mycoplasma identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "687-4",
+      "display" : "Mycoplasma sp and Ureaplasma sp [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "69410-9",
+      "display" : "Haemophilus influenzae [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "701-3",
+      "display" : "Yersinia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "73907-8",
+      "display" : "Polio virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90003-5",
+      "display" : "Acinetobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "94151-8",
+      "display" : "Bacteria.carbapenem resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9781-6",
+      "display" : "Acanthamoeba sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9782-4",
+      "display" : "Adenovirus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9816-0",
+      "display" : "Actinomyces sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10347-3",
+      "display" : "Babesia microti identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106047-4",
+      "display" : "Ova and parasites identified in Bronchoalveolar lavage by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106048-2",
+      "display" : "Ova and parasites identified in Aspirate by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10658-3",
+      "display" : "Cyanobacterium identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10661-7",
+      "display" : "Dinoflagellate identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10692-2",
+      "display" : "Mushroom.toxic identified in Food by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10693-0",
+      "display" : "Mushroom.toxic identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10704-5",
+      "display" : "Ova and parasites identified in Stool by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10708-6",
+      "display" : "Toxic Plant identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10715-1",
+      "display" : "Schistosoma sp identified in Urine sediment by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10729-2",
+      "display" : "Trypanosoma sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10855-5",
+      "display" : "Ova and parasites identified in Duodenal fluid or Gastric fluid by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10857-1",
+      "display" : "Microsporidia identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13319-9",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13320-7",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13325-6",
+      "display" : "Bartonella sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13326-4",
+      "display" : "Pneumocystis sp identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14839-5",
+      "display" : "Trypanosoma sp identified in Buffy Coat by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17784-0",
+      "display" : "Parasite identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20933-8",
+      "display" : "Parasite identified in Serum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32206-5",
+      "display" : "Plasmodium sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "41451-6",
+      "display" : "Plasmodium stage [Identifier] in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52107-0",
+      "display" : "Bacterial capsule [Identifier] in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52794-5",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52795-2",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53609-4",
+      "display" : "Parasite identified in Bone marrow by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6674-6",
+      "display" : "Ova and parasites identified in Tissue by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "673-4",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "74037-3",
+      "display" : "Transmissible spongiform encephalopathy [Identifier] in Brain by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76699-8",
+      "display" : "Filaria identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76767-3",
+      "display" : "Schistosoma sp identified in Semen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88337-1",
+      "display" : "Mite identified in Ear by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91768-2",
+      "display" : "Ova and parasites identified in Sputum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91826-8",
+      "display" : "Ova and parasites identified in Lower respiratory specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9787-3",
+      "display" : "Sarcoptes scabiei identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "98026-8",
+      "display" : "Parasite identified in Prostatic fluid by Light microscopy"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

@@ -154,25 +154,43 @@ class ValueSetExpanderTests {
     checkExpansionParameters(exp);
   }
 
-  @Test
-  void testExcludeAcrossServers() throws IOException {
+  // is-a 46635009, less 290002008 and is-a 70694009 (the same codes in the International and Czech editions)
+  private static final List<String> DIABETES_CODES = List.of("1217068008", "1255271005", "190368000", "190372001", "199229001",
+      "23045005", "28032008", "31321000119102", "426875007", "444073006", "444074000", "46635009", "609564002", "609566000",
+      "703137001", "722454003", "870528001");
+  // is-a 49436004, less 314208002 and is-a 282825002 (Estonian edition)
+  private static final List<String> AF_CODES = List.of("120041000119109", "1389267007", "233910005", "233911009",
+      "280797561000119107", "300996004", "313377641000119105", "426749004", "440028005", "440059007", "489609371000119104",
+      "49436004", "706923002", "715395008", "762247006");
+
+  private static void checkSnomedExpansion(String name) throws IOException {
     SimpleWorkerContext context = txContext();
-    ValueSet exp = expandAsPublisher(context, loadValueSet(context, "vs-exclude-sct-multi.json"));
+    ValueSet exp = expandAsPublisher(context, loadValueSet(context, name));
     Set<String> codes = codes(exp.getExpansion().getContains(), new HashSet<>());
 
-    // International edition (tx-dev.fhir.org): is-a 46635009, less 290002008 and is-a 70694009
-    Set<String> expected = new HashSet<>(List.of("1217068008", "1255271005", "190368000", "190372001", "199229001", "23045005",
-        "28032008", "31321000119102", "426875007", "444073006", "444074000", "46635009", "609564002", "609566000", "703137001",
-        "722454003", "870528001"));
-    // Estonian edition (term.tehik.ee): is-a 49436004, less 314208002 and is-a 282825002
-    expected.addAll(List.of("120041000119109", "1389267007", "233910005", "233911009", "280797561000119107", "300996004",
-        "313377641000119105", "426749004", "440028005", "440059007", "489609371000119104", "49436004", "706923002",
-        "715395008", "762247006"));
-
+    Set<String> expected = new HashSet<>(DIABETES_CODES);
+    expected.addAll(AF_CODES);
     assertEquals(new TreeSet<>(expected), new TreeSet<>(codes));
     if (exp.getExpansion().hasTotal()) {
       assertEquals(expected.size(), exp.getExpansion().getTotal());
     }
     checkExpansionParameters(exp);
+  }
+
+  /**
+   * International + Estonian editions. term.tehik.ee has both, so one server can do it all
+   */
+  @Test
+  void testExcludeOnOneServer() throws IOException {
+    checkSnomedExpansion("vs-exclude-sct-multi.json");
+  }
+
+  /**
+   * Czech + Estonian editions. Only tx.hl7.cz has the Czech edition, and only term.tehik.ee has the Estonian one,
+   * so it takes two servers
+   */
+  @Test
+  void testExcludeAcrossServers() throws IOException {
+    checkSnomedExpansion("vs-exclude-sct-split.json");
   }
 }

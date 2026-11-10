@@ -1188,6 +1188,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     List<String> allErrors = new ArrayList<>();
 
+    // a value set with excludes on a server side code system, or with only server side includes, goes to
+    // the server as a whole if one server can do it all (see chooseServerForWholeValueSet)
+    TerminologyClientContext wholeServer = chooseServerForWholeValueSet(vs);
+    if (wholeServer != null) {
+      return expandOnServer(vs, p, cacheToken, wholeServer, null);
+    }
+
     // ok, first we try to expand locally
     ValueSetExpander vse = constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
     vse.setNoTerminologyServer(noTerminologyServer);
@@ -1232,6 +1239,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc == null) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
     }
+    return expandOnServer(vs, p, cacheToken, tc, res);
+  }
+
+  /**
+   * Expand the value set on the server tc. res is the outcome of trying to expand it locally first, if that was tried
+   */
+  private ValueSetExpansionOutcome expandOnServer(ValueSet vs, Parameters p, CacheToken cacheToken, TerminologyClientContext tc, ValueSetExpansionOutcome res) {
+    List<String> allErrors = new ArrayList<>();
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
 
     try {
@@ -1258,7 +1273,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
-      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) ? TerminologyServiceErrorClass.SERVER_ERROR : res.getErrorClass();
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) ? TerminologyServiceErrorClass.SERVER_ERROR : res == null ? TerminologyServiceErrorClass.UNKNOWN : res.getErrorClass();
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", errorClass, false);
       } else {
@@ -1275,6 +1290,53 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * Whether to hand the whole value set to a terminology server rather than expanding it here, where server side
+   * code systems are expanded one include (and exclude) at a time (fhir-ig-publisher#1469):
+   *
+   *  - an exclude on a server side code system means fetching everything it excludes, which might be very big, so
+   *    then the whole value set goes to the server if a single server can do it all - whether or not there are
+   *    local code systems as well (they're sent with the request)
+   *  - otherwise, if any include is local (including imports of other value sets), it's expanded here
+   *  - otherwise (all the includes are server side), it goes to the server if a single server can do it all
+   *
+   * Returns null to expand it here (piecemeal, if it uses more than one server)
+   */
+  private TerminologyClientContext chooseServerForWholeValueSet(ValueSet vs) {
+    if (noTerminologyServer || terminologyClientManager == null || !vs.hasCompose() || vs.getCompose().getIncludeList().isEmpty()) {
+      return null;
+    }
+    boolean serverExclude = false;
+    for (ConceptSetComponent exc : vs.getCompose().getExcludeList()) {
+      if (exc.hasSystem() && isServerSideSystem(exc, vs)) {
+        serverExclude = true;
+      }
+    }
+    if (!serverExclude) {
+      for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+        if (!inc.hasSystem() || inc.hasValueSet() || !isServerSideSystem(inc, vs)) {
+          return null;
+        }
+      }
+    }
+    try {
+      return terminologyClientManager.chooseSingleServer(vs, findRelevantSystems(vs), true);
+    } catch (Exception e) {
+      return null; // then the expander works it out
+    }
+  }
+
+  /**
+   * the same test the expander uses to decide to send an include to the server
+   */
+  private boolean isServerSideSystem(ConceptSetComponent inc, ValueSet vs) {
+    if (ValueSetUtilities.isServerSide(inc.getSystem())) {
+      return true;
+    }
+    CodeSystem cs = fetchCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), vs);
+    return cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT);
   }
 
   /**

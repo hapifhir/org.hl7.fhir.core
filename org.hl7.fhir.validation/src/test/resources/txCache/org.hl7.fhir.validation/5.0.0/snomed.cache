@@ -1316,3 +1316,1160 @@ p: {
   "properties" : {"designation:900000000000003001":["Apgar response to stimulus score (observable entity)"],"designation:900000000000013009":["Apgar response to stimulus score","Apgar grimace score"],"inactive":["false"]}
 }
 -------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "249225007", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar muscle tone score (observable entity)"],"designation:900000000000013009":["Apgar muscle tone score","Apgar activity score"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "290002008"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Brittle type 1 diabetes mellitus",
+  "code" : "290002008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#290002008 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#290002008\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"290002008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "1285518004"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Wolfram syndrome type 1",
+  "code" : "1285518004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#1285518004 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#1285518004\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"1285518004\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "314208002"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Rapid atrial fibrillation",
+  "code" : "314208002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102/version/20260530",
+  "server" : "https://term.tehik.ee/fhir",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "1010405004"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Paroxysmal atrial fibrillation with rapid ventricular response",
+  "code" : "1010405004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102/version/20260530",
+  "server" : "https://term.tehik.ee/fhir",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "290002008"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0 for validation purposes\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Validate \"[http://snomed.info/sct#290002008 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Check \"http://snomed.info/sct#290002008\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: check code in (http://snomed.info/sct)(conceptis-a46635009) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Filter concept is-a 46635009: Code \"290002008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: check code not in (http://snomed.info/sct)(290002008) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Code \"290002008\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#290002008' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "1285518004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Validate \"[http://snomed.info/sct#1285518004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Check \"http://snomed.info/sct#1285518004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: check code in (http://snomed.info/sct)(conceptis-a46635009) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Filter concept is-a 46635009: Code \"1285518004\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: check code not in (http://snomed.info/sct)(290002008) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: check code not in (http://snomed.info/sct)(conceptis-a70694009) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Filter concept is-a 70694009: Code \"1285518004\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#1285518004' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0'"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "314208002"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/900000000000207008 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "1010405004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#1010405004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#1010405004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/900000000000207008 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "46635009"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Type 1 diabetes mellitus",
+  "code" : "46635009",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20260701",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Validate \"[http://snomed.info/sct#46635009 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Check \"http://snomed.info/sct#46635009\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20260701: Code \"46635009\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "49436004"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Atrial fibrillation",
+  "code" : "49436004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102/version/20260530",
+  "server" : "https://term.tehik.ee/fhir",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "49436004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/900000000000207008 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"op": "lookup-properties", "system" : "http://snomed.info/sct", "version" : null, "code" : "249224006", "properties" : ["272741003", "363698007", "363704007", "405813007", "405814001", "408729009", "408730004", "designation", "inactive"]}####
+p: {
+  "properties" : {"designation:900000000000003001":["Apgar respiratory effort score (observable entity)"],"designation:900000000000013009":["Apgar respiratory effort score"],"inactive":["false"]}
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "46635009"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-multi-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Type 1 diabetes mellitus",
+  "code" : "46635009",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102/version/20260530",
+  "server" : "https://term.tehik.ee/fhir",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "290002008"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Brittle type 1 diabetes mellitus",
+  "code" : "290002008",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109/version/20260618",
+  "server" : "https://tx.hl7.cz/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008 (\"undefined\")]\"\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008\"\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618 for http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Code \"290002008\" found in http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "1285518004"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Wolfram syndrome type 1",
+  "code" : "1285518004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109/version/20260618",
+  "server" : "https://tx.hl7.cz/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#1285518004 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#1285518004\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618 for http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Code \"1285518004\" found in http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "290002008"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008 (\"undefined\")]\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008\"\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000279109",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "1285518004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#1285518004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#1285518004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000279109",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "314208002"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/11000279109 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "1010405004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#1010405004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#1010405004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/11000279109 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "46635009"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Type 1 diabetes mellitus",
+  "code" : "46635009",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109/version/20260618",
+  "server" : "https://tx.hl7.cz/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009\"\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618 for http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/11000279109/version/20260618: Code \"46635009\" found in http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "46635009"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000279109",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "49436004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/11000279109 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "46635009"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "314208002"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "46635009"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "314208002"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909; A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n2ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009 (\"undefined\"), http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002 (\"undefined\")]\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#46635009\"\n5ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000279109\n10ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#314208002\"\n11ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/11000279109 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n11ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "290002008"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "49436004"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000279109",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000279109",
+    "code" : "290002008"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/11000181102",
+    "code" : "49436004"
+  }]
+}, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/test/StructureDefinition/vs-exclude-sct-split-observation|1.0.0]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/11000181102",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909; A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Analysing http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[0]: \"(http://snomed.info/sct)(conceptis-a46635009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare include[1]: \"(http://snomed.info/sct)(conceptis-a49436004)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[0]: \"(http://snomed.info/sct)(290002008)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[1]: \"(http://snomed.info/sct)(conceptis-a70694009)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000279109 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000279109\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[2]: \"(http://snomed.info/sct)(314208002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Prepare exclude[3]: \"(http://snomed.info/sct)(conceptis-a282825002)\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem version http://snomed.info/sct/11000181102 not found: \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Validate \"[http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008 (\"undefined\"), http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004 (\"undefined\")]\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000279109#290002008\"\n1ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000279109\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Check \"http://snomed.info/sct|http://snomed.info/sct/11000181102#49436004\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: Include for http://snomed.info/sct|http://snomed.info/sct/11000279109 not considered for \"http://snomed.info/sct|http://snomed.info/sct/11000181102\"\n4ms http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-split|1.0.0: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/11000181102",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000279109' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000181102' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20260930, http://snomed.info/sct/11010000107/version/20261021, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20250201, http://snomed.info/sct/900000000000207008/version/20260701 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

@@ -230,38 +230,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       choices.add(findServerForSystem(s, language));
     }    
     
-    // first we look for a server that's authoritative for all of them
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.authoritative) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!t.authoritative.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found authoritative server "+s);
-          return findClientContext(s, systems, expand);
-        }
-      }
-    }
-    
-    // now we look for a server that's authoritative for one of them and a candidate for the others.
-    // A system that the registry knows no server for at all doesn't constrain the choice - any
-    // server is as good as any other for it - so it doesn't stop a server qualifying here
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.authoritative) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found partially authoritative server "+s);
-          return findClientContext(s, systems, expand);
-        }
-      }
+    TerminologyClientContext agreed = findAuthoritativeServer(vs, systems, expand, choices);
+    if (agreed != null) {
+      return agreed;
     }
 
     for (String sys : systems) {
@@ -284,29 +255,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
     }
 
-    // now we look for a server that's a candidate for all of them (again, systems no server is
-    // known for don't constrain the choice), and that actually has a usable copy of the code
-    // systems. The support check costs a round trip (or several) per server, so it's only done
-    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
-    // the outcome of the check is not written back to the ServerOptionList objects: they are
-    // cached in resMap (and persisted to system-map.json), and must keep recording what the
-    // registry actually said, not the outcome of a possibly-transient support check
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.candidates) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!isUnresolved(t) && !t.candidates.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          ok = actuallySupportsAll(vs, s, systems, choices);
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found candidate server " + s);
-          return findClientContext(s, systems, expand);
-        }
-      }
+    agreed = findCandidateServer(vs, systems, expand, choices);
+    if (agreed != null) {
+      return agreed;
     }
 
 
@@ -362,6 +313,101 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   /**
    * the registry answered, but knows of no server at all for the system
    */
+  /**
+   * Choose a server that can handle all of these code systems by itself, or null if there isn't one.
+   *
+   * chooseServer() always picks a server, even when the systems are spread across servers and none of
+   * them can do it all. This only returns a server when one server is authoritative or a candidate for
+   * all of the systems (or there's only one system, or the ecosystem isn't in use), so the caller can
+   * send a whole value set there, instead of splitting it up by code system (fhir-ig-publisher#1469)
+   */
+  public TerminologyClientContext chooseSingleServer(ValueSet vs, Set<String> systems, boolean expand) throws TerminologyServiceException {
+    if (serverList.isEmpty() || systems.isEmpty() || systems.contains(UNRESOLVED_VALUESET)) {
+      return null;
+    }
+    if (systems.size() == 1 || !useEcosystem) {
+      return chooseServer(vs, systems, expand);
+    }
+    String language = effectiveLanguage(null, expand);
+    List<ServerOptionList> choices = new ArrayList<>();
+    for (String s : systems) {
+      choices.add(findServerForSystem(s, language));
+    }
+    TerminologyClientContext agreed = findAuthoritativeServer(vs, systems, expand, choices);
+    if (agreed == null) {
+      agreed = findCandidateServer(vs, systems, expand, choices);
+    }
+    if (agreed == null) {
+      log(vs, null, systems, choices, "No single server handles all the systems");
+    }
+    return agreed;
+  }
+
+  private TerminologyClientContext findAuthoritativeServer(ValueSet vs, Set<String> systems, boolean expand, List<ServerOptionList> choices) {
+    // first we look for a server that's authoritative for all of them
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!t.authoritative.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found authoritative server "+s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+
+    // now we look for a server that's authoritative for one of them and a candidate for the others.
+    // A system that the registry knows no server for at all doesn't constrain the choice - any
+    // server is as good as any other for it - so it doesn't stop a server qualifying here
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found partially authoritative server "+s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+    return null;
+  }
+
+  private TerminologyClientContext findCandidateServer(ValueSet vs, Set<String> systems, boolean expand, List<ServerOptionList> choices) {
+    // now we look for a server that's a candidate for all of them (again, systems no server is
+    // known for don't constrain the choice), and that actually has a usable copy of the code
+    // systems. The support check costs a round trip (or several) per server, so it's only done
+    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
+    // the outcome of the check is not written back to the ServerOptionList objects: they are
+    // cached in resMap (and persisted to system-map.json), and must keep recording what the
+    // registry actually said, not the outcome of a possibly-transient support check
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.candidates) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!isUnresolved(t) && !t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          ok = actuallySupportsAll(vs, s, systems, choices);
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found candidate server " + s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+    return null;
+  }
+
   private boolean isUnresolved(ServerOptionList choice) {
     return choice.authoritative.isEmpty() && choice.candidates.isEmpty();
   }
