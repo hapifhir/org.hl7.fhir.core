@@ -3,7 +3,6 @@
   "http://hl7.org/fhir/Library/library-quick-model-definition" : null,
   "http://loinc.org" : {
     "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-bc226337-db02-416f-ab7a-ea5db47da69c.json"
-  },
-  "http://snomed.info/sct" : null
+    "filename" : "cs-51b781d8-84bc-45bc-8626-7217ea818a6a.json"
+  }
 }

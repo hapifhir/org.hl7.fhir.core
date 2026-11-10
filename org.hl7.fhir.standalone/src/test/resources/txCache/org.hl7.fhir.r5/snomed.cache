@@ -5,6 +5,7 @@
     "inactive" : true,
     "include" : [{
       "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
       "concept" : [{
         "code" : "290002008"
       }]
@@ -13,13 +14,13 @@
 }}####
 e: {
   "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
+  "source" : tx.hl7.cz,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:23356bcc-4a89-4185-a349-d16f78ac717a",
-    "timestamp" : "2026-11-09T18:59:24.415Z",
+    "identifier" : "urn:uuid:65b50125-7721-447b-bfe9-68836b8320e7",
+    "timestamp" : "2026-11-10T04:31:12.939Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -40,7 +41,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
     }],
     "contains" : [{
       "system" : "http://snomed.info/sct",
@@ -58,6 +59,7 @@ e: {
     "inactive" : true,
     "include" : [{
       "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
       "filter" : [{
         "property" : "concept",
         "op" : "is-a",
@@ -68,7 +70,7 @@ e: {
 }}####
 e: {
   "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
+  "source" : tx.hl7.cz,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
@@ -77,8 +79,8 @@ e: {
       "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
       "valueBoolean" : true
     }],
-    "identifier" : "urn:uuid:45424c03-f430-426c-b54b-9b2d92ed6859",
-    "timestamp" : "2026-11-09T18:59:24.621Z",
+    "identifier" : "urn:uuid:a2664eff-bd8a-41e7-8e95-b237050113af",
+    "timestamp" : "2026-11-10T04:31:13.198Z",
     "total" : 3,
     "offset" : 0,
     "parameter" : [{
@@ -99,7 +101,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
     }],
     "contains" : [{
       "system" : "http://snomed.info/sct",
@@ -141,8 +143,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:a0576c96-a1cd-4472-93ab-c747674a22ae",
-    "timestamp" : "2026-11-09T20:59:26+02:00",
+    "identifier" : "urn:uuid:8cd8f746-774c-4dae-8fb4-21cd3c71919b",
+    "timestamp" : "2026-11-10T06:31:15+02:00",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -197,8 +199,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:85903e23-1c61-4d65-99a3-3476cc8e33e8",
-    "timestamp" : "2026-11-09T20:59:27+02:00",
+    "identifier" : "urn:uuid:3d32964f-261a-4c11-aa63-4ce728d57835",
+    "timestamp" : "2026-11-10T06:31:15+02:00",
     "total" : 3,
     "offset" : 0,
     "parameter" : [{
@@ -247,6 +249,7 @@ e: {
     "inactive" : true,
     "include" : [{
       "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
       "filter" : [{
         "property" : "concept",
         "op" : "is-a",
@@ -257,7 +260,7 @@ e: {
 }}####
 e: {
   "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
+  "source" : tx.hl7.cz,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
@@ -266,8 +269,8 @@ e: {
       "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
       "valueBoolean" : true
     }],
-    "identifier" : "urn:uuid:b9c030fb-ea11-4f6f-b033-5b0165f334a8",
-    "timestamp" : "2026-11-09T18:59:27.639Z",
+    "identifier" : "urn:uuid:521a3b51-cd36-4f5c-828d-87ccc37a3a47",
+    "timestamp" : "2026-11-10T04:31:15.794Z",
     "total" : 21,
     "offset" : 0,
     "parameter" : [{
@@ -288,7 +291,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
     }],
     "contains" : [{
       "system" : "http://snomed.info/sct",
@@ -422,8 +425,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:99370570-a3b1-423b-a0e6-2016fcda3ca1",
-    "timestamp" : "2026-11-09T20:59:27+02:00",
+    "identifier" : "urn:uuid:15b0a30a-cfff-4775-ae52-5fd6d9a9d893",
+    "timestamp" : "2026-11-10T06:31:16+02:00",
     "total" : 19,
     "offset" : 0,
     "parameter" : [{
@@ -546,571 +549,6 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/900000000000207008",
-      "concept" : [{
-        "code" : "290002008"
-      }]
-    }]
-  }
-}}####
-e: {
-  "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "identifier" : "urn:uuid:90472c84-909c-487a-92a5-eb8de19dd23c",
-    "timestamp" : "2026-11-09T20:15:26.791Z",
-    "total" : 1,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "290002008",
-      "display" : "Brittle type 1 diabetes mellitus"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/900000000000207008",
-      "filter" : [{
-        "property" : "concept",
-        "op" : "is-a",
-        "value" : "70694009"
-      }]
-    }]
-  }
-}}####
-e: {
-  "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
-      "valueBoolean" : true
-    }],
-    "identifier" : "urn:uuid:8b555b4e-46f3-415a-ab9f-77e965510f0b",
-    "timestamp" : "2026-11-09T20:15:26.997Z",
-    "total" : 3,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "70694009",
-      "display" : "Wolfram syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285518004",
-      "display" : "Wolfram syndrome type 1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285519007",
-      "display" : "Wolfram syndrome type 2"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/900000000000207008",
-      "filter" : [{
-        "property" : "concept",
-        "op" : "is-a",
-        "value" : "46635009"
-      }]
-    }]
-  }
-}}####
-e: {
-  "class" : "UNKNOWN",
-  "source" : tx-dev.fhir.org,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
-      "valueBoolean" : true
-    }],
-    "identifier" : "urn:uuid:883aebe2-1d60-416f-892a-28ef84c349f5",
-    "timestamp" : "2026-11-09T20:15:27.203Z",
-    "total" : 21,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20260701"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "46635009",
-      "display" : "Type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "23045005",
-      "display" : "Insulin dependent diabetes mellitus type 1A"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "28032008",
-      "display" : "Insulin dependent diabetes mellitus type 1B"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "70694009",
-      "display" : "Wolfram syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "190368000",
-      "display" : "Type 1 diabetes mellitus with ulcer"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "190372001",
-      "display" : "Type 1 diabetes mellitus maturity onset"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "199229001",
-      "display" : "Pre-existing type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "290002008",
-      "display" : "Brittle type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "426875007",
-      "display" : "Latent autoimmune diabetes mellitus in adult"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "444073006",
-      "display" : "Uncontrolled type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "444074000",
-      "display" : "Well controlled type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "609564002",
-      "display" : "Pre-existing type 1 diabetes mellitus in pregnancy"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "609566000",
-      "display" : "Pregnancy and type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "703137001",
-      "display" : "Type 1 diabetes mellitus in remission"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "722454003",
-      "display" : "Intellectual disability, craniofacial dysmorphism, hypogonadism, diabetes mellitus syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "870528001",
-      "display" : "Newly diagnosed type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1217068008",
-      "display" : "Fulminant type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1255271005",
-      "display" : "Type 1 diabetes mellitus, central and peripheral neurodegeneration syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285518004",
-      "display" : "Wolfram syndrome type 1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285519007",
-      "display" : "Wolfram syndrome type 2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "31321000119102",
-      "display" : "Diabetes mellitus type 1 without retinopathy"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/11000279109",
-      "concept" : [{
-        "code" : "290002008"
-      }]
-    }]
-  }
-}}####
-e: {
-  "source" : tx.hl7.cz,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "identifier" : "urn:uuid:0a9560f7-4835-4339-9d36-b6c961abcb5d",
-    "timestamp" : "2026-11-09T20:54:26.776Z",
-    "total" : 1,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "290002008",
-      "display" : "Brittle type 1 diabetes mellitus"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/11000279109",
-      "filter" : [{
-        "property" : "concept",
-        "op" : "is-a",
-        "value" : "70694009"
-      }]
-    }]
-  }
-}}####
-e: {
-  "source" : tx.hl7.cz,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
-      "valueBoolean" : true
-    }],
-    "identifier" : "urn:uuid:04436ec5-2125-4738-8940-a1f8d707a394",
-    "timestamp" : "2026-11-09T20:54:27.036Z",
-    "total" : 3,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "70694009",
-      "display" : "Wolfram syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285518004",
-      "display" : "Wolfram syndrome type 1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285519007",
-      "display" : "Wolfram syndrome type 2"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://snomed.info/sct",
-      "version" : "http://snomed.info/sct/11000279109",
-      "filter" : [{
-        "property" : "concept",
-        "op" : "is-a",
-        "value" : "46635009"
-      }]
-    }]
-  }
-}}####
-e: {
-  "source" : tx.hl7.cz,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
-      "valueBoolean" : true
-    }],
-    "identifier" : "urn:uuid:1328a733-0da3-4aec-9732-061ec5730334",
-    "timestamp" : "2026-11-09T20:54:27.294Z",
-    "total" : 21,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
-    }],
-    "contains" : [{
-      "system" : "http://snomed.info/sct",
-      "code" : "46635009",
-      "display" : "Type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "23045005",
-      "display" : "Insulin dependent diabetes mellitus type 1A"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "28032008",
-      "display" : "Insulin dependent diabetes mellitus type 1B"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "70694009",
-      "display" : "Wolfram syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "190368000",
-      "display" : "Type 1 diabetes mellitus with ulcer"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "190372001",
-      "display" : "Type 1 diabetes mellitus maturity onset"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "199229001",
-      "display" : "Pre-existing type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "290002008",
-      "display" : "Brittle type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "426875007",
-      "display" : "Latent autoimmune diabetes mellitus in adult"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "444073006",
-      "display" : "Uncontrolled type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "444074000",
-      "display" : "Well controlled type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "609564002",
-      "display" : "Pre-existing type 1 diabetes mellitus in pregnancy"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "609566000",
-      "display" : "Pregnancy and type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "703137001",
-      "display" : "Type 1 diabetes mellitus in remission"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "722454003",
-      "display" : "Intellectual disability, craniofacial dysmorphism, hypogonadism, diabetes mellitus syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "870528001",
-      "display" : "Newly diagnosed type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1217068008",
-      "display" : "Fulminant type 1 diabetes mellitus"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1255271005",
-      "display" : "Type 1 diabetes mellitus, central and peripheral neurodegeneration syndrome"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285518004",
-      "display" : "Wolfram syndrome type 1"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "1285519007",
-      "display" : "Wolfram syndrome type 2"
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "code" : "31321000119102",
-      "display" : "Diabetes mellitus type 1 without retinopathy"
-    }]
-  }
-},
-  "error" : ""
-}
--------------------------------------------------------------------------------------
 {"hierarchical" : true, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0"}####
 e: {
   "source" : term.tehik.ee,
@@ -1123,8 +561,8 @@ e: {
   "status" : "active",
   "experimental" : false,
   "expansion" : {
-    "identifier" : "urn:uuid:39a35f19-493e-4615-970f-538c3b0f09df",
-    "timestamp" : "2026-11-09T22:54:30+02:00",
+    "identifier" : "urn:uuid:d4bdeafd-ff4f-4cc6-8262-1df544478514",
+    "timestamp" : "2026-11-10T09:29:10+02:00",
     "total" : 32,
     "offset" : 0,
     "parameter" : [{
