@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Uri40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Extension40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Meta40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Narrative40_N;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Basic;
 
