@@ -1350,16 +1350,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     ResourceSearchParams sParams = new ResourceSearchParams();
     String capExpectation;
     SingleParam param;
-    if (r==null) {
-      return sParams;
-    }
-
-    for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParamList()) {
+    // r is null for the system level (rest.searchParam)
+    for (CapabilityStatementRestResourceSearchParamComponent sp : params) {
       capExpectation = expectationForDisplay(sp, EXPECTATION);
       if (Utilities.noString(capExpectation)) {
         capExpectation = "supported";
       }
-      param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation, r.getType().toLowerCase());
+      param = new SingleParam(sp.getName(), sp.getDefinition(), sp.getType().toCode(), sp.getDocumentation(), capExpectation, r == null ? null : r.getType().toLowerCase());
       sParams.addIndividualbyName(param.getName(), param);
       sParams.addIndividualbyExp(capExpectation, param);
     }
@@ -1368,7 +1365,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
       CombinedSearchParamSet combinedParams;
       String paramName;
-      for (Extension e : r.getExtensionsByUrl(COMBINED)) {
+      for (Extension e : r == null ? new ArrayList<Extension>() : r.getExtensionsByUrl(COMBINED)) {
         capExpectation = expectationForDisplay(e,EXPECTATION);
         if (Utilities.noString(capExpectation)) {
           capExpectation = "supported";

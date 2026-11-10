@@ -5356,7 +5356,7 @@ msgstr "Il y a une slice sans discriminateur à {0}"
 # SD_XIG_LINK
 #: SD_XIG_LINK
 msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">usages in the FHIR IG Statistics</a></p>"
-msgstr "!!<p>Vous pouvez également vérifier <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">les usages dans le FHIR IG Statistics</a></p>"
+msgstr "<p>Vous pouvez également vérifier <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">les usages dans le FHIR IG Statistics</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
