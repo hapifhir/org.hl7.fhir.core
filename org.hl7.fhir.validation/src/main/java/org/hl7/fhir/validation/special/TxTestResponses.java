@@ -36,8 +36,14 @@ public class TxTestResponses {
     this.test = test;
     this.modes = modes;
     this.httpCode = test.has("http-code") ? test.asString("http-code") : "2xx";
-    for (String c : httpCode.split("\\|")) {
-      String code = c.trim();
+    int start = 0;
+    while (start <= httpCode.length()) {
+      int end = httpCode.indexOf('|', start);
+      if (end < 0) {
+        end = httpCode.length();
+      }
+      String code = httpCode.substring(start, end).trim();
+      start = end + 1;
       if (!isHttpCodeChoice(code)) {
         throw new FHIRException("Test "+test.asString("name")+": invalid http-code '"+httpCode+"'");
       }
@@ -108,7 +114,16 @@ public class TxTestResponses {
 
   /** a single http-code choice: an exact code (e.g. 200, 422), or a class of codes (2xx, 4xx) */
   public static boolean isHttpCodeChoice(String tcode) {
-    return tcode.matches("[1-5][0-9][0-9]|[1-5]xx");
+    if (tcode == null || tcode.length() != 3 || tcode.charAt(0) < '1' || tcode.charAt(0) > '5') {
+      return false;
+    }
+    char c1 = tcode.charAt(1);
+    char c2 = tcode.charAt(2);
+    return (isAsciiDigit(c1) && isAsciiDigit(c2)) || (c1 == 'x' && c2 == 'x');
+  }
+
+  private static boolean isAsciiDigit(char c) {
+    return c >= '0' && c <= '9';
   }
 
   public static boolean httpCodeOk(String tcode, int code) {
