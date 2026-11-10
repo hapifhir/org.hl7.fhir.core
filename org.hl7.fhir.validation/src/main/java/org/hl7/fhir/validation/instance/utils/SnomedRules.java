@@ -293,12 +293,15 @@ public class SnomedRules {
     return props == null ? null : new Concept(code, version, display, props);
   }
 
+  // reviewed: a fixed pattern with no nested repetition, so it runs in linear time on any input
+  @SuppressWarnings("checkstyle:patternUsage")
   private static final Pattern LATERALITY_REFINEMENT = Pattern.compile("^\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*:\\s*" + LATERALITY + "\\s*(\\|[^|]*\\|)?\\s*=\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*$");
 
   /**
    * a post-coordinated expression that only refines a concept's laterality (e.g. 69695003:272741003=7771000,
    * a left stomach): the focus concept and the laterality, or null if it isn't one
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage") // the match below uses the reviewed LATERALITY_REFINEMENT
   public static String[] lateralityRefinement(String expression) {
     if (expression == null || !expression.contains(":")) {
       return null;

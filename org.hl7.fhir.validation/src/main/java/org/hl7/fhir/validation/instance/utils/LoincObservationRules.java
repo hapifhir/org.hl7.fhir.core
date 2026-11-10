@@ -161,7 +161,7 @@ public class LoincObservationRules {
      */
     public boolean isTimed() {
       String t = getTimeAspect();
-      return t != null && t.matches("\\d+H");
+      return t != null && isHours(t);
     }
   }
 
@@ -239,7 +239,7 @@ public class LoincObservationRules {
     }
     List<String> examples = new ArrayList<>();
     for (String s : code.props.getOrDefault("EXAMPLE_UCUM_UNITS", new ArrayList<>())) {
-      for (String u : s.split(";")) {
+      for (String u : splitOnSemicolons(s)) {
         if (!Utilities.noString(u.trim()) && !isArbitrary(u.trim())) {
           examples.add(u.trim());
         }
@@ -281,9 +281,55 @@ public class LoincObservationRules {
     }
   }
 
+  /** one or more digits followed by H (24H, 12H): a number of hours */
+  private static boolean isHours(String t) {
+    if (t.length() < 2 || t.charAt(t.length() - 1) != 'H') {
+      return false;
+    }
+    for (int i = 0; i < t.length() - 1; i++) {
+      if (t.charAt(i) < '0' || t.charAt(i) > '9') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /** the parts of s between semicolons (no regex) */
+  private static List<String> splitOnSemicolons(String s) {
+    List<String> res = new ArrayList<>();
+    int start = 0;
+    int i;
+    while ((i = s.indexOf(';', start)) >= 0) {
+      res.add(s.substring(start, i));
+      start = i + 1;
+    }
+    res.add(s.substring(start));
+    return res;
+  }
+
+  /**
+   * s without any part that starts with open and ends at the next close (e.g. {mg} or [IU]); an
+   * open with no close after it is left as it is
+   */
+  private static String removeDelimited(String s, char open, char close) {
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    while (i < s.length()) {
+      char c = s.charAt(i);
+      int end = c == open ? s.indexOf(close, i + 1) : -1;
+      if (end >= 0) {
+        i = end + 1;
+      } else {
+        b.append(c);
+        i++;
+      }
+    }
+    return b.toString();
+  }
+
   /** a unit of moles - mol, mmol/L, meq/L, mosm/kg - as opposed to a count (10*9/L) */
   private static boolean isMoles(String unit) {
-    String u = unit.replaceAll("\\{[^}]*\\}", "").replaceAll("\\[[^\\]]*\\]", "");
+    String u = removeDelimited(removeDelimited(unit, '{', '}'), '[', ']');
     return u.contains("mol") || u.contains("eq") || u.contains("osm");
   }
 
