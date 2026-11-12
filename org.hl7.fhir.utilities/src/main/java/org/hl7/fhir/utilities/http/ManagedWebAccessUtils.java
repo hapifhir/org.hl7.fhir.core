@@ -134,7 +134,7 @@ public class ManagedWebAccessUtils {
     if (InetAddresses.isInetAddress(host)) {
       throwExceptionIfNonPublicAddress(InetAddresses.forString(host), host);
     } else if (NonCanonicalIPMatcher.isNonCanonicalIPHost(host)) {
-      throw new IOException("Refusing to fetch from non-canonical IP literal host " + host);
+      throw new IOException("The server address " + host + " is not in the usual canonical form so is not supported.");
     }
   }
 
