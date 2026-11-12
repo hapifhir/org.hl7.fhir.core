@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /*
@@ -55,7 +53,7 @@ public class PackagePreparer {
   public static void main(String[] args) throws IOException {
     for (File f : ManagedFileAccess.file("C:\\work\\fhirserver\\resources\\mihin").listFiles()) {
       try {
-        org.hl7.fhir.dstu3.model.Resource r = new org.hl7.fhir.dstu3.formats.JsonParser().parse(ManagedFileAccess.inStream(f));
+        org.hl7.fhir.dstu3.model.Resource r = new org.hl7.fhir.dstu3.formats.JsonParser().parseFile(f);
         if (r instanceof Bundle) {
           Bundle b = (Bundle) r;
           for (BundleEntryComponent be : b.getEntry()) {
@@ -64,7 +62,7 @@ public class PackagePreparer {
               if (r4.getId().startsWith(r4.fhirType() + "-"))
                 be.getResource().setId(r4.getId().substring(r4.fhirType().length() + 1));
               if (be.getResource().hasId())
-                new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(Utilities.path("C:\\work\\fhirserver\\resources\\fhir.test.data\\3.5.0\\package", be.getResource().fhirType() + "-" + be.getResource().getId() + ".json")), r4);
+                new org.hl7.fhir.r4.formats.JsonParser().composeFile(Utilities.path("C:\\work\\fhirserver\\resources\\fhir.test.data\\3.5.0\\package", be.getResource().fhirType() + "-" + be.getResource().getId() + ".json"), r4);
               else
                 System.out.println(f.getName() + " bundle entry has no id");
             } catch (Exception e) {
@@ -72,7 +70,7 @@ public class PackagePreparer {
             }
           }
         } else if (r.hasId())
-          new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(FileUtilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType() + "-" + r.getId() + ".json")), VersionConvertorFactory_30_40.convertResource(r));
+          new org.hl7.fhir.r4.formats.JsonParser().composeFile(Utilities.path(FileUtilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType() + "-" + r.getId() + ".json"), VersionConvertorFactory_30_40.convertResource(r));
         else
           System.out.println(f.getName() + " has no id");
       } catch (Exception e) {

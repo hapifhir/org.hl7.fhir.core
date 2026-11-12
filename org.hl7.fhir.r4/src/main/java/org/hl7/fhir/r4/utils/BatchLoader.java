@@ -30,7 +30,6 @@ package org.hl7.fhir.r4.utils;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -97,7 +96,7 @@ public class BatchLoader {
     long ms = System.currentTimeMillis();
     System.out.print("Loading " + f.getName() + ".. ");
     IParser parser = f.getName().endsWith(".json") ? new JsonParser() : new XmlParser();
-    Resource res = parser.parse(new FileInputStream(f));
+    Resource res = parser.parseFile(f);
     System.out.println("  done: (" + Long.toString(System.currentTimeMillis() - ms) + " ms)");
 
     if (res instanceof Bundle) {

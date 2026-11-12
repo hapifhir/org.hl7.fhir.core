@@ -2735,7 +2735,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         log.info("The extension "+u+" from profile "+profile.getVUrl()+" cannot be resolved globally");
         return sd1;
       } else if (!StringUtils.equals(sd1.getVersion(), sd2.getVersion())) {
-        log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+        if (settings.isDebug()) {
+          log.info("The extension definition (" + sd1.getVersion() + ") for " + u + " from profile " + profile.getVUrl() + " is different to the latest (" + sd2.getVersion() + "). Using the latest");
+        }
       }
     }
     return sd2;
@@ -7297,6 +7299,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           warning(errors, "2024-10-18", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !version.contains("#"), I18nConstants.VALIDATION_VAL_VERSION_NOHASH, version);
         }        
       }
+      // SNOMED CT codes against what SNOMED CT says about them - at the base, whatever the profiles
+      ok = new SnomedResourceValidator(this).validate(errors, element, stack) && ok;
+      // negation codes (No known allergy...) that are refuted, or have reactions
+      new NegationValidator(this).validate(errors, element, stack);
       if (element.getType().equals(BUNDLE)) {
         return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, valContext, pct, mode) && ok;
       } else if (element.getType().equals("Observation")) {

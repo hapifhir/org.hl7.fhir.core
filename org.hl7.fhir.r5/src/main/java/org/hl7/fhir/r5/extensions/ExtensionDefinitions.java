@@ -68,6 +68,7 @@ public class ExtensionDefinitions {
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint";
   public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
   public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
+  public static final String EXT_EXPANSION_ISSUE = "http://hl7.org/fhir/StructureDefinition/expansion-issue";
   public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
   public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   public static final String EXT_FMM_DERIVED = "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom";

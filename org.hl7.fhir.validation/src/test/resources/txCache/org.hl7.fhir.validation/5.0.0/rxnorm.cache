@@ -20,9 +20,9 @@ v: {
   "display" : "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet [Percocet]",
   "code" : "1049640",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1049640 (\"Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1049640\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n58ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"1049640\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1049640 (\"Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1049640\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n5ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1049640\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -50,11 +50,35 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n4ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
+  }]
 }
 
 }
@@ -80,11 +104,35 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
+  }]
 }
 
 }

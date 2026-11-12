@@ -802,9 +802,9 @@ public class ProfileUtilitiesTests {
 //    focus.setDifferential(null);
     String f1 = Utilities.path("c:", "temp", "base.xml");
     String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f1), base);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f1, base);
     ;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f2), focus);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f2, focus);
     ;
     String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
     List<String> command = new ArrayList<String>();

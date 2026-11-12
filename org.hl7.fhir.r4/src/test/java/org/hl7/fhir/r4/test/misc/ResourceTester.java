@@ -60,7 +60,7 @@ public class ResourceTester {
       parser = new JsonParser();
     else
       parser = new XmlParser(false);
-    Resource resource = parser.parse(ManagedFileAccess.inStream(source));
+    Resource resource = parser.parseFile(source);
 
     FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.json");
     JsonParser jsonPrettyParser = new JsonParser();
@@ -69,7 +69,7 @@ public class ResourceTester {
     out.close();
 
     JsonParser jsonParser = new JsonParser();
-    resource = jsonParser.parse(ManagedFileAccess.inStream(source.getAbsoluteFile() + ".out.json"));
+    resource = jsonParser.parseFile(source.getAbsoluteFile() + ".out.json");
 
     out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.xml");
     XmlParser xmlParser = new XmlParser();

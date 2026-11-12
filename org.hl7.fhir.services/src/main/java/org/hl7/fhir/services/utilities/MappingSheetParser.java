@@ -414,11 +414,13 @@ public class MappingSheetParser {
   private static final String SFX = "<body></html>";
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
     MappingSheetParser parser = new MappingSheetParser();
-    parser.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv")), "v2-pid.csv");
+    try (InputStream stream = ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv"))) {
+      parser.parse(stream, "v2-pid.csv");
+    }
     ConceptMap cm = parser.getConceptMap();
     StructureMap sm = parser.getStructureMap();
-    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "sm.json")), sm);
-    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "cm.json")), cm);
+    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "sm.json"), sm);
+    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "cm.json"), cm);
     FileUtilities.stringToFile(StructureMapTools.render(sm), Utilities.path("[tmp]", "sm.txt"));
     FileUtilities.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
   }

@@ -171,9 +171,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     String cnt = processTemplate(template, "CodeSystem", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        .composeFile(Utilities.path(folder, comp.getId() + "-union.json"), comp.getUnion());
+    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(folder, comp.getId() + "-intersection.json"), comp.getIntersection());
   }
 
   private String file(String name) throws IOException {
@@ -197,9 +196,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     String cnt = processTemplate(template, "ValueSet", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        .composeFile(Utilities.path(folder, comp.getId() + "-union.json"), comp.getUnion());
+    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(folder, comp.getId() + "-intersection.json"), comp.getIntersection());
   }
 
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
@@ -221,9 +219,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     String cnt = processTemplate(template, "CodeSystem", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        .composeFile(Utilities.path(folder, comp.getId() + "-union.json"), comp.getUnion());
+    new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(folder, comp.getId() + "-intersection.json"), comp.getIntersection());
   }
 
   private String processTemplate(String template, String name, Map<String, Base> vars) {

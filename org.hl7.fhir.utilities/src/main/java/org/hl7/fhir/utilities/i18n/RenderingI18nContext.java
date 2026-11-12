@@ -1203,6 +1203,11 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_SYNONYM = "VALUE_SET_SYNONYM";
   public static final String VALUE_SET_SYSTEM = "VALUE_SET_SYSTEM";
   public static final String VALUE_SET_THESE_CODES_DEF = "VALUE_SET_THESE_CODES_DEF";
+  public static final String VALUE_SET_EXP_ISSUES = "VALUE_SET_EXP_ISSUES";
+  public static final String VALUE_SET_EXP_ISSUE_ERROR = "VALUE_SET_EXP_ISSUE_ERROR";
+  public static final String VALUE_SET_EXP_ISSUE_WARNING = "VALUE_SET_EXP_ISSUE_WARNING";
+  public static final String VALUE_SET_EXP_ISSUE_INFO = "VALUE_SET_EXP_ISSUE_INFO";
+  public static final String VALUE_SET_UNCLOSED = "VALUE_SET_UNCLOSED";
   public static final String VALUE_SET_TOO_COSTLY = "VALUE_SET_TOO_COSTLY";
   public static final String VALUE_SET_UK = "VALUE_SET_UK";
   public static final String VALUE_SET_US = "VALUE_SET_US";

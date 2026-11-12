@@ -247,6 +247,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.noTerminologyChecks = parent.noTerminologyChecks;
   }
 
+  /**
+   * The definitions (url:STATUS - DEPRECATED, WITHDRAWN, RETIRED, Experimental) whose status this validator has
+   * already reported, so that each is reported only once. It's shared with the validators this one creates.
+   * <p>
+   * This is the live set, not a copy: a caller that reuses the outcome of an earlier validation instead of validating
+   * again (e.g. the IG publisher's -rapido mode) adds what that validation reported, so it isn't reported a second time
+   */
+  public Set<String> getStatusWarnings() {
+    return statusWarnings;
+  }
+
   private boolean doingLevel(IssueSeverity error) {
     return ValidationLevel.includes(settings.getLevel(), error);
   }

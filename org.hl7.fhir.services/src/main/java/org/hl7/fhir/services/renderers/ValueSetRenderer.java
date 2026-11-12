@@ -225,6 +225,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     boolean hasFragment = generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
+    generateExpansionIssues(x, vs);
     
     if (ExtensionUtilities.hasExtension(vs.getExpansion(), ExtensionDefinitions.EXT_EXP_TOOCOSTLY)) {
       String msg = null;
@@ -437,6 +438,103 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     return false;
+  }
+
+  private static class ExpansionIssue {
+    private final String severity;
+    private final String text;
+
+    private ExpansionIssue(String severity, String text) {
+      this.severity = severity;
+      this.text = text;
+    }
+
+    private int rank() {
+      switch (severity) {
+      case "fatal": return 0;
+      case "error": return 1;
+      case "warning": return 2;
+      default: return 3;
+      }
+    }
+  }
+
+  /**
+   * Renders the issues associated with the expansion - those in OperationOutcomes referenced by
+   * the expansion-issue extension, along with the unclosed/unclosed-reason extensions, which are
+   * presented as if they were an information issue in the same list
+   */
+  private void generateExpansionIssues(XhtmlNode x, ValueSet vs) {
+    List<ExpansionIssue> issues = new ArrayList<>();
+    for (Extension ext : vs.getExpansion().getExtensionList()) {
+      if (ExtensionDefinitions.EXT_EXPANSION_ISSUE.equals(ext.getUrl()) && ext.getValue() instanceof Reference) {
+        OperationOutcome oo = findContainedOperationOutcome(vs, ((Reference) ext.getValue()).getReference());
+        if (oo != null) {
+          for (OperationOutcome.OperationOutcomeIssueComponent iss : oo.getIssueList()) {
+            String text = iss.hasDetails() && iss.getDetails().hasText() ? iss.getDetails().getText() : iss.getDiagnostics();
+            if (!Utilities.noString(text)) {
+              issues.add(new ExpansionIssue(iss.hasSeverity() ? iss.getSeverity().toCode() : "information", text));
+            }
+          }
+        }
+      }
+    }
+    Extension unclosed = vs.getExpansion().getExtensionByUrl(ExtensionDefinitions.EXT_UNCLOSED);
+    if (unclosed != null && unclosed.hasValue() && "true".equals(unclosed.getValue().primitiveValue())) {
+      Extension reason = vs.getExpansion().getExtensionByUrl(ExtensionDefinitions.EXT_UNCLOSED_REASON);
+      String text = reason != null && reason.hasValue() ? reason.getValue().primitiveValue() : null;
+      issues.add(new ExpansionIssue("information", Utilities.noString(text) ? context.formatPhrase(RenderingI18nContext.VALUE_SET_UNCLOSED) : text));
+    }
+    if (issues.isEmpty()) {
+      return;
+    }
+    issues.sort(Comparator.comparingInt(ExpansionIssue::rank)); // stable, so source order is kept within a level
+    // styled using the bootstrap panel-* and text-* classes in bootstrap-fhir.css. The panel takes
+    // the level of the most serious issue (the list is sorted, so that's the first one)
+    XhtmlNode body = x.div().clss("panel panel-"+issueClassSuffix(issues.get(0))).div().clss("panel-body");
+    if (issues.size() == 1) {
+      body.addText(issues.get(0).text);
+    } else {
+      body.para().tx(context.formatPhrase(RenderingI18nContext.VALUE_SET_EXP_ISSUES));
+      XhtmlNode ul = body.ul();
+      for (ExpansionIssue issue : issues) {
+        XhtmlNode li = ul.li();
+        li.span().clss("text-"+issueClassSuffix(issue)).b().tx(issueLabel(issue)+":");
+        li.tx(" ");
+        li.addText(issue.text);
+      }
+    }
+  }
+
+  private OperationOutcome findContainedOperationOutcome(ValueSet vs, String ref) {
+    if (ref == null || !ref.startsWith("#")) {
+      return null;
+    }
+    String id = ref.substring(1);
+    for (Resource r : vs.getContainedList()) {
+      if (r instanceof OperationOutcome && id.equals(r.getIdPart())) {
+        return (OperationOutcome) r;
+      }
+    }
+    return null;
+  }
+
+  private String issueLabel(ExpansionIssue issue) {
+    switch (issue.rank()) {
+    case 0:
+    case 1: return context.formatPhrase(RenderingI18nContext.VALUE_SET_EXP_ISSUE_ERROR);
+    case 2: return context.formatPhrase(RenderingI18nContext.VALUE_SET_EXP_ISSUE_WARNING);
+    default: return context.formatPhrase(RenderingI18nContext.VALUE_SET_EXP_ISSUE_INFO);
+    }
+  }
+
+  private String issueClassSuffix(ExpansionIssue issue) {
+    switch (issue.rank()) {
+    case 0:
+    case 1: return "danger";
+    case 2: return "warning";
+    default: return "info";
+    }
   }
 
   private boolean generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
