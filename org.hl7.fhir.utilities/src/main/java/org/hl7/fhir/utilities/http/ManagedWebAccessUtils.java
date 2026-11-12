@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.http;
 
 import com.google.common.net.InetAddresses;
 import org.hl7.fhir.utilities.http.okhttpimpl.NonPublicAddressRejectingDns;
+import org.hl7.fhir.utilities.http.okhttpimpl.NonCanonicalIPMatcher;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;
@@ -123,10 +124,17 @@ public class ManagedWebAccessUtils {
    * still safe to do eagerly (unlike hostname validation, which must happen no earlier than the
    * connection uses it) - a literal IP address has nothing to re-resolve, so there is no
    * DNS-rebinding window between checking it and connecting to it.
+   * <p>
+   * Hosts that OkHttp treats as literal IPs but Guava does not recognize as canonical IP
+   * addresses (e.g. {@code 2130706433}, {@code 127.1}, {@code 127.000.000.001}) are rejected
+   * outright: OkHttp would hand them to {@code InetAddress.getByName}, which resolves them to an
+   * address that was never validated. Such strings are never legitimate DNS hostnames.
    */
   public static void throwExceptionIfLiteralIpAndNonPublicAddress(String host) throws IOException {
     if (InetAddresses.isInetAddress(host)) {
       throwExceptionIfNonPublicAddress(InetAddresses.forString(host), host);
+    } else if (NonCanonicalIPMatcher.isNonCanonicalIPHost(host)) {
+      throw new IOException("Refusing to fetch from non-canonical IP literal host " + host);
     }
   }
 

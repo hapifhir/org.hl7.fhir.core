@@ -448,8 +448,24 @@ public class ManagedHTTPClientTest {
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "https://2130706433/", // decimal 127.0.0.1
+      "https://127.1/",      // short form of 127.0.0.1
+      "https://2852039166/"  // decimal 169.254.169.254
+    })
+    void blocksNonCanonicalIpv4LiteralUrlsWhenProtectionEnabled(String url) {
+      // Regression test: OkHttp treats these as literal IPs (skipping the configured Dns) while
+      // Guava does not, so they previously bypassed the SSRF check. Assert on the message, since a
+      // failed connection would also throw IOException.
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      IOException e = assertThrows(IOException.class, () -> client.get(url, "application/json"));
+      assertThat(e.getMessage()).contains("Refusing");
+    }
+
     @Test
-    void blocksRedirectFromPublicUrlToNonPublicAddress() throws UnknownHostException {
+    void blocksRedirectFromPublicUrlToNonPublicAddress()throws UnknownHostException {
       String initialUrl = server.url("start").url().toString();
       // Redirect target is still the same, genuinely loopback MockWebServer instance (not mocked
       // below), so the real ssrf check legitimately blocks it, and a missing/broken re-check

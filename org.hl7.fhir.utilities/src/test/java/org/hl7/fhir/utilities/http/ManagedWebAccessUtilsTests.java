@@ -204,6 +204,24 @@ class ManagedWebAccessUtilsTests {
     }
 
     @ParameterizedTest
+    @ValueSource(strings = {
+      "2130706433",      // decimal 127.0.0.1
+      "127.1",           // short form of 127.0.0.1
+      "127.000.000.001", // leading zeros, 127.0.0.1
+      "10.000.000.001",  // leading zeros, 10.0.0.1
+      "2852039166",      // decimal 169.254.169.254
+      "017700000001",    // octal-looking 127.0.0.1
+      "134744072"        // decimal 8.8.8.8 - public, but non-canonical forms are refused too
+    })
+    void throwsForNonCanonicalIpLiteral(String host) {
+      // Regression test: Guava does not recognize these as IP literals, but OkHttp does and
+      // connects via InetAddress.getByName, bypassing NonPublicAddressRejectingDns entirely.
+      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("non-canonical");
+    }
+
+    @ParameterizedTest
     @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#publicLiteralIps")
     void doesNotThrowForPublicLiteralIp(String host) {
       assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
