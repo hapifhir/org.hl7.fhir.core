@@ -199,8 +199,11 @@ class ManagedWebAccessUtilsTests {
     @ParameterizedTest
     @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#nonPublicLiteralIps")
     void throwsForNonPublicLiteralIp(String host) {
+      // Canonical literals must still be rejected by the IP-range check itself, not by the
+      // non-canonical fallback, so assert on the message to pin down which branch fired.
       assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
-        .isInstanceOf(IOException.class);
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("non-public address");
     }
 
     @ParameterizedTest
@@ -218,7 +221,7 @@ class ManagedWebAccessUtilsTests {
       // connects via InetAddress.getByName, bypassing NonPublicAddressRejectingDns entirely.
       assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
         .isInstanceOf(IOException.class)
-        .hasMessageContaining("non-canonical");
+        .hasMessageContaining("not in the usual canonical form");
     }
 
     @ParameterizedTest
