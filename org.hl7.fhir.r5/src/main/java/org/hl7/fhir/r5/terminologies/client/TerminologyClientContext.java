@@ -4,19 +4,24 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 
 
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -90,13 +95,14 @@ public class TerminologyClientContext {
   // The cache-id for this server: server-issued via $cache-control during
   // construction, or adopted from a shared client (see the constructor). null
   // means this server isn't caching (didn't advertise $cache-control, caching
-  // was disabled, or starting a cache failed). Fixed for the life of the
-  // context; shutdown() ends its *use*, it doesn't change the identity.
-  private final String cacheId;
+  // was disabled, or starting a cache failed). It changes only when the server
+  // says it no longer has the cache (see send()): a new one is started in its
+  // place. shutdown() ends its *use*, it doesn't change the identity.
+  private volatile String cacheId;
   // Whether this context started the cache itself (and so is responsible for
   // releasing it at shutdown), as opposed to adopting one already carried by a
   // shared client.
-  private final boolean cacheOwned;
+  private volatile boolean cacheOwned;
   // Lifecycle: set once by shutdown(), never cleared. After shutdown the context
   // must not be used for further requests (see shutdown()).
   private boolean isShutdown;
@@ -450,33 +456,48 @@ public class TerminologyClientContext {
     }
   }
 
-  public boolean supportsSystem(String system) throws IOException {
+  /**
+   * true if the server's TerminologyCapabilities lists the code system (and version, if there is
+   * one), and doesn't say its content is anything other than complete or fragment. An R4 server
+   * says what the content is in the cross-version extension
+   */
+  public boolean listsWithContent(String canonical) throws IOException {
+    TerminologyCapabilitiesCodeSystemComponent tccs = findSystemDeclaration(canonical);
+    if (tccs == null) {
+      return false;
+    }
+    String content = tccs.hasContent() ? tccs.getContent().toCode() : tccs.getExtensionString(ExtensionDefinitions.EXT_TX_CAPS_CONTENT);
+    return content == null || Utilities.existsInList(content, "complete", "fragment");
+  }
 
+  public boolean supportsSystem(String system) throws IOException {
+    return findSystemDeclaration(system) != null;
+  }
+
+  public TerminologyCapabilitiesCodeSystemComponent findSystemDeclaration(String system) throws IOException {
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
-      if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getCode())))) {
-        return true;
+      if (system.equals(tccs.getUri())) {
+        return tccs;
       }
       if (system.startsWith(tccs.getUri()+"|")) {
+        String version = system.substring(tccs.getUri().length()+1);
         if (tccs.hasVersion()) {
           for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
-              return true;
+            if (version.equals(v.getCode())) {
+              return tccs;
             }
           }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system) && v.getIsDefault()) {
-              return true;
-            }
-          }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system)) {
-              return true;
+          if (system.startsWith("http://snomed.info/sct")) { // edition matching logic
+            for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+              if (v.getCode().startsWith(version)) {
+                return tccs;
+              }
             }
           }
         }
       }
     }
-    return false;
+    return null;
   }
 
   public String getTxTestVersion() {
@@ -510,4 +531,119 @@ public class TerminologyClientContext {
     TerminologyClientContext.allowNonConformantServers = allowNonConformantServers;
   }
 
+  // ---- when the server no longer has the cache ----
+
+  private static final String TX_ISSUE_TYPE = "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type";
+
+  /**
+   * A request that is sent with this context's cache, and that can be made again from scratch.
+   */
+  public interface CachedRequest<T> {
+    /**
+     * Build the request and send it. Whatever the request refers to by reference because the server
+     * has it in its cache (see getCached() / alreadyCached()) must be worked out here, each time:
+     * when the server has lost the cache, this is called again, with the context's record of what
+     * the server has cleared, so everything is sent again.
+     *
+     * @param again true when this is the second time, after the server lost the cache
+     */
+    T run(boolean again);
+  }
+
+  /**
+   * Send a request that uses this server's cache. If the server says it doesn't have the cache
+   * (tx-issue-type cache-id-unknown: it restarted, the cache expired or was dropped, or the request
+   * reached a different instance), the operation has not been performed: the context forgets what it
+   * thought the server had, starts a new cache, and makes the request again, from scratch. Once only:
+   * if the new cache is lost as well, the error goes to the caller.
+   */
+  public <T> T send(CachedRequest<T> request) {
+    String used = syncCacheId();
+    try {
+      return request.run(false);
+    } catch (RuntimeException e) {
+      if (used == null || isShutdown || !isCacheGone(e)) {
+        throw e;
+      }
+      restartCache(used, e);
+      return request.run(true);
+    }
+  }
+
+  /**
+   * Whether an error from a server says that it doesn't have the cache the request named - which is
+   * about the server's state, not about the request (a 404 that doesn't mean the code is unknown).
+   * The issue is coded tx-issue-type#cache-id-unknown, whatever the reason the cache is gone (the
+   * server restarted, the cache expired or was evicted, or a request would have made it too big -
+   * FHIRsmith answers all of these the same way); the message id only says which.
+   */
+  public static boolean isCacheGone(Throwable t) {
+    for (Throwable c = t; c != null; c = c.getCause() == c ? null : c.getCause()) {
+      if (c instanceof EFhirClientException && ((EFhirClientException) c).hasServerErrors()) {
+        for (OperationOutcome oo : ((EFhirClientException) c).getServerErrors()) {
+          for (OperationOutcome.OperationOutcomeIssueComponent iss : oo.getIssue()) {
+            if (iss.hasDetails()) {
+              for (Coding cd : iss.getDetails().getCoding()) {
+                if (TX_ISSUE_TYPE.equals(cd.getSystem()) && "cache-id-unknown".equals(cd.getCode())) {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The cache this context should be using now. A client can be shared by more than one context
+   * (see the constructor): if another one has replaced the cache, the header on the client names the
+   * new one, and this context's record of what the server has is for the old one, so it is dropped.
+   */
+  private synchronized String syncCacheId() {
+    if (cacheId == null || isShutdown) {
+      return cacheId;
+    }
+    String current = existingCacheIdHeader();
+    if (current != null && !current.equals(cacheId)) {
+      cached.clear();
+      cacheId = current;
+      cacheOwned = false;
+    }
+    return cacheId;
+  }
+
+  /**
+   * The server doesn't have the cache that was used: start a new one - unless another thread (or
+   * another context on the same client) already has. Never silent: the server's reason is logged,
+   * because a cache that keeps going away is a problem someone needs to hear about.
+   */
+  private synchronized void restartCache(String lost, Throwable why) {
+    syncCacheId();
+    if (cacheId != null && !cacheId.equals(lost)) {
+      return; // already replaced
+    }
+    if (logger != null) {
+      logger.logMessage("Terminology server " + getAddress() + " no longer has the cache " + lost + " (" + why.getMessage() + "); starting a new cache, and sending the request again");
+    }
+    cached.clear();
+    removeCacheIdHeader();
+    cacheId = startCache();
+    cacheOwned = cacheId != null;
+    setTxCaching(cacheId != null);
+  }
+
+  /** Take the cache-id header off the client, leaving its other headers as they are. */
+  private void removeCacheIdHeader() {
+    List<HTTPHeader> keep = new ArrayList<>();
+    if (client.getClientHeaders() != null) {
+      for (HTTPHeader h : client.getClientHeaders()) {
+        if (!CACHE_ID_HEADER.equalsIgnoreCase(h.getName())) {
+          keep.add(h);
+        }
+      }
+    }
+    client.setClientHeaders(new ClientHeaders(keep));
+  }
 }

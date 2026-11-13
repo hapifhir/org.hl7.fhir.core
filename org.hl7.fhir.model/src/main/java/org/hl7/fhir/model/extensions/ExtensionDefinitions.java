@@ -830,6 +830,7 @@ public class ExtensionDefinitions {
   public static final String EXT_SUPPORTED_CONCEPT_RELATIONSHIP_TRANSITIVITY = "http://terminology.hl7.org/StructureDefinition/ext-mif-relationship-transitivity"; // MIF concept relationship transitivity
   public static final String EXT_NAMING_SYSTEM_TITLE = "http://terminology.hl7.org/StructureDefinition/ext-namingsystem-title"; // NamingSystem title
   public static final String EXT_NAMING_SYSTEM_VERSION = "http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version"; // NamingSystem version
+  public static final String EXT_TX_CAPS_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content";
 
 
   // not properly defined yet
@@ -846,6 +847,7 @@ public class ExtensionDefinitions {
   public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
   public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
   public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
+  public static final String EXT_EXPANSION_ISSUE = "http://hl7.org/fhir/StructureDefinition/expansion-issue";
 
 
   // special cases: defined in earlier versions and still used, but no longer defined

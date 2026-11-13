@@ -63,17 +63,17 @@ public class IGPackConverter102 extends BaseAdvisor_10_30 {
       if (s.endsWith(".xml") && !s.startsWith("z-") && !Utilities.existsInList(s, "expansions.xml", "v3-codesystems.xml", "v2-tables.xml")) {
         System.out.println("process " + s);
         org.hl7.fhir.dstu2.formats.XmlParser xp = new org.hl7.fhir.dstu2.formats.XmlParser();
-        org.hl7.fhir.dstu2.model.Resource r10 = xp.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "igpack2\\" + s)));
+        org.hl7.fhir.dstu2.model.Resource r10 = xp.parseFile(Utilities.path("[tmp]", "igpack2\\" + s));
         org.hl7.fhir.dstu3.model.Resource r17 = VersionConvertorFactory_10_30.convertResource(r10, this);
         org.hl7.fhir.dstu3.formats.XmlParser xc = new org.hl7.fhir.dstu3.formats.XmlParser();
         xc.setOutputStyle(OutputStyle.PRETTY);
-        xc.compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "igpack2\\" + s)), r17);
+        xc.composeFile(Utilities.path("[tmp]", "igpack2\\" + s), r17);
       }
     }
     System.out.println("save codesystems");
     org.hl7.fhir.dstu3.formats.XmlParser xc = new org.hl7.fhir.dstu3.formats.XmlParser();
     xc.setOutputStyle(OutputStyle.PRETTY);
-    xc.compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "igpack2\\codesystems.xml")), cslist);
+    xc.composeFile(Utilities.path("[tmp]", "igpack2\\codesystems.xml"), cslist);
     System.out.println("done");
   }
 

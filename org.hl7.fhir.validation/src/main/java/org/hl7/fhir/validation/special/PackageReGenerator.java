@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.special;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -682,9 +681,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.json")), expansionParameters);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(output, "manifest.json"), expansionParameters);
     } else {
-      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(output, "manifest.xml"), expansionParameters);
     }
     for (CanonicalResource cr : resources) {
       FileUtilities.bytesToFile(composeResource(cr), Utilities.path(output, resourceFileName(cr)));

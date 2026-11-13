@@ -64,7 +64,7 @@ public class GeneratedPEModelTest {
     Assertions.assertEquals(0, tp.getComplex().getExtensions().size());
     
     Observation tgt = tp.build(ctxt);
-    new XmlParser(ctxt.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
+    new XmlParser(ctxt.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "pe-instance-gen.xml"), tgt);
     
     String msg = new CompareUtilities().checkXMLIsSame("PEGEN", TestingUtilities.loadTestResourceStream("r6", "profiles", "pe-instance.xml"), ManagedFileAccess.inStream(Utilities.path("[tmp]", "pe-instance-gen.xml")));
     Assertions.assertNull(msg, msg);

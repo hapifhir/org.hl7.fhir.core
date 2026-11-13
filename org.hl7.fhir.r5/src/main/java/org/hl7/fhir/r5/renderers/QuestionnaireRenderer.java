@@ -301,7 +301,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     r.getCells().add(c1); 
     String txt = (i.has("prefix") ? i.primitiveValue("prefix") + ". " : "") + i.primitiveValue("text"); 
     r.getCells().add(gen.new Cell(null, null, txt, null, null)); 
-    r.getCells().add(gen.new Cell(null, null, ("true".equals(i.primitiveValue("required")) ? "1" : "0")+".."+("true".equals(i.primitiveValue("repeats")) ? "*" : "1"), null, null)); 
+    // display items can't have cardinality (que-6, que-9 for repeats), so don't show any
+    String card = "display".equals(type) ? "" : ("true".equals(i.primitiveValue("required")) ? "1" : "0")+".."+("true".equals(i.primitiveValue("repeats")) ? "*" : "1");
+    r.getCells().add(gen.new Cell(null, null, card, null, null)); 
     if (i.child("type").hasExtension(ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
       status.setExtensions(true);
       String t = i.child("type").extensionString(ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 

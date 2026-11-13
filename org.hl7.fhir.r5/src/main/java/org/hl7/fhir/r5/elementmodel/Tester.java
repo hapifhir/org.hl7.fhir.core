@@ -31,9 +31,9 @@ package org.hl7.fhir.r5.elementmodel;
 
 
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -64,9 +64,16 @@ public class Tester {
 //						ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")), FhirFormat.JSON, OutputStyle.PRETTY);
 //				String src = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
 //				String tgt = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
-				Element e = Manager.parseSingle(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML);
-				Manager.compose(context, e, ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+FileUtilities.changeFileExt(f, ".mm.ttl")), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
-        Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML, OutputStyle.PRETTY, null);
+				Element e;
+				try (InputStream stream = ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f)) {
+					e = Manager.parseSingle(context, stream, FhirFormat.XML);
+				}
+				try (OutputStream stream = ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+FileUtilities.changeFileExt(f, ".mm.ttl"))) {
+					Manager.compose(context, e, stream, FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+				}
+        try (OutputStream stream = ManagedFileAccess.outStream(Utilities.path("[tmp]", "resource.xml"))) {
+          Manager.compose(context, e, stream, FhirFormat.XML, OutputStyle.PRETTY, null);
+        }
 				String src = FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+FileUtilities.changeFileExt(f, ".mm.ttl"));
 				String tgt = FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+FileUtilities.changeFileExt(f, ".ttl"));
 				t++;

@@ -49,7 +49,7 @@ public class GenValueSetExpansionConvertor {
   public static void main(String[] args) throws FHIRFormatError, IOException {
     String src = args[0];
     String tgt = args[1];
-    Bundle bundle = (Bundle) new XmlParser().parse(ManagedFileAccess.inStream(src));
+    Bundle bundle = (Bundle) new XmlParser().parseFile(src);
     for (BundleEntryComponent be : bundle.getEntry()) {
       Resource res = be.getResource();
       if (res != null) {
@@ -58,7 +58,7 @@ public class GenValueSetExpansionConvertor {
           id = tail(((ValueSet) res).getUrl());
         String dst = Utilities.path(tgt, res.fhirType() + "-" + id + ".json");
         System.out.println(dst);
-        new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(dst), res);
+        new JsonParser().setOutputStyle(OutputStyle.NORMAL).composeFile(dst, res);
       }
     }
   }

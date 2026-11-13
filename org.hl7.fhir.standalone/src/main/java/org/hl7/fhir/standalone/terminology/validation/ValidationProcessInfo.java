@@ -62,7 +62,11 @@ public class ValidationProcessInfo {
     }
     if (msgs.isEmpty()) {
       for (OperationOutcomeIssueComponent issue : issues) {
-        msgs.add(issue.getDetails().getText());
+        // ... but not even then for "this code is not in the value set": that is a note about a
+        // coding that didn't contribute to the outcome, never an explanation of it
+        if (!issue.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")) {
+          msgs.add(issue.getDetails().getText());
+        }
       }
     }
     Collections.sort(msgs);

@@ -5363,7 +5363,7 @@ msgstr "Det finns en skiva utan diskriminator vid {0}"
 # SD_XIG_LINK
 #: SD_XIG_LINK
 msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">usages in the FHIR IG Statistics</a></p>"
-msgstr "!!<p>Du kan också kontrollera <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">användningar i FHIR IG-statistiken</a></p>"
+msgstr "<p>Du kan också kontrollera <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">användningar i FHIR IG-statistiken</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED

@@ -20,9 +20,9 @@ v: {
   "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
   "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1000990\"\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n38ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"1000990\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1000990\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n5ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1000990\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -50,9 +50,9 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
   "code" : "1010603",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010603\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n7ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"1010603\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010603\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n7ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1010603\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -80,9 +80,9 @@ v: {
   "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
   "code" : "1298088",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1298088\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n7ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"1298088\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1298088\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n7ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1298088\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -110,9 +110,9 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
   "code" : "1010600",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010600\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"1010600\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010600\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n4ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1010600\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -141,39 +141,35 @@ v: {
   "display" : "nizatidine 15 MG/ML Oral Solution [Axid]",
   "code" : "582620",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '582620' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#582620 (\"Nizatidine 15 MG/ML Oral Solution [Axid]\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#582620\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n7ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"582620\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#582620 (\"Nizatidine 15 MG/ML Oral Solution [Axid]\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#582620\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n4ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"582620\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "code" : "582620",
-  "display" : "Nizatidine 15 MG/ML Oral Solution [Axid]"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "defaultDisplayLanguage",
-    "valueCode" : "en-US"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '582620' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
   }]
-}}####
-v: {
-  "display" : "nizatidine 15 MG/ML Oral Solution [Axid]",
-  "code" : "582620",
-  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#582620 (\"Nizatidine 15 MG/ML Oral Solution [Axid]\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#582620\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at Coding\n5ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"582620\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -199,11 +195,35 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n6ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n5ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
+  }]
 }
 
 }
@@ -229,11 +249,87 @@ v: {
   "display" : "metformin 250 MG Oral Tablet",
   "code" : "428759",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "03022026",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|03022026 for http://www.nlm.nih.gov/research/umls/rxnorm|03022026\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n4ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|03022026: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|03022026",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n3ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '428759' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["CodeableConcept.coding[0]"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "code" : "582620",
+  "display" : "Nizatidine 15 MG/ML Oral Solution [Axid]"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "nizatidine 15 MG/ML Oral Solution [Axid]",
+  "code" : "582620",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "??",
+  "severity" : "warning",
+  "error" : "The concept '582620' has a status of obsolete and inactive and its use should be reviewed",
+  "status" : "obsolete",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "inactive" : true,
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#582620 (\"Nizatidine 15 MG/ML Oral Solution [Axid]\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#582620\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at Coding\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"582620\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "INACTIVE_CONCEPT_FOUND"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "code-comment"
+      }],
+      "text" : "The concept '582620' has a status of obsolete and inactive and its use should be reviewed"
+    },
+    "expression" : ["Coding"]
+  }]
 }
 
 }

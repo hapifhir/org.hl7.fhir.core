@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc.adl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,11 +92,15 @@ public class ADLImporter {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    adlConfig = builder.parse(ManagedFileAccess.inStream(config)).getDocumentElement();
+    try (InputStream stream = ManagedFileAccess.inStream(config)) {
+      adlConfig = builder.parse(stream).getDocumentElement();
+    }
 
     // load ADL
     builder = factory.newDocumentBuilder();
-    adl = builder.parse(ManagedFileAccess.inStream(source)).getDocumentElement();
+    try (InputStream stream = ManagedFileAccess.inStream(source)) {
+      adl = builder.parse(stream).getDocumentElement();
+    }
 
     check("root", adl.getNamespaceURI(), "http://schemas.openehr.org/v1", "Wrong namespace for ADL XML");
     check("root", adl.getNodeName(), "archetype", "Wrong XML for ADL XML");
@@ -152,7 +157,7 @@ public class ADLImporter {
     genElements(sd, root.getName(), root);
 
     // save
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dest), sd);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dest, sd);
     System.out.println("done. saved as " + dest);
   }
 
