@@ -85,7 +85,7 @@ public class TurtleParserR6 extends TurtleParserBase {
   @Override
   protected void composeResourceMetadata(Subject subject, Element resource) throws FHIRException {
     if (ExtensionUtilities.readBoolExtension(resource.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
-      subject.linkedPredicate("fhir:resourceDefinition", resource.getProperty().getStructure().getVersionedUrl(), null, null);
+      subject.predicate("fhir:resourceDefinition").predicate(FHIR_VALUE_PREDICATE, ttlLiteral(resource.getProperty().getStructure().getVersionedUrl(), "canonical"));
     }
   }
 

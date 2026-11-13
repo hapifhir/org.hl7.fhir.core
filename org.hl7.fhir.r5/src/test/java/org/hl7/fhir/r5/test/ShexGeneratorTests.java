@@ -159,6 +159,24 @@ public class ShexGeneratorTests {
     generateShexFromProfileDirectory(profileDirectoryPath, fhirVersion);
   }
 
+
+  @Disabled("Run manually")
+  @Test
+  void testResourceDefinitionOnlyAllowedInR6() {
+    StructureDefinition r5Resource = r5WorkerContext.fetchResource(StructureDefinition.class,
+        "http://hl7.org/fhir/StructureDefinition/Resource");
+    StructureDefinition r6Resource = r6WorkerContext.fetchResource(StructureDefinition.class,
+        "http://hl7.org/fhir/StructureDefinition/Resource");
+
+    String r5Schema = new ShExGenerator(r5WorkerContext).generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, r5Resource);
+    String r6Schema = new ShExGeneratorR6(r6WorkerContext).generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, r6Resource);
+    String dispatchedSchema = new ShExGenerator(r6WorkerContext).generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, r6Resource);
+
+    assertThat(r5Schema).doesNotContain("fhir:resourceDefinition");
+    assertThat(r6Schema).contains("<Resource> {", "fhir:resourceDefinition @<Canonical>?;", "IMPORT <Canonical.shex>");
+    assertThat(dispatchedSchema).isEqualTo(r6Schema);
+  }
+
   /** Generate individual ShEx schemas */
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
