@@ -489,7 +489,7 @@ public class TerminologyClientContext {
           }
           if (system.startsWith("http://snomed.info/sct")) { // edition matching logic
             for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-              if (version.startsWith(v.getCode())) {
+              if (v.getCode().startsWith(version)) {
                 return tccs;
               }
             }

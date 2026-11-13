@@ -488,7 +488,7 @@ public class TerminologyClientContext {
           }
           if (system.startsWith("http://snomed.info/sct")) { // edition matching logic
             for (org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
-              if (version.startsWith(v.getValue())) {
+              if (v.getValue().startsWith(version)) {
                 return tccs;
               }
             }
