@@ -41,13 +41,30 @@ public class CIBuildClient {
    **/
   private final Map<String, String> ciPackageUrls = new HashMap<>();
 
+  /**
+   * if not null, the list of IG builds is read from it while it has it, and the server's list is kept in it
+   */
+  private final RegistryAnswerCache answers;
+
   public CIBuildClient() {
    this(DEFAULT_ROOT_URL, DEFAULT_CI_QUERY_INTERVAL, false);
   }
 
   public CIBuildClient(String rootUrl, long ciQueryInterval, boolean silent) {
+    this(rootUrl, ciQueryInterval, null);
+  }
+
+  private CIBuildClient(String rootUrl, long ciQueryInterval, RegistryAnswerCache answers) {
     this.rootUrl = rootUrl;
     this.ciQueryInterval = ciQueryInterval;
+    this.answers = answers;
+  }
+
+  /**
+   * @return a new client for the same server that shares the list of IG builds through answers
+   */
+  CIBuildClient withAnswers(RegistryAnswerCache answers) {
+    return new CIBuildClient(rootUrl, ciQueryInterval, answers);
   }
 
   String getPackageId(String canonical) {
@@ -154,23 +171,9 @@ public class CIBuildClient {
 
   private void updateFromCIServer() throws IOException {
     try {
-      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
-      res.checkThrowException();
+      ciBuildInfo = answers == null ? fetchBuildInfo() : answers.get(rootUrl + "/ig/qas.json", this::fetchBuildInfo, this::canRead);
 
-      ciBuildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
-
-      List<BuildRecord> builds = new ArrayList<>();
-
-      for (JsonElement n : ciBuildInfo) {
-        JsonObject j = (JsonObject) n;
-        if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
-          String packageUrl = j.asString("url");
-          if (packageUrl.contains("/ImplementationGuide/"))
-            packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
-          builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
-        }
-      }
-      Collections.sort(builds, new BuildRecordSorter());
+      List<BuildRecord> builds = readBuilds(ciBuildInfo);
       for (BuildRecord build : builds) {
         if (!ciPackageUrls.containsKey(build.getPackageId())) {
           ciPackageUrls.put(build.getPackageId(), rootUrl + "/ig/" + build.getRepo());
@@ -182,6 +185,36 @@ public class CIBuildClient {
     } finally {
       ciLastQueriedTimeStamp = System.currentTimeMillis();
     }
+  }
+
+  private List<BuildRecord> readBuilds(JsonArray info) {
+    List<BuildRecord> builds = new ArrayList<>();
+    for (JsonElement n : info) {
+      JsonObject j = (JsonObject) n;
+      if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
+        String packageUrl = j.asString("url");
+        if (packageUrl.contains("/ImplementationGuide/"))
+          packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
+        builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
+      }
+    }
+    Collections.sort(builds, new BuildRecordSorter());
+    return builds;
+  }
+
+  private boolean canRead(JsonArray info) {
+    try {
+      readBuilds(info);
+      return true;
+    } catch (RuntimeException e) {
+      return false;
+    }
+  }
+
+  private JsonArray fetchBuildInfo() throws IOException {
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    return (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
   }
 
   private String getRepo(String path) {

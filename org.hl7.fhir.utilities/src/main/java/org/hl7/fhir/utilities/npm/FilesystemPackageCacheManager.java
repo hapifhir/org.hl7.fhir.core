@@ -120,18 +120,29 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     @Getter
     private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
 
+    /**
+     * If set, what the package servers and build.fhir.org answer to catalog searches, version lists and the list of
+     * IG builds is kept in it and reused.
+     * See {@link RegistryAnswerCache}.
+     */
+    @With
+    @Getter
+    private final RegistryAnswerCache registryAnswerCache;
+
     public Builder() throws IOException {
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
       this.lockParameters = null;
       this.ciBuildClient = new CIBuildClient();
+      this.registryAnswerCache = null;
     }
 
-    private Builder(File cacheFolder, List<PackageServer> packageServers, CIBuildClient ciBuildClient, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
+    private Builder(File cacheFolder, List<PackageServer> packageServers, CIBuildClient ciBuildClient, FilesystemPackageCacheManagerLocks.LockParameters lockParameters, RegistryAnswerCache registryAnswerCache) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
       this.ciBuildClient = ciBuildClient;
       this.lockParameters = lockParameters;
+      this.registryAnswerCache = registryAnswerCache;
     }
 
     private File getUserCacheFolder() throws IOException {
@@ -164,7 +175,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
-      return new Builder(cacheFolder, this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(cacheFolder, this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public Builder withSystemCacheFolder() throws IOException {
@@ -174,11 +185,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new Builder(systemCacheFolder,  this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(systemCacheFolder,  this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -192,7 +203,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      if (registryAnswerCache == null) {
+        return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      }
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient.withAnswers(registryAnswerCache), locks, lockParameters);
+      pcm.setClientFactory(server -> new PackageClient(server, registryAnswerCache));
+      return pcm;
     }
   }
 
@@ -358,7 +374,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
-        PackageClient pc = new PackageClient(nextPackageServer);
+        PackageClient pc = newPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id, milestonesOnly);
         } catch (IOException e) {
@@ -385,7 +401,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
-        PackageClient pc = new PackageClient(nextPackageServer);
+        PackageClient pc = newPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id, versionFilter);
         } catch (IOException e) {
