@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.instance.type;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -120,19 +121,45 @@ public class CompliesWithChecker {
           // if it's closed, then we just don't have any. But if it's not closed, we need the slice
           // because we don't know what constraints the authoritySlice is going to make. It's possible it won't
           // make any - it just exists and does nothing but then why does it exist?
-          if (hasAnyConstraints(authoritySlice)) {
+          if (discriminatorValues.stream().anyMatch(d -> d != null && d.isUnknown())) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath,
+              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_DISCRIMINATOR_VALUE, slicePath, discriminatorsToString(discriminators)), IssueSeverity.WARNING));
+          } else if (hasAnyConstraints(authoritySlice)) {
             messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath,
               context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_SLICE, slicePath, discriminatorsToString(discriminators),
                 valuesToString(discriminatorValues)), IssueSeverity.ERROR));
           }
         }
+        // when several claimee slices match one authority slice, their cardinalities add up
+        boolean several = cnSlices.size() > 1;
+        long minSum = 0;
+        long maxSum = 0;
+        boolean unbounded = false;
+        CommaSeparatedStringBuilder sliceNames = new CommaSeparatedStringBuilder("|");
         for (DefinitionNavigator claimeeSlice : cnSlices) {
-          slicePath = claimeePath +":"+claimeeSlice.current().getSliceName();
+          String claimeeSlicePath = claimeePath +":"+claimeeSlice.current().getSliceName();
           if (!processed.contains(claimeeSlice)) {
             // it's weird if it does - is that a problem?
             processed.add(claimeeSlice);
           }
-          checkCompliesWith(messages, slicePath, claimeeSlice, authoritySlice, false);
+          checkCompliesWith(messages, claimeeSlicePath, claimeeSlice, authoritySlice, several);
+          sliceNames.append(claimeeSlice.current().getSliceName());
+          minSum += claimeeSlice.current().getMin();
+          if ("*".equals(claimeeSlice.current().getMax())) {
+            unbounded = true;
+          } else {
+            maxSum += claimeeSlice.current().getMaxAsInt();
+          }
+        }
+        if (several) {
+          ElementDefinition authority = authoritySlice.current();
+          String slicesPath = claimeePath + ":" + sliceNames.toString();
+          if (authority.getMin() > minSum) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "min", authority.getMin(), minSum, slicesPath), IssueSeverity.ERROR));
+          }
+          if (!"*".equals(authority.getMax()) && (unbounded || authority.getMaxAsInt() < maxSum)) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "max", authority.getMax(), unbounded ? "*" : maxSum, slicesPath), IssueSeverity.ERROR));
+          }
         }
       }
       for (DefinitionNavigator cnSlice : claimeeChild.slices()) {
@@ -216,44 +243,22 @@ public class CompliesWithChecker {
       case NULL: return false;
       case POSITION: return false;
       case PROFILE: 
-        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.value.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(dt1.value));
-        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.value.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(dt2.value));
-        if (sd1 == null || sd2 == null) {
+        if (dt1.profiles == null || dt2.profiles == null) {
           return false;
         }
-        for (Extension ex : sd2.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
-          String url = ex.getValue().primitiveValue();
-          if (url != null) {
-            StructureDefinition sde = sd1;
-            while (sde != null) {
-              if (url.equals(sde.getUrl()) || url.equals(sde.getVersionedUrl())) {
-                return true;
-              }
-              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
-            }
+        // each profile of the claimee slice has to be, derive from, impose or claim to comply with
+        // one of the profiles of the authority slice. A broader claimee slice doesn't match
+        for (CanonicalType ct : dt2.profiles) {
+          if (dt1.profileUrls().stream().anyMatch(a -> sameCanonical(ct.asStringValue(), a))) {
+            continue;
+          }
+          StructureDefinition sd2 = context.fetchResourceRaw(StructureDefinition.class, ct.asStringValue(), ExtensionUtilities.getVersionResolutionRules(ct));
+          if (sd2 == null || !conformsTo(sd2, dt1.profileUrls(), new HashSet<>())) {
+            return false;
           }
         }
-        for (Extension ex : sd2.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-          String url = ex.getValue().primitiveValue();
-          if (url != null) {
-            StructureDefinition sde = sd1;
-            while (sde != null) {
-              if (url.equals(sde.getUrl()) || url.equals(sde.getVersionedUrl())) {
-                return true;
-              }
-              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(),  ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
-            }
-          }
-        }
-        StructureDefinition sde = sd1;
-        while (sde != null) {
-          if (sd2.getVersionedUrl().equals(sde.getVersionedUrl())) {
-            return true;
-          }
-          sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(),  ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
-        }
-        return false;
-      case TYPE: return dt1.value.primitiveValue().equals(dt2.value.primitiveValue());
+        return true;
+      case TYPE: return dt1.value != null && dt2.value != null && dt1.value.primitiveValue().equals(dt2.value.primitiveValue());
       case PATTERN:
         if (dt1.value != null && dt2.value != null) {
           return dt1.value.equalsDeep(dt2.value); // todo: revise this?
@@ -291,17 +296,43 @@ public class CompliesWithChecker {
     }
   }
 
-  private DataType getProfileDiscriminatorValue(DefinitionNavigator authoritySlice, String authorityPath) {
-    DefinitionNavigator pathDN = getByPath(authoritySlice, authorityPath);
-    if (pathDN == null) {
+  private List<CanonicalType> getProfileDiscriminatorValue(DefinitionNavigator authoritySlice, String authorityPath) {
+    // for resolve(), the profiles are the target profiles of the reference
+    boolean resolve = "resolve()".equals(authorityPath) || authorityPath.endsWith(".resolve()");
+    String path = !resolve ? authorityPath : "resolve()".equals(authorityPath) ? "$this" : authorityPath.substring(0, authorityPath.length() - ".resolve()".length());
+    DefinitionNavigator pathDN = getByPath(authoritySlice, path);
+    ElementDefinition ed = pathDN == null ? null : pathDN.current();
+    if (resolve && (ed == null || !ed.hasType() || !ed.getTypeFirstRep().hasTargetProfile()) && ("reference".equals(path) || path.endsWith(".reference"))) {
+      // for a CodeableReference, the target profiles are on the CodeableReference itself
+      DefinitionNavigator parentDN = getByPath(authoritySlice, "reference".equals(path) ? "$this" : path.substring(0, path.length() - ".reference".length()));
+      if (parentDN != null) {
+        ed = parentDN.current();
+      }
+    }
+    if (ed == null || !ed.hasType()) {
       return null;
     }
-    ElementDefinition ed = pathDN.current();
-    if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile()) {
-      return null;
-    } else {
-      return new CanonicalType(ed.getTypeFirstRep().getProfileList().get(0).asStringValue());
+    List<CanonicalType> profiles = new ArrayList<>();
+    for (TypeRefComponent tr : ed.getTypeList()) {
+      if (resolve) {
+        if (tr.hasTargetProfile()) {
+          profiles.addAll(tr.getTargetProfileList());
+        } else {
+          // no target profile, so any resource can be the target
+          profiles.add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/Resource"));
+        }
+      } else if (tr.hasProfile()) {
+        profiles.addAll(tr.getProfileList());
+      } else {
+        // no profile, so the slice is only constrained to the type itself
+        StructureDefinition sd = context.fetchTypeDefinition(tr.getWorkingCode());
+        if (sd == null) {
+          return null;
+        }
+        profiles.add(new CanonicalType(sd.getUrl()));
+      }
     }
+    return profiles;
   }
 
   private DataType getExistsDiscriminatorValue(DefinitionNavigator authoritySlice, String authorityPath) {
@@ -645,6 +676,54 @@ public class CompliesWithChecker {
     return false;
   }
 
+  /**
+   * true if sd is one of the allowed profiles, or derives from, imposes or claims to comply with one of them
+   */
+  private boolean conformsTo(StructureDefinition sd, List<String> allowed, Set<String> visited) {
+    if (!visited.add(sd.getVersionedUrl())) {
+      return false;
+    }
+    if (allowed.stream().anyMatch(a -> sameCanonical(sd.getVersionedUrl(), a))) {
+      return true;
+    }
+    if (sd.hasBaseDefinition() && linkConformsTo(sd.getBaseDefinition(), sd.getBaseDefinitionElement(), allowed, visited)) {
+      return true;
+    }
+    for (Extension ex : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE, ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+      if (ex.getValue() != null && ex.getValue().primitiveValue() != null && linkConformsTo(ex.getValue().primitiveValue(), ex.getValue(), allowed, visited)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * conformsTo for the profile at url, which is the base, an imposed or a claimed profile of another profile
+   */
+  private boolean linkConformsTo(String url, Element source, List<String> allowed, Set<String> visited) {
+    if (allowed.stream().anyMatch(a -> sameCanonical(url, a))) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(source));
+    return sd != null && conformsTo(sd, allowed, visited);
+  }
+
+  private boolean sameCanonical(String c1, String c2) {
+    if (c1 == null || c2 == null) {
+      return false;
+    }
+    if (c1.equals(c2)) {
+      return true;
+    }
+    // an unversioned reference matches any version
+    if (!c1.contains("|") || !c2.contains("|")) {
+      String u1 = c1.contains("|") ? c1.substring(0, c1.indexOf("|")) : c1;
+      String u2 = c2.contains("|") ? c2.substring(0, c2.indexOf("|")) : c2;
+      return u1.equals(u2);
+    }
+    return false;
+  }
+
   private boolean compliesWith(DataType authority, DataType test) {
     if (!authority.fhirType().equals(test.fhirType())) {
       return false;
@@ -676,6 +755,7 @@ public class CompliesWithChecker {
   private static class DiscriminatorData {
     private ValueSet vs;
     private DataType value;
+    private List<CanonicalType> profiles;
 
     public DiscriminatorData(DataType value) {
       this.value = value;
@@ -685,11 +765,31 @@ public class CompliesWithChecker {
       this.vs = vs;
     }
 
+    public DiscriminatorData(List<CanonicalType> profiles) {
+      this.profiles = profiles;
+    }
+
+    public boolean isUnknown() {
+      return value == null && vs == null && profiles == null;
+    }
+
+    public List<String> profileUrls() {
+      List<String> urls = new ArrayList<>();
+      for (CanonicalType ct : profiles) {
+        urls.add(ct.asStringValue());
+      }
+      return urls;
+    }
+
     public String describe() {
-      if (value != null) {
+      if (profiles != null) {
+        return CommaSeparatedStringBuilder.join(" or ", profileUrls());
+      } else if (value != null) {
         return value.toString();
-      } else {
+      } else if (vs != null) {
         return vs.present();
+      } else {
+        return "?";
       }
     }
   }
