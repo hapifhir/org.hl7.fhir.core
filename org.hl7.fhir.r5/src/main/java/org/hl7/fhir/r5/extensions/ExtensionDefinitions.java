@@ -128,6 +128,7 @@ public class ExtensionDefinitions {
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
+  public static final String EXT_TX_CAPS_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content";
 
   public static final String EXT_XHTML_RENDERING = "http://hl7.org/fhir/StructureDefinition/rendering-xhtml";
   // in the tooling IG

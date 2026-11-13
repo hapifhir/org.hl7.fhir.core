@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -669,7 +670,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
     try {
       var client = findClientContext(server, null, false);
-      if (listsWithContent(client, canonical)) {
+      if (client.listsWithContent(canonical)) {
         serverSupportMap.put(key, true);
         return true;
       }
@@ -715,29 +716,6 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
     }
     return false;
-  }
-
-  private static final String TX_CAPS_CONTENT_EXT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content";
-
-  /**
-   * true if the server's TerminologyCapabilities lists the code system (and version, if there is
-   * one), and doesn't say its content is anything other than complete or fragment. An R4 server
-   * says what the content is in the cross-version extension
-   */
-  private boolean listsWithContent(TerminologyClientContext client, String canonical) throws IOException {
-    if (client.getTxCapabilities() == null || !client.supportsSystem(canonical)) {
-      return false;
-    }
-    String url = canonical.contains("|") ? canonical.substring(0, canonical.indexOf("|")) : canonical;
-    for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tccs : client.getTxCapabilities().getCodeSystem()) {
-      if (url.equals(tccs.getUri())) {
-        String content = tccs.hasContent() ? tccs.getContent().toCode() : tccs.getExtensionString(TX_CAPS_CONTENT_EXT);
-        if (content != null && !Utilities.existsInList(content, "complete", "fragment")) {
-          return false;
-        }
-      }
-    }
-    return true;
   }
 
   private boolean hasMessage(String msg) {

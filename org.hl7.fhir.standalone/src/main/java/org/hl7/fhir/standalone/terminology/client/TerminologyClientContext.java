@@ -3,13 +3,14 @@ package org.hl7.fhir.standalone.terminology.client;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.services.client.ClientHeaders;
 import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.logging.ILoggingService;
@@ -454,33 +455,48 @@ public class TerminologyClientContext {
     }
   }
 
-  public boolean supportsSystem(String system) throws IOException {
+  /**
+   * true if the server's TerminologyCapabilities lists the code system (and version, if there is
+   * one), and doesn't say its content is anything other than complete or fragment. An R4 server
+   * says what the content is in the cross-version extension
+   */
+  public boolean listsWithContent(String canonical) throws IOException {
+    org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tccs = findSystemDeclaration(canonical);
+    if (tccs == null) {
+      return false;
+    }
+    String content = tccs.hasContent() ? tccs.getContent().toCode() : tccs.getExtensionString(ExtensionDefinitions.EXT_TX_CAPS_CONTENT);
+    return content == null || Utilities.existsInList(content, "complete", "fragment");
+  }
 
+  public boolean supportsSystem(String system) throws IOException {
+    return findSystemDeclaration(system) != null;
+  }
+
+  public org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent findSystemDeclaration(String system) throws IOException {
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystemList()) {
-      if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getValue())))) {
-        return true;
+      if (system.equals(tccs.getUri())) {
+        return tccs;
       }
       if (system.startsWith(tccs.getUri()+"|")) {
+        String version = system.substring(tccs.getUri().length()+1);
         if (tccs.hasVersion()) {
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
-            if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()))) {
-              return true;
+          for (org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
+            if (version.equals(v.getValue())) {
+              return tccs;
             }
           }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()).startsWith(system) && v.getIsDefault()) {
-              return true;
-            }
-          }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()).startsWith(system)) {
-              return true;
+          if (system.startsWith("http://snomed.info/sct")) { // edition matching logic
+            for (org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
+              if (version.startsWith(v.getValue())) {
+                return tccs;
+              }
             }
           }
         }
       }
     }
-    return false;
+    return null;
   }
 
   public String getTxTestVersion() {
