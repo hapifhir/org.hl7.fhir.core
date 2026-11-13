@@ -154,10 +154,7 @@ public class CodeSystemHierarchy {
     if (!cache) {
       return new CodeSystemHierarchy(cs);
     }
-    // the lock is so that two threads don't build it at the same time, and so that the user data map is
-    // only changed by one thread at a time - as far as this key is concerned. Base.userData isn't
-    // thread safe, so anything else that writes user data on the same code system from another thread
-    // at the same time can still collide with this
+    // the lock is so that two threads don't build it at the same time (Base.userData itself is thread safe)
     synchronized (cs) {
       Object o = cs.getUserData(USER_DATA_NAME);
       if (o instanceof CodeSystemHierarchy && ((CodeSystemHierarchy) o).codeSystem == cs) {

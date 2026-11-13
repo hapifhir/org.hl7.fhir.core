@@ -58,7 +58,26 @@ public abstract class Base implements Serializable, IBase, IElement {
   /**
    * 2. User data. User appended data items - allow users to add extra information to the class
    */
-  private transient Map<String, Object> userData;
+  /**
+   * user data. Thread safe: the map is a ConcurrentHashMap, created lazily with a compare-and-set so that two threads
+   * creating it at the same time can't each build their own map and lose the other's entries. Note that a
+   * ConcurrentHashMap can't hold null values - setting a null value removes the entry
+   */
+  private transient volatile Map<String, Object> userData;
+
+  @SuppressWarnings("rawtypes")
+  private static final java.util.concurrent.atomic.AtomicReferenceFieldUpdater<Base, Map> USER_DATA =
+      java.util.concurrent.atomic.AtomicReferenceFieldUpdater.newUpdater(Base.class, Map.class, "userData");
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> userDataForWrite() {
+    Map<String, Object> ud = userData;
+    if (ud == null) {
+      USER_DATA.compareAndSet(this, null, new java.util.concurrent.ConcurrentHashMap<String, Object>());
+      ud = userData; // either ours, or the one another thread got in first with
+    }
+    return ud;
+  }
 
   /**
    * 3. Post Validation Definition information
@@ -214,22 +233,26 @@ public abstract class Base implements Serializable, IBase, IElement {
   //region User Data
   /** the user data item with the given name, or null if there isn't one */
   public Object getUserData(String name) {
-    if (userData == null)
+    Map<String, Object> ud = userData;
+    if (ud == null)
       return null;
-    return userData.get(name);
+    return ud.get(name);
   }
   
   /** set the named user data item, replacing any existing value */
   public void setUserData(String name, Object value) {
-    if (userData == null)
-      userData = new HashMap<String, Object>();
-    userData.put(name, value);
+    if (value == null) {
+      clearUserData(name);
+    } else {
+      userDataForWrite().put(name, value);
+    }
   }
 
   /** remove the named user data item, if present */
   public void clearUserData(String name) {
-    if (userData != null)
-      userData.remove(name);
+    Map<String, Object> ud = userData;
+    if (ud != null)
+      ud.remove(name);
   }
 
   /**
@@ -243,18 +266,13 @@ public abstract class Base implements Serializable, IBase, IElement {
   public void setUserDataINN(String name, Object value) {
     if (value == null)
       return;
-    
-    if (userData == null)
-      userData = new HashMap<String, Object>();
-    userData.put(name, value);
+    userDataForWrite().put(name, value);
   }
 
   /** true if the named user data item is present with a non-null value */
   public boolean hasUserData(String name) {
-    if (userData == null)
-      return false;
-    else
-      return userData.containsKey(name) && (userData.get(name) != null);
+    Map<String, Object> ud = userData;
+    return ud != null && ud.get(name) != null;
   }
 
   /** the named user data item as a string (toString() for non-strings), or null if absent */
@@ -279,20 +297,22 @@ public abstract class Base implements Serializable, IBase, IElement {
     // through the accessors, not other.userData: a subclass (e.g. a version adaptor) may keep its user data somewhere else
     Set<String> names = other.getUserDataNames();
     if (!names.isEmpty()) {
-      if (userData == null) {
-        userData = new HashMap<>();
-      }
+      Map<String, Object> ud = userDataForWrite();
       for (String n : names) {
-        userData.put(n, other.getUserData(n));
+        Object v = other.getUserData(n);
+        if (v != null) {
+          ud.put(n, v);
+        }
       }
     }
   }
 
   public Set<String> getUserDataNames() {
-    if (userData == null) {
+    Map<String, Object> ud = userData;
+    if (ud == null) {
       return new HashSet<>();
     } else {
-      return userData.keySet();
+      return ud.keySet();
     }
   }
 
@@ -912,9 +932,9 @@ public abstract class Base implements Serializable, IBase, IElement {
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
     if (options.contains(CopyObjectOptions.USER_DATA)) {
-      if (userData != null) {
-        dst.userData = new HashMap<>();
-        dst.userData.putAll(userData);
+      Map<String, Object> ud = userData;
+      if (ud != null) {
+        dst.userData = new java.util.concurrent.ConcurrentHashMap<>(ud);
       } else {
         dst.userData = null;
       }
