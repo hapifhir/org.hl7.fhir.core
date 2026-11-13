@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.services.context.IWorkerContext;
@@ -293,24 +291,74 @@ public class SnomedRules {
     return props == null ? null : new Concept(code, version, display, props);
   }
 
-  // reviewed: a fixed pattern with no nested repetition, but the adjacent \s* runs around the optional
-  // |term|s backtrack, so it isn't linear on pathological input - lateralityRefinement only runs it on
-  // strings up to MAX_LATERALITY_EXPRESSION long
-  private static final int MAX_LATERALITY_EXPRESSION = 200;
-
-  @SuppressWarnings("checkstyle:patternUsage")
-  private static final Pattern LATERALITY_REFINEMENT = Pattern.compile("^\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*:\\s*" + LATERALITY + "\\s*(\\|[^|]*\\|)?\\s*=\\s*(\\d+)\\s*(\\|[^|]*\\|)?\\s*$");
-
   /**
    * a post-coordinated expression that only refines a concept's laterality (e.g. 69695003:272741003=7771000,
-   * a left stomach): the focus concept and the laterality, or null if it isn't one
+   * a left stomach): the focus concept and the laterality, or null if it isn't one. Terms (|...|) and
+   * whitespace are allowed around each code.
    */
-  @SuppressWarnings("checkstyle:stringImplicitPatternUsage") // the match below uses the reviewed LATERALITY_REFINEMENT
   public static String[] lateralityRefinement(String expression) {
-    if (expression == null || expression.length() > MAX_LATERALITY_EXPRESSION || !expression.contains(":")) {
+    if (expression == null || !expression.contains(":")) {
       return null;
     }
-    Matcher m = LATERALITY_REFINEMENT.matcher(expression);
-    return m.matches() ? new String[] { m.group(1), m.group(4) } : null;
+    ExpressionReader r = new ExpressionReader(expression);
+    String focus = r.code();
+    if (focus == null || !r.optionalTerm() || !r.symbol(':') || !LATERALITY.equals(r.code()) || !r.optionalTerm() || !r.symbol('=')) {
+      return null;
+    }
+    String laterality = r.code();
+    return laterality != null && r.optionalTerm() && r.atEnd() ? new String[] { focus, laterality } : null;
+  }
+
+  /** a minimal reader for the simple expressions lateralityRefinement accepts; each step skips leading whitespace */
+  private static class ExpressionReader {
+    private final String src;
+    private int cursor;
+
+    private ExpressionReader(String src) {
+      this.src = src;
+    }
+
+    /** a run of digits, or null if there isn't one */
+    private String code() {
+      skipWhitespace();
+      int start = cursor;
+      while (cursor < src.length() && src.charAt(cursor) >= '0' && src.charAt(cursor) <= '9') {
+        cursor++;
+      }
+      return cursor > start ? src.substring(start, cursor) : null;
+    }
+
+    /** skips a |term| if there is one; false if a term is opened but not closed */
+    private boolean optionalTerm() {
+      skipWhitespace();
+      if (cursor < src.length() && src.charAt(cursor) == '|') {
+        int end = src.indexOf('|', cursor + 1);
+        if (end < 0) {
+          return false;
+        }
+        cursor = end + 1;
+      }
+      return true;
+    }
+
+    private boolean symbol(char ch) {
+      skipWhitespace();
+      if (cursor < src.length() && src.charAt(cursor) == ch) {
+        cursor++;
+        return true;
+      }
+      return false;
+    }
+
+    private boolean atEnd() {
+      skipWhitespace();
+      return cursor == src.length();
+    }
+
+    private void skipWhitespace() {
+      while (cursor < src.length() && " \t\n\u000B\f\r".indexOf(src.charAt(cursor)) >= 0) {
+        cursor++;
+      }
+    }
   }
 }

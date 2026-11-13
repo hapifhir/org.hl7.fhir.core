@@ -830,6 +830,7 @@ public class ExtensionDefinitions {
   public static final String EXT_SUPPORTED_CONCEPT_RELATIONSHIP_TRANSITIVITY = "http://terminology.hl7.org/StructureDefinition/ext-mif-relationship-transitivity"; // MIF concept relationship transitivity
   public static final String EXT_NAMING_SYSTEM_TITLE = "http://terminology.hl7.org/StructureDefinition/ext-namingsystem-title"; // NamingSystem title
   public static final String EXT_NAMING_SYSTEM_VERSION = "http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version"; // NamingSystem version
+  public static final String EXT_TX_CAPS_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content";
 
 
   // not properly defined yet

@@ -64,8 +64,14 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext.setAllowNonConformantServers(true);
   }
 
-  /** server address -> code systems it really has (complete content) */
+  /** server address -> code systems it has CodeSystem resources for (complete content) */
   private final Map<String, Set<String>> hosted = new HashMap<>();
+  /** server address -> code systems it has CodeSystem resources for, that say the content is not present */
+  private final Map<String, Set<String>> hostedNotPresent = new HashMap<>();
+  /** server address -> code systems its TerminologyCapabilities lists, without saying what the content is */
+  private final Map<String, Set<String>> listed = new HashMap<>();
+  /** server address -> code systems its TerminologyCapabilities lists, saying the content is not present */
+  private final Map<String, Set<String>> listedNotPresent = new HashMap<>();
   /** "server|criteria" for every CodeSystem search made */
   private final List<String> searches = new ArrayList<>();
 
@@ -100,7 +106,7 @@ class TerminologyClientManagerRoutingTest {
       case "getUserAgent": return "fhir-core-tests";
       case "getCapabilitiesStatement":
       case "getCapabilitiesStatementQuick": return new CapabilityStatement();
-      case "getTerminologyCapabilities": return new TerminologyCapabilities();
+      case "getTerminologyCapabilities": return terminologyCapabilities(address);
       case "search": return search(address, (String) args[1]);
       case "toString": return "fake client: " + address;
       case "equals": return proxy == args[0];
@@ -115,18 +121,34 @@ class TerminologyClientManagerRoutingTest {
     });
   }
 
+  private TerminologyCapabilities terminologyCapabilities(String address) {
+    TerminologyCapabilities tc = new TerminologyCapabilities();
+    for (String url : listed.getOrDefault(address, new HashSet<>())) {
+      tc.addCodeSystem().setUri(url);
+    }
+    for (String url : listedNotPresent.getOrDefault(address, new HashSet<>())) {
+      tc.addCodeSystem().setUri(url).setContent(CodeSystemContentMode.NOTPRESENT);
+    }
+    return tc;
+  }
+
   private Bundle search(String address, String criteria) {
     searches.add(address+"|"+criteria);
     Bundle bnd = new Bundle();
-    for (String url : hosted.getOrDefault(address, new HashSet<>())) {
+    addCodeSystems(bnd, hosted.getOrDefault(address, new HashSet<>()), criteria, CodeSystemContentMode.COMPLETE);
+    addCodeSystems(bnd, hostedNotPresent.getOrDefault(address, new HashSet<>()), criteria, CodeSystemContentMode.NOTPRESENT);
+    return bnd;
+  }
+
+  private void addCodeSystems(Bundle bnd, Set<String> urls, String criteria, CodeSystemContentMode content) {
+    for (String url : urls) {
       if (criteria.contains(org.hl7.fhir.utilities.Utilities.escapeUrl(url))) {
         CodeSystem cs = new CodeSystem();
         cs.setUrl(url);
-        cs.setContent(CodeSystemContentMode.COMPLETE);
+        cs.setContent(content);
         bnd.addEntry().setResource(cs);
       }
     }
-    return bnd;
   }
 
   private class TestFactory implements ITerminologyClientFactoryN {
@@ -221,5 +243,36 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
     assertEquals(MAIN, tc.getAddress());
     assertEquals(2, searches.size(), "both candidates should have been checked: "+searches);
+  }
+  @Test
+  void testCandidateWhoseCodeSystemSaysContentNotPresentIsSkipped() throws IOException {
+    // a server that holds the concepts in its own tables, and says not-present, has to be
+    // registered as authoritative to be used
+    hostedNotPresent.put(X, systems(CS_C));
+    hosted.put(Y, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(Y, tc.getAddress());
+    assertTrue(logged(mgr, "Candidate server "+X+" dropped for "+CS_C), "expected X to be dropped: "+messages(mgr));
+  }
+
+  @Test
+  void testCandidateThatListsCodeSystemInTerminologyCapabilitiesIsUsedWithoutSearching() throws IOException {
+    listed.put(X, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(X, tc.getAddress());
+    assertEquals(0, searches.size(), "the TerminologyCapabilities is enough: "+searches);
+  }
+
+  @Test
+  void testCandidateWhoseTerminologyCapabilitiesSaysContentNotPresentIsSearched() throws IOException {
+    listedNotPresent.put(X, systems(CS_C));
+    listedNotPresent.put(Y, systems(CS_C));
+    hosted.put(Y, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(Y, tc.getAddress());
+    assertTrue(searches.stream().anyMatch(q -> q.startsWith(X+"|")), "X should have been searched: "+searches);
   }
 }

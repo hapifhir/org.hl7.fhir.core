@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -649,6 +650,16 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     return failedLookups.contains(canonical);
   }
 
+  /**
+   * Whether a candidate server has the content of a code system (canonical may have a version).
+   * What its TerminologyCapabilities says comes first: if it lists the code system, and doesn't say
+   * the content is anything other than complete or fragment, that's enough. Otherwise its CodeSystem
+   * resources are searched for, and one with complete or fragment content is needed.
+   *
+   * Only candidates are checked (see actuallySupportsAll): a server that provides services for a
+   * code system it says it has no content for (because it holds the concepts in its own tables)
+   * has to be registered as authoritative for it
+   */
   private boolean checkCSAvailable(String server, String canonical) {
     if (isTxFhirOrg(server)) {
       return true;
@@ -659,6 +670,10 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
     try {
       var client = findClientContext(server, null, false);
+      if (client.listsWithContent(canonical)) {
+        serverSupportMap.put(key, true);
+        return true;
+      }
       // (requests go through send(): if the server has lost this client's cache, a new one is started)
       Bundle bnd = client.send(again -> client.getClient().search("CodeSystem",
         canonical.contains("|")

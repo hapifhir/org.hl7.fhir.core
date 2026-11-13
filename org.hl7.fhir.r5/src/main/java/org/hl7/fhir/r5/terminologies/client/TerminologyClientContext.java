@@ -14,6 +14,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.*;
@@ -455,33 +456,48 @@ public class TerminologyClientContext {
     }
   }
 
-  public boolean supportsSystem(String system) throws IOException {
+  /**
+   * true if the server's TerminologyCapabilities lists the code system (and version, if there is
+   * one), and doesn't say its content is anything other than complete or fragment. An R4 server
+   * says what the content is in the cross-version extension
+   */
+  public boolean listsWithContent(String canonical) throws IOException {
+    TerminologyCapabilitiesCodeSystemComponent tccs = findSystemDeclaration(canonical);
+    if (tccs == null) {
+      return false;
+    }
+    String content = tccs.hasContent() ? tccs.getContent().toCode() : tccs.getExtensionString(ExtensionDefinitions.EXT_TX_CAPS_CONTENT);
+    return content == null || Utilities.existsInList(content, "complete", "fragment");
+  }
 
+  public boolean supportsSystem(String system) throws IOException {
+    return findSystemDeclaration(system) != null;
+  }
+
+  public TerminologyCapabilitiesCodeSystemComponent findSystemDeclaration(String system) throws IOException {
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
-      if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getCode())))) {
-        return true;
+      if (system.equals(tccs.getUri())) {
+        return tccs;
       }
       if (system.startsWith(tccs.getUri()+"|")) {
+        String version = system.substring(tccs.getUri().length()+1);
         if (tccs.hasVersion()) {
           for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
-              return true;
+            if (version.equals(v.getCode())) {
+              return tccs;
             }
           }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system) && v.getIsDefault()) {
-              return true;
-            }
-          }
-          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
-            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system)) {
-              return true;
+          if (system.startsWith("http://snomed.info/sct")) { // edition matching logic
+            for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+              if (v.getCode().startsWith(version)) {
+                return tccs;
+              }
             }
           }
         }
       }
     }
-    return false;
+    return null;
   }
 
   public String getTxTestVersion() {
