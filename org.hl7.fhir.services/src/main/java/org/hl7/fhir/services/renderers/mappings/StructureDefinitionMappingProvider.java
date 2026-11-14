@@ -244,7 +244,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
    */
   private void textWithBreaks(XhtmlNode x, String s) {
     boolean first = true;
-    for (String line : s.split("\\r\\n|\\r|\\n")) {
+    for (String line : Utilities.splitLines(s)) {
       if (first) {
         first = false;
       } else {

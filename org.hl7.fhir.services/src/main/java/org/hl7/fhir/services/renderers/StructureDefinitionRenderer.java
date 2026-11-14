@@ -5867,7 +5867,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       td = tr.td();
       if (m.hasMap()) {
         boolean first = true;
-        for (String line : m.getMap().split("\\r\\n|\\r|\\n")) {
+        for (String line : Utilities.splitLines(m.getMap())) {
           if (first) {
             first = false;
           } else {
