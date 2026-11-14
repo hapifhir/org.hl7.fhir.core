@@ -2880,12 +2880,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return getResourceNamesAsSet();
   }
 
+  /**
+   * Thread safe: built and read under the lock, and the set handed out is never changed (it's
+   * unmodifiable, and replaced, not changed, when the definitions change)
+   */
   @Override
   public Set<String> getResourceNamesAsSet() {
     synchronized (lock) {
       if (cachedResourceNameSet == null) {
-        cachedResourceNameSet = new HashSet<String>();
-        cachedResourceNameSet.addAll(getResourceNames());
+        cachedResourceNameSet = Collections.unmodifiableSet(new HashSet<String>(getResourceNames()));
       }
       return cachedResourceNameSet;
     }
@@ -3545,6 +3548,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * Thread safe: the lookup (fetchResourceWithExceptionByVersion) runs under the lock, including any lazy
+   * loading of the resource. (A '#id' reference is resolved against the contained resources of the source
+   * without the lock, but that only reads the resource and writes user data, which is thread safe)
+   */
   @Override
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri) {
     try {
@@ -3825,7 +3833,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     }
-    StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
+    // thread safety: the type manager is only changed under the lock, so it's read under the lock too. The
+    // snapshot is not generated under the lock: snapshots have to be generated before multi-threaded use
+    // starts (see Thread Safety in the README), so this is normally a no-op
+    StructureDefinition structureDefinition;
+    synchronized (lock) {
+      structureDefinition = typeManager.fetchTypeDefinition(typeName);
+    }
     generateSnapshot(structureDefinition, "5");
     return structureDefinition;
   }

@@ -86,10 +86,11 @@ public class Property {
   private byte cachedIsJsonList;
   // getType(elementName) result. Only one branch of getType depends on elementName - the choice
   // where the declared types differ - so cacheability is decided from the definition alone,
-  // before elementName is looked at. null is a legitimate result, hence the separate flag, and
-  // nothing is stored on the paths that throw.
-  private String cachedTypeName;
-  private boolean cachedTypeNameSet;
+  // before elementName is looked at. null is a legitimate result, hence the NULL_TYPE marker, and
+  // nothing is stored on the paths that throw. It's one volatile field (not a value + a flag) so that
+  // another thread can never see 'cached' without also seeing the value
+  private static final Object NULL_TYPE = new Object();
+  private volatile Object cachedTypeName; // null: not cached yet
 
   public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils) {
 		this.context = context;
@@ -212,13 +213,13 @@ public class Property {
 	}
 
 	public String getType(String elementName) {
-	  if (cachedTypeNameSet) {
-	    return cachedTypeName;
+	  Object cached = cachedTypeName;
+	  if (cached != null) {
+	    return cached == NULL_TYPE ? null : (String) cached;
 	  }
 	  String result = determineType(elementName);
 	  if (typeIsIndependentOfElementName()) {
-	    cachedTypeName = result;
-	    cachedTypeNameSet = true;
+	    cachedTypeName = result == null ? NULL_TYPE : result;
 	  }
 	  return result;
 	}

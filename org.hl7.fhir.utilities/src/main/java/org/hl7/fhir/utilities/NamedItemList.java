@@ -20,7 +20,11 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
 
 
   private List<T> list = new ArrayList<>();
-  private Map<String, List<T>> map = null;
+  // the by-name index, built lazily. Reading the list (getByName) from several threads at once is
+  // safe: the index is built into a local map and only published once it's complete, through a
+  // volatile field (two threads may both build it; that's harmless). Changing the list is not
+  // thread safe, and must not happen while other threads are reading
+  private volatile Map<String, List<T>> map = null;
 
   @Override
   public int size() {
@@ -102,10 +106,11 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
   public List<T> getByName(String name) {
     List<T> res = new ArrayList<>();
     if (size() > SIZE_CUTOFF_MAP) {
-      if (map == null) {
-        buildMap();
+      Map<String, List<T>> m = map;
+      if (m == null) {
+        m = buildMap();
       }
-      List<T> l = map.get(name);
+      List<T> l = m.get(name);
       if (l != null) {
         res.addAll(l);
       }
@@ -120,10 +125,11 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
   }
   
   public int getSizeByName(String name) {
-    if (map == null) {
-      buildMap();
+    Map<String, List<T>> m = map;
+    if (m == null) {
+      m = buildMap();
     }
-    List<T> l = map.get(name);
+    List<T> l = m.get(name);
     return l == null ? 0 : l.size();
   }
 
@@ -131,23 +137,30 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
     return list.get(c);
   }
 
-  private void buildMap() {
-    map = new HashMap<>();
+  private Map<String, List<T>> buildMap() {
+    Map<String, List<T>> m = new HashMap<>();
     for (T child : list) {
-      addToMap(child);
+      addToMap(m, child);
     }
+    map = m;
+    return m;
   }
   
   private void addToMap(T child) {
-    if (map == null) {
+    Map<String, List<T>> m = map;
+    if (m == null) {
       // map will be re-built anyway in next call to getByName
       return;
     }
+    addToMap(m, child);
+  }
+
+  private void addToMap(Map<String, List<T>> m, T child) {
     String n = child.getListName();
-    List<T> l = map.get(n);
+    List<T> l = m.get(n);
     if (l == null) {
       l = new ArrayList<>();
-      map.put(n,l);
+      m.put(n,l);
     }
     l.add(child);
   }

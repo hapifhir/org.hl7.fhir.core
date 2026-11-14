@@ -149,6 +149,7 @@ import org.hl7.fhir.validation.ai.CodeAndTextValidationResult;
 import org.hl7.fhir.validation.ai.CodeAndTextValidator;
 import org.hl7.fhir.validation.instance.type.*;
 import org.hl7.fhir.validation.instance.utils.Base64Util;
+import org.hl7.fhir.validation.instance.utils.BundleIndex;
 import org.hl7.fhir.validation.instance.utils.BoundedSizeList;
 import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
 import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
@@ -2924,7 +2925,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
           contexts.append("p:" + ctxt.getExpression());
           // The context is all elements that match the FHIRPath query found in the expression.
-          List<Base> res = fpe.evaluate(valContext, resource, valContext.getRootResource(), resource, fpe.parse(ctxt.getExpression()));
+          ExpressionNode expr = parseExpression(ctxt, ctxt.getExpression(), false);
+          List<Base> res = fpe.evaluate(valContext, resource, valContext.getRootResource(), resource, expr);
           if (res.contains(container)) {
             ok = true;
           }
@@ -2948,7 +2950,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (definition.hasContextInvariant()) {
         for (StringType s : definition.getContextInvariantList()) {
-          if (!fpe.evaluateToBoolean(valContext, resource, valContext.getRootResource(), container, fpe.parse(s.getValue()))) {
+          ExpressionNode expr = parseExpression(s, s.getValue(), false);
+          if (!fpe.evaluateToBoolean(valContext, resource, valContext.getRootResource(), container, expr)) {
             if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
               warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extensionUrlVersioned, s.getValue());
               return true;
@@ -2961,6 +2964,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return true;
     }
+  }
+
+  // parse a FHIRPath expression if it has not already been parsed.
+  // note that some FHIRPath expressions for slicing are defined adhoc and are different on different iterations, so they get scoped by expression
+  private ExpressionNode parseExpression(Base ctxt, String expr, boolean scoped) {
+    String key = UserDataNames.validator_expression_cache+(scoped ? "|"+expr : "");
+    ExpressionNode expression = (ExpressionNode) ctxt.getUserData(key);
+    if (expression == null) {
+      expression = fpe.parse(expr);
+      ctxt.setUserData(key, expression);
+    } else {
+      ExpressionNode exprNew = fpe.parse(expr);
+      if (!exprNew.toString().equals(expression.toString())) {
+        throw new Error("Different");
+      }
+    }
+    return expression;
   }
 
   private String stripRefs(String literalPath) {
@@ -5237,7 +5257,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ex.hasExtension("selector")) {
           String expression = ex.getExtensionString("selector");
           try {
-            ExpressionNode expr = fpe.parse(expression);
+            ExpressionNode expr = parseExpression(ex, expression, false);
             if (type != null) {
               fpe.check(null, resource.fhirType(), resource.fhirType(), type, expr);
             }
@@ -5317,8 +5337,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     BooleanHolder bh = new BooleanHolder();
-    BooleanHolder stop = new BooleanHolder(false);
-    ResolvedReference we = localResolve(ref, stack, errors, path, valContext.getRootResource(), valContext.getGroupingResource(), element, bh, stop);
+    ResolvedReference we = localResolve(ref, stack, errors, path, valContext.getRootResource(), valContext.getGroupingResource(), element, bh);
     ok = bh.ok() && ok;
     IValidationPolicyAdvisor.ReferenceDestinationType refType;
     if (ref.startsWith("#")) {
@@ -5344,8 +5363,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
       ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
       ok = rule(errors, "2026-09-03", IssueType.INVALID, element.line(), element.col(), path, inTransaction(valContext), I18nConstants.REFERENCE_REF_QUERY_NOT_TRANSACTION, ref) && ok;
-    } else if (stop.ok()) {
-      hint(errors, "2025-04-08", IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_REL_UNSOLVEABLE, ref);      
     } else if (pol.checkExists()) {
       if (we == null) {
         if (refType != IValidationPolicyAdvisor.ReferenceDestinationType.CONTAINED) {
@@ -5875,7 +5892,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String fp = FHIRPathExpressionFixer.fixExpr(discriminator, null, context.getFHIRVersion());
     ExpressionNode expr = null;
     try {
-      expr = fpe.parse(fp);
+      expr = parseExpression(element, fp, true);
     } catch (Exception e) {
       if (STACK_TRACE) e.printStackTrace();
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
@@ -5904,7 +5921,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (element == null)
             throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_, id, p));
         }
-        expr = fpe.parse(fp);
+        expr = parseExpression(type, fp, true);
         t2 = System.nanoTime();
         ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile, dontFollowReference);
         timeTracker.sd(t2);
@@ -6120,7 +6137,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  public ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh, BooleanHolder stop) {
+  public ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh) {
     if (ref.startsWith("#")) {
       // work back through the parent list, tracking the stack as we go 
       // really, there should only be one level for this (contained resources cannot contain
@@ -6179,31 +6196,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (fullUrl == null) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, focus.getParentForValidator().line(), focus.getParentForValidator().col(), focus.getParentForValidator().getPath(),
               Utilities.existsInList(type, "batch-response", "transaction-response") || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFULLURL));
-          } else {
-            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-            //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-            boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
-            if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
-              stop.set(true);
-            }
           }
         }
         if (BUNDLE.equals(focus.getType())) {
           String type = focus.getChildValue(TYPE);
-          if (!stop.ok()) {
-            IndexedElement res = getFromBundle(focus, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
-            if (res == null) {
-              return null;
-            } else {
-              ResolvedReference rr = new ResolvedReference();
-              rr.setResource(res.getMatch());
-              rr.setFocus(res.getMatch());
-              rr.setExternal(false);
-              rr.setStack(new NodeStack(context, null, res.getMatch(), validationLanguage));
-              rr.setVia(stack);
-              rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
-              return rr;
-            }
+          IndexedElement res = getFromBundle(focus, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
+          if (res == null) {
+            return null;
+          } else {
+            ResolvedReference rr = new ResolvedReference();
+            rr.setResource(res.getMatch());
+            rr.setFocus(res.getMatch());
+            rr.setExternal(false);
+            rr.setStack(new NodeStack(context, null, res.getMatch(), validationLanguage));
+            rr.setVia(stack);
+            rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
+            return rr;
           }
         }
         if (focus.getSpecial() == SpecialElement.PARAMETER && focus.getParentForValidator() != null) {
@@ -6225,40 +6233,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String type = groupingResource.getChildValue(TYPE);
         Element entry = getEntryForSource(groupingResource, source);
         fullUrl = entry.getChildValue(FULL_URL);
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-        boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
-        if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
-          stop.set(true);
+        IndexedElement res = getFromBundle(groupingResource, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
+        if (res == null) {
+          return null;
         } else {
-          IndexedElement res = getFromBundle(groupingResource, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
-          if (res == null) {
-            return null;
-          } else {
-            ResolvedReference rr = new ResolvedReference();
-            rr.setResource(res.getMatch());
-            rr.setFocus(res.getMatch());
-            rr.setExternal(false);
-            rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
-                res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
-                    res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
-            return rr;
-          }
+          ResolvedReference rr = new ResolvedReference();
+          rr.setResource(res.getMatch());
+          rr.setFocus(res.getMatch());
+          rr.setExternal(false);
+          rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+              res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
+                  res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+          rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
+          return rr;
         }
       }
     }
     return null;
-  }
-
-  private boolean applyR5BundleRelativePolicy() {
-    switch (settings.getR5BundleRelativeReferencePolicy()) {
-    case ALWAYS: return true;
-    case NEVER: return false;
-    case DEFAULT:
-    default:
-      return VersionUtilities.isR5Plus(context.getFHIRVersion());
-    }
   }
 
   private Element findParameters(Element focus) {
@@ -6311,14 +6302,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private Element getEntryForSource(Element bundle, Element element) {
-    List<Element> entries = new ArrayList<Element>();
-    bundle.getNamedChildren(ENTRY, entries);
-    for (Element entry : entries) {
-      if (entry.hasDescendant(element)) {
-        return entry;
-      }
-    }
-    return null;
+    return BundleIndex.forBundle(bundle).getEntryForElement(element);
   }
 
   private ResolvedReference makeExternalRef(Element external, String path) {
@@ -6332,7 +6316,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private Element resolve(Object appContext, String ref, NodeStack stack, List<ValidationMessage> errors, String path, BooleanHolder bh) throws IOException, FHIRException {
-    Element local = localResolve(ref, stack, errors, path, null, null, null, bh, new BooleanHolder()).getFocus();
+    Element local = localResolve(ref, stack, errors, path, null, null, null, bh).getFocus();
     if (local != null)
       return local;
     if (fetcher == null)
@@ -6561,7 +6545,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       try {
-        n = fpe.parse(FHIRPathExpressionFixer.fixExpr(expression.toString(), null, context.getFHIRVersion()));
+        n = parseExpression(slicer, FHIRPathExpressionFixer.fixExpr(expression.toString(), null, context.getFHIRVersion()), true);
       } catch (FHIRLexerException e) {
         if (STACK_TRACE) e.printStackTrace();
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getVersionedUrl(), path, e.getMessage()));
@@ -6974,6 +6958,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), defn.getVersionedUrl(), logProgress);
     }
     if (BUNDLE.equals(element.fhirType())) {
+      // index the bundle entries as soon as we see the bundle - everything that navigates the bundle uses the index
+      BundleIndex.startBuilding(element);
       log.debug("Resolve Bundle Entries "+time());
       resolveBundleReferences(element, new ArrayList<Element>());
     }
@@ -7178,8 +7164,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String ref = element.getChildValue("reference");
       if (!Utilities.noString(ref)) {
         for (Element bundle : bundles) {
-          List<Element> entries = bundle.getChildren(ENTRY);
-          Element tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase(), null, null, null, element, false, false);
+          Element tgt = resolveInBundle(bundle, ref, fu, resource.fhirType(), resource.getIdBase(), null, null, null, element, false, false);
           if (tgt != null) {
             element.setUserData(UserDataNames.validator_bundle_resolution, tgt.getNamedChild(RESOURCE, false));
             return;

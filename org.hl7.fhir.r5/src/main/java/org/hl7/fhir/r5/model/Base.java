@@ -129,7 +129,22 @@ public abstract class Base implements Serializable, IBase, IElement {
   /**
    * User appended data items - allow users to add extra information to the class
    */
-  private transient Map<String, Object> userData; 
+  private transient volatile Map<String, Object> userData; // thread safe: a ConcurrentHashMap, created with a compare-and-set (see userDataForWrite). Can't hold null values - setting null removes the entry
+
+  @SuppressWarnings("rawtypes")
+  private static final java.util.concurrent.atomic.AtomicReferenceFieldUpdater<Base, Map> USER_DATA =
+      java.util.concurrent.atomic.AtomicReferenceFieldUpdater.newUpdater(Base.class, Map.class, "userData");
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> userDataForWrite() {
+    Map<String, Object> ud = userData;
+    if (ud == null) {
+      // if two threads get here at once, only one map is kept, and both use it
+      USER_DATA.compareAndSet(this, null, new java.util.concurrent.ConcurrentHashMap<String, Object>());
+      ud = userData;
+    }
+    return ud;
+  }
 
   /**
    * Post Validation Definition information
@@ -150,20 +165,24 @@ public abstract class Base implements Serializable, IBase, IElement {
    
   
   public Object getUserData(String name) {
-    if (userData == null)
+    Map<String, Object> ud = userData;
+    if (ud == null)
       return null;
-    return userData.get(name);
+    return ud.get(name);
   }
   
   public void setUserData(String name, Object value) {
-    if (userData == null)
-      userData = new HashMap<String, Object>();
-    userData.put(name, value);
+    if (value == null) {
+      clearUserData(name);
+    } else {
+      userDataForWrite().put(name, value);
+    }
   }
 
   public void clearUserData(String name) {
-    if (userData != null)
-      userData.remove(name);
+    Map<String, Object> ud = userData;
+    if (ud != null)
+      ud.remove(name);
   }
 
   /**
@@ -177,17 +196,12 @@ public abstract class Base implements Serializable, IBase, IElement {
   public void setUserDataINN(String name, Object value) {
     if (value == null)
       return;
-    
-    if (userData == null)
-      userData = new HashMap<String, Object>();
-    userData.put(name, value);
+    userDataForWrite().put(name, value);
   }
 
   public boolean hasUserData(String name) {
-    if (userData == null)
-      return false;
-    else
-      return userData.containsKey(name) && (userData.get(name) != null);
+    Map<String, Object> ud = userData;
+    return ud != null && ud.get(name) != null;
   }
 
 	public String getUserString(String name) {
@@ -206,19 +220,18 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   public void copyUserData(Base other) {
-    if (other.userData != null) {
-      if (userData == null) {
-        userData = new HashMap<>();
-      }
-      userData.putAll(other.userData);
+    Map<String, Object> oud = other.userData;
+    if (oud != null && !oud.isEmpty()) {
+      userDataForWrite().putAll(oud);
     }
   }
 
   public Set<String> getUserDataNames() {
-    if (userData == null) {
+    Map<String, Object> ud = userData;
+    if (ud == null) {
       return new HashSet<>();
     } else {
-      return userData.keySet();
+      return ud.keySet();
     }
   }
 
@@ -579,9 +592,9 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   public void copyValues(Base dst) {  
-    if (isCopyUserData() && userData != null) {
-      dst.userData = new HashMap<>();
-      dst.userData.putAll(userData);
+    Map<String, Object> ud = userData;
+    if (isCopyUserData() && ud != null) {
+      dst.userData = new java.util.concurrent.ConcurrentHashMap<>(ud);
     }
   }
 
