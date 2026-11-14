@@ -155,10 +155,8 @@ public class InstanceValidatorOptions {
   // Enum fields
   @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
     description = """
-  Control R5 bundle resolution policy (always, never, default)
-      * always - always apply the rule irrespective of version
-      * never - never apply this rule irrespective of version
-      * default - the default behaviour: apply this rule in R5 and later
+  Deprecated, and ignored: the R5 bundle resolution rules for relative references now apply to all versions
+  (was: control R5 bundle resolution policy (always, never, default))
   """)
   @With
   public String r5BundleRelativeReferencePolicy;

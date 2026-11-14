@@ -18,6 +18,8 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.utilities.MappingSpace;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -35,16 +37,47 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     this.fpe = fpe;
   }
 
+  /**
+   * where to link for a mapping that isn't to a known StructureDefinition: the tools extension mapping-reference, 
+   * then the link in the mapping space metadata, then the uri itself, if it's a URL. Null if there's nowhere to link
+   */
+  public static String mappingLink(RenderingContext context, StructureDefinitionMappingComponent map) {
+    String ref = map.getExtensionString(ExtensionDefinitions.EXT_MAPPING_REFERENCE);
+    if (Utilities.isAbsoluteUrlLinkable(ref)) {
+      return ref;
+    }
+    MappingSpace ms = map.hasUri() ? context.getMappingSpaces().get(map.getUri()) : null;
+    if (ms != null && ms.hasLink() && Utilities.isAbsoluteUrlLinkable(ms.getLink())) {
+      return ms.getLink();
+    }
+    return map.hasUri() && Utilities.isAbsoluteUrlLinkable(map.getUri()) ? map.getUri() : null;
+  }
+
   @Override
   public Column makeColumn(String id) {
     if (dest != null) {
-      return new Column(id, map.getName(), dest.present(), dest.getWebPath());
+      return new Column(id, map.getName(), dest.present(), dest.getWebPath()).setAnchor(map.getIdentity());
     } else {
       // no known StructureDefinition for this mapping - all we have is what's in the mapping declaration itself
-      String hint = map.hasComment() ? map.getComment() : map.hasUri() ? map.getUri() : map.getName();
-      String link = map.hasUri() && Utilities.isAbsoluteUrlLinkable(map.getUri()) ? map.getUri() : null;
-      return new Column(id, map.getName(), hint, link);
+      // the mapping uri is an identifier for the mapping target, and often doesn't resolve. The mapping can say
+      // where to find out about it (the tools extension mapping-reference), and the mapping space metadata from
+      // the core package says where to find out about the known ones (#1171)
+      MappingSpace ms = map.hasUri() ? context.getMappingSpaces().get(map.getUri()) : null;
+      // not the comment - that's shown in the Mapping Comments row
+      String hint = ms != null && !Utilities.noString(ms.getTitle()) ? ms.getTitle() : map.hasUri() ? map.getUri() : map.getName();
+      String link = mappingLink(context, map);
+      return new Column(id, map.getName(), hint, link).setAnchor(map.getIdentity());
     }
+  }
+
+  @Override
+  public String getColumnKey() {
+    return map.hasIdentity() ? "map-"+map.getIdentity() : null;
+  }
+
+  @Override
+  public String getComment() {
+    return map.hasComment() ? map.getComment() : null;
   }
 
   @Override
@@ -85,25 +118,17 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
           m = t;
         }
       }
-      boolean complex = false;
       if (m != null) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
-        if (maps.length == 1) {
-          renderMap(div, maps[0]);
-        } else {
-          complex = true;
-          XhtmlNode ul = div.ul();
-          for (String s : maps) {
-            renderMap(ul.li(), s);
-          }
+        // the map is just a string: a comma has no special meaning in it, so it's not split up (#1171). Line breaks are kept
+        if (m.hasMap()) {
+          renderMap(div, m.getMap().trim());
         }
         if (m.hasComment()) {
-          if (!complex) {
+          if (m.hasMap()) {
             div.br();
           }
-          div.i().tx(m.getComment());
+          // a very faint yellow behind the comment, to separate it from the map itself
+          div.span().style("background-color: #fffde7").i().tx(m.getComment());
         }
       }
     }
@@ -173,7 +198,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     // the approved syntax is id: fhirPath, or it's just rendered directly
     if ("n/a".equals(s)) {
       x.tx(s);
-    } else if (s.startsWith("http:") || s.startsWith("https:")) {
+    } else if ((s.startsWith("http:") || s.startsWith("https:")) && Utilities.isAbsoluteUrlLinkable(s) && !hasLineBreak(s)) {
       Resource res = context.getContext().fetchResource(Resource.class, s, IWorkerContext.VersionResolutionRules.PACKAGE);
       if (res == null) {
         res = context.getResolveLinkResolver().findLinkableResource(Resource.class, s);
@@ -193,9 +218,9 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
       String l = s.substring(0, s.indexOf(":"));
       String r = s.substring(s.indexOf(":")+1);
       if (dest != null && dest.getSnapshot().getElementById(l) != null) {
-        x.ah(ref()+"#"+l, l).tx(r);
+        textWithBreaks(x.ah(ref()+"#"+l, l), r);
       } else {
-        x.tx(r);
+        textWithBreaks(x, s); // the colon isn't the id: path syntax, so it's just part of the text
       }
     } else {
       // what's going on here is that if it happens to be FHIRPath, and we can strip this down to a path reference
@@ -205,13 +230,32 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
         stripFunctions(exp);
         String p = exp.toString();
         if (dest != null && dest.getSnapshot().getElementById(p) != null) {
-          x.ah(ref()+"#"+p, p).tx(s);
+          textWithBreaks(x.ah(ref()+"#"+p, p), s);
         } else {
-          x.tx(s);
+          textWithBreaks(x, s);
         }
       } catch (Exception e) {
-        x.tx(s);
+        textWithBreaks(x, s);
       }
+    }
+  }
+
+  private boolean hasLineBreak(String s) {
+    return s.contains("\n") || s.contains("\r");
+  }
+
+  /**
+   * render the text, with a br for each line break in it
+   */
+  private void textWithBreaks(XhtmlNode x, String s) {
+    boolean first = true;
+    for (String line : Utilities.splitLines(s)) {
+      if (first) {
+        first = false;
+      } else {
+        x.br();
+      }
+      x.tx(line);
     }
   }
 

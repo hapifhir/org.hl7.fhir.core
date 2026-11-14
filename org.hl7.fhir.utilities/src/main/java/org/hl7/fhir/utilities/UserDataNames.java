@@ -27,6 +27,8 @@ public class UserDataNames {
   public static final String SNAPSHOT_slice_name = "slice-name";
   public static final String SNAPSHOT_SORT_ed_index = "ed.index";
   public static final String SNAPSHOT_diff_source = "diff-source";
+  public static final String SNAPSHOT_ORIGINAL_MARKDOWN = "SNAPSHOT_ORIGINAL_MARKDOWN"; // on markdown in a snapshot element where relative links were made absolute: the text before that was done
+  public static final String SNAPSHOT_diff_processed = "diff-processed"; // on a differential element: the copy of it that the snapshot generator processed (which has the SNAPSHOT_DERIVATION_EQUALS marks on its values)
   public static final String SNAPSHOT_regeneration_tracker = "hack.regnerated";
   
   public static final String LANGUTILS_ORPHAN = "translations.orphans";
@@ -82,8 +84,7 @@ public class UserDataNames {
   public static final String validator_bundle_resolved = "validator.bundle.resolved";
   public static final String validator_expression_cache = "validator.expression.cache";
   public static final String validator_slice_expression_cache = "slice.expression.cache";
-  public static final String validator_entry_map = "validator.entrymap";
-  public static final String validator_entry_map_reverse = "validator.entrymapR";
+  public static final String validator_bundle_index = "validator.bundle.index";
   public static final String validation_bundle_error = "bundle.error.noted";
   
   public static final String map_profile = "profile";

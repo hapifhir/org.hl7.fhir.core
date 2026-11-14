@@ -22,6 +22,21 @@ public abstract class ModelMappingProvider {
 
   public abstract Column makeColumn(String id);
 
+  /**
+   * @return any comment about the mapping as a whole (e.g. StructureDefinition.mapping.comment), or null
+   */
+  public String getComment() {
+    return null;
+  }
+
+  /**
+   * @return a key for the column that is the same wherever the same mapping appears (so the column's visibility 
+   *   can be shared across tables), or null if there isn't one
+   */
+  public String getColumnKey() {
+    return null;
+  }
+
   public abstract void render(ElementDefinition element, XhtmlNode div) throws IOException;
 
 

@@ -218,7 +218,7 @@ public class AdditionalBindingsRenderer {
   public void render(List<XhtmlNode> children, boolean fullDoco) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
-    boolean any = false;
+    boolean any = fullDoco; // the full view (detailed descriptions) always shows the any/all column
     for (AdditionalBindingDetail binding : bindings) {
       doco = doco || binding.getDoco(fullDoco)!=null  || (binding.compare!=null && binding.compare.getDoco(fullDoco)!=null);
       usage = usage || !binding.usages.isEmpty() || (binding.compare!=null && !binding.compare.usages.isEmpty());
@@ -227,16 +227,19 @@ public class AdditionalBindingsRenderer {
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
-    tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_ADD_BIND));
-    tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingI18nContext.GENERAL_PURPOSE));
+    // the heading links to the definition of additional bindings (#922), and the headings are bold (#958)
+    boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion());
+    String abLink = r5 ? Utilities.pathURL(corePath, "elementdefinition-definitions.html#ElementDefinition.binding.additional") : "http://hl7.org/fhir/tools/StructureDefinition-additional-binding.html";
+    tr.td().style("font-size: 11px").b().ah(abLink).tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_ADD_BIND));
+    tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PURPOSE));
     if (usage) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingI18nContext.GENERAL_USAGE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_USAGE));
     }
     if (any) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_ANY));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_ANY));
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION));
     }
     for (AdditionalBindingDetail binding : bindings) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
@@ -286,25 +289,14 @@ public class AdditionalBindingsRenderer {
       if (usage) {
         if (!binding.usages.isEmpty()) {
           XhtmlNode td = tr.td();
-          for (UsageContext uc : binding.usages) {
-            td.sep(", ");
-            Coding c = uc.getCode();
-            renderUsageCode(td, c);
-            td.tx(" = ");
-            if (uc.hasValueCodeableConcept() && !uc.getValueCodeableConcept().hasText() && uc.getValueCodeableConcept().getCodingList().size() == 1) {
-              c = uc.getValueCodeableConcept().getCodingFirstRep();
-              renderUsageCode(td, c);
-            } else if (uc.getValue() != null) {
-              new DataRenderer(context).renderBase(new RenderingStatus(), td, uc.getValue());
-            }
-          }
+          renderUsages(td, binding.usages);
         } else {
           tr.td();          
         }
       }
       if (any) {
         String newRepeat = binding.any ? context.formatPhrase(RenderingI18nContext.ADD_BIND_ANY_REP) : context.formatPhrase(RenderingI18nContext.ADD_BIND_ALL_REP);
-        String oldRepeat = binding.compare!=null && binding.compare.any ? context.formatPhrase(RenderingI18nContext.ADD_BIND_ANY_REP) : context.formatPhrase(RenderingI18nContext.ADD_BIND_ALL_REP);
+        String oldRepeat = binding.compare == null ? null : binding.compare.any ? context.formatPhrase(RenderingI18nContext.ADD_BIND_ANY_REP) : context.formatPhrase(RenderingI18nContext.ADD_BIND_ALL_REP);
         compareString(tr.td().style("font-size: 11px"), newRepeat, oldRepeat);
       }
       if (doco) {
@@ -315,6 +307,24 @@ public class AdditionalBindingsRenderer {
         } else {
           tr.td().style("font-size: 11px");
         }
+      }
+    }
+  }
+
+  /**
+   * the usage contexts of an additional binding, as "code = value, code = value"
+   */
+  public void renderUsages(XhtmlNode td, List<UsageContext> usages) throws IOException {
+    for (UsageContext uc : usages) {
+      td.sep(", ");
+      Coding c = uc.getCode();
+      renderUsageCode(td, c);
+      td.tx(" = ");
+      if (uc.hasValueCodeableConcept() && !uc.getValueCodeableConcept().hasText() && uc.getValueCodeableConcept().getCodingList().size() == 1) {
+        c = uc.getValueCodeableConcept().getCodingFirstRep();
+        renderUsageCode(td, c);
+      } else if (uc.getValue() != null) {
+        new DataRenderer(context).renderBase(new RenderingStatus(), td, uc.getValue());
       }
     }
   }
@@ -367,7 +377,7 @@ public class AdditionalBindingsRenderer {
     return Utilities.isAbsoluteUrl(url) || !pkp.prependLinks() ? url : corePath + url;
   }
 
-  private void renderPurpose(XhtmlNode td, String purpose) {
+  public void renderPurpose(XhtmlNode td, String purpose) {
     boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion());
     switch (purpose) {
     case "maximum": 

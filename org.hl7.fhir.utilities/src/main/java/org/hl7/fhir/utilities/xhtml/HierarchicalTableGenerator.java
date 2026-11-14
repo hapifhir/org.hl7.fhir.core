@@ -392,6 +392,7 @@ public class HierarchicalTableGenerator {
     private boolean innerTable; // if you want a multiline left cell, you have to set this to true
     private TextAlignment alignment = TextAlignment.LEFT;
     private String id;
+    private Map<String, String> attributes; // extra attributes for the td/th (e.g. data-col, for showing and hiding columns)
  
     public Cell() {
       
@@ -684,12 +685,24 @@ public class HierarchicalTableGenerator {
       this.minWidth = minWidth;
       return this;
     }
+
+    /**
+     * an extra attribute to put on the cell's td/th element
+     */
+    public Cell addAttribute(String name, String value) {
+      if (attributes == null) {
+        attributes = new HashMap<>();
+      }
+      attributes.put(name, value);
+      return this;
+    }
   }
 
   public class Title extends Cell {
     private int width;
     private boolean filter;
     private Map<String, String> checkboxes = new HashMap<String, String>();
+    private String anchor;
 
     public Title(String prefix, String reference, String text, String hint, String suffix, int width) {
       super(prefix, reference, text, hint, suffix);
@@ -741,6 +754,19 @@ public class HierarchicalTableGenerator {
 
     public Title setMinWidth(String minWidth) {
       this.minWidth = minWidth;
+      return this;
+    }
+
+    /**
+     * an anchor on the column heading, so that other content can link to the column. Unlike row anchors,
+     * this is not given the generator's unique local prefix - the caller is responsible for it being unique
+     */
+    public String getAnchor() {
+      return anchor;
+    }
+
+    public Title setAnchor(String anchor) {
+      this.anchor = anchor;
       return this;
     }
   }
@@ -822,6 +848,21 @@ public class HierarchicalTableGenerator {
     
   }
 
+  public static class ColumnToggle {
+    private String key;
+    private String label;
+    public ColumnToggle(String key, String label) {
+      this.key = key;
+      this.label = label;
+    }
+    public String getKey() {
+      return key;
+    }
+    public String getLabel() {
+      return label;
+    }
+  }
+
   public class TableModel {
     private String id;
     private boolean active;
@@ -836,7 +877,30 @@ public class HierarchicalTableGenerator {
     // users get the hierarchy that the tree lines show. Element tables use "." (paths); set to null to turn this off
     private String hierarchySeparator = " / ";
     private String label; // accessible name for the table (aria-label)
+    private List<ColumnToggle> columnToggles = new ArrayList<>();
+    private String columnToggleLabel;
         
+    /**
+     * a column the user can show or hide with a checkbox above the table (active tables only). Every cell in the 
+     * column must have the attribute data-col with the key as its value. The state is stored in local storage by 
+     * key, so all the tables on a web site that use the same key share it
+     */
+    public void addColumnToggle(String key, String label) {
+      columnToggles.add(new ColumnToggle(key, label));
+    }
+
+    public List<ColumnToggle> getColumnToggles() {
+      return columnToggles;
+    }
+
+    public String getColumnToggleLabel() {
+      return columnToggleLabel;
+    }
+
+    public void setColumnToggleLabel(String columnToggleLabel) {
+      this.columnToggleLabel = columnToggleLabel;
+    }
+
     public TableModel(String id, boolean active) {
       super();
       this.id = id;
@@ -1127,6 +1191,9 @@ public class HierarchicalTableGenerator {
       for (Title t : model.getTitles()) {
         tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true, model.active && t.isFilter(), model.getId(), t.getCheckboxes(), null);
         tc.setAttribute("scope", "col");
+        if (makeTargets && !Utilities.noString(t.getAnchor())) {
+          tc.addTag("a").setAttribute("name", nmTokenize(t.getAnchor())).addText(" ");
+        }
         if (t.width != 0)
           tc.style("width: "+Integer.toString(t.width)+"px");
       }
@@ -1176,7 +1243,61 @@ public class HierarchicalTableGenerator {
     if (model.active && script) {
       table.addTag("script").setAttribute("type", "text/javascript").tx(treeFilterJS(model.getId(), checkboxes));      
     }
+    if (model.active && !model.getColumnToggles().isEmpty()) {
+      return addColumnToggles(model, table);
+    }
     return table;
+  }
+
+  /**
+   * A horizontal list of checkboxes above the table, one for each column that can be shown or hidden. All columns
+   * are shown by default; the state of each checkbox is kept in local storage (ht-col-[key]) so that it is shared 
+   * across all the tables on the site, and the checkboxes for the same key on the same page are kept in sync
+   */
+  private XhtmlNode addColumnToggles(TableModel model, XhtmlNode table) {
+    XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode fs = div.addTag("fieldset");
+    fs.setAttribute("id", "ct"+model.getId());
+    fs.style("border: none; padding: 0; margin: 0 0 4px 0; font-size: 11px; font-family: verdana");
+    XhtmlNode lg = fs.addTag("legend");
+    lg.style("float: left; padding: 0 6px 0 0; font-weight: bold");
+    lg.tx(model.getColumnToggleLabel() == null ? i18n.formatPhrase(RenderingI18nContext.GENERAL_SHOW) : model.getColumnToggleLabel());
+    for (ColumnToggle ct : model.getColumnToggles()) {
+      XhtmlNode lbl = fs.addTag("label");
+      lbl.style("margin-right: 12px; white-space: nowrap");
+      XhtmlNode input = lbl.addTag("input");
+      input.setAttribute("type", "checkbox");
+      input.setAttribute("checked", "checked");
+      input.setAttribute("data-col-toggle", ct.getKey());
+      input.setAttribute("onClick", "htColToggle(this)");
+      lbl.tx(" "+ct.getLabel());
+    }
+    div.addChildNode(table);
+    div.addTag("script").setAttribute("type", "text/javascript").tx(columnToggleJS(model.getId()));
+    return div;
+  }
+
+  private String columnToggleJS(String mid) {
+    StringBuilder b = new StringBuilder();
+    b.append("  // "+uuid+"\n");
+    b.append("if (typeof htColToggle === 'undefined') {\n");
+    b.append("  window.htColApply = function(k, show) {\n");
+    b.append("    document.querySelectorAll('[data-col=\"'+k+'\"]').forEach(function(c) { c.style.display = show ? '' : 'none'; });\n");
+    b.append("    document.querySelectorAll('input[data-col-toggle=\"'+k+'\"]').forEach(function(c) { c.checked = show; });\n");
+    b.append("  };\n");
+    b.append("  window.htColToggle = function(cb) {\n");
+    b.append("    var k = cb.getAttribute('data-col-toggle');\n");
+    b.append("    try { if (cb.checked) { localStorage.removeItem('ht-col-'+k); } else { localStorage.setItem('ht-col-'+k, 'false'); } } catch (e) { }\n");
+    b.append("    htColApply(k, cb.checked);\n");
+    b.append("  };\n");
+    b.append("}\n");
+    b.append("document.querySelectorAll('#ct"+mid+" input[data-col-toggle]').forEach(function(cb) {\n");
+    b.append("  var k = cb.getAttribute('data-col-toggle');\n");
+    b.append("  var s = null;\n");
+    b.append("  try { s = localStorage.getItem('ht-col-'+k); } catch (e) { }\n");
+    b.append("  if (s === 'false') { htColApply(k, false); }\n");
+    b.append("});\n");
+    return b.toString();
   }
 
 
@@ -1264,6 +1385,11 @@ public class HierarchicalTableGenerator {
     tc.setAttribute("class", "hierarchy");
     if (c.span > 1) {
       tc.colspan(Integer.toString(c.span));
+    }
+    if (c.attributes != null) {
+      for (String n : Utilities.sorted(c.attributes.keySet())) {
+        tc.setAttribute(n, c.attributes.get(n));
+      }
     }
     if (c.getId() != null) {
       tc.setAttribute("id", c.getId());
@@ -1432,7 +1558,6 @@ public class HierarchicalTableGenerator {
         } else {
           a.addChildren(p.getChildren());
         }
-        addStyle(a, p);
         if (p.getTagImg() != null) {
           a.tx(" ");
           a.img(p.getTagImg(), null);

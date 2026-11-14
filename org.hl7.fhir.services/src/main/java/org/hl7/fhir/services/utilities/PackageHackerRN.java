@@ -168,10 +168,33 @@ public class PackageHackerRN {
      fixSubExtensionUrl(sd, "interval");
    }
 
+   // pre-adopt FHIR-59812: textLink repeats on Narrative - one repetition per linked target (max 1 -> *).
+   // Remove this once the extensions packages in use have been republished with the change
+   if ("http://hl7.org/fhir/StructureDefinition/textLink".equals(r.getUrl()) && "StructureDefinition".equals(r.getType())) {
+     fixRootMax((StructureDefinition) r.getResource(), "*");
+   }
+
    if (r.hasUrl() && r.getUrl().contains("|")) {
      assert false;
    }
    
+  }
+
+  /**
+   * set the max cardinality of the root element of the structure definition, in both the differential and the snapshot
+   */
+  static void fixRootMax(StructureDefinition sd, String max) {
+    String root = sd.getType();
+    for (ElementDefinition ed : sd.getDifferential().getElementList()) {
+      if (root.equals(ed.getPath())) {
+        ed.setMax(max);
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (root.equals(ed.getPath())) {
+        ed.setMax(max);
+      }
+    }
   }
 
   /**

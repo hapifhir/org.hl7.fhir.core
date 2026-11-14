@@ -402,6 +402,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public static final String LOINC_MAPPING = "http://loinc.org"; 
   public static final String SNOMED_MAPPING = "http://snomed.info";
   private static final boolean PREFIX_SLICES = true; 
+  // whether slices are named in the tables with just ":" and the slice name, without the element name (#473). This
+  // may not stick, so it's a constant that can be turned off, or made into a setting
+  private static final boolean SHORTEN_SLICE_NAMES = true;
  
   private final boolean ADD_REFERENCE_TO_TABLE = true; 
  
@@ -554,6 +557,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     String title; 
     String hint; 
     private String link; 
+    private String anchor; 
  
     public Column(String id, String title, String hint) { 
       super(); 
@@ -568,6 +572,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       this.hint = hint; 
       this.link = link; 
     } 
+
+    /**
+     * @param anchor an anchor for the column heading (e.g. the identity of a mapping), so other content can link to it 
+     */
+    public Column setAnchor(String anchor) {
+      this.anchor = anchor;
+      return this;
+    }
  
   }
 
@@ -606,10 +618,40 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
   }
 
+  /**
+   * supplementMissingDiffElements adds the elements the differential doesn't mention but that are needed to show
+   * the hierarchy (e.g. the BackboneElement whose children the differential constrains). Link each of these to the
+   * matching snapshot element, so that its row shows the inherited cardinality, types, description and flags,
+   * de-emphasized as unchanged (#1242)
+   */
+  private void linkInferredDiffElements(StructureDefinition profile, List<ElementDefinition> list) {
+    if (!profile.hasSnapshot()) {
+      return;
+    }
+    Set<ElementDefinition> stated = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    stated.addAll(profile.getDifferential().getElement());
+    for (int i = 1; i < list.size(); i++) { // not the root
+      ElementDefinition ed = list.get(i);
+      if (!stated.contains(ed) && !ed.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER)) {
+        ElementDefinition sed = null;
+        for (ElementDefinition t : profile.getSnapshot().getElement()) {
+          if (ed.hasId() ? ed.getId().equals(t.getId()) : ed.getPath().equals(t.getPath())) {
+            sed = t;
+            break;
+          }
+        }
+        if (sed != null) {
+          ed.setUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER, sed);
+        }
+      }
+    }
+  }
+
   private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
     List<ElementDefinition> list;
     if (diff) {
       list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
+      linkInferredDiffElements(profile, list);
     } else {
       list = new ArrayList<>();
       list.addAll(profile.getSnapshot().getElement());
@@ -634,6 +676,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return null;
       }
       model = initCustomTable(gen, corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);
+      // a line between the mapping columns (#1171). Not on the first column - it's the element tree
+      for (int i = 1; i < model.getTitles().size(); i++) {
+        model.getTitles().get(i).setLeftLine(true);
+      }
+      // checkboxes above the table to show and hide the mapping columns, if there's more than one (#1171). 
+      // The script is in-line, so unlike the tree filters, this doesn't depend on the active-tables IG parameter
+      mappingColumnToggles = rc.getRules() == GenerationRules.IG_PUBLISHER && mappings.size() > 1;
+      if (mappingColumnToggles) {
+        model.setColumnToggleLabel(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SHOW_MAPPINGS));
+        for (int i = 0; i < mappings.size(); i++) {
+          String key = mappings.get(i).getColumnKey();
+          if (key != null) {
+            model.addColumnToggle(key, columns.get(i).title);
+            model.getTitles().get(i+1).addAttribute("data-col", key);
+          }
+        }
+      }
+      addMappingCommentsRow(gen, model, mappings);
       break;
     case SUMMARY:
       model = gen.initNormalTable(corePath, false, true, profile.getId()+ idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, rc.getRules() == GenerationRules.IG_PUBLISHER ? TableGenerationMode.XHTML : TableGenerationMode.XML);
@@ -742,6 +802,33 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     profile.setUserData(UserDataNames.PROFILE_RENDERED_MAPPINGS, res.size() >= 0);
     return res;
   }
+
+  /**
+   * If any of the mappings has a comment, the first row of the table (immediately under the headings) shows them (#1171)
+   */
+  private void addMappingCommentsRow(HierarchicalTableGenerator gen, TableModel model, List<ModelMappingProvider> mappings) {
+    boolean any = false;
+    for (ModelMappingProvider mm : mappings) {
+      any = any || !Utilities.noString(mm.getComment());
+    }
+    if (any) {
+      Row row = gen.new Row();
+      model.getRows().add(row);
+      Cell c = gen.new Cell();
+      row.getCells().add(c);
+      c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAPPING_COMMENTS), null).styleAsBold());
+      for (ModelMappingProvider mm : mappings) {
+        c = gen.new Cell().setLeftLine(true);
+        addColumnKey(c, mm);
+        row.getCells().add(c);
+        if (!Utilities.noString(mm.getComment())) {
+          c.addText(mm.getComment());
+        }
+      }
+    }
+  }
+
+  private boolean mappingColumnToggles; // whether the mapping columns can be shown and hidden (see generateTableInner)
 
   private boolean includeSDForMap(StructureDefinition sd, boolean okForNull) {
     if (mappingsMode == null) {
@@ -890,7 +977,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views")); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.GENERAL_NAME)), (context.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME)), null, 0)); 
     for (Column col : columns) { 
-      model.getTitles().add(gen.new Title(null, col.link != null ? col.link : model.getDocoRef(), (col.title), (col.hint), null, 0));       
+      model.getTitles().add(gen.new Title(null, col.link != null ? col.link : model.getDocoRef(), (col.title), (col.hint), null, 0).setAnchor(col.anchor));       
     } 
     return model; 
   } 
@@ -995,7 +1082,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
       String sName = null;
-      if (PREFIX_SLICES) {
+      if (SHORTEN_SLICE_NAMES && element.hasSliceName()) {
+        sName = ":" + element.getSliceName();
+      } else if (PREFIX_SLICES) {
     	sName = tail(element.getPath());
     	if (element.hasSliceName()) {
     	  sName = sName + ":" + element.getSliceName();
@@ -1034,8 +1123,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           used.used = true; // doesn't matter whether we have a type, we're used if we're setting up slicing ... element.hasType() && element.getType().get(0).hasProfile(); 
           showMissing = false; //? 
           slicingRow = row; 
+          setSlicerIcon(row, element.getPath()); // the slicing icon, not the extension icon (#473)
         } else { 
-          row.setIcon("icon_slice.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_SLICE)); 
+          setSlicerIcon(row, element.getPath()); 
           slicingRow = row; 
           for (Cell cell : row.getCells()) 
             for (Piece p : cell.getPieces()) { 
@@ -1130,7 +1220,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.setAnchor(context.prefixAnchor(anchorE)); 
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode)); 
                 parent.setLineColor(1); 
-                parent.setIcon("icon_slice.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_SLICE)); 
+                setSlicerIcon(parent, child.getPath()); 
                 parent.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE_FOR, child.getName()), "", null)); 
                 switch (context.getStructureMode()) { 
                 case BINDINGS: 
@@ -1231,9 +1321,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
 
+  private void addColumnKey(Cell c, ModelMappingProvider mm) {
+    if (mappingColumnToggles && mm.getColumnKey() != null) {
+      c.addAttribute("data-col", mm.getColumnKey());
+    }
+  }
+
   private void genElementMappings(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile, List<ModelMappingProvider> mappings) throws IOException { 
     for (ModelMappingProvider mm : mappings) {  
-      Cell gc = gen.new Cell(); 
+      Cell gc = gen.new Cell().setLeftLine(true); 
+      addColumnKey(gc, mm);
       row.getCells().add(gc); 
       Piece p = gc.addText("");
       XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
@@ -1351,26 +1448,44 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     Cell gc = gen.new Cell(); 
     row.getCells().add(gc); 
     res.add(gc); 
-    if (element != null && element.getIsModifier()) { 
-      checkForNoChange(element.getIsModifierElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_MOD)), "?!", null, null, null, false)); 
-    } 
+    // in the differential view, flags that are inherited (not stated in the differential) are shown de-emphasized,
+    // like cardinality (#327, #887). The derivation pointer is the matching element in the base definition
+    ElementDefinition inh = diff && element != null && element.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER) ? (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER) : null;
+    if (element != null) {
+      ElementDefinition src = element.hasIsModifier() || inh == null ? element : inh;
+      if (src.getIsModifier()) {
+        flagChange(src != element, src.getIsModifierElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_MOD)), "?!", null, null, null, false));
+      }
+    }
     if (element != null) { 
-      if (element.getMustSupport() && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
-      } else if (element.getMustSupport()) { 
-          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
-      } else if (element != null && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
+      ElementDefinition src = element.hasMustSupport() || element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS) || inh == null ? element : inh;
+      boolean inherited = src != element;
+      if (src.getMustSupport() && src.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
+        flagChange(inherited, src.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
+      } else if (src.getMustSupport()) { 
+        flagChange(inherited, src.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
+      } else if (src.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
+        flagChange(inherited, src.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } 
     } 
-    if (element != null && element.getIsSummary()) { 
-      checkForNoChange(element.getIsSummaryElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_INCLUDED)), "\u03A3", null, null, null, false)); 
+    if (element != null && isNoExtensions(element)) {
+      // Element.id and Extension.url can't have extensions or an id (#1293)
+      gc.addStyledText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_NO_EXT_ID), "NE", null, null, null, false);
+    }
+    if (element != null) {
+      ElementDefinition src = element.hasIsSummary() || inh == null ? element : inh;
+      if (src.getIsSummary()) { 
+        flagChange(src != element, src.getIsSummaryElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_INCLUDED)), "\u03A3", null, null, null, false));
+      }
     } 
     if (element != null && ExtensionUtilities.readBoolExtension(element, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
       gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_TRANSLATABLE)), "T", "black", HierarchicalTableGenerator.TRANSLATABLE_BACKGROUND_COLOR, null, true);
     } 
-    if (element != null && element.getMustHaveValue()) { 
-      checkForNoChange(element.getMustHaveValueElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE)), "V", "maroon", null, null, true)); 
+    if (element != null) {
+      ElementDefinition src = element.hasMustHaveValue() || inh == null ? element : inh;
+      if (src.getMustHaveValue()) { 
+        flagChange(src != element, src.getMustHaveValueElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE)), "V", "maroon", null, null, true));
+      }
     } 
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) { 
       Piece p = gc.addText(CONSTRAINT_CHAR); 
@@ -1417,16 +1532,87 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
     } else if (element != null) { 
-      res.add(genCardinality(gen, element, row, hasDef, used, null)); 
+      if (logicalModel && element.getPath() != null && !element.getPath().contains(".")) {
+        // the root of a logical model doesn't have a cardinality (#1176)
+        res.add(addCell(row, gen.new Cell()));
+      } else {
+        res.add(genCardinality(gen, element, row, hasDef, used, null)); 
+      }
       if (hasDef && !"0".equals(element.getMax()) && typesRow == null) 
         res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root, mustSupport, diff));
       else 
         res.add(addCell(row, gen.new Cell())); 
       res.add(generateDescription(status, gen, row, element, (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER), null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements, resource));
     } 
+    if (diff && element != null && !res.isEmpty() && profile != null && profile.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+      addOtherChanges(gen, res.get(res.size()-1), element, ref);
+    }
     return res; 
   } 
+
+  /**
+   * In the differential, a profile can change things about an element that the table doesn't show. When it does,
+   * the description says what kind of things changed, so that it's clear why the element is in the differential (#616).
+   * Each one links to the element's definition, where the details are
+   */
+  private void addOtherChanges(HierarchicalTableGenerator gen, Cell c, ElementDefinition element, String ref) {
+    // when the snapshot is generated, values in the (processed copy of the) differential that are the same as the 
+    // base are marked (SNAPSHOT_DERIVATION_EQUALS); those don't count. Otherwise, anything stated in the differential counts. 
+    // Mappings are taken from the differential itself - the processed copy has the base mappings merged into it
+    ElementDefinition p = element.hasUserData(UserDataNames.SNAPSHOT_diff_processed) ? (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_diff_processed) : element;
+    List<String> changes = new ArrayList<>();
+    if (listChanged(element.getMapping())) {
+      changes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES_MAPPINGS));
+    }
+    if (valueChanged(p.getDefinitionElement()) || valueChanged(p.getCommentElement()) || valueChanged(p.getRequirementsElement()) || 
+        valueChanged(p.getLabelElement()) || valueChanged(p.getMeaningWhenMissingElement()) || valueChanged(p.getOrderMeaningElement()) || 
+        valueChanged(p.getIsModifierReasonElement()) || listChanged(p.getAlias())) {
+      changes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES_DOCUMENTATION));
+    }
+    if (!changes.isEmpty()) {
+      // these are all marked as underived, so that if the element is prohibited, they aren't struck through with 
+      // the rest of the row (they're about the profile, not the element)
+      if (!c.getPieces().isEmpty()) {
+        c.addPiece(underived(gen.new Piece("br")));
+      }
+      c.addPiece(underived(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES)+" ", null)));
+      boolean first = true;
+      for (String s : changes) {
+        if (first) {
+          first = false;
+        } else {
+          c.addPiece(underived(gen.new Piece(null, ", ", null)));
+        }
+        // inverted colours with slightly rounded corners - inline, so it doesn't depend on the template's css
+        c.addPiece(underived(gen.new Piece(ref, s, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES_HINT, s))
+            .addStyleXHTOK("background-color: black; color: white; border-radius: 3px; padding: 0px 3px; text-decoration: none")));
+      }
+    }
+  }
+
+  private Piece underived(Piece p) {
+    p.setUnderived(true);
+    return p;
+  }
+
+  private boolean valueChanged(PrimitiveType<?> value) {
+    return value != null && value.hasValue() && !value.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
+  }
+
+  private boolean listChanged(List<? extends Base> values) {
+    for (Base v : values) {
+      if (!v.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+        return true;
+      }
+    }
+    return false;
+  }
  
+  private boolean isNoExtensions(ElementDefinition element) {
+    String path = element.hasBase() && element.getBase().hasPath() ? element.getBase().getPath() : element.getPath();
+    return Utilities.existsInList(path, "Element.id", "Extension.url");
+  }
+
   private Cell genCardinality(HierarchicalTableGenerator gen, ElementDefinition definition, Row row, boolean hasDef, UnusedTracker tracker, ElementDefinition fallback) { 
     IntegerType min = !hasDef ? new IntegerType() : definition.hasMinElement() ? definition.getMinElement() : new IntegerType(); 
     StringType max = !hasDef ? new StringType() : definition.hasMaxElement() ? definition.getMaxElement() : new StringType(); 
@@ -1526,6 +1712,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   } 
  
+  /**
+   * the icon for the row that sets up slicing: slices of extensions and modifier extensions have their own icons (#473)
+   */
+  private void setSlicerIcon(Row row, String path) {
+    String t = tail(path);
+    if (t.equals("modifierExtension")) {
+      row.setIcon("icon_slice_extension_modifier.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_SLICE_EXTENSION_MODIFIER));
+    } else if (t.equals("extension")) {
+      row.setIcon("icon_slice_extension.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_SLICE_EXTENSION));
+    } else {
+      row.setIcon("icon_slice.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_SLICE)); 
+    }
+  }
+
   private boolean standardExtensionSlicing(ElementDefinition element) { 
     String t = tail(element.getPath()); 
     return (t.equals("extension") || t.equals("modifierExtension")) 
@@ -2100,13 +2300,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) {
               ElementDefinitionMappingComponent map = null;
               for (ElementDefinitionMappingComponent m : definition.getMapping())
-                if (m.getIdentity().equals(md.getIdentity()))
+                if (java.util.Objects.equals(m.getIdentity(), md.getIdentity()))
                   map = m;
               if (map != null) {
-                for (int i = 0; i < definition.getMapping().size(); i++) {
-                  c.addPiece(gen.new Piece("br"));
-                  c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME) + ": " + map.getMap(), null));
-                }
+                c.addPiece(gen.new Piece("br"));
+                c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME) + ": " + map.getMap(), null));
               }
             }
           }
@@ -2356,6 +2554,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }     
   } 
  
+  private Piece flagChange(boolean inherited, Element source, Piece piece) {
+    return inherited ? piece.styleAsDeEmphasized() : checkForNoChange(source, piece);
+  }
+
   private Piece checkForNoChange(Element source, Piece piece) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
       piece.styleAsDeEmphasized();
@@ -3061,13 +3263,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               if (md.hasExtension(ExtensionDefinitions.EXT_TABLE_NAME)) { 
                 ElementDefinitionMappingComponent map = null; 
                 for (ElementDefinitionMappingComponent m : definition.getMapping())  
-                  if (m.getIdentity().equals(md.getIdentity())) 
+                  if (java.util.Objects.equals(m.getIdentity(), md.getIdentity())) 
                     map = m; 
                 if (map != null) { 
-                  for (int i = 0; i<definition.getMapping().size(); i++){ 
-                    c.addPiece(gen.new Piece("br")); 
-                    c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
-                  } 
+                  c.addPiece(gen.new Piece("br")); 
+                  c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(md, ExtensionDefinitions.EXT_TABLE_NAME)+": " + map.getMap(), null)); 
                 } 
               } 
             } 
@@ -3375,7 +3575,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!c.getPieces().isEmpty()) {
       c.addPiece(gen.new Piece("br"));
     }
-    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_FIXED : RenderingI18nContext.STRUC_DEF_REQ_PATT) + ": ", null).styleAsBold()));
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(isFixed ? null : Utilities.pathURL(corePath, "elementdefinition-definitions.html#ElementDefinition.pattern_x_"), context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_FIXED : RenderingI18nContext.STRUC_DEF_REQ_PATT) + ": ", null).styleAsBold()));
     if (isSimplePrimitive(value)) {
       String s = value.primitiveValue();
       String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
@@ -4471,6 +4671,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd));  
     } 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_AGGREGATION), "elementdefinition-definitions.html#ElementDefinition.type.aggregation", strikethrough, describeAggregation(d));
     if (root && sd.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER)));
     }
@@ -4481,8 +4682,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       tableRow(tbl, Utilities.pluralize(context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SPEC), d.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));           
     } 
     if (d.getPath().endsWith("[x]") && !d.prohibited()) { 
-      tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) 
-    		  , spec("formats.html#choice"), null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_DATA_TYPE), context.formatPhrase(RenderingI18nContext.STRUC_DEF_FURTHER_INFO)); 
+      tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE)+" " 
+    		  , spec("formats.html#choice"), null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_DATA_TYPE), " "+context.formatPhrase(RenderingI18nContext.STRUC_DEF_FURTHER_INFO)); 
     } 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MODIFIER), "conformance-rules.html#ismodifier", strikethrough, presentModifier(d, mode, compare)); 
     if (d.getMustHaveValue()) { 
@@ -4630,11 +4831,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_DEFAULT_VALUE), null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode, d.getName())); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MEAN_MISS), null, strikethrough, d.getMeaningWhenMissing()); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED), null, strikethrough, renderValueDetail(d.getFixed(), compare == null ? null : compare.getFixed(), mode, valueElementName(d, d.getFixed(), null), true)); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), null, strikethrough, renderValueDetail(d.getPattern(), compare == null ? null : compare.getPattern(), mode, valueElementName(d, d.getPattern(), null), false)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), "elementdefinition-definitions.html#ElementDefinition.pattern_x_", strikethrough, renderValueDetail(d.getPattern(), compare == null ? null : compare.getPattern(), mode, valueElementName(d, d.getPattern(), null), false)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExample()));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOINC), null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SNOMED), null, strikethrough, getMapping(sd, d, SNOMED_MAPPING, compare, mode)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAPPINGS), null, strikethrough, renderDictMappings(sd, d));
     tbl.tx("\r\n"); 
   } 
    
@@ -4941,6 +5143,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  /**
+   * the aggregation modes, as codes. When more than one type has them, each list is prefixed with its type
+   */
+  private String describeAggregation(ElementDefinition d) {
+    List<String> list = new ArrayList<>();
+    boolean multiple = d.getType().stream().filter(t -> t.hasAggregation()).count() > 1;
+    for (TypeRefComponent t : d.getType()) {
+      if (t.hasAggregation()) {
+        List<String> codes = new ArrayList<>();
+        for (Enumeration<AggregationMode> a : t.getAggregation()) {
+          codes.add(a.getCode());
+        }
+        list.add((multiple ? t.getWorkingCode()+": " : "")+String.join(", ", codes));
+      }
+    }
+    return String.join("; ", list);
+  }
+
   private void tableRow(XhtmlNode x, String name, String defRef, boolean strikethrough, String text) throws IOException { 
     if (!Utilities.noString(text)) { 
       var tr = x.tr(); 
@@ -5345,8 +5565,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode); 
         } 
       } 
+      AdditionalBindingsRenderer abr = additionalBindingsForDict(sd, d, binding, compBinding, compare, mode);
       if (!binding.hasValueSet()) { 
-        return bindingDesc; 
+        if (!abr.hasBindings()) {
+          return bindingDesc;
+        }
+        // there's no primary value set, but there are additional bindings (#970)
+        XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
+        if (bindingDesc != null) {
+          x.copyAllContent(bindingDesc);
+        }
+        var tbl = x.table("grid", false).markGenerated(!context.forValidResource());
+        abr.render(tbl.getChildNodes(), true); 
+        return x;
       } 
        
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
@@ -5368,18 +5599,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         renderCoding(new RenderingStatus(), x, ResourceWrapper.forType(context.getContextUtilities(), binding.getExtensionByUrl(ExtensionDefinitions.EXT_CONCEPT_DOMAIN).getValue()));  
       }
  
-      AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, sd, d.getPath(), context, hostMd, this); 
- 
-      if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
-        abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MAX_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
-      } 
-      if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
-        abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MIN_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
-      } 
-      if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
-        abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), compBinding==null ? null : compBinding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
-      } 
- 
       if (abr.hasBindings()) { 
         var tbl = x.table("grid", false).markGenerated(!context.forValidResource());
         abr.render(tbl.getChildNodes(), true); 
@@ -5388,6 +5607,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  /**
+   * all the additional bindings on a binding for the data dictionary - the binding.additional elements and the 
+   * max/min/additional binding extensions (#970)
+   */
+  private AdditionalBindingsRenderer additionalBindingsForDict(StructureDefinition sd, ElementDefinition d, ElementDefinitionBindingComponent binding, ElementDefinitionBindingComponent compBinding, ElementDefinition compare, int mode) {
+    AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, sd, d.getPath(), context, hostMd, this); 
+    abr.seeAdditionalBindings(d, compare, compare != null && mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS);
+ 
+    if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET)) { 
+      abr.seeMaxBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MAX_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+    } 
+    if (binding.hasExtension(ExtensionDefinitions.EXT_MIN_VALUESET)) { 
+      abr.seeMinBinding(ExtensionUtilities.getExtension(binding, ExtensionDefinitions.EXT_MIN_VALUESET), compBinding==null ? null : ExtensionUtilities.getExtension(compBinding, ExtensionDefinitions.EXT_MIN_VALUESET), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+    } 
+    if (binding.hasExtension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL)) { 
+      abr.seeAdditionalBindings(binding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), compBinding==null ? null : compBinding.getExtensionsByUrl(ExtensionDefinitions.EXT_BINDING_ADDITIONAL), mode!=GEN_MODE_SNAP && mode!=GEN_MODE_MS); 
+    }
+    return abr;
+  }
+
   private boolean isSimpleContent(XhtmlNode bindingDesc) { 
     return bindingDesc.getChildNodes().size() == 1 && bindingDesc.getChildNodes().get(0).isPara(); 
   } 
@@ -5507,6 +5746,78 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return (prefixWithName ? "\""+Utilities.escapeXml(elementName)+"\" : " : "")+ b.toString().trim(); 
   } 
  
+  /**
+   * The mappings on an element in the detailed view: a row for each one that isn't suppressed, with the mapping 
+   * (linked as the mapping table headings are, and its identity), the map, and the comment (that column is left 
+   * out if none of them have a comment). LOINC and SNOMED CT mappings aren't included - they have their own rows
+   */
+  private XhtmlNode renderDictMappings(StructureDefinition profile, ElementDefinition d) throws IOException {
+    List<ElementDefinitionMappingComponent> maps = new ArrayList<>();
+    List<StructureDefinitionMappingComponent> decls = new ArrayList<>();
+    boolean comments = false;
+    for (ElementDefinitionMappingComponent m : d.getMapping()) {
+      if (!m.hasIdentity() || (!m.hasMap() && !m.hasComment()) || ExtensionUtilities.readBoolExtension(m, ExtensionDefinitions.EXT_ED_SUPPRESS)) {
+        continue;
+      }
+      StructureDefinitionMappingComponent decl = null;
+      for (StructureDefinitionMappingComponent t : profile.getMapping()) {
+        if (m.getIdentity().equals(t.getIdentity())) {
+          decl = t;
+        }
+      }
+      if (decl != null && (ExtensionUtilities.readBoolExtension(decl, ExtensionDefinitions.EXT_ED_SUPPRESS) || Utilities.existsInList(decl.getUri(), LOINC_MAPPING, SNOMED_MAPPING))) {
+        continue;
+      }
+      maps.add(m);
+      decls.add(decl);
+      comments = comments || m.hasComment();
+    }
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (maps.isEmpty()) {
+      return x;
+    }
+    XhtmlNode tbl = x.table("grid", false);
+    for (int i = 0; i < maps.size(); i++) {
+      ElementDefinitionMappingComponent m = maps.get(i);
+      StructureDefinitionMappingComponent decl = decls.get(i);
+      XhtmlNode tr = tbl.tr();
+      XhtmlNode td = tr.td();
+      String name = decl != null && decl.hasName() ? decl.getName() : m.getIdentity();
+      String link = null;
+      if (decl != null) {
+        StructureDefinition dest = decl.hasUri() ? context.getContext().fetchResource(StructureDefinition.class, decl.getUri()) : null;
+        link = dest != null && dest.hasWebPath() ? dest.getWebPath() : StructureDefinitionMappingProvider.mappingLink(context, decl);
+      }
+      if (link != null) {
+        td.ah(link).tx(name);
+      } else {
+        td.tx(name);
+      }
+      if (decl != null && decl.hasName()) {
+        td.tx(" ("+m.getIdentity()+")");
+      }
+      td = tr.td();
+      if (m.hasMap()) {
+        boolean first = true;
+        for (String line : Utilities.splitLines(m.getMap())) {
+          if (first) {
+            first = false;
+          } else {
+            td.br();
+          }
+          td.tx(line);
+        }
+      }
+      if (comments) {
+        td = tr.td();
+        if (m.hasComment()) {
+          addMarkdown(td, m.getComment());
+        }
+      }
+    }
+    return x;
+  }
+
   private XhtmlNode getMapping(StructureDefinition profile, ElementDefinition d, String uri, ElementDefinition compare, int mode) { 
     String id = null; 
     for (StructureDefinitionMappingComponent m : profile.getMapping()) { 
@@ -5517,7 +5828,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return null; 
     String newMap = null; 
     for (ElementDefinitionMappingComponent m : d.getMapping()) { 
-      if (m.getIdentity().equals(id)) { 
+      if (java.util.Objects.equals(m.getIdentity(), id)) { 
         newMap = m.getMap(); 
         break; 
       } 
@@ -5529,7 +5840,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return new XhtmlNode(NodeType.Element, "div").tx(newMap); 
     String oldMap = null; 
     for (ElementDefinitionMappingComponent m : compare.getMapping()) { 
-      if (m.getIdentity().equals(id)) { 
+      if (java.util.Objects.equals(m.getIdentity(), id)) { 
         oldMap = m.getMap(); 
         break; 
       } 

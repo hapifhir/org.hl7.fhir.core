@@ -311,15 +311,23 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     
     String igVersion = conf.getVersion();
 
-    x.h(2,context.prefixAnchor("title")).addText(conf.getTitle());
+    // in the IG publisher, the title, version, date and publisher are already shown in the
+    // resource summary table and the page footer (#1212)
+    if (!igRenderingMode) {
+      x.h(2,context.prefixAnchor("title")).addText(conf.getTitle());
+    }
     XhtmlNode uList = x.ul();
-    uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_IMP_VER, igVersion) + " ");
-    uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
+    if (!igRenderingMode) {
+      uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_IMP_VER, igVersion) + " ");
+    }
+    if (!igRenderingMode || !currentVersion.toCode().equals(context.getContext().getFHIRVersion())) {
+      uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
+    }
     addSupportedFormats(uList, conf);
-    
-    if (conf.hasDate())
+
+    if (!igRenderingMode && conf.hasDate())
       uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_PUB_ON, displayDateTime(wrapWC(res, conf.getDateElement())) + " "));
-    if (conf.hasPublisher())
+    if (!igRenderingMode && conf.hasPublisher())
       uList.li().addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_PUB_BY, conf.getPublisherElement().asStringValue()) + " ");
 
 
@@ -445,21 +453,22 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
   
   private void supportedWithConformance(XhtmlNode n, Element op) {
-    if (op.hasExtension(ExtensionDefinitions.EXT_CAP_STMT_EXPECT)) {
-      String expectation = op.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
-      XhtmlNode n2 = n.span(null, expectation);
-      if (expectation.equals("SHALL"))
-        n2.b().tx("Y");
-      else if (expectation.equals("SHOULD"))
-        n2.tx("Y");
-      else if (expectation.equals("MAY"))
-        n2.tx("y?");
-      else if (expectation.equals("SHOULD-NOT"))
-        n2.tx("🛇?");
-      else
-        n.tx("y");
-    } else
-      n.tx("y");    
+    String expectation = expectationForDisplay(op, EXPECTATION);
+    if (Utilities.noString(expectation)) {
+      conformanceIcon(n, "conf-required.png", "supported");
+    } else if (expectation.equals("SHOULD")) {
+      conformanceIcon(n, "conf-should.png", expectation);
+    } else if (expectation.equals("MAY")) {
+      conformanceIcon(n, "conf-optional.png", expectation);
+    } else if (expectation.equals("SHOULD-NOT")) {
+      conformanceIcon(n, "conf-prohibited.png", expectation);
+    } else {
+      conformanceIcon(n, "conf-required.png", expectation);
+    }
+  }
+
+  private void conformanceIcon(XhtmlNode n, String icon, String expectation) {
+    n.img(icon, expectation, expectation);
   }
 
   private XhtmlNode addTableRow(XhtmlNode t, String name) {
@@ -902,10 +911,15 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   private void addSummaryTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
-    XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover", false);
+    // if no resource names a base profile, the column is just the supported profiles, and the header says so (#1213)
+    boolean anyBaseProfile = false;
+    for (CapabilityStatementRestResourceComponent r : rest.getResourceList()) {
+      anyBaseProfile = anyBaseProfile || r.hasProfile();
+    }
+    XhtmlNode t = x.div().attribute("class","table-responsive").table("grid", false);
     XhtmlNode tr = t.addTag("thead").tr();
     tr.th().b().tx(context.formatPhrase(RenderingI18nContext.CAPABILITY_RES_TYP));
-    tr.th().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PROF));
+    tr.th().b().tx(context.formatPhrase(anyBaseProfile ? RenderingI18nContext.GENERAL_PROF : RenderingI18nContext.CAPABILITY_SUPP_PROFS));
     tr.th().attribute("class", "text-center").b().attribute("title", context.formatPhrase(RenderingI18nContext.CAPABILITY_READ_INT)).tx("R");
     if (hasVRead)
       tr.th().attribute("class", "text-center").b().attribute("title", context.formatPhrase(RenderingI18nContext.CAPABILITY_VREAD_INT)).tx("V-R");
@@ -944,17 +958,19 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         profCell.nbsp();
       }
       else if (hasProf) {
-        addResourceLink(profCell, r.getProfile(), r.getProfile());
-        //profCell.ah(r.getProfile()).addText(r.getProfile());
+        renderCanonical(status, res, profCell, StructureDefinition.class, r.getProfileElement());
         if (hasSupProf) {
           profCell.br();
           profCell.addTag("em").addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_ADD_SUPP_PROF));
-          renderSupportedProfiles(status, res, profCell, r);
+          renderSupportedProfiles(status, res, profCell, r, true);
         }
       }
-      else {    //Case of only supported profiles
+      else if (anyBaseProfile) {    //Case of only supported profiles, in a table that also has base profiles
         profCell.addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_SUPP_PROFS));
-        renderSupportedProfiles(status, res, profCell, r);
+        renderSupportedProfiles(status, res, profCell, r, true);
+      }
+      else {    // the header already says these are the supported profiles
+        renderSupportedProfiles(status, res, profCell, r, false);
       }
       //Show capabilities
       showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.READ);
@@ -964,7 +980,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.UPDATE);
       if (hasPatch)
         showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.PATCH);
-        showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.CREATE);
+      showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.CREATE);
       if (hasDelete)
         showOp(tr.td().attribute("class", "text-center"), r, TypeRestfulInteraction.DELETE);
       if (hasUpdates)
@@ -976,15 +992,24 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       getParams(stringList,r.getSearchParamList());
       getCombinedParams(stringList,r.getExtensionsByUrl(COMBINED));
       tr.td().addText(getSeparatedList(stringList,","));
-      //Show supported includes
-      stringList = getStringListFromStringTypeList(r.getSearchIncludeList());
-      addSeparatedListOfCodes(tr.td(), stringList, ",");
-      //Show supported revIncludes
-      stringList = getStringListFromStringTypeList(r.getSearchRevIncludeList());
-      addSeparatedListOfCodes(tr.td(), stringList, ",");
+      //Show supported includes and revIncludes, with their conformance expectations (#977)
+      addIncludes(tr.td(), r.getSearchIncludeList());
+      addIncludes(tr.td(), r.getSearchRevIncludeList());
       //Show supported operations
       stringList = getStringListFromOperations(r.getOperationList());
       addSeparatedListOfCodes(tr.td(), stringList, ",");
+    }
+  }
+
+  private void addIncludes(XhtmlNode parent, List<StringType> list) {
+    boolean first = true;
+    for (StringType st : list) {
+      if (!first) {
+        parent.addText(", ");
+      }
+      first = false;
+      parent.code().addText(st.asStringValue());
+      addConformanceExpectation(parent, st);
     }
   }
 
@@ -1000,11 +1025,18 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return paramNames;
   }
 
-  private void renderSupportedProfiles(RenderingStatus status, ResourceWrapper res, XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
+  private void renderSupportedProfiles(RenderingStatus status, ResourceWrapper res, XhtmlNode profCell, CapabilityStatementRestResourceComponent r, boolean indent) throws IOException {
+    boolean first = true;
     for (CanonicalType sp: r.getSupportedProfileList()) {
-      profCell.br();
-      profCell.nbsp().nbsp();
+      if (indent || !first) {
+        profCell.br();
+      }
+      if (indent) {
+        profCell.nbsp().nbsp();
+      }
+      first = false;
       renderCanonical(status, res, profCell, StructureDefinition.class, sp);
+      addConformanceExpectation(profCell, sp);
     }
     if (r.hasExtension(ExtensionDefinitions.EXT_PROFILE_MAPPING_NEW, ExtensionDefinitions.EXT_PROFILE_MAPPING_OLD)) {
       profCell.br();
@@ -1050,7 +1082,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       params.append(param.getValueStringType());
     }
     for (Extension param : optionalParams) {
-      params.append("+");
+      if (!first) {
+        params.append("+");
+      }
+      first = false;
       params.append(param.getValueStringType());
     }
     return params.toString();
@@ -1163,7 +1198,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       panelRef = panelHead.ah("#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","true").attribute("aria-controls","collapse" + countString);
       //panelRef = panelHead.addTag("button").attribute("href","#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","false").attribute("aria-controls","collapse" + countString);
       //panelRef.span("float: right;","").attribute("class", "lead").addText("Resource Conformance: " + getResourceExpectation(r));
-      panelRef.span("float: right;","").addText("Resource Conformance: " + getResourceExpectation(r));
+      panelRef.span("float: right;","").addText(context.formatPhrase(RenderingI18nContext.CAPABILITY_RES_CONF, getResourceExpectation(r)));
       panelRef.addText(r.getType());
       body = panel.div().attribute("class", collapseClass).attribute("id","collapse" + countString).attribute("role","region").attribute("aria-labelledby","heading" + countString).div().attribute("class", "panel-body").div().attribute("class", "container");
     }
@@ -1176,10 +1211,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     
     //Top part of panel
     XhtmlNode cell = null;
-    XhtmlNode row = body.div().attribute("class", "row");   
+    XhtmlNode row = body.div().attribute("class", "row");
     String text = r.getProfile();
-    boolean pullInteraction = false;
-    String refPolicyWidth = "col-lg-3";
     if (!Utilities.noString(text)) {
       cell = row.div().attribute("class", "col-lg-6");
       addLead(cell,context.formatPhrase(RenderingI18nContext.CAPABILITY_BASE_SYS));
@@ -1189,28 +1222,35 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       addLead(cell, context.formatPhrase(RenderingI18nContext.CAPABILITY_PROF_CONF));
       cell.br();
       cell.b().addText(getProfileExpectation(r.getProfileElement()));
+      cell = row.div().attribute("class", "col-lg-3");
     }
     else {   //No profile, use FHIR Core Resource
-      cell = row.div().attribute("class", "col-lg-4");
+      cell = row.div().attribute("class", "col-lg-6");
       addLead(cell, context.formatPhrase(RenderingI18nContext.CAPABILITY_FHIR));
       cell.br();
       cell.ah(currentFhirBase + r.getType().toLowerCase() + ".html").addText(r.getType());
-      pullInteraction = true;
-      refPolicyWidth = "col-lg-4";
+      cell = row.div().attribute("class", "col-lg-6");
     }
-    
-    cell = row.div().attribute("class", refPolicyWidth);
     addLead(cell,context.formatPhrase(RenderingI18nContext.CAPABILITY_REF_PROF));
     cell.br();
-    addSeparatedListOfCodes(cell, getReferencePolicyStrings(r.getReferencePolicyList()) , ",");
-    if (pullInteraction) {
-      addInteractions(row, r, 4);
+    addReferencePolicies(cell, r.getReferencePolicyList());
+
+    //Resource Documentation - comes before the interactions, which may have their own documentation (#908)
+    String mdText = r.getDocumentation();
+    if (!Utilities.noString(mdText)) {
+      body.para();
+      row = body.div().attribute("class", "row");
+      cell = row.div().attribute("class", "col-12");
+      addLead(cell, context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION));
+      addMarkdown(cell.blockquote(), mdText);
     }
+
+    //Supported profiles and interactions
     body.para();
+    row = body.div().attribute("class", "row");
     List<CanonicalType> supportedProfiles = r.getSupportedProfileList();
     if (supportedProfiles.size() > 0) {
-      row = body.div().attribute("class", "row");
-      cell = row.div().attribute("class", "col-6");
+      cell = row.div().attribute("class", "col-lg-6");
       addLead(cell, context.formatPhrase(RenderingI18nContext.CAPABILITY_SUPP_PROFS));
       XhtmlNode para = cell.para();
       boolean first = true;
@@ -1220,25 +1260,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         first=false;
         renderCanonical(status, res, para, StructureDefinition.class, c);
-        //para.ah(c.asStringValue()).addText(c.asStringValue());
-      }  
-    }
-    if (!pullInteraction) {
-      if (supportedProfiles.size() < 1) {
-        row = body.div().attribute("class", "row");
+        addConformanceExpectation(para, c);
       }
-      addInteractions(row, r, 6);
     }
-
-    //Resource Documentation
-    body.para();
-    String mdText = r.getDocumentation();
-    if (!Utilities.noString(mdText)) {
-      row = body.div().attribute("class", "row");
-      cell = row.div().attribute("class", "col-12");
-      addLead(cell, context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION));
-      addMarkdown(cell.blockquote(), mdText);
-    }
+    addInteractions(row, r, 6);
 
     //Resource search parameters
     if (r.hasSearchParam()) {
@@ -1522,12 +1547,14 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       else {
         tr.td().nbsp();
       }
+      List<SingleParam> required = paramSet.getParams().get(true);
+      List<SingleParam> optional = paramSet.getParams().get(false);
       //Parameter combination
       td = tr.td();
       first = true;
-      for (SingleParam p : paramSet.getParams().get(true)) {
+      for (SingleParam p : required) {
         if (!first) {
-          td.addText("+");
+          td.addText(" + ");
         }
         first=false;
         if (Utilities.noString(p.getDefinition())) {
@@ -1535,19 +1562,21 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         else {
           addResourceLink(td, p.getName(), p.getDefinition(), true, p.getHostResource());
-          //td.ah(p.param.getDefinition()).addText(p.param.getName());
         }
       }
-      if (paramSet.getParams().get(false).size() > 0) {
-        td.addText("(");
-        for (SingleParam p : paramSet.getParams().get(false)) {
-          td.addText("+");
+      if (optional.size() > 0) {
+        td.addText(required.isEmpty() ? "(" : " (");
+        first = true;
+        for (SingleParam p : optional) {
+          if (!first || !required.isEmpty()) {
+            td.addText(first ? "+ " : " + ");
+          }
+          first = false;
           if (Utilities.noString(p.getDefinition())) {
             td.addText(p.getName());
           }
           else {
             addResourceLink(td, p.getName(), p.getDefinition(), true, p.getHostResource());
-            //td.ah(p.param.getDefinition()).addText(p.param.getName());
           }
         }
         td.addText(")");
@@ -1555,17 +1584,21 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       //types combination
       td = tr.td();
       first = true;
-      for (SingleParam p : paramSet.getParams().get(true)) {
+      for (SingleParam p : required) {
         if (!first) {
-          td.addText("+");
+          td.addText(" + ");
         }
         first=false;
         td.code().addText(p.getType());
       }
-      if (paramSet.getParams().get(false).size() > 0) {
-        td.addText("(");
-        for (SingleParam p : paramSet.getParams().get(false)) {
-          td.addText("+");
+      if (optional.size() > 0) {
+        td.addText(required.isEmpty() ? "(" : " (");
+        first = true;
+        for (SingleParam p : optional) {
+          if (!first || !required.isEmpty()) {
+            td.addText(first ? "+ " : " + ");
+          }
+          first = false;
           if (!p.getType().equals("<unknown>")) {
             td.code().addText(p.getType());
           }
@@ -1600,18 +1633,32 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return result;
   }
 
-  private List<String> getReferencePolicyStrings(List<Enumeration<ReferenceHandlingPolicy>> list) {
-    List<String> stringList = new ArrayList<String>();
+  private void addReferencePolicies(XhtmlNode parent, List<Enumeration<ReferenceHandlingPolicy>> list) {
+    boolean first = true;
     for (Enumeration<ReferenceHandlingPolicy> p : list) {
-      stringList.add(p.getCode());
+      if (!first) {
+        parent.addText(", ");
+      }
+      first = false;
+      parent.code().addText(p.getCode());
+      addConformanceExpectation(parent, p);
     }
-    return stringList;
   }
+
+  private void addConformanceExpectation(XhtmlNode parent, Element e) {
+    String capExpectation = expectationForDisplay(e, EXPECTATION);
+    if (!Utilities.noString(capExpectation)) {
+      parent.addText(" (");
+      parent.ah("https://hl7.org/fhir/conformance-rules.html#conflang").addText(capExpectation);
+      parent.addText(")");
+    }
+  }
+
   private String getResourceExpectation(CapabilityStatementRestResourceComponent r) {
     String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
     if (!context.isInferResourceConformance())
-      return "unspecified";
+      return "supported";
     boolean shalls = false;
     boolean shoulds = false;
     boolean mays = false;

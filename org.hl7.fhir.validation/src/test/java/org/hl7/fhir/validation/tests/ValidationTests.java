@@ -45,6 +45,8 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.model.utilities.SnomedUtilities;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.services.xver.XVerExtensionManager;
@@ -346,6 +348,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       } else {
         val.getSettings().getUsageContexts().add(parseUsageContext(usage));
       }
+    }
+    if (content.has("jurisdiction")) {
+      // the jurisdiction to validate in - what -jurisdiction supplies on the command line. Either a
+      // country code / uv, or system#code. It is itself a use context for additional bindings
+      String j = content.get("jurisdiction").getAsString();
+      val.getSettings().setJurisdiction(j.contains("#") ? CodeSystemUtilities.readCoding(j) : JurisdictionUtilities.getJurisdictionCodingFromLocale(j));
     }
     if (content.has("launch-context")) {
       // launch contexts the caller supplies - what -launch-context provides on the command line.

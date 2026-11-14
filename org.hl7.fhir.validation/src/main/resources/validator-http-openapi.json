@@ -207,7 +207,8 @@
           {
             "name": "r5BundleRelativeReferencePolicy",
             "in": "query",
-            "description": "Whether relative references in a Bundle follow the R5 resolution rule. An unrecognised value raises an unhandled exception rather than a `400`.",
+            "description": "Deprecated, and ignored: relative references in a Bundle always follow the R5 resolution rule. An unrecognised value still raises an unhandled exception rather than a `400`.",
+            "deprecated": true,
             "schema": {
               "type": "string",
               "enum": [

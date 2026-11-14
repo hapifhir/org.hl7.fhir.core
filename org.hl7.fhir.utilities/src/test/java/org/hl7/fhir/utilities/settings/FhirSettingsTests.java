@@ -99,6 +99,7 @@ class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("dummy-diff-tool-path", fhirSettings.getDiffToolPath());
     assertEquals("dummy-temp-path", fhirSettings.getTempPath());
     assertEquals("dummy-test-igs-path", fhirSettings.getTestIgsPath());
+    assertEquals("dummy-package-signing-key", fhirSettings.getPackageSigningKey());
 
     assertTrue(fhirSettings.getIgnoreDefaultPackageServers());
 
