@@ -448,6 +448,107 @@ public class ManagedHTTPClientTest {
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "https://2130706433/",      // decimal 127.0.0.1
+      "https://127.000.000.001/", // leading zeros, 127.0.0.1
+      "https://10.000.000.001/",  // leading zeros, 10.0.0.1
+      "https://2852039166/",      // decimal 169.254.169.254
+      "https://017700000001/"     // octal-looking 127.0.0.1
+    })
+    void blocksNonCanonicalIpv4LiteralUrlsWhenProtectionEnabled(String url) {
+      // Regression test: OkHttp treats these as literal IPs (skipping the configured Dns) while
+      // Guava does not, so they previously bypassed the SSRF check. Assert on the message, since a
+      // failed connection would also throw IOException.
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      assertThatThrownBy(() -> client.get(url, "application/json"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("not in the usual canonical form");
+    }
+
+    @Test
+    void blocksShortFormIpv4LiteralUrlWhenProtectionEnabled() {
+      // "127.1" (short form of 127.0.0.1) is an OkHttp literal too, but java.net.URI does not parse
+      // it as a server-based authority (getHost() is null), so on this path it is refused by the
+      // scheme/host check before the literal-IP check is reached. The literal-IP check's own
+      // handling of it is covered in ManagedWebAccessUtilsTests.
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      assertThatThrownBy(() -> client.get("https://127.1/", "application/json"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("no host");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "https://127.0.0.1/",       // loopback
+      "https://10.0.0.1/",        // RFC1918 site-local
+      "https://192.168.0.1/",     // RFC1918 site-local
+      "https://169.254.169.254/"  // AWS/GCP/Azure IMDS
+    })
+    void blocksCanonicalIpv4LiteralNonPublicUrlsWhenProtectionEnabled(String url) {
+      // The canonical spellings of the addresses above must still be rejected by the IP-range
+      // check (not by the scheme check, as the http:// cases in
+      // blocksVariousNonPublicUrlsWhenProtectionEnabled are, and not by the non-canonical fallback).
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      assertThatThrownBy(() -> client.get(url, "application/json"))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("non-public address");
+    }
+
+    @Test
+    void blocksHostnameResolvingToNonPublicAddressViaDns() {
+      // A hostname (not a literal IP) must be validated by NonPublicAddressRejectingDns at
+      // connection time. That guard reports failures as UnknownHostException, while the literal-IP
+      // check throws a plain IOException, so the exception type shows which guard rejected it.
+      String url = "https://localhost:" + server.getPort() + "/resource";
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if wrongly allowed
+
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      assertThatThrownBy(() -> client.get(url, "application/json"))
+        .isInstanceOf(UnknownHostException.class)
+        .hasMessageContaining("non-public address")
+        .hasMessageContaining("for host localhost");
+      assertThat(server.getRequestCount()).isZero();
+    }
+
+    @Test
+    void blocksRedirectFromPublicUrlToNonCanonicalIpLiteral() {
+      String initialUrl = server.url("start").url().toString();
+      // Resolves to the same loopback MockWebServer, so a missing check would make a second
+      // connection attempt rather than fail with the expected message.
+      String redirectTarget = "https://2130706433:" + server.getPort() + "/redirected";
+
+      server.enqueue(
+        new MockResponse()
+          .setResponseCode(302)
+          .addHeader("Location", redirectTarget));
+      server.enqueue(
+        new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if the redirect is wrongly allowed
+
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      try (MockedStatic<ManagedWebAccessUtils> mocked = mockStatic(ManagedWebAccessUtils.class, Mockito.CALLS_REAL_METHODS)) {
+        // Fake past the initial (plain http, loopback) hop's checks, as in
+        // blocksRedirectFromPublicUrlToNonPublicAddress. The non-canonical branch of the literal-IP
+        // check does not call throwExceptionIfNonPublicAddress, so the redirect target is still
+        // genuinely checked.
+        mocked.when(() -> ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(URI.create(initialUrl)))
+          .thenAnswer(invocation -> null);
+        mocked.when(() -> ManagedWebAccessUtils.throwExceptionIfNonPublicAddress(any(InetAddress.class), anyString()))
+          .thenAnswer(invocation -> null);
+
+        assertThatThrownBy(() -> client.get(initialUrl, "application/json"))
+          .isInstanceOf(IOException.class)
+          .hasMessageContaining("not in the usual canonical form");
+      }
+
+      assertThat(server.getRequestCount()).isEqualTo(1);
+    }
+
     @Test
     void blocksRedirectFromPublicUrlToNonPublicAddress() throws UnknownHostException {
       String initialUrl = server.url("start").url().toString();

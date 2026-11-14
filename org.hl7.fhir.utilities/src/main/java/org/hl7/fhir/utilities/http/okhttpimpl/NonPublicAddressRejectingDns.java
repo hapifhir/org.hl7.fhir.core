@@ -22,7 +22,8 @@ import javax.annotation.Nonnull;
  * validation and connection perform independent lookups.
  * <p>
  * This is only invoked for genuine hostnames. OkHttp's route selection recognizes literal IP
- * hosts and short-circuits to {@code InetAddress.getByName(host)} without ever calling this
+ * hosts (including non-canonical forms such as {@code 2130706433} or {@code 127.1}) and
+ * short-circuits to {@code InetAddress.getByName(host)} without ever calling this
  * class - callers must validate those separately, e.g. via
  * {@link ManagedWebAccessUtils#throwExceptionIfLiteralIpAndNonPublicAddress(String)}.
  */
