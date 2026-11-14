@@ -460,6 +460,16 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       }  
     } 
 
+    if (i.has("code")) {
+      if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
+      defn.getPieces().add(gen.new Piece(null, context.formatPhrasePlural(i.children("code").size(), RenderingI18nContext.QUEST_QUESTION_CODE)+" ", null));
+      boolean first = true;
+      for (ResourceWrapper c : i.children("code")) {
+        if (first) first = false; else defn.getPieces().add(gen.new Piece(null, ", ", null));
+        renderCoding(gen, defn.getPieces(), c);
+      }
+    }
+
     for (ResourceWrapper c : i.children("item")) { 
       renderTreeItem(status, gen, r.getSubRows(), q, c, hasFlags); 
     }      

@@ -54,15 +54,21 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (context.isShowStandardsStatus() && ss != context.getDefaultStandardsStatus()) {
       genStandardsStatus(h2, ss);
     }
-    XhtmlNode p =  x.para();
-    p.tx(context.formatPhrase(RenderingI18nContext.GENERAL_PAR)+" ");
-    p.code().tx(spd.getCode());
-    p.tx(":");
-    p.code().tx(spd.getType().toCode());
     addMarkdown(x, spd.getDescription());
 
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
+    // the code and type first, as rows, so it's clear which is which (#1280)
     XhtmlNode tr = tbl.tr();
+    tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME));
+    tr.td().code().tx(spd.getCode());
+    tr = tbl.tr();
+    tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE));
+    if (spd.hasType()) {
+      tr.td().ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "search.html#"+spd.getType().toCode()))).code().tx(spd.getType().toCode());
+    } else {
+      tr.td();
+    }
+    tr = tbl.tr();
     tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE), spd.getBaseList().size()));
     XhtmlNode td = tr.td();
     for (UriType t : spd.getBaseList()) {

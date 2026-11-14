@@ -4,5 +4,7 @@
   "http://loinc.org" : {
     "server" : "http://tx-dev.fhir.org/r5",
     "filename" : "cs-51b781d8-84bc-45bc-8626-7217ea818a6a.json"
-  }
+  },
+  "http://example.org/ActorDefinition/consumer" : null,
+  "http://example.org/CapabilityStatement/consumer" : null
 }

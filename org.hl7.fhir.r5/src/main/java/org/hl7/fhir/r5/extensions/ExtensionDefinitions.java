@@ -150,6 +150,7 @@ public class ExtensionDefinitions {
   // unregistered? - don't know what these are used for
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
   public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
+  public static final String EXT_MAPPING_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/mapping-reference"; // a web page about the target of StructureDefinition.mapping
 
   // for the v2 mapping project
   public static final String EXT_MAPPING_NAME = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-name";

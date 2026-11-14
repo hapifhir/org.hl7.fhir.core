@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MappingSpace;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -187,6 +188,9 @@ public class NarrativeGenerationTests {
     private boolean track;
     private String register;
     private String prefix;
+    private boolean igRules; // rules="ig": render as the IG publisher does (GenerationRules.IG_PUBLISHER)
+    private String qmode; // questionnaire rendering mode (tree, form, links, logic, defns)
+    private boolean genSnapshot; // snapshot="generate": generate the snapshot of the StructureDefinition before rendering, as the IG publisher does
     private List<String> sdViews = new ArrayList<>();
     @Getter @Setter private boolean csProperties;
 
@@ -202,6 +206,12 @@ public class NarrativeGenerationTests {
         register = null;
       }
       prefix = test.getAttribute("prefix");
+      igRules = "ig".equals(test.getAttribute("rules"));
+      qmode = test.getAttribute("qmode");
+      genSnapshot = "generate".equals(test.getAttribute("snapshot"));
+      if ("".equals(qmode)) {
+        qmode = null;
+      }
       if ("".equals(prefix)) {
         prefix = null;
       }
@@ -264,6 +274,8 @@ public class NarrativeGenerationTests {
   @BeforeAll
   static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
+    // the build marker in generated scripts is random - fix it so the IG mode outputs are stable
+    org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.uuid = "00000000-0000-0000-0000-000000000000";
     simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -281,13 +293,18 @@ public class NarrativeGenerationTests {
   public void test(String id, TestDetails test) throws Exception {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
+      Resource reg;
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        reg = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister()));
       } else {
-        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        reg = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister()));
+      }
+      // more than one test can register the same resource, and the context is shared across the tests
+      if (!(reg instanceof org.hl7.fhir.r5.model.CanonicalResource) || !context.hasResource(reg.getClass(), ((org.hl7.fhir.r5.model.CanonicalResource) reg).getUrl())) {
+        context.getManager().cacheResource(reg);
       }
     }
-    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, test.igRules ? GenerationRules.IG_PUBLISHER : GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative5"));
     rc.setShowSummaryTable(test.isHeader());
     rc.setTrackNarrativeSource(test.isTrack());
@@ -295,6 +312,7 @@ public class NarrativeGenerationTests {
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
     rc.setCsProperties(test.isCsProperties());
+    rc.getMappingSpaces().putAll(MappingSpace.loadMappingSpaces(context.getBinaryForKey("mappingSpaces.details")));
     
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
@@ -309,6 +327,9 @@ public class NarrativeGenerationTests {
     if (test.getSDMode() != null) {
       rc.setStructureMode(StructureDefinitionRendererMode.valueOf(test.getSDMode().toUpperCase()));
     }
+    if (test.qmode != null) {
+      rc.setQuestionnaireMode(RenderingContext.QuestionnaireRendererMode.valueOf(test.qmode.toUpperCase()));
+    }
     if (test.prefix != null) {
       rc.setUniqueLocalPrefix(test.prefix);
     }
@@ -322,6 +343,9 @@ public class NarrativeGenerationTests {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
+    if (test.genSnapshot && source instanceof StructureDefinition) {
+      generateSnapshot(rc, (StructureDefinition) source);
+    }
     XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
@@ -368,6 +392,23 @@ public class NarrativeGenerationTests {
    * sdviews="snapshot,ms,dict" renders those too, each
    * compared against output/[id]-[view].html
    */
+  /**
+   * Generating the snapshot links each differential element to the element it derives from in the base
+   * definition (UserDataNames.SNAPSHOT_DERIVATION_POINTER). The differential view uses that link to show
+   * the inherited values (cardinality, flags) de-emphasized, so a test of that needs a generated snapshot
+   */
+  private void generateSnapshot(RenderingContext rc, StructureDefinition sd) {
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    if (base == null) {
+      throw new FHIRException("Unable to find base definition "+sd.getBaseDefinition());
+    }
+    if (!base.hasSnapshot()) {
+      generateSnapshot(rc, base);
+    }
+    sd.setSnapshot(null);
+    rc.getProfileUtilities().generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+  }
+
   private void checkStructureDefinitionView(String id, TestDetails test, StructureDefinition sd, String view, RenderingContext rc) throws Exception {
     StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(rc);
     ResourceWrapper res = ResourceWrapper.forResource(rc.getContextUtilities(), sd);
@@ -382,6 +423,17 @@ public class NarrativeGenerationTests {
       StructureDefinition msd = sd.copy();
       msd.getSnapshot().setElement(new MustSupportFilter(sd).getMustSupportElements());
       x = sdr.generateTable(new RenderingStatus(), rc.getDefinitionsTarget(), msd, false, rc.getDestDir(), false, msd.getId(), true, corePath, "", logical, false, null, true, rc.withUniqueLocalPrefix("m"), "m", res, "M");
+      break;
+    case "maps":
+      // the "Other Mappings" table on the IG publisher's mappings page (mappings to things that aren't StructureDefinitions)
+      RenderingContext mrc = rc.withUniqueLocalPrefix("p");
+      mrc.setStructureMode(StructureDefinitionRendererMode.MAPPINGS);
+      StructureDefinitionRenderer msdr = new StructureDefinitionRenderer(mrc);
+      msdr.setMappingsMode(StructureDefinitionRenderer.MapStructureMode.OTHER);
+      x = msdr.generateTable(new RenderingStatus(), rc.getDefinitionsTarget(), sd, false, rc.getDestDir(), false, sd.getId(), true, corePath, "", logical, false, null, false, mrc, "p", res, "P");
+      if (x == null) {
+        x = new XhtmlNode(NodeType.Element, "div");
+      }
       break;
     case "dict":
       x = new XhtmlNode(NodeType.Element, "div");
