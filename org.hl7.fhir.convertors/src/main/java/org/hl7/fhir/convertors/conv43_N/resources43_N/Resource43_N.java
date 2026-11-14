@@ -103,6 +103,8 @@ public class Resource43_N {
       return CoverageEligibilityRequest43_N.convertCoverageEligibilityRequest((org.hl7.fhir.r4b.model.CoverageEligibilityRequest) src);
     if (src instanceof org.hl7.fhir.r4b.model.DetectedIssue)
       return DetectedIssue43_N.convertDetectedIssue((org.hl7.fhir.r4b.model.DetectedIssue) src);
+    if (src instanceof org.hl7.fhir.r4b.model.DeviceDefinition)
+      return DeviceDefinition43_N.convertDeviceDefinition((org.hl7.fhir.r4b.model.DeviceDefinition) src);
     if (src instanceof org.hl7.fhir.r4b.model.Device)
       return Device43_N.convertDevice((org.hl7.fhir.r4b.model.Device) src);
     if (src instanceof org.hl7.fhir.r4b.model.DeviceMetric)
@@ -229,6 +231,8 @@ public class Resource43_N {
       return ValueSet43_N.convertValueSet((org.hl7.fhir.r4b.model.ValueSet) src);
     if (src instanceof org.hl7.fhir.r4b.model.VisionPrescription)
       return VisionPrescription43_N.convertVisionPrescription((org.hl7.fhir.r4b.model.VisionPrescription) src);
+    if (src instanceof org.hl7.fhir.r4b.model.SubscriptionStatus)
+      return SubscriptionStatus43_N.convertSubscriptionStatus((org.hl7.fhir.r4b.model.SubscriptionStatus) src);
     if (src instanceof org.hl7.fhir.r4b.model.Subscription)
       return Subscription43_N.convertSubscription((org.hl7.fhir.r4b.model.Subscription) src);
 
@@ -306,6 +310,8 @@ public class Resource43_N {
       return CoverageEligibilityRequest43_N.convertCoverageEligibilityRequest((org.hl7.fhir.model.core.CoverageEligibilityRequest) src);
     if (src instanceof org.hl7.fhir.model.core.DetectedIssue)
       return DetectedIssue43_N.convertDetectedIssue((org.hl7.fhir.model.core.DetectedIssue) src);
+    if (src instanceof org.hl7.fhir.model.core.DeviceDefinition)
+      return DeviceDefinition43_N.convertDeviceDefinition((org.hl7.fhir.model.core.DeviceDefinition) src);
     if (src instanceof org.hl7.fhir.model.core.Device)
       return Device43_N.convertDevice((org.hl7.fhir.model.core.Device) src);
     if (src instanceof org.hl7.fhir.model.core.DeviceMetric)
@@ -437,6 +443,8 @@ public class Resource43_N {
       return ValueSet43_N.convertValueSet((org.hl7.fhir.model.core.ValueSet) src);
     if (src instanceof org.hl7.fhir.model.core.VisionPrescription)
       return VisionPrescription43_N.convertVisionPrescription((org.hl7.fhir.model.core.VisionPrescription) src);
+    if (src instanceof org.hl7.fhir.model.core.SubscriptionStatus)
+      return SubscriptionStatus43_N.convertSubscriptionStatus((org.hl7.fhir.model.core.SubscriptionStatus) src);
     if (src instanceof org.hl7.fhir.model.core.Subscription)
       return Subscription43_N.convertSubscription((org.hl7.fhir.model.core.Subscription) src);
 

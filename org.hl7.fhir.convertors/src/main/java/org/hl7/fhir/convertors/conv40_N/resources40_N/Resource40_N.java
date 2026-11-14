@@ -103,6 +103,8 @@ public class Resource40_N {
       return CoverageEligibilityRequest40_N.convertCoverageEligibilityRequest((org.hl7.fhir.r4.model.CoverageEligibilityRequest) src);
     if (src instanceof org.hl7.fhir.r4.model.DetectedIssue)
       return DetectedIssue40_N.convertDetectedIssue((org.hl7.fhir.r4.model.DetectedIssue) src);
+    if (src instanceof org.hl7.fhir.r4.model.DeviceDefinition)
+      return DeviceDefinition40_N.convertDeviceDefinition((org.hl7.fhir.r4.model.DeviceDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.Device)
       return Device40_N.convertDevice((org.hl7.fhir.r4.model.Device) src);
     if (src instanceof org.hl7.fhir.r4.model.DeviceMetric)
@@ -306,6 +308,8 @@ public class Resource40_N {
       return CoverageEligibilityRequest40_N.convertCoverageEligibilityRequest((org.hl7.fhir.model.core.CoverageEligibilityRequest) src);
     if (src instanceof org.hl7.fhir.model.core.DetectedIssue)
       return DetectedIssue40_N.convertDetectedIssue((org.hl7.fhir.model.core.DetectedIssue) src);
+    if (src instanceof org.hl7.fhir.model.core.DeviceDefinition)
+      return DeviceDefinition40_N.convertDeviceDefinition((org.hl7.fhir.model.core.DeviceDefinition) src);
     if (src instanceof org.hl7.fhir.model.core.Device)
       return Device40_N.convertDevice((org.hl7.fhir.model.core.Device) src);
     if (src instanceof org.hl7.fhir.model.core.DeviceMetric)
