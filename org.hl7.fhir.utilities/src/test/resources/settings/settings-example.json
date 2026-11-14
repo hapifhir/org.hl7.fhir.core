@@ -8,6 +8,7 @@
   "diffToolPath": "dummy-diff-tool-path",
   "tempPath": "dummy-temp-path",
   "testIgsPath": "dummy-test-igs-path",
+  "packageSigningKey": "dummy-package-signing-key",
   "unusedField": "unused",
   "ignoreDefaultPackageServers": true,
   "servers": [
