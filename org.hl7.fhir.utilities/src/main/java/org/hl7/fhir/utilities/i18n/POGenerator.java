@@ -32,10 +32,27 @@ import static org.hl7.fhir.utilities.i18n.POUtilities.tagAsOutdated;
  *   (a) New constants are added to the java code
  *   (b) An implementer contributes translations in a .po source file
  * <br/>
- * It takes 3 parameters:
- *   * path to the local copy of the core repo
- *   * path to the local copy of the ig-publisher repo
- *   * path to the local copy of the FHIRsmith repo (javascript)
+ * Usage:
+ * <pre>
+ *   java org.hl7.fhir.utilities.i18n.POGenerator [core] [igpub] [fhirsmith]
+ * </pre>
+ * It takes 3 positional parameters, all required:
+ * <ol>
+ *   <li>core: path to the local copy of the core repo (hapifhir/org.hl7.fhir.core). The
+ *       .properties and .po files under org.hl7.fhir.utilities/src/main/resources are
+ *       read and updated in place, and the java source is scanned for constant usage</li>
+ *   <li>igpub: path to the local copy of the ig-publisher repo (HL7/fhir-ig-publisher).
+ *       Only read - the java source is scanned for constant usage</li>
+ *   <li>fhirsmith: path to the local copy of the FHIRsmith repo (javascript). Only read -
+ *       *.js/mjs/cjs files are scanned for property names used as quoted strings</li>
+ * </ol>
+ * Run with -h, -help, --help or ? (or with the wrong number of parameters) to get usage help.
+ * <br/>
+ * The languages that are generated are listed in the [languages] section of
+ * translations-control.ini in the same resources folder.
+ * <br/>
+ * If the consistency check finds errors, the generator reports them and stops without
+ * changing any files.
  */
 @SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
@@ -87,7 +104,57 @@ public class POGenerator {
   }
 
   public static void main(String[] args) throws IOException {
+    if (args.length == 1 && Utilities.existsInList(args[0], "-h", "-help", "--help", "?", "-?", "/?")) {
+      usage();
+      return;
+    }
+    if (args.length != 3) {
+      System.out.println("Error: expected 3 parameters, but found "+args.length);
+      System.out.println();
+      usage();
+      System.exit(1);
+    }
+    boolean ok = checkFolder("core", args[0], "org.hl7.fhir.utilities/src/main/resources/translations-control.ini");
+    ok = checkFolder("igpub", args[1], null) && ok;
+    ok = checkFolder("fhirsmith", args[2], null) && ok;
+    if (!ok) {
+      System.out.println();
+      usage();
+      System.exit(1);
+    }
     new POGenerator().execute(args[0], args[1], args[2]);
+  }
+
+  private static boolean checkFolder(String name, String path, String expectedFile) throws IOException {
+    File f = ManagedFileAccess.file(path);
+    if (!f.exists() || !f.isDirectory()) {
+      System.out.println("Error: "+name+" folder '"+path+"' not found");
+      return false;
+    }
+    if (expectedFile != null && !ManagedFileAccess.file(Utilities.path(path, expectedFile)).exists()) {
+      System.out.println("Error: "+name+" folder '"+path+"' does not look right - "+expectedFile+" not found");
+      return false;
+    }
+    return true;
+  }
+
+  private static void usage() {
+    System.out.println("POGenerator: checks the i18n constants and declarations are consistent, then");
+    System.out.println("generates/updates the .po source files and the translated .properties files.");
+    System.out.println("Run it when new i18n constants are added, or when translations are contributed.");
+    System.out.println();
+    System.out.println("Usage: java org.hl7.fhir.utilities.i18n.POGenerator [core] [igpub] [fhirsmith]");
+    System.out.println();
+    System.out.println("  [core]       local copy of the core repo (hapifhir/org.hl7.fhir.core). The .properties");
+    System.out.println("               and .po files in org.hl7.fhir.utilities/src/main/resources are updated");
+    System.out.println("  [igpub]      local copy of the IG publisher repo (HL7/fhir-ig-publisher) - read only,");
+    System.out.println("               scanned for use of the constants");
+    System.out.println("  [fhirsmith]  local copy of the FHIRsmith repo (javascript) - read only, scanned for");
+    System.out.println("               use of the message ids");
+    System.out.println();
+    System.out.println("Languages come from the [languages] section of translations-control.ini.");
+    System.out.println("If the consistency check finds errors, nothing is changed.");
+    System.out.println("Use -help to show this message.");
   }
 
   private int noTrans = 0;

@@ -5,7 +5,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ACTOR_DEF_ACT = "ACTOR_DEF_ACT";
   public static final String ACTOR_DEF_CAP = "ACTOR_DEF_CAP";
   public static final String ACTOR_DEF_CAT = "ACTOR_DEF_CAT";
-  public static final String ACTOR_DEF_DER = "ACTOR_DEF_DER";
   public static final String GENERAL_REFS = "GENERAL_REFS";
   public static final String ACTOR_DEF_TYP = "ACTOR_DEF_TYP";
   public static final String ADD_BIND_ADD_BIND = "ADD_BIND_ADD_BIND";
@@ -859,7 +858,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_ALT_NAME = "STRUC_DEF_ALT_NAME";
   public static final String STRUC_DEF_AND = "STRUC_DEF_AND";
   public static final String STRUC_DEF_APPROP_CON = "STRUC_DEF_APPROP_CON";
-  public static final String STRUC_DEF_AS_SHOWN = "STRUC_DEF_AS_SHOWN";
   public static final String STRUC_DEF_BECAUSE = "STRUC_DEF_BECAUSE";
   public static final String STRUC_DEF_BINDINGS = "STRUC_DEF_BINDINGS";
   public static final String STRUC_DEF_BINDING_STYLE = "STRUC_DEF_BINDING_STYLE";
@@ -881,7 +879,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_CLOSED = "STRUC_DEF_CLOSED";
   public static final String STRUC_DEF_COMMENT = "STRUC_DEF_COMMENT";
   public static final String STRUC_DEF_COMPLEX = "STRUC_DEF_COMPLEX";
-  public static final String STRUC_DEF_COMPLEXBRACK = "STRUC_DEF_COMPLEXBRACK";
   public static final String STRUC_DEF_COMP_DOC = "STRUC_DEF_COMP_DOC";
   public static final String STRUC_DEF_COMP_EX = "STRUC_DEF_COMP_EX";
   public static final String STRUC_DEF_COMP_PROF = "STRUC_DEF_COMP_PROF";
@@ -930,7 +927,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_FHIR_EXCEP = "STRUC_DEF_FHIR_EXCEP";
   public static final String STRUC_DEF_FII = "STRUC_DEF_FII";
   public static final String STRUC_DEF_FIXED = "STRUC_DEF_FIXED";
-  public static final String STRUC_DEF_FIXED_VALUE = "STRUC_DEF_FIXED_VALUE";
   public static final String STRUC_DEF_NO_EXT_ALLOWED = "STRUC_DEF_NO_EXT_ALLOWED";
   public static final String STRUC_DEF_EXT_ALLOWED = "STRUC_DEF_EXT_ALLOWED";
   public static final String STRUC_DEF_FOR_CODE = "STRUC_DEF_FOR_CODE";
@@ -964,7 +960,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_JSON_SINGLE = "STRUC_DEF_JSON_SINGLE";
   public static final String STRUC_DEF_JSON_TYPE = "STRUC_DEF_JSON_TYPE";
   public static final String STRUC_DEF_LABEL = "STRUC_DEF_LABEL";
-  public static final String STRUC_DEF_LEAST_FOLLOW = "STRUC_DEF_LEAST_FOLLOW";
   public static final String STRUC_DEF_LOGICAL = "STRUC_DEF_LOGICAL";
   public static final String STRUC_DEF_LOGICAL_CONT = "STRUC_DEF_LOGICAL_CONT";
   public static final String STRUC_DEF_LOINC = "STRUC_DEF_LOINC";
@@ -1024,7 +1019,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_REPEAT = "STRUC_DEF_REPEAT";
   public static final String STRUC_DEF_REPEAT_ELE = "STRUC_DEF_REPEAT_ELE";
   public static final String STRUC_DEF_REQUIRED = "STRUC_DEF_REQUIRED";
-  public static final String STRUC_DEF_REQUIRED_PATT = "STRUC_DEF_REQUIRED_PATT";
   public static final String STRUC_DEF_REQUIREMENTS = "STRUC_DEF_REQUIREMENTS";
   public static final String STRUC_DEF_REQ_BIND = "STRUC_DEF_REQ_BIND";
   public static final String STRUC_DEF_REQ_PATT = "STRUC_DEF_REQ_PATT";
@@ -1376,7 +1370,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_EXT_ANY = "SDR_EXT_ANY";
   public static final String SDR_EXT_ELEM = "SDR_EXT_ELEM";
   public static final String SDR_EXT_MOD = "SDR_EXT_MOD";
-  public static final String SDR_EXT_ELEM_ID = "SDR_EXT_ELEM_ID";
   public static final String SDR_EXT_ROOT_ELEMENTS = "SDR_EXT_ROOT_ELEMENTS";
   public static final String SDR_EXT_ELEMENTS = "SDR_EXT_ELEMENTS";
   public static final String STRUC_DEF_NO_EXT_ID = "STRUC_DEF_NO_EXT_ID";

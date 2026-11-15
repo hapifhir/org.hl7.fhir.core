@@ -872,7 +872,6 @@ public class I18nConstants {
   public static final String SM_TARGET_TRANSFORM_OP_INVALID_TYPE = "SM_TARGET_TRANSFORM_OP_INVALID_TYPE";
   public static final String SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE = "SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE";
   public static final String SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE = "SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE";
-  public static final String SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE = "SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE";
   public static final String SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE = "SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE";
   public static final String SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE = "SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE";
   public static final String SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND = "SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND";
@@ -1176,7 +1175,6 @@ public class I18nConstants {
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
-  public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
   public static final String UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE = "Unknown_resource_type_missing_rdfstype";
   public static final String UNKNOWN_TYPE__AT_ = "Unknown_type__at_";
   public static final String UNRECOGNISED_EXTENSION_CONTEXT_ = "Unrecognised_extension_context_";
