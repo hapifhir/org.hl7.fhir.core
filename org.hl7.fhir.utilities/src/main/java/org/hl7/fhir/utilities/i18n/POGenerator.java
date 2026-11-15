@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.IniFile;
@@ -59,6 +61,8 @@ public class POGenerator {
 
   public static class PropertyValue extends StringPair {
     private boolean used;
+    private boolean usedInJavascript;
+    private List<ConstantDefinition> constants = new ArrayList<>();
 
     public PropertyValue(String name, String value) {
       super(name, value);
@@ -81,7 +85,28 @@ public class POGenerator {
     private String sname;
     private boolean defined;
     private boolean used;
+    private boolean usedInCore;
+    private boolean usedInIgpub;
   }
+
+  /**
+   * Where the messages in one .properties file are used: counted by message (the _one and
+   * _other forms of a plural are one message). A message is used in core or the IG publisher
+   * if its constant is referenced there, and in FHIRsmith if its id appears as a quoted string
+   */
+  private static class UsageSummary {
+    private String file;
+    private int total;
+    private int core;
+    private int igpub;
+    private int fhirsmith;
+    private int javaOnly;
+    private int fhirsmithOnly;
+    private int both;
+    private int none;
+  }
+
+  private List<UsageSummary> usage = new ArrayList<>();
 
   public static class POObjectSorter implements Comparator<POObject> {
 
@@ -161,7 +186,8 @@ public class POGenerator {
 
   public void execute(String core, String igpub, String javascript) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
-    if (checkState(source, core, igpub, javascript)) {
+    boolean ok = checkState(source, core, igpub, javascript);
+    if (ok) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
       generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
@@ -171,7 +197,59 @@ public class POGenerator {
       }
 
       System.out.println("Finished");
-    } 
+    }
+    reportUsage();
+  }
+
+  private UsageSummary summariseUsage(String file, List<PropertyValue> props) {
+    // by message: the plural forms share a base name
+    Map<String, boolean[]> byMessage = new LinkedHashMap<>();
+    for (PropertyValue p : props) {
+      boolean[] where = byMessage.computeIfAbsent(p.getBaseName(), k -> new boolean[3]);
+      for (ConstantDefinition cd : p.constants) {
+        where[0] = where[0] || cd.usedInCore;
+        where[1] = where[1] || cd.usedInIgpub;
+      }
+      where[2] = where[2] || p.usedInJavascript;
+    }
+    UsageSummary res = new UsageSummary();
+    res.file = file;
+    for (boolean[] where : byMessage.values()) {
+      boolean java = where[0] || where[1];
+      res.total++;
+      if (where[0]) {
+        res.core++;
+      }
+      if (where[1]) {
+        res.igpub++;
+      }
+      if (where[2]) {
+        res.fhirsmith++;
+      }
+      if (java && where[2]) {
+        res.both++;
+      } else if (java) {
+        res.javaOnly++;
+      } else if (where[2]) {
+        res.fhirsmithOnly++;
+      } else {
+        res.none++;
+      }
+    }
+    return res;
+  }
+
+  private void reportUsage() {
+    if (usage.isEmpty()) {
+      return;
+    }
+    System.out.println();
+    System.out.println("Message usage (by message - plural forms count once):");
+    System.out.println(String.format("  %-30s %7s %7s %7s %9s   %9s %13s %7s %7s", "", "total", "core", "igpub", "fhirsmith", "java only", "fhirsmith only", "both", "none"));
+    for (UsageSummary u : usage) {
+      System.out.println(String.format("  %-30s %7d %7d %7d %9d   %9d %13d %7d %7d", u.file, u.total, u.core, u.igpub, u.fhirsmith, u.javaOnly, u.fhirsmithOnly, u.both, u.none));
+    }
+    System.out.println("  (core/igpub: the constant is referenced there; java = core or igpub; both = java and fhirsmith)");
   }
 
   private boolean checkState(String source, String core, String igpub, String javascript) throws IOException {
@@ -186,13 +264,15 @@ public class POGenerator {
         if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
           found = true;
           p.used = true;
+          p.constants.add(cd);
         }
       }
       cd.defined = found;
     }
-    scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
-    scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(core, true, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(igpub, false, consts, "RenderingI18nContext", "RenderingContext");
     scanJavascriptSource(javascript, props);
+    usage.add(summariseUsage("rendering-phrases.properties", props));
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -231,14 +311,16 @@ public class POGenerator {
         if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
           found = true;
           p.used = true;
+          p.constants.add(cd);
         }
       }
       cd.defined = found;
     }
 
-    scanJavaSource(core, consts, "I18nConstants");
-    scanJavaSource(igpub, consts, "I18nConstants");
+    scanJavaSource(core, true, consts, "I18nConstants");
+    scanJavaSource(igpub, false, consts, "I18nConstants");
     scanJavascriptSource(javascript, props);
+    usage.add(summariseUsage("Messages.properties", props));
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -277,10 +359,16 @@ public class POGenerator {
     return ok;
   }
 
+  /**
+   * Finds references to the constants as Name.CONSTANT (Name being I18nConstants etc), and
+   * records them against the repo being scanned. One pass over each file, so every constant
+   * is checked in every repo (not just the ones not yet found), for the usage report
+   */
   private class JavaScanner implements IDirectoryVisitorImplementation {
-    List<ConstantDefinition> consts;
-    List<String> names;
-    
+    Map<String, ConstantDefinition> consts;
+    Pattern pattern;
+    boolean core;
+
     @Override
     public boolean enterDirectory(File f) throws IOException {
       return !Utilities.existsInList(f.getName(), "model", "formats");
@@ -289,52 +377,47 @@ public class POGenerator {
     @Override
     public boolean visitFile(File file) throws IOException {
       String source = FileUtilities.fileToString(file);
-      for (ConstantDefinition cd : consts) {
-        if (!cd.used) {
-          for (String n : names) {
-            if (containsToken(source, n+"."+cd.name)) {
-              cd.used = true;
-              break;
-            }
+      Matcher m = pattern.matcher(source);
+      while (m.find()) {
+        // the identifier is matched greedily, so it is the whole token: CONST, not CONST_OTHER
+        ConstantDefinition cd = consts.get(m.group(1));
+        if (cd != null) {
+          cd.used = true;
+          if (core) {
+            cd.usedInCore = true;
+          } else {
+            cd.usedInIgpub = true;
           }
         }
       }
       return true;
     }
-
-    /**
-     * True if token appears in source followed by a non-identifier character
-     * (so e.g. CONST matches "CONST ," and "CONST)" but not "CONST_OTHER").
-     */
-    private boolean containsToken(String source, String token) {
-      int i = source.indexOf(token);
-      while (i > -1) {
-        int e = i + token.length();
-        if (e == source.length() || !isIdentifierChar(source.charAt(e))) {
-          return true;
-        }
-        i = source.indexOf(token, e);
-      }
-      return false;
-    }
-
-    private boolean isIdentifierChar(char c) {
-      return Character.isLetterOrDigit(c) || c == '_';
-    }
   }
-  
-  private void scanJavaSource(String path, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
+
+  private void scanJavaSource(String path, boolean core, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
     JavaScanner scanner = new JavaScanner();
-    scanner.consts = consts;
-    scanner.names = new ArrayList<String>();
-    for (String s : names) {
-      scanner.names.add(s);
+    scanner.core = core;
+    scanner.consts = new HashMap<>();
+    for (ConstantDefinition cd : consts) {
+      scanner.consts.put(cd.name, cd);
     }
+    StringBuilder b = new StringBuilder();
+    for (String s : names) {
+      b.append(b.length() == 0 ? "" : "|").append(Pattern.quote(s));
+    }
+    scanner.pattern = Pattern.compile("(?:" + b + ")\\.([A-Za-z0-9_]+)");
     DirectoryVisitor.visitDirectory(scanner, path, "java");
   }
 
+  /**
+   * Finds message ids used as quoted strings ('X', "X" or `X`) in javascript. One pass over each
+   * file collecting the quoted strings, then looked up by message (base) name
+   */
   private class JavascriptScanner implements IDirectoryVisitorImplementation {
-    private List<PropertyValue> defs;
+    // a quoted string with no quotes or whitespace in it. The closing quote isn't consumed, so
+    // an occurrence that starts on it is still found (as String.contains would)
+    private final Pattern quoted = Pattern.compile("(['\"`])([^'\"`\\s]+)(?=\\1)");
+    private Map<String, List<PropertyValue>> defs;
 
     @Override
     public boolean enterDirectory(File directory) throws IOException {
@@ -344,15 +427,13 @@ public class POGenerator {
     @Override
     public boolean visitFile(File file) throws IOException {
       String source = FileUtilities.fileToString(file);
-      for (PropertyValue pv : defs) {
-        if (!pv.used) {
-          boolean found = false;
-          String pn = pv.getBaseName();
-          if (source.contains("'"+pn+"'") || source.contains("\""+pn+"\"") || source.contains("`"+pn+"`")) {
-            found = true;
-          }
-          if (found) {
+      Matcher m = quoted.matcher(source);
+      while (m.find()) {
+        List<PropertyValue> pvs = defs.get(m.group(2));
+        if (pvs != null) {
+          for (PropertyValue pv : pvs) {
             pv.used = true;
+            pv.usedInJavascript = true;
           }
         }
       }
@@ -362,7 +443,10 @@ public class POGenerator {
 
   private void scanJavascriptSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
     JavascriptScanner scanner = new JavascriptScanner();
-    scanner.defs = defs;
+    scanner.defs = new HashMap<>();
+    for (PropertyValue pv : defs) {
+      scanner.defs.computeIfAbsent(pv.getBaseName(), k -> new ArrayList<>()).add(pv);
+    }
     DirectoryVisitor.visitDirectory(scanner, path, "js", "mjs", "cjs");
   }
 
