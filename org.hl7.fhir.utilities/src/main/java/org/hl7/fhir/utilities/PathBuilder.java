@@ -115,7 +115,7 @@ public class PathBuilder {
         if (stringBuilder.length() == 0) {
           stringBuilder = new StringBuilder(Paths.get(".").toAbsolutePath().normalize().toString());
         } else {
-          String p = stringBuilder.toString().substring(0, stringBuilder.length() - 1);
+          String p = stringBuilder.substring(0, stringBuilder.length() - 1);
           if (!p.contains(File.separator)) {
             stringBuilder = new StringBuilder();
           } else {
