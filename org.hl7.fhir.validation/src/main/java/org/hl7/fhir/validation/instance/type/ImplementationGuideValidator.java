@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.instance.type;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,15 +34,28 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   private static final int DATE_WARNING_CUTOFF = 3;
 
-  /**
-   * The IG resource is validated in every build of a watch session, so what the package registries and
-   * build.fhir.org answer about its dependencies is kept for an hour, as long as CIBuildClient keeps its list of
-   * IG builds. A request that fails isn't kept.
-   */
-  private static final RegistryAnswerCache REGISTRY_ANSWERS = new RegistryAnswerCache(60 * 60 * 1000L);
+  private RegistryAnswerCache registryAnswers;
+  private FilesystemPackageCacheManager pcm;
 
   public ImplementationGuideValidator(BaseValidator parent) {
     super(parent);
+  }
+
+  private RegistryAnswerCache registryAnswers() {
+    if (registryAnswers == null) {
+      registryAnswers = settings.getRegistryAnswerCache() != null ? settings.getRegistryAnswerCache() : new RegistryAnswerCache();
+    }
+    return registryAnswers;
+  }
+
+  /**
+   * one for all the dependencies, so the list of IG builds on build.fhir.org is loaded once per validation
+   */
+  private FilesystemPackageCacheManager packageCacheManager() throws IOException {
+    if (pcm == null) {
+      pcm = new FilesystemPackageCacheManager.Builder().withRegistryAnswerCache(registryAnswers()).build();
+    }
+    return pcm;
   }
 
   public boolean validateImplementationGuide(ValidationContext valContext, List<ValidationMessage> errors, Element ig, NodeStack stack) {
@@ -93,7 +107,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     try {
       ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ElementModelUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withRegistryAnswerCache(REGISTRY_ANSWERS).build();
+      FilesystemPackageCacheManager pcm = packageCacheManager();
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(uri);
         String canonical = pcm.getPackageUrl(packageId);
@@ -127,7 +141,7 @@ public class ImplementationGuideValidator extends BaseValidator {
         }
         if (settings.isForPublication()) { 
           try {
-            PackageClient pc = new PackageClient(PackageServer.primaryServer(), REGISTRY_ANSWERS);
+            PackageClient pc = new PackageClient(PackageServer.primaryServer(), registryAnswers());
             List<PackageInfo> list = pc.getVersions(packageId);
             Collections.sort(list, new org.hl7.fhir.utilities.npm.PackageInfo.PackageInfoVersionSorter());
             String lver = pcm.getLatestVersion(packageId, true);

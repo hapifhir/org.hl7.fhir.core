@@ -47,7 +47,7 @@ public class PackageClient {
 
   /**
    * @param answers if not null, catalog searches and version lists are answered from it while it has them, and
-   *                the server's answers are kept in it
+   *                the server's answers are kept in it; so is a 404 for a package
    */
   public PackageClient(PackageServer server, @Nullable RegistryAnswerCache answers) {
     super();
@@ -71,6 +71,14 @@ public class PackageClient {
   }
 
   private InputStream fetchTarball(String id, String ver) throws IOException {
+    if (answers != null) {
+      // the package itself is never kept, only a 404 for it
+      return answers.get(url(id, ver), () -> fetchTarballFromServer(id, ver), stream -> false);
+    }
+    return fetchTarballFromServer(id, ver);
+  }
+
+  private InputStream fetchTarballFromServer(String id, String ver) throws IOException {
     String url = getPackageTarballUrl(id, ver);
     if (server.getServerType() == PackageServer.PackageServerType.NPM) {
       return fetchCached(url); // the tarball URL from the version's npm document
@@ -108,7 +116,7 @@ public class PackageClient {
     List<PackageInfo> res = new ArrayList<>();
     JsonObject json;
     try {
-      // registries answer an unknown package with 404, so a list without versions isn't kept
+      // a list without versions isn't kept; registries answer an unknown package with 404, which is kept briefly
       json = answers == null ? fetchJson(url) : answers.get(url, () -> fetchJson(url),
         j -> j.hasObject("versions") && canRead(() -> readVersions(j, new ArrayList<>())));
       boolean hasDates = readVersions(json, res);

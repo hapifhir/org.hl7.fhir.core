@@ -121,8 +121,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
 
     /**
-     * If set, what the package servers and build.fhir.org answer to catalog searches, version lists and the list of
-     * IG builds is kept in it and reused.
+     * If set, what the package servers answer to catalog searches and version lists, and their 404s for unknown
+     * packages, are kept in it and reused. The list of IG builds on build.fhir.org is not: it is how current
+     * builds are found.
      * See {@link RegistryAnswerCache}.
      */
     @With
@@ -203,11 +204,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      if (registryAnswerCache == null) {
-        return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      if (registryAnswerCache != null) {
+        pcm.setClientFactory(server -> new PackageClient(server, registryAnswerCache));
       }
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient.withAnswers(registryAnswerCache), locks, lockParameters);
-      pcm.setClientFactory(server -> new PackageClient(server, registryAnswerCache));
       return pcm;
     }
   }
