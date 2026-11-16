@@ -71,7 +71,7 @@ import javax.xml.transform.stream.StreamSource;
 
 public class XsltZipURIResolver implements URIResolver {
 
-  private Map<String, byte[]> files;
+  private final Map<String, byte[]> files;
   
   
   public XsltZipURIResolver(Map<String, byte[]> files) {
