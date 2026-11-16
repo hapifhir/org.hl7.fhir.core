@@ -1,5 +1,7 @@
 package org.hl7.fhir.test;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
@@ -30,8 +32,13 @@ public class ValidationTestConvertor {
         if (!t.exists()) {
           try {
             System.out.print("Process " + f.getAbsolutePath());
-            Element e = Manager.parseSingle(context, ManagedFileAccess.inStream(f), FhirFormat.XML);
-            Manager.compose(context, e, ManagedFileAccess.outStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+            Element e;
+            try (InputStream stream = ManagedFileAccess.inStream(f)) {
+              e = Manager.parseSingle(context, stream, FhirFormat.XML);
+            }
+            try (OutputStream stream = ManagedFileAccess.outStream(t)) {
+              Manager.compose(context, e, stream, FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+            }
             System.out.println("   .... success");
           } catch (Exception e) {
             System.out.println("   .... fail: " + e.getMessage());
@@ -44,8 +51,13 @@ public class ValidationTestConvertor {
           if (!t.exists()) {
             try {
               System.out.print("Process " + f.getAbsolutePath());
-              Element e = Manager.parseSingle(context, ManagedFileAccess.inStream(f), FhirFormat.JSON);
-              Manager.compose(context, e, ManagedFileAccess.outStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+              Element e;
+              try (InputStream stream = ManagedFileAccess.inStream(f)) {
+                e = Manager.parseSingle(context, stream, FhirFormat.JSON);
+              }
+              try (OutputStream stream = ManagedFileAccess.outStream(t)) {
+                Manager.compose(context, e, stream, FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+              }
               System.out.println("   .... success");
             } catch (Exception e) {
               System.out.println("   .... fail: " + e.getMessage());

@@ -115,6 +115,35 @@ class SQLiteINpmPackageIndexBuilderDBImplTest {
     }
   }
 
+  @Test
+  void resourcesWithComplexRootPropertiesAreInTheDatabase() throws Exception {
+    NpmPackageIndexBuilder.INpmPackageIndexBuilderDBImplFactory old = NpmPackageIndexBuilder.getExtensionFactory();
+    NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
+    try {
+      String filename = tempDir.resolve(".index.db").toString();
+      NpmPackageIndexBuilder builder = new NpmPackageIndexBuilder();
+      builder.start(filename);
+      // Media.type and Media.content are complex; content.id once made this resource fail to go into the database
+      builder.seeFile("Media-chest-xray.json", ("{\"resourceType\":\"Media\",\"id\":\"chest-xray\","
+        + "\"type\":{\"coding\":[{\"code\":\"image\"}]},"
+        + "\"content\":{\"id\":\"a1\",\"contentType\":\"image/jpeg\",\"url\":\"http://example.org/Binary/A12345\"}}").getBytes(StandardCharsets.UTF_8));
+      builder.seeFile("Patient-p.json", patient("p"));
+      builder.build();
+
+      assertEquals(2, countRows(filename));
+      try (Connection c = DriverManager.getConnection("jdbc:sqlite:" + filename);
+           Statement s = c.createStatement();
+           ResultSet rs = s.executeQuery("select Id, Url, Type, Content from ResourceList where FileName = 'Media-chest-xray.json'")) {
+        assertEquals("chest-xray", rs.getString(1));
+        assertNull(rs.getString(2));
+        assertNull(rs.getString(3));
+        assertNull(rs.getString(4));
+      }
+    } finally {
+      NpmPackageIndexBuilder.setExtensionFactory(old);
+    }
+  }
+
   private static byte[] patient(String id) {
     return ("{\"resourceType\": \"Patient\", \"id\": \"" + id + "\"}").getBytes(StandardCharsets.UTF_8);
   }

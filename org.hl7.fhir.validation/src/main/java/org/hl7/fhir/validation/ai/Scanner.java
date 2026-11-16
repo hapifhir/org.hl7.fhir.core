@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.ai;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,7 +101,7 @@ public class Scanner {
         execute(f);
       } else if (f.getName().endsWith(".json")) {
         try {
-          Resource r = new JsonParser().parse(new FileInputStream(f));
+          Resource r = new JsonParser().parseFile(f);
           if (r != null) {
             if (r instanceof CodeSystem) {
               CodeSystem cs = (CodeSystem) r;

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.InputStream;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -361,7 +362,9 @@ public class CountryCodesConverter {
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
-    return builder.parse(ManagedFileAccess.inStream(source));
+    try (InputStream stream = ManagedFileAccess.inStream(source)) {
+      return builder.parse(stream);
+    }
   }
 
 

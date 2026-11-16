@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.special;
 
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -140,7 +141,10 @@ public class DicomPackageBuilder {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Ontology", "DCM", "dcm.owl")));
+    Document doc;
+    try (InputStream stream = ManagedFileAccess.inStream(Utilities.path(source, "Ontology", "DCM", "dcm.owl"))) {
+      doc = builder.parse(stream);
+    }
     Element rdf = doc.getDocumentElement();
     Element d = XMLUtil.getFirstChild(rdf);
     version = processVersion(XMLUtil.getNamedChildText(d, "versionInfo"));

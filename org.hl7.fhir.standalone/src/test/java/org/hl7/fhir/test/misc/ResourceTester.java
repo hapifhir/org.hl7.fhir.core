@@ -61,7 +61,7 @@ public class ResourceTester {
       parser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     else
       parser = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext(),false);
-    Resource resource = parser.parse(ManagedFileAccess.inStream(source));
+    Resource resource = parser.parseFile(source);
 
     FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.json");
     JsonParser jsonPrettyParser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
@@ -70,7 +70,7 @@ public class ResourceTester {
     out.close();
 
     JsonParser jsonParser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
-    resource = jsonParser.parse(ManagedFileAccess.inStream(source.getAbsoluteFile()+".out.json"));
+    resource = jsonParser.parseFile(source.getAbsoluteFile()+".out.json");
 
     out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.xml");
     XmlParser xmlParser = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());

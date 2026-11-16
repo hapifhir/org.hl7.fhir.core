@@ -104,7 +104,12 @@ public class TerminologyClient5R3 implements ITerminologyClient5 {
   public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException {
     org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertorFactory_30_50.convertResource(vs);
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(p);
-    vs2 = client.expandValueset(vs2, p2); // todo: second parameter
+    try {
+      vs2 = client.expandValueset(vs2, p2); // todo: second parameter
+    } catch (EFhirClientException e) {
+      // keeps the HTTP status where the caller can see it, to tell a server that is unavailable from one that answered
+      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
+    }
     return (ValueSet) VersionConvertorFactory_30_50.convertResource(vs2);
   }
 

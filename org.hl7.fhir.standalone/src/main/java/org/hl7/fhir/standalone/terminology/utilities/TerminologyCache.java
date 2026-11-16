@@ -30,6 +30,8 @@ package org.hl7.fhir.standalone.terminology.utilities;
  */
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -93,6 +95,9 @@ import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 @Slf4j
 public class TerminologyCache {
+
+  // writes the properties of a $lookup result into the cache files - without escaping <, >, = and ', so they stay readable
+  private static final Gson PROPERTIES_GSON = new GsonBuilder().disableHtmlEscaping().create();
 
   // TODO (thread-safety): locking in this class is inconsistent. The validation / expansion /
   // subsumption read+write paths (getValidation, cacheValidation, getExpansion, cacheExpansion,
@@ -307,6 +312,25 @@ public class TerminologyCache {
     
   }
   
+  /**
+   * what a server said about some of a concept's properties ($lookup with property=): their
+   * values, or null if the code isn't known
+   */
+  public static class PropertiesResult {
+
+    private final Map<String, List<String>> properties;
+
+    protected PropertiesResult(Map<String, List<String>> properties) {
+      super();
+      this.properties = properties;
+    }
+
+    public Map<String, List<String>> getProperties() {
+      return properties;
+    }
+
+  }
+
   protected SystemNameKeyGenerator getSystemNameKeyGenerator() {
     return systemNameKeyGenerator;
   }
@@ -384,6 +408,7 @@ public class TerminologyCache {
     private ValidationResult v;
     private ValueSetExpansionOutcome e;
     private SubsumesResult s;
+    private PropertiesResult p;
   }
 
   private class NamedCache {
@@ -451,6 +476,10 @@ public class TerminologyCache {
 
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
+  // entries in vsCache / csCache that came from a failed lookup: used for this run, but not
+  // written to vs-externals.json / cs-externals.json, so the next run asks again
+  private Set<String> vsTransient = new HashSet<>();
+  private Set<String> csTransient = new HashSet<>();
   private Map<String, String> serverMap = new HashMap<>();
 
   @Getter @Setter private static boolean noCaching;
@@ -684,6 +713,8 @@ public class TerminologyCache {
       caches.clear();
       vsCache.clear();
       csCache.clear();
+      vsTransient.clear();
+      csTransient.clear();
       unloaded = true;
     }
   }
@@ -698,6 +729,8 @@ public class TerminologyCache {
     caches.clear();
     vsCache.clear();
     csCache.clear();
+    vsTransient.clear();
+    csTransient.clear();
   }
   
   public boolean hasCapabilityStatement(String address) {
@@ -1458,6 +1491,13 @@ public class TerminologyCache {
     } else if (cacheEntry.s != null) {
       writer.write("s: {\r\n");
       writer.write("  \"result\" : "+ cacheEntry.s.result+"\r\n}\r\n");
+    } else if (cacheEntry.p != null) {
+      writer.write("p: {\r\n");
+      if (cacheEntry.p.properties == null) {
+        writer.write("  \"unknown\" : true\r\n}\r\n");
+      } else {
+        writer.write("  \"properties\" : "+ PROPERTIES_GSON.toJson(new TreeMap<>(cacheEntry.p.properties))+"\r\n}\r\n");
+      }
     } else {
       writer.write("v: {\r\n");
       boolean first = true;
@@ -1590,6 +1630,18 @@ public class TerminologyCache {
       }
     } else if (e == 's') {
       ce.s = new SubsumesResult(o.get("result").getAsBoolean());
+    } else if (e == 'p') {
+      Map<String, List<String>> props = o.has("unknown") ? null : new HashMap<>();
+      if (props != null && o.has("properties")) {
+        for (Map.Entry<String, JsonElement> pe : o.getAsJsonObject("properties").entrySet()) {
+          List<String> values = new ArrayList<>();
+          for (JsonElement v : pe.getValue().getAsJsonArray()) {
+            values.add(v.getAsString());
+          }
+          props.put(pe.getKey(), values);
+        }
+      }
+      ce.p = new PropertiesResult(props);
     } else {
       String t = loadJS(o.get("severity"));
       IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
@@ -1912,7 +1964,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1925,7 +1977,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1933,8 +1985,20 @@ public class TerminologyCache {
   }
 
   public void cacheValueSet(String canonical, SourcedValueSet svs) {
+    cacheValueSet(canonical, svs, true);
+  }
+
+  /**
+   * @param persistent false if svs is the result of a failed lookup, so it's kept for this run but not saved
+   */
+  public void cacheValueSet(String canonical, SourcedValueSet svs, boolean persistent) {
     if (canonical == null) {
       return;
+    }
+    if (persistent) {
+      vsTransient.remove(canonical);
+    } else {
+      vsTransient.add(canonical);
     }
     try {
       if (svs == null) {
@@ -1943,12 +2007,15 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context.getModelContext()).composeFile(Utilities.path(folder, fn), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : vsCache.keySet()) {
+        if (vsTransient.contains(k)) {
+          continue;
+        }
         SourcedValueSetEntry sve = vsCache.get(k);
         if (sve == null) {
           j.add(k, new JsonNull());
@@ -1970,8 +2037,20 @@ public class TerminologyCache {
   }
 
   public void cacheCodeSystem(String canonical, SourcedCodeSystem scs) {
+    cacheCodeSystem(canonical, scs, true);
+  }
+
+  /**
+   * @param persistent false if scs is the result of a failed lookup, so it's kept for this run but not saved
+   */
+  public void cacheCodeSystem(String canonical, SourcedCodeSystem scs, boolean persistent) {
     if (canonical == null) {
       return;
+    }
+    if (persistent) {
+      csTransient.remove(canonical);
+    } else {
+      csTransient.add(canonical);
     }
     try {
       if (scs == null) {
@@ -1980,12 +2059,15 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context.getModelContext()).composeFile(Utilities.path(folder, fn), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : csCache.keySet()) {
+        if (csTransient.contains(k)) {
+          continue;
+        }
         SourcedCodeSystemEntry sve = csCache.get(k);
         if (sve == null) {
           j.add(k, new JsonNull());
@@ -2058,6 +2140,51 @@ public class TerminologyCache {
     }
   }
 
+
+  public CacheToken generateLookupPropertiesToken(String system, String version, String code, Set<String> properties) {
+    CacheToken ct = new CacheToken();
+    ct.setName(getSystemName(system, ct.getName()));
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+    for (String p : new TreeSet<>(properties)) {
+      b.append("\"" + Utilities.escapeJson(p) + "\"");
+    }
+    ct.setRequest("{\"op\": \"lookup-properties\", \"system\" : \"" + Utilities.escapeJson(system) + "\", \"version\" : " + (version == null ? "null" : "\"" + Utilities.escapeJson(version) + "\"")
+      + ", \"code\" : \"" + Utilities.escapeJson(code) + "\", \"properties\" : [" + b + "]}");
+    ct.setKey(String.valueOf(hashJson(ct.getRequest())));
+    return ct;
+  }
+
+  /** what's cached for the token, or null if there's nothing cached */
+  public PropertiesResult getLookupProperties(CacheToken cacheToken) {
+    if (cacheToken.getKey() == null) {
+      return null;
+    }
+    synchronized (lock) {
+      requestCount++;
+      NamedCache nc = getNamedCache(cacheToken);
+      CacheEntry e = nc.map.get(cacheToken.getKey());
+      if (e == null || e.p == null) {
+        networkCount++;
+        return null;
+      } else {
+        hitCount++;
+        return e.p;
+      }
+    }
+  }
+
+  public void cacheLookupProperties(CacheToken cacheToken, Map<String, List<String>> properties, boolean persistent) {
+    if (cacheToken.getKey() != null) {
+      synchronized (lock) {
+        NamedCache nc = getNamedCache(cacheToken);
+        CacheEntry e = new CacheEntry();
+        e.request = cacheToken.getRequest();
+        e.persistent = persistent;
+        e.p = new PropertiesResult(properties);
+        store(cacheToken, persistent, nc, e);
+      }
+    }
+  }
 
   public String getReport() {
     int c = 0;

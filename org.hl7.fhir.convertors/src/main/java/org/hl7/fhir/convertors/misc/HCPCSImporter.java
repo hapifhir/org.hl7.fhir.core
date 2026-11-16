@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.misc;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -72,7 +71,7 @@ public class HCPCSImporter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), cs);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dest, cs);
   }
 
   private String field(String line, int i, int j) {

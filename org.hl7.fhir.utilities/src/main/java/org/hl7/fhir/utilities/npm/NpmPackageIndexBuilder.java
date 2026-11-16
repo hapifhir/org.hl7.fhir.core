@@ -2,6 +2,9 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonToken;
@@ -38,6 +41,8 @@ public class NpmPackageIndexBuilder {
 
   private static INpmPackageIndexBuilderDBImplFactory extensionFactory;
   private static final JsonFactory JSON_FACTORY = new JsonFactory(); // reuse across all seeFile calls
+  // the root properties that are indexed, in the order they appear in each .index.json entry (after the filename)
+  private static final List<String> INDEXED_PROPERTIES = List.of("resourceType", "id", "url", "version", "kind", "type", "supplements", "content", "valueSet", "derivation");
 
   public static final Integer CURRENT_INDEX_VERSION = 2;
   private JsonObject index;
@@ -65,58 +70,54 @@ public class NpmPackageIndexBuilder {
 
   public boolean seeFile(String name, byte[] content) {
     if (name.endsWith(".json")) {
-      /* We are only interested in some string fields on the first level of the JSON file.
-       * We can then use a streaming parser to get the values of these fields instead of parsing the whole file and
+      /* We are only interested in some primitive properties at the root of the JSON file.
+       * We can then use a streaming parser to get the values of these properties instead of parsing the whole file and
        * allocating memory for everything in it.
+       *
+       * Only primitive values are indexed. A root property with one of these names but a complex value (e.g.
+       * Media.type, DocumentReference.content) is skipped along with everything inside it, so that properties
+       * of nested objects (e.g. Media.content.id) are never mistaken for root properties.
        */
+      Map<String, String> values = new HashMap<>();
       try (final var parser = JSON_FACTORY.createParser(content)) {
-        final var fi = new JsonObject();
-        int level = 0;
-
-        while (parser.nextToken() != null) {
-          if (parser.currentToken() == JsonToken.START_OBJECT || parser.currentToken() == JsonToken.START_ARRAY) {
-            level++;
-          } else if (parser.currentToken() == JsonToken.END_OBJECT || parser.currentToken() == JsonToken.END_ARRAY) {
-            level--;
-          }
-          if (level != 1) {
-            continue;
-          }
-
-          String fieldName = parser.currentName();
-
-          if ("resourceType".equals(fieldName)) {
-            parser.nextToken();
-            files.add(fi);
-            fi.add("filename", name);
-            fi.add(fieldName, parser.getText());
-          }
-
-          if ("id".equals(fieldName)
-              || "url".equals(fieldName)
-              || "version".equals(fieldName)
-              || "kind".equals(fieldName)
-              || "type".equals(fieldName)
-              || "supplements".equals(fieldName)
-              || "content".equals(fieldName)
-              || "valueSet".equals(fieldName)
-              || "derivation".equals(fieldName)) {
-            parser.nextToken();
-            fi.add(fieldName, parser.getText());
-          }
-        }
-
-        if (!fi.has("resourceType")) {
-          // We haven't seen the 'resourceType' key, it's not a FHIR resource
+        if (parser.nextToken() != JsonToken.START_OBJECT) {
           return true;
         }
-
-        if (extension != null) {
-          extension.seeFile(name, fi);
+        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+          String fieldName = parser.currentName();
+          JsonToken value = parser.nextToken();
+          if (value == JsonToken.START_OBJECT || value == JsonToken.START_ARRAY) {
+            parser.skipChildren();
+          } else if (value != JsonToken.VALUE_NULL && INDEXED_PROPERTIES.contains(fieldName) && !values.containsKey(fieldName)) {
+            values.put(fieldName, parser.getText());
+          }
         }
       } catch (Exception e) {
         if (name.contains("openapi")) {
           return false;
+        }
+        return true;
+      }
+
+      if (!values.containsKey("resourceType")) {
+        // We haven't seen a 'resourceType' property, it's not a FHIR resource
+        return true;
+      }
+
+      // the entry is only built once the file has been read successfully, so .index.json and .index.db see the same files
+      final var fi = new JsonObject();
+      fi.add("filename", name);
+      for (String n : INDEXED_PROPERTIES) {
+        if (values.containsKey(n)) {
+          fi.add(n, values.get(n));
+        }
+      }
+      files.add(fi);
+      if (extension != null) {
+        try {
+          extension.seeFile(name, fi);
+        } catch (Exception e) {
+          log.warn("Unable to add " + name + " to the package index " + dbFilename + ": " + e.getMessage());
         }
       }
     }

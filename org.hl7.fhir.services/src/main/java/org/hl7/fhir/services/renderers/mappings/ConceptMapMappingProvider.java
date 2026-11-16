@@ -31,7 +31,15 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
 
   @Override
   public Column makeColumn(String id) {
-    return new Column(id, map.getName(), dest.present(), map.getWebPath());
+    return new Column(id, columnTitle(), dest.present(), map.getWebPath());
+  }
+
+  // name is optional in a ConceptMap, and the table rejects an empty title cell
+  private String columnTitle() {
+    if (map.hasName()) {
+      return map.getName();
+    }
+    return map.hasTitle() ? map.getTitle() : map.getIdBase();
   }
 
   @Override
@@ -86,13 +94,18 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
       x.ahOrNot(relationshipHref(tgt.getRelationship().toCode())).tx(rel(tgt.getRelationship()));
     }
     x.tx(" ");
-    x.ah(ref()+"#"+tgt.getCode()).tx(tgt.getCode());
+    x.ah(ref()+"#"+elementAnchor(tgt.getCode())).tx(tgt.getCode());
     if (tgt.hasComment()) {
       XhtmlNode i = x.i();
       i.tx(" (");
       i.tx(tgt.getComment());
       i.tx(")");
     }
+  }
+
+  // the structure tables build their anchors with [ and ] replaced by _ (e.g. Observation.value_x_)
+  private String elementAnchor(String id) {
+    return id.replace("[", "_").replace("]", "_");
   }
 
   private String rel(ConceptMapRelationship rel) {
