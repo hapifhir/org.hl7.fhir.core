@@ -63,6 +63,7 @@ import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
 import org.hl7.fhir.standalone.terminology.validation.VSCheckerException;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
@@ -584,7 +585,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     String vstatus = determineStatus(cs, def);
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
-        ValueSetExpansionContainsComponent t = addCode(wc, system, version, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignationList(), expParams,
+        ValueSetExpansionContainsComponent t = addCode(wc, system, version, code, def.getDisplay(), cs.getLanguage(), parent, withLanguage(cs, def.getDesignationList()), expParams,
           abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getPropertyList()), cs,
           null, def.getExtension(), null, exp, vstatus) ;
         if (np == null) {
@@ -936,8 +937,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        //Switch to VALUESET_TOO_COSTLY_COUNT for more verbose output. Commented parameters should remain in case this is needed.
-        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
+        // the size is known, so say it (as the other servers do); the message id reported is still VALUESET_TOO_COSTLY
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -1122,8 +1123,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
-        //Switch to VALUESET_TOO_COSTLY_COUNT for more verbose output. Commented parameters should remain in case this is needed.
-        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
+        // the size is known, so say it (as the other servers do); the message id reported is still VALUESET_TOO_COSTLY
+        throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
@@ -1789,9 +1790,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
             } else if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
               addExampleWarning(exp, cs);
             } else {
-              if (checkCodesWhenExpanding) {
-                throw createTerminologyServiceException("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
-              }
+              // the internal terminology server is strict about this: the code system and the value set
+              // are expected to agree (terminology versions are controlled more tightly here than in the
+              // general ecosystem), so a listed code the code system doesn't have is an error, not a warning
+              throw unknownCodeError(I18nConstants.VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR, c.getCode(), cs.getVersionedUrl());
             }
           } else {
             def.checkNoModifiers("Code in Code System", "expanding");
@@ -1799,7 +1801,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
             isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
             String vstatus = determineStatus(cs, def);
             addCode(dwc, inc.getSystem(), cs.getVersion(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(),
-              null, mergeDesignations(def, convertDesignations(c.getDesignationList())), expParams, isAbstract, inactive, imports, noInactive, false,
+              null, mergeDesignations(cs, def, convertDesignations(c.getDesignationList())), expParams, isAbstract, inactive, imports, noInactive, false,
               exp.getPropertyList(), makeCSProps(def.getDefinition(), def.getPropertyList()), cs, null, def.getExtension(), c.getExtension(), exp, vstatus);
           }
         }
@@ -1824,6 +1826,30 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  /**
+   * A code that the value set names (listed, or as the value of a concept filter) isn't in its
+   * (complete) code system: the value set can't be expanded. An error, with the issue the client
+   * gets (code-invalid / invalid-code), rather than a warning on the expansion
+   */
+  private VSCheckerException unknownCodeError(String msgId, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    List<OperationOutcomeIssueComponent> issues = makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, null, msg, OpIssueCode.InvalidCode, null, msgId);
+    return new VSCheckerException(msg, issues, TerminologyServiceErrorClass.PROCESSING);
+  }
+
+  /**
+   * The value of a concept filter (is-a, descendent-of, child-of) isn't a code in the code system. For an
+   * include in a complete code system, that's an error: the value set can't be expanded (see unknownCodeError).
+   * Otherwise (an exclude, or a code system that isn't complete) it's what it always was
+   */
+  private FHIRException unknownFilterCode(ConceptSetComponent inc, CodeSystem cs, ConceptSetFilterComponent fc, boolean exclude) {
+    if (!exclude && cs.getContent() == CodeSystemContentMode.COMPLETE) {
+      return unknownCodeError(I18nConstants.VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR, fc.getProperty(), fc.getOp().toCode(), fc.getValue(), cs.getVersionedUrl());
+    } else {
+      return createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+    }
+  }
+
   private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, 
       ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters, boolean exclude, String vspath)
       throws OperationIsTooCostly {
@@ -1838,8 +1864,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty()) ) && fc.getOp() == FilterOperator.ISA) {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConceptList(), fc.getValue());
-      if (def == null)
-        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+      if (def == null) {
+        throw unknownFilterCode(inc, cs, fc, exclude);
+      }
       if (exclude) {
         excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, new AllConceptsFilter(allErrors), filters, exp, Integer.MAX_VALUE);
       } else {
@@ -1860,8 +1887,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.DESCENDENTOF) {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConceptList(), fc.getValue());
-      if (def == null)
-        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+      if (def == null) {
+        throw unknownFilterCode(inc, cs, fc, exclude);
+      }
       for (ConceptDefinitionComponent c : def.getConceptList())
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp, Integer.MAX_VALUE);
@@ -1881,8 +1909,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.CHILDOF) {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConceptList(), fc.getValue());
-      if (def == null)
-        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+      if (def == null) {
+        throw unknownFilterCode(inc, cs, fc, exclude);
+      }
       for (ConceptDefinitionComponent c : def.getConceptList())
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp, 0);
@@ -1914,7 +1943,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
               excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
             } else {
               String vstatus = determineStatus(cs, def);
-              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignationList(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, withLanguage(cs, def.getDesignationList()), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
                 imports, noInactive, false, exp.getPropertyList(), makeCSProps(def.getDefinition(), def.getPropertyList()), cs, null, def.getExtension(), null, exp, vstatus);
             }
           }
@@ -1944,7 +1973,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                 excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
               } else {
                 String vstatus = determineStatus(cs, def);
-                addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignationList(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+                addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, withLanguage(cs, def.getDesignationList()), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
                   imports, noInactive, false, exp.getPropertyList(), makeCSProps(def.getDefinition(), def.getPropertyList()), cs, null, def.getExtension(), null, exp, vstatus);
               }
             }
@@ -1988,11 +2017,36 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return Utilities.existsInList(property, "notSelectable");
   }
 
-  private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
+  /**
+   * A designation with no language of its own is in its code system's language (CodeSystem.language), so it
+   * goes into the expansion with that language. Returns the list unchanged if there is nothing to fill in,
+   * else a new list with copies that have the language. A designation merged in from a supplement that has
+   * no language (see CodeSystemUtilities.mergeSupplements) is left alone: its language is unknown
+   */
+  private List<ConceptDefinitionDesignationComponent> withLanguage(CodeSystem cs, List<ConceptDefinitionDesignationComponent> designations) {
+    if (cs == null || !cs.hasLanguage() || designations == null) {
+      return designations;
+    }
+    List<ConceptDefinitionDesignationComponent> res = null;
+    for (int i = 0; i < designations.size(); i++) {
+      ConceptDefinitionDesignationComponent d = designations.get(i);
+      if (!d.hasLanguage() && !d.hasUserData(UserDataNames.tx_designation_no_language)) {
+        if (res == null) {
+          res = new ArrayList<>(designations);
+        }
+        ConceptDefinitionDesignationComponent c = d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA));
+        c.setLanguage(cs.getLanguage());
+        res.set(i, c);
+      }
+    }
+    return res == null ? designations : res;
+  }
+
+  private List<ConceptDefinitionDesignationComponent> mergeDesignations(CodeSystem cs, ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
     if (def != null) {
-      res.addAll(def.getDesignationList());
+      res.addAll(withLanguage(cs, def.getDesignationList()));
     }
     res.addAll(list);
     return res;

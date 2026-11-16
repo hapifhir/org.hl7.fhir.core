@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.*;
@@ -949,6 +950,20 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
+  // a designation with no language of its own is in its code system's language - for a supplement, the
+  // supplement's language, not the base code system's. If the supplement doesn't have one, the designation's
+  // language is unknown, and it is marked so that it doesn't get the base code system's language either
+  private static ConceptDefinitionDesignationComponent supplementDesignation(CodeSystem supplement, ConceptDefinitionDesignationComponent d) {
+    if (!d.hasLanguage()) {
+      if (supplement.hasLanguage()) {
+        d.setLanguage(supplement.getLanguage());
+      } else {
+        d.setUserData(UserDataNames.tx_designation_no_language, true);
+      }
+    }
+    return d;
+  }
+
   private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements, List<Map<String, ConceptDefinitionComponent>> supplementIndexes) {
     for (int i = 0; i < supplements.size(); i++) {
       CodeSystem cs = supplements.get(i);
@@ -963,7 +978,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           fdef.addDesignation().setLanguage(cs.getLanguage()).setValue(def.getDisplay());
         }
         for (ConceptDefinitionDesignationComponent d : def.getDesignationList()) {
-          fdef.addDesignation(d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
+          fdef.addDesignation(supplementDesignation(cs, d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA))));
         }
         for (ConceptPropertyComponent p : def.getPropertyList()) {
           PropertyComponent pd = CodeSystemUtilities.getPropertyDefinition(cs, p);

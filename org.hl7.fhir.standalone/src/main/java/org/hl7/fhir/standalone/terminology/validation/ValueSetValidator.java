@@ -1012,6 +1012,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 valueset.getVersionedUrl() : "(unidentified)", "'" + code.toString() + "'");
               res.addMessage(msg).setSeverity(IssueSeverity.ERROR);
               res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.NotInVS, null, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE));
+              addInvalidValueSetIssues(res);
               res.mineIssues(res.getIssues());
               res.setUnknownSystems(unknownSystems);
             }
@@ -1034,6 +1035,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
         res.addMessage(msg);
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.NotInVS, null, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE));
+        addInvalidValueSetIssues(res);
         res.mineIssues(res.getIssues());
       }
     }
@@ -1069,6 +1071,46 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
 
     return res;
+  }
+
+  /**
+   * The code isn't in the value set: if the value set itself is invalid - it names codes that its
+   * (complete) code systems don't have, either listed or as the value of a concept filter - say so
+   * too, since that may be why. The value set can't be expanded (see ValueSetExpander), and the
+   * internal terminology server treats that as an error
+   */
+  private void addInvalidValueSetIssues(ValidationResult res) {
+    if (valueset == null || !valueset.hasCompose()) {
+      return;
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getIncludeList()) {
+      opContext.deadCheck("addInvalidValueSetIssues");
+      if (!inc.hasSystem()) {
+        continue;
+      }
+      CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion(), inc, valueset);
+      if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+        continue;
+      }
+      List<String> reasons = new ArrayList<>();
+      for (ConceptReferenceComponent c : inc.getConceptList()) {
+        if (CodeSystemUtilities.findCodeOrAltCode(cs.getConceptList(), c.getCode(), null) == null && CodeSystemUtilities.findReservedCodeConcept(cs, c.getCode()) == null) {
+          reasons.add(context.formatMessage(I18nConstants.VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR, c.getCode(), cs.getVersionedUrl()));
+        }
+      }
+      for (ConceptSetFilterComponent f : inc.getFilterList()) {
+        if (f.hasValue() && Utilities.existsInList(f.getProperty(), "concept", "code") && f.getOp() != null
+            && Utilities.existsInList(f.getOp().toCode(), "=", "is-a", "descendent-of", "child-of", "descendent-leaf", "generalizes")
+            && CodeSystemUtilities.findCodeOrAltCode(cs.getConceptList(), f.getValue(), null) == null) {
+          reasons.add(context.formatMessage(I18nConstants.VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR, f.getProperty(), f.getOp().toCode(), f.getValue(), cs.getVersionedUrl()));
+        }
+      }
+      for (String reason : reasons) {
+        String m = context.formatMessage(I18nConstants.VALUESET_INVALID_FOR_VALIDATION, valueset.getVersionedUrl(), reason);
+        res.addMessage(m);
+        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, null, m, OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_INVALID_FOR_VALIDATION));
+      }
+    }
   }
 
   private String getCodeSystemVersionFromValueSet(String system, String version, String code, String display) {
