@@ -8,13 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import org.hl7.fhir.utilities.xslt.XsltUtilities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Demonstrates local-file disclosure via an XML external entity whose SYSTEM identifier is an
- * absolute path, resolved by MyURIResolver / ZipURIResolver in the resolver-bearing
+ * absolute path, resolved by XsltURIResolver / XsltZipURIResolver in the resolver-bearing
  * saxonTransform and transform overloads. Also checks that ordinary transforms and stylesheet
  * includes still work through those overloads.
  */

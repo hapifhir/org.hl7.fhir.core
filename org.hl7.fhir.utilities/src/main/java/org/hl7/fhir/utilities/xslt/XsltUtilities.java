@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities.xslt;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.XMLConstants;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.xml.sax.InputSource;
@@ -66,10 +67,10 @@ public class XsltUtilities {
     TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
+    f.setURIResolver(new XsltZipURIResolver(files));
     Transformer t = f.newTransformer(xsrc);
 
-    t.setURIResolver(new ZipURIResolver(files));
+    t.setURIResolver(new XsltZipURIResolver(files));
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     t.transform(newXXEProtectedSource(new ByteArrayInputStream(source)), new StreamResult(out));
     return out.toByteArray();
@@ -79,10 +80,10 @@ public class XsltUtilities {
     TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
+    f.setURIResolver(new XsltZipURIResolver(files));
     Transformer t = f.newTransformer(xsrc);
 
-    t.setURIResolver(new ZipURIResolver(files));
+    t.setURIResolver(new XsltZipURIResolver(files));
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     t.transform(newXXEProtectedSource(new ByteArrayInputStream(source)), new StreamResult(out));
     return out.toByteArray();
@@ -107,7 +108,7 @@ public class XsltUtilities {
     TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
+    f.setURIResolver(new XsltURIResolver(xsltDir, alt));
     Transformer t = f.newTransformer(xsrc);
     if (params != null) {
       for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -115,7 +116,7 @@ public class XsltUtilities {
       }
     }
 
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
+    t.setURIResolver(new XsltURIResolver(xsltDir, alt));
     try (FileInputStream fso = ManagedFileAccess.inStream(source);
          FileOutputStream fsr = ManagedFileAccess.outStream(dest)) {
       t.transform(newXXEProtectedSource(fso), new StreamResult(fsr));
@@ -126,10 +127,10 @@ public class XsltUtilities {
 
     TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
+    f.setURIResolver(new XsltURIResolver(xsltDir, alt));
     Transformer t = f.newTransformer(xsrc);
 
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
+    t.setURIResolver(new XsltURIResolver(xsltDir, alt));
     try (FileInputStream fss = ManagedFileAccess.inStream(source);
          FileOutputStream fsr = ManagedFileAccess.outStream(dest)) {
       t.transform(newXXEProtectedSource(fss), new StreamResult(fsr));

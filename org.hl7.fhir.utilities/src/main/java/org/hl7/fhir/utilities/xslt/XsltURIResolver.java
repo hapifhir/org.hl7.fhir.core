@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities.xslt;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -69,14 +69,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-public class MyURIResolver implements URIResolver {
+public class XsltURIResolver implements URIResolver {
 
   private final String path;
   private final URIResolver alt;
   
-  public MyURIResolver(String path, URIResolver alt) {
+  public XsltURIResolver(String path, URIResolver alt) {
     super();
     this.path = path;
     this.alt = alt;

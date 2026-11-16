@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities.xslt;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -69,12 +69,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
-public class ZipURIResolver implements URIResolver {
+public class XsltZipURIResolver implements URIResolver {
 
   private Map<String, byte[]> files;
   
   
-  public ZipURIResolver(Map<String, byte[]> files) {
+  public XsltZipURIResolver(Map<String, byte[]> files) {
     super();
     this.files = files;
   }
