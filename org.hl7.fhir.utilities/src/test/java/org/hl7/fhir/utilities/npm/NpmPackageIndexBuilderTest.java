@@ -62,4 +62,43 @@ class NpmPackageIndexBuilderTest {
     assertFalse(file.has("derivation"));
 
   }
+
+  // Media.type and Media.content are complex: they must not be indexed, and nothing inside them (e.g. content.id)
+  // may be taken as a root property. Shape taken from US Core's Media-chest-xray example
+  static final String MEDIA = "{\"resourceType\":\"Media\",\"id\":\"chest-xray\",\"status\":\"completed\","
+    + "\"type\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/media-type\",\"code\":\"image\"}]},"
+    + "\"modality\":{\"coding\":[{\"system\":\"http://snomed.info/sct\",\"version\":\"http://snomed.info/sct/731000124108\",\"code\":\"399208008\"}]},"
+    + "\"subject\":{\"reference\":\"Patient/example\"},"
+    + "\"content\":{\"id\":\"a1\",\"contentType\":\"image/jpeg\",\"url\":\"http://example.org/Binary/A12345\"}}";
+
+  @Test
+  void testComplexRootPropertiesAreNotIndexed() throws Exception {
+    final var builder = new NpmPackageIndexBuilder();
+    builder.start(null);
+    builder.seeFile("Media-chest-xray.json", MEDIA.getBytes(StandardCharsets.UTF_8));
+    // DocumentReference.content is an array, and the url inside it must not be taken
+    builder.seeFile("DocumentReference-dr.json", ("{\"resourceType\":\"DocumentReference\",\"content\":[{\"attachment\":{\"url\":\"http://example.org/a\"}}],"
+      + "\"id\":\"dr\",\"type\":{\"text\":\"note\"}}").getBytes(StandardCharsets.UTF_8));
+
+    final var files = JsonParser.parseObject(builder.build()).getJsonArray("files");
+    assertEquals(2, files.size());
+
+    var file = (JsonObject) files.get(0);
+    assertEquals("{\"filename\":\"Media-chest-xray.json\",\"resourceType\":\"Media\",\"id\":\"chest-xray\"}", JsonParser.compose(file, false));
+
+    file = (JsonObject) files.get(1);
+    assertEquals("{\"filename\":\"DocumentReference-dr.json\",\"resourceType\":\"DocumentReference\",\"id\":\"dr\"}", JsonParser.compose(file, false));
+  }
+
+  @Test
+  void testUnreadableFileIsNotIndexed() throws Exception {
+    final var builder = new NpmPackageIndexBuilder();
+    builder.start(null);
+    builder.seeFile("Patient-broken.json", "{\"resourceType\":\"Patient\",\"id\":\"broken\",\"name\":[".getBytes(StandardCharsets.UTF_8));
+    builder.seeFile("Patient-ok.json", "{\"id\":\"ok\",\"resourceType\":\"Patient\"}".getBytes(StandardCharsets.UTF_8));
+
+    final var files = JsonParser.parseObject(builder.build()).getJsonArray("files");
+    assertEquals(1, files.size());
+    assertEquals("{\"filename\":\"Patient-ok.json\",\"resourceType\":\"Patient\",\"id\":\"ok\"}", JsonParser.compose((JsonObject) files.get(0), false));
+  }
 }

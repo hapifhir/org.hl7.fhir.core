@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -551,7 +550,7 @@ public class SnapShotGenerationTests {
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
 //    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")), test.getOutput());
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -614,9 +613,9 @@ public class SnapShotGenerationTests {
     StructureDefinition sdc = test.getSource().copy();
     new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential(), sdc);
     if (test.sourceJson) {
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json"), sdc);
     } else {
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml"), sdc);
     }
 
 
@@ -652,9 +651,9 @@ public class SnapShotGenerationTests {
       }
 //      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(dst));
       if (test.json) {
-        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);        
+        new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dst.getAbsolutePath(), output);        
       } else {
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(dst.getAbsolutePath(), output);
       }
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);

@@ -2,9 +2,7 @@ package org.hl7.fhir.r4.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -36,10 +34,10 @@ public class ResourceRoundTripTests {
   @Disabled
   void test() throws FHIRException {
     assertDoesNotThrow(() -> {
-      Resource res = new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("unicode.xml")));
+      Resource res = new XmlParser().parseFile(TestingUtilities.resourceNameToFile("unicode.xml"));
       new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
       new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-          .compose(ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
+          .composeFile(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml"), res);
     });
   }
 

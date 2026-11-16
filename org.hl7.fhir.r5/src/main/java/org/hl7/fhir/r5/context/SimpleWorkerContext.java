@@ -776,7 +776,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) {
   	Resource r; 
   	try {
-  		r = p.parse(ManagedFileAccess.inStream(filename));
+  		r = p.parseFile(filename);
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           cacheResource(e.getResource());

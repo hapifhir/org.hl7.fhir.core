@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class JsonResourceTemplateFixer {
           JsonParser.compose(j, tgt, true);
           try {
             var res = new org.hl7.fhir.r5.formats.JsonParser().parse(FileUtilities.fileToBytes(tgt));
-            new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(tgt), res);
+            new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(tgt, res);
           } catch (Exception e) {
             System.out.println("Error reading "+tgt.getAbsolutePath()+": "+e.getMessage());
           }

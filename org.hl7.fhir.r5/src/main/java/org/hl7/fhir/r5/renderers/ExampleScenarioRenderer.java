@@ -194,8 +194,9 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     plantUml.append(actorKeys.get(op.getInitiator()) + " -> " + actorKeys.get(op.getReceiver()) + ": ");
     plantUml.append(creolLink(op.getTitle(), "#" + context.prefixAnchor(prefixes.get(op)), op.getDescription()));
     if (op.hasRequest()) {
-      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
+      plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")");
     }
+    plantUml.append("\r\n");
     if (op.hasResponse()) {
       plantUml.append("activate " + actorKeys.get(op.getReceiver()) + "\r\n");
       plantUml.append(actorKeys.get(op.getReceiver()) + " --> " + actorKeys.get(op.getInitiator()) + ": ");
@@ -247,7 +248,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       actorKeys.add(actor.getKey());
     }
     plantUml += String.join(", ", actorKeys);
-    plantUml += " " + text;
+    plantUml += " " + text + "\r\n";
     return plantUml;
   }
 
