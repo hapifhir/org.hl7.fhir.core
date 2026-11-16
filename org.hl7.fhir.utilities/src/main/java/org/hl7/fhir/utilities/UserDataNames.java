@@ -28,7 +28,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_SORT_ed_index = "ed.index";
   public static final String SNAPSHOT_diff_source = "diff-source";
   public static final String SNAPSHOT_ORIGINAL_MARKDOWN = "SNAPSHOT_ORIGINAL_MARKDOWN"; // on markdown in a snapshot element where relative links were made absolute: the text before that was done
-  public static final String SNAPSHOT_diff_processed = "diff-processed"; // on a differential element: the copy of it that the snapshot generator processed (which has the SNAPSHOT_DERIVATION_EQUALS marks on its values)
+  public static final String SNAPSHOT_diff_doc_changed = "diff-doc-changed"; // on a differential element: Boolean - whether its documentation differs from the base, worked out when the snapshot was generated (see ProfileUtilities.hasDocumentationChanges)
   public static final String SNAPSHOT_regeneration_tracker = "hack.regnerated";
   
   public static final String LANGUTILS_ORPHAN = "translations.orphans";

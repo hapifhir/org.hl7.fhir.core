@@ -137,6 +137,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_SUPP_FORM = "CAPABILITY_SUPP_FORM";
   public static final String CAPABILITY_SUPP_PATCH_FORM = "CAPABILITY_SUPP_PATCH_FORM";
   public static final String CAPABILITY_SUPP_PROFS = "CAPABILITY_SUPP_PROFS";
+  public static final String CAPABILITY_SUPPORTED = "CAPABILITY_SUPPORTED";
   public static final String CAPABILITY_SUPP_MSGS = "CAPABILITY_SUPP_MSGS";
   public static final String CAPABILITY_ENDPOINTS = "CAPABILITY_ENDPOINTS";
   public static final String CAPABILITY_SUPP_THE = "CAPABILITY_SUPP_THE";

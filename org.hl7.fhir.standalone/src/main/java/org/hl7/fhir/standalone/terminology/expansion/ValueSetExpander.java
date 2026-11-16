@@ -63,7 +63,6 @@ import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
 import org.hl7.fhir.standalone.terminology.validation.VSCheckerException;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
@@ -149,7 +148,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   @Getter @Setter
   private boolean noTerminologyServer;
-  private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
   private boolean debug;
   private boolean reportingOnVersionsInContains;
@@ -2109,14 +2107,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private String key(ValueSetExpansionContainsComponent c) {
     return key(c.getSystem(), c.getVersion(), c.getCode());
-  }
-
-  public boolean isCheckCodesWhenExpanding() {
-    return checkCodesWhenExpanding;
-  }
-
-  public void setCheckCodesWhenExpanding(boolean checkCodesWhenExpanding) {
-    this.checkCodesWhenExpanding = checkCodesWhenExpanding;
   }
 
   private boolean passesOtherFilters(List<WorkingContext> otherFilters, CodeSystem cs, String code) {

@@ -64,7 +64,7 @@
           "Validation"
         ],
         "summary": "Validate a FHIR resource",
-        "description": "Validates the posted resource against the base specification for the FHIR version the\nserver was started with, plus any profiles supplied in `Resource.meta.profile` or in the\n`profile` query parameter.\n\nEvery query parameter is optional, but an **unrecognised** parameter name is an error:\nthe request fails with `400` and an `OperationOutcome` reading\n`Unable to process param <name>=<value>`. The same `400` is returned when a value cannot\nbe parsed (`bestPractice`, `checkDisplay`, `resourceIdRule`, and the three numeric\nparameters).\n\nEnum values are case sensitive where the underlying enum is matched by name\n(`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code\n(`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`,\n`r5BundleRelativeReferencePolicy`).\n",
+        "description": "Validates the posted resource against the base specification for the FHIR version the\nserver was started with, plus any profiles supplied in `Resource.meta.profile` or in the\n`profile` query parameter.\n\nEvery query parameter is optional, but an **unrecognised** parameter name is an error:\nthe request fails with `400` and an `OperationOutcome` reading\n`Unable to process param <name>=<value>`. The same `400` is returned when a value cannot\nbe parsed (`bestPractice`, `checkDisplay`, `resourceIdRule`, and the three numeric\nparameters).\n\nEnum values are case sensitive where the underlying enum is matched by name\n(`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code\n(`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`).\n",
         "parameters": [
           {
             "name": "profile",
@@ -202,21 +202,6 @@
                 "warning",
                 "error"
               ]
-            }
-          },
-          {
-            "name": "r5BundleRelativeReferencePolicy",
-            "in": "query",
-            "description": "Deprecated, and ignored: relative references in a Bundle always follow the R5 resolution rule. An unrecognised value still raises an unhandled exception rather than a `400`.",
-            "deprecated": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "default",
-                "never",
-                "always"
-              ],
-              "default": "default"
             }
           },
           {

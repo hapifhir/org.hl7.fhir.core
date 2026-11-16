@@ -925,8 +925,9 @@ public class ProfileUtilities {
               ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS));
             if (e.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER))
               ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER, e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER));
-            // so renderers can tell which of the values in the differential are the same as the base (#616)
-            ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_diff_processed, e);
+            // so renderers can tell whether the documentation in the differential differs from the base (#616). Just the
+            // answer - keeping the processed copy itself would keep a second copy of every differential alive
+            ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_diff_doc_changed, hasDocumentationChanges(e));
           }
           if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT)) {
             b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
@@ -2342,12 +2343,6 @@ public class ProfileUtilities {
 
 
   /**
-   * Finds internal references in an Element's Binding and StructureDefinition references (in TypeRef) and bases them on the given url
-   * @param url - the base url to use to turn internal references into absolute references
-   * @param element - the Element to update
-   * @return - the updated Element
-   */
-  /**
    * when relative links in the markdown of a base element are made absolute, keep the original text, so that a 
    * differential that restates the original text is still recognised as the same (see sameMarkdown)
    */
@@ -2369,6 +2364,40 @@ public class ProfileUtilities {
         && derived.getValue().equals(base.getUserString(UserDataNames.SNAPSHOT_ORIGINAL_MARKDOWN));
   }
 
+  /**
+   * whether the documentation of a differential element (definition, comment, requirements, label, meaningWhenMissing,
+   * orderMeaning, isModifierReason, alias) says anything that the base doesn't. When the snapshot is generated, values in
+   * the (processed copy of the) differential that are the same as the base are marked SNAPSHOT_DERIVATION_EQUALS, and
+   * don't count; otherwise, anything stated counts (#616)
+   */
+  public static boolean hasDocumentationChanges(ElementDefinition ed) {
+    return (ed.hasDefinitionElement() && valueChanged(ed.getDefinitionElement())) || (ed.hasCommentElement() && valueChanged(ed.getCommentElement())) ||
+        (ed.hasRequirementsElement() && valueChanged(ed.getRequirementsElement())) || (ed.hasLabelElement() && valueChanged(ed.getLabelElement())) ||
+        (ed.hasMeaningWhenMissingElement() && valueChanged(ed.getMeaningWhenMissingElement())) || (ed.hasOrderMeaningElement() && valueChanged(ed.getOrderMeaningElement())) ||
+        (ed.hasIsModifierReasonElement() && valueChanged(ed.getIsModifierReasonElement())) || (ed.hasAlias() && listChanged(ed.getAlias()));
+  }
+
+  /** true if the value is present, and not marked as the same as the base (SNAPSHOT_DERIVATION_EQUALS) */
+  public static boolean valueChanged(PrimitiveType<?> value) {
+    return value != null && value.hasValue() && !value.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
+  }
+
+  /** true if any of the values is not marked as the same as the base (SNAPSHOT_DERIVATION_EQUALS) */
+  public static boolean listChanged(List<? extends Base> values) {
+    for (Base v : values) {
+      if (!v.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Finds internal references in an Element's Binding and StructureDefinition references (in TypeRef) and bases them on the given url
+   * @param url - the base url to use to turn internal references into absolute references
+   * @param element - the Element to update
+   * @return - the updated Element
+   */
   public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element, boolean processRelatives) {
     if (element != null) {
       ElementDefinition defn = element;

@@ -381,13 +381,6 @@ public class NarrativeGenerationTests {
   }
 
   /**
-   * The narrative for a StructureDefinition only contains the differential table. The IG publisher
-   * also renders the snapshot and must-support views, which go down different paths (snapshot = true,
-   * mustSupportOnly = true, a filtered element list), and the detailed view (data dictionary) of the snapshot.
-   * sdviews="snapshot,ms,dict" renders those too, each
-   * compared against output/[id]-[view].html
-   */
-  /**
    * Generating the snapshot links each differential element to the element it derives from in the base
    * definition (UserDataNames.SNAPSHOT_DERIVATION_POINTER). The differential view uses that link to show
    * the inherited values (cardinality, flags) de-emphasized, so a test of that needs a generated snapshot
@@ -404,6 +397,13 @@ public class NarrativeGenerationTests {
     rc.getProfileUtilities().generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
   }
 
+  /**
+   * The narrative for a StructureDefinition only contains the differential table. The IG publisher
+   * also renders the snapshot and must-support views, which go down different paths (snapshot = true,
+   * mustSupportOnly = true, a filtered element list), and the detailed view (data dictionary) of the snapshot.
+   * sdviews="snapshot,ms,dict" renders those too, each
+   * compared against output/[id]-[view].html
+   */
   private void checkStructureDefinitionView(String id, TestDetails test, StructureDefinition sd, String view, RenderingContext rc) throws Exception {
     StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(rc);
     ResourceWrapper res = ResourceWrapper.forResource(rc.getContextUtilities(), sd);

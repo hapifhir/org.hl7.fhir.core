@@ -455,7 +455,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void supportedWithConformance(XhtmlNode n, Element op) {
     String expectation = expectationForDisplay(op, EXPECTATION);
     if (Utilities.noString(expectation)) {
-      conformanceIcon(n, "conf-required.png", "supported");
+      conformanceIcon(n, "conf-required.png", context.formatPhrase(RenderingI18nContext.CAPABILITY_SUPPORTED));
     } else if (expectation.equals("SHOULD")) {
       conformanceIcon(n, "conf-should.png", expectation);
     } else if (expectation.equals("MAY")) {
@@ -1649,7 +1649,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String capExpectation = expectationForDisplay(e, EXPECTATION);
     if (!Utilities.noString(capExpectation)) {
       parent.addText(" (");
-      parent.ah("https://hl7.org/fhir/conformance-rules.html#conflang").addText(capExpectation);
+      parent.ah(Utilities.pathURL(context.getLink(RenderingContext.KnownLinkType.SPEC, true), "conformance-rules.html#conflang")).addText(capExpectation);
       parent.addText(")");
     }
   }
@@ -1658,7 +1658,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
     if (!context.isInferResourceConformance())
-      return "supported";
+      return context.formatPhrase(RenderingI18nContext.CAPABILITY_SUPPORTED);
     boolean shalls = false;
     boolean shoulds = false;
     boolean mays = false;
@@ -1699,7 +1699,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (shoulds) return "SHOULD";
     if (mays) return "MAY";
     if (shouldnots) return "SHOULD NOT";
-    return "supported";
+    return context.formatPhrase(RenderingI18nContext.CAPABILITY_SUPPORTED);
   }
 
   private String getProfileExpectation(CanonicalType r) {

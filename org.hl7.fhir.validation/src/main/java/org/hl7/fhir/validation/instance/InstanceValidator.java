@@ -680,7 +680,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setAllowDoubleQuotesInFHIRPath(parameters.isAllowDoubleQuotesInFHIRPath());
     setNoUnicodeBiDiControlChars(parameters.isNoUnicodeBiDiControlChars());
     setDoImplicitFHIRPathStringConversion(parameters.isDoImplicitFHIRPathStringConversion());
-    getSettings().setR5BundleRelativeReferencePolicy(parameters.getR5BundleRelativeReferencePolicy());
     setJurisdiction(CodeSystemUtilities.readCoding(parameters.getJurisdiction()));
     getSettings().getUsageContexts().clear(); // should be empty - the settings are fresh - but this method is public
     for (String usage : parameters.getUsages()) {

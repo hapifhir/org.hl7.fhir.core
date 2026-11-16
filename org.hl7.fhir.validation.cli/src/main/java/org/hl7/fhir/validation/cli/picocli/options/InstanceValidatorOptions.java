@@ -153,14 +153,6 @@ public class InstanceValidatorOptions {
   public String outputStyle;
 
   // Enum fields
-  @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
-    description = """
-  Deprecated, and ignored: the R5 bundle resolution rules for relative references now apply to all versions
-  (was: control R5 bundle resolution policy (always, never, default))
-  """)
-  @With
-  public String r5BundleRelativeReferencePolicy;
-
   @CommandLine.Option(names = {"-questionnaire"},
     description = """
     What to do when validating QuestionnaireResponse resources (none, check, required)

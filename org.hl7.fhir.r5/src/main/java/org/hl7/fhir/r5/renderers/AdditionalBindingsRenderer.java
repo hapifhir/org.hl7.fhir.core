@@ -234,7 +234,7 @@ public class AdditionalBindingsRenderer {
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
     // the heading links to the definition of additional bindings (#922), and the headings are bold (#958)
-    boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getVersion());
+    boolean r5 = isR5();
     String abLink = r5 ? Utilities.pathURL(corePath, "elementdefinition-definitions.html#ElementDefinition.binding.additional") : "http://hl7.org/fhir/tools/StructureDefinition-additional-binding.html";
     tr.td().style("font-size: 11px").b().ah(abLink).tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_ADD_BIND));
     tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PURPOSE));
@@ -383,8 +383,13 @@ public class AdditionalBindingsRenderer {
     return Utilities.isAbsoluteUrl(url) || !pkp.prependLinks() ? url : corePath + url;
   }
 
+  /** whether the version being rendered is R5 or later, where additional bindings are part of ElementDefinition, rather than an extension */
+  private boolean isR5() {
+    return context != null && context.getWorker() != null && VersionUtilities.isR5Plus(context.getWorker().getVersion());
+  }
+
   public void renderPurpose(XhtmlNode td, String purpose) {
-    boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getVersion());
+    boolean r5 = isR5();
     switch (purpose) {
     case "maximum": 
       td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", context.formatPhrase(RenderingI18nContext.ADD_BIND_EXT_PREF)).tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_MAX));

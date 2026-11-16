@@ -1517,17 +1517,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
    * Each one links to the element's definition, where the details are
    */
   private void addOtherChanges(HierarchicalTableGenerator gen, Cell c, ElementDefinition element, String ref) {
-    // when the snapshot is generated, values in the (processed copy of the) differential that are the same as the 
-    // base are marked (SNAPSHOT_DERIVATION_EQUALS); those don't count. Otherwise, anything stated in the differential counts. 
-    // Mappings are taken from the differential itself - the processed copy has the base mappings merged into it
-    ElementDefinition p = element.hasUserData(UserDataNames.SNAPSHOT_diff_processed) ? (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_diff_processed) : element;
+    // whether the documentation differs from the base was worked out when the snapshot was generated (see
+    // ProfileUtilities.hasDocumentationChanges); if it hasn't been, anything stated in the differential counts.
+    // Mappings are taken from the differential itself (the processed copy has the base mappings merged into it)
+    boolean docChanged = element.hasUserData(UserDataNames.SNAPSHOT_diff_doc_changed) ? (Boolean) element.getUserData(UserDataNames.SNAPSHOT_diff_doc_changed) : ProfileUtilities.hasDocumentationChanges(element);
     List<String> changes = new ArrayList<>();
-    if (listChanged(element.getMappingList())) {
+    if (element.hasMapping() && ProfileUtilities.listChanged(element.getMappingList())) {
       changes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES_MAPPINGS));
     }
-    if (valueChanged(p.getDefinitionElement()) || valueChanged(p.getCommentElement()) || valueChanged(p.getRequirementsElement()) || 
-        valueChanged(p.getLabelElement()) || valueChanged(p.getMeaningWhenMissingElement()) || valueChanged(p.getOrderMeaningElement()) || 
-        valueChanged(p.getIsModifierReasonElement()) || listChanged(p.getAliasList())) {
+    if (docChanged) {
       changes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_OTHER_CHANGES_DOCUMENTATION));
     }
     if (!changes.isEmpty()) {
@@ -1556,18 +1554,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return p;
   }
 
-  private boolean valueChanged(PrimitiveType<?> value) {
-    return value != null && value.hasValue() && !value.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
-  }
-
-  private boolean listChanged(List<? extends Base> values) {
-    for (Base v : values) {
-      if (!v.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
-        return true;
-      }
-    }
-    return false;
-  }
  
   private boolean isNoExtensions(ElementDefinition element) {
     String path = element.hasBase() && element.getBase().hasPath() ? element.getBase().getPath() : element.getPath();

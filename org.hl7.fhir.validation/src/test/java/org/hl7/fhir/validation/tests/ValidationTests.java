@@ -70,7 +70,6 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.IgLoader.IDirectPackageProvider;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -476,9 +475,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     }
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
-    }
-    if (content.has("r5-bundle-relative-reference-policy")) {
-      val.getSettings().setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(content.get("r5-bundle-relative-reference-policy").getAsString()));
     }
     if (content.has("no-experimental-content")) {
       val.setNoExperimentalContent(content.get("no-experimental-content").getAsBoolean());

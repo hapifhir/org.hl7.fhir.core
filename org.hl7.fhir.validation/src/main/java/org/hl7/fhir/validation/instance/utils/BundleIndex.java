@@ -130,9 +130,16 @@ public class BundleIndex {
       }
     }
     // a built index is never changed, so callers can't change the lists either
-    index.byFullUrl.replaceAll((k, v) -> Collections.unmodifiableList(v));
-    index.byTypeAndId.replaceAll((k, v) -> Collections.unmodifiableList(v));
+    freeze(index.byFullUrl);
+    freeze(index.byTypeAndId);
     return index;
+  }
+
+  // (a loop rather than Map.replaceAll, which checkstyle mistakes for String.replaceAll)
+  private static void freeze(Map<String, List<Element>> map) {
+    for (Map.Entry<String, List<Element>> e : map.entrySet()) {
+      e.setValue(Collections.unmodifiableList(e.getValue()));
+    }
   }
 
   private static void add(Map<String, List<Element>> map, String key, Element entry) {
@@ -165,27 +172,29 @@ public class BundleIndex {
    * @return the entry in this bundle that contains the element, or null if it's not in this bundle.
    *
    * Walks up the validator parent chain (see InstanceValidator.setParents), so it costs the depth of the element,
-   * not the size of the bundle. If the parent chain isn't available, falls back to searching the entries
+   * not the size of the bundle. Only if the element has no parent chain at all does it search the entries. If the chain
+   * reaches a root without passing through one of this bundle's entries, the element isn't in this bundle (the parents
+   * are set over the whole tree, so searching the entries couldn't find it either)
    */
   public Element getEntryForElement(Element element) {
-    Element focus = element;
-    while (focus != null && focus.hasParentForValidator()) {
+    if (entryIndex.containsKey(element)) {
+      return element;
+    }
+    if (!element.hasParentForValidator()) {
+      // no parent chain - search the hard way
+      for (Element entry : entries) {
+        if (entry.hasDescendant(element)) {
+          return entry;
+        }
+      }
+      return null;
+    }
+    Element focus = element.getParentForValidator();
+    while (focus != null) {
       if (entryIndex.containsKey(focus)) {
         return focus;
       }
-      focus = focus.getParentForValidator();
-    }
-    if (focus == null) {
-      return null; // walked all the way to the root: it's not in this bundle
-    }
-    if (entryIndex.containsKey(focus)) {
-      return focus;
-    }
-    // no parent chain - search the hard way
-    for (Element entry : entries) {
-      if (entry.hasDescendant(element)) {
-        return entry;
-      }
+      focus = focus.hasParentForValidator() ? focus.getParentForValidator() : null;
     }
     return null;
   }
