@@ -111,6 +111,19 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("</pre>");
   }
 
+  @Override
+  public void logFailure(String error, long elapsed) {
+
+    log.debug(" txlog fail: " +error+" after "+elapsed+"ms");
+
+    if (file == null)
+      return;
+    req = false;
+    file.println("<pre>");
+    file.println("No Response ("+Utilities.escapeXml(Utilities.describeDuration(elapsed))+"): "+Utilities.escapeXml(error));
+    file.println("</pre>");
+  }
+
   private String present(byte[] body) {
     if (body == null) {
       return "";

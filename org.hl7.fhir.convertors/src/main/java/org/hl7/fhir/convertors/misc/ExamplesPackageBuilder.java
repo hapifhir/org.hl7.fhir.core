@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
@@ -26,7 +25,7 @@ public class ExamplesPackageBuilder {
     Set<String> set = new HashSet<>();
     for (File f : ManagedFileAccess.file(source).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        JsonObject obj = JsonParser.parseObject(ManagedFileAccess.inStream(f));
+        JsonObject obj = JsonParser.parseObject(f);
         if (obj.has("resourceType") && obj.has("id")) {
           String type = obj.asString("resourceType");
           String id = obj.asString("id");

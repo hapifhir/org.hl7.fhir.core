@@ -25,6 +25,7 @@ public class ExtensionDefinitions {
   public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
   public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
   public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
+  public static final String EXT_EXPANSION_ISSUE = "http://hl7.org/fhir/StructureDefinition/expansion-issue";
 
 
   // special cases: defined in earlier versions and still used, but no longer defined

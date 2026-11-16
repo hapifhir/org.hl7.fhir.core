@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -79,7 +78,7 @@ public class ObservationStatsBuilder {
     vitals(b, base, 130, 95, 133, 97, 37.2);
     vitals(b, base, 150, 85, 125, 98, 37.1);
 
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vitals.xml")), b);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "vitals.xml"), b);
   }
 
   private static void vitals(Bundle b, Calendar base, int minutes, int diastolic, int systolic, int sat, double temp) throws FHIRFormatError {
@@ -203,7 +202,7 @@ public class ObservationStatsBuilder {
     addAge(b, 10, 0, "31.9");
 
 
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "obs.xml")), b);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "obs.xml"), b);
   }
 
   private static void addAge(Bundle b, int y, int m, String v) throws FHIRException {
