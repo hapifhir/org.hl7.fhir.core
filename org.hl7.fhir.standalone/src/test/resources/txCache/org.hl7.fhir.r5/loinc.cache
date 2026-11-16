@@ -1,8 +1,7 @@
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
-    "inactive" : true,
     "include" : [{
       "system" : "http://loinc.org",
       "concept" : [{
@@ -45,19 +44,21 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/uv/sdc/Questionnaire/questionnaire-sdc-profile-example-render--contained[0]: ValueSet (ContainedResource/Questionnaire.contained[0]): native = ValueSet -> ValueSet[null]",
+  "title" : "Timing of harm assessment [AHRQ]",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:2797afd8-e555-497c-ac20-a3843fc60d6f",
-    "timestamp" : "2026-09-30T02:44:20.271Z",
+    "identifier" : "urn:uuid:b0586dbc-de0b-4765-9a6b-52803826d617",
+    "timestamp" : "2026-11-10T04:31:25.560Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -69,7 +70,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "property" : [{
       "code" : "label",
@@ -116,10 +117,9 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
-    "inactive" : true,
     "include" : [{
       "system" : "http://loinc.org",
       "filter" : [{
@@ -135,19 +135,24 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://loinc.org/vs/LL715-4",
+  "version" : "2.83",
+  "name" : "LOINCAnswerListLL715_4",
   "status" : "active",
+  "experimental" : false,
+  "date" : "2026-11-10T04:31:25.785Z",
   "expansion" : {
-    "identifier" : "urn:uuid:d595e5ff-b023-45d5-84cb-d5928462d8b9",
-    "timestamp" : "2026-09-30T02:44:20.475Z",
+    "identifier" : "urn:uuid:ef748d93-b7e4-4508-bd54-80608f93ee18",
+    "timestamp" : "2026-11-10T04:31:25.786Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -159,7 +164,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -206,7 +211,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -252,19 +257,20 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:7020eb31-a60f-47bf-b48a-420cca6c2664",
-    "timestamp" : "2026-09-30T02:44:21.508Z",
+    "identifier" : "urn:uuid:b1062ce0-4a6b-4c1e-9e57-2eda7298282a",
+    "timestamp" : "2026-11-10T04:31:26.867Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -276,7 +282,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "property" : [{
       "code" : "label",
@@ -333,10 +339,10 @@ v: {
   "code" : "LP43571-6",
   "system" : "http://loinc.org",
   "severity" : "error",
-  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.82'",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.83'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n8ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n8ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP43571-6\"\n4ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n4ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n4ms http://loinc.org/vs|2.83: Code \"LP43571-6\" not found in http://loinc.org|2.83: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -355,7 +361,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.82'"
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.83'"
     },
     "expression" : ["Coding.code"]
   }]
@@ -363,7 +369,7 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -381,19 +387,20 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/ValueSet/example-intensional-inc-1",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:d771fc44-a01c-4024-9e68-32210b5a016a",
-    "timestamp" : "2026-09-30T02:44:23.090Z",
+    "identifier" : "urn:uuid:158af380-6d71-4f41-b340-1393e4e192c0",
+    "timestamp" : "2026-11-10T04:31:28.504Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -405,7 +412,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -417,29 +424,9 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "38269-7"
-}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "isDefaultLang":"true", "profile": {
-  "resourceType" : "Parameters"
-}}####
-v: {
-  "display" : "Study report Skeletal system DXA",
-  "code" : "38269-7",
-  "system" : "http://loinc.org",
-  "version" : "2.82",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n7ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n7ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
-    "inactive" : true,
     "include" : [{
       "system" : "http://loinc.org",
       "concept" : [{
@@ -470,19 +457,25 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[1]: ValueSet (ContainedResource/Questionnaire.contained[1]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL356-7"
+  }],
+  "name" : "GCS Verbal Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:da196aed-2e58-463d-968d-464179a2314f",
-    "timestamp" : "2026-09-30T02:44:26.313Z",
+    "identifier" : "urn:uuid:5ed38b37-6aef-4bcf-b2f6-afb668ff30d9",
+    "timestamp" : "2026-11-10T04:31:30.954Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -494,7 +487,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -526,10 +519,9 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
-    "inactive" : true,
     "include" : [{
       "system" : "http://loinc.org",
       "concept" : [{
@@ -564,19 +556,25 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[0]: ValueSet (ContainedResource/Questionnaire.contained[0]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL357-5"
+  }],
+  "name" : "GCS Motor Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:b0f06d1d-f033-406e-8c46-0b75c4e6e638",
-    "timestamp" : "2026-09-30T02:44:26.512Z",
+    "identifier" : "urn:uuid:4453778b-553c-4e77-b488-08d891467048",
+    "timestamp" : "2026-11-10T04:31:31.167Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -588,7 +586,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -625,10 +623,9 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
-    "inactive" : true,
     "include" : [{
       "system" : "http://loinc.org",
       "concept" : [{
@@ -655,19 +652,25 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/Questionnaire/gcs--contained[2]: ValueSet (ContainedResource/Questionnaire.contained[2]): native = ValueSet -> ValueSet[null]",
+  "identifier" : [{
+    "system" : "http://loinc.org",
+    "value" : "http://loinc.org/ValueSet/LL355-9"
+  }],
+  "name" : "GCS Eye Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:0b1b8ac5-21fb-4721-bbf9-cdd12e6c740b",
-    "timestamp" : "2026-09-30T02:44:26.716Z",
+    "identifier" : "urn:uuid:c90775a4-d611-4cf7-b67a-81966b2f2d68",
+    "timestamp" : "2026-11-10T04:31:31.383Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -679,7 +682,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -706,7 +709,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -744,19 +747,20 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:0d38234a-fd27-42b6-8d67-a22dbc40c28b",
-    "timestamp" : "2026-09-30T02:44:26.913Z",
+    "identifier" : "urn:uuid:2eb370a6-74a8-494f-9673-75775d499aea",
+    "timestamp" : "2026-11-10T04:31:31.595Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -768,7 +772,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -805,7 +809,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -839,19 +843,20 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:d83abe86-39d3-4f50-8b49-12a21a4a0408",
-    "timestamp" : "2026-09-30T02:44:27.112Z",
+    "identifier" : "urn:uuid:fe6b2c8e-0450-4d04-8f72-9fdbcfa9de80",
+    "timestamp" : "2026-11-10T04:31:31.812Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -863,7 +868,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -895,7 +900,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
+{"hierarchical" : false, "language": "en", "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -925,19 +930,20 @@ e: {
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
+  "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:da59d028-5123-4c44-83af-e1b8edf96a1b",
-    "timestamp" : "2026-09-30T02:44:27.318Z",
+    "identifier" : "urn:uuid:16b70a4e-8b5b-4e46-9f7c-55cfbd1f5041",
+    "timestamp" : "2026-11-10T04:31:32.027Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
+      "name" : "displayLanguage",
+      "valueCode" : "en"
     },
     {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
+      "name" : "excludeNested",
+      "valueBoolean" : true
     },
     {
       "name" : "offset",
@@ -949,7 +955,7 @@ e: {
     },
     {
       "name" : "used-codesystem",
-      "valueUri" : "http://loinc.org|2.82"
+      "valueUri" : "http://loinc.org|2.83"
     }],
     "contains" : [{
       "system" : "http://loinc.org",
@@ -983,12 +989,12 @@ e: {
   "resourceType" : "Parameters"
 }}####
 v: {
-  "display" : "Death certificate",
+  "display" : "Death Certificate",
   "code" : "64297-5",
   "system" : "http://loinc.org",
-  "version" : "2.82",
+  "version" : "2.83",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n13ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#64297-5 (\"undefined\")]\"\n15ms http://loinc.org/vs|2.82: Check \"http://loinc.org#64297-5\"\n19ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n19ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n19ms http://loinc.org/vs|2.82: Code \"64297-5\" found in http://loinc.org|2.82",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#64297-5 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#64297-5\"\n5ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n5ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.83: Code \"64297-5\" found in http://loinc.org|2.83",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1005,12 +1011,550 @@ v: {
   "display" : "Vital signs note",
   "code" : "8716-3",
   "system" : "http://loinc.org",
-  "version" : "2.82",
+  "version" : "2.83",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#8716-3 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#8716-3\"\n8ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n8ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.82: Code \"8716-3\" found in http://loinc.org|2.82",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#8716-3 (\"undefined\")]\"\n4ms http://loinc.org/vs|2.83: Check \"http://loinc.org#8716-3\"\n4ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n4ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n4ms http://loinc.org/vs|2.83: Code \"8716-3\" found in http://loinc.org|2.83",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc", "version": "1.0.0"}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/test/ValueSet/vs-exclude-loinc",
+  "version" : "1.0.0",
+  "name" : "VSExcludeLoinc",
+  "title" : "Exclude from LOINC",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2026-11-10",
+  "expansion" : {
+    "identifier" : "urn:uuid:289886a5-aecc-4dc2-82c0-d76c84e4e7c2",
+    "timestamp" : "2026-11-10T04:29:53.303Z",
+    "total" : 100,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.83"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "100899-4",
+      "display" : "Enterobacteriaceae.extended spectrum beta lactamase resistance phenotype [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "100907-5",
+      "display" : "Vancomycin resistant enterococcus [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "105604-3",
+      "display" : "Aeromonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10639-3",
+      "display" : "Thermophilic Actinomycetes identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10716-9",
+      "display" : "Schistosoma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "107595-1",
+      "display" : "Spore [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17520-8",
+      "display" : "Respiratory syncytial virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17530-7",
+      "display" : "Retrovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17563-8",
+      "display" : "Salmonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17576-0",
+      "display" : "Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20445-3",
+      "display" : "Herpes virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20966-8",
+      "display" : "Staphylococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "24409-5",
+      "display" : "Brachyspira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "29885-1",
+      "display" : "Actinobacillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32368-3",
+      "display" : "Ureaplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38353-9",
+      "display" : "Streptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38354-7",
+      "display" : "Bartonella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "38376-0",
+      "display" : "Cryptococcus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40436-8",
+      "display" : "Parainfluenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "40684-3",
+      "display" : "Acinetobacter sp multidrug resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "42255-0",
+      "display" : "Salmonella and Shigella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43365-6",
+      "display" : "Nocardia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43387-0",
+      "display" : "Neisseria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "43979-4",
+      "display" : "Aspergillus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44089-1",
+      "display" : "Escherichia coli O157:H7 [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "44798-7",
+      "display" : "Burkholderia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "48873-4",
+      "display" : "Ehrlichia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "51710-2",
+      "display" : "Leishmania sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "543-9",
+      "display" : "Mycobacterium sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "552-0",
+      "display" : "Brucella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "555-3",
+      "display" : "Candida sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "560-3",
+      "display" : "Chlamydia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "567-8",
+      "display" : "Diphtheria identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5843-8",
+      "display" : "Enterovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "5859-4",
+      "display" : "Herpes simplex virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "593-4",
+      "display" : "Legionella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "594-2",
+      "display" : "Leptospira sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "62454-4",
+      "display" : "Herpes simplex virus and Varicella zoster virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6310-7",
+      "display" : "Arbovirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6317-2",
+      "display" : "Bordetella sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6323-0",
+      "display" : "Borrelia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6332-1",
+      "display" : "Campylobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6406-3",
+      "display" : "Flavivirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6431-1",
+      "display" : "HIV identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6486-5",
+      "display" : "Mycoplasma sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6539-1",
+      "display" : "Rabies virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6546-6",
+      "display" : "Rickettsia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6547-4",
+      "display" : "Rotavirus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6581-3",
+      "display" : "Vibrio sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6594-6",
+      "display" : "Amoeba identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6600-1",
+      "display" : "Haemophilus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6604-3",
+      "display" : "Influenza virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6609-2",
+      "display" : "Listeria sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "68458-9",
+      "display" : "Trichomonas sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "686-6",
+      "display" : "Respiratory Mycoplasma identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "687-4",
+      "display" : "Mycoplasma sp and Ureaplasma sp [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "69410-9",
+      "display" : "Haemophilus influenzae [Identifier] in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "701-3",
+      "display" : "Yersinia sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "73907-8",
+      "display" : "Polio virus identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "90003-5",
+      "display" : "Acinetobacter sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "94151-8",
+      "display" : "Bacteria.carbapenem resistant identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9781-6",
+      "display" : "Acanthamoeba sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9782-4",
+      "display" : "Adenovirus sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9816-0",
+      "display" : "Actinomyces sp identified in Specimen by Organism specific culture"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10347-3",
+      "display" : "Babesia microti identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106047-4",
+      "display" : "Ova and parasites identified in Bronchoalveolar lavage by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "106048-2",
+      "display" : "Ova and parasites identified in Aspirate by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10658-3",
+      "display" : "Cyanobacterium identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10661-7",
+      "display" : "Dinoflagellate identified in Water by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10692-2",
+      "display" : "Mushroom.toxic identified in Food by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10693-0",
+      "display" : "Mushroom.toxic identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10704-5",
+      "display" : "Ova and parasites identified in Stool by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10708-6",
+      "display" : "Toxic Plant identified in Vomitus by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10715-1",
+      "display" : "Schistosoma sp identified in Urine sediment by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10729-2",
+      "display" : "Trypanosoma sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10855-5",
+      "display" : "Ova and parasites identified in Duodenal fluid or Gastric fluid by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "10857-1",
+      "display" : "Microsporidia identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13319-9",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13320-7",
+      "display" : "Ova and parasites identified in Stool by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13325-6",
+      "display" : "Bartonella sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "13326-4",
+      "display" : "Pneumocystis sp identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "14839-5",
+      "display" : "Trypanosoma sp identified in Buffy Coat by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "17784-0",
+      "display" : "Parasite identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "20933-8",
+      "display" : "Parasite identified in Serum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "32206-5",
+      "display" : "Plasmodium sp identified in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "41451-6",
+      "display" : "Plasmodium stage [Identifier] in Blood by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52107-0",
+      "display" : "Bacterial capsule [Identifier] in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52794-5",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--3rd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "52795-2",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy--2nd specimen"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "53609-4",
+      "display" : "Parasite identified in Bone marrow by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "6674-6",
+      "display" : "Ova and parasites identified in Tissue by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "673-4",
+      "display" : "Ova and parasites identified in Specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "74037-3",
+      "display" : "Transmissible spongiform encephalopathy [Identifier] in Brain by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76699-8",
+      "display" : "Filaria identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "76767-3",
+      "display" : "Schistosoma sp identified in Semen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "88337-1",
+      "display" : "Mite identified in Ear by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91768-2",
+      "display" : "Ova and parasites identified in Sputum by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "91826-8",
+      "display" : "Ova and parasites identified in Lower respiratory specimen by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "9787-3",
+      "display" : "Sarcoptes scabiei identified in Skin by Light microscopy"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "98026-8",
+      "display" : "Parasite identified in Prostatic fluid by Light microscopy"
+    }]
+  }
+},
+  "error" : ""
 }
 -------------------------------------------------------------------------------------

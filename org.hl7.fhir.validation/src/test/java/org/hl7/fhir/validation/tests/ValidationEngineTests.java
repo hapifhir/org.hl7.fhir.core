@@ -65,6 +65,28 @@ public class ValidationEngineTests {
     TerminologyClientContext.setCanUseCacheId(true);
   }
 
+  /**
+   * The engines made by the current test. The terminology cache only writes to disk once per
+   * SAVE_DELAY_MS window, so whatever an engine learned since its last write is still in memory,
+   * and nothing writes it out once the engine is dropped - the next run asks the server again,
+   * and fails verifyNoTerminologyRequests. So each test's engines are saved when it finishes,
+   * whether it passed or not (see ValidationTests.saveTerminologyCache)
+   */
+  private final List<ValidationEngine> engines = new ArrayList<>();
+
+  private ValidationEngine track(ValidationEngine engine) {
+    engines.add(engine);
+    return engine;
+  }
+
+  @AfterEach
+  void saveTerminologyCaches() {
+    for (ValidationEngine engine : engines) {
+      engine.saveTerminologyCache();
+    }
+    engines.clear();
+  }
+
   @AfterAll
   public static void cleanup() {
 
@@ -85,7 +107,7 @@ public class ValidationEngineTests {
     final String[] ISSUE_CODES_2 = {"business-rule"};
     final String[] ISSUE_CODES_3 = {"invalid", "invariant"};
 
-    ValidationEngine originalEngine = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    ValidationEngine originalEngine = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
 
     final ValidationEngine[] validationEngines = new ValidationEngine[10];
     validationEngines[0] = originalEngine;
@@ -160,7 +182,7 @@ public class ValidationEngineTests {
   public void test401Xml() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
@@ -192,7 +214,7 @@ public class ValidationEngineTests {
   public void test401Json() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
@@ -222,7 +244,7 @@ public class ValidationEngineTests {
   public void test430Xml() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
@@ -234,7 +256,7 @@ public class ValidationEngineTests {
   public void test430Json() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
@@ -250,7 +272,7 @@ public class ValidationEngineTests {
     }
     if (!TestUtilities.silent)
       System.out.println("Test140: Validate patient-example.xml in v1.4.0 version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, FhirPublication.DSTU2016May, "1.4.0");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, FhirPublication.DSTU2016May, "1.4.0"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient140.xml"), null);
@@ -264,7 +286,7 @@ public class ValidationEngineTests {
   public void test301() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301: Validate observation301.xml against Core");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2", new InstanceValidatorParameters().setAllowExampleUrls(true));
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2", new InstanceValidatorParameters().setAllowExampleUrls(true)));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
 
@@ -281,7 +303,7 @@ public class ValidationEngineTests {
   public void test301USCore() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301USCore: Validate patient300.xml against US-Core");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
@@ -301,7 +323,7 @@ public class ValidationEngineTests {
   public void test401USCore() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test401USCore: Validate observation401_ucum.json against US-Core with no terminology server");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", "n/a", FhirPublication.R4, "4.0.1");
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", "n/a", FhirPublication.R4, "4.0.1"));
     CacheVerificationLogger logger = new CacheVerificationLogger();
     IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
     if (!TestUtilities.silent)
@@ -335,7 +357,7 @@ public class ValidationEngineTests {
   public void testResolveRelativeFileValid() throws Exception {
     String folder = setupFolder();
     try {
-      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
       ve.getContext().setLocator(fetcher);
@@ -359,7 +381,7 @@ public class ValidationEngineTests {
   public void testResolveRelativeFileInvalid() throws Exception {
     String folder = setupFolder();
     try {
-      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
       ve.getContext().setLocator(fetcher);
@@ -385,7 +407,7 @@ public class ValidationEngineTests {
   void testResolveRelativeFileError() throws Exception {
     String folder = setupFolder();
     try {
-      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
       ve.getContext().setLocator(fetcher);
@@ -409,7 +431,7 @@ public class ValidationEngineTests {
 
   @Test
   public void testResolveAbsoluteValid() throws Exception {
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1", new InstanceValidatorParameters().setShowMessagesFromReferences(true));
+    ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1", new InstanceValidatorParameters().setShowMessagesFromReferences(true)));
     StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
     ve.setFetcher(fetcher);
     ve.getContext().setLocator(fetcher);
@@ -429,7 +451,7 @@ public class ValidationEngineTests {
 
   @Test
   public void testResolveAbsoluteInvalid() throws Exception {
-      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
       ve.getContext().setLocator(fetcher);
@@ -448,7 +470,7 @@ public class ValidationEngineTests {
 
   @Test
   void testResolveAbsoluteError() throws Exception {
-      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      ValidationEngine ve = track(TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1"));
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
       ve.getContext().setLocator(fetcher);

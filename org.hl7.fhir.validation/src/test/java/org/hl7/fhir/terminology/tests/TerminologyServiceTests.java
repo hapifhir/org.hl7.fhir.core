@@ -31,6 +31,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.special.TxServiceTestHelper;
+import org.hl7.fhir.validation.special.TxTestResponses;
 import org.hl7.fhir.validation.special.TxTestSetup;
 import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTesterScrubbers;
@@ -144,17 +145,18 @@ private static TxTestData testData;
         && Utilities.existsInList(setup.getTest().asString("operation"), "validate-code", "cs-validate-code")) {
       ((org.hl7.fhir.model.core.Parameters) req).addParameter("lenient-display-validation", setup.getTest().asBoolean("lenient-display"));
     }
-    String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
+    // which response the internal server's answer is compared with can depend on whether it
+    // succeeded or failed (see TxTestResponses), so the response is chosen once it has answered
+    TxTestResponses responses = new TxTestResponses(setup.getTest(), modes());
     String fn2 = setup.getTest().has("response2") ? setup.getTest().asString("response2") : null; // alternative allowed response for servers unable to implement a feature
-    String resp = testData.load(fn);
     String resp2 = fn2 == null ? null : testData.load(fn2);
-    String fp = Utilities.path("[tmp]", "tx", fn);
-    actualFile = fp;
-    JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
-    File fo = ManagedFileAccess.file(fp);
-    if (fo.exists()) {
-      fo.delete();
+    for (String fn : responses.files()) {
+      File fo = ManagedFileAccess.file(Utilities.path("[tmp]", "tx", fn));
+      if (fo.exists()) {
+        fo.delete();
+      }
     }
+    actualFile = Utilities.path("[tmp]", "tx", responses.fileFor(responses.getChoices().get(0)));
 
     if (setup.getTest().has("profile")) {
       engine.getContext().setExpansionParameters((org.hl7.fhir.model.core.Parameters) loadResource(setup.getTest().asString("profile")));
@@ -163,21 +165,62 @@ private static TxTestData testData;
     }
     engine.getContext().setNoTerminologyServer(true);
     if (setup.getTest().asString("operation").equals("expand")) {
-      expand(setup.getTest().str("name"), engine, req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext);
+      expand(setup.getTest().str("name"), engine, req, responses, resp2, setup.getTest().asString("Accept-Language"));
     } else if (setup.getTest().asString("operation").equals("validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext, false, modes());
-      assertNull(diff, diff);
+      validate(engine, req, responses, resp2, false);
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext, true, modes());
-      assertNull(diff, diff);
+      validate(engine, req, responses, resp2, true);
     } else if (setup.getTest().asString("operation").equals("subsumes")) {
-      subsumes(setup.getTest().str("name"), engine, req, resp, fp, ext);
+      subsumes(setup.getTest().str("name"), engine, req, responses);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
     } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate", "cs-batch-validate", "closure")) { // the internal terminology server doesn't implement these methods
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
     return true;
+  }
+
+  /** The expected response for what the internal server did, and where its actual response goes */
+  private static class Expected {
+    private final String resp;
+    private final String fp;
+    private final JsonObject ext;
+
+    private Expected(String resp, String fp, JsonObject ext) {
+      this.resp = resp;
+      this.fp = fp;
+      this.ext = ext;
+    }
+  }
+
+  /**
+   * The response to compare the internal server's answer with. Usually a test has just the one.
+   * When its http-code gives a choice (e.g. 200|4xx), it depends on whether the internal server
+   * failed: there's no http layer here, so a result stands for the 2xx choice, and an error
+   * (an OperationOutcome) for the 4xx or 5xx one.
+   */
+  private Expected expected(TxTestResponses responses, boolean error) throws IOException {
+    String choice;
+    if (responses.isChoice()) {
+      choice = responses.choiceForOutcome(error);
+      if (choice == null) {
+        Assertions.fail("The internal server "+(error ? "failed" : "succeeded")+", but the test's http-code '"+responses.getHttpCode()+"' doesn't allow for that");
+      }
+    } else {
+      // the internal server doesn't check the http-code of tests without a choice
+      choice = responses.getChoices().get(0);
+    }
+    String fn = responses.fileFor(choice);
+    String fp = Utilities.path("[tmp]", "tx", fn);
+    actualFile = fp;
+    return new Expected(testData.load(fn), fp, testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn));
+  }
+
+  private void validate(ValidationEngine engine, Resource req, TxTestResponses responses, String resp2, boolean isCodeSystem) throws IOException {
+    TxServiceTestHelper.ValidationResponse actual = TxServiceTestHelper.runValidation(engine.getContext(), req, setup.getTest().asString("Accept-Language"), isCodeSystem);
+    Expected exp = expected(responses, actual.isError());
+    String diff = TxServiceTestHelper.compareResponse(setup.getTest().str("name"), setup.getTest().asString("name"), exp.resp, resp2, actual.getJson(), exp.fp, exp.ext, modes());
+    assertNull(diff, diff);
   }
 
   /**
@@ -218,7 +261,7 @@ private static TxTestData testData;
    * operation parameters (system + codeA/codeB, and codingA/codingB); the parameter names are 
    * passed through to the tester so that any issues are reported against the right parameter.
    */
-  private void subsumes(String id, ValidationEngine engine, Resource req, String resp, String fp, JsonObject ext) throws IOException {
+  private void subsumes(String id, ValidationEngine engine, Resource req, TxTestResponses responses) throws IOException {
     org.hl7.fhir.model.core.Parameters p = (org.hl7.fhir.model.core.Parameters) req;
     Coding codingA;
     Coding codingB;
@@ -239,12 +282,14 @@ private static TxTestData testData;
     }
 
     String actual;
+    boolean error = false;
     try {
       SubsumptionOutcome outcome = new TerminologySubsumptionTester(engine.getContext()).subsumes(codingA, codingB, pathA, pathB);
       org.hl7.fhir.model.core.Parameters po = new org.hl7.fhir.model.core.Parameters();
       po.addParameter("outcome", new CodeType(outcome.toCode()));
       actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (SubsumptionException e) {
+      error = true;
       OperationOutcome oo = new OperationOutcome();
       oo.getIssueList().addAll(e.getIssues());
       TxTesterSorters.sortOperationOutcome(oo);
@@ -252,10 +297,11 @@ private static TxTestData testData;
       actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
 
-    String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, actual);
+    Expected exp = expected(responses, error);
+    String diff = new CompareUtilities(modes(), exp.ext, vars()).checkJsonSrcIsSame(id, exp.resp, actual);
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-      FileUtilities.stringToFile(actual, fp);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(exp.fp));
+      FileUtilities.stringToFile(actual, exp.fp);
     }
     Assertions.assertNull(diff, diff);
   }
@@ -282,7 +328,7 @@ private static TxTestData testData;
 
   }
 
-  private void expand(String id, ValidationEngine engine, Resource req, String resp, String resp2, String lang, String fp, JsonObject ext) throws IOException {
+  private void expand(String id, ValidationEngine engine, Resource req, TxTestResponses responses, String resp2, String lang) throws IOException {
     org.hl7.fhir.model.core.Parameters p = ( org.hl7.fhir.model.core.Parameters) req;
     ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {      
@@ -313,6 +359,10 @@ private static TxTestData testData;
       p.addParameter("displayLanguage", new CodeType(lang));
     }
     ValueSetExpansionOutcome vse = engine.getContext().expandVS(new ExpansionOptions( false, hierarchical, 0, false, null), vs,p, true);
+    Expected exp = expected(responses, vse.getValueset() == null);
+    String resp = exp.resp;
+    String fp = exp.fp;
+    JsonObject ext = exp.ext;
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
         if (resp2 != null) {

@@ -171,7 +171,7 @@ public class FhirRequestBuilder {
   }
 
   public Bundle executeAsBatch() throws IOException {
-    HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, null);
+    HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, headers);
     HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);
     return unmarshalFeed(response, resourceFormat);
   }
