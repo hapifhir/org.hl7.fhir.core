@@ -5,17 +5,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.XMLConstants;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -63,10 +70,8 @@ public class XsltUtilities {
     Transformer t = f.newTransformer(xsrc);
 
     t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
+    t.transform(newXXEProtectedSource(new ByteArrayInputStream(source)), new StreamResult(out));
     return out.toByteArray();
   }
 
@@ -78,10 +83,8 @@ public class XsltUtilities {
     Transformer t = f.newTransformer(xsrc);
 
     t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
+    t.transform(newXXEProtectedSource(new ByteArrayInputStream(source)), new StreamResult(out));
     return out.toByteArray();
   }
 
@@ -113,15 +116,9 @@ public class XsltUtilities {
     }
 
     t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    FileInputStream fso = ManagedFileAccess.inStream(source);
-    FileOutputStream fsr = ManagedFileAccess.outStream(dest);
-    try {
-      StreamSource src = new StreamSource(fso);
-      StreamResult res = new StreamResult(fsr);
-      t.transform(src, res);
-    } finally {
-      fso.close();
-      fsr.close();
+    try (FileInputStream fso = ManagedFileAccess.inStream(source);
+         FileOutputStream fsr = ManagedFileAccess.outStream(dest)) {
+      t.transform(newXXEProtectedSource(fso), new StreamResult(fsr));
     }
   }
 
@@ -133,17 +130,24 @@ public class XsltUtilities {
     Transformer t = f.newTransformer(xsrc);
 
     t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    FileInputStream fss = ManagedFileAccess.inStream(source);
-    FileOutputStream fsr = ManagedFileAccess.outStream(dest);
-    try {
-      StreamSource src = new StreamSource(fss);
-      StreamResult res = new StreamResult(fsr);
-      t.transform(src, res);
-    } finally {
-      fss.close();
-      fsr.close();
+    try (FileInputStream fss = ManagedFileAccess.inStream(source);
+         FileOutputStream fsr = ManagedFileAccess.outStream(dest)) {
+      t.transform(newXXEProtectedSource(fss), new StreamResult(fsr));
     }
+  }
 
+  /**
+   * Wraps a source document in a SAXSource backed by an XXE-protected XMLReader, so that DOCTYPE
+   * declarations (and therefore external entities) are rejected by the parser before any
+   * URIResolver can be consulted.
+   */
+  private static SAXSource newXXEProtectedSource(InputStream in) throws TransformerException {
+    try {
+      XMLReader reader = XMLUtil.getXXEProtectedXMLReader(XMLUtil.newXXEProtectedSaxParserFactory());
+      return new SAXSource(reader, new InputSource(in));
+    } catch (ParserConfigurationException | SAXException e) {
+      throw new TransformerException(e);
+    }
   }
 
   /**

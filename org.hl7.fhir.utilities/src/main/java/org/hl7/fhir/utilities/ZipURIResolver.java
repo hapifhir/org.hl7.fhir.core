@@ -80,14 +80,20 @@ public class ZipURIResolver implements URIResolver {
   }
 
 
+  /**
+   * Serves only entries from the supplied map.
+   * <p>
+   * An unknown href must throw rather than return null: returning null would make the transformer
+   * fall back to its default resolver, which can read from the local filesystem or network (for
+   * example, an external entity in the source document with an absolute-path SYSTEM id).
+   */
   @Override
-  public Source resolve(String arg0, String arg1) throws TransformerException {
-    try {
-      byte[] bs = files.get(arg0);
-      return new StreamSource(new ByteArrayInputStream(bs));
-    } catch (Exception e) {
-      throw new TransformerException(e);
+  public Source resolve(String href, String base) throws TransformerException {
+    byte[] bs = files == null ? null : files.get(href);
+    if (bs == null) {
+      throw new TransformerException("Unable to resolve '" + href + "': not a known resource");
     }
+    return new StreamSource(new ByteArrayInputStream(bs));
   }
 
 }

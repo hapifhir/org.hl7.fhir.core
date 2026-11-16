@@ -1,0 +1,120 @@
+package org.hl7.fhir.utilities;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+/**
+ * MyURIResolver must only serve local files that are inside its configured root directory.
+ */
+class MyURIResolverTests {
+
+  @TempDir
+  Path work;
+
+  Path root;
+  Path outside;
+
+  @BeforeEach
+  void setUp() throws Exception {
+    root = work.resolve("root");
+    Files.createDirectories(root.resolve("sub"));
+    Files.writeString(root.resolve("a.xsl"), "A");
+    Files.writeString(root.resolve("sub").resolve("b.xsl"), "B");
+    outside = work.resolve("outside.txt");
+    Files.writeString(outside, "OUTSIDE");
+  }
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @CsvSource({"a.xsl, A", "sub/b.xsl, B", "sub\\b.xsl, B", "sub/../a.xsl, A"})
+  void relativeHrefResolvesUnderRoot(String href, String expected) throws Exception {
+    MyURIResolver resolver = new MyURIResolver(root.toString(), null);
+
+    assertThat(read(resolver.resolve(href, null))).isEqualTo(expected);
+  }
+
+  @Test
+  void absoluteHrefInsideRootIsResolved() throws Exception {
+    MyURIResolver resolver = new MyURIResolver(root.toString(), null);
+
+    String href = root.resolve("sub").resolve("b.xsl").toAbsolutePath().toString();
+
+    assertThat(read(resolver.resolve(href, null))).isEqualTo("B");
+  }
+
+  @Test
+  void absoluteHrefOutsideRootIsRejected() {
+    MyURIResolver resolver = new MyURIResolver(root.toString(), null);
+
+    String href = outside.toAbsolutePath().toString();
+
+    assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
+  }
+
+  @Test
+  void absoluteHrefToSiblingDirectoryWithSharedPrefixIsRejected() throws Exception {
+    Path sibling = work.resolve("root-sibling");
+    Files.createDirectories(sibling);
+    Files.writeString(sibling.resolve("x.xsl"), "SIBLING");
+    MyURIResolver resolver = new MyURIResolver(root.toString(), null);
+
+    String href = sibling.resolve("x.xsl").toAbsolutePath().toString();
+
+    assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
+  }
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @ValueSource(strings = {"../outside.txt", "sub/../../outside.txt", "..\\outside.txt"})
+  void traversalOutsideRootIsRejected(String href) {
+    MyURIResolver resolver = new MyURIResolver(root.toString(), null);
+
+    assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
+  }
+
+  @Test
+  void nullRootIsRejected() {
+    MyURIResolver resolver = new MyURIResolver(null, null);
+
+    assertThrows(TransformerException.class, () -> resolver.resolve("a.xsl", null));
+  }
+
+  @Test
+  void tmpVariableRootIsExpanded() throws Exception {
+    Path tmp = Path.of(Utilities.path("[tmp]"));
+    Path tmpRoot = Files.createTempDirectory(tmp, "my-uri-resolver-");
+    try {
+      Files.createDirectories(tmpRoot.resolve("sub"));
+      Files.writeString(tmpRoot.resolve("a.xsl"), "TMP-A");
+      Files.writeString(tmpRoot.resolve("sub").resolve("b.xsl"), "TMP-B");
+      MyURIResolver resolver = new MyURIResolver("[tmp]/" + tmpRoot.getFileName(), null);
+
+      assertThat(read(resolver.resolve("a.xsl", null))).isEqualTo("TMP-A");
+      assertThat(read(resolver.resolve("sub/b.xsl", null))).isEqualTo("TMP-B");
+    } finally {
+      FileUtils.deleteDirectory(tmpRoot.toFile());
+    }
+  }
+
+  private static String read(Source source) throws Exception {
+    assertThat(source).isInstanceOf(StreamSource.class);
+    try (InputStream in = ((StreamSource) source).getInputStream()) {
+      return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+    }
+  }
+}

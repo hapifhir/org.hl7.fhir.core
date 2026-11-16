@@ -60,14 +60,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
@@ -75,8 +73,8 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class MyURIResolver implements URIResolver {
 
-  private String path;
-  private URIResolver alt;  
+  private final String path;
+  private final URIResolver alt;
   
   public MyURIResolver(String path, URIResolver alt) {
     super();
@@ -96,10 +94,34 @@ public class MyURIResolver implements URIResolver {
         }
         return org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory().getURIResolver().resolve(href, base);
       } else
-        return new StreamSource(ManagedFileAccess.inStream(href.contains(File.separator) ? href : Utilities.path(path, href)));
-    } catch (FileNotFoundException e) {
-      throw new TransformerException(e);
+        return new StreamSource(ManagedFileAccess.inStream(resolveWithinRoot(href)));
     } catch (IOException e) {
+      throw new TransformerException(e);
+    }
+  }
+
+  /**
+   * Resolves a local href against the configured root directory, refusing any result that falls
+   * outside it (absolute paths elsewhere, '..' traversal). This prevents stylesheet includes,
+   * document() calls, or entity references from reading arbitrary files.
+   * <p>
+   * The root is built with {@link Utilities#path(String...)} so that variables such as
+   * <code>[tmp]</code> and <code>[user]</code> are expanded, as before. Relative hrefs are also
+   * resolved with {@link Utilities#path(String...)}. Absolute hrefs are accepted only if they
+   * already point inside the root (PathBuilder would otherwise re-root them under it).
+   */
+  private String resolveWithinRoot(String href) throws TransformerException {
+    try {
+      Path root = Paths.get(Utilities.path(path)).toAbsolutePath().normalize();
+      String resolved = Paths.get(href).isAbsolute() ? href : Utilities.path(path, href);
+      Path target = Paths.get(resolved).toAbsolutePath().normalize();
+      if (!target.startsWith(root)) {
+        throw new TransformerException("Access to '" + href + "' outside " + root + " is not permitted");
+      }
+      return target.toString();
+    } catch (IOException | RuntimeException e) {
+      // PathBuilder reports null roots and traversal outside the root as RuntimeException;
+      // Paths.get rejects malformed hrefs with InvalidPathException (also a RuntimeException)
       throw new TransformerException(e);
     }
   }
