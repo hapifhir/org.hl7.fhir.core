@@ -1050,6 +1050,20 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  void testValidationDependenciesLeaveOutANotPresentCodeSystem() throws IOException {
+    CodeSystem stub = new CodeSystem();
+    stub.setUrl("http://snomed.info/sct");
+    stub.setContent(Enumerations.CodeSystemContentMode.NOTPRESENT);
+    Mockito.doReturn(stub).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://snomed.info/sct"), any(), isNull(), any());
+    Coding coding = new Coding("http://snomed.info/sct", "123456", null);
+
+    List<CanonicalResource> deps = context.findValidationDependencies(null, List.of(coding));
+    assertEquals(List.of(), deps);
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    assertFalse(cache.generateValidationToken(new ValidationOptions(FhirPublication.R5), coding, null, new Parameters(), "Coding", deps).getRequest().contains("\"definition\""));
+  }
+
+  @Test
   void testValidationDependenciesHaveTheCodingsVersion() {
     // the code is checked against the version the coding names, which the ValueSet need not name; and against its
     // code system even when the ValueSet doesn't include it

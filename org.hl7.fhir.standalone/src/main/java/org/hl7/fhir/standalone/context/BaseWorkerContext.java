@@ -1437,7 +1437,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
       for (CodeSystem cs : versions) {
-        addExpansionDependency(res, cs);
+        // as for an expansion: a not-present stub (THO's for SNOMED CT and LOINC) says nothing about the answer
+        if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+          addExpansionDependency(res, cs);
+        }
         for (CodeSystem supp : codeSystems.getSupplements(cs)) {
           addExpansionDependency(res, supp);
         }
