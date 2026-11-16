@@ -417,7 +417,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
@@ -437,7 +437,7 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl(UUIDUtilities.makeUuidUrn());
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
     Mockito.doReturn(createdValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
@@ -460,7 +460,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
@@ -486,7 +486,7 @@ public class BaseWorkerContextTests {
    */
   private ValidationOptions setUpUnknownSystem() {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5);
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"), any());
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), isNull(), any());
     AtomicReference<Set<String>> unknownSystems = new AtomicReference<>();
     Mockito.doAnswer(inv -> {
@@ -560,7 +560,7 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl("http://example.org/vs");
     valueSet.getCompose().addInclude().setSystem(UNKNOWN_SYSTEM);
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"), any());
     Mockito.doReturn(checker).when(context).constructValueSetCheckerSimple(any(), same(valueSet), any());
     return valueSet;
   }
@@ -587,7 +587,7 @@ public class BaseWorkerContextTests {
 
     // no local check, so no local warning to give
     ValidationOptions noClient = validationOptions.withNoClient();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"), any());
     ValidationResult res = context.validateCode(noClient, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
 
     assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
@@ -623,7 +623,7 @@ public class BaseWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
@@ -641,7 +641,7 @@ public class BaseWorkerContextTests {
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
 
     ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(createdValidationResult, validationResultB);
@@ -664,7 +664,7 @@ public class BaseWorkerContextTests {
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
     Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn),same(validationOptions), eq(Collections.emptySet()));
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
 
     ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
 

@@ -769,6 +769,149 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
   }
 
+  /**
+   * The same for validate-code: an IG edits a ValueSet, or a code system it uses, without changing the version,
+   * and the answers cached against the old definition must not be used
+   */
+  @Nested
+  class ValidationTokenDefinitionTests {
+
+    private static final String CS_URL = "http://example.org/fhir/CodeSystem/blood-group";
+
+    private ValueSet bloodGroupValueSet(String... codes) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/blood-group");
+      vs.setVersion("1.0.0");
+      ValueSet.ConceptSetComponent inc = vs.getCompose().addInclude().setSystem(CS_URL);
+      for (String code : codes) {
+        inc.addConcept().setCode(code);
+      }
+      return vs;
+    }
+
+    private CodeSystem bloodGroupCodeSystem(String displayOfB) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl(CS_URL);
+      cs.setVersion("1.0.0");
+      cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+      cs.addConcept().setCode("a").setDisplay("A");
+      cs.addConcept().setCode("b").setDisplay(displayOfB);
+      return cs;
+    }
+
+    private CodeSystem supplement(String displayOfB) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl("http://example.org/fhir/CodeSystem/blood-group-supplement");
+      cs.setVersion("1.0.0");
+      cs.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+      cs.setSupplements(CS_URL);
+      cs.addConcept().setCode("b").setDisplay(displayOfB);
+      return cs;
+    }
+
+    private String codingRequest(TerminologyCache cache, ValueSet vs, List<? extends CanonicalResource> dependencies) {
+      return cache.generateValidationToken(CacheTestUtils.validationOptions, new Coding(CS_URL, "b", null), vs, new Parameters(), "Coding", dependencies).getRequest();
+    }
+
+    private String conceptRequest(TerminologyCache cache, ValueSet vs, List<? extends CanonicalResource> dependencies) {
+      return cache.generateValidationToken(CacheTestUtils.validationOptions, new CodeableConcept(new Coding(CS_URL, "b", null)), vs, new Parameters(), dependencies).getRequest();
+    }
+
+    @Test
+    void testEditedValueSetSameVersionMissesAfterReload() throws IOException {
+      // code b was in the value set when the answer was cached; the IG then took it out without changing the version
+      Path dir = createTempCacheDirectory();
+      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      Coding coding = new Coding(CS_URL, "b", null);
+      CodeableConcept concept = new CodeableConcept(coding);
+      ValueSet vs = bloodGroupValueSet("a", "b");
+      List<CodeSystem> deps = List.of(bloodGroupCodeSystem("B"));
+      ValidationResult valid = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "valid", null);
+      cacheA.cacheValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, vs, new Parameters(), "Coding", deps), valid, true);
+      cacheA.cacheValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, vs, new Parameters(), deps), valid, true);
+      cacheA.save();
+
+      // a new run: a new cache over the same folder, and the resources loaded afresh
+      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      ValueSet edited = bloodGroupValueSet("a");
+      List<CodeSystem> depsB = List.of(bloodGroupCodeSystem("B"));
+      assertNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, coding, edited, new Parameters(), "Coding", depsB)));
+      assertNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, concept, edited, new Parameters(), depsB)));
+      ValueSet unchanged = bloodGroupValueSet("a", "b");
+      assertNotNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, coding, unchanged, new Parameters(), "Coding", depsB)));
+      assertNotNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, concept, unchanged, new Parameters(), depsB)));
+      deleteTempCacheDirectory(dir);
+    }
+
+    @Test
+    void testEditedCodeSystemMisses() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = new ValueSet();
+      vs.setUrl("http://example.org/fhir/ValueSet/blood-group");
+      vs.setVersion("1.0.0");
+      vs.getCompose().addInclude().setSystem(CS_URL);
+
+      String coding = codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B")));
+      String concept = conceptRequest(cache, vs, List.of(bloodGroupCodeSystem("B")));
+      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
+      assertNotEquals(concept, conceptRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
+
+      CodeSystem renarrated = bloodGroupCodeSystem("B");
+      renarrated.setTitle("A new title");
+      renarrated.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
+      assertEquals(coding, codingRequest(cache, vs, List.of(renarrated)));
+      assertEquals(concept, conceptRequest(cache, vs, List.of(renarrated)));
+    }
+
+    @Test
+    void testEditedSupplementMisses() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = bloodGroupValueSet("a", "b");
+      String coding = codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B")));
+      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B changed"))));
+      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"))));
+      assertEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B"))));
+    }
+
+    @Test
+    void testNarrativeAndMetadataDoNotChangeTheKey() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = bloodGroupValueSet("a", "b");
+      ValueSet other = bloodGroupValueSet("a", "b");
+      other.setTitle("A new title");
+      other.setDate(new Date());
+      other.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
+      assertEquals(codingRequest(cache, vs, null), codingRequest(cache, other, null));
+      assertEquals(conceptRequest(cache, vs, null), conceptRequest(cache, other, null));
+      assertNotEquals(codingRequest(cache, vs, null), codingRequest(cache, bloodGroupValueSet("a"), null));
+    }
+
+    @Test
+    void testUnversionedValueSetEditMisses() throws IOException {
+      // a ValueSet with a url but no version was keyed by its url alone
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = bloodGroupValueSet("a", "b");
+      vs.setVersion(null);
+      ValueSet edited = bloodGroupValueSet("a");
+      edited.setVersion(null);
+      assertNotEquals(codingRequest(cache, vs, null), codingRequest(cache, edited, null));
+      assertNotEquals(conceptRequest(cache, vs, null), conceptRequest(cache, edited, null));
+    }
+
+    @Test
+    void testEmbeddedValueSetKeepsItsKey() throws IOException {
+      // a ValueSet without a url is in the key as it is; only what it depends on is added
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet vs = bloodGroupValueSet("a", "b");
+      vs.setUrl(null);
+      vs.setVersion(null);
+      assertFalse(codingRequest(cache, vs, null).contains("\"definition\""));
+      assertFalse(conceptRequest(cache, vs, List.of()).contains("\"definition\""));
+      assertEquals(codingRequest(cache, vs, null), cache.generateValidationToken(CacheTestUtils.validationOptions, new Coding(CS_URL, "b", null), vs, new Parameters(), "Coding").getRequest());
+      assertNotEquals(codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"))), codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
+    }
+  }
+
   @Test
   public void testGetVSEssence() throws IOException {
     ValueSet.ValueSetExpansionParameterComponent vsepc = new ValueSet.ValueSetExpansionParameterComponent().setName("dummyValueSetExpansionParameterComponent");

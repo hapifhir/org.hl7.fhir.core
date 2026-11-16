@@ -468,6 +468,8 @@ public class TerminologyCache {
   // The produced string is byte-identical to the old inline composeString, so
   // existing on-disk .cache keys remain valid.
   private final AtomicReference<ExpParamsJson> expParamsJsonCache = new AtomicReference<>();
+  /** see dependencyDigest; weak, so a resource that is dropped from the context isn't kept */
+  private final Map<Resource, String> dependencyDigests = Collections.synchronizedMap(new WeakHashMap<>());
 
   private static final class ExpParamsJson {
     final Parameters params;
@@ -779,6 +781,18 @@ public class TerminologyCache {
   }
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters, String path) {
+    return generateValidationToken(options, code, vs, expParameters, path, null);
+  }
+
+  /**
+   * As for an expansion (see generateExpandToken), the key holds a digest of the ValueSet's definition wherever the
+   * definition itself is not part of the key, and of the local resources the validation depends on when the caller
+   * resolved them, so a ValueSet or CodeSystem edited without a version change doesn't get the old answer.
+   * Entries written with the older url|version key stay readable; they are simply no longer found.
+   *
+   * @param dependencies the ValueSets vs imports (all the way down) and the CodeSystems and supplements it draws on, or null
+   */
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters, String path, List<? extends CanonicalResource> dependencies) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
@@ -800,15 +814,15 @@ public class TerminologyCache {
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
-          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + pathJS + ", \"profile\": " + expJS + "}\r\n";
+          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + definitionJS(json, vs, dependencies, true) + (options == null ? "" : ", " + options.toJson()) + pathJS + ", \"profile\": " + expJS + "}\r\n";
       } else if (vs != null && vs.hasUrl()) {
           ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-            +"\""+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}\r\n";
+            +"\""+definitionJS(json, vs, dependencies, true)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}\r\n";
       } else if (options.getVsAsUrl()) {
-        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}";
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+definitionJS(json, vs, dependencies, false)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}";
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}";
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+definitionJS(json, vs, dependencies, false)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}";
       }
       ct.key = String.valueOf(hashJson(ct.request));
       return ct;
@@ -868,6 +882,11 @@ public class TerminologyCache {
   }
 
   public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs, Parameters expParameters) {
+    return generateValidationToken(options, code, vs, expParameters, null);
+  }
+
+  /** see the Coding variant */
+  public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs, Parameters expParameters, List<? extends CanonicalResource> dependencies) {
     try {
       CacheToken ct = new CacheToken();
       for (Coding c : code.getCoding()) {
@@ -881,12 +900,12 @@ public class TerminologyCache {
       String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
-            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
+            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+definitionJS(json, vs, dependencies, true)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
       } else if (vs == null) { 
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";        
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+definitionJS(json, vs, dependencies, false)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       }
       ct.key = String.valueOf(hashJson(ct.request));
       return ct;
@@ -954,6 +973,21 @@ public class TerminologyCache {
     return ct;
   }
 
+  /**
+   * The definition digest for a validation key: always when the key names the ValueSet by url, otherwise only when the
+   * embedded definition is left out (too large) or says nothing about the dependencies
+   */
+  private String definitionJS(JsonParser json, ValueSet vs, List<? extends CanonicalResource> dependencies, boolean byUrl) throws IOException {
+    if (vs == null) {
+      return "";
+    }
+    ValueSet vsc = getVSEssense(vs);
+    if (!byUrl && !tooLargeToEmbed(vsc) && (dependencies == null || dependencies.isEmpty())) {
+      return "";
+    }
+    return ", \"definition\": \""+definitionDigest(json, vs, vsc, dependencies)+"\"";
+  }
+
   private boolean tooLargeToEmbed(ValueSet vsc) {
     return vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000;
   }
@@ -963,19 +997,34 @@ public class TerminologyCache {
     b.append("\n").append(statusOf(vs)).append("\n").append(namedSupplements(vs));
     if (dependencies != null) {
       for (CanonicalResource cr : dependencies) {
-        Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
-        b.append("\n").append(cr.fhirType());
-        if (cr.hasUrl() && !cr.getUrl().startsWith("urn:uuid:")) {
-          // a contained resource without a url is given a new urn:uuid: every run
-          b.append("/").append(cr.getVersionedUrl());
-        }
-        b.append("\n").append(statusOf(cr)).append("\n").append(json.composeString(essence));
-        if (cr instanceof ValueSet) {
-          b.append("\n").append(namedSupplements((ValueSet) cr));
-        }
+        b.append("\n").append(dependencyDigest(json, cr));
       }
     }
     return hashJson(b.toString());
+  }
+
+  /**
+   * A dependency's digest, kept by identity: a validation key is made for every code validated, and composing a large
+   * CodeSystem each time would cost more than the validation. A resource is not edited once it is in a context; one
+   * loaded afresh is a new object
+   */
+  private String dependencyDigest(JsonParser json, CanonicalResource cr) throws IOException {
+    String res = dependencyDigests.get(cr);
+    if (res == null) {
+      Resource essence = cr instanceof ValueSet ? getVSEssense((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
+      StringBuilder b = new StringBuilder(cr.fhirType());
+      if (cr.hasUrl() && !cr.getUrl().startsWith("urn:uuid:")) {
+        // a contained resource without a url is given a new urn:uuid: every run
+        b.append("/").append(cr.getVersionedUrl());
+      }
+      b.append("\n").append(statusOf(cr)).append("\n").append(json.composeString(essence));
+      if (cr instanceof ValueSet) {
+        b.append("\n").append(namedSupplements((ValueSet) cr));
+      }
+      res = hashJson(b.toString());
+      dependencyDigests.put(cr, res);
+    }
+    return res;
   }
 
   /** the supplements the ValueSet names (valueset-supplement): one that isn't global is only used when it is named, and one that can't be found is an error */

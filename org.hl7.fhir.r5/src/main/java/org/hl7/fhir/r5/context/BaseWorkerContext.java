@@ -1375,6 +1375,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+  /** the local resources a validate-code against vs depends on, for its cache key: the ones its expansion depends on */
+  private List<CanonicalResource> validationDependencies(ValueSet vs) {
+    return vs == null ? null : findExpansionDependencies(vs, getExpansionParametersForCacheToken());
+  }
+
   /** false if cr is null or already there, so the caller doesn't follow it again (imports can be circular) */
   private boolean addExpansionDependency(Map<String, CanonicalResource> res, CanonicalResource cr) {
     return cr != null && res.putIfAbsent(cr.fhirType() + "/" + cr.getVersionedUrl(), cr) == null;
@@ -1512,8 +1517,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 1st pass: what is in the cache? 
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
+    List<CanonicalResource> dependencies = txCache != null ? validationDependencies(vs) : null;
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken(), "Coding", dependencies) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1781,7 +1787,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path, validationDependencies(vs)) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -2095,7 +2101,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken());
+    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), validationDependencies(vs));
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
