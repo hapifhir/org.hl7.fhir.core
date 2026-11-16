@@ -909,36 +909,82 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Dependency rules for every build (pull request and master pipelines). Each enforcer profile uses its own
+             execution id with an execution-level skip=false, so the plugin-level skip=true still applies to the
+             inherited enforce-maven execution, and rules from different profiles don't merge. -->
         <profile>
-            <id>checkForSnapshotDependencies</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>checkForSnapshotDependencies</name>
-                    <value>true</value>
-                </property>
-            </activation>
+            <id>dependencyEnforcement</id>
             <build>
                 <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <configuration>
-                        <skip>false</skip>
-                        <rules>
-                            <requireJavaVersion>
-                                <version>(17,)</version>
-                            </requireJavaVersion>
+                    <executions>
+                        <execution>
+                            <id>ban-direct-opentelemetry</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <skip>false</skip>
+                                <rules>
+                                    <!-- OpenTelemetry is only inherited from hapi-fhir: opentelemetry-instrumentation-annotations
+                                         is declared in the hapi-fhir parent pom's <dependencies> (so it appears as a direct
+                                         dependency of every module and must be allowed here), and opentelemetry-api/context/common
+                                         arrive transitively via hapi-fhir-base. Their CVEs are suppressed in
+                                         owasp-suppression-file.xml on that basis, so any other direct declaration is banned. -->
+                                    <bannedDependencies>
+                                        <searchTransitive>false</searchTransitive>
+                                        <excludes>
+                                            <exclude>io.opentelemetry*</exclude>
+                                        </excludes>
+                                        <includes>
+                                            <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations</include>
+                                        </includes>
+                                        <message>OpenTelemetry must not be declared directly; it is only inherited from the hapi-fhir parent pom and hapi-fhir-base.</message>
+                                    </bannedDependencies>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- Additional dependency rules for release builds; used together with dependencyEnforcement. -->
+        <profile>
+            <id>dependencyEnforcementRelease</id>
+            <build>
+                <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>require-release-deps</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <skip>false</skip>
+                                <rules>
+                                    <requireJavaVersion>
+                                        <version>(17,)</version>
+                                    </requireJavaVersion>
 
-                            <requireReleaseDeps>
-                                <message>No Snapshots Allowed!</message>
-                                <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
-                                <excludes>
-                                    <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.*</exclude>
-                                </excludes>
-                            </requireReleaseDeps>
-                        </rules>
-                    </configuration>
+                                    <requireReleaseDeps>
+                                        <message>No Snapshots Allowed!</message>
+                                        <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                        <excludes>
+                                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.*</exclude>
+                                        </excludes>
+                                    </requireReleaseDeps>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 </plugins>
             </build>

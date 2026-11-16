@@ -14,4 +14,15 @@
         <packageUrl regex="true">^pkg:maven/org\.hl7\.fhir\.testcases/fhir\-test\-cases@.*$</packageUrl>
         <cve>CVE-2021-32053</cve>
     </suppress>
+    <suppress until="2027-11-16Z">
+        <notes><![CDATA[
+   OpenTelemetry is only inherited from hapi-fhir: opentelemetry-instrumentation-annotations is declared in the
+   hapi-fhir parent pom's dependencies, and opentelemetry-api/context/common arrive transitively via hapi-fhir-base.
+   This project declares no OpenTelemetry dependency and has no OTel SDK, exporter or propagator configured.
+   Many OTel CVEs are false positives: NVD uses one vendor/product CPE for every language implementation.
+   Direct use is blocked by checkstyle (NoOpenTelemetry) and enforcer (dependencyEnforcement profile).
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.opentelemetry(\.instrumentation)?/opentelemetry\-(api|context|common|instrumentation\-annotations)@.*$</packageUrl>
+        <vulnerabilityName regex="true">.*</vulnerabilityName>
+    </suppress>
 </suppressions>
