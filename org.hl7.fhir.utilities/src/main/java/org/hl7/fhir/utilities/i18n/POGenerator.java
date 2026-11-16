@@ -394,6 +394,8 @@ public class POGenerator {
     }
   }
 
+  // names are Pattern.quote()d, so the only regex syntax is the fixed suffix
+  @SuppressWarnings("checkstyle:patternUsage")
   private void scanJavaSource(String path, boolean core, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
     JavaScanner scanner = new JavaScanner();
     scanner.core = core;
@@ -416,6 +418,7 @@ public class POGenerator {
   private class JavascriptScanner implements IDirectoryVisitorImplementation {
     // a quoted string with no quotes or whitespace in it. The closing quote isn't consumed, so
     // an occurrence that starts on it is still found (as String.contains would)
+    @SuppressWarnings("checkstyle:patternUsage")
     private final Pattern quoted = Pattern.compile("(['\"`])([^'\"`\\s]+)(?=\\1)");
     private Map<String, List<PropertyValue>> defs;
 
