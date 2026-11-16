@@ -1031,6 +1031,52 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  void testValidationDependenciesWithoutAValueSet() {
+    // a code validated against its code system alone depends on that code system and its supplements
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://example.org/cs");
+    cs.setVersion("1.0");
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    context.cacheResource(supp);
+    Mockito.doReturn(cs).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+
+    List<CanonicalResource> deps = context.findValidationDependencies(null, List.of(new Coding("http://example.org/cs", "a", null)));
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs, supp)), deps.toString());
+    assertEquals(List.of(), context.findValidationDependencies(null, List.of(new Coding(null, "a", null))));
+  }
+
+  @Test
+  void testValidationDependenciesHaveTheCodingsVersion() {
+    // the code is checked against the version the coding names, which the ValueSet need not name; and against its
+    // code system even when the ValueSet doesn't include it
+    CodeSystem cs1 = new CodeSystem();
+    cs1.setUrl("http://example.org/cs");
+    cs1.setVersion("1.0");
+    cs1.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem cs2 = new CodeSystem();
+    cs2.setUrl("http://example.org/cs");
+    cs2.setVersion("2.0");
+    cs2.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    Mockito.doReturn(cs2).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+    Mockito.doReturn(cs1).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), eq("1.0"), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+
+    assertEquals(List.of(cs2), context.findValidationDependencies(vs, List.of(new Coding("http://example.org/cs", "a", null))));
+    List<CanonicalResource> deps = context.findValidationDependencies(vs, List.of(new Coding("http://example.org/cs", "a", null).setVersion("1.0")));
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs1, cs2)), deps.toString());
+
+    ValueSet other = new ValueSet();
+    other.setUrl(DUMMY_URL);
+    other.getCompose().addInclude().setSystem("http://example.org/other");
+    assertEquals(List.of(cs2), context.findValidationDependencies(other, List.of(new Coding("http://example.org/cs", "a", null))));
+  }
+
+  @Test
   void testExpandIncludeKeyHasTheExpansionParameters() {
     // they are sent with the include, so they are in its key: a pinned version gives a different expansion
     Parameters ep = new Parameters();

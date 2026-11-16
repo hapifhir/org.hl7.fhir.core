@@ -903,6 +903,20 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
+    void testEditedCodeSystemWithoutAValueSetMisses() throws IOException {
+      // a code validated against its code system alone
+      TerminologyCache cache = createTerminologyCache();
+      assertFalse(codingRequest(cache, null, null).contains("\"definition\""));
+      assertFalse(codingRequest(cache, null, List.of()).contains("\"definition\""));
+      String coding = codingRequest(cache, null, List.of(bloodGroupCodeSystem("B")));
+      String concept = conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B")));
+      assertNotEquals(coding, codingRequest(cache, null, List.of(bloodGroupCodeSystem("B changed"))));
+      assertNotEquals(concept, conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B changed"))));
+      assertEquals(coding, codingRequest(cache, null, List.of(bloodGroupCodeSystem("B"))));
+      assertEquals(concept, conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B"))));
+    }
+
+    @Test
     void testEmbeddedValueSetKeepsItsKey() throws IOException {
       // a ValueSet without a url is in the key as it is; only what it depends on is added
       TerminologyCache cache = createTerminologyCache();
