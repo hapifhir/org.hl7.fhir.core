@@ -42,7 +42,6 @@ public class UserDataNames {
   public static final String render_tx_pattern = "tx.pattern";
   public static final String render_link = "render.link";
   public static final String render_external_link = "External.Link";
-  public static final String render_dict_generator_anchors = "dict.generator.anchors";
   public static final String render_presentation = "presentation";
   public static final String render_src_package = "package"; // <--- this value is reused by HAPI and can't change without consultation
   public static final String renderer_is_generated = "renderer.generated";

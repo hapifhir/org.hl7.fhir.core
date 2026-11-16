@@ -4246,13 +4246,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   public void renderDict(RenderingStatus status, StructureDefinition sd, List<ElementDefinition> elements, XhtmlNode t, boolean incProfiledOut, int mode, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException { 
     int i = 0; 
+    // the anchors for each element. Local to this call (not user data on the elements, which belong to the profile, so
+    // two renderings of the same profile, perhaps on different threads, can't interfere with each other)
+    Map<ElementDefinition, List<String>> anchorLists = new IdentityHashMap<>();
     Map<String, ElementDefinition> allAnchors = new HashMap<>(); 
     List<ElementDefinition> excluded = new ArrayList<>(); 
     List<ElementDefinition> stack = new ArrayList<>(); // keeps track of parents, for anchor generation 
      
     for (ElementDefinition ec : elements) { 
       addToStack(stack, ec); 
-      generateAnchors(stack, allAnchors); 
+      generateAnchors(stack, allAnchors, anchorLists); 
       checkInScope(stack, excluded); 
     } 
     Stack<ElementDefinition> dstack = new Stack<>(); 
@@ -4264,7 +4267,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         else if (mode==GEN_MODE_KEY) 
           compareElement = getRootElement(ec, sd);
  
-        List<String> anchors = makeAnchors(ec, anchorPrefix); 
+        List<String> anchors = makeAnchors(ec, anchorPrefix, anchorLists); 
         String title = ec.getId(); 
         XhtmlNode tr = t.tr(); 
         XhtmlNode sp = renderStatus(ec, tr.td("structure").colspan(2).spanClss("self-link-parent")); 
@@ -4381,7 +4384,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private void generateAnchors(List<ElementDefinition> stack, Map<String, ElementDefinition> allAnchors) { 
+  private void generateAnchors(List<ElementDefinition> stack, Map<String, ElementDefinition> allAnchors, Map<ElementDefinition, List<String>> anchorLists) { 
     List<String> list = new ArrayList<>(); 
     list.add(stack.get(0).getId()); // initialise 
     for (int i = 1; i < stack.size(); i++) { 
@@ -4428,14 +4431,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         removed.add(s); 
       } else { 
         // we delete it from the other 
-        @SuppressWarnings("unchecked") 
-        List<String> other = (List<String>) allAnchors.get(s).getUserData(UserDataNames.render_dict_generator_anchors); 
+        List<String> other = anchorLists.get(allAnchors.get(s)); 
         other.remove(s); 
         allAnchors.put(s, ed); 
       } 
     } 
     list.removeAll(removed); 
-    ed.setUserData(UserDataNames.render_dict_generator_anchors, list); 
+    anchorLists.put(ed, list); 
   } 
  
   private void addToStack(List<ElementDefinition> stack, ElementDefinition ec) { 
@@ -4449,8 +4451,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return ec.getPath().startsWith(ed.getPath()+"."); 
   } 
  
-  private List<String> makeAnchors(ElementDefinition ed, String anchorPrefix) { 
-    List<String> list = (List<String>) ed.getUserData(UserDataNames.render_dict_generator_anchors); 
+  private List<String> makeAnchors(ElementDefinition ed, String anchorPrefix, Map<ElementDefinition, List<String>> anchorLists) { 
+    List<String> list = anchorLists.get(ed); 
     List<String>  res = new ArrayList<>(); 
     res.add(anchorPrefix + ed.getId()); 
     for (String s : list) { 

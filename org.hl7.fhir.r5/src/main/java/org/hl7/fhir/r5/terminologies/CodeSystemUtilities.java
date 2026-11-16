@@ -144,6 +144,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
+  public static final String USER_DATA_CROSS_LINKED = "cs.utils.cross.linked"; // on a CodeSystem: its concepts have been cross-linked (see crossLinkCodeSystem)
 
   /**
    * Walks the concepts of a code system for rendering, re-arranging the top level concepts under the
@@ -743,10 +744,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
+  /**
+   * Build the child lists (USER_DATA_CROSS_LINK) from the #parent property. This is done once per code system:
+   * later calls do nothing. Thread safe: done under a lock on the code system, so that two threads can't build
+   * the lists at the same time (but readers of the lists don't lock - a code system must be cross-linked before
+   * it is published to other threads, see CanonicalResourceProxy.getResource())
+   */
   public static void crossLinkCodeSystem(@Nonnull CodeSystem cs) {
-    String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
-    if ((parent != null)) {
-      crossLinkConcepts(cs.getConcept(), cs.getConcept(), parent);
+    synchronized (cs) {
+      if (cs.hasUserData(USER_DATA_CROSS_LINKED)) {
+        return;
+      }
+      String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
+      if ((parent != null)) {
+        crossLinkConcepts(cs.getConcept(), cs.getConcept(), parent);
+      }
+      cs.setUserData(USER_DATA_CROSS_LINKED, true);
     }
   }
 
