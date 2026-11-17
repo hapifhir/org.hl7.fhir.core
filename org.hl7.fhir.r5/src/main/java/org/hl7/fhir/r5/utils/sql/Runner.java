@@ -92,6 +92,7 @@ public class Runner implements IHostApplicationServices {
   private FHIRPathEngine fpe;
 
   private String resourceName;
+  private String resourceType;
   private List<ValidationMessage> issues;
   private int resCount;
 
@@ -208,6 +209,7 @@ public class Runner implements IHostApplicationServices {
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
+    resourceType = validator.getResourceType();
     wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData(UserDataNames.db_columns));
     return wc;
   }
@@ -224,7 +226,7 @@ public class Runner implements IHostApplicationServices {
   private void processResource(JsonObject vd, Store store, Base b) {
     // Spec, "Process a Resource" step 1: a resource of another type emits nothing. Batch mode
     // fetches by type, but trickle mode hands over whatever the caller has.
-    if (!resourceName.equals(b.fhirType())) {
+    if (!resourceType.equals(typeOf(b))) {
       return;
     }
     // The resource is row 0 of its own scope: %rowIndex is 0 until a select
@@ -251,6 +253,16 @@ public class Runner implements IHostApplicationServices {
         storage.addRow(store, row);
       }
     }
+  }
+
+  /**
+   * The type of a resource or logical model instance, in the form that StructureDefinition.type
+   * takes: a name for a type in the FHIR namespace and a URL for any other. An element model
+   * instance takes it from its definition, because fhirType() gives the name that the parser gave
+   * the root element, which for a logical model depends upon the format it was parsed from.
+   */
+  private static String typeOf(Base b) {
+    return b instanceof Element ? ((Element) b).getProperty().getStructure().getType() : b.fhirType();
   }
   
   public void finish(WorkContext wc) {
