@@ -2,7 +2,9 @@ package org.hl7.fhir.utilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -89,6 +91,41 @@ class XsltURIResolverTests {
   }
 
   @Test
+  void symlinkedDirectoryPointingOutsideRootIsRejected() throws Exception {
+    Path outsideDir = Files.createDirectories(work.resolve("outside-dir"));
+    Files.writeString(outsideDir.resolve("secret.xsl"), "SECRET");
+    createSymlinkOrSkip(root.resolve("pivot"), outsideDir);
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+
+    assertThrows(TransformerException.class, () -> resolver.resolve("pivot/secret.xsl", null));
+  }
+
+  @Test
+  void symlinkedFilePointingOutsideRootIsRejected() {
+    createSymlinkOrSkip(root.resolve("link.xsl"), outside);
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+
+    assertThrows(TransformerException.class, () -> resolver.resolve("link.xsl", null));
+  }
+
+  @Test
+  void symlinkPointingInsideRootIsResolved() throws Exception {
+    createSymlinkOrSkip(root.resolve("alias"), root.resolve("sub"));
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+
+    assertThat(read(resolver.resolve("alias/b.xsl", null))).isEqualTo("B");
+  }
+
+  @Test
+  void symlinkedRootIsResolved() throws Exception {
+    Path linkedRoot = work.resolve("linked-root");
+    createSymlinkOrSkip(linkedRoot, root);
+    XsltURIResolver resolver = new XsltURIResolver(linkedRoot.toString(), null);
+
+    assertThat(read(resolver.resolve("sub/b.xsl", null))).isEqualTo("B");
+  }
+
+  @Test
   void nullRootIsRejected() {
     XsltURIResolver resolver = new XsltURIResolver(null, null);
 
@@ -109,6 +146,15 @@ class XsltURIResolverTests {
       assertThat(read(resolver.resolve("sub/b.xsl", null))).isEqualTo("TMP-B");
     } finally {
       FileUtils.deleteDirectory(tmpRoot.toFile());
+    }
+  }
+
+  /** Creates a symlink, or skips the test where the platform or user cannot (for example, Windows without the privilege). */
+  static void createSymlinkOrSkip(Path link, Path target) {
+    try {
+      Files.createSymbolicLink(link, target);
+    } catch (IOException | UnsupportedOperationException e) {
+      assumeTrue(false, "symlinks not supported here: " + e);
     }
   }
 

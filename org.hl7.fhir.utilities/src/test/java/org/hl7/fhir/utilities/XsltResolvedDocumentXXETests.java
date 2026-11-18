@@ -328,6 +328,43 @@ class XsltResolvedDocumentXXETests {
     assertNoCanary(() -> new String(XsltUtilities.saxonTransform(files, source, DOCUMENT_XSL.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
   }
 
+  // --- symlink inside xsltDir pointing outside it -----------------------------------------
+
+  /**
+   * Creates {@code xsltDir/pivot}, a symlink to a directory outside xsltDir that contains
+   * {@code secret.xml}. No entity is needed: if the resolver follows the link, document() loads
+   * {@code <d>RESOLVED-DOC-CANARY</d>} directly and {@link #DOCUMENT_XSL} outputs the canary.
+   */
+  private void createPivotToOutsideDirectory() throws Exception {
+    Path outsideDir = Files.createDirectories(work.resolve("outside-dir"));
+    Files.writeString(outsideDir.resolve("secret.xml"), "<?xml version=\"1.0\"?>\n<d>" + CANARY + "</d>\n");
+    XsltURIResolverTests.createSymlinkOrSkip(xsltDir.resolve("pivot"), outsideDir);
+  }
+
+  @Test
+  void saxonTransformDocumentThroughSymlinkDoesNotLeakLocalFile() throws Exception {
+    createPivotToOutsideDirectory();
+    Path style = writeStylesheet("doc.xsl", DOCUMENT_XSL);
+    Path source = sourceWithHref("pivot/secret.xml");
+
+    assertNoCanary(() -> {
+      XsltUtilities.saxonTransform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null);
+      return Files.readString(output);
+    });
+  }
+
+  @Test
+  void transformDocumentThroughSymlinkDoesNotLeakLocalFile() throws Exception {
+    createPivotToOutsideDirectory();
+    Path style = writeStylesheet("doc.xsl", DOCUMENT_XSL);
+    Path source = sourceWithHref("pivot/secret.xml");
+
+    assertNoCanary(() -> {
+      XsltUtilities.transform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null);
+      return Files.readString(output);
+    });
+  }
+
   // --- controls: the same paths load a harmless document, so the tests above are not vacuous --
 
   /** Harmless document for the control tests. It is loaded through the same paths and must output "plain". */

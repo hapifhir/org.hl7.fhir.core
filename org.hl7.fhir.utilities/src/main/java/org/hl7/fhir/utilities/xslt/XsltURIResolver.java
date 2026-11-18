@@ -110,12 +110,17 @@ public class XsltURIResolver implements URIResolver {
    * <code>[tmp]</code> and <code>[user]</code> are expanded, as before. Relative hrefs are also
    * resolved with {@link Utilities#path(String...)}. Absolute hrefs are accepted only if they
    * already point inside the root (PathBuilder would otherwise re-root them under it).
+   * <p>
+   * Both the root and the target are compared as real paths, with symlinks resolved, so a symlink
+   * inside the root cannot point the read outside it. The real path is returned so that the file
+   * opened is the one that was checked. A target that does not exist fails here with
+   * NoSuchFileException.
    */
   private String resolveWithinRoot(String href) throws TransformerException {
     try {
-      Path root = Paths.get(Utilities.path(path)).toAbsolutePath().normalize();
+      Path root = Paths.get(Utilities.path(path)).toRealPath();
       String resolved = Paths.get(href).isAbsolute() ? href : Utilities.path(path, href);
-      Path target = Paths.get(resolved).toAbsolutePath().normalize();
+      Path target = Paths.get(resolved).toRealPath();
       if (!target.startsWith(root)) {
         throw new TransformerException("Access to '" + href + "' outside " + root + " is not permitted");
       }
