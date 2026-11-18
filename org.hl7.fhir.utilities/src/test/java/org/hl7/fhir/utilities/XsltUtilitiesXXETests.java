@@ -23,6 +23,11 @@ class XsltUtilitiesXXETests {
 
   private static final String CANARY = "CURRENT-CANARY";
 
+  /**
+   * Outputs the text of the root element. In the XXE tests, this copies whatever {@code &xxe;} expanded to
+   * into the output file, so a leak of the secret file is visible to the assertions. In the
+   * ordinary-document tests, the root contains "hello".
+   */
   private static final String XSL = """
     <?xml version="1.0"?>
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -31,6 +36,10 @@ class XsltUtilitiesXXETests {
     </xsl:stylesheet>
     """;
 
+  /*
+   * INCLUDED_XSL and INCLUDING_XSL are used only by the Map-overload tests that check xsl:include
+   * still resolves from the supplied map. They are not part of the exploit.
+   */
   private static final String INCLUDED_XSL = """
     <?xml version="1.0"?>
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -59,14 +68,21 @@ class XsltUtilitiesXXETests {
     Path secret = work.resolve("canary-secret.txt");
     Files.writeString(secret, CANARY);
 
-    String xml = "<?xml version=\"1.0\"?>\n"
+    /*
+     * XML whose external entity points at the secret file. If the entity is resolved (before the
+     * fix, XsltURIResolver opened the absolute path directly), &xxe; is replaced with the file's
+     * contents:
+     *
+     *   <root>CURRENT-CANARY</root>
+     */
+    String inputXml = "<?xml version=\"1.0\"?>\n"
       + "<!DOCTYPE root [<!ENTITY xxe SYSTEM \"" + secret.toAbsolutePath() + "\">]>\n"
       + "<root>&xxe;</root>\n";
 
     source = work.resolve("input.xml");
     style = work.resolve("identity.xsl");
     output = work.resolve("output.txt");
-    Files.writeString(source, xml);
+    Files.writeString(source, inputXml);
     Files.writeString(style, XSL);
   }
 
@@ -106,7 +122,7 @@ class XsltUtilitiesXXETests {
   }
 
   @Test
-  void mapSaxonTransformOverloadDoesNotLeakLocalFile() throws Exception {
+  void mapSaxonTransformOverloadDoesNotLeakLocalFile() {
     byte[] out;
     try {
       out = XsltUtilities.saxonTransform(Map.of("other.xsl", XSL.getBytes(StandardCharsets.UTF_8)), Files.readAllBytes(source), Files.readAllBytes(style));
@@ -117,7 +133,7 @@ class XsltUtilitiesXXETests {
   }
 
   @Test
-  void mapTransformOverloadDoesNotLeakLocalFile() throws Exception {
+  void mapTransformOverloadDoesNotLeakLocalFile() {
     byte[] out;
     try {
       out = XsltUtilities.transform(Map.of("other.xsl", XSL.getBytes(StandardCharsets.UTF_8)), Files.readAllBytes(source), Files.readAllBytes(style));
