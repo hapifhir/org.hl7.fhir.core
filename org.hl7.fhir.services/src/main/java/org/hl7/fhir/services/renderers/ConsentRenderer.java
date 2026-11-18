@@ -56,6 +56,11 @@ public class ConsentRenderer extends ResourceRenderer {
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_DATE)+":");
       renderDataType(status, xlinkNarrative(tr.td(), cr.child("date")), cr.child("date"));
+    } else if (cr.has("dateTime")) {
+      // R4
+      tr = tbl.tr();
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_DATE)+":");
+      renderDataType(status, xlinkNarrative(tr.td(), cr.child("dateTime")), cr.child("dateTime"));
     }
     if (cr.has("period")) {
       tr = tbl.tr();
@@ -190,16 +195,45 @@ public class ConsentRenderer extends ResourceRenderer {
         model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES_DESC)), null, 0));
       }
 
-      // first we add a root for the consent itself
-      HierarchicalTableGenerator.Row row = addConsentRoot(gen, model.getRows(), consent, permit, hasWhen, hasWho, hasWhat, hasRules);
+      // first we add a root for the consent itself, unless an R4 consent states its base rule in the root provision
+      List<HierarchicalTableGenerator.Row> rows = model.getRows();
+      if (!hasR4BaseRuleRootProvision(consent)) {
+        HierarchicalTableGenerator.Row row = addConsentRoot(gen, model.getRows(), consent, permit, hasWhen, hasWho, hasWhat, hasRules);
+        rows = row.getSubRows();
+      }
       for (ResourceWrapper i : consent.childrenMN("provision", "except")) {
-        renderConsentProvision(status, gen, row.getSubRows(), consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
+        renderConsentProvision(status, gen, rows, consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
       }
       XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
       x.addChildNode(xn);
     } else {
       x.para().tx(context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT_DESC :  RenderingContext.CONSENT_DENY_DESC));
     }
+  }
+
+  private static final String[] R4_PROVISION_CONDITIONS = { "actor", "action", "securityLabel", "purpose", "class", "code", "dataPeriod", "data" };
+
+  /**
+   * R4 says the root provision has no type, but the validator accepts one, and some IGs use a root provision with a
+   * type and no conditions (only a period) as the base rule of the consent, e.g. deny for an opt-in model. Such a root
+   * provision already states the base decision, so no synthetic root row is added; it would always show "permit" (see
+   * determineBasePermit). A typed root provision with conditions (actor, purpose, ...) is an exception to the base
+   * policy, as in the R4 example consent-example-notOrg, and keeps the synthetic root row.
+   */
+  private boolean hasR4BaseRuleRootProvision(ResourceWrapper consent) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) || consent.hasExtension(EXT_CONSENT_DECISION)) {
+      return false;
+    }
+    ResourceWrapper root = consent.child("provision");
+    if (root == null || !root.has("type")) {
+      return false;
+    }
+    for (String condition : R4_PROVISION_CONDITIONS) {
+      if (root.has(condition)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private boolean determineBasePermit(ResourceWrapper consent) {
