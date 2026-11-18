@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.FileUtils;
@@ -123,6 +125,32 @@ class XsltURIResolverTests {
     XsltURIResolver resolver = new XsltURIResolver(linkedRoot.toString(), null);
 
     assertThat(read(resolver.resolve("sub/b.xsl", null))).isEqualTo("B");
+  }
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @ValueSource(strings = {"http://example.org/a.xsl", "https://example.org/a.xsl"})
+  void remoteHrefWithoutAltIsRejected(String href) {
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+
+    TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
+    assertThat(e).hasMessageContaining("remote resources require a caller-supplied resolver");
+  }
+
+  @Test
+  void remoteHrefIsRejectedWhenAltReturnsNull() {
+    URIResolver declining = (href, base) -> null;
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), declining);
+
+    TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve("http://example.org/a.xsl", null));
+    assertThat(e).hasMessageContaining("remote resources require a caller-supplied resolver");
+  }
+
+  @Test
+  void remoteHrefIsServedByAlt() throws Exception {
+    Source fromAlt = new StreamSource(new ByteArrayInputStream("ALT".getBytes(StandardCharsets.UTF_8)));
+    XsltURIResolver resolver = new XsltURIResolver(root.toString(), (href, base) -> fromAlt);
+
+    assertThat(resolver.resolve("http://example.org/a.xsl", null)).isSameAs(fromAlt);
   }
 
   @Test

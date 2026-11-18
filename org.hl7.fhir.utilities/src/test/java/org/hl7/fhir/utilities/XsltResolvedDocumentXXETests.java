@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -223,31 +224,29 @@ class XsltResolvedDocumentXXETests {
   }
 
   // --- http document named by the source; no alt resolver ------------------------------------
-  // With alt == null every http(s) href fails (NPE: the fallback factory has no URIResolver),
-  // so these pass without loading anything. Kept to record that behaviour.
+  // With alt == null, XsltURIResolver refuses every http(s) href without fetching it. These
+  // tests require that explicit rejection, so they fail if a default remote fetch is ever added.
+
+  private static final String REMOTE_REJECTED = "remote resources require a caller-supplied resolver";
 
   @Test
-  void saxonTransformRemoteDocumentNamedBySourceDoesNotLeakLocalFile() throws Exception {
+  void saxonTransformRemoteDocumentNamedBySourceIsRejected() throws Exception {
     String url = serve(entityDocument());
     Path source = sourceWithHref(url);
     Path style = writeStylesheet("doc.xsl", DOCUMENT_XSL);
 
-    assertNoCanary(() -> {
-      XsltUtilities.saxonTransform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null);
-      return Files.readString(output);
-    });
+    assertThatThrownBy(() -> XsltUtilities.saxonTransform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null))
+      .hasStackTraceContaining(REMOTE_REJECTED);
   }
 
   @Test
-  void transformRemoteDocumentNamedBySourceDoesNotLeakLocalFile() throws Exception {
+  void transformRemoteDocumentNamedBySourceIsRejected() throws Exception {
     String url = serve(entityDocument());
     Path style = writeStylesheet("doc.xsl", DOCUMENT_XSL);
     Path source = sourceWithHref(url);
 
-    assertNoCanary(() -> {
-      XsltUtilities.transform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null);
-      return Files.readString(output);
-    });
+    assertThatThrownBy(() -> XsltUtilities.transform(xsltDir.toString(), source.toString(), style.toString(), output.toString(), null))
+      .hasStackTraceContaining(REMOTE_REJECTED);
   }
 
   // --- http document named by the source, fetched by a caller-supplied alt resolver ------

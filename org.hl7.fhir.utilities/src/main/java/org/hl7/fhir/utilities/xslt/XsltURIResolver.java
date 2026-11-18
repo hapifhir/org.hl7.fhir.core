@@ -93,7 +93,9 @@ public class XsltURIResolver implements URIResolver {
           if (s != null)
             return s;
         }
-        return org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory().getURIResolver().resolve(href, base);
+        // No default remote fetch: fetching here would make outbound requests on behalf of the
+        // documents being transformed. Callers that need remote resources supply an alt resolver.
+        throw new TransformerException("Unable to resolve '" + href + "': remote resources require a caller-supplied resolver");
       } else
         return new StreamSource(ManagedFileAccess.inStream(resolveWithinRoot(href)));
     } catch (IOException e) {
