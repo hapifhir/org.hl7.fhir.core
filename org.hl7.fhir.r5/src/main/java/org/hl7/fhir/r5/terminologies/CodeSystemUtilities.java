@@ -567,29 +567,20 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return res;
   }
 
-  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code, @Nonnull String use) {
+  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code))
         return c;
       for (ConceptPropertyComponent p : c.getProperty()) {
-        if ("alternateCode".equals(p.getCode()) && (use == null || hasUse(p, use)) && p.hasValue() && p.getValue().isPrimitive() && code.equals(p.getValue().primitiveValue())) {
+        if ("alternateCode".equals(p.getCode()) && p.hasValue() && p.getValue().isPrimitive() && code.equals(p.getValue().primitiveValue())) {
           return c;
         }
       }
-      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConcept(), code, use);
+      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConcept(), code);
       if (s != null)
         return s;
     }
     return null;
-  }
-
-  private static boolean hasUse(ConceptPropertyComponent p, String use) {
-    for (Extension ext : p.getExtensionsByUrl(ExtensionDefinitions.EXT_CS_ALTERNATE_USE)) {
-      if (ext.hasValueCoding() && use.equals(ext.getValueCoding().getCode())) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion, String thisVersion) throws FHIRException {

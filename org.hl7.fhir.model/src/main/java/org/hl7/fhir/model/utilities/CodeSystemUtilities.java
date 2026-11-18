@@ -545,7 +545,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return res;
   }
 
-  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code, @Nonnull String use) {
+  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code))
         return c;
@@ -554,7 +554,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           return c;
         }
       }
-      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConceptList(), code, use);
+      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConceptList(), code);
       if (s != null)
         return s;
     }

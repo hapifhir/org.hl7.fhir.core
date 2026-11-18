@@ -1774,7 +1774,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         dwc.setCanBeHierarchy(false);
         for (ConceptReferenceComponent c : inc.getConceptList()) {
           c.checkNoModifiers("Code in Value Set", "expanding");
-          ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConceptList(), c.getCode(), null);
+          ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConceptList(), c.getCode());
           if (def == null) {
             // a code in a code space the code system reserves for users to define their own codes: listed, it
             // is in the expansion (with an extension-codes supplement's display, or the code space's default)
