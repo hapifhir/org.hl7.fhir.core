@@ -3659,10 +3659,10 @@ public class ProfileUtilities {
       return true;
     }
     if (unknown.contains(url)) {
-      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.SNAPSHOT_TARGET_PROFILE_UNKNOWN, url, dPath), IssueSeverity.WARNING));
       return true;
     } else if (!unknown.isEmpty()) {
-      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because these profiles it derives from, imposes or claims to comply with are not known: " + CommaSeparatedStringBuilder.join(", ", unknown), IssueSeverity.WARNING));
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.SNAPSHOT_TARGET_PROFILE_ANCESTOR_UNKNOWN, url, dPath, CommaSeparatedStringBuilder.join(", ", unknown)), IssueSeverity.WARNING));
       return true;
     }
     return false;

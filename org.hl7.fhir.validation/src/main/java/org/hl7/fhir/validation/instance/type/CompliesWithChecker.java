@@ -829,7 +829,7 @@ public class CompliesWithChecker {
 
     public String describe() {
       if (profiles != null) {
-        return CommaSeparatedStringBuilder.join(" or ", profileUrls());
+        return CommaSeparatedStringBuilder.join(", ", profileUrls());
       } else if (value != null) {
         return value.toString();
       } else if (vs != null) {
