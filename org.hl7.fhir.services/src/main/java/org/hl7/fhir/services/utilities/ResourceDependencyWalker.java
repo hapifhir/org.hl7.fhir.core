@@ -196,7 +196,7 @@ public class ResourceDependencyWalker {
   private void walkSMRule(StructureMap.StructureMapGroupRuleComponent rule, StructureMap sm) {
     for (StructureMap.StructureMapGroupRuleTargetComponent target : rule.getTargetList()) {
       // `translate(<concept-map>, code, "code")` — the first parameter is a ConceptMap canonical.
-      if (target.getTransform() == StructureMap.StructureMapTransform.TRANSLATE
+      if (target.getTransform() == StructureMap.StructureMapTransformVS.TRANSLATE
           && !target.getParameterList().isEmpty()) {
         org.hl7.fhir.model.core.DataType v = target.getParameterList().get(0).getValue();
         if (v != null && v.hasPrimitiveValue()) {
