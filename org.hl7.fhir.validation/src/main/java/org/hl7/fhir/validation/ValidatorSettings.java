@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.UsageContext;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.instance.utils.DigitalSignatureSupport;
@@ -52,6 +53,13 @@ public class ValidatorSettings extends ValidationOptions {
   @Getter @Setter private int codeSystemValidationSizeLimit = DEFAULT_CODESYSTEM_VALIDATION_SIZE_LIMIT; // @configuration
 
   @Getter private Set<String> jwtHeaderList = buildJadesHeaders();
+
+  /**
+   * What the package registries answer when an ImplementationGuide's dependencies are checked. A host that
+   * validates the same IG again (a watch session, a server) sets one cache here for as long as answers can be
+   * reused; if it is null, answers are kept only while one ImplementationGuide is validated.
+   */
+  @Getter @Setter private RegistryAnswerCache registryAnswerCache;
 
 
   public Source getSource() {

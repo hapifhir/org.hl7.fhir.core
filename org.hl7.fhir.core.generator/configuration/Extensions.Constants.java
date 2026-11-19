@@ -13,6 +13,8 @@ public class ExtensionDefinitions {
 
   // not properly defined yet
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
+  public static final String EXT_SUPPL_GLOBAL = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-global";
+  public static final String EXT_RESERVED_CODE_SPACE = "http://hl7.org/fhir/StructureDefinition/codesystem-reservedCodeSpace";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_JSON_NAME_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
@@ -23,6 +25,7 @@ public class ExtensionDefinitions {
   public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
   public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
   public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
+  public static final String EXT_EXPANSION_ISSUE = "http://hl7.org/fhir/StructureDefinition/expansion-issue";
 
 
   // special cases: defined in earlier versions and still used, but no longer defined

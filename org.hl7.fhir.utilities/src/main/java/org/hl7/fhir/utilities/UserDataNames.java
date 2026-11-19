@@ -76,6 +76,7 @@ public class UserDataNames {
   public static final String TX_ASSOCIATED_CODESYSTEM = "cs";
   public static final String tx_cs_version_notes = "cs.version.notes";
   public static final String tx_known_supplements = "supplements.installed";
+  public static final String tx_implicit_vs_by_url = "tx.implicit.vs.by-url"; // an implicit value set that goes to a terminology server by its url, not as a resource (see ImplicitValueSets)
 
   public static final String validator_bundle_resolution = "validator.bundle.resolution";
   public static final String validator_bundle_resolved = "validator.bundle.resolved";

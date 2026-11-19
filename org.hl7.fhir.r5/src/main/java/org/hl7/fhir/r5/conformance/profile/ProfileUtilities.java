@@ -1927,7 +1927,13 @@ public class ProfileUtilities {
   protected void replaceFromContentReference(ElementDefinition outcome, ElementDefinition tgt) {
     outcome.setContentReference(null);
     outcome.getType().clear(); // though it should be clear anyway
-    outcome.getType().addAll(tgt.getType());    
+    outcome.getType().addAll(tgt.getType());
+    // the invariants of the referenced element apply here too (e.g. cmp-1 on Composition.section.section)
+    for (ElementDefinitionConstraintComponent inv : tgt.getConstraint()) {
+      if (!outcome.hasConstraint(inv.getKey())) {
+        outcome.getConstraint().add(inv.copy());
+      }
+    }
   }
 
 

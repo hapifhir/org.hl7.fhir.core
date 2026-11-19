@@ -39,7 +39,7 @@ public class ResourceRoundTripTests {
       RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       new RendererFactory().factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.xml")));
-      new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
+      new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.tempFile("gen", "unicode.out.xml"), res);
     });
   }
 

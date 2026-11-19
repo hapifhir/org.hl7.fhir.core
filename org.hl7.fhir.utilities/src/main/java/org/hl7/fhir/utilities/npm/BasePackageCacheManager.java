@@ -45,6 +45,10 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     myClientFactory = theClientFactory;
   }
 
+  protected PackageClient newPackageClient(PackageServer server) {
+    return myClientFactory.apply(server);
+  }
+
   public List<PackageServer> getPackageServers() {
     return myPackageServers;
   }

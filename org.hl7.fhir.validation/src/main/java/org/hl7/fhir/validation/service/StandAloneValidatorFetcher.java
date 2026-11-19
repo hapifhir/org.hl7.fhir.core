@@ -1,8 +1,8 @@
 package org.hl7.fhir.validation.service;
 
+import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -161,10 +161,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   private Element loadFile(File tgt) throws FHIRFormatError, DefinitionException, FHIRException, FileNotFoundException, IOException {
-    if (tgt.getName().endsWith(".xml")) {
-      return Manager.parse(context, new FileInputStream(tgt), FhirFormat.XML).get(0).getElement();
-    } else {
-      return Manager.parse(context, new FileInputStream(tgt), FhirFormat.JSON).get(0).getElement();
+    try (InputStream stream = ManagedFileAccess.inStream(tgt)) {
+      if (tgt.getName().endsWith(".xml")) {
+        return Manager.parse(context, stream, FhirFormat.XML).get(0).getElement();
+      } else {
+        return Manager.parse(context, stream, FhirFormat.JSON).get(0).getElement();
+      }
     }
   }
 
@@ -196,7 +198,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     String ver = null;
     String base = findBaseUrl(url);
     if (base == null) {
-      return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
+      return !url.startsWith("http://hl7.org/fhir") && !"canonical".equals(type);
     }
 
     // the next operations are expensive. we're going to cache them 
@@ -268,7 +270,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     }
 
     // we don't bother with urls outside fhir space in the standalone validator - we assume they are valid
-    return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
+    return !url.startsWith("http://hl7.org/fhir") && !"canonical".equals(type);
   }
 
   private boolean isMappingUri(String url) {
@@ -370,9 +372,13 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public void findResource(Object validator, String url, VersionResolutionRules rules) {
+  public void findResource(Object caller, String url, VersionResolutionRules rules) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, rules,null, false, null);
+      // the caller isn't necessarily a validator - the worker context asks about code systems it
+      // doesn't know, and the server's /canonical about any canonical URL (-autoLoadPackages) - and
+      // resolveURL doesn't use it. Casting it threw a ClassCastException, which was swallowed below,
+      // so nothing was ever found this way
+      resolveURL(caller instanceof IResourceValidator ? (IResourceValidator) caller : null, null, null, url, rules, null, false, null);
     } catch (Exception e) {
     }
   }

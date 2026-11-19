@@ -40,9 +40,11 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.CodeSystem.*;
 import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class CodeSystemUtilities extends TerminologyUtilities {
@@ -835,7 +837,8 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   /**
-   * @return true if mergeSupplements has already merged this supplement into the code system
+   * @return true if mergeSupplements has already merged this supplement - or another version of it -
+   * into the code system: only one version of a supplement applies (see oneVersionEach)
    */
   public static boolean isSupplementMerged(CodeSystem cs, CodeSystem supplement) {
     String merged = cs.getUserString(UserDataNames.tx_known_supplements);
@@ -845,17 +848,69 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
     String[] mergedList = merged.split(",");
-    return Utilities.existsInList(supplement.getVersionedUrl(), mergedList);
+    for (String m : mergedList) {
+      if (m.equals(supplement.getVersionedUrl()) || m.equals(supplement.getUrl()) || m.startsWith(supplement.getUrl() + "|")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Only one version of a supplement applies. When more than one version is in scope (a server's own,
+   * and another passed with the request; or one named by a value set without a version, and another
+   * asked for by version), the one asked for by version (url|version in specified) is used, else the
+   * latest
+   *
+   * @param supplements the supplements in scope, possibly several versions of one
+   * @param specified the supplements asked for (url or url|version), or null
+   * @return the supplements, one version of each
+   */
+  public static List<CodeSystem> oneVersionEach(List<CodeSystem> supplements, List<String> specified) {
+    Map<String, CodeSystem> chosen = new LinkedHashMap<>();
+    for (CodeSystem sup : supplements) {
+      CodeSystem existing = chosen.get(sup.getUrl());
+      if (existing == null) {
+        chosen.put(sup.getUrl(), sup);
+      } else {
+        boolean supAsked = specified != null && sup.hasVersion() && specified.contains(sup.getVersionedUrl());
+        boolean existingAsked = specified != null && existing.hasVersion() && specified.contains(existing.getVersionedUrl());
+        if (supAsked && !existingAsked) {
+          chosen.put(sup.getUrl(), sup);
+        } else if (!existingAsked && VersionUtilities.compareVersionsGeneral(sup.getVersion(), existing.getVersion()) > 0) {
+          chosen.put(sup.getUrl(), sup);
+        }
+      }
+    }
+    return new ArrayList<>(chosen.values());
   }
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA));
-    ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
+    // cs may already have supplements merged into it (the global ones, before the ones a request refers
+    // to are added): the record of what is merged is all of them, not just these ones
+    List<CodeSystem> all = new ArrayList<>();
+    if (cs.hasUserData(UserDataNames.CS_SUPPLEMENT_LIST)) {
+      @SuppressWarnings("unchecked")
+      List<CodeSystem> merged = (List<CodeSystem>) cs.getUserData(UserDataNames.CS_SUPPLEMENT_LIST);
+      all.addAll(merged);
+    }
+    // each supplement is merged once, however often it is asked for (e.g. a global supplement that a request
+    // also names), and not at all if cs already has it
+    List<CodeSystem> toMerge = new ArrayList<>();
+    for (CodeSystem sup : supplements) {
+      if (!listHasSupplement(all, sup)) {
+        all.add(sup);
+        toMerge.add(sup);
+      }
+    }
+    supplements = toMerge;
+    ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, all);
     // readers (ValueSetValidator.resolveCodeSystem, ValueSetExpander) split this on "," alone, so the
     // separator must be a bare comma: the default ", " left every supplement after the first with a
     // leading space, and so never matched the url it was required by (useSupplement)
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
-    for (CodeSystem sup : supplements) {
+    for (CodeSystem sup : all) {
       b.append(sup.getVersionedUrl());      
     }
     ret.setUserData(UserDataNames.tx_known_supplements, b.toString());
@@ -902,6 +957,11 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         for (Extension ext : def.getExtension()) {
           fdef.addExtension(ext.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
         }
+        // a supplement's display for a concept is another display for it, in the supplement's language (as
+        // the server treats it: e.g. an extension-codes supplement's display for a code the code system defines)
+        if (def.hasDisplay() && !def.getDisplay().equals(fdef.getDisplay())) {
+          fdef.addDesignation().setLanguage(cs.getLanguage()).setValue(def.getDisplay());
+        }
         for (ConceptDefinitionDesignationComponent d : def.getDesignationList()) {
           fdef.addDesignation(d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
         }
@@ -916,10 +976,21 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
         }
       }
-      for (ConceptDefinitionComponent t : fdef.getConceptList()) {
-        mergeSupplements(ret, t, supplements, supplementIndexes);
-      }      
     }
+    // the children once, with all the supplements (not once for each supplement, which merged each
+    // supplement's content into a child as many times as there are supplements, and more below that)
+    for (ConceptDefinitionComponent t : fdef.getConceptList()) {
+      mergeSupplements(ret, t, supplements, supplementIndexes);
+    }
+  }
+
+  private static boolean listHasSupplement(List<CodeSystem> list, CodeSystem sup) {
+    for (CodeSystem c : list) {
+      if (c == sup || (c.hasUrl() && c.getVersionedUrl().equals(sup.getVersionedUrl()))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static PropertyType propertyTypeForType(DataType value) {
@@ -1203,12 +1274,151 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     setProperty(cs, cc, code, new StringType(comments));
   }
 
-  public static boolean isLangPack(CodeSystem c) {
+  /**
+   * @return the supplement's type, from the codesystem-supplement-type extension: lang-pack, properties,
+   *   extension-codes... (null if it doesn't say)
+   */
+  public static String getSupplementType(CodeSystem c) {
     Extension ext = ExtensionUtilities.getExtension(c,  ExtensionDefinitions.EXT_SUPPL_TYPE);
-    // a global language pack is used whether or not it is referenced. The code was 'lang-pack' until
-    // Oct 2026; it is still accepted, so that supplements marked the old way keep working
-    return ext != null && ext.getValue() instanceof StringType
-      && Utilities.existsInList(((StringType) ext.getValue()).getValue(), "global-lang-pack", "lang-pack");
+    return ext != null && ext.getValue() instanceof StringType ? ((StringType) ext.getValue()).getValue() : null;
+  }
+
+  /**
+   * @return true if the supplement is a language pack (codesystem-supplement-type = lang-pack). A language
+   *   pack is only used when it is referenced, unless it is also global - see isGlobalSupplement
+   */
+  public static boolean isLangPack(CodeSystem c) {
+    return "lang-pack".equals(getSupplementType(c));
+  }
+
+  /**
+   * @return true if the supplement is an extension-codes supplement (codesystem-supplement-type): one that
+   *   defines codes in the reserved code space of the code system it supplements
+   */
+  public static boolean isExtensionCodesSupplement(CodeSystem c) {
+    return "extension-codes".equals(getSupplementType(c));
+  }
+
+  /**
+   * @return the regular expressions (codesystem-reservedCodeSpace.reservedCodeSpace) for the code spaces the code
+   *   system's steward has reserved for users to define their own codes in
+   */
+  public static List<String> getReservedCodeSpaces(CodeSystem cs) {
+    List<String> res = new ArrayList<>();
+    for (Extension ext : cs.getExtensionsByUrl(ExtensionDefinitions.EXT_RESERVED_CODE_SPACE)) {
+      Extension rcs = ext.getExtensionByUrl("reservedCodeSpace");
+      if (rcs != null && rcs.hasValue() && !Utilities.noString(rcs.getValue().primitiveValue())) {
+        res.add(rcs.getValue().primitiveValue());
+      }
+    }
+    return res;
+  }
+
+  /**
+   * @return true if the code is in a code space the code system reserves for users to define their own
+   *   codes in (the code must match a reservedCodeSpace expression in full). An expression that doesn't
+   *   compile, or takes too long, matches nothing
+   */
+  public static boolean isInReservedCodeSpace(CodeSystem cs, String code) {
+    if (Utilities.noString(code)) {
+      return false;
+    }
+    for (String regex : getReservedCodeSpaces(cs)) {
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from the code system's codesystem-reservedCodeSpace extension
+        boolean matches = RegexTimeout.matches(code, regex);
+        if (matches) {
+          return true;
+        }
+      } catch (TimeoutException | java.util.regex.PatternSyntaxException e) {
+        // matches nothing
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The user data a concept made for a code in a reserved code space carries (see findReservedCodeConcept):
+   * where its display came from - DISPLAY_DEFAULT (the code space's default display, a placeholder),
+   * DISPLAY_GLOBAL (a global extension-codes supplement: as if the code system defined it) or
+   * DISPLAY_REFERENCED (an extension-codes supplement that is not global, so not the only correct display)
+   */
+  public static final String UD_RESERVED_CODE_DISPLAY = "tx.reserved-code.display";
+  public static final String DISPLAY_DEFAULT = "default";
+  public static final String DISPLAY_GLOBAL = "global";
+  public static final String DISPLAY_REFERENCED = "referenced";
+
+  /**
+   * @return the default display for a code in the reserved code space it is in: the space's
+   *   default-display, or 'User-assigned' (null if the code isn't in a reserved code space)
+   */
+  public static String getReservedCodeSpaceDefaultDisplay(CodeSystem cs, String code) {
+    if (Utilities.noString(code)) {
+      return null;
+    }
+    for (Extension ext : cs.getExtensionsByUrl(ExtensionDefinitions.EXT_RESERVED_CODE_SPACE)) {
+      Extension rcs = ext.getExtensionByUrl("reservedCodeSpace");
+      if (rcs != null && rcs.hasValue() && !Utilities.noString(rcs.getValue().primitiveValue())) {
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from the code system's codesystem-reservedCodeSpace extension
+          boolean matches = RegexTimeout.matches(code, rcs.getValue().primitiveValue());
+          if (matches) {
+            Extension dd = ext.getExtensionByUrl("default-display");
+            return dd != null && dd.hasValue() && !Utilities.noString(dd.getValue().primitiveValue()) ? dd.getValue().primitiveValue() : "User-assigned";
+          }
+        } catch (TimeoutException | java.util.regex.PatternSyntaxException e) {
+          // matches nothing
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * A code the code system doesn't define, but that is in one of its reserved code spaces
+   * (codesystem-reservedCodeSpace), is a valid code. This makes a concept for it: its display is the one an
+   * extension-codes supplement merged into the code system (mergeSupplements) gives it - a global one first -
+   * or, if none does, the code space's default display. The concept records which (UD_RESERVED_CODE_DISPLAY).
+   * It is not part of the code system, so it is never listed with its concepts.
+   *
+   * @return the concept, or null if the code isn't in a reserved code space
+   */
+  @SuppressWarnings("unchecked")
+  public static ConceptDefinitionComponent findReservedCodeConcept(CodeSystem cs, String code) {
+    String defaultDisplay = getReservedCodeSpaceDefaultDisplay(cs, code);
+    if (defaultDisplay == null) {
+      return null;
+    }
+    ConceptDefinitionComponent res = new ConceptDefinitionComponent().setCode(code);
+    List<CodeSystem> supplements = cs.hasUserData(UserDataNames.CS_SUPPLEMENT_LIST) ? (List<CodeSystem>) cs.getUserData(UserDataNames.CS_SUPPLEMENT_LIST) : new ArrayList<>();
+    for (boolean global : new boolean[] { true, false }) {
+      for (CodeSystem sup : supplements) {
+        if (!res.hasDisplay() && isExtensionCodesSupplement(sup) && isGlobalSupplement(sup) == global) {
+          ConceptDefinitionComponent def = findCode(sup.getConceptList(), code);
+          if (def != null && def.hasDisplay()) {
+            res.setDisplay(def.getDisplay());
+            res.setUserData(UD_RESERVED_CODE_DISPLAY, global ? DISPLAY_GLOBAL : DISPLAY_REFERENCED);
+          }
+        }
+      }
+    }
+    if (!res.hasDisplay()) {
+      res.setDisplay(defaultDisplay);
+      res.setUserData(UD_RESERVED_CODE_DISPLAY, DISPLAY_DEFAULT);
+    }
+    return res;
+  }
+
+  /**
+   * A global supplement is used for the code system it supplements whether or not it is referenced. It is a
+   * language pack or an extension-codes supplement (codesystem-supplement-type) that is marked global with
+   * codesystem-supplement-global = true. Any other supplement is only used when it is referenced
+   */
+  public static boolean isGlobalSupplement(CodeSystem c) {
+    return Utilities.existsInList(getSupplementType(c), "lang-pack", "extension-codes")
+      && ExtensionUtilities.readBoolExtension(c, ExtensionDefinitions.EXT_SUPPL_GLOBAL);
   }
 
 }

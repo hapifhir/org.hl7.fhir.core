@@ -844,22 +844,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
     CodeSystem cs = fetchCodeSystem(system, rules, version, sourceOfReference);
     if (cs != null) {
-      List<CodeSystem> supplements = codeSystems.getSupplements(cs);
+      List<CodeSystem> supplements = new ArrayList<>(codeSystems.getSupplements(cs));
+      // getSupplements prefers supplements from the code system's own package, and only looks in other packages
+      // when there are none there. A supplement asked for by version is a candidate wherever it comes from, so
+      // that oneVersionEach can choose it over a version of the same supplement in the code system's package
+      if (specifiedSupplements != null) {
+        for (String s : specifiedSupplements) {
+          if (s.contains("|") && !hasSupplementVersion(supplements, s)) {
+            CodeSystem scs = fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
+            if (scs != null && s.equals(scs.getVersionedUrl()) && CodeSystemUtilities.supplementApplies(scs, cs)) {
+              supplements.add(scs);
+            }
+          }
+        }
+      }
       List<CodeSystem> activeSupplements = new ArrayList<>();
       for (CodeSystem c : supplements) {
-        if (CodeSystemUtilities.isLangPack(c)) {
+        // a global supplement that the request also names is only added once
+        if (CodeSystemUtilities.isGlobalSupplement(c)) {
           activeSupplements.add(c);
-        }
-        if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
+        } else if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
           activeSupplements.add(c);
         }
       }
 
+      // one version of each supplement: the one asked for by version, else the latest
+      activeSupplements = CodeSystemUtilities.oneVersionEach(activeSupplements, specifiedSupplements);
       if (activeSupplements.size() > 0) {
         cs = CodeSystemUtilities.mergeSupplements(cs, activeSupplements);
       }
     }
     return cs;
+  }
+
+  private boolean hasSupplementVersion(List<CodeSystem> supplements, String versionedUrl) {
+    for (CodeSystem c : supplements) {
+      if (versionedUrl.equals(c.getVersionedUrl())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -958,7 +982,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc == null) {
       return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);
     }
-    Parameters p = constructParameters(opCtxt, tc, vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getIncludeList()) {
       codeSystemsUsed.add(incl.getSystem());
     }
@@ -969,21 +992,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, false);
     }
-    p.addParameter("count", expandCodesLimit);
-    p.addParameter("offset", 0);
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
-    // dependent resources are still sent; the cache-id now travels as an HTTP header
-    addDependentResources(opCtxt, tc, p, vs);
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p);
+      // the parameters are built inside the request, so that if the server has lost its cache, they
+      // are built again with everything in them (see TerminologyClientContext.send)
+      ValueSet result = tc.send(again -> {
+        Parameters p = constructParameters(opCtxt, tc, vs, hierarchical);
+        p.addParameter("count", expandCodesLimit);
+        p.addParameter("offset", 0);
+        // dependent resources are still sent; the cache-id now travels as an HTTP header
+        addDependentResources(opCtxt, tc, p, vs);
+        return tc.getClient().expandValueset(vs, p);
+      });
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
       if (res != null && res.getValueset() != null) {
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
-      if (e instanceof EFhirClientException) {
+      if (TerminologyClientContext.isCacheGone(e)) {
+        // the server lost the cache twice running: that's about the server, not the value set
+        errorClass = TerminologyServiceErrorClass.SERVER_ERROR;
+      } else if (isServerUnavailable(e)) {
+        errorClass = TerminologyServiceErrorClass.SERVER_ERROR;
+      } else if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
         if (fhirClientException.hasServerErrors()) {
           errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerErrors().get(0));
@@ -1046,7 +1079,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       txLog("$expand " + url + " on " + tc.getAddress());
 
-      ValueSet result = tc.getClient().expandValueset(null, p);
+      ValueSet result = tc.send(again -> tc.getClient().expandValueset(null, p));
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(url);
@@ -1060,7 +1093,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+      boolean registryFailed = tc == null && terminologyClientManager.lookupFailed(url);
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) || registryFailed ? TerminologyServiceErrorClass.SERVER_ERROR : TerminologyServiceErrorClass.UNKNOWN;
+      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1153,6 +1188,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     List<String> allErrors = new ArrayList<>();
 
+    // a value set with excludes on a server side code system, or with only server side includes, goes to
+    // the server as a whole if one server can do it all (see chooseServerForWholeValueSet)
+    TerminologyClientContext wholeServer = chooseServerForWholeValueSet(vs);
+    if (wholeServer != null) {
+      return expandOnServer(vs, p, cacheToken, wholeServer, null);
+    }
+
     // ok, first we try to expand locally
     ValueSetExpander vse = constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
     vse.setNoTerminologyServer(noTerminologyServer);
@@ -1197,13 +1239,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc == null) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
     }
-    addDependentResources(null, tc, p, vs);
+    return expandOnServer(vs, p, cacheToken, tc, res);
+  }
 
-
+  /**
+   * Expand the value set on the server tc. res is the outcome of trying to expand it locally first, if that was tried
+   */
+  private ValueSetExpansionOutcome expandOnServer(ValueSet vs, Parameters p, CacheToken cacheToken, TerminologyClientContext tc, ValueSetExpansionOutcome res) {
+    List<String> allErrors = new ArrayList<>();
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p);
+      // what the dependent resources add to p is taken off again if the server has lost its cache,
+      // and added again with everything in it (see TerminologyClientContext.send)
+      final Parameters fp = p;
+      final ValueSet fvs = vs;
+      List<ParametersParameterComponent> given = new ArrayList<>(fp.getParameterList());
+      ValueSet result = tc.send(again -> {
+        if (again) {
+          fp.getParameterList().clear();
+          fp.getParameterList().addAll(given);
+        }
+        if (ImplicitValueSets.isSentByUrl(fvs)) {
+          // the server knows this value set by its url (#2784)
+          fp.setParameter("url", new UriType(fvs.getUrl()));
+          return tc.getClient().expandValueset(null, fp);
+        }
+        addDependentResources(null, tc, fp, fvs);
+        return tc.getClient().expandValueset(fvs, fp);
+      });
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(vs.getUrl());
@@ -1214,10 +1278,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
+      TerminologyServiceErrorClass errorClass = isServerUnavailable(e) ? TerminologyServiceErrorClass.SERVER_ERROR : res == null ? TerminologyServiceErrorClass.UNKNOWN : res.getErrorClass();
       if (res != null && !res.isFromServer()) {
-        res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
+        res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", errorClass, false);
       } else {
-        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), res.getErrorClass(), allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+      }
+      if (TerminologyClientContext.isCacheGone(e)) {
+        // the server lost the cache twice running: that's about the server, not the value set - so
+        // not to be remembered beyond this session
+        res = new ValueSetExpansionOutcome(res.getError(), TerminologyServiceErrorClass.SERVER_ERROR, allErrors, true).setTxLink(res.getTxLink());
       }
     }
     if (res != null && res.getValueset() != null) {
@@ -1225,6 +1295,73 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * Whether to hand the whole value set to a terminology server rather than expanding it here, where server side
+   * code systems are expanded one include (and exclude) at a time (fhir-ig-publisher#1469):
+   *
+   *  - an exclude on a server side code system means fetching everything it excludes, which might be very big, so
+   *    then the whole value set goes to the server if a single server can do it all - whether or not there are
+   *    local code systems as well (they're sent with the request)
+   *  - otherwise, if any include is local (including imports of other value sets), it's expanded here
+   *  - otherwise (all the includes are server side), it goes to the server if a single server can do it all
+   *
+   * Returns null to expand it here (piecemeal, if it uses more than one server)
+   */
+  private TerminologyClientContext chooseServerForWholeValueSet(ValueSet vs) {
+    if (noTerminologyServer || terminologyClientManager == null || !vs.hasCompose() || vs.getCompose().getIncludeList().isEmpty()) {
+      return null;
+    }
+    boolean serverExclude = false;
+    for (ConceptSetComponent exc : vs.getCompose().getExcludeList()) {
+      if (exc.hasSystem() && isServerSideSystem(exc, vs)) {
+        serverExclude = true;
+      }
+    }
+    if (!serverExclude) {
+      for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+        if (!inc.hasSystem() || inc.hasValueSet() || !isServerSideSystem(inc, vs)) {
+          return null;
+        }
+      }
+    }
+    try {
+      return terminologyClientManager.chooseSingleServer(vs, findRelevantSystems(vs), true);
+    } catch (Exception e) {
+      return null; // then the expander works it out
+    }
+  }
+
+  /**
+   * the same test the expander uses to decide to send an include to the server
+   */
+  private boolean isServerSideSystem(ConceptSetComponent inc, ValueSet vs) {
+    if (ValueSetUtilities.isServerSide(inc.getSystem())) {
+      return true;
+    }
+    CodeSystem cs = fetchCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), vs);
+    return cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT);
+  }
+
+  /**
+   * Did the $expand fail because the server couldn't be reached just then, rather than with an answer from it? That's
+   * no response at all (a timeout or a network error), or a 408, 429, 502, 503 or 504. Those get SERVER_ERROR, which
+   * TerminologyCache.store() keeps for this run only (#2524). Anything else the server returned, a 500 included, is
+   * its answer, and is cached for later runs as before.
+   */
+  public static boolean isServerUnavailable(Throwable e) {
+    boolean noResponse = false;
+    for (Throwable t = e; t != null; t = t.getCause()) {
+      if (t instanceof EFhirClientException && ((EFhirClientException) t).getCode() > 0) {
+        // there was a response, so its status decides
+        return Utilities.existsInList(((EFhirClientException) t).getCode(), 408, 429, 502, 503, 504);
+      }
+      if (t instanceof IOException) {
+        noResponse = true;
+      }
+    }
+    return noResponse;
   }
 
 //  private boolean hasTooCostlyExpansion(ValueSet valueset) {
@@ -1358,7 +1495,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         return;
       }
-      Parameters resp = processBatch(tc, batch, systems, items.size());
+      Parameters resp = processBatch(tc, batch, systems, items.size(), vs == null);
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
         CodingValidationRequest requestAtIndex = items.get(i);
@@ -1405,7 +1542,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size) {
+  /**
+   * With a value set, the batch goes to ValueSet/$batch-validate-code (with the value set's url at the top
+   * level). Without one, each code is validated against its own code system, so the batch goes to
+   * CodeSystem/$batch-validate-code - just as the single code path uses CodeSystem/$validate-code when
+   * there is no value set. A ValueSet batch with no url is not a valid request, and servers reject it.
+   */
+  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size, boolean againstCodeSystems) {
     txLog("$batch validate for " + size + " codes on systems " + systems.toString());
     if (terminologyClientManager == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
@@ -1413,7 +1556,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (txLog != null) {
       txLog.clearLastId();
     }
-    Parameters resp = tc.getClient().batchValidateVS(batch);
+    Parameters resp = tc.send(again -> againstCodeSystems ? tc.getClient().batchValidateCS(batch) : tc.getClient().batchValidateVS(batch));
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
     }
@@ -1643,6 +1786,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
+      if (vs == null && localWarning != null) {
+        // the answer the server gives for a code from a system that neither we nor it know
+        return unknownCodeSystemWarning(localWarning);
+      }
       // this is the same answer we already got for this code system, so it is reported the same way:
       // against the system, which is the part that could not be resolved, and not against the coding.
       // Without the expression it lands on the element instead, and reads as a second, different problem.
@@ -1690,10 +1837,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: " + localError.trim() + ". Server Error: " + res.getMessage());
     } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
-      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
-      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
-      res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
-      return res;
+      // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error.
+      // This isn't cached, but the server isn't asked about this system again in this run. Only a real answer
+      // gets here: a failed request is a SERVER_ERROR
+      updateUnsupportedCodeSystems(res, code, codeKey);
+      return unknownCodeSystemWarning(localWarning);
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -1702,6 +1850,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+
+  private ValidationResult unknownCodeSystemWarning(String localWarning) {
+    ValidationResult res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
+    res.setDiagnostics("Local Warning: " + localWarning.trim() + ". Server Error: " + res.getMessage());
+    return res;
+  }
 
   /**
    * ask the terminology system whether parent subsumes child.
@@ -1767,14 +1921,135 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txLog != null) {
         txLog.clearLastId();
       }
-      Parameters pOut = tc.getClient().subsumes(pIn);
-      return processSubsumesResult(pOut, tc.getClient().getAddress());
+      Parameters pOut = tc.send(again -> tc.getClient().subsumes(pIn));
+      Boolean b = processSubsumesResult(pOut, tc.getClient().getAddress());
+      // the server's answer is cached as the local one is: it was asked again every time
+      if (b != null && txCache != null && cachingAllowed) {
+        txCache.cacheSubsumes(cacheToken, b, true);
+      }
+      return b;
     } catch (Exception e) {
       // nothing - for now?
     }
     return null;
   }
 
+
+  // lookupProperties(): what a server said about a concept's properties, or null when it couldn't
+  // say, by system|version#code?properties - one request per concept for the life of the context
+  private final Map<String, Map<String, List<String>>> propertyLookups = new HashMap<>();
+
+  @Override
+  public Map<String, List<String>> lookupProperties(ValidationOptions optionsArg, String system, String version, String code, Set<String> properties) {
+    ValidationOptions options = optionsArg != null ? optionsArg : ValidationOptions.defaults();
+    if (system == null || code == null || properties == null || properties.isEmpty()) {
+      return null;
+    }
+    String key = system + "|" + (version == null ? "" : version) + "#" + code + "?" + String.join(",", new TreeSet<>(properties));
+    synchronized (propertyLookups) {
+      if (propertyLookups.containsKey(key)) {
+        return propertyLookups.get(key);
+      }
+    }
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateLookupPropertiesToken(system, version, code, properties) : null;
+    if (cacheToken != null) {
+      TerminologyCache.PropertiesResult cached = txCache.getLookupProperties(cacheToken);
+      if (cached != null) {
+        // (a cached unknown code has no properties: null)
+        synchronized (propertyLookups) {
+          propertyLookups.put(key, cached.getProperties());
+        }
+        return cached.getProperties();
+      }
+    }
+    if (!terminologyClientManager.hasClient() || !options.isUseServer() || unsupportedCodeSystems.contains(system) || noTerminologyServer) {
+      return null;
+    }
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(null, Set.of(system), false);
+    // chooseServer() returns null when no terminology server is configured at all
+    if (tc == null) {
+      return null;
+    }
+
+    txLog("$lookup " + system + "#" + code + " " + properties + " on " + tc.getAddress());
+    Map<String, List<String>> result = null;
+    boolean unknown = false;
+    try {
+      Parameters pIn = new Parameters();
+      pIn.addParameter().setName("system").setValue(new UriType(system));
+      if (version != null) {
+        pIn.addParameter().setName("version").setValue(new StringType(version));
+      }
+      pIn.addParameter().setName("code").setValue(new CodeType(code));
+      for (String p : new TreeSet<>(properties)) {
+        pIn.addParameter().setName("property").setValue(new CodeType(p));
+      }
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      result = processLookupProperties(tc.send(again -> tc.getClient().lookupCode(pIn)), properties);
+    } catch (EFhirClientException e) {
+      // the server said no: a 4xx is about the request - the code isn't known - and that is an
+      // answer; anything else is the server's problem. Except that a 404 can also be about the
+      // server's cache (cache-id-unknown: it restarted, or the cache expired), which says nothing
+      // about the code, and must not be remembered as if it did
+      unknown = e.getCode() >= 400 && e.getCode() < 500 && !TerminologyClientContext.isCacheGone(e);
+    } catch (Exception e) {
+      // the server couldn't answer
+    }
+    // either way, nothing is known about it, and it isn't asked again this session
+    synchronized (propertyLookups) {
+      propertyLookups.put(key, result);
+    }
+    // an answer goes in the terminology cache - properties, or that the code isn't known - but not
+    // a failure, which may be the server's, not the concept's
+    if ((result != null || unknown) && cacheToken != null) {
+      txCache.cacheLookupProperties(cacheToken, result, true);
+    }
+    return result;
+  }
+
+  /**
+   * The values of the properties asked for, from a $lookup response.
+   * public for testing only
+   */
+  public Map<String, List<String>> processLookupProperties(Parameters pOut, Set<String> properties) {
+    Map<String, List<String>> result = new HashMap<>();
+    for (ParametersParameterComponent p : pOut.getParameterList()) {
+      if ("property".equals(p.getName())) {
+        String pcode = null;
+        String value = null;
+        for (ParametersParameterComponent part : p.getPartList()) {
+          if ("code".equals(part.getName()) && part.hasValue()) {
+            pcode = part.getValue().primitiveValue();
+          } else if ("value".equals(part.getName()) && part.hasValue()) {
+            value = part.getValue() instanceof Coding ? ((Coding) part.getValue()).getCode() : part.getValue().primitiveValue();
+          }
+        }
+        if (pcode != null && value != null && properties.contains(pcode)) {
+          result.computeIfAbsent(pcode, k -> new ArrayList<>()).add(value);
+        }
+      } else if ("designation".equals(p.getName()) && properties.contains("designation")) {
+        // asked for as "designation": the active designations, as designation:{use code}
+        String use = null;
+        String value = null;
+        boolean active = true;
+        for (ParametersParameterComponent part : p.getPartList()) {
+          if ("use".equals(part.getName()) && part.getValue() instanceof Coding) {
+            use = ((Coding) part.getValue()).getCode();
+          } else if ("value".equals(part.getName()) && part.hasValue()) {
+            value = part.getValue().primitiveValue();
+          } else if ("status".equals(part.getName()) && part.hasValue()) {
+            active = !"inactive".equals(part.getValue().primitiveValue());
+          }
+        }
+        if (value != null && active) {
+          result.computeIfAbsent("designation:" + (use == null ? "" : use), k -> new ArrayList<>()).add(value);
+        }
+      }
+    }
+    return result;
+  }
 
   public Boolean processSubsumesResult(Parameters pOut, String server) {
     for (ParametersParameterComponent p : pOut.getParameterList()) {
@@ -2089,20 +2364,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    addServerValidationParameters(null, tc, vs, pin, options, systems);
-
-    if (txLog != null) {
-      txLog.clearLastId();
-    }
     if (tc == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
     }
-    Parameters pOut;
-    if (vs == null) {
-      pOut = tc.getClient().validateCS(pin);
-    } else {
-      pOut = tc.getClient().validateVS(pin);
-    }
+    // what the validation parameters add to pin - the value set and its dependent resources, or
+    // references to them when the server has them cached - is taken off again if the server has lost
+    // its cache, and added again with everything in it (see TerminologyClientContext.send)
+    List<ParametersParameterComponent> given = new ArrayList<>(pin.getParameterList());
+    Parameters pOut = tc.send(again -> {
+      if (again) {
+        pin.getParameterList().clear();
+        pin.getParameterList().addAll(given);
+      }
+      addServerValidationParameters(null, tc, vs, pin, options, systems);
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      return vs == null ? tc.getClient().validateCS(pin) : tc.getClient().validateVS(pin);
+    });
     return processValidationResult(pOut, vs == null ? null : vs.getUrl(), tc.getClient().getAddress());
   }
 
@@ -2136,7 +2415,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (vs.hasVersion()) {
           pin.addParameter().setName("valueSetVersion").setValue(new StringType(vs.getVersion()));
         }
-      } else if (options.getVsAsUrl()) {
+      } else if (options.getVsAsUrl() || ImplicitValueSets.isSentByUrl(vs)) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
         if (vs.hasCompose() && vs.hasExpansion()) {
@@ -2221,7 +2500,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
     for (CanonicalType c : inc.getValueSetList()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
-      if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
+      // an implicit value set the server knows by its url isn't sent (#2784)
+      if (vs != null && !ImplicitValueSets.isSentByUrl(vs) && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
       }
@@ -3943,7 +4223,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         svs = txCache.getValueSet(canonical);
       } else {
         svs = terminologyClientManager.findValueSetOnServer(canonical);
-        txCache.cacheValueSet(canonical, svs);
+        txCache.cacheValueSet(canonical, svs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (svs != null) {
         String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3966,7 +4246,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else {
 
         scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        txCache.cacheCodeSystem(canonical, scs, !terminologyClientManager.lookupFailed(canonical));
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -4218,7 +4498,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txLog != null) {
         txLog.clearLastId();
       }
-      return tc.getClient().validateResource(vs);
+      return tc.send(again -> tc.getClient().validateResource(vs));
     }
     return null;
   }

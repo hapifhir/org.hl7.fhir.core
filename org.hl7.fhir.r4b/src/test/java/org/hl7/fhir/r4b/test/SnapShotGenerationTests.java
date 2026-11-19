@@ -536,8 +536,7 @@ public class SnapShotGenerationTests {
       throw new FHIRException(errors.get(0));
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
         ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml"), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -629,7 +628,7 @@ public class SnapShotGenerationTests {
           TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
           ManagedFileAccess.outStream(dst));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-          .compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
+          .composeFile(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml"), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
