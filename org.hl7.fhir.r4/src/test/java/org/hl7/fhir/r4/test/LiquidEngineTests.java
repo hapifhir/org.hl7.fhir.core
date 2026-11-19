@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +77,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
     String name = test.get("focus").getAsString();
     if (!resources.containsKey(name)) {
       String fn = TestingUtilities.resourceNameToFile(name.replace("/", "-") + ".xml");
-      resources.put(name, new XmlParser().parse(ManagedFileAccess.inStream(fn)));
+      resources.put(name, new XmlParser().parseFile(fn));
     }
     return resources.get(test.get("focus").getAsString());
   }

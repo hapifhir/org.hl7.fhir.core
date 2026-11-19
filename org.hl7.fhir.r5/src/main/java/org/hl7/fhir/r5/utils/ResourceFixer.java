@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,14 +37,14 @@ public class ResourceFixer {
       } else if (f.getName().endsWith(".json")) {
         Resource r = null;
         try {
-          r = new JsonParser().parse(ManagedFileAccess.inStream(f));
+          r = new JsonParser().parseFile(f);
         } catch (Throwable e) {
           // nothing at all
         }
         if (r != null) {
           try {
             if (visitResource(r)) {
-              new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
+              new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f, r);
             }
           } catch (Exception e) {
             System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());
@@ -56,14 +54,14 @@ public class ResourceFixer {
       } else if (f.getName().endsWith(".xml")) {
         Resource r = null;
         try {
-          r = new XmlParser().parse(ManagedFileAccess.inStream(f));
+          r = new XmlParser().parseFile(f);
         } catch (Throwable e) {
           // nothing at all
         }
         if (r != null) {
           try {
             if (visitResource(r)) {
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(f, r);
             }
           } catch (Exception e) {
             System.out.println("Error processing "+f.getAbsolutePath()+": "+e.getMessage());

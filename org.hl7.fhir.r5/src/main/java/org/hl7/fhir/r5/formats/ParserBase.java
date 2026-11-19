@@ -305,13 +305,4 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     return value;
   }
 
-  @Override
-  public Resource parseAndClose(InputStream input) throws IOException, FHIRFormatError {
-    try {
-      return parse(input);
-    } finally {
-      input.close();
-    }
-  }
-
 }

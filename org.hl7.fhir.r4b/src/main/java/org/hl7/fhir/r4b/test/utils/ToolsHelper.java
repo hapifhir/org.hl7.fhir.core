@@ -275,7 +275,7 @@ public class ToolsHelper {
     Resource rf = p.parse(in);
     XmlParser cxml = new XmlParser();
     cxml.setOutputStyle(OutputStyle.NORMAL);
-    cxml.compose(ManagedFileAccess.outStream(dest), rf);
+    cxml.composeFile(dest, rf);
   }
 
   private void executeVersion(String[] args) throws IOException {

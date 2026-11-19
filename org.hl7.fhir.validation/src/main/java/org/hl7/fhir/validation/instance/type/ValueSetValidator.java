@@ -215,7 +215,7 @@ public class ValueSetValidator extends BaseValidator {
       int i = 0;
       for (Element ext : vs.getExtensions(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
         Element n = ext.getExtension("name");
-        if (n != null) {
+        if (n != null && n.getNamedChildValue("value") != null) {
           Element d = ext.getExtension("documentation");
           NodeStack estack = stack.push(ext, i, null, null);
           String name = n.getNamedChildValue("value");
@@ -905,7 +905,7 @@ public class ValueSetValidator extends BaseValidator {
       vs.setVersion(null);
       vs.setExpansion(null);
       ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
-      if (vse.isOk()) {
+      if (vse.isOk() && vse.getValueset() != null) {
         Set<String> missing = new HashSet<>();
         for (ValueSet.ValueSetExpansionContainsComponent ccs : vse.getValueset().getExpansion().getContainsList()) {
           if (keys.contains(ccs.getSystem()+"#"+ccs.getCode())) {
@@ -952,7 +952,7 @@ public class ValueSetValidator extends BaseValidator {
   private Element getPropertyDefinition(Element expansion, String p) {
     for (Element defn : expansion.getChildrenByName("property")) {
       String code = defn.getNamedChildValue("code");
-      if (code.equals(p)) {
+      if (code != null && code.equals(p)) {
         return defn;
       }
     }
@@ -963,7 +963,7 @@ public class ValueSetValidator extends BaseValidator {
     List<Element> result = new ArrayList<>();
     for (Element parameter : parameters) {
       String name = parameter.getNamedChildValue("name");
-      if (!name.startsWith("used-")) {
+      if (name == null || !name.startsWith("used-")) {
         result.add(parameter);
       }
     }
@@ -985,7 +985,10 @@ public class ValueSetValidator extends BaseValidator {
     for (Element parameter : parameters) {
       String name = parameter.getNamedChildValue("name");
       if (name != null && name.equals("used-codesystem")) {
-        result.add(parameter.getNamedChildValue("value"));
+        String value = parameter.getNamedChildValue("value");
+        if (value != null) {
+          result.add(value);
+        }
       }
     }
     return result;

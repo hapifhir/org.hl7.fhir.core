@@ -128,7 +128,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   public ValueSetValidator(BaseWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
-    this.options = options;
+    // a copy, since checkValueSetOptions() sets the value set's language on it, which must not leak to the caller
+    this.options = options.copy();
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
     this.registry = registry;
@@ -335,6 +336,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             c.setUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM, cs);
 
             checkCanonical(info.getIssues(), path, cs, valueset);
+            checkVersionNeeded(info.getIssues(), path+".coding["+i+"]", c, cs);
             res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
           }
           info.getIssues().addAll(res.getIssues());
@@ -486,6 +488,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
         for (OperationOutcomeIssueComponent iss : info.getIssues()) {
           lvl = IssueSeverity.max(lvl, OperationOutcomeUtilities.convert(iss.getSeverity()));
         }
+        if (valueset == null && vcc.hasCoding()) {
+          // no value set (CodeSystem $validate-code), so there's no value set membership to find the
+          // code: it's the coding that validated against its code system, the same as when there are
+          // no issues (below). The issues are warnings or less (errors are handled above)
+          Coding fc = vcc.getCodingFirstRep();
+          ConceptDefinitionComponent cd = new ConceptDefinitionComponent(null, fc.getCode());
+          cd.setDisplay(fc.getDisplay());
+          return setFoundStatus(new ValidationResult(lvl, info.summaryList(), fc.getSystem(), getVersion(fc), cd, fc.getDisplay(), info.getIssues()).addCodeableConcept(vcc), codingResults, firstValidCoding(codingResults));
+        }
         return new ValidationResult(lvl, null, info.getIssues());
       } else {
         String disp = lookupDisplay(foundCoding);
@@ -515,6 +526,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
    * CodeableConcept they come from the result of the coding that was returned (the first that
    * validated), not from whichever coding happened to be inactive
    */
+  /**
+   * The index of the first coding that validated, or -1 if none did
+   */
+  private int firstValidCoding(Map<Integer, ValidationResult> codingResults) {
+    int res = -1;
+    for (Map.Entry<Integer, ValidationResult> e : codingResults.entrySet()) {
+      if (e.getValue() != null && e.getValue().isOk() && (res == -1 || e.getKey() < res)) {
+        res = e.getKey();
+      }
+    }
+    return res;
+  }
+
   private ValidationResult setFoundStatus(ValidationResult res, Map<Integer, ValidationResult> codingResults, int foundIndex) {
     ValidationResult fr = codingResults.get(foundIndex);
     if (fr != null && fr.isInactive()) {
@@ -859,6 +883,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         } else {
           checkCanonical(issues, path, cs, valueset);
+          checkVersionNeeded(issues, path, code, cs);
         }
         if (cs != null && (cs.hasSupplements() || cs.getContent() == CodeSystemContentMode.SUPPLEMENT)) {
           String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getVersionedUrl());
@@ -978,7 +1003,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
               res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
               res.setErrorClass(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
             }
-          } else if (!inExpansion && !inInclude) {
+          } else if (!inExpansion && (!inInclude || excludedAsInactive(info))) {
+            // an inactive code that the value set lists is not in it when inactive codes are
+            // excluded (activeOnly, or compose.inactive = false): not in the value set, as for
+            // any other way of including it
             if (!info.isFragment()) {
               String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.hasUrl() ?
                 valueset.getVersionedUrl() : "(unidentified)", "'" + code.toString() + "'");
@@ -1024,7 +1052,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.setMessage(CommaSeparatedStringBuilder.join("; ", msgs));
       } else {
         for (OperationOutcomeIssueComponent issue : issues) {
-          if (issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR && "INACTIVE_CONCEPT_FOUND".equals(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
+          if (issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR && Utilities.existsInList(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID), "INACTIVE_CONCEPT_FOUND", I18nConstants.CODESYSTEM_VERSION_NEEDED)) {
             msgs.add(issue.getDetails().getText());
           }
         }
@@ -1151,6 +1179,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return false;    
   }
 
+  private boolean excludedAsInactive(ValidationProcessInfo info) {
+    for (OperationOutcomeIssueComponent issue : info.getIssues()) {
+      if (I18nConstants.STATUS_CODE_WARNING_CODE.equals(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private boolean checkInclude(Coding code) {
     if (valueset == null || code.getSystem() == null || code.getCode() == null) {
       return false;
@@ -1265,6 +1302,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
     }
+    if (cc == null && !cs.hasUserData(UserDataNames.tx_cs_special)) {
+      // a code in a code space the code system reserves for users to define their own codes is valid,
+      // whether or not an extension-codes supplement defines it
+      cc = CodeSystemUtilities.findReservedCodeConcept(cs, code.getCode());
+    }
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_FRAGMENT, code.getCode(), cs.getUrl(), cs.getVersion());
@@ -1345,15 +1387,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
         isDefaultLang = true;
       }
       if (isOkLanguage(ds.getLanguage())) {
-        b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
+        b.append("'"+ds.getValue()+"'"+(ds.hasLanguage() ? " ("+ds.getLanguage()+")" : ""));
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
           if (ds.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
             String dstatus = ds.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status");
             List<String> ok = new ArrayList<>();
             ok.add(cc.getDisplay());
             for (ConceptDefinitionDesignationComponent ds1 : cc.getDesignationList()) {
-              if (isOkLanguage(ds.getLanguage()) && !ds.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
-                ok.add(ds.getValue());
+              if (isOkLanguage(ds1.getLanguage()) && !ds1.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status")) {
+                ok.add(ds1.getValue());
               }
             }
             Collections.sort(ok);
@@ -1393,6 +1435,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         }
       }
+    }
+    // a code in a reserved code space: its default display is a placeholder, so another display is only
+    // noted; a display from an extension-codes supplement that is not global is not the only correct one,
+    // so another display is a warning. One from a global supplement is as if the code system defined it
+    String reservedDisplay = cc.getUserString(CodeSystemUtilities.UD_RESERVED_CODE_DISPLAY);
+    if (b.count() > 0 && CodeSystemUtilities.DISPLAY_DEFAULT.equals(reservedDisplay)) {
+      String msgId = I18nConstants.DISPLAY_NAME_NOT_FIXED_USE_SUPPLEMENT;
+      String msg = context.formatMessagePlural(b.count(), msgId, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.INFORMATION, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null, msgId)).setStatus(inactive, status);
+    } else if (b.count() > 0 && CodeSystemUtilities.DISPLAY_REFERENCED.equals(reservedDisplay)) {
+      String msgId = ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF;
+      String msg = context.formatMessagePlural(b.count(), msgId, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null, msgId)).setStatus(inactive, status);
     }
     if (b.count() > 0) {
       String msgId = ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF;
@@ -1682,6 +1737,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return false;
     }
     if (vsi.hasSystem()) {
+      checkSystemKnownForInference(code, vsi);
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
         String uuid = dummyValueSetUrl(vsi);
@@ -1764,6 +1820,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return false;
+  }
+
+  /**
+   * The system can only be inferred from all of the value set: if an include names a code system that isn't known,
+   * the code might be in it, so the request can't be answered (an error, not a validation result)
+   */
+  private void checkSystemKnownForInference(String code, ConceptSetComponent vsi) {
+    if (context.isNoTerminologyServer() && CodeSystemProvider.factory(vsi.getSystem()) == null && !"urn:ietf:bcp:13".equals(vsi.getSystem())
+        && resolveCodeSystem(vsi.getSystem(), vsi.getVersion(), vsi, valueset) == null) {
+      String url = vsi.hasVersion() ? vsi.getSystem() + "|" + vsi.getVersion() : vsi.getSystem();
+      String msg = context.formatMessage(I18nConstants.UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), url);
+      throw new VSCheckerException(msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, msg, OpIssueCode.NotFound, null,
+        I18nConstants.UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM), TerminologyServiceErrorClass.INTERNAL_ERROR);
+    }
   }
 
   private String filterSummary(ConceptSetComponent vsi) {
@@ -2043,6 +2113,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
+  /**
+   * versionNeeded = true means that a version must be specified whenever the code system is referenced.
+   * This is a check on the coding itself: a version pinned by the value set or by the parameters is
+   * specific to that context, and doesn't travel with the coding, so it makes no difference here
+   */
+  private void checkVersionNeeded(List<OperationOutcomeIssueComponent> issues, String path, Coding code, CodeSystem cs) {
+    if (cs.getVersionNeeded() && !code.hasVersion()) {
+      String msg = context.formatMessage(I18nConstants.CODESYSTEM_VERSION_NEEDED, cs.getUrl());
+      issues.addAll(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, Utilities.noString(path) ? "version" : path + ".version", msg, OpIssueCode.InvalidData, null, I18nConstants.CODESYSTEM_VERSION_NEEDED));
+    }
+  }
+
   private void checkVersion(String path, @Nonnull String system, @Nonnull String version, VersionAlgorithm va, List<OperationOutcomeIssueComponent> issues) {
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameterList()) {
@@ -2204,7 +2286,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
 
       List<ConceptDefinitionComponent> list = cs.getConceptList();
-      ok = validateCodeInConceptList(code, cs, list, allAltCodes, excluding);
+      ok = validateCodeInConceptList(code, cs, list, allAltCodes, excluding) || isReservedCodeMember(cs, vsi, code);
       if (ok && vsi.hasConcept()) {
         for (ConceptReferenceComponent cc : vsi.getConceptList()) {
           if (cc.getCode().equals(code)) {
@@ -2222,7 +2304,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       } else {
         // recheck that this is a valid alternate code
-        ok = validateCodeInConceptList(code, cs, list, altCodeParams, excluding);
+        ok = validateCodeInConceptList(code, cs, list, altCodeParams, excluding) || isReservedCodeMember(cs, vsi, code);
         return ok;
       }
     }
@@ -2235,6 +2317,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else {
       return false;
     }
+  }
+
+  /**
+   * A code in a code space the code system reserves for users to define their own codes
+   * (codesystem-reservedCodeSpace) isn't one of its concepts, but it is a member of an include of all of the
+   * code system (which is why the expansion of one is marked unclosed), and of an include that lists it (the
+   * expansion lists it). A filter never selects one: reserved codes have no hierarchy or properties, and the
+   * expander doesn't include them either.
+   */
+  private boolean isReservedCodeMember(CodeSystem cs, ConceptSetComponent vsi, String code) {
+    return !vsi.hasFilter() && !cs.hasUserData(UserDataNames.tx_cs_special) && CodeSystemUtilities.isInReservedCodeSpace(cs, code);
   }
 
   private boolean codeInFilter(CodeSystem cs, String path, String system, ConceptSetFilterComponent f, String code) throws FHIRException {
@@ -2252,6 +2345,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInRegexFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.EQUAL)
       return codeInCodeEquals(cs, f, code);
+    else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.IN)
+      return codeInList(f, code);
+    else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.NOTIN)
+      return !codeInList(f, code);
     else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
       return codeInPropertyFilter(cs, f, code);
     } else if (isKnownProperty(f.getProperty())) {
@@ -2380,10 +2477,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     case CHILDOF: return codeInConceptChildOfFilter(cs, f, code);
+    case IN: return codeInList(f, code);
+    case NOTIN: return !codeInList(f, code);
     default:
       log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
+  }
+
+  // concept in / code in: the code is one of the listed codes (comma separated)
+  private boolean codeInList(ConceptSetFilterComponent f, String code) {
+    if (f.getValue() == null || code == null) {
+      return false;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] listed = f.getValue().split("\\,");
+    for (String v : listed) {
+      if (code.equals(v.trim())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean codeInCodeEquals(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {

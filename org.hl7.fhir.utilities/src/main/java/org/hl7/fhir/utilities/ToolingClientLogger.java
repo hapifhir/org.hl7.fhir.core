@@ -37,6 +37,17 @@ public interface ToolingClientLogger {
 
   void logRequest(String method, String url, List<String> headers, byte[] body);
   void logResponse(String outcome, List<String> headers, byte[] body, long length);
+
+  /**
+   * The request logged by logRequest() got no response: the connection failed, or timed out
+   * waiting for one. Without this the log shows the request and nothing else, and a call that
+   * held things up for a minute is easily missed.
+   *
+   * @param error what went wrong (the exception's class and message)
+   * @param elapsed how long the request ran before it failed, in milliseconds
+   */
+  default void logFailure(String error, long elapsed) {
+  }
   String getLastId();
   void clearLastId();
 

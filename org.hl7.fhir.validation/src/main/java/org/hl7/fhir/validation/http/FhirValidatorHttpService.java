@@ -1,5 +1,9 @@
 package org.hl7.fhir.validation.http;
 
+import com.sun.net.httpserver.Filter;
+import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.hl7.fhir.model.IModelContext;
 import lombok.Getter;
@@ -11,6 +15,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * HTTP service wrapper for the FHIR validator using ValidationEngine and IGLoader directly
@@ -35,7 +40,31 @@ public class FhirValidatorHttpService {
    */
   @Getter
   private final boolean txTestsEnabled;
+  /**
+   * -- GETTER --
+   *  Whether /canonical may find and load the package that defines a canonical resource the
+   *  engine doesn't know yet. That has a caller make the server download packages and load them
+   *  into the shared engine, permanently, so it is off unless asked for at start up.
+   */
+  @Getter
+  private final boolean autoLoadPackages;
   private final int port;
+
+  /** The response header that carries the nonce. */
+  public static final String NONCE_HEADER = "X-Validator-Nonce";
+  @SuppressWarnings("checkstyle:patternUsage")
+  //a fixed literal reviewed here: a single bounded character class, no nesting; the nonce is what is matched, not the pattern
+  private static final Pattern NONCE_PATTERN = Pattern.compile("[A-Za-z0-9._-]{1,128}");
+
+  /**
+   * -- GETTER --
+   *  The nonce the server was started with, or null. When there is one, it is returned in an
+   *  X-Validator-Nonce header on every response, so that whoever started the server (a wrapper
+   *  such as fhir-validator-wrapper) can tell it from anything else that answers on the port -
+   *  a server left running by an earlier process, say. It is not a secret, and not authentication.
+   */
+  @Getter
+  private final String nonce;
 
   // the terminology test runs in progress (see TxTestHTTPHandler), by session id
   private final Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new java.util.concurrent.ConcurrentHashMap<>();
@@ -45,10 +74,43 @@ public class FhirValidatorHttpService {
   }
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port) {
+    this(validationEngine, loopBackOnly, txTestsEnabled, port, null);
+  }
+
+  /**
+   * Checks a nonce before anything expensive is done with it (the CLI calls this before it loads
+   * the validation engine).
+   *
+   * @return null if the nonce is acceptable or absent, otherwise a message saying what is wrong with it
+   */
+  public static String checkNonce(String nonce) {
+    if (nonce == null) {
+      return null;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: Matcher.matches() on NONCE_PATTERN, which is reviewed above
+    boolean nonceIsValid = NONCE_PATTERN.matcher(nonce).matches();
+    if (!nonceIsValid) {
+      return "The nonce may contain only letters, digits, '.', '-' and '_', and be up to 128 characters long";
+    }
+    return null;
+  }
+
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, int port, String nonce) {
+    this(validationEngine, loopBackOnly, txTestsEnabled, false, port, nonce);
+  }
+
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, boolean txTestsEnabled, boolean autoLoadPackages, int port, String nonce) {
+    String nonceProblem = checkNonce(nonce);
+    if (nonceProblem != null) {
+      throw new IllegalArgumentException(nonceProblem);
+    }
     this.validationEngine = validationEngine;
     this.loopbackOnly = loopBackOnly;
     this.txTestsEnabled = txTestsEnabled;
+    this.autoLoadPackages = autoLoadPackages;
     this.port = port;
+    this.nonce = nonce;
     ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
@@ -67,33 +129,66 @@ public class FhirValidatorHttpService {
     if (txTestsEnabled && !loopbackOnly) {
       log.warn("The terminology test endpoints (/txTest) are on, and the server is reachable from the network: callers can run tests against the servers configured in fhir-settings and write output files to this machine's temporary directory. They are intended for a build pipeline, not a public server.");
     }
+    if (autoLoadPackages && !loopbackOnly) {
+      log.warn("Package auto-loading (/canonical) is on, and the server is reachable from the network: callers can make this server download packages and load them into the engine every request uses.");
+    }
     server = HttpServer.create(inetSocketAddress, 0);
 
     IModelContext context = validationEngine.getContext().getModelContext();
 
-    server.createContext("/validateResource", new ValidateResourceHTTPHandler(context, this));
-    server.createContext("/fhirpath", new FhirPathHTTPHandler(context, this));
-    server.createContext("/fhirpath/check", new FhirPathCheckHTTPHandler(context, this));
-    server.createContext("/matchetype", new MatchetypeHTTPHandler(context, this));
-    server.createContext("/testdata", new TestDataHTTPHandler(context, this));
-    server.createContext("/loadIG", new LoadIGHTTPHandler(context, this));
-    server.createContext("/convert", new ConvertHTTPHandler(context, this));
-    server.createContext("/snapshot", new SnapshotHTTPHandler(context, this));
-    server.createContext("/narrative", new NarrativeHTTPHandler(context, this));
-    server.createContext("/transform", new TransformHTTPHandler(context, this));
-    server.createContext("/version", new VersionHTTPHandler(context, this));
-    server.createContext("/compile", new CompileHTTPHandler(context, this));
-    server.createContext("/openapi.json", new OpenApiHTTPHandler());
-    server.createContext("/docs", new DocsHTTPHandler(context, DocsHTTPHandler.SWAGGER_HTML));
-    server.createContext("/redoc", new DocsHTTPHandler(context, DocsHTTPHandler.REDOC_HTML));
-    server.createContext("/txTest", new TxTestHTTPHandler(context, this));
-    server.createContext("/stop", new StopHTTPHandler(context, this));
+    addContext("/validateResource", new ValidateResourceHTTPHandler(context, this));
+    addContext("/fhirpath", new FhirPathHTTPHandler(context, this));
+    addContext("/fhirpath/check", new FhirPathCheckHTTPHandler(context, this));
+    addContext("/canonical", new CanonicalHTTPHandler(context, this));
+    addContext("/matchetype", new MatchetypeHTTPHandler(context, this));
+    addContext("/testdata", new TestDataHTTPHandler(context, this));
+    addContext("/loadIG", new LoadIGHTTPHandler(context, this));
+    addContext("/convert", new ConvertHTTPHandler(context, this));
+    addContext("/snapshot", new SnapshotHTTPHandler(context, this));
+    addContext("/narrative", new NarrativeHTTPHandler(context, this));
+    addContext("/transform", new TransformHTTPHandler(context, this));
+    addContext("/version", new VersionHTTPHandler(context, this));
+    addContext("/compile", new CompileHTTPHandler(context, this));
+    addContext("/openapi.json", new OpenApiHTTPHandler());
+    addContext("/docs", new DocsHTTPHandler(context, DocsHTTPHandler.SWAGGER_HTML));
+    addContext("/redoc", new DocsHTTPHandler(context, DocsHTTPHandler.REDOC_HTML));
+    addContext("/txTest", new TxTestHTTPHandler(context, this));
+    addContext("/stop", new StopHTTPHandler(context, this));
+    // anything that none of the above match: an explicit 404 rather than the server's default, so it gets the nonce too
+    addContext("/", new NotFoundHTTPHandler(context));
 
     // Start the server
     server.setExecutor(null); // Use default executor
     server.start();
 
     log.info("FHIR Validator HTTP Service started on  " + inetSocketAddress.getAddress() + ":" + inetSocketAddress.getPort());
+  }
+
+  private void addContext(String path, HttpHandler handler) {
+    HttpContext ctx = server.createContext(path, handler);
+    if (nonce != null) {
+      ctx.getFilters().add(new NonceFilter(nonce));
+    }
+  }
+
+  /** Puts the nonce in the response headers, before the handler sends them. */
+  private static class NonceFilter extends Filter {
+    private final String nonce;
+
+    NonceFilter(String nonce) {
+      this.nonce = nonce;
+    }
+
+    @Override
+    public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+      exchange.getResponseHeaders().set(NONCE_HEADER, nonce);
+      chain.doFilter(exchange);
+    }
+
+    @Override
+    public String description() {
+      return "Returns the server's nonce in the " + NONCE_HEADER + " header";
+    }
   }
 
   /**

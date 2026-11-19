@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4.ips;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -28,7 +27,7 @@ public class IpsBuilderTest {
     assertDoesNotThrow(() -> {
       FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
       Bundle bnd = IPSBuilder.generateIPS(server, "wang-li");
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "ips-gen.json"), bnd);
     });
   }
 

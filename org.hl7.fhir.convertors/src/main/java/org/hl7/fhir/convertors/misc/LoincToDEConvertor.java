@@ -31,6 +31,7 @@ package org.hl7.fhir.convertors.misc;
 
 
 
+import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -154,7 +155,9 @@ public class LoincToDEConvertor {
 		factory.setNamespaceAware(true);
 		DocumentBuilder builder = factory.newDocumentBuilder();
 
-		xml = builder.parse(ManagedFileAccess.inStream(definitions)); 
+		try (InputStream stream = ManagedFileAccess.inStream(definitions)) {
+			xml = builder.parse(stream);
+		}
 	}
 
 	private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {

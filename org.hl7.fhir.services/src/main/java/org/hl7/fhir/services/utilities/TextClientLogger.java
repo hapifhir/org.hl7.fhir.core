@@ -96,4 +96,12 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     }
   }
 
+  @Override
+  public void logFailure(String error, long elapsed) {
+    if (file == null)
+      return;
+    file.println("\r\n\r\nNo Response ("+Utilities.describeDuration(elapsed)+"): \r\n");
+    file.println(error);
+  }
+
 }
