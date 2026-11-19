@@ -478,6 +478,10 @@ public class TerminologyCache {
 
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
+  // entries in vsCache / csCache that came from a failed lookup: used for this run, but not
+  // written to vs-externals.json / cs-externals.json, so the next run asks again
+  private Set<String> vsTransient = new HashSet<>();
+  private Set<String> csTransient = new HashSet<>();
   private Map<String, String> serverMap = new HashMap<>();
 
   @Getter @Setter private static boolean noCaching;
@@ -709,6 +713,8 @@ public class TerminologyCache {
       caches.clear();
       vsCache.clear();
       csCache.clear();
+      vsTransient.clear();
+      csTransient.clear();
       unloaded = true;
     }
   }
@@ -723,6 +729,8 @@ public class TerminologyCache {
     caches.clear();
     vsCache.clear();
     csCache.clear();
+    vsTransient.clear();
+    csTransient.clear();
   }
   
   public boolean hasCapabilityStatement(String address) {
@@ -1929,7 +1937,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1942,7 +1950,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser().parseFile(Utilities.path(folder, sp.getFilename())));
       } catch (Exception e) {
         return null;
       }
@@ -1950,8 +1958,20 @@ public class TerminologyCache {
   }
 
   public void cacheValueSet(String canonical, SourcedValueSet svs) {
+    cacheValueSet(canonical, svs, true);
+  }
+
+  /**
+   * @param persistent false if svs is the result of a failed lookup, so it's kept for this run but not saved
+   */
+  public void cacheValueSet(String canonical, SourcedValueSet svs, boolean persistent) {
     if (canonical == null) {
       return;
+    }
+    if (persistent) {
+      vsTransient.remove(canonical);
+    } else {
+      vsTransient.add(canonical);
     }
     try {
       if (svs == null) {
@@ -1960,12 +1980,15 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser().composeFile(Utilities.path(folder, fn), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : vsCache.keySet()) {
+        if (vsTransient.contains(k)) {
+          continue;
+        }
         SourcedValueSetEntry sve = vsCache.get(k);
         if (sve == null) {
           j.add(k, new JsonNull());
@@ -1987,8 +2010,20 @@ public class TerminologyCache {
   }
 
   public void cacheCodeSystem(String canonical, SourcedCodeSystem scs) {
+    cacheCodeSystem(canonical, scs, true);
+  }
+
+  /**
+   * @param persistent false if scs is the result of a failed lookup, so it's kept for this run but not saved
+   */
+  public void cacheCodeSystem(String canonical, SourcedCodeSystem scs, boolean persistent) {
     if (canonical == null) {
       return;
+    }
+    if (persistent) {
+      csTransient.remove(canonical);
+    } else {
+      csTransient.add(canonical);
     }
     try {
       if (scs == null) {
@@ -1997,12 +2032,15 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser().composeFile(Utilities.path(folder, fn), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : csCache.keySet()) {
+        if (csTransient.contains(k)) {
+          continue;
+        }
         SourcedCodeSystemEntry sve = csCache.get(k);
         if (sve == null) {
           j.add(k, new JsonNull());

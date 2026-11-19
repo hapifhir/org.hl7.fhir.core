@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -46,7 +45,7 @@ public class ResourceRoundTripTests {
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
           ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.xml")));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-          .compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
+          .composeFile(TestingUtilities.tempFile("gen", "unicode.out.xml"), res);
     });
   }
 

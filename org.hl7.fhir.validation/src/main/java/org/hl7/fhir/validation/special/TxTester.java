@@ -1233,56 +1233,40 @@ public class TxTester implements ITerminologyRequestIdProvider {
           ((Parameters) req).addParameter("lenient-display-validation", test.asBoolean("lenient-display"));
         }
 
-        String fn = chooseParam(test, "response", modes);
-        String resp = FileUtilities.bytesToString(loader.loadContent(fn));
-        String base = label == null ? outputRoot() : Utilities.path(outputRoot(), label);
-        String expFn = Utilities.path(base, "expected", fn);
-        String actFn = Utilities.path(base, "actual", fn);
-        File fo = ManagedFileAccess.file(expFn);
-        if (fo.exists()) {
-          fo.delete();
-        }
-        fo = ManagedFileAccess.file(actFn);
-        if (fo.exists()) {
-          fo.delete();
-        }
-        fo = ManagedFileAccess.file(Utilities.path(base, "comparison", fn));
-        if (fo.exists()) {
-          fo.delete();
-        }
-        currentOutput.set(new String[] { base, fn });
-
-        JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
+        // which response the server's answer is compared with can depend on the http code
+        // it returns (see ExpectedResponse), so the response is chosen after the call
+        ExpectedResponse expected = new ExpectedResponse(loader, test, modes, label == null ? outputRoot() : Utilities.path(outputRoot(), label));
+        expected.clearOutput();
 
         nextRequestId.set("txTests:"+suite.asString("name")+"/"+test.asString("name"));
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
-          msg = metadata(test.str("name"), effectiveSetup, resp, expFn, actFn, lang, profile, ext, modes);
+          msg = metadata(test.str("name"), effectiveSetup, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("term-caps")) {
-          msg = termcaps(test.str("name"), effectiveSetup, resp, expFn, actFn, lang, profile, ext, modes);
+          msg = termcaps(test.str("name"), effectiveSetup, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("expand")) {
-          msg = expand(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = expand(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = validate(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = validateCS(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = lookup(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = translate(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("batch")) {
-          msg = batch(test.str("name"), effectiveSetup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = batch(test.str("name"), effectiveSetup, (Bundle) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("batch-validate")) {
-          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, false);
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes, false);
         } else if (test.asString("operation").equals("cs-batch-validate")) {
-          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes, true);
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes, true);
         } else if (test.asString("operation").equals("compare")) {
-          msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = compare(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("subsumes")) {
-          msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else if (test.asString("operation").equals("closure")) {
-          msg = closure(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = closure(test.str("name"), effectiveSetup, (Parameters) req, expected, lang, profile, modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -1326,46 +1310,110 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
   }
 
-  private String metadata(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
+  private String metadata(String id, List<Resource> setup, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     CapabilityStatement cs = capabilityStatement.copy(Base.COPY_NOTHING);
     TxTesterScrubbers.scrubCapStmt(cs, tight);
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
+    String diff = checkResponse(id, expected, 200, csj, modes, true);
     return diff;
   }
 
-  private String termcaps(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
+  private String termcaps(String id, List<Resource> setup, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     TerminologyCapabilities cs = terminologyCapabilities.copy(Base.COPY_NOTHING);
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
+    String diff = checkResponse(id, expected, 200, csj, modes, true);
     return diff;
   }
 
-  private String getResponseCode(JsonObject test) {
-    if (test.has("http-code")) {
-      return test.asString("http-code");
-    } else {
-      return "2xx";
+  /**
+   * What a test expects back from the server - see TxTestResponses. The http code the server
+   * returns picks which of the test's responses its answer is compared with.
+   */
+  class ExpectedResponse {
+    private final ITxTesterLoader loader;
+    private final String base;
+    private final TxTestResponses responses;
+
+    ExpectedResponse(ITxTesterLoader loader, JsonObject test, Set<String> modes, String base) {
+      this.loader = loader;
+      this.base = base;
+      this.responses = new TxTestResponses(test, modes);
+    }
+
+    /** the expected http code(s), as the test gives them */
+    String getHttpCode() {
+      return responses.getHttpCode();
+    }
+
+    /** remove what a previous run of this test left in the output folders, for every response it might be compared with */
+    void clearOutput() throws IOException {
+      for (String fn : responses.files()) {
+        for (String folder : new String[] { "expected", "actual", "comparison" }) {
+          File fo = ManagedFileAccess.file(Utilities.path(base, folder, fn));
+          if (fo.exists()) {
+            fo.delete();
+          }
+        }
+      }
+    }
+
+    /**
+     * The response to compare with, given the http code the server returned. When the code
+     * matches none of the choices, the test fails anyway; the first choice's response is used, so
+     * there's still something to compare with.
+     */
+    Selection select(int code) throws IOException {
+      String choice = responses.choiceForCode(code);
+      boolean codeOk = choice != null;
+      String fn = responses.fileFor(codeOk ? choice : responses.getChoices().get(0));
+      currentOutput.set(new String[] { base, fn });
+      return new Selection(codeOk,
+        FileUtilities.bytesToString(loader.loadContent(fn)),
+        Utilities.path(base, "expected", fn),
+        Utilities.path(base, "actual", fn),
+        externals == null ? null : externals.getJsonObject(fn));
     }
   }
 
-  private String chooseParam(JsonObject test, String name, Set<String> modes) {
-    for (String mode : modes) {
-      if (test.has(name+":"+mode)) {
-        return test.asString(name+":"+mode);
-      }
+  /** The response chosen for the code the server returned */
+  static class Selection {
+    final boolean codeOk;
+    final String resp;
+    final String expFn;
+    final String actFn;
+    final JsonObject ext;
+
+    Selection(boolean codeOk, String resp, String expFn, String actFn, JsonObject ext) {
+      this.codeOk = codeOk;
+      this.resp = resp;
+      this.expFn = expFn;
+      this.actFn = actFn;
+      this.ext = ext;
     }
-    return test.asString(name);
+  }
+
+  /**
+   * Compare what the server returned with the response the test expects for the http code it
+   * returned, write the test output, and return the failure message, or null if the test passed
+   */
+  private String checkResponse(String id, ExpectedResponse expected, int code, String actual, Set<String> modes, boolean patternMode) throws IOException, URISyntaxException {
+    Selection sel = expected.select(code);
+    CompareUtilities c = new CompareUtilities(modes, sel.ext, vars()).setCollectAll(true);
+    String diff = c.setPatternMode(patternMode).checkJsonSrcIsSame(id, sel.resp, actual, false);
+    warnings.addAll(c.getWarnings());
+    writeTestOutput(sel.expFn, sel.resp, sel.actFn, actual, modes, diff != null);
+    if (!sel.codeOk) {
+      return "Response Code fail: should be '"+expected.getHttpCode()+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  private String chooseParam(JsonObject test, String name, Set<String> modes) {
+    return TxTestResponses.chooseParam(test, name, modes);
   }
 
   private Parameters loadProfile(ITxTesterLoader loader, JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
@@ -1442,7 +1490,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return outputDir == null ? Utilities.path("[tmp]", outputFolder()) : outputDir;
   }
 
-  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String lookup(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1462,17 +1510,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String subsumes(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String subsumes(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1492,13 +1534,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
@@ -1524,7 +1560,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
   }
 
-  private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String closure(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     useRunClosureTable(p, closureTableName);
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
@@ -1549,17 +1585,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String translate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String translate(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1579,17 +1609,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String expand(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1618,32 +1642,15 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, vsj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, vsj, modes, false);
     return diff;
-  }
-
-  private boolean httpCodeOk(String tcode, int code) {
-    switch (tcode) {
-      case "2xx" : return code >= 200 && code < 300;
-      case "3xx" : return code >= 300 && code < 400;
-      case "4xx" : return code >= 400 && code < 500;
-      case "5xx" : return code >= 500 && code < 600;
-      default:
-        throw new Error("unknown code string "+tcode);
-    }
   }
 
   /**
    * batch-validate is ValueSet/$batch-validate-code; cs-batch-validate (cs = true) is
    * CodeSystem/$batch-validate-code
    */
-  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes, boolean cs) throws IOException, URISyntaxException {
+  private String batchValidate(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes, boolean cs) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1664,17 +1671,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String validate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String validate(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1699,13 +1700,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     if (pj != null) {
       try {
         Parameters pp = (Parameters) new org.hl7.fhir.model.core.formats.JsonParser(context).parse(pj);
@@ -1725,7 +1720,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String validateCS(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1745,17 +1740,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String compare(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String compare(String id, List<Resource> setup, Parameters p, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1780,17 +1769,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
   }
 
-  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String batch(String id, List<Resource> setup, Bundle bnd, ExpectedResponse expected, String lang, Parameters profile, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       Parameters p = (Parameters) bnd.getEntryFirstRep().getResource();
       p.addParameter().setName("tx-resource").setResource(r);
@@ -1822,13 +1805,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
-    String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
-    warnings.addAll(c.getWarnings());
-    writeTestOutput(expFn, resp, actFn, bj, modes, diff != null);
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
+    String diff = checkResponse(id, expected, code, bj, modes, false);
     return diff;
   }
 
@@ -2041,6 +2018,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
 
     public InternalTxLoader(String source, boolean additional) throws IOException {
+      this.context = ModelContext.fullCoreContext(); // loadResource() needs it: -input failed with 'modelContext must not be null'
       this.additional = additional;
       File f = ManagedFileAccess.file(source);
       if (f.exists() && f.isDirectory()) {

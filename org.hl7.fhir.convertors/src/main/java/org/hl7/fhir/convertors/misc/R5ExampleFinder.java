@@ -7,7 +7,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class R5ExampleFinder {
@@ -28,7 +27,7 @@ public class R5ExampleFinder {
         exec(json, f);
       } else if (f.getName().startsWith("list-")) {
         try {
-          ListResource r = (ListResource) new XmlParser().parse(new FileInputStream(f));
+          ListResource r = (ListResource) new XmlParser().parseFile(f);
           for (ListResource.ListResourceEntryComponent entry : r.getEntry()) {
             Reference item = entry.getItem();
             if (item.hasReference() && item.hasDisplay() && entry.hasExtension("http://hl7.org/fhir/build/StructureDefinition/title")) {

@@ -1,0 +1,752 @@
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
+      "concept" : [{
+        "code" : "290002008"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx.hl7.cz,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:65b50125-7721-447b-bfe9-68836b8320e7",
+    "timestamp" : "2026-11-10T04:31:12.939Z",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "290002008",
+      "display" : "Brittle type 1 diabetes mellitus"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
+      "filter" : [{
+        "property" : "concept",
+        "op" : "is-a",
+        "value" : "70694009"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx.hl7.cz,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+      "valueBoolean" : true
+    }],
+    "identifier" : "urn:uuid:a2664eff-bd8a-41e7-8e95-b237050113af",
+    "timestamp" : "2026-11-10T04:31:13.198Z",
+    "total" : 3,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "70694009",
+      "display" : "Wolfram syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1285518004",
+      "display" : "Wolfram syndrome type 1"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1285519007",
+      "display" : "Wolfram syndrome type 2"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000181102",
+      "concept" : [{
+        "code" : "314208002"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : term.tehik.ee,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:8cd8f746-774c-4dae-8fb4-21cd3c71919b",
+    "timestamp" : "2026-11-10T06:31:15+02:00",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "314208002",
+      "display" : "Rapid atrial fibrillation"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000181102",
+      "filter" : [{
+        "property" : "concept",
+        "op" : "is-a",
+        "value" : "282825002"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : term.tehik.ee,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:3d32964f-261a-4c11-aa63-4ce728d57835",
+    "timestamp" : "2026-11-10T06:31:15+02:00",
+    "total" : 3,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "282825002",
+      "display" : "Paroxysmal atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "467643831000119105",
+      "display" : "Paroxysmal atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1010405004",
+      "display" : "Paroxysmal atrial fibrillation with rapid ventricular response"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000279109",
+      "filter" : [{
+        "property" : "concept",
+        "op" : "is-a",
+        "value" : "46635009"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx.hl7.cz,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+      "valueBoolean" : true
+    }],
+    "identifier" : "urn:uuid:521a3b51-cd36-4f5c-828d-87ccc37a3a47",
+    "timestamp" : "2026-11-10T04:31:15.794Z",
+    "total" : 21,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000279109/version/20260618"
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "46635009",
+      "display" : "Type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "23045005",
+      "display" : "Insulin dependent diabetes mellitus type 1A"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "28032008",
+      "display" : "Insulin dependent diabetes mellitus type 1B"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "70694009",
+      "display" : "Wolfram syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "190368000",
+      "display" : "Type 1 diabetes mellitus with ulcer"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "190372001",
+      "display" : "Type 1 diabetes mellitus maturity onset"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "199229001",
+      "display" : "Pre-existing type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "290002008",
+      "display" : "Brittle type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "426875007",
+      "display" : "Latent autoimmune diabetes mellitus in adult"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "444073006",
+      "display" : "Uncontrolled type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "444074000",
+      "display" : "Well controlled type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "609564002",
+      "display" : "Pre-existing type 1 diabetes mellitus in pregnancy"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "609566000",
+      "display" : "Pregnancy and type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "703137001",
+      "display" : "Type 1 diabetes mellitus in remission"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "722454003",
+      "display" : "Intellectual disability, craniofacial dysmorphism, hypogonadism, diabetes mellitus syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "870528001",
+      "display" : "Newly diagnosed type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1217068008",
+      "display" : "Fulminant type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1255271005",
+      "display" : "Type 1 diabetes mellitus, central and peripheral neurodegeneration syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1285518004",
+      "display" : "Wolfram syndrome type 1"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1285519007",
+      "display" : "Wolfram syndrome type 2"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "31321000119102",
+      "display" : "Diabetes mellitus type 1 without retinopathy"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "version" : "http://snomed.info/sct/11000181102",
+      "filter" : [{
+        "property" : "concept",
+        "op" : "is-a",
+        "value" : "49436004"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : term.tehik.ee,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:15b0a30a-cfff-4775-ae52-5fd6d9a9d893",
+    "timestamp" : "2026-11-10T06:31:16+02:00",
+    "total" : 19,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "49436004",
+      "display" : "Atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "313377641000119105",
+      "display" : "Atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "120041000119109",
+      "display" : "Atrial fibrillation with rapid ventricular response"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1389267007",
+      "display" : "Atrial fibrillation with slow ventricular response"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "426749004",
+      "display" : "Chronic atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "300996004",
+      "display" : "Controlled atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "715395008",
+      "display" : "Familial atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "233910005",
+      "display" : "Lone atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "706923002",
+      "display" : "Longstanding persistent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "233911009",
+      "display" : "Non-rheumatic atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "282825002",
+      "display" : "Paroxysmal atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "467643831000119105",
+      "display" : "Paroxysmal atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1010405004",
+      "display" : "Paroxysmal atrial fibrillation with rapid ventricular response"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "440028005",
+      "display" : "Permanent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "280797561000119107",
+      "display" : "Permanent atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "440059007",
+      "display" : "Persistent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "489609371000119104",
+      "display" : "Persistent atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "762247006",
+      "display" : "Preexcited atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "314208002",
+      "display" : "Rapid atrial fibrillation"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "url": "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi", "version": "1.0.0"}####
+e: {
+  "source" : term.tehik.ee,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "url" : "http://hl7.org/fhir/test/ValueSet/vs-exclude-sct-multi",
+  "version" : "1.0.0",
+  "name" : "VSExcludeSctMulti",
+  "title" : "Exclude from SNOMED CT across servers",
+  "status" : "active",
+  "experimental" : false,
+  "expansion" : {
+    "identifier" : "urn:uuid:d4bdeafd-ff4f-4cc6-8262-1df544478514",
+    "timestamp" : "2026-11-10T09:29:10+02:00",
+    "total" : 32,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "used-codesystem",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/sct/11000181102/version/20260530"
+    },
+    {
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    }],
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "49436004",
+      "display" : "Atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "313377641000119105",
+      "display" : "Atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "120041000119109",
+      "display" : "Atrial fibrillation with rapid ventricular response"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1389267007",
+      "display" : "Atrial fibrillation with slow ventricular response"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "426749004",
+      "display" : "Chronic atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "300996004",
+      "display" : "Controlled atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "31321000119102",
+      "display" : "Diabetes mellitus type 1 without retinopathy"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "715395008",
+      "display" : "Familial atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1217068008",
+      "display" : "Fulminant type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "23045005",
+      "display" : "Insulin dependent diabetes mellitus type 1A"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "28032008",
+      "display" : "Insulin dependent diabetes mellitus type 1B"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "722454003",
+      "display" : "Intellectual disability, craniofacial dysmorphism, hypogonadism, diabetes mellitus syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "426875007",
+      "display" : "Latent autoimmune diabetes mellitus in adult"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "233910005",
+      "display" : "Lone atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "706923002",
+      "display" : "Longstanding persistent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "870528001",
+      "display" : "Newly diagnosed type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "233911009",
+      "display" : "Non-rheumatic atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "440028005",
+      "display" : "Permanent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "280797561000119107",
+      "display" : "Permanent atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "440059007",
+      "display" : "Persistent atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "489609371000119104",
+      "display" : "Persistent atrial fibrillation due to heart valve disorder"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "199229001",
+      "display" : "Pre-existing type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "609564002",
+      "display" : "Pre-existing type 1 diabetes mellitus in pregnancy"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "762247006",
+      "display" : "Preexcited atrial fibrillation"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "609566000",
+      "display" : "Pregnancy and type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "46635009",
+      "display" : "Type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "703137001",
+      "display" : "Type 1 diabetes mellitus in remission"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "190372001",
+      "display" : "Type 1 diabetes mellitus maturity onset"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "190368000",
+      "display" : "Type 1 diabetes mellitus with ulcer"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "1255271005",
+      "display" : "Type 1 diabetes mellitus, central and peripheral neurodegeneration syndrome"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "444073006",
+      "display" : "Uncontrolled type 1 diabetes mellitus"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "code" : "444074000",
+      "display" : "Well controlled type 1 diabetes mellitus"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

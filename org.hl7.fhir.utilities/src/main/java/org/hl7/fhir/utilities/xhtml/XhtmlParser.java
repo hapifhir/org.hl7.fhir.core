@@ -724,7 +724,7 @@ public class XhtmlParser {
       {
         parseLiteral(s);
       }
-      else
+      else if (!readPlainChars(s, '<', '&'))
         s.append(readChar());
     }
     addTextNode(node, s);
@@ -849,7 +849,7 @@ public class XhtmlParser {
       {
         parseLiteral(b);
       }
-      else
+      else if (!readPlainChars(b, '&', '>', term == END_OF_CHARS ? '/' : term))
         b.append(readChar());
     }
     if (peekChar() == term)
@@ -935,6 +935,42 @@ public class XhtmlParser {
     }      
     col++;
     return c;
+  }
+
+  /**
+   * Appends to b the characters from the source up to the next one of stop1, stop2 or stop3,
+   * a line break, or the end of the source, and moves past those characters, leaving the stop
+   * character to be read next. readChar() would return each of them in turn and move on a
+   * column; the caller would append them one by one.
+   *
+   * Does nothing if there are pushed back characters, so the caller's loop carries on as before.
+   *
+   * @return whether any characters were read
+   */
+  private boolean readPlainChars(StringBuilder b, char stop1, char stop2, char stop3)
+  {
+    if (pushback.length() > 0)
+      return false;
+    int start = srcPos;
+    int end = start;
+    int len = src.length();
+    while (end < len) {
+      char c = src.charAt(end);
+      if (c == stop1 || c == stop2 || c == stop3 || c == '\r' || c == '\n' || c == END_OF_CHARS)
+        break;
+      end++;
+    }
+    if (end == start)
+      return false;
+    b.append(src, start, end);
+    col += end - start;
+    srcPos = end;
+    return true;
+  }
+
+  private boolean readPlainChars(StringBuilder b, char stop1, char stop2)
+  {
+    return readPlainChars(b, stop1, stop2, stop2);
   }
 
   private String readToTagEnd() throws IOException, FHIRFormatError 
@@ -1069,6 +1105,15 @@ public class XhtmlParser {
 
   private String readName() throws IOException
   {
+    if (pushback.length() == 0) {
+      // straight from the source. Name characters are never line breaks, so all readChar() would do
+      // with each of them is move on a column
+      int start = srcPos;
+      while (srcPos < src.length() && isNameChar(src.charAt(srcPos)))
+        srcPos++;
+      col += srcPos - start;
+      return src.substring(start, srcPos);
+    }
     StringBuilder s = new StringBuilder();
     while (isNameChar(peekChar()))
       s.append(readChar());

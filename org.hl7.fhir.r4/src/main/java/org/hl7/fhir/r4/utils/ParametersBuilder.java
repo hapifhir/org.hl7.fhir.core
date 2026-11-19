@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,7 +55,7 @@ public class ParametersBuilder {
         }
       }
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(output), p);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(output, p);
   }
 
   private byte[] shaveZeros(byte[] cnt) {

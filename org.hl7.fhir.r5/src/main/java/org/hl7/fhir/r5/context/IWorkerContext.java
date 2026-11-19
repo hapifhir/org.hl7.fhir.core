@@ -820,9 +820,8 @@ public interface IWorkerContext {
    *          null to ask only "is this code valid in its own code system", which is the batch equivalent
    *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
    *          <p>
-   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
-   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
-   *          parameter when vs is null.
+   *          As with the single code path, the batch goes to ValueSet/$batch-validate-code when there
+   *          is a value set, and to CodeSystem/$batch-validate-code when vs is null.
    * @param notUsed not used - pass null. This was once a flag doing something, but no caller ever set it, and it did not make sense.
    *          The parameter is retained only so that the signature of this interface does not change.
    *
@@ -864,9 +863,8 @@ public interface IWorkerContext {
    *          null to ask only "is this code valid in its own code system", which is the batch equivalent
    *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
    *          <p>
-   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
-   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
-   *          parameter when vs is null.
+   *          As with the single code path, the batch goes to ValueSet/$batch-validate-code when there
+   *          is a value set, and to CodeSystem/$batch-validate-code when vs is null.
    *
    * @throws FHIRException if no terminology server is available, or the server returns no response to
    *           the batch

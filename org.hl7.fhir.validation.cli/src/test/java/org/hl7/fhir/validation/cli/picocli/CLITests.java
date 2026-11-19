@@ -692,6 +692,22 @@ class CLITests {
     }
 
     @Test
+    @DisplayName("-txTests after the server command is the server's option, not the txTests command")
+    void serverTxTestsOptionIsNotReplaced() {
+      assertThat(CLI.replaceDeprecatedArgs(new String[]{"server", "9096", "-tx", "http://localhost:9095/r5", "-txTests"}))
+        .containsExactly("server", "9096", "-tx", "http://localhost:9095/r5", "-txTests");
+      assertThat(CLI.replaceDeprecatedArgs(new String[]{"-server", "9096", "-txTests"}))
+        .containsExactly("server", "9096", "-txTests");
+    }
+
+    @Test
+    @DisplayName("Deprecated -txTests argument on its own is still the txTests command")
+    void deprecatedTxTestsArgumentTest() {
+      assertThat(CLI.replaceDeprecatedArgs(new String[]{"-txTests", "-tx", "http://localhost:9095/r5"}))
+        .containsExactly("txTests", "-tx", "http://localhost:9095/r5");
+    }
+
+    @Test
     @DisplayName("Deprecated -server argument is replaced with server command")
     void deprecatedServerArgumentTest() {
       String[] args = {"-server", "8080"};
