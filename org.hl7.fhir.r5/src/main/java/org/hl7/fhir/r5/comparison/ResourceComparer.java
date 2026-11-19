@@ -25,6 +25,15 @@ public class ResourceComparer {
 
   static int counter = 0;
 
+  /**
+   * Numbers the comparisons from 1 again, as in a new JVM. Their ids (and so the names of their pages) include this
+   * number, so a tool that compares again in the same JVM (e.g. the IG Publisher in watch mode) calls this first to
+   * get the same ids as a fresh run
+   */
+  public static void resetCounter() {
+    counter = 0;
+  }
+
   public static class MessageCounts {
     private int errors;
     private int warnings;

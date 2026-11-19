@@ -324,7 +324,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void listConceptLanguages(CodeSystem cs, ConceptDefinitionComponent c, List<String> langs) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignationList()) {
-      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
+      if (cd.hasLanguage() && !isDefinition(cd) && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
         langs.add(cd.getLanguage());
       }
     }
@@ -672,11 +672,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     for (ConceptDefinitionDesignationComponent cd : c.getDesignationList()) {
-      if (cd.hasLanguage() && cd.getLanguage().equals(lang)) {
+      if (cd.hasLanguage() && cd.getLanguage().equals(lang) && !isDefinition(cd)) {
         return cd.getValue();
       }
     }
     return null;
+  }
+
+  private boolean isDefinition(ConceptDefinitionDesignationComponent cd) {
+    return cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") || cd.getUse().is("http://snomed.info/sct", "900000000000550004");
   }
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
@@ -751,14 +755,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     XhtmlNode tr = t.tr();
     tr.td().addText(c.getCode());
     for (String lang : langs) {
-      ConceptDefinitionDesignationComponent d = null;
-      for (ConceptDefinitionDesignationComponent designation : c.getDesignationList()) {
-        if (designation.hasLanguage()) {
-          if (lang.equals(designation.getLanguage()))
-            d = designation;
-        }
-      }
-      tr.td().addText(d == null ? "" : d.getValue());
+      String d = getDisplay(lang, c);
+      tr.td().addText(d == null ? "" : d);
     }
   }
  

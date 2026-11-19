@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.ValueSet;
 
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class ImplicitValueSets {
       if ("default-version".equals(p.getName())) {
         String u = p.getValue().primitiveValue();
         if (u.startsWith(url+"|")) {
-          return u.substring(u.indexOf(1)+1);
+          return u.substring(u.indexOf("|")+1);
         }
       }
     }
@@ -97,6 +98,15 @@ public class ImplicitValueSets {
     } else {
       return null;
     }
+  }
+
+  /**
+   * true if vs is an implicit value set generated here that should be passed to a terminology server
+   * by its url rather than as a resource, because the compose generated for it isn't portable
+   * across servers (LOINC answer lists, #2784)
+   */
+  public static boolean isSentByUrl(ValueSet vs) {
+    return vs != null && vs.hasUserData(UserDataNames.tx_implicit_vs_by_url);
   }
 
   public boolean isImplicitValueSet(String url) {
@@ -184,6 +194,9 @@ public class ImplicitValueSets {
       vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
       vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("LIST").setOp(Enumerations.FilterOperator.EQUAL).setValue(c);
       vs.setWebPath("https://loinc.org/"+c);
+      // the LOINC page defines the answer list value sets by their url, but there's no defined filter
+      // for list membership (LIST is tx.fhir.org's), so servers get the url, not this compose (#2784)
+      vs.setUserData(UserDataNames.tx_implicit_vs_by_url, true);
       return vs;
     } else if (url.startsWith("http://loinc.org/vs/LP")) {
       String c = url.substring("http://loinc.org/vs/".length());

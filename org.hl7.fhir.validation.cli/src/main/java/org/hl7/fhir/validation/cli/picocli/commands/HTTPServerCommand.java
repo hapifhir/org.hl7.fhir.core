@@ -78,6 +78,18 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   )
   private boolean txTests;
 
+  @CommandLine.Option(
+    names = {"-autoLoadPackages"},
+    description = "Let /canonical find and load the package that defines a canonical resource the server doesn't know yet (not for a particular version). Callers can then make the server download packages and load them into the engine every request uses, permanently."
+  )
+  private boolean autoLoadPackages;
+
+  @CommandLine.Option(
+    names = {"-nonce"},
+    description = "A value the server returns in an X-Validator-Nonce header on every response, so that a program that starts the server can tell it from anything else answering on the port (a server left running by an earlier process, say). Letters, digits, '.', '-' and '_', up to 128 characters. Not a secret, and not authentication."
+  )
+  private String nonce;
+
   // The remaining parameters are processed as sources
   @CommandLine.Parameters(
     description = "Source file(s) to transform",
@@ -103,15 +115,15 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   protected Integer call(@Nonnull ValidationService validationService,
                         @Nonnull ValidationEngine validationEngine) {
     try {
-      validateServerParameters();
-
       validationEngine.setLogValidationProgress(false);
 
       FhirValidatorHttpService service = new FhirValidatorHttpService(
         validationEngine,
         !allowNetworkAccess,
         txTests,
-        port
+        autoLoadPackages,
+        port,
+        nonce
       );
       service.startServer();
 
@@ -132,11 +144,11 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
     }
   }
 
-  private void validateServerParameters() {
-    // Validate port number
+  @Override
+  protected String checkParameters() {
     if (port <= 0 || port > 65535) {
-      log.error("Invalid port number: {}. Port must be between 1 and 65535.", port);
-      System.exit(1);
+      return "Invalid port number: " + port + ". Port must be between 1 and 65535.";
     }
+    return FhirValidatorHttpService.checkNonce(nonce);
   }
 }

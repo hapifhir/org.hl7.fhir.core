@@ -645,6 +645,10 @@ public class JsonParser extends ParserBase {
           if (arr2 != null && arr2.isExtraComma()) {
             logError(errors, "2022-11-26", arr2.getEnd().getLine(), arr2.getEnd().getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_COMMA_EXTRA, "Array"), IssueSeverity.ERROR);
           }
+          JsonArray empty = arr1 != null && arr1.size() == 0 ? arr1 : arr2 != null && arr2.size() == 0 ? arr2 : null;
+          if (empty != null && !property.canBeEmpty()) {
+            logError(errors, ValidationMessage.NO_RULE_DATE, line(empty), col(empty), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);
+          }
 
           for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
             JsonElement m = arrI(arr1, i);

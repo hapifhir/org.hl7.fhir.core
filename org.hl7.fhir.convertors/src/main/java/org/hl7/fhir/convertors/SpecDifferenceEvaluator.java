@@ -146,7 +146,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(ManagedFileAccess.inStream(fn));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parseFile(fn);
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.StructureDefinition) {
         org.hl7.fhir.r4.model.StructureDefinition sd = (org.hl7.fhir.r4.model.StructureDefinition) be.getResource();
@@ -157,7 +157,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadSD(Map<String, StructureDefinition> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parse(ManagedFileAccess.inStream(fn));
+    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parseFile(fn);
     for (BundleEntryComponent be : bundle.getEntryList()) {
       if (be.getResource() instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) be.getResource();
@@ -167,7 +167,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadVS4(Map<String, ValueSet> map, String fn) throws FHIRException, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(ManagedFileAccess.inStream(fn));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parseFile(fn);
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.ValueSet) {
         org.hl7.fhir.r4.model.ValueSet sd = (org.hl7.fhir.r4.model.ValueSet) be.getResource();
@@ -177,7 +177,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadVS(Map<String, ValueSet> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parse(ManagedFileAccess.inStream(fn));
+    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parseFile(fn);
     for (BundleEntryComponent be : bundle.getEntryList()) {
       if (be.getResource() instanceof ValueSet) {
         ValueSet sd = (ValueSet) be.getResource();

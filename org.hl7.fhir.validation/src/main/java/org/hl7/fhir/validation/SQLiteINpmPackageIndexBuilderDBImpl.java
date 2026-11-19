@@ -6,6 +6,9 @@ import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
 import java.sql.*;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SQLiteINpmPackageIndexBuilderDBImpl implements NpmPackageIndexBuilder.INpmPackageIndexBuilderDBImpl {
   private String dbFilename;
   private Connection conn;
@@ -32,7 +35,10 @@ public class SQLiteINpmPackageIndexBuilderDBImpl implements NpmPackageIndexBuild
         "Derivation     nvarchar NULL,\r\n" +
         "PRIMARY KEY (FileName))\r\n");
 
-      psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      // the rows go in one transaction, committed in close(). In auto-commit mode every insert is
+      // its own transaction, with its own sync to disk, which takes seconds for a large package
+      conn.setAutoCommit(false);
+      psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet, Derivation) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     } catch (Exception e) {
       if (conn != null) {
         try {
@@ -57,19 +63,33 @@ public class SQLiteINpmPackageIndexBuilderDBImpl implements NpmPackageIndexBuild
       psql.setString(8, fi.asString("supplements")); // Supplements");
       psql.setString(9, fi.asString("content")); // Content");
       psql.setString(10, fi.asString("valueSet")); // ValueSet");
-      psql.setString(10, fi.asString("derivation")); // Derivation");
+      psql.setString(11, fi.asString("derivation")); // Derivation");
       psql.execute();
     }
   }
 
   @Override
   public void close() {
+    if (conn == null) {
+      return;
+    }
     try {
-      if (conn != null) {
-        conn.close();
+      conn.commit();
+    } catch (SQLException e) {
+      log.warn("Unable to write the package index " + dbFilename + ": " + e.getMessage());
+      try {
+        conn.rollback();
+      } catch (SQLException e1) {
+        // closing the connection discards the transaction anyway
       }
-    } catch (Exception e) {
-      // nothing
+    } finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        // nothing
+      }
+      conn = null;
+      psql = null;
     }
   }
 
