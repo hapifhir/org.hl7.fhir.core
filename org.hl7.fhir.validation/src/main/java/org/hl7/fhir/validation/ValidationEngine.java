@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
@@ -1060,6 +1061,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public byte[] convertFormat(byte[] resource, FhirFormat inputFormat, FhirFormat outputFormat) throws FHIRException, IOException {
+    if (inputFormat == FhirFormat.FML) {
+      // FML is the text form of a StructureMap; parse it the way the engine loads maps, so the
+      // result has the structure of the runtime FHIR version
+      return parseStructureMap(new String(resource, StandardCharsets.UTF_8), null, outputFormat);
+    }
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), inputFormat);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);

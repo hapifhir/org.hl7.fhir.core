@@ -134,12 +134,11 @@ the HTTP status.
 | POST | `/matchetype` | Compare a resource against a matchetype pattern |
 | POST | `/testdata` | Generate test data for a profile |
 | POST | `/loadIG` | Load an IG into the running engine |
-| POST | `/convert` | Convert a resource between JSON and XML |
+| POST | `/convert` | Convert a resource between JSON and XML, or FML to a StructureMap |
 | POST | `/version` | Convert a resource between FHIR versions |
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
-| POST | `/fml` | Parse FHIR Mapping Language into a StructureMap |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
 | GET | `/canonical` | Fetch a canonical resource the engine knows, by canonical URL |
 | POST | `/txTest/setup` | Start a run of the terminology ecosystem tests against a server |
@@ -290,8 +289,16 @@ curl -X POST http://localhost:8080/loadIG \
 
 ### POST /convert and POST /version
 
-`/convert` re-serialises between JSON and XML (`Content-Type` in, `Accept` out). `/version`
-converts between FHIR versions:
+`/convert` re-serialises between JSON and XML (`Content-Type` in, `Accept` out). It also takes
+FHIR Mapping Language (`Content-Type: text/fhir-mapping`, or `text/fhir+fml`), the text form of a
+StructureMap, and returns the StructureMap, with the structure of the FHIR version the engine is
+running rather than R5's. Nothing is registered - the map is returned to the caller.
+
+```sh
+curl -X POST 'http://localhost:8080/convert' \n  -H 'Content-Type: text/fhir-mapping' -H 'Accept: application/fhir+json' \n  --data-binary @example.fml
+```
+
+`/version` converts between FHIR versions:
 
 ```sh
 curl -X POST 'http://localhost:8080/version?targetVersion=5.0' \
@@ -350,19 +357,6 @@ curl 'http://localhost:8080/canonical?url=http://hl7.org/fhir/ValueSet/administr
 by any client with `/loadIG` - can be read by every client of the server, including unpublished
 content loaded from a local folder. Don't load anything into a server others can reach that they
 shouldn't see.
-
-### POST /fml
-
-Parses FHIR Mapping Language source into a StructureMap and returns it, serialised for the FHIR
-version the engine is running rather than for R5. Nothing is registered - the result is returned
-to the caller.
-
-```sh
-curl -X POST 'http://localhost:8080/fml?name=Example'   -H 'Content-Type: text/plain'   --data-binary @example.fml
-```
-
-`name` is used only in parse error messages; `format` (`json` or `xml`, default `json`) picks the
-output format, and `Accept` is not consulted.
 
 ### Terminology ecosystem tests: /txTest
 
