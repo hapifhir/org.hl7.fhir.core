@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.misc.utg;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +35,7 @@ public class UTGCaseSensitivePopulator {
     bundle.setId("hxutg1-1-0-12");
     
     scanFolders(root, bundle);
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(root.getAbsolutePath(), "input", "sourceOfTruth", "history", "utgrel1hx-1-0-12.json")), bundle);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(root.getAbsolutePath(), "input", "sourceOfTruth", "history", "utgrel1hx-1-0-12.json"), bundle);
     System.out.println("Done");
   }
 
@@ -62,10 +60,10 @@ public class UTGCaseSensitivePopulator {
 
   private void processFile(File f, Bundle bundle, IParser parser, Date d, Date dt) {
     try {
-      Resource r = parser.parse(ManagedFileAccess.inStream(f));
+      Resource r = parser.parseFile(f);
       if (r instanceof CodeSystem) {
         if (processCodeSystem((CodeSystem) r, bundle, d, dt)) {
-          parser.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
+          parser.setOutputStyle(OutputStyle.PRETTY).composeFile(f, r);
         }
       }
     } catch (Exception e) {

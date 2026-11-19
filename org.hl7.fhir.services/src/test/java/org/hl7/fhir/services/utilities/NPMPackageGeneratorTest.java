@@ -1224,6 +1224,24 @@ class NPMPackageGeneratorTest {
   }
 
   @Test
+  void renamedFilesAreReported() throws IOException {
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    String test = "validate-supplements-hierarchy-grandchild-wrong-display-request-parameters.json";
+    generator.addFile("tests/extensions", test, "{}".getBytes(StandardCharsets.UTF_8));
+    String example = "QuestionnaireResponse-example-cervical-cancer-screening-questionnaire-response.json";
+    generator.addFile(NPMPackageGenerator.Category.EXAMPLE, example, "{}".getBytes(StandardCharsets.UTF_8));
+    generator.addFile("tests/extensions", "short.json", "{}".getBytes(StandardCharsets.UTF_8));
+    finish(generator);
+
+    Map<String, String> renamed = generator.getRenamedFiles();
+    assertEquals(List.of("package/tests/extensions/" + test, "package/examples/" + example), new ArrayList<>(renamed.keySet()));
+    for (Map.Entry<String, String> e : renamed.entrySet()) {
+      assertTrue(generator.getCreated().contains(e.getValue()), e.getValue());
+      assertFalse(NPMPackageGenerator.tooLongForTar(e.getValue()), e.getValue());
+    }
+  }
+
+  @Test
   void shortenedNameKeepsTypeAndExtension() {
     String name = "ValueSet-" + "x".repeat(100) + ".xml";
     String shortName = NPMPackageGenerator.shortenForTar("package/", name);

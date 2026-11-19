@@ -25,7 +25,7 @@ public class UnicodeCharacterTests {
     FileOutputStream o = ManagedFileAccess.outStream(Utilities.path("[tmp]", "unicode-problem.xml"));
     xml.compose(o, p);
     o.close();
-    p = (Parameters) xml.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "unicode-problem.xml")));
+    p = (Parameters) xml.parseFile(Utilities.path("[tmp]", "unicode-problem.xml"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
   }
   
@@ -39,7 +39,7 @@ public class UnicodeCharacterTests {
     FileOutputStream o = ManagedFileAccess.outStream(Utilities.path("[tmp]", "unicode-problem.json"));
     json.compose(o, p);
     o.close();
-    p = (Parameters) json.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "unicode-problem.json")));
+    p = (Parameters) json.parseFile(Utilities.path("[tmp]", "unicode-problem.json"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
   }
   

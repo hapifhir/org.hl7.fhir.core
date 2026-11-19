@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class NarrativeGeneratorTests {
   private void process(String path)
       throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
-    DomainResource r = (DomainResource) p.parse(ManagedFileAccess.inStream(path));
+    DomainResource r = (DomainResource) p.parseFile(path);
     gen.generate(r, null);
     FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);

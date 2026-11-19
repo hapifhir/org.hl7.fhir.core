@@ -59,18 +59,18 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
     CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
     JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statement.json")), cs);
+    json.setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "vsac-capability-statement.json"), cs);
 
     System.out.println("CodeSystems");
     CodeSystem css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCREC");
     checkHierarchy(fhirToolingClient, css);
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCREC.json")), css);
+    json.setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "CodeSystem-CDCREC.json"), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCNHSN");
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCNHSN.json")), css);
+    json.setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "CodeSystem-CDCNHSN.json"), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "HSLOC");
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-HSLOC.json")), css);
+    json.setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "CodeSystem-HSLOC.json"), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "SOP");
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-SOP.json")), css);
+    json.setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "CodeSystem-SOP.json"), css);
 
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
@@ -119,7 +119,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     for (String oid : errs.keySet()) {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json"), oo);
     System.out.println();
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
@@ -305,7 +305,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         }
         vs.setName(makeValidName(vs.getName()));
         JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-        new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+        new JsonParser().setOutputStyle(OutputStyle.NORMAL).composeFile(Utilities.path(dest, "ValueSet-" + oid + ".json"), vs);
         return true;
       }
     }

@@ -29,6 +29,34 @@ import java.util.Set;
 @Slf4j
 public class TxServiceTestHelper {
   public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String expectedResponse2, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
+    ValidationResponse actual = runValidation(context, requestParameters, lang, isCodeSystem);
+    return compareResponse(id, name, expectedResponse, expectedResponse2, actual.getJson(), fp, externals, modes);
+  }
+
+  /**
+   * What the internal terminology server answered: the response, and whether it is an error (an
+   * OperationOutcome - what a server would return with a 4xx) rather than a result
+   */
+  public static class ValidationResponse {
+    private final boolean error;
+    private final String json;
+
+    public ValidationResponse(boolean error, String json) {
+      this.error = error;
+      this.json = json;
+    }
+
+    public boolean isError() {
+      return error;
+    }
+
+    public String getJson() {
+      return json;
+    }
+  }
+
+  /** Run $validate-code against the internal terminology server */
+  public static ValidationResponse runValidation(IWorkerContext context, Resource requestParameters, String lang, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.model.core.Parameters p = (org.hl7.fhir.model.core.Parameters) requestParameters;
     OperationOutcome operationOutcome = checkRequest(p, isCodeSystem);
     ValueSet valueSet = null;
@@ -132,23 +160,7 @@ public class TxServiceTestHelper {
       String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(operationOutcome);
 
 
-      boolean option2 = false;
-      String diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
-      if (diff != null && expectedResponse2 != null) {
-        diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
-        if (diff == null) {
-          option2 = true;
-        }
-      }
-
-      writeDiffToFileSystem( name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
-
-      if (diff != null) {
-        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-        FileUtilities.stringToFile(actualResponse, fp);
-        log.error("Test "+name+" failed: "+diff);
-      }
-      return diff;
+      return new ValidationResponse(true, actualResponse);
     } else {
       if (parameters == null) {
         parameters = new org.hl7.fhir.model.core.Parameters();
@@ -203,26 +215,34 @@ public class TxServiceTestHelper {
 
       String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
 
-      boolean option2 = false;
-      String diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
-      if (diff != null && expectedResponse2 != null) {
-        diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
-        if (diff == null) {
-          option2 = true;
-        }
-      }
-
-      writeDiffToFileSystem(name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
-
-      if (diff != null) {
-         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
-        FileUtilities.stringToFile(actualResponse, fp);
-        log.error("Test "+name+" failed: "+diff);
-      }
-      return diff;
+      return new ValidationResponse(false, actualResponse);
     }
   }
 
+  /**
+   * Compare the internal server's response with the expected response (or, failing that, with
+   * expectedResponse2, if there is one), and write the actual response to fp if they differ.
+   * Returns the differences, or null if it matches
+   */
+  public static String compareResponse(String id, String name, String expectedResponse, String expectedResponse2, String actualResponse, String fp, JsonObject externals, Set<String> modes) throws IOException {
+    boolean option2 = false;
+    String diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+    if (diff != null && expectedResponse2 != null) {
+      diff = new CompareUtilities(modes, externals, vars()).setCollectAll(true).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+      if (diff == null) {
+        option2 = true;
+      }
+    }
+
+    writeDiffToFileSystem(name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
+
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(actualResponse, fp);
+      log.error("Test "+name+" failed: "+diff);
+    }
+    return diff;
+  }
 
   /**
    * result = true means the server validated the code, not merely that it found nothing wrong.

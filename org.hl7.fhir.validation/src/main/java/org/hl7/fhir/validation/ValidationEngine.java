@@ -98,6 +98,7 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
+import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -220,6 +221,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String version;
   @Getter @Setter private String language;
   @Setter private FilesystemPackageCacheManager pcm;
+  /**
+   * shared by the validators this engine makes, see {@link ValidatorSettings#getRegistryAnswerCache()}
+   */
+  @Getter @Setter private RegistryAnswerCache registryAnswerCache = new RegistryAnswerCache();
   @Getter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
@@ -279,6 +284,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     displayWarnings = other.displayWarnings;
+    registryAnswerCache = other.registryAnswerCache;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
 
@@ -873,7 +879,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
-    Manager.compose(context, e, ManagedFileAccess.outStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
+    try (OutputStream stream = ManagedFileAccess.outStream(output)) {
+      Manager.compose(context, e, stream, (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
+    }
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
@@ -1361,6 +1369,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     validator.setValidationLanguage(language);
     validator.getSettings().setDisplayWarningMode(isDisplayWarnings());
+    validator.getSettings().setRegistryAnswerCache(registryAnswerCache);
     if (language != null) {
       if (locale == null) {
         locale = Locale.forLanguageTag(language);

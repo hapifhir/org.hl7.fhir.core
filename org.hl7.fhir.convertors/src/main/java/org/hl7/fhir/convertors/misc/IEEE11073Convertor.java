@@ -124,7 +124,7 @@ public class IEEE11073Convertor {
       t.setCode(csv.cell("LOINC_NUM"));
       t.setDisplay(csv.cell("LOINC_LONG_COMMON_NAME"));
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dst, "conceptmap-" + cm.getId() + ".xml")), cm);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dst, "conceptmap-" + cm.getId() + ".xml"), cm);
     System.out.println("Done");
     return cm;
   }
@@ -209,7 +209,7 @@ public class IEEE11073Convertor {
       }
     }
     csv.close();
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dst, "codesystem-" + cs.getId() + ".xml")), cs);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path(dst, "codesystem-" + cs.getId() + ".xml"), cs);
     System.out.println(errorCount + "UCUM errors");
 
     for (String u : sorted(ucumIssues.keySet()))

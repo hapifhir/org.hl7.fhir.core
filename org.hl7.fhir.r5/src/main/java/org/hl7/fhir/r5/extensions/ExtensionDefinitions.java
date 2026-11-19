@@ -68,6 +68,7 @@ public class ExtensionDefinitions {
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint";
   public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
   public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
+  public static final String EXT_EXPANSION_ISSUE = "http://hl7.org/fhir/StructureDefinition/expansion-issue";
   public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
   public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   public static final String EXT_FMM_DERIVED = "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom";
@@ -127,6 +128,7 @@ public class ExtensionDefinitions {
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
+  public static final String EXT_TX_CAPS_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content";
 
   public static final String EXT_XHTML_RENDERING = "http://hl7.org/fhir/StructureDefinition/rendering-xhtml";
   // in the tooling IG
@@ -230,6 +232,8 @@ public class ExtensionDefinitions {
   public static final String EXT_ADDITIONAL_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource";
   public static final String EXT_IG_EXPANSION_PARAMETERS = "http://hl7.org/fhir/tools/StructureDefinition/expansion-parameters";
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
+  public static final String EXT_SUPPL_GLOBAL = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-global";
+  public static final String EXT_RESERVED_CODE_SPACE = "http://hl7.org/fhir/StructureDefinition/codesystem-reservedCodeSpace";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_VALUESET_RULES_TEXT = "http://hl7.org/fhir/StructureDefinition/valueset-rules-text";
   public static final String EXT_CONTENT_PROFILE = "http://hl7.org/fhir/StructureDefinition/contentReferenceProfile";

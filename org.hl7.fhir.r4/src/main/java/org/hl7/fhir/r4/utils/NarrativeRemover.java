@@ -30,8 +30,6 @@ package org.hl7.fhir.r4.utils;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.r4.formats.JsonParser;
@@ -55,11 +53,11 @@ public class NarrativeRemover {
       else {
         System.out.println(f.getAbsolutePath());
         try {
-          Resource r = new JsonParser().parse(ManagedFileAccess.inStream(f));
+          Resource r = new JsonParser().parseFile(f);
           if (r instanceof DomainResource) {
             DomainResource d = (DomainResource) r;
             d.setText(null);
-            new JsonParser().compose(ManagedFileAccess.outStream(f), d);
+            new JsonParser().composeFile(f, d);
           }
         } catch (Exception e) {
           e.printStackTrace();

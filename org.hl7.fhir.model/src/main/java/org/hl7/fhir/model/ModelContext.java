@@ -1,6 +1,7 @@
 package org.hl7.fhir.model;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.model.api.ApiRegistration;
 import org.hl7.fhir.model.fml.FmlRegistration;
 import org.hl7.fhir.model.testing.TestingRegistration;
@@ -38,7 +39,7 @@ public class ModelContext implements IModelContext  {
     }
   }
 
-  private final @NonNull ModelContextInformation contextInformation;
+  private final @Nonnull ModelContextInformation contextInformation;
 
   public ModelContext() {
     contextInformation = new ModelContextInformation();
@@ -77,12 +78,12 @@ public class ModelContext implements IModelContext  {
   }
 
   @Override
-  public @NonNull String getFHIRVersion() {
+  public @Nonnull String getFHIRVersion() {
     return "6.0.0";
   }
 
   @Override
-  public @NonNull ModelContextInformation getContextInformation() {
+  public @Nonnull ModelContextInformation getContextInformation() {
     return contextInformation;
   }
 
