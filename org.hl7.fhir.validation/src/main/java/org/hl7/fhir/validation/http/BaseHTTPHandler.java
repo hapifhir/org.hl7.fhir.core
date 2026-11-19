@@ -88,14 +88,37 @@ public class BaseHTTPHandler {
     if (body == null || body.length == 0) {
       return true;
     }
-    String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
-    String lower = contentType == null ? "" : contentType.toLowerCase();
-    if (lower.contains("json") || lower.contains("xml")) {
+    return requireDeclaredType(exchange);
+  }
+
+  /**
+   * For a POST that takes no body but changes the server's state ({@code /stop},
+   * {@code /txTest/setup} and {@code /txTest/teardown}), require a JSON or XML content type all
+   * the same. An empty POST is a CORS simple request, so without this any web page could make
+   * one; with it, a browser must send a preflight first, which this server does not answer.
+   *
+   * @return true to continue; false when a 415 has already been sent
+   */
+  protected boolean requireDeclaredType(HttpExchange exchange) throws IOException {
+    if (isJsonOrXml(exchange.getRequestHeaders().getFirst("Content-Type"))) {
       return true;
     }
     sendOperationOutcome(exchange, 415, OperationOutcomeUtilities.createError(
-      "A request body must declare a JSON or XML Content-Type"), getAcceptHeader(exchange));
+      "A POST must declare a JSON or XML Content-Type"), getAcceptHeader(exchange));
     return false;
+  }
+
+  /**
+   * Whether a content type is JSON or XML, judged on the media type before any parameters: a
+   * browser decides whether a request is simple from that alone, so {@code text/plain;json} is
+   * still text/plain.
+   */
+  static boolean isJsonOrXml(String contentType) {
+    if (contentType == null) {
+      return false;
+    }
+    String base = contentType.split(";")[0].trim().toLowerCase();
+    return base.endsWith("/json") || base.endsWith("+json") || base.endsWith("/xml") || base.endsWith("+xml");
   }
 
   protected  FhirFormat determineFormat(String contentType) {

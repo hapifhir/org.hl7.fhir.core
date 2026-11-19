@@ -20,13 +20,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * A POST that carries a body must declare a JSON or XML content type. A browser can reach this
  * server from any page without a preflight only as a CORS "simple" request, which cannot carry
  * those types - so requiring one turns such requests away while every real client, which always
- * declares what it sends, is unaffected. An empty body is not subject to the check.
+ * declares what it sends, is unaffected. An empty body is not subject to the check, except on the
+ * POSTs that take no body at all and change the server's state ({@code /stop}, and
+ * {@code /txTest/setup} and {@code /txTest/teardown}, tested with the tx test handler).
  */
 class PostBodyContentTypeTests {
 
@@ -95,6 +98,26 @@ class PostBodyContentTypeTests {
     // content-type check did not fire on it.
     HttpResponse<String> r = post("/matchetype", "", null);
     assertNotEquals(415, r.statusCode(), r.body());
+  }
+
+  @ParameterizedTest
+  @DisplayName("A CORS-simple type is refused even when a parameter mentions json or xml")
+  @ValueSource(strings = { "text/plain;json", "text/plain; charset=xml",
+    "application/x-www-form-urlencoded; a=json", "multipart/form-data; boundary=xml" })
+  void simpleRequestTypesWithParametersAreRefused(String contentType) throws Exception {
+    // A browser decides whether a request is "simple" (no preflight) from the base type before ';' alone,
+    // so fetch(url, {method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'text/plain;json'}, body})
+    // still needs no preflight. The server must refuse it just as it refuses plain text/plain.
+    assertEquals(415, post("/matchetype", JSON_BODY, contentType).statusCode(), contentType);
+  }
+
+  @ParameterizedTest
+  @DisplayName("/stop takes no body, but still needs a declared JSON or XML type")
+  @NullSource
+  @ValueSource(strings = { "text/plain", "text/plain;json", "application/x-www-form-urlencoded" })
+  void stopWithoutDeclaredTypeIsRefused(String contentType) throws Exception {
+    // only the refusal can be tested here: an accepted /stop exits the JVM
+    assertEquals(415, post("/stop", "", contentType).statusCode(), String.valueOf(contentType));
   }
 
   @Test
