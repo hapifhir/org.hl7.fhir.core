@@ -13,6 +13,8 @@ import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -1520,25 +1522,66 @@ class FhirValidatorHttpServiceTest {
         "  src.id -> tgt.id;\n" +
         "}\n";
 
-    @Test
-    @DisplayName("FML - parse FML text to a StructureMap (legacy POST /fml)")
-    void testFmlParseLegacy() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"text/fhir-mapping", "text/fhir+fml"})
+    @DisplayName("Convert - FML to a StructureMap in JSON")
+    void testConvertFmlToJson(String contentType) throws Exception {
       setUpService(getValidationEngine());
 
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+        .uri(URI.create(BASE_URL + "/convert"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
-        .header("Content-Type", "text/plain")
+        .header("Content-Type", contentType)
+        .header("Accept", "application/fhir+json")
         .build();
 
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
       assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+json"));
       org.hl7.fhir.utilities.json.model.JsonObject sm =
         org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
       assertEquals("StructureMap", sm.asString("resourceType"));
       assertEquals("http://example.org/StructureMap/IdentityTest", sm.asString("url"));
       assertTrue(sm.has("group"), "parsed StructureMap should have a group");
+    }
+
+    @Test
+    @DisplayName("Convert - FML to a StructureMap in XML")
+    void testConvertFmlToXml() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/convert"))
+        .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+        .header("Content-Type", "text/fhir-mapping")
+        .header("Accept", "application/fhir+xml")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+xml"));
+      assertTrue(response.body().contains("<StructureMap"));
+      assertTrue(response.body().contains("http://example.org/StructureMap/IdentityTest"));
+    }
+
+    @Test
+    @DisplayName("Convert - FML that does not parse is a 500 with an OperationOutcome")
+    void testConvertFmlParseError() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/convert"))
+        .POST(HttpRequest.BodyPublishers.ofString("map \"http://example.org/StructureMap/Broken\" = \"Broken\"\ngroup {"))
+        .header("Content-Type", "text/fhir-mapping")
+        .header("Accept", "application/fhir+json")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(500, response.statusCode());
+      assertTrue(response.body().contains("OperationOutcome"));
     }
 
     /**
@@ -1562,8 +1605,8 @@ class FhirValidatorHttpServiceTest {
         "}\n";
 
     @Test
-    @DisplayName("FML - parse output uses the engine's runtime FHIR version (R4 emits 'variable' on dependent, not 'parameter')")
-    void testFmlParseEmitsRuntimeVersion() throws Exception {
+    @DisplayName("Convert - FML output uses the engine's runtime FHIR version (R4 emits 'variable' on dependent, not 'parameter')")
+    void testConvertFmlEmitsRuntimeVersion() throws Exception {
       // The test engine is R4 (hl7.fhir.r4.core#4.0.1). The parsed StructureMap
       // must round-trip through an R4 JSON parser without losing dependent data —
       // i.e. its dependent invocation must be encoded as `variable: [...]` (the R4 form),
@@ -1572,9 +1615,10 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> resp = httpClient.send(
         HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/fml?name=PassThrough"))
+          .uri(URI.create(BASE_URL + "/convert"))
           .POST(HttpRequest.BodyPublishers.ofString(FML_WITH_DEPENDENT))
-          .header("Content-Type", "text/plain")
+          .header("Content-Type", "text/fhir-mapping")
+          .header("Accept", "application/fhir+json")
           .build(),
         HttpResponse.BodyHandlers.ofString());
       assertEquals(200, resp.statusCode(), "parse: " + resp.body());
@@ -1594,37 +1638,6 @@ class FhirValidatorHttpServiceTest {
         "R4-mode parse must NOT emit dependent.parameter (R5-only) — would silently lose data: " + dependent.toString());
       assertEquals(2, dependent.getJsonArray("variable").size(),
         "dependent.variable must carry both args (src, t): " + dependent.toString());
-    }
-
-    @Test
-    @DisplayName("FML - Missing body returns 400")
-    void testFmlParseMissingBody() throws Exception {
-      setUpService(getValidationEngine());
-
-      HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/fml"))
-        .POST(HttpRequest.BodyPublishers.ofString(""))
-        .build();
-
-      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-      assertEquals(400, response.statusCode());
-      assertTrue(response.body().contains("Missing request body"));
-    }
-
-    @Test
-    @DisplayName("FML - GET method not allowed")
-    void testFmlGetNotAllowed() throws Exception {
-      setUpService(getValidationEngine());
-
-      HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/fml"))
-        .GET()
-        .build();
-
-      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-      assertEquals(405, response.statusCode());
     }
 
     // ─── CRMI $package tests ───
@@ -1697,9 +1710,10 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> parseResp = httpClient.send(
         HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/fml?name=PassThrough"))
+          .uri(URI.create(BASE_URL + "/convert"))
           .POST(HttpRequest.BodyPublishers.ofString(FML_WITH_DEPENDENT))
-          .header("Content-Type", "text/plain")
+          .header("Content-Type", "text/fhir-mapping")
+          .header("Accept", "application/fhir+json")
           .build(),
         HttpResponse.BodyHandlers.ofString());
       assertEquals(200, parseResp.statusCode());
@@ -1728,9 +1742,10 @@ class FhirValidatorHttpServiceTest {
       // 1. parse FML to a StructureMap JSON
       HttpResponse<String> parseResp = httpClient.send(
         HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .uri(URI.create(BASE_URL + "/convert"))
           .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
-          .header("Content-Type", "text/plain")
+          .header("Content-Type", "text/fhir-mapping")
+          .header("Accept", "application/fhir+json")
           .build(),
         HttpResponse.BodyHandlers.ofString());
       assertEquals(200, parseResp.statusCode(), "parse: " + parseResp.body());
@@ -1814,9 +1829,10 @@ class FhirValidatorHttpServiceTest {
       // 1. Parse the original FML to a StructureMap JSON and register it.
       HttpResponse<String> parse1 = httpClient.send(
         HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .uri(URI.create(BASE_URL + "/convert"))
           .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
-          .header("Content-Type", "text/plain")
+          .header("Content-Type", "text/fhir-mapping")
+          .header("Accept", "application/fhir+json")
           .build(),
         HttpResponse.BodyHandlers.ofString());
       assertEquals(200, parse1.statusCode(), "first parse: " + parse1.body());
@@ -1848,9 +1864,10 @@ class FhirValidatorHttpServiceTest {
 
       HttpResponse<String> parse2 = httpClient.send(
         HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .uri(URI.create(BASE_URL + "/convert"))
           .POST(HttpRequest.BodyPublishers.ofString(modifiedFml))
-          .header("Content-Type", "text/plain")
+          .header("Content-Type", "text/fhir-mapping")
+          .header("Accept", "application/fhir+json")
           .build(),
         HttpResponse.BodyHandlers.ofString());
       assertEquals(200, parse2.statusCode(), "second parse: " + parse2.body());

@@ -21,7 +21,7 @@ import java.util.List;
  * {@code POST /loadResource?format=json|xml} with the resource (or a {@code collection}/
  * {@code batch}/{@code transaction} Bundle) in the request body.
  *
- * <p>Used to inject artifacts — typically StructureMaps parsed via {@code /fml} —
+ * <p>Used to inject artifacts — typically StructureMaps parsed from FML via {@code /convert} —
  * into the running validator without rebuilding an NPM package.</p>
  */
 @Slf4j

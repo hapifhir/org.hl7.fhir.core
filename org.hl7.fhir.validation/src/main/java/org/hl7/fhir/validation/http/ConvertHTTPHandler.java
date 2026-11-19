@@ -13,6 +13,8 @@ import java.io.OutputStream;
  * Handler for converting FHIR resources between JSON and XML formats.
  * POST a resource in one format, receive it back in the other.
  * Content-Type determines input format, Accept determines output format.
+ * FHIR Mapping Language (text/fhir-mapping or text/fhir+fml) is accepted as an input format:
+ * it is the text form of a StructureMap.
  */
 class ConvertHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private final FhirValidatorHttpService fhirValidatorHttpService;
@@ -32,7 +34,7 @@ class ConvertHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     try {
       byte[] resourceBytes = readRequestBody(exchange);
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
-      FhirFormat inputFormat = determineFormat(contentType);
+      FhirFormat inputFormat = isFml(contentType) ? FhirFormat.FML : determineFormat(contentType);
       String acceptHeader = getAcceptHeader(exchange);
       FhirFormat outputFormat = "xml".equals(acceptHeader) ? FhirFormat.XML : FhirFormat.JSON;
 
@@ -48,5 +50,13 @@ class ConvertHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     } catch (Throwable e) {
       sendOperationOutcome(exchange, 500, OperationOutcomeUtilities.createError("Format conversion failed: " + e.getMessage()), getAcceptHeader(exchange));
     }
+  }
+
+  private static boolean isFml(String contentType) {
+    if (contentType == null) {
+      return false;
+    }
+    String base = contentType.split(";")[0].trim().toLowerCase();
+    return "text/fhir-mapping".equals(base) || "text/fhir+fml".equals(base);
   }
 }
