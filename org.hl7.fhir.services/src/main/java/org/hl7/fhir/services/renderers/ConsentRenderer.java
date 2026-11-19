@@ -195,9 +195,9 @@ public class ConsentRenderer extends ResourceRenderer {
         model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES_DESC)), null, 0));
       }
 
-      // first we add a root for the consent itself, unless an R4 consent states its base rule in the root provision
+      // first we add a root for the consent itself, unless the type of an R4 root provision already states the decision
       List<HierarchicalTableGenerator.Row> rows = model.getRows();
-      if (!hasR4BaseRuleRootProvision(consent)) {
+      if (!hasR4RootProvisionDecision(consent)) {
         HierarchicalTableGenerator.Row row = addConsentRoot(gen, model.getRows(), consent, permit, hasWhen, hasWho, hasWhat, hasRules);
         rows = row.getSubRows();
       }
@@ -211,29 +211,18 @@ public class ConsentRenderer extends ResourceRenderer {
     }
   }
 
-  private static final String[] R4_PROVISION_CONDITIONS = { "actor", "action", "securityLabel", "purpose", "class", "code", "dataPeriod", "data" };
-
   /**
-   * R4 says the root provision has no type, but the validator accepts one, and some IGs use a root provision with a
-   * type and no conditions (only a period) as the base rule of the consent, e.g. deny for an opt-in model. Such a root
-   * provision already states the base decision, so no synthetic root row is added; it would always show "permit" (see
-   * determineBasePermit). A typed root provision with conditions (actor, purpose, ...) is an exception to the base
-   * policy, as in the R4 example consent-example-notOrg, and keeps the synthetic root row.
+   * In R4, the type of the root provision is the decision of the consent: R5 moved the root provision's elements to
+   * the consent and renamed its type to Consent.decision. R4 says the root provision has no type, but the validator
+   * accepts one, and IGs use it (e.g. HL7 Germany's consent management IG). If the root provision has a type, it is
+   * the decision, so no synthetic root row is added; it would always show "permit" (see determineBasePermit).
    */
-  private boolean hasR4BaseRuleRootProvision(ResourceWrapper consent) {
+  private boolean hasR4RootProvisionDecision(ResourceWrapper consent) {
     if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) || consent.hasExtension(EXT_CONSENT_DECISION)) {
       return false;
     }
     ResourceWrapper root = consent.child("provision");
-    if (root == null || !root.has("type")) {
-      return false;
-    }
-    for (String condition : R4_PROVISION_CONDITIONS) {
-      if (root.has(condition)) {
-        return false;
-      }
-    }
-    return true;
+    return root != null && root.has("type");
   }
 
   private boolean determineBasePermit(ResourceWrapper consent) {
