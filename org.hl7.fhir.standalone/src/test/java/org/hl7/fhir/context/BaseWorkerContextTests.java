@@ -5,6 +5,7 @@ import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.validation.IResourceValidator;
@@ -35,6 +36,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -415,7 +417,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
@@ -435,7 +437,7 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl(UUIDUtilities.makeUuidUrn());
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
     Mockito.doReturn(createdValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
@@ -458,7 +460,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding", Collections.emptyList());
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
@@ -484,7 +486,7 @@ public class BaseWorkerContextTests {
    */
   private ValidationOptions setUpUnknownSystem() {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5);
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"), any());
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), isNull(), any());
     AtomicReference<Set<String>> unknownSystems = new AtomicReference<>();
     Mockito.doAnswer(inv -> {
@@ -558,7 +560,7 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl("http://example.org/vs");
     valueSet.getCompose().addInclude().setSystem(UNKNOWN_SYSTEM);
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"), any());
     Mockito.doReturn(checker).when(context).constructValueSetCheckerSimple(any(), same(valueSet), any());
     return valueSet;
   }
@@ -585,7 +587,7 @@ public class BaseWorkerContextTests {
 
     // no local check, so no local warning to give
     ValidationOptions noClient = validationOptions.withNoClient();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"), any());
     ValidationResult res = context.validateCode(noClient, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
 
     assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
@@ -621,7 +623,7 @@ public class BaseWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
@@ -639,7 +641,7 @@ public class BaseWorkerContextTests {
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
 
     ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(createdValidationResult, validationResultB);
@@ -662,7 +664,7 @@ public class BaseWorkerContextTests {
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
     Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn),same(validationOptions), eq(Collections.emptySet()));
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters, Collections.emptyList());
 
     ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
 
@@ -687,7 +689,7 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
 
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)), any(), eq(Collections.emptyList()));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
@@ -712,7 +714,7 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
 
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),argThat(new ExpansionOptionsMatcher(opt)));
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)), argThat(new ExpansionOptionsMatcher(opt)), any(), eq(Collections.emptyList()));
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
@@ -743,7 +745,7 @@ public class BaseWorkerContextTests {
 
       //This is the actual test. The ExpansionOptions generated should match the one above, and the rest of the test
       //should then be able to run without exception.
-      Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), argThat(new ExpansionOptionsMatcher(opt)));
+      Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), argThat(new ExpansionOptionsMatcher(opt)), any(Parameters.class), eq(Collections.emptyList()));
       Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
       Parameters pIn = new Parameters();
@@ -761,7 +763,7 @@ public class BaseWorkerContextTests {
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
     Parameters pIn = new Parameters();
@@ -789,13 +791,85 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  public void testExpandValueSetKeyHasImportedValueSets() throws IOException {
+    // vs imports a, a imports b, and b imports a again; c can't be loaded
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/a");
+    vs.getCompose().addExclude().addValueSet("http://example.org/c");
+    ValueSet a = new ValueSet();
+    a.setUrl("http://example.org/a");
+    a.getCompose().addInclude().addValueSet("http://example.org/b");
+    ValueSet b = new ValueSet();
+    b.setUrl("http://example.org/b");
+    b.getCompose().addInclude().addValueSet("http://example.org/a");
+    Mockito.doReturn(a).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/a"), any(), any(), any());
+    Mockito.doReturn(b).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    Mockito.doThrow(new FHIRException("can't load c")).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/c"), any(), any(), any());
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(List.of(a, b)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, new Parameters(), false));
+  }
+
+  @Test
+  public void testExpandValueSetKeyHasCodeSystemsAndSupplements() throws IOException {
+    // the content of the code systems a local definition draws on goes into the key; a stub (not-present) doesn't
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/supp"));
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    vs.getCompose().addInclude().setSystem("http://example.org/stub");
+    CodeSystem supp = new CodeSystem();
+    supp.setUrl("http://example.org/supp");
+    supp.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://example.org/cs");
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem stub = new CodeSystem();
+    stub.setUrl("http://example.org/stub");
+    stub.setContent(Enumerations.CodeSystemContentMode.NOTPRESENT);
+    Mockito.doReturn(supp).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/supp"), any(), any(), any());
+    Mockito.doReturn(cs).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), any(), any());
+    Mockito.doReturn(stub).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/stub"), any(), any(), any());
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(List.of(supp, cs)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, new Parameters(), false));
+  }
+
+  @Test
+  public void testExpandValueSetKeyHasTheExpansionParameters() throws IOException {
+    // the parameters as sent: the caller's, plus what the options add
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true).withIncompleteOk(true).withLanguage("de");
+    ArgumentCaptor<Parameters> sent = ArgumentCaptor.forClass(Parameters.class);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), sent.capture(), eq(Collections.emptyList()));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    Parameters pIn = new Parameters();
+    pIn.addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250101");
+
+    assertEquals(expectedExpansionResult, context.expandVS(opt, vs, pIn, false));
+    Parameters key = sent.getValue();
+    assertEquals("http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250101", key.getParameter("system-version").getValue().primitiveValue());
+    assertEquals("de", key.getParameter("displayLanguage").getValue().primitiveValue());
+    assertEquals("false", key.getParameter("excludeNested").getValue().primitiveValue());
+    assertEquals("true", key.getParameter("incomplete-ok").getValue().primitiveValue());
+  }
+
+  @Test
   public void testExpandValueSetWithOptionsWithValueSetExpanderSimple() throws IOException {
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
 
     Parameters pIn = new Parameters();
 
@@ -822,7 +896,7 @@ public class BaseWorkerContextTests {
     vs.setUrl(DUMMY_URL);
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
 
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,opt);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(same(vs), same(opt), any(Parameters.class), eq(Collections.emptyList()));
 
     Parameters pIn = new Parameters();
 
@@ -842,6 +916,203 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  private static CodeSystem supplement(String url, String supplements) {
+    CodeSystem supp = new CodeSystem();
+    supp.setUrl(url);
+    supp.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+    supp.setSupplements(supplements);
+    return supp;
+  }
+
+  @Test
+  void testExpansionDependenciesHaveRegisteredSupplements() {
+    // the supplements known for the code system, and for the version the parameters pin it to
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    CodeSystem supp2 = supplement("http://example.org/supp2", "http://example.org/cs|2.0");
+    context.cacheResource(supp);
+    context.cacheResource(supp2);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+
+    assertEquals(List.of(supp), context.findExpansionDependencies(vs, new Parameters()));
+    assertEquals(List.of(supp), context.findExpansionDependencies(vs, null));
+    Parameters p = new Parameters();
+    p.addParameter("system-version", new CanonicalType("http://example.org/cs|2.0"));
+    assertEquals(List.of(supp, supp2), context.findExpansionDependencies(vs, p));
+  }
+
+  @Test
+  void testExpansionDependenciesHaveTheIncludedVersion() {
+    // the server is sent the code system as resolved without a version, the local expander uses the include's
+    CodeSystem cs1 = new CodeSystem();
+    cs1.setUrl("http://example.org/cs");
+    cs1.setVersion("1.0");
+    cs1.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem cs2 = new CodeSystem();
+    cs2.setUrl("http://example.org/cs");
+    cs2.setVersion("2.0");
+    cs2.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem supp1 = supplement("http://example.org/supp", "http://example.org/cs|1.0");
+    Mockito.doReturn(cs2).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+    Mockito.doReturn(cs1).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), eq("1.0"), any());
+    context.cacheResource(supp1);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs").setVersion("1.0");
+
+    List<CanonicalResource> deps = context.findExpansionDependencies(vs, null);
+    assertEquals(3, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs1, cs2, supp1)), deps.toString());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"system-version", "force-system-version", "check-system-version"})
+  void testExpansionDependenciesHaveThePinnedVersion(String param) {
+    // the local expander uses the version the parameters pin the code system to
+    CodeSystem cs1 = new CodeSystem();
+    cs1.setUrl("http://example.org/cs");
+    cs1.setVersion("1.0");
+    cs1.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem cs2 = new CodeSystem();
+    cs2.setUrl("http://example.org/cs");
+    cs2.setVersion("2.0");
+    cs2.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    Mockito.doReturn(cs2).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+    Mockito.doReturn(cs1).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), eq("1.0"), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    Parameters p = new Parameters();
+    p.addParameter(param, new CanonicalType("http://example.org/cs|1.0"));
+
+    List<CanonicalResource> deps = context.findExpansionDependencies(vs, p);
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs1, cs2)), deps.toString());
+  }
+
+  @Test
+  void testExpansionDependenciesHaveThePinnedImport() {
+    // the local expander imports the version default-valueset-version pins the ValueSet to
+    ValueSet b1 = new ValueSet();
+    b1.setUrl("http://example.org/b");
+    b1.setVersion("1");
+    ValueSet b2 = new ValueSet();
+    b2.setUrl("http://example.org/b");
+    b2.setVersion("2");
+    Mockito.doReturn(b2).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    Mockito.doReturn(b1).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b|1"), any(), any(), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/b");
+    Parameters p = new Parameters();
+    p.addParameter("default-valueset-version", new CanonicalType("http://example.org/b|1"));
+
+    List<CanonicalResource> deps = context.findExpansionDependencies(vs, p);
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(b1, b2)), deps.toString());
+  }
+
+  @Test
+  void testExpansionDependenciesIgnoreAPinWithoutAValue() {
+    // a malformed parameter is left to the expansion to report, not thrown while building the key
+    ValueSet b = new ValueSet();
+    b.setUrl("http://example.org/b");
+    Mockito.doReturn(b).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/b"), any(), any(), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().addValueSet("http://example.org/b");
+    Parameters p = new Parameters();
+    p.addParameter().setName("default-valueset-version");
+
+    assertEquals(List.of(b), context.findExpansionDependencies(vs, p));
+  }
+
+  @Test
+  void testValidationDependenciesWithoutAValueSet() {
+    // a code validated against its code system alone depends on that code system and its supplements
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://example.org/cs");
+    cs.setVersion("1.0");
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    context.cacheResource(supp);
+    Mockito.doReturn(cs).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+
+    List<CanonicalResource> deps = context.findValidationDependencies(null, List.of(new Coding("http://example.org/cs", "a", null)));
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs, supp)), deps.toString());
+    assertEquals(List.of(), context.findValidationDependencies(null, List.of(new Coding(null, "a", null))));
+  }
+
+  @Test
+  void testValidationDependenciesLeaveOutANotPresentCodeSystem() throws IOException {
+    CodeSystem stub = new CodeSystem();
+    stub.setUrl("http://snomed.info/sct");
+    stub.setContent(Enumerations.CodeSystemContentMode.NOTPRESENT);
+    Mockito.doReturn(stub).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://snomed.info/sct"), any(), isNull(), any());
+    Coding coding = new Coding("http://snomed.info/sct", "123456", null);
+
+    List<CanonicalResource> deps = context.findValidationDependencies(null, List.of(coding));
+    assertEquals(List.of(), deps);
+    TerminologyCache cache = new TerminologyCache(new Object(), null, context);
+    assertFalse(cache.generateValidationToken(new ValidationOptions(FhirPublication.R5), coding, null, new Parameters(), "Coding", deps).getRequest().contains("\"definition\""));
+  }
+
+  @Test
+  void testValidationDependenciesHaveTheCodingsVersion() {
+    // the code is checked against the version the coding names, which the ValueSet need not name; and against its
+    // code system even when the ValueSet doesn't include it
+    CodeSystem cs1 = new CodeSystem();
+    cs1.setUrl("http://example.org/cs");
+    cs1.setVersion("1.0");
+    cs1.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    CodeSystem cs2 = new CodeSystem();
+    cs2.setUrl("http://example.org/cs");
+    cs2.setVersion("2.0");
+    cs2.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    Mockito.doReturn(cs2).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), isNull(), any());
+    Mockito.doReturn(cs1).when(context).fetchResourceWithException(eq(CodeSystem.class), eq("http://example.org/cs"), any(), eq("1.0"), any());
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+
+    assertEquals(List.of(cs2), context.findValidationDependencies(vs, List.of(new Coding("http://example.org/cs", "a", null))));
+    List<CanonicalResource> deps = context.findValidationDependencies(vs, List.of(new Coding("http://example.org/cs", "a", null).setVersion("1.0")));
+    assertEquals(2, deps.size(), deps.toString());
+    assertTrue(deps.containsAll(List.of(cs1, cs2)), deps.toString());
+
+    ValueSet other = new ValueSet();
+    other.setUrl(DUMMY_URL);
+    other.getCompose().addInclude().setSystem("http://example.org/other");
+    assertEquals(List.of(cs2), context.findValidationDependencies(other, List.of(new Coding("http://example.org/cs", "a", null))));
+  }
+
+  @Test
+  void testExpandIncludeKeyHasTheExpansionParameters() {
+    // they are sent with the include, so they are in its key: a pinned version gives a different expansion
+    Parameters ep = new Parameters();
+    ep.addParameter("system-version", new CanonicalType("http://example.org/cs|2.0"));
+    context.setExpansionParameters(new AtomicReference<>(ep));
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    ArgumentCaptor<Parameters> sent = ArgumentCaptor.forClass(Parameters.class);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), sent.capture(), eq(Collections.emptyList()));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    assertEquals(expectedExpansionResult, context.expandVS(null, inc, true, false));
+    assertEquals("http://example.org/cs|2.0", sent.getValue().getParameter("system-version").getValue().primitiveValue());
+  }
+
+  @Test
+  void testExpandIncludeKeyHasDependencies() {
+    // the expansion of a single include is persisted too, and the server is sent the supplements
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs");
+    context.cacheResource(supp);
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(any(ValueSet.class), any(ExpansionOptions.class), any(), eq(List.of(supp)));
+    Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
+    assertEquals(expectedExpansionResult, context.expandVS(null, inc, true, false));
   }
 
   private static OperationOutcome serverError(OperationOutcome.IssueType type, String text) {
@@ -887,9 +1158,8 @@ public class BaseWorkerContextTests {
    * With a real cache: a failed $expand is answered from the cache for the rest of the run. A new cache on the same
    * folder (the next run) has it only if it was the server's answer.
    */
-  private void expandTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder, Expansion expansion,
-                                     java.util.function.Function<TerminologyCache, CacheToken> token) throws IOException {
-    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), context);
+  private void expandTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder, Expansion expansion) throws IOException {
+    TerminologyCache cache = Mockito.spy(new TerminologyCache(new Object(), folder.toString(), context));
     context.initTxCache(cache);
     Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(), any(Parameters.class));
 
@@ -899,9 +1169,12 @@ public class BaseWorkerContextTests {
     assertSame(res, expansion.expand());
     Mockito.verify(terminologyClient, times(1)).expandValueset(any(), any(Parameters.class));
     cache.save();
+    // the key covers the parameters and dependencies the expansion used, so look it up by the one it stored
+    ArgumentCaptor<CacheToken> stored = ArgumentCaptor.forClass(CacheToken.class);
+    Mockito.verify(cache).cacheExpansion(stored.capture(), any(), anyBoolean());
 
     TerminologyCache next = new TerminologyCache(new Object(), folder.toString(), context);
-    ValueSetExpansionOutcome reloaded = next.getExpansion(token.apply(next));
+    ValueSetExpansionOutcome reloaded = next.getExpansion(stored.getValue());
     if (expectReloaded) {
       assertNotNull(reloaded);
       assertEquals(res.getError(), reloaded.getError());
@@ -914,13 +1187,7 @@ public class BaseWorkerContextTests {
   private void expandIncludeTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
     ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
     Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
-    ValueSet vs = new ValueSet();
-    vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
-    vs.setCompose(new ValueSet.ValueSetComposeComponent());
-    vs.getCompose().setInactive(true);
-    vs.getCompose().getIncludeList().add(inc);
-    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(null, inc, true, false),
-      cache -> cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true)));
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(null, inc, true, false));
   }
 
   @ParameterizedTest
@@ -941,8 +1208,7 @@ public class BaseWorkerContextTests {
     context.getTerminologyClientManager().setMasterClient(terminologyClient, null);
     context.setExpansionParameters(new AtomicReference<>(new Parameters()));
     ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
-    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, DUMMY_URL),
-      cache -> cache.generateExpandToken(DUMMY_URL, opt));
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, DUMMY_URL));
   }
 
   @ParameterizedTest
@@ -1005,8 +1271,7 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
     // there's no local code system, so the include is server side: the whole value set goes straight to the
     // server, without trying to expand it locally first (fhir-ig-publisher#1469)
-    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, vs, new Parameters(), false),
-      cache -> cache.generateExpandToken(vs, opt));
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, vs, new Parameters(), false));
     Mockito.verify(context, Mockito.never()).constructValueSetExpanderSimple(any(ValidationOptions.class));
   }
 

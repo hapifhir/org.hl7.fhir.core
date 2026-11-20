@@ -44,10 +44,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Getter;
@@ -950,7 +952,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
-    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
+    Parameters expParameters = getExpansionParameters(); // constructParameters sends these
+    CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical), expParameters, findExpansionDependencies(vs, expParameters));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1156,7 +1159,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.setParameter("incomplete-ok", true);
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, options);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, options, p, findExpansionDependencies(vs, p));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
@@ -1269,6 +1272,182 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * The local resources the expansion of vs depends on: the ones addDependentResources sends to the server
+   * as tx-resource (the ValueSets it imports, all the way down, the complete or fragment CodeSystems it
+   * draws on, and their supplements). An IG can edit any of them without changing a version, so they are
+   * part of the expansion's cache key. Resolved the way addDependentResources resolves them, so the key
+   * describes what the server is sent.
+   */
+  public List<CanonicalResource> findExpansionDependencies(ValueSet vs, Parameters p) {
+    Map<String, CanonicalResource> res = new LinkedHashMap<>();
+    findExpansionDependencies(vs, p, res);
+    return new ArrayList<>(res.values());
+  }
+
+  private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, CanonicalResource> res) {
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        addExpansionDependency(res, fetchForKey(CodeSystem.class, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null, null));
+      }
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      findExpansionDependencies(vs, inc, p, res);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+      findExpansionDependencies(vs, inc, p, res);
+    }
+  }
+
+  private void findExpansionDependencies(ValueSet src, ConceptSetComponent inc, Parameters p, Map<String, CanonicalResource> res) {
+    for (CanonicalType c : inc.getValueSet()) {
+      // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
+      String url = c.getValue();
+      String pinned = pinnedImport(url, p);
+      for (String u : url == null || url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
+        ValueSet imp = fetchForKey(ValueSet.class, u, ExtensionUtilities.getVersionResolutionRules(c), null, src);
+        if (addExpansionDependency(res, imp)) {
+          findExpansionDependencies(imp, p, res);
+        }
+      }
+    }
+    String sys = inc.getSystem();
+    // the server is sent the code system as resolved without the include's version, the local expander uses that
+    // version, or the one the parameters pin it to
+    List<CodeSystem> versions = new ArrayList<>();
+    versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), null, src));
+    if (inc.hasVersion()) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), src));
+    }
+    for (String v : pinnedVersions(sys, p)) {
+      versions.add(fetchForKey(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(inc), v, src));
+    }
+    for (CodeSystem c : versions) {
+      if (c != null && (c.getContent() == CodeSystemContentMode.COMPLETE || c.getContent() == CodeSystemContentMode.FRAGMENT)) {
+        addExpansionDependency(res, c);
+      }
+      for (CodeSystem supp : codeSystems.getSupplements(c)) {
+        addExpansionDependency(res, supp);
+      }
+    }
+    if (sys != null) {
+      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+        addExpansionDependency(res, supp);
+      }
+      if (!sys.contains("!") && p != null) {
+        String fixed = getFixedVersion(sys, p);
+        if (fixed != null) {
+          for (CodeSystem supp : codeSystems.getSupplements(fixed)) {
+            addExpansionDependency(res, supp);
+          }
+        }
+      }
+    }
+  }
+
+  /** url as default-valueset-version pins it, as ContextUtilities.pinValueSet does for the local expander, but a malformed parameter is left to the expansion to report */
+  private String pinnedImport(String url, Parameters p) {
+    if (url != null && p != null && !url.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameter()) {
+        String v = "default-valueset-version".equals(pp.getName()) && pp.hasValue() ? pp.getValue().primitiveValue() : null;
+        if (v != null && v.startsWith(url + "|")) {
+          return v;
+        }
+      }
+    }
+    return url;
+  }
+
+  /** the versions of sys that force-system-version, system-version and check-system-version pin it to, as the local expander reads them */
+  private List<String> pinnedVersions(String sys, Parameters p) {
+    List<String> res = new ArrayList<>();
+    if (sys != null && p != null && !sys.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameter()) {
+        if (pp.getName() != null && Utilities.existsInList(pp.getName().toLowerCase(), "force-system-version", "system-version", "check-system-version")) {
+          String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
+          if (v != null && v.startsWith(sys + "|")) {
+            res.add(v.substring(sys.length() + 1));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /** the local resources an expansion of vs depends on, or none when there is no vs; see validationDependencies */
+  private Map<String, CanonicalResource> valueSetDependencies(ValueSet vs) {
+    Map<String, CanonicalResource> res = new LinkedHashMap<>();
+    if (vs != null) {
+      findExpansionDependencies(vs, getExpansionParametersForCacheToken(), res);
+    }
+    return res;
+  }
+
+  /**
+   * The local resources a validate-code depends on, for its cache key: the ones an expansion of the ValueSet depends
+   * on, and the code system of each coding with its supplements, which the code and display are checked against
+   * whether or not the ValueSet names it (at the coding's version, else as resolved and at the versions the
+   * parameters pin)
+   */
+  public List<CanonicalResource> findValidationDependencies(ValueSet vs, List<Coding> codings) {
+    return validationDependencies(valueSetDependencies(vs), codings);
+  }
+
+  /** as findValidationDependencies, with the ValueSet's part worked out once for a batch */
+  private List<CanonicalResource> validationDependencies(Map<String, CanonicalResource> valueSetDependencies, List<Coding> codings) {
+    Map<String, CanonicalResource> res = new LinkedHashMap<>(valueSetDependencies);
+    Parameters p = getExpansionParametersForCacheToken();
+    for (Coding c : codings) {
+      String sys = c.getSystem();
+      if (sys == null) {
+        continue;
+      }
+      List<CodeSystem> versions = new ArrayList<>();
+      versions.add(fetchForKey(CodeSystem.class, sys, null, c.getVersion(), null));
+      if (!c.hasVersion()) {
+        for (String v : pinnedVersions(sys, p)) {
+          versions.add(fetchForKey(CodeSystem.class, sys, null, v, null));
+        }
+      }
+      for (CodeSystem cs : versions) {
+        // as for an expansion: a not-present stub (THO's for SNOMED CT and LOINC) says nothing about the answer
+        if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+          addExpansionDependency(res, cs);
+        }
+        for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+          addExpansionDependency(res, supp);
+        }
+      }
+      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+        addExpansionDependency(res, supp);
+      }
+    }
+    return new ArrayList<>(res.values());
+  }
+
+  /** false if cr is null or already there, so the caller doesn't follow it again (imports can be circular) */
+  private boolean addExpansionDependency(Map<String, CanonicalResource> res, CanonicalResource cr) {
+    return cr != null && res.putIfAbsent(cr.fhirType() + "/" + cr.getVersionedUrl(), cr) == null;
+  }
+
+  /** urls fetchForKey failed to load, so each is only reported once */
+  private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
+
+  /** one that isn't there is null; one that can't be loaded is left to the expansion or validation to report, and for the key it is not there */
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
+    if (url == null) {
+      return null;
+    }
+    try {
+      return fetchResourceWithException(type, url, rules, version, src);
+    } catch (FHIRException e) {
+      if (keyFetchFailures.add(url + "|" + version)) {
+        log.warn("Unable to load " + url + (version == null ? "" : "|" + version) + " for a tx cache key: " + e.getMessage());
+      }
+      return null;
+    }
   }
 
   /**
@@ -1391,8 +1570,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 1st pass: what is in the cache? 
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
+    Map<String, CanonicalResource> vsDependencies = txCache != null ? valueSetDependencies(vs) : null;
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken(), "Coding", validationDependencies(vsDependencies, List.of(t.getCoding()))) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1660,7 +1840,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path, findValidationDependencies(vs, List.of(code))) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1974,7 +2154,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken());
+    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), findValidationDependencies(vs, code.getCoding()));
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
