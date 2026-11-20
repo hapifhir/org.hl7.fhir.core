@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.zip.Deflater;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -779,10 +780,13 @@ public class NpmPackage {
    * and case is ignored (macOS and Windows file systems don't tell Package.json from
    * package.json). FHIRsmith (library/package-names.js) normalises the same way.
    */
+  private static final Pattern SLASH = Pattern.compile("/");
+  private static final Pattern SLASH_OR_BACKSLASH = Pattern.compile("[/\\\\]");
+
   public static String entryNameKey(String name) {
     String n = Normalizer.normalize(name, Normalizer.Form.NFC).replace('\\', '/');
     StringBuilder b = new StringBuilder();
-    for (String s : n.split("/")) {
+    for (String s : SLASH.split(n)) {
       if (!s.isEmpty() && !s.equals(".")) {
         if (b.length() > 0) {
           b.append('/');
@@ -799,7 +803,7 @@ public class NpmPackage {
    * FHIRsmith (library/package-names.js) refuses the same names
    */
   public static void checkEntryPath(String name) throws IOException {
-    for (String s : name.split("[/\\\\]")) {
+    for (String s : SLASH_OR_BACKSLASH.split(name)) {
       if ("..".equals(s)) {
         throw new IOException("Entry with an illegal name: " + name);
       }
