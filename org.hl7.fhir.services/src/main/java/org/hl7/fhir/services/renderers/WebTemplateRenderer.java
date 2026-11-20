@@ -56,12 +56,14 @@ public class WebTemplateRenderer extends ResourceRenderer {
     }  
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Name"), (context.formatPhrase(RenderingI18nContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Card."), (context.formatPhrase(RenderingI18nContext.QUEST_TEXTFOR)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Definition"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Inputs"), (context.formatPhrase(RenderingI18nContext.QUEST_TYPE_ITEM)), null, 0)); 
- 
-    // first we add a root for the WebTemplate itself 
-    Row row = addItem(gen, model.getRows(), wt.child("tree")); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Description"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Inputs"), (context.formatPhrase(RenderingI18nContext.QUEST_TYPE_ITEM)), null, 0));
+
+    String lang = context.getLocale() != null ? context.getLocale().getLanguage() : null;
+    String defLang = wt.primitiveValue("defaultLanguage");
+    // first we add a root for the WebTemplate itself
+    Row row = addItem(gen, model.getRows(), wt.child("tree"), lang, defLang);
 //    for (ResourceWrapper select : vd.children("select")) { 
 //      renderSelect(status, gen, row.getSubRows(), vd, select); 
 //    } 
@@ -71,17 +73,28 @@ public class WebTemplateRenderer extends ResourceRenderer {
     
   } 
 
-  private Row addItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper item) {
-    Row r = gen.new Row(); 
-    rows.add(r); 
+  private Row addItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper item, String lang, String defLang) {
+    Row r = gen.new Row();
+    rows.add(r);
 
-    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingI18nContext.QUEST_ROOT)); 
-    r.getCells().add(gen.new Cell(null, null, item.primitiveValue("name"), null, null)); 
-    
-    r.getCells().add(gen.new Cell(null, null, item.primitiveValue("min")+".."+("-1".equals(item.primitiveValue("max")) ? "*" : item.primitiveValue("max")), null, null));
-    
+    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingI18nContext.QUEST_ROOT));
+    // Name [archetype_id/nodeId], with the AQL path as the hover hint
     String def = (item.primitiveValue("archetype_id") != null ? item.primitiveValue("archetype_id")+"/" : "")+(item.primitiveValue("nodeId") != null ?item.primitiveValue("nodeId") : "");
-    Cell cell = gen.new Cell(null, null, Utilities.noString(def) ? "--" : def, item.primitiveValue("aqlPath"), null);
+    String name = item.primitiveValue("name");
+    if (Utilities.noString(name)) {
+      name = item.primitiveValue("id");
+    }
+    Cell cell = gen.new Cell(null, null, name, item.primitiveValue("aqlPath"), null);
+    if (!Utilities.noString(def)) {
+      cell.addPiece(gen.new Piece(null, " ["+def+"]", item.primitiveValue("aqlPath")));
+    }
+    r.getCells().add(cell);
+
+    r.getCells().add(gen.new Cell(null, null, item.primitiveValue("min")+".."+("-1".equals(item.primitiveValue("max")) ? "*" : item.primitiveValue("max")), null, null));
+
+    // Description: the node description in the rendering language, then any term bindings
+    String desc = getLocalizedDescription(item, lang, defLang);
+    cell = gen.new Cell(null, null, desc, null, null);
     r.getCells().add(cell);
     addTermBindings(gen, cell, item);
     
@@ -102,9 +115,35 @@ public class WebTemplateRenderer extends ResourceRenderer {
     
     
     for (ResourceWrapper child : item.children("children")) {
-      addItem(gen, r.getSubRows(), child);
+      addItem(gen, r.getSubRows(), child, lang, defLang);
     }
-    return r;     
+    return r;
+  }
+
+  /**
+   * localizedDescriptions is a map keyed by language (json-property-key = language).
+   * Prefer the rendering language, then the template's default language, then the first entry.
+   */
+  private String getLocalizedDescription(ResourceWrapper item, String lang, String defLang) {
+    String first = null;
+    String byDefault = null;
+    for (ResourceWrapper ts : item.children("localizedDescriptions")) {
+      String l = ts.primitiveValue("language");
+      String v = ts.primitiveValue("value");
+      if (Utilities.noString(v)) {
+        continue;
+      }
+      if (lang != null && lang.equals(l)) {
+        return v;
+      }
+      if (defLang != null && defLang.equals(l)) {
+        byDefault = v;
+      }
+      if (first == null) {
+        first = v;
+      }
+    }
+    return byDefault != null ? byDefault : first;
   }
 
   private void addInput(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper input) {
