@@ -156,11 +156,25 @@ public class MappingAssistant {
   }
 
 
+  /**
+   * base is the differential's element and derived is the element inherited from the base profile (the caller
+   * reverses them - see ProfileUtilities.updateFromDefinition).
+   * <p>
+   * A differential mapping that carries the elementdefinition-suppress extension is not added to the snapshot,
+   * and it removes the inherited mapping it matches: the same identity and map. If the inherited map is a list
+   * that was appended to (see compareMaps), just that entry is removed from the list (#2669)
+   */
   public void merge(ElementDefinition base, ElementDefinition derived) {
+    List<ElementDefinitionMappingComponent> suppressed = new ArrayList<>();
+    for (ElementDefinitionMappingComponent m : base.getMapping()) {
+      if (isSuppressed(m)) {
+        suppressed.add(m);
+      }
+    }
     List<ElementDefinitionMappingComponent> list = new ArrayList<>();
     addMappings(list, base.getMapping(), renames);
     if (derived.hasMapping()) {
-      addMappings(list, derived.getMapping(), null);
+      addMappings(list, suppressed.isEmpty() ? derived.getMapping() : removeSuppressed(derived.getMapping(), suppressed), null);
     }
     derived.setMapping(list);
     
@@ -171,6 +185,37 @@ public class MappingAssistant {
       }
     }
 
+  }
+
+  private List<ElementDefinitionMappingComponent> removeSuppressed(List<ElementDefinitionMappingComponent> inherited, List<ElementDefinitionMappingComponent> suppressed) {
+    List<ElementDefinitionMappingComponent> res = new ArrayList<>();
+    for (ElementDefinitionMappingComponent m : inherited) {
+      ElementDefinitionMappingComponent r = m;
+      for (ElementDefinitionMappingComponent s : suppressed) {
+        if (r != null && s.hasMap() && r.hasMap() && (java.util.Objects.equals(s.getIdentity(), r.getIdentity()) || java.util.Objects.equals(s.getIdentity(), renames.get(r.getIdentity())))) {
+          String sm = s.getMap().trim();
+          if (sm.equals(r.getMap().trim())) {
+            r = null;
+          } else {
+            List<String> parts = CSVReader.splitString(r.getMap());
+            if (parts.size() > 1 && parts.contains(sm)) {
+              CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
+              for (String p : parts) {
+                if (!p.equals(sm)) {
+                  b.append(p);
+                }
+              }
+              r = r.copy();
+              r.setMap(b.toString());
+            }
+          }
+        }
+      }
+      if (r != null) {
+        res.add(r);
+      }
+    }
+    return res;
   }
 
   private void addMappings(List<ElementDefinitionMappingComponent> destination, List<ElementDefinitionMappingComponent> source, Map<String, String> renames2) {

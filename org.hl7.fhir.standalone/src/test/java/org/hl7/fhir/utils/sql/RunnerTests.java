@@ -121,4 +121,29 @@ class RunnerTests {
     assertEquals(1, storage.getResults().size());
     assertTrue(((JsonObject) storage.getResults().get(0)).get("s") instanceof JsonNull);
   }
+
+  // getReferenceKey() on a contained reference: the provider can only find the target inside the
+  // resource being processed, so the runner must pass that resource through. It used to pass null,
+  // and a contained target never had a key
+  @Test
+  void referenceKeyResolvesContainedReference() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource("{\"resourceType\":\"Observation\",\"id\":\"o1\",\"status\":\"final\","
+        + "\"contained\":[{\"resourceType\":\"Patient\",\"id\":\"p1\"}],"
+        + "\"code\":{\"text\":\"x\"},\"subject\":{\"reference\":\"#p1\"}}"));
+    Runner runner = newRunner(provider, storage);
+
+    runner.execute(JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Observation\",\"select\":[{\"column\":["
+        + "{\"name\":\"any\",\"path\":\"subject.getReferenceKey()\"},"
+        + "{\"name\":\"pat\",\"path\":\"subject.getReferenceKey(Patient)\"},"
+        + "{\"name\":\"grp\",\"path\":\"subject.getReferenceKey(Group)\"}]}]}"));
+
+    assertEquals(1, storage.getResults().size());
+    JsonObject row = (JsonObject) storage.getResults().get(0);
+    assertEquals("Patient/p1", row.asString("any"));
+    assertEquals("Patient/p1", row.asString("pat"));
+    assertTrue(row.get("grp") instanceof JsonNull, "a contained Patient is not a Group");
+  }
 }
