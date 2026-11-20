@@ -2851,7 +2851,7 @@
     }],
     "uri" : "http://hl7.org/fhir/sid/ndc",
     "version" : [{
-      "value" : "2021-11-01",
+      "value" : "20261117",
       "isDefault" : true
     }]
   },
@@ -3009,6 +3009,17 @@
     "uri" : "http://hl7.org/fhir/task-status",
     "version" : [{
       "value" : "4.0.1",
+      "isDefault" : true
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "supplement"
+    }],
+    "uri" : "http://hl7.org/fhir/test/CodeSystem/glp-base-da",
+    "version" : [{
+      "value" : "1.0.0",
       "isDefault" : true
     }]
   },
@@ -3402,16 +3413,16 @@
       "value" : "http://snomed.info/sct/11000146104/version/20260930"
     },
     {
-      "value" : "http://snomed.info/sct/83821000000107/version/20230412"
-    },
-    {
-      "value" : "http://snomed.info/sct/731000124108/version/20230301"
-    },
-    {
-      "value" : "http://snomed.info/sct/731000124108/version/20250901"
+      "value" : "http://snomed.info/sct/83821000000107/version/20261021"
     },
     {
       "value" : "http://snomed.info/sct/731000124108/version/20240301"
+    },
+    {
+      "value" : "http://snomed.info/sct/731000124108/version/20260901"
+    },
+    {
+      "value" : "http://snomed.info/sct/731000124108/version/20250901"
     },
     {
       "value" : "http://snomed.info/sct/11010000107/version/20261021"

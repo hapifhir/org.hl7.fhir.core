@@ -3086,6 +3086,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.org/fhir/test/CodeSystem/glp-base-da",
+    "version" : [{
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
     "uri" : "http://hl7.org/fhir/testscript-scope-conformance-codes",
     "version" : [{
       "isDefault" : true

@@ -48,8 +48,8 @@ e: {
   "title" : "Timing of harm assessment [AHRQ]",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:242d09c6-9631-4256-bc2f-2c4df79aea33",
-    "timestamp" : "2026-11-10T04:27:52.828Z",
+    "identifier" : "urn:uuid:fa52e9c1-d80a-4588-ae19-0350c6723558",
+    "timestamp" : "2026-11-20T10:51:26.979Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -140,10 +140,10 @@ e: {
   "name" : "LOINCAnswerListLL715_4",
   "status" : "active",
   "experimental" : false,
-  "date" : "2026-11-10T04:27:53.122Z",
+  "date" : "2026-11-20T10:51:27.276Z",
   "expansion" : {
-    "identifier" : "urn:uuid:e1df6c3e-7451-4c50-8268-0087d4987cd0",
-    "timestamp" : "2026-11-10T04:27:53.129Z",
+    "identifier" : "urn:uuid:78324807-c427-4570-9d30-364303d15b09",
+    "timestamp" : "2026-11-20T10:51:27.280Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
@@ -260,8 +260,8 @@ e: {
   "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:f9678d82-d6dd-4521-968f-30dba999d59f",
-    "timestamp" : "2026-11-10T04:27:54.339Z",
+    "identifier" : "urn:uuid:0334f093-1e85-4b2a-925d-64029a57d10b",
+    "timestamp" : "2026-11-20T10:51:28.669Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -342,7 +342,7 @@ v: {
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.83'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n11ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n15ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP43571-6\"\n17ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n19ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n19ms http://loinc.org/vs|2.83: Code \"LP43571-6\" not found in http://loinc.org|2.83: undefined",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP43571-6\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"LP43571-6\" not found in http://loinc.org|2.83: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -390,8 +390,8 @@ e: {
   "url" : "http://hl7.org/fhir/ValueSet/example-intensional-inc-1",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:c7117716-d3c3-4167-bfe8-6a246b394c81",
-    "timestamp" : "2026-11-10T04:27:56.146Z",
+    "identifier" : "urn:uuid:a7347280-52ff-41bc-9ce8-9d1f0580c685",
+    "timestamp" : "2026-11-20T10:51:30.849Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -465,8 +465,8 @@ e: {
   "name" : "GCS Verbal Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:8fd6bbe5-f7dc-4d81-b0bc-70b7e9d76a41",
-    "timestamp" : "2026-11-10T04:27:58.770Z",
+    "identifier" : "urn:uuid:5cddeade-18b8-4de5-b8d3-3030f74ae666",
+    "timestamp" : "2026-11-20T10:51:34.008Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -564,8 +564,8 @@ e: {
   "name" : "GCS Motor Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:5f886865-48e6-4712-9675-02284d6af5af",
-    "timestamp" : "2026-11-10T04:27:59.013Z",
+    "identifier" : "urn:uuid:3786703a-64b7-4a25-9604-af919a267a53",
+    "timestamp" : "2026-11-20T10:51:34.254Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -660,8 +660,8 @@ e: {
   "name" : "GCS Eye Value Set",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:76ced4d2-ef8c-493a-adb8-dcd6bffb735c",
-    "timestamp" : "2026-11-10T04:27:59.254Z",
+    "identifier" : "urn:uuid:cc995342-ee25-4efe-be6f-3863d8a3a8bf",
+    "timestamp" : "2026-11-20T10:51:34.498Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -750,8 +750,8 @@ e: {
   "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:049369c1-2f34-422f-8a40-a9141cc77d6a",
-    "timestamp" : "2026-11-10T04:27:59.493Z",
+    "identifier" : "urn:uuid:f9979149-bd75-4ac5-be4b-0e677e512e65",
+    "timestamp" : "2026-11-20T10:51:34.736Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -846,8 +846,8 @@ e: {
   "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:f8789eb4-6fd9-4061-89bb-ad23e9e2f998",
-    "timestamp" : "2026-11-10T04:27:59.764Z",
+    "identifier" : "urn:uuid:2758b839-3481-41df-bd61-4af3973ace48",
+    "timestamp" : "2026-11-20T10:51:35.044Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -933,8 +933,8 @@ e: {
   "url" : "null-inc-0",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:26a7576d-387d-40bc-86fe-143b90b6fc58",
-    "timestamp" : "2026-11-10T04:28:00.121Z",
+    "identifier" : "urn:uuid:7b920607-76cd-4077-9573-71e280b84b81",
+    "timestamp" : "2026-11-20T10:51:35.351Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -994,7 +994,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.83",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n15ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#64297-5 (\"undefined\")]\"\n21ms http://loinc.org/vs|2.83: Check \"http://loinc.org#64297-5\"\n24ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n27ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n27ms http://loinc.org/vs|2.83: Code \"64297-5\" found in http://loinc.org|2.83",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#64297-5 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.83: Check \"http://loinc.org#64297-5\"\n6ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"64297-5\" found in http://loinc.org|2.83",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1013,7 +1013,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.83",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n6ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#8716-3 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.83: Check \"http://loinc.org#8716-3\"\n7ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n7ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n7ms http://loinc.org/vs|2.83: Code \"8716-3\" found in http://loinc.org|2.83",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#8716-3 (\"undefined\")]\"\n1ms http://loinc.org/vs|2.83: Check \"http://loinc.org#8716-3\"\n1ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n1ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n1ms http://loinc.org/vs|2.83: Code \"8716-3\" found in http://loinc.org|2.83",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1033,8 +1033,8 @@ e: {
   "experimental" : false,
   "date" : "2026-11-10",
   "expansion" : {
-    "identifier" : "urn:uuid:294e1703-efd0-40c7-8034-2c19ee1d3006",
-    "timestamp" : "2026-11-16T11:15:04.712Z",
+    "identifier" : "urn:uuid:d110d16b-1f8a-4e31-98cf-e19398678e44",
+    "timestamp" : "2026-11-20T11:43:13.957Z",
     "total" : 100,
     "offset" : 0,
     "parameter" : [{
