@@ -166,17 +166,22 @@ public class WebTemplateRenderer extends ResourceRenderer {
   }
 
   private void addInput(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper input, boolean rmAttribute) {
+    // The input type is not shown: the Type column already gives the RM data type
+    boolean started = false;
     if (input.has("suffix")) {
       cell.getPieces().add(gen.new Piece(null, input.primitiveValue("suffix"), null));
-      cell.getPieces().add(gen.new Piece(null, " ", null));      
+      started = true;
     }
-    cell.getPieces().add(gen.new Piece(null, input.primitiveValue("type"), null).styleAsBold());
     if (input.has("defaultValue")) {
-      cell.getPieces().add(gen.new Piece(null, "(=", null));
+      cell.getPieces().add(gen.new Piece(null, (started ? " " : "")+"(=", null));
       cell.getPieces().add(gen.new Piece(null, input.primitiveValue("defaultValue"), null));
       cell.getPieces().add(gen.new Piece(null, ")", null));
+      started = true;
     }
     if (input.has("validation")) {
+      if (started) {
+        cell.getPieces().add(gen.new Piece(null, ": ", null));
+      }
       addValidation(gen, cell, input.child("validation"));
     }
     if (input.has("list")) {
@@ -185,8 +190,6 @@ public class WebTemplateRenderer extends ResourceRenderer {
   }
 
   private void addValidation(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper validation) {
-    cell.getPieces().add(gen.new Piece(null, ": ", null));
-    
     if (validation.has("range") && !validation.has("precision")) {
       addRange(gen, cell, validation.child("range"));
     } else {
@@ -243,16 +246,20 @@ public class WebTemplateRenderer extends ResourceRenderer {
         cell.getPieces().add(gen.new Piece(cs.getWebPath(), cs.hasTitle() ? cs.getTitle() : cs.getName(), cs.getUrl()));
       }
     }
+    // Codes are shown in openEHR code-phrase style: [terminology::]code | label |
+    // (local at-codes have no terminology prefix)
+    String prefix = openehr ? "openehr::" : !Utilities.noString(terminology) ? terminology+"::" : "";
     for (ResourceWrapper item : list) {
       cell.getPieces().add(gen.new Piece("br"));
       cell.getPieces().add(gen.new Piece(null, "• ", null));
       String code = item.primitiveValue("value");
+      String text = prefix+code+" | "+item.primitiveValue("label")+" |";
       CodeSystem cs = openehr ? findOpenehrCodeSystem(code) : null;
       if (cs != null) {
         String link = getLinkForCode(cs.getUrl(), null, code, item.getResourceNative());
-        cell.getPieces().add(gen.new Piece(link, item.primitiveValue("label"), "openEHR "+(cs.hasTitle() ? cs.getTitle() : cs.getName())+" "+code));
+        cell.getPieces().add(gen.new Piece(link, text, "openEHR "+(cs.hasTitle() ? cs.getTitle() : cs.getName())+" "+code));
       } else {
-        cell.getPieces().add(gen.new Piece(null, item.primitiveValue("label"), code));
+        cell.getPieces().add(gen.new Piece(null, text, null));
       }
     }
   }
