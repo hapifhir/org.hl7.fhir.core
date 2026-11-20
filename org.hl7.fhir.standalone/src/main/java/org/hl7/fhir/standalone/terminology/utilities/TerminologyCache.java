@@ -1018,7 +1018,8 @@ public class TerminologyCache {
 
     // Two kinds of result describe the state of the terminology server rather than the content
     // being validated, and so must not outlive this session:
-    //  - SERVER_ERROR / NOSERVICE: the server could not be reached this time. Written to disk,
+    //  - SERVER_ERROR / NOSERVICE / INTERNAL_ERROR: the server could not be reached, could not be
+    //    used, or failed (on its side or ours) this time, rather than answering. Written to disk,
     //    a single timeout becomes permanent for every later run and every later version of the
     //    validator, with no recovery short of deleting the cache directory by hand (see #2524).
     //  - CODESYSTEM_UNSUPPORTED: the server does not have that code system. Load it and the
@@ -1072,15 +1073,18 @@ public class TerminologyCache {
   }
 
   /**
-   * Is this a failure to reach the terminology server, rather than an answer about the content?
+   * Is this a failure to get an answer from the terminology server, rather than an answer about the content?
    *
    * Deliberately not {@link TerminologyServiceErrorClass#isInfrastructure()}, which also covers
    * VALUESET_UNSUPPORTED: that describes the request the server was asked to answer, and is
-   * reproducible, where these two describe the connection at one moment in time.
+   * reproducible, where these describe the server (or this side) at one moment in time. INTERNAL_ERROR
+   * is a server that failed rather than answered (a 500), or a request that failed on this side; even
+   * where it is reproducible, it is likely to be fixed, so it is asked again next run.
    */
   private boolean isTransientFailure(CacheEntry e) {
     TerminologyServiceErrorClass ec = errorClassOf(e);
-    return ec == TerminologyServiceErrorClass.SERVER_ERROR || ec == TerminologyServiceErrorClass.NOSERVICE;
+    return ec == TerminologyServiceErrorClass.SERVER_ERROR || ec == TerminologyServiceErrorClass.NOSERVICE
+      || ec == TerminologyServiceErrorClass.INTERNAL_ERROR;
   }
 
   /**
