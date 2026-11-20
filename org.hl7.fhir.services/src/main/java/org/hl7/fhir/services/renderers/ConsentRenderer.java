@@ -56,6 +56,11 @@ public class ConsentRenderer extends ResourceRenderer {
       tr = tbl.tr();
       markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_DATE)+":");
       renderDataType(status, xlinkNarrative(tr.td(), cr.child("date")), cr.child("date"));
+    } else if (cr.has("dateTime")) {
+      // R4
+      tr = tbl.tr();
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_DATE)+":");
+      renderDataType(status, xlinkNarrative(tr.td(), cr.child("dateTime")), cr.child("dateTime"));
     }
     if (cr.has("period")) {
       tr = tbl.tr();
@@ -190,16 +195,34 @@ public class ConsentRenderer extends ResourceRenderer {
         model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES_DESC)), null, 0));
       }
 
-      // first we add a root for the consent itself
-      HierarchicalTableGenerator.Row row = addConsentRoot(gen, model.getRows(), consent, permit, hasWhen, hasWho, hasWhat, hasRules);
+      // first we add a root for the consent itself, unless the type of an R4 root provision already states the decision
+      List<HierarchicalTableGenerator.Row> rows = model.getRows();
+      if (!hasR4RootProvisionDecision(consent)) {
+        HierarchicalTableGenerator.Row row = addConsentRoot(gen, model.getRows(), consent, permit, hasWhen, hasWho, hasWhat, hasRules);
+        rows = row.getSubRows();
+      }
       for (ResourceWrapper i : consent.childrenMN("provision", "except")) {
-        renderConsentProvision(status, gen, row.getSubRows(), consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
+        renderConsentProvision(status, gen, rows, consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
       }
       XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
       x.addChildNode(xn);
     } else {
       x.para().tx(context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT_DESC :  RenderingContext.CONSENT_DENY_DESC));
     }
+  }
+
+  /**
+   * In R4, the type of the root provision is the decision of the consent: R5 moved the root provision's elements to
+   * the consent and renamed its type to Consent.decision. R4 says the root provision has no type, but the validator
+   * accepts one, and IGs use it (e.g. HL7 Germany's consent management IG). If the root provision has a type, it is
+   * the decision, so no synthetic root row is added; it would always show "permit" (see determineBasePermit).
+   */
+  private boolean hasR4RootProvisionDecision(ResourceWrapper consent) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) || consent.hasExtension(EXT_CONSENT_DECISION)) {
+      return false;
+    }
+    ResourceWrapper root = consent.child("provision");
+    return root != null && root.has("type");
   }
 
   private boolean determineBasePermit(ResourceWrapper consent) {
