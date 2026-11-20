@@ -66,11 +66,7 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println(method+" "+url+" HTTP/1.1");
     if (headers != null) {
       for (String s : headers) { 
-        if (s.startsWith("Api-Key")) {
-          file.println("Api-Key: xxxxxxxxxxxxxxxx");        
-        } else {
-          file.println(s);
-        }
+        file.println(ToolingClientLogger.presentHeader(s));
       }
     }
     if (body != null) {

@@ -35,6 +35,26 @@ import java.util.List;
 
 public interface ToolingClientLogger {
 
+  /**
+   * A request header as it can be logged. The value of anything that authenticates the request is masked:
+   * Authorization, Proxy-Authorization, Cookie, Api-Key, and any header whose name says it is a key, token, secret or
+   * password. Logs can be published (the IG publisher's qa-tx.html), and a server configured with token or basic
+   * authentication sends an Authorization header, not an Api-Key
+   */
+  static String presentHeader(String header) {
+    int i = header == null ? -1 : header.indexOf(':');
+    if (i < 0) {
+      return header;
+    }
+    String name = header.substring(0, i).trim();
+    String n = name.toLowerCase();
+    if (n.equals("authorization") || n.equals("proxy-authorization") || n.equals("cookie")
+        || n.contains("key") || n.contains("token") || n.contains("secret") || n.contains("password")) {
+      return name + ": xxxxxxxxxxxxxxxx";
+    }
+    return header;
+  }
+
   void logRequest(String method, String url, List<String> headers, byte[] body);
   void logResponse(String outcome, List<String> headers, byte[] body, long length);
 
