@@ -99,6 +99,28 @@
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "supplement"
+    }],
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icd10-da",
+    "version" : [{
+      "value" : "2026-06-16",
+      "isDefault" : true
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "supplement"
+    }],
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icpc2E-DK",
+    "version" : [{
+      "value" : "4.4.20260629",
+      "isDefault" : true
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
       "valueCode" : "complete"
     }],
     "uri" : "http://hl7.org/fhir/abstract-types",
@@ -2805,6 +2827,17 @@
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
       "valueCode" : "complete"
     }],
+    "uri" : "http://hl7.org/fhir/sid/icpc-2",
+    "version" : [{
+      "value" : "7.0",
+      "isDefault" : true
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
     "uri" : "http://hl7.org/fhir/sid/mvx",
     "version" : [{
       "value" : "20201030",
@@ -3337,7 +3370,7 @@
     }],
     "uri" : "http://nucc.org/provider-taxonomy",
     "version" : [{
-      "value" : "22.1",
+      "value" : "26.1",
       "isDefault" : true
     }]
   },

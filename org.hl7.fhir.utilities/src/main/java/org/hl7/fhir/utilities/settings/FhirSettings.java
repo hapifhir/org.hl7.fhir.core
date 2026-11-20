@@ -125,6 +125,17 @@ public class FhirSettings {
     return instance.fhirSettingsPOJO.getTestIgsPath();
   }
 
+  public static boolean hasPackageSigningKey() {
+    getInstance();
+    return instance.fhirSettingsPOJO.getPackageSigningKey() != null;
+  }
+
+  /** The path of the key NPM packages are signed with (see NpmPackageSigner), or null */
+  public static String getPackageSigningKey() {
+    getInstance();
+    return instance.fhirSettingsPOJO.getPackageSigningKey();
+  }
+
   public static boolean hasProhibitNetworkAccess() {
     if (prohibitNetworkAccess != null) {
       return true;

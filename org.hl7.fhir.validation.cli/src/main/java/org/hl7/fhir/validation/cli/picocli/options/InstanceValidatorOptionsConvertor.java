@@ -9,7 +9,6 @@ import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -63,10 +62,6 @@ public class InstanceValidatorOptionsConvertor {
     instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(options.allowDoubleQuotesInFHIRPath);
 
     // Enum fields - null check then setter
-    if (options.r5BundleRelativeReferencePolicy != null) {
-      instanceValidatorParameters.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(options.r5BundleRelativeReferencePolicy));
-    }
-
     if (options.questionnaireMode != null) {
       instanceValidatorParameters.setQuestionnaireMode(QuestionnaireMode.fromCode(options.questionnaireMode));
     }

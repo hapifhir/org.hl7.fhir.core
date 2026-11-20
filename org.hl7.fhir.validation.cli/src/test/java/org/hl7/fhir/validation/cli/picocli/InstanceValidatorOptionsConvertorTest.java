@@ -5,7 +5,6 @@ import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
@@ -248,12 +247,6 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
-        "r5BundleRelativeReferencePolicy ALWAYS",
-        new InstanceValidatorOptions().withR5BundleRelativeReferencePolicy("always"),
-        new InstanceValidatorParameters().setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.ALWAYS)
-      ),
-
-      Arguments.arguments(
         "questionnaireMode REQUIRED",
         new InstanceValidatorOptions().withQuestionnaireMode("required"),
         new InstanceValidatorParameters().setQuestionnaireMode(QuestionnaireMode.REQUIRED)
@@ -363,7 +356,6 @@ public class InstanceValidatorOptionsConvertorTest {
           .withVerbose(true)
           .withHtmlOutput("/tmp/output.html")
           .withOutputStyle("json")
-          .withR5BundleRelativeReferencePolicy("never")
           .withQuestionnaireMode("none")
           .withLevel("info")
           .withBestPracticeLevel("ignore")
@@ -382,7 +374,6 @@ public class InstanceValidatorOptionsConvertorTest {
           .setShowMessageIds(true)
           .setHtmlOutput("/tmp/output.html")
           .setOutputStyle("json")
-          .setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.NEVER)
           .setQuestionnaireMode(QuestionnaireMode.NONE)
           .setLevel(ValidationLevel.HINTS)
           .setBestPracticeLevel(BestPracticeWarningLevel.Ignore)

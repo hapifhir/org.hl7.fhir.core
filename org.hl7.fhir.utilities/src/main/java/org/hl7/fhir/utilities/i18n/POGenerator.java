@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.IniFile;
@@ -32,16 +34,35 @@ import static org.hl7.fhir.utilities.i18n.POUtilities.tagAsOutdated;
  *   (a) New constants are added to the java code
  *   (b) An implementer contributes translations in a .po source file
  * <br/>
- * It takes 3 parameters:
- *   * path to the local copy of the core repo
- *   * path to the local copy of the ig-publisher repo
- *   * path to the local copy of the FHIRsmith repo (javascript)
+ * Usage:
+ * <pre>
+ *   java org.hl7.fhir.utilities.i18n.POGenerator [core] [igpub] [fhirsmith]
+ * </pre>
+ * It takes 3 positional parameters, all required:
+ * <ol>
+ *   <li>core: path to the local copy of the core repo (hapifhir/org.hl7.fhir.core). The
+ *       .properties and .po files under org.hl7.fhir.utilities/src/main/resources are
+ *       read and updated in place, and the java source is scanned for constant usage</li>
+ *   <li>igpub: path to the local copy of the ig-publisher repo (HL7/fhir-ig-publisher).
+ *       Only read - the java source is scanned for constant usage</li>
+ *   <li>fhirsmith: path to the local copy of the FHIRsmith repo (javascript). Only read -
+ *       *.js/mjs/cjs files are scanned for property names used as quoted strings</li>
+ * </ol>
+ * Run with -h, -help, --help or ? (or with the wrong number of parameters) to get usage help.
+ * <br/>
+ * The languages that are generated are listed in the [languages] section of
+ * translations-control.ini in the same resources folder.
+ * <br/>
+ * If the consistency check finds errors, the generator reports them and stops without
+ * changing any files.
  */
 @SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
 
   public static class PropertyValue extends StringPair {
     private boolean used;
+    private boolean usedInJavascript;
+    private List<ConstantDefinition> constants = new ArrayList<>();
 
     public PropertyValue(String name, String value) {
       super(name, value);
@@ -64,7 +85,28 @@ public class POGenerator {
     private String sname;
     private boolean defined;
     private boolean used;
+    private boolean usedInCore;
+    private boolean usedInIgpub;
   }
+
+  /**
+   * Where the messages in one .properties file are used: counted by message (the _one and
+   * _other forms of a plural are one message). A message is used in core or the IG publisher
+   * if its constant is referenced there, and in FHIRsmith if its id appears as a quoted string
+   */
+  private static class UsageSummary {
+    private String file;
+    private int total;
+    private int core;
+    private int igpub;
+    private int fhirsmith;
+    private int javaOnly;
+    private int fhirsmithOnly;
+    private int both;
+    private int none;
+  }
+
+  private List<UsageSummary> usage = new ArrayList<>();
 
   public static class POObjectSorter implements Comparator<POObject> {
 
@@ -87,14 +129,65 @@ public class POGenerator {
   }
 
   public static void main(String[] args) throws IOException {
+    if (args.length == 1 && Utilities.existsInList(args[0], "-h", "-help", "--help", "?", "-?", "/?")) {
+      usage();
+      return;
+    }
+    if (args.length != 3) {
+      System.out.println("Error: expected 3 parameters, but found "+args.length);
+      System.out.println();
+      usage();
+      System.exit(1);
+    }
+    boolean ok = checkFolder("core", args[0], "org.hl7.fhir.utilities/src/main/resources/translations-control.ini");
+    ok = checkFolder("igpub", args[1], null) && ok;
+    ok = checkFolder("fhirsmith", args[2], null) && ok;
+    if (!ok) {
+      System.out.println();
+      usage();
+      System.exit(1);
+    }
     new POGenerator().execute(args[0], args[1], args[2]);
+  }
+
+  private static boolean checkFolder(String name, String path, String expectedFile) throws IOException {
+    File f = ManagedFileAccess.file(path);
+    if (!f.exists() || !f.isDirectory()) {
+      System.out.println("Error: "+name+" folder '"+path+"' not found");
+      return false;
+    }
+    if (expectedFile != null && !ManagedFileAccess.file(Utilities.path(path, expectedFile)).exists()) {
+      System.out.println("Error: "+name+" folder '"+path+"' does not look right - "+expectedFile+" not found");
+      return false;
+    }
+    return true;
+  }
+
+  private static void usage() {
+    System.out.println("POGenerator: checks the i18n constants and declarations are consistent, then");
+    System.out.println("generates/updates the .po source files and the translated .properties files.");
+    System.out.println("Run it when new i18n constants are added, or when translations are contributed.");
+    System.out.println();
+    System.out.println("Usage: java org.hl7.fhir.utilities.i18n.POGenerator [core] [igpub] [fhirsmith]");
+    System.out.println();
+    System.out.println("  [core]       local copy of the core repo (hapifhir/org.hl7.fhir.core). The .properties");
+    System.out.println("               and .po files in org.hl7.fhir.utilities/src/main/resources are updated");
+    System.out.println("  [igpub]      local copy of the IG publisher repo (HL7/fhir-ig-publisher) - read only,");
+    System.out.println("               scanned for use of the constants");
+    System.out.println("  [fhirsmith]  local copy of the FHIRsmith repo (javascript) - read only, scanned for");
+    System.out.println("               use of the message ids");
+    System.out.println();
+    System.out.println("Languages come from the [languages] section of translations-control.ini.");
+    System.out.println("If the consistency check finds errors, nothing is changed.");
+    System.out.println("Use -help to show this message.");
   }
 
   private int noTrans = 0;
 
   public void execute(String core, String igpub, String javascript) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
-    if (checkState(source, core, igpub, javascript)) {
+    boolean ok = checkState(source, core, igpub, javascript);
+    if (ok) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
       generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
@@ -104,7 +197,59 @@ public class POGenerator {
       }
 
       System.out.println("Finished");
-    } 
+    }
+    reportUsage();
+  }
+
+  private UsageSummary summariseUsage(String file, List<PropertyValue> props) {
+    // by message: the plural forms share a base name
+    Map<String, boolean[]> byMessage = new LinkedHashMap<>();
+    for (PropertyValue p : props) {
+      boolean[] where = byMessage.computeIfAbsent(p.getBaseName(), k -> new boolean[3]);
+      for (ConstantDefinition cd : p.constants) {
+        where[0] = where[0] || cd.usedInCore;
+        where[1] = where[1] || cd.usedInIgpub;
+      }
+      where[2] = where[2] || p.usedInJavascript;
+    }
+    UsageSummary res = new UsageSummary();
+    res.file = file;
+    for (boolean[] where : byMessage.values()) {
+      boolean java = where[0] || where[1];
+      res.total++;
+      if (where[0]) {
+        res.core++;
+      }
+      if (where[1]) {
+        res.igpub++;
+      }
+      if (where[2]) {
+        res.fhirsmith++;
+      }
+      if (java && where[2]) {
+        res.both++;
+      } else if (java) {
+        res.javaOnly++;
+      } else if (where[2]) {
+        res.fhirsmithOnly++;
+      } else {
+        res.none++;
+      }
+    }
+    return res;
+  }
+
+  private void reportUsage() {
+    if (usage.isEmpty()) {
+      return;
+    }
+    System.out.println();
+    System.out.println("Message usage (by message - plural forms count once):");
+    System.out.println(String.format("  %-30s %7s %7s %7s %9s   %9s %13s %7s %7s", "", "total", "core", "igpub", "fhirsmith", "java only", "fhirsmith only", "both", "none"));
+    for (UsageSummary u : usage) {
+      System.out.println(String.format("  %-30s %7d %7d %7d %9d   %9d %13d %7d %7d", u.file, u.total, u.core, u.igpub, u.fhirsmith, u.javaOnly, u.fhirsmithOnly, u.both, u.none));
+    }
+    System.out.println("  (core/igpub: the constant is referenced there; java = core or igpub; both = java and fhirsmith)");
   }
 
   private boolean checkState(String source, String core, String igpub, String javascript) throws IOException {
@@ -119,13 +264,15 @@ public class POGenerator {
         if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
           found = true;
           p.used = true;
+          p.constants.add(cd);
         }
       }
       cd.defined = found;
     }
-    scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
-    scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(core, true, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(igpub, false, consts, "RenderingI18nContext", "RenderingContext");
     scanJavascriptSource(javascript, props);
+    usage.add(summariseUsage("rendering-phrases.properties", props));
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -164,14 +311,16 @@ public class POGenerator {
         if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
           found = true;
           p.used = true;
+          p.constants.add(cd);
         }
       }
       cd.defined = found;
     }
 
-    scanJavaSource(core, consts, "I18nConstants");
-    scanJavaSource(igpub, consts, "I18nConstants");
+    scanJavaSource(core, true, consts, "I18nConstants");
+    scanJavaSource(igpub, false, consts, "I18nConstants");
     scanJavascriptSource(javascript, props);
+    usage.add(summariseUsage("Messages.properties", props));
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -210,10 +359,16 @@ public class POGenerator {
     return ok;
   }
 
+  /**
+   * Finds references to the constants as Name.CONSTANT (Name being I18nConstants etc), and
+   * records them against the repo being scanned. One pass over each file, so every constant
+   * is checked in every repo (not just the ones not yet found), for the usage report
+   */
   private class JavaScanner implements IDirectoryVisitorImplementation {
-    List<ConstantDefinition> consts;
-    List<String> names;
-    
+    Map<String, ConstantDefinition> consts;
+    Pattern pattern;
+    boolean core;
+
     @Override
     public boolean enterDirectory(File f) throws IOException {
       return !Utilities.existsInList(f.getName(), "model", "formats");
@@ -222,52 +377,50 @@ public class POGenerator {
     @Override
     public boolean visitFile(File file) throws IOException {
       String source = FileUtilities.fileToString(file);
-      for (ConstantDefinition cd : consts) {
-        if (!cd.used) {
-          for (String n : names) {
-            if (containsToken(source, n+"."+cd.name)) {
-              cd.used = true;
-              break;
-            }
+      Matcher m = pattern.matcher(source);
+      while (m.find()) {
+        // the identifier is matched greedily, so it is the whole token: CONST, not CONST_OTHER
+        ConstantDefinition cd = consts.get(m.group(1));
+        if (cd != null) {
+          cd.used = true;
+          if (core) {
+            cd.usedInCore = true;
+          } else {
+            cd.usedInIgpub = true;
           }
         }
       }
       return true;
     }
-
-    /**
-     * True if token appears in source followed by a non-identifier character
-     * (so e.g. CONST matches "CONST ," and "CONST)" but not "CONST_OTHER").
-     */
-    private boolean containsToken(String source, String token) {
-      int i = source.indexOf(token);
-      while (i > -1) {
-        int e = i + token.length();
-        if (e == source.length() || !isIdentifierChar(source.charAt(e))) {
-          return true;
-        }
-        i = source.indexOf(token, e);
-      }
-      return false;
-    }
-
-    private boolean isIdentifierChar(char c) {
-      return Character.isLetterOrDigit(c) || c == '_';
-    }
   }
-  
-  private void scanJavaSource(String path, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
+
+  // names are Pattern.quote()d, so the only regex syntax is the fixed suffix
+  @SuppressWarnings("checkstyle:patternUsage")
+  private void scanJavaSource(String path, boolean core, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
     JavaScanner scanner = new JavaScanner();
-    scanner.consts = consts;
-    scanner.names = new ArrayList<String>();
-    for (String s : names) {
-      scanner.names.add(s);
+    scanner.core = core;
+    scanner.consts = new HashMap<>();
+    for (ConstantDefinition cd : consts) {
+      scanner.consts.put(cd.name, cd);
     }
+    StringBuilder b = new StringBuilder();
+    for (String s : names) {
+      b.append(b.length() == 0 ? "" : "|").append(Pattern.quote(s));
+    }
+    scanner.pattern = Pattern.compile("(?:" + b + ")\\.([A-Za-z0-9_]+)");
     DirectoryVisitor.visitDirectory(scanner, path, "java");
   }
 
+  /**
+   * Finds message ids used as quoted strings ('X', "X" or `X`) in javascript. One pass over each
+   * file collecting the quoted strings, then looked up by message (base) name
+   */
   private class JavascriptScanner implements IDirectoryVisitorImplementation {
-    private List<PropertyValue> defs;
+    // a quoted string with no quotes or whitespace in it. The closing quote isn't consumed, so
+    // an occurrence that starts on it is still found (as String.contains would)
+    @SuppressWarnings("checkstyle:patternUsage")
+    private final Pattern quoted = Pattern.compile("(['\"`])([^'\"`\\s]+)(?=\\1)");
+    private Map<String, List<PropertyValue>> defs;
 
     @Override
     public boolean enterDirectory(File directory) throws IOException {
@@ -277,15 +430,13 @@ public class POGenerator {
     @Override
     public boolean visitFile(File file) throws IOException {
       String source = FileUtilities.fileToString(file);
-      for (PropertyValue pv : defs) {
-        if (!pv.used) {
-          boolean found = false;
-          String pn = pv.getBaseName();
-          if (source.contains("'"+pn+"'") || source.contains("\""+pn+"\"") || source.contains("`"+pn+"`")) {
-            found = true;
-          }
-          if (found) {
+      Matcher m = quoted.matcher(source);
+      while (m.find()) {
+        List<PropertyValue> pvs = defs.get(m.group(2));
+        if (pvs != null) {
+          for (PropertyValue pv : pvs) {
             pv.used = true;
+            pv.usedInJavascript = true;
           }
         }
       }
@@ -295,7 +446,10 @@ public class POGenerator {
 
   private void scanJavascriptSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
     JavascriptScanner scanner = new JavascriptScanner();
-    scanner.defs = defs;
+    scanner.defs = new HashMap<>();
+    for (PropertyValue pv : defs) {
+      scanner.defs.computeIfAbsent(pv.getBaseName(), k -> new ArrayList<>()).add(pv);
+    }
     DirectoryVisitor.visitDirectory(scanner, path, "js", "mjs", "cjs");
   }
 

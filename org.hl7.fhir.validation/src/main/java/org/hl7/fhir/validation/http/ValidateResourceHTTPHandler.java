@@ -18,7 +18,6 @@ import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -115,9 +114,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           break;
         case ParamNames.OUTPUT_STYLE:
           params.setOutputStyle(pair.getValue());
-          break;
-        case ParamNames.R5_BUNDLE_RELATIVE_REFERENCE_POLICY:
-          params.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(pair.getValue()));
           break;
         case ParamNames.QUESTIONNAIRE_MODE:
           params.setQuestionnaireMode(QuestionnaireMode.fromCode(pair.getValue()));

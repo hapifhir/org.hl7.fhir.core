@@ -328,6 +328,7 @@ public class RenderingContext extends RenderingI18nContext {
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, StringPair> namedLinks = new HashMap<>();
+  private Map<String, MappingSpace> mappingSpaces = new HashMap<>(); // by url - see MappingSpace.loadMappingSpaces
   private boolean addName = false;
   private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
   private int base64Limit = 1024;
@@ -437,6 +438,7 @@ public class RenderingContext extends RenderingI18nContext {
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     res.typeMap.putAll(typeMap);
+    res.mappingSpaces = mappingSpaces;
     res.multiLanguagePolicy = multiLanguagePolicy;
     res.allowedLanguages.addAll(allowedLanguages);
     if (copyAnchors) {
@@ -878,6 +880,14 @@ public class RenderingContext extends RenderingI18nContext {
   public RenderingContext setChangeVersion(String changeVersion) {
     this.changeVersion = changeVersion;
     return this;
+  }
+
+  /**
+   * Metadata about the targets of StructureDefinition.mapping.uri (e.g. http://hl7.org/v2), keyed by url.
+   * Populate from the core package with MappingSpace.loadMappingSpaces(worker.getBinaryForKey("mappingSpaces.details"))
+   */
+  public Map<String, MappingSpace> getMappingSpaces() {
+    return mappingSpaces;
   }
 
   public Map<String, StringPair> getNamedLinks() {

@@ -899,6 +899,9 @@ public class ProfileUtilities {
               ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS));
             if (e.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER))
               ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER, e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER));
+            // so renderers can tell whether the documentation in the differential differs from the base (#616). Just the
+            // answer - keeping the processed copy itself would keep a second copy of every differential alive
+            ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_diff_doc_changed, hasDocumentationChanges(e));
           }
           if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT)) {
             b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
@@ -2350,6 +2353,56 @@ public class ProfileUtilities {
 
 
   /**
+   * when relative links in the markdown of a base element are made absolute, keep the original text, so that a 
+   * differential that restates the original text is still recognised as the same (see sameMarkdown)
+   */
+  private void keepOriginalMarkdown(MarkdownType md, String original) {
+    if (md != null && original != null && !original.equals(md.getValue()) && !md.hasUserData(UserDataNames.SNAPSHOT_ORIGINAL_MARKDOWN)) {
+      md.setUserData(UserDataNames.SNAPSHOT_ORIGINAL_MARKDOWN, original);
+    }
+  }
+
+  /**
+   * whether the markdown in a differential element is the same as the base: either as it is in the base snapshot,
+   * or as it was before relative links in it were made absolute (#616)
+   */
+  private boolean sameMarkdown(MarkdownType derived, MarkdownType base) {
+    if (Base.compareDeep(derived, base, false)) {
+      return true;
+    }
+    return derived != null && base != null && derived.hasValue() && base.hasUserData(UserDataNames.SNAPSHOT_ORIGINAL_MARKDOWN) 
+        && derived.getValue().equals(base.getUserString(UserDataNames.SNAPSHOT_ORIGINAL_MARKDOWN));
+  }
+
+  /**
+   * whether the documentation of a differential element (definition, comment, requirements, label, meaningWhenMissing,
+   * orderMeaning, isModifierReason, alias) says anything that the base doesn't. When the snapshot is generated, values in
+   * the (processed copy of the) differential that are the same as the base are marked SNAPSHOT_DERIVATION_EQUALS, and
+   * don't count; otherwise, anything stated counts (#616)
+   */
+  public static boolean hasDocumentationChanges(ElementDefinition ed) {
+    return (ed.hasDefinitionElement() && valueChanged(ed.getDefinitionElement())) || (ed.hasCommentElement() && valueChanged(ed.getCommentElement())) ||
+        (ed.hasRequirementsElement() && valueChanged(ed.getRequirementsElement())) || (ed.hasLabelElement() && valueChanged(ed.getLabelElement())) ||
+        (ed.hasMeaningWhenMissingElement() && valueChanged(ed.getMeaningWhenMissingElement())) || (ed.hasOrderMeaningElement() && valueChanged(ed.getOrderMeaningElement())) ||
+        (ed.hasIsModifierReasonElement() && valueChanged(ed.getIsModifierReasonElement())) || (ed.hasAlias() && listChanged(ed.getAliasList()));
+  }
+
+  /** true if the value is present, and not marked as the same as the base (SNAPSHOT_DERIVATION_EQUALS) */
+  public static boolean valueChanged(PrimitiveType<?> value) {
+    return value != null && value.hasValue() && !value.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
+  }
+
+  /** true if any of the values is not marked as the same as the base (SNAPSHOT_DERIVATION_EQUALS) */
+  public static boolean listChanged(List<? extends Base> values) {
+    for (Base v : values) {
+      if (!v.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Finds internal references in an Element's Binding and StructureDefinition references (in TypeRef) and bases them on the given url
    * @param url - the base url to use to turn internal references into absolute references
    * @param element - the Element to update
@@ -2373,13 +2426,19 @@ public class ProfileUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition()) {
+          String original = element.getDefinition();
           element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
+          keepOriginalMarkdown(element.getDefinitionElement(), original);
         }
         if (element.hasComment()) {
+          String original = element.getComment();
           element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
+          keepOriginalMarkdown(element.getCommentElement(), original);
         }
         if (element.hasRequirements()) {
+          String original = element.getRequirements();
           element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
+          keepOriginalMarkdown(element.getRequirementsElement(), original);
         }
         if (element.hasMeaningWhenMissing()) {
           element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
@@ -3025,7 +3084,7 @@ public class ProfileUtilities {
       }
 
       if (derived.hasDefinitionElement()) {
-        if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
+        if (!sameMarkdown(derived.getDefinitionElement(), base.getDefinitionElement())) {
           base.setDefinitionElement(mergeMarkdown(derived.getDefinitionElement(), base.getDefinitionElement()));
         } else if (trimDifferential)
           derived.setDefinitionElement(null);
@@ -3034,7 +3093,7 @@ public class ProfileUtilities {
       }
 
       if (derived.hasCommentElement()) {
-        if (!Base.compareDeep(derived.getCommentElement(), base.getCommentElement(), false))
+        if (!sameMarkdown(derived.getCommentElement(), base.getCommentElement()))
           base.setCommentElement(mergeMarkdown(derived.getCommentElement(), base.getCommentElement()));
         else if (trimDifferential)
           base.setCommentElement(derived.getCommentElement().copy(Base.COPY_DATA));
@@ -3052,7 +3111,7 @@ public class ProfileUtilities {
       }
 
       if (derived.hasRequirementsElement()) {
-        if (!base.hasRequirementsElement() || !Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
+        if (!base.hasRequirementsElement() || !sameMarkdown(derived.getRequirementsElement(), base.getRequirementsElement()))
           base.setRequirementsElement(mergeMarkdown(derived.getRequirementsElement(), base.getRequirementsElement()));
         else if (trimDifferential)
           base.setRequirementsElement(derived.getRequirementsElement().copy(Base.COPY_DATA));

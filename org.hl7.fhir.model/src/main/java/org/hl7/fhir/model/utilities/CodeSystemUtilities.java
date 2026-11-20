@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.*;
@@ -120,6 +121,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
+  public static final String USER_DATA_CROSS_LINKED = "cs.utils.cross.linked"; // on a CodeSystem: its concepts have been cross-linked (see crossLinkCodeSystem)
 
   /**
    * Walks the concepts of a code system for rendering, re-arranging the top level concepts under the
@@ -543,7 +545,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return res;
   }
 
-  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code, @Nonnull String use) {
+  public static ConceptDefinitionComponent findCodeOrAltCode(@Nonnull List<ConceptDefinitionComponent> list, @Nonnull String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.hasCode() && c.getCode().equals(code))
         return c;
@@ -552,7 +554,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           return c;
         }
       }
-      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConceptList(), code, use);
+      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConceptList(), code);
       if (s != null)
         return s;
     }
@@ -711,10 +713,22 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
+  /**
+   * Build the child lists (USER_DATA_CROSS_LINK) from the #parent property. This is done once per code system:
+   * later calls do nothing. Thread safe: done under a lock on the code system, so that two threads can't build
+   * the lists at the same time (but readers of the lists don't lock - a code system must be cross-linked before
+   * it is published to other threads, see CanonicalResourceProxy.getResource())
+   */
   public static void crossLinkCodeSystem(@Nonnull CodeSystem cs) {
-    String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
-    if ((parent != null)) {
-      crossLinkConcepts(cs.getConceptList(), cs.getConceptList(), parent);
+    synchronized (cs) {
+      if (cs.hasUserData(USER_DATA_CROSS_LINKED)) {
+        return;
+      }
+      String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
+      if ((parent != null)) {
+        crossLinkConcepts(cs.getConceptList(), cs.getConceptList(), parent);
+      }
+      cs.setUserData(USER_DATA_CROSS_LINKED, true);
     }
   }
 
@@ -928,6 +942,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     // the copy shares the original's user data, so its cross-links still lead to the original
     // concepts, which have none of the supplement content - link the copy's own concepts instead
     clearCrossLinks(ret.getConceptList());
+    ret.clearUserData(USER_DATA_CROSS_LINKED); // copied from cs with the rest of its user data
     crossLinkCodeSystem(ret);
     return ret;
   }
@@ -949,6 +964,20 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
+  // a designation with no language of its own is in its code system's language - for a supplement, the
+  // supplement's language, not the base code system's. If the supplement doesn't have one, the designation's
+  // language is unknown, and it is marked so that it doesn't get the base code system's language either
+  private static ConceptDefinitionDesignationComponent supplementDesignation(CodeSystem supplement, ConceptDefinitionDesignationComponent d) {
+    if (!d.hasLanguage()) {
+      if (supplement.hasLanguage()) {
+        d.setLanguage(supplement.getLanguage());
+      } else {
+        d.setUserData(UserDataNames.tx_designation_no_language, true);
+      }
+    }
+    return d;
+  }
+
   private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements, List<Map<String, ConceptDefinitionComponent>> supplementIndexes) {
     for (int i = 0; i < supplements.size(); i++) {
       CodeSystem cs = supplements.get(i);
@@ -963,7 +992,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
           fdef.addDesignation().setLanguage(cs.getLanguage()).setValue(def.getDisplay());
         }
         for (ConceptDefinitionDesignationComponent d : def.getDesignationList()) {
-          fdef.addDesignation(d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
+          fdef.addDesignation(supplementDesignation(cs, d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA))));
         }
         for (ConceptPropertyComponent p : def.getPropertyList()) {
           PropertyComponent pd = CodeSystemUtilities.getPropertyDefinition(cs, p);

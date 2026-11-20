@@ -8,7 +8,6 @@ import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.ValidatorSettings;
@@ -29,7 +28,6 @@ public class InstanceValidatorParameters {
     this.hintAboutNonMustSupport = instanceValidatorParameters.hintAboutNonMustSupport;
     this.htmlOutput = instanceValidatorParameters.htmlOutput;
     this.outputStyle = instanceValidatorParameters.outputStyle;
-    this.r5BundleRelativeReferencePolicy = instanceValidatorParameters.r5BundleRelativeReferencePolicy;
     this.extensions = new ArrayList<>(instanceValidatorParameters.extensions);
     this.usages = new ArrayList<>(instanceValidatorParameters.usages);
     this.launchContexts = new ArrayList<>(instanceValidatorParameters.launchContexts);
@@ -129,19 +127,6 @@ public class InstanceValidatorParameters {
   @JsonProperty("outputStyle")
   public InstanceValidatorParameters setOutputStyle(String outputStyle) {
     this.outputStyle = outputStyle;
-    return this;
-  }
-
-  @JsonProperty("r5BundleRelativeReferencePolicy")
-  @SerializedName("r5BundleRelativeReferencePolicy")
-  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
-
-  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
-    return r5BundleRelativeReferencePolicy;
-  }
-
-  public InstanceValidatorParameters setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
     return this;
   }
 
@@ -721,7 +706,6 @@ public class InstanceValidatorParameters {
       && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
-      && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
       && Objects.equals(extensions, that.extensions)
       && Objects.equals(usages, that.usages)
       && Objects.equals(launchContexts, that.launchContexts)
@@ -742,7 +726,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -752,7 +736,6 @@ public class InstanceValidatorParameters {
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", outputStyle='" + outputStyle + '\'' +
-      ", r5BundleRelativeReferencePolicy=" + r5BundleRelativeReferencePolicy +
       ", extensions=" + extensions +
       ", usages=" + usages +
       ", launchContexts=" + launchContexts +

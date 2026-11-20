@@ -256,6 +256,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return (context.formatPhrase(RenderingI18nContext.GENERAL_UCUM));
     if (system.equals("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl")) 
       return (context.formatPhrase(RenderingI18nContext.GENERAL_NCI_THES));
+    if (system.equals("urn:iso:std:iso:3166")) 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_ISO_COUNTRY));
+    if (system.equals("http://unstats.un.org/unsd/methods/m49/m49.htm")) 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_UN_REGIONS));
     
 
     CodeSystem cs = context.getContext().fetchCodeSystem(system, VersionResolutionRules.defaultRule());
@@ -277,7 +281,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String tails(String system) { 
-    if (system.contains("/")) { 
+    if (system.startsWith("urn:iso:std:iso:")) { 
+      return "ISO "+system.substring(16); 
+    } else if (system.startsWith("urn:ietf:bcp:")) { 
+      return "IETF BCP "+system.substring(13); 
+    } else if (system.startsWith("urn:ietf:rfc:")) { 
+      return "IETF RFC "+system.substring(13); 
+    } else if (system.startsWith("urn:oid:")) { 
+      return "OID "+system.substring(8); 
+    } else if (system.startsWith("urn:uuid:")) { 
+      return "UUID "+system.substring(9); 
+    } else if (system.contains("/")) { 
       return system.substring(system.lastIndexOf("/")+1); 
     } else { 
       return (context.formatPhrase(RenderingI18nContext.DATA_REND_UNKNWN));

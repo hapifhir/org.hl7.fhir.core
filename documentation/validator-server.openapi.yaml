@@ -84,8 +84,7 @@ paths:
 
         Enum values are case sensitive where the underlying enum is matched by name
         (`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code
-        (`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`,
-        `r5BundleRelativeReferencePolicy`).
+        (`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`).
       parameters:
         - name: profile
           in: query
@@ -173,15 +172,6 @@ paths:
           schema:
             type: string
             enum: [ignore, warning, error]
-        - name: r5BundleRelativeReferencePolicy
-          in: query
-          description: >-
-            Whether relative references in a Bundle follow the R5 resolution rule. An
-            unrecognised value raises an unhandled exception rather than a `400`.
-          schema:
-            type: string
-            enum: [default, never, always]
-            default: default
         - name: assumeValidRestReferences
           in: query
           description: >-

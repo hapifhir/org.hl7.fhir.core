@@ -37,7 +37,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String id;
     private String url;
     private String version;
-    private CanonicalResource resource;
+    private volatile CanonicalResource resource; // only set once it's fully prepared (see getResource())
 
     public CanonicalResourceProxy(String type, String id, String url, String version) {
       super();
@@ -75,14 +75,25 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       return version != null;
     }
 
+    /**
+     * Thread safe: the resource is loaded once, under a lock, and only published (assigned to the field) once it is
+     * fully prepared, so another thread never sees it half done (e.g. a CodeSystem that isn't cross-linked yet)
+     */
     public CanonicalResource getResource() throws FHIRException {
-      if (resource == null) {
-        resource = loadResource();
-        if (resource instanceof CodeSystem) {
-          CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
+      CanonicalResource res = resource;
+      if (res == null) {
+        synchronized (this) {
+          res = resource;
+          if (res == null) {
+            res = loadResource();
+            if (res instanceof CodeSystem) {
+              CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) res);
+            }
+            resource = res;
+          }
         }
       }
-      return resource;
+      return res;
     }
 
     public void setResource(CanonicalResource resource) {

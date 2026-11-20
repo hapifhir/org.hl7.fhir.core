@@ -133,8 +133,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return mappings;
   }
 
-
-
   protected String getCharForRelationship(TargetElementComponent mapping) {
     if (!mapping.hasRelationship())
       return "";
@@ -143,6 +141,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     case SOURCEISNARROWERTHANTARGET : return "<";
     case SOURCEISBROADERTHANTARGET : return ">";
     case NOTRELATEDTO : return "!=";
+    case RELATEDTO: return "";
     default: return "?";
     }
   }

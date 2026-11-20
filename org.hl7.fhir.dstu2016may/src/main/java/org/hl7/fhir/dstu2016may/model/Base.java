@@ -58,12 +58,19 @@ public abstract class Base implements Serializable, IBase, IElement {
    */
   private List<String> formatCommentsPost;
 
+  /**
+   * The named user data item, or null if it is absent or was set to null (hasUserData tells those apart)
+   */
   public Object getUserData(String name) {
     if (userData == null)
       return null;
     return userData.get(name);
   }
 
+  /**
+   * Set the named user data item, replacing any existing value. A null value is kept as a value:
+   * the name stays present, so hasUserData(name) is true and getUserData(name) returns null (there is no way to remove a single item)
+   */
   public void setUserData(String name, Object value) {
     if (userData == null)
       userData = new HashMap<String, Object>();
@@ -79,6 +86,9 @@ public abstract class Base implements Serializable, IBase, IElement {
     userData.put(name, value);
   }
 
+  /**
+   * True if the named user data item is present - including when it was set to null (setUserData(name, null))
+   */
   public boolean hasUserData(String name) {
     if (userData == null)
       return false;
@@ -86,14 +96,19 @@ public abstract class Base implements Serializable, IBase, IElement {
       return userData.containsKey(name);
   }
 
+  /**
+   * The named user data item as a String (it must be one), or null if it is absent or was set to null
+   */
   public String getUserString(String name) {
     return (String) getUserData(name);
   }
 
+  /**
+   * The named user data item as an int (it must be an Integer), or 0 if it is absent or was set to null
+   */
   public int getUserInt(String name) {
-    if (!hasUserData(name))
-      return 0;
-    return (Integer) getUserData(name);
+    Object v = getUserData(name);
+    return v == null ? 0 : (Integer) v;
   }
 
   public boolean hasFormatComment() {

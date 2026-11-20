@@ -70,6 +70,22 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icd10-da",
+    "version" : [{
+      "value" : "2026-06-16",
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icpc2E-DK",
+    "version" : [{
+      "value" : "4.4.20260629",
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
     "uri" : "http://hl7.org/fhir/account-aggregate",
     "version" : [{
       "value" : "5.0.0",
@@ -3151,6 +3167,14 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.org/fhir/sid/icpc-2",
+    "version" : [{
+      "value" : "7.0",
+      "isDefault" : true
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://hl7.org/fhir/sid/mvx",
     "version" : [{
       "value" : "20201030",
@@ -3843,7 +3867,7 @@
   {
     "uri" : "http://nucc.org/provider-taxonomy",
     "version" : [{
-      "value" : "22.1",
+      "value" : "26.1",
       "isDefault" : true
     }],
     "content" : "complete"

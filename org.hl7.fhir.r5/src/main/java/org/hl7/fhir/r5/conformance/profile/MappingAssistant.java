@@ -87,7 +87,7 @@ public class MappingAssistant {
           if (!md.hasComment() && m.hasComment()) {
             md.setComment(m.getComment());
           }
-          if (!m.getIdentity().equals(md.getIdentity())) {
+          if (m.hasIdentity() && !m.getIdentity().equals(md.getIdentity())) {
             renames.put(m.getIdentity(), md.getIdentity());
           }
         }
@@ -105,7 +105,7 @@ public class MappingAssistant {
   
   private boolean nameExists(String n) {
     for (StructureDefinitionMappingComponent md : masterList) {
-      if (n.equals(md.getIdentity())) {
+      if (n != null && n.equals(md.getIdentity())) {
         return true;
       }      
     }
@@ -209,7 +209,7 @@ public class MappingAssistant {
 
   private StructureDefinitionMappingComponent findDefinition(String name) {
     for (StructureDefinitionMappingComponent t : masterList) {
-      if (t.getIdentity().equals(name)) {
+      if (name != null && name.equals(t.getIdentity())) { // identity is required, but may be missing in invalid content
         return t;
       }
     }
@@ -218,11 +218,11 @@ public class MappingAssistant {
 
   private boolean compareMaps(String name, ElementDefinitionMappingComponent s, ElementDefinitionMappingComponent d) {
     
-    if (d.getIdentity().equals(name) && d.getMap().equals(s.getMap())) {
+    if (java.util.Objects.equals(d.getIdentity(), name) && java.util.Objects.equals(d.getMap(), s.getMap())) {
       return true;
     }
     if (VersionUtilities.isR5Plus(version)) {
-      if (d.getIdentity().equals(name)) {
+      if (java.util.Objects.equals(d.getIdentity(), name)) {
         switch (mappingMergeMode) {
         case APPEND:
           if (!Utilities.splitStrings(d.getMap(), "\\,").contains(s.getMap())) {
