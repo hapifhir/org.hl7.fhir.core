@@ -54,7 +54,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.zip.Deflater;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -780,13 +779,10 @@ public class NpmPackage {
    * and case is ignored (macOS and Windows file systems don't tell Package.json from
    * package.json). FHIRsmith (library/package-names.js) normalises the same way.
    */
-  private static final Pattern SLASH = Pattern.compile("/");
-  private static final Pattern SLASH_OR_BACKSLASH = Pattern.compile("[/\\\\]");
-
   public static String entryNameKey(String name) {
     String n = Normalizer.normalize(name, Normalizer.Form.NFC).replace('\\', '/');
     StringBuilder b = new StringBuilder();
-    for (String s : SLASH.split(n)) {
+    for (String s : pathSegments(n)) {
       if (!s.isEmpty() && !s.equals(".")) {
         if (b.length() > 0) {
           b.append('/');
@@ -803,11 +799,25 @@ public class NpmPackage {
    * FHIRsmith (library/package-names.js) refuses the same names
    */
   public static void checkEntryPath(String name) throws IOException {
-    for (String s : SLASH_OR_BACKSLASH.split(name)) {
+    for (String s : pathSegments(name.replace('\\', '/'))) {
       if ("..".equals(s)) {
         throw new IOException("Entry with an illegal name: " + name);
       }
     }
+  }
+
+  /** the segments of a name split on / (empty segments included), without using a regex */
+  private static List<String> pathSegments(String name) {
+    List<String> res = new ArrayList<>();
+    int start = 0;
+    int i = name.indexOf('/');
+    while (i >= 0) {
+      res.add(name.substring(start, i));
+      start = i + 1;
+      i = name.indexOf('/', start);
+    }
+    res.add(name.substring(start));
+    return res;
   }
 
   /** Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey */
