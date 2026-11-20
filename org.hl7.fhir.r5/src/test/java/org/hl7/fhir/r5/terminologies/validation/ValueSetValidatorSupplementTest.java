@@ -12,6 +12,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 import java.util.Objects;
+import java.util.HashSet;
 
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
@@ -169,6 +170,26 @@ class ValueSetValidatorSupplementTest {
     ValidationResult res = assertDoesNotThrow(() -> vsv.validateCode(new Coding(SUPPLEMENTED_URL, "x", null)));
     assertTrue(res.isOk());
     assertEquals(SUPPLEMENT_URL, sentToServer().getExtensionString(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED));
+  }
+
+  @Test
+  void validationStateDoesNotCarryFromUnknownVersionToValidCode() throws Exception {
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing();
+    CodeSystem local = new CodeSystem().setUrl(LOCAL_URL).setStatus(PublicationStatus.ACTIVE)
+        .setContent(CodeSystemContentMode.COMPLETE);
+    local.addConcept().setCode("valid");
+    ctxt.cacheResource(local);
+
+    ValueSet vs = new ValueSet().setUrl("http://example.org/fhir/ValueSet/state").setStatus(PublicationStatus.ACTIVE);
+    vs.getCompose().addInclude().setSystem(UNRESOLVABLE_URL).setVersion("1");
+    vs.getCompose().addInclude().setSystem(LOCAL_URL);
+    ValueSetValidator vsv = newValidator(ctxt, vs);
+    vsv.setUnknownSystems(new HashSet<>());
+
+    assertDoesNotThrow(() -> vsv.validateCode(new Coding(UNRESOLVABLE_URL, "unknown", null).setVersion("2")));
+    ValidationResult result = vsv.validateCode(new Coding(LOCAL_URL, "valid", null));
+
+    assertTrue(result.isOk());
   }
 
   private void assertSupplementMissing(Executable validation) {
