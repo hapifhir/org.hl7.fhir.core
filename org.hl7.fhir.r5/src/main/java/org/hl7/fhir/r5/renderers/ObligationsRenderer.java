@@ -68,7 +68,7 @@ public class ObligationsRenderer extends Renderer {
       this.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
       if (ext.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_SOURCE, ExtensionDefinitions.EXT_OBLIGATION_SOURCE_SHORT)) {
         this.source = ext.getExtensionString(ExtensionDefinitions.EXT_OBLIGATION_SOURCE, ExtensionDefinitions.EXT_OBLIGATION_SOURCE_SHORT);
-      } else if (ext.hasUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)) {
+      } else if (ext.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE) != null) {
         this.source = ((StructureDefinition) ext.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)).getVersionedUrl();
       }
     }
