@@ -215,13 +215,15 @@ public class FileUtilities {
   public static String fileTitle(String file) throws IOException {
     if (file == null)
       return null;
-    String s = ManagedFileAccess.file(file).getName();
+    // only works with the text of the path: no file is opened, so ManagedFileAccess's policy doesn't apply
+    String s = new File(file).getName();
     return s.indexOf(".") == -1 ? s : s.substring(0, s.indexOf("."));
   }
 
   public static String getDirectoryForFile(String filepath) throws IOException {
-    File f = ManagedFileAccess.file(filepath);
-    return f.getParent();
+    // only works with the text of the path: no file is opened, so ManagedFileAccess's policy doesn't apply (a relative
+    // path would otherwise be checked against the current folder, which needn't be an allowed one)
+    return new File(filepath).getParent();
   }
 
   public static String getDirectoryForFile(File file) throws IOException {
@@ -541,10 +543,17 @@ public class FileUtilities {
         if (files != null) {
           for (String f : files) {
             if (!Utilities.existsInList(f, exemptions)) {
-              File fh = ManagedFileAccess.csfile(folder + File.separatorChar + f);
-              if (fh.isDirectory())
-                clearDirectory(fh.getAbsolutePath());
-              fh.delete();
+              File link = ManagedFileAccess.file(folder + File.separatorChar + f);
+              if (java.nio.file.Files.isSymbolicLink(link.toPath())) {
+                // a link in the folder is deleted, not what it links to (as FileUtils.cleanDirectory does, above). (and
+                // before CSFile, whose case check fails on a link)
+                link.delete();
+              } else {
+                File fh = ManagedFileAccess.csfile(folder + File.separatorChar + f);
+                if (fh.isDirectory())
+                  clearDirectory(fh.getAbsolutePath());
+                fh.delete();
+              }
             }
           }
         }

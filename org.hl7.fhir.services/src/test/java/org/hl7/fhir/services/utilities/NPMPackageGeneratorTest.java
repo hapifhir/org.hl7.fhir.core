@@ -1223,6 +1223,33 @@ class NPMPackageGeneratorTest {
     finish(second);
   }
 
+  /** Two files whose names differ only in case (resource ids that do) can't both be in a package: every reader refuses one with both */
+  @Test
+  void namesThatDifferOnlyInCaseFailTheBuild() throws IOException {
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    // exactly the same name again is a duplicate add: reported, and skipped
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    org.hl7.fhir.exceptions.FHIRException e = org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class,
+        () -> generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-ABC.json", "{}".getBytes(StandardCharsets.UTF_8)));
+    assertTrue(e.getMessage().contains("package/ValueSet-abc.json and package/ValueSet-ABC.json"), e.getMessage());
+    // the same through the other addFile
+    org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class,
+        () -> generator.addFile("package", "valueset-ABC.json", "{}".getBytes(StandardCharsets.UTF_8)));
+    finish(generator);
+  }
+
+  /** Files loaded from a folder are named with /, whatever the platform's separator */
+  @Test
+  void filesLoadedFromAFolderAreNamedWithSlashes(@TempDir Path folder) throws IOException {
+    Files.createDirectories(folder.resolve("package").resolve("other"));
+    Files.writeString(folder.resolve("package").resolve("other").resolve("x.json"), "{}");
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.loadFiles(folder.toString(), null, folder.resolve("package").toFile());
+    finish(generator);
+    assertTrue(generator.getCreated().contains("package/other/x.json"), generator.getCreated().toString());
+  }
+
   @Test
   void renamedFilesAreReported() throws IOException {
     NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());

@@ -49,6 +49,7 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.PackageEntryNames;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -92,6 +93,8 @@ public class NPMPackageGenerator {
 
   private String destFile;
   private Set<String> created = new HashSet<String>();
+  // what the duplicate check goes by: the same file to some systems is an error (see PackageEntryNames)
+  private PackageEntryNames entryNames = new PackageEntryNames();
   public Set<String> getCreated() {
     return created;
   }
@@ -421,7 +424,7 @@ public class NPMPackageGenerator {
       renamed.put(original, path);
     }
       
-    if (created.contains(path)) {
+    if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
       created.add(path);
@@ -448,7 +451,7 @@ public class NPMPackageGenerator {
       renamed.put(original, path);
     }
       
-    if (created.contains(path)) {
+    if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
       created.add(path);
@@ -557,8 +560,8 @@ public class NPMPackageGenerator {
                 try {
                     if (isNotIgnored(f, root, rootIgnoreNode, directoryIgnoreCache)) {
                         Path rel = root.relativize(f);
-                        String path = rel.toString();
-                        if (created.contains(path))
+                        String path = rel.toString().replace(File.separatorChar, '/'); // a tar entry's separator is /, on Windows too
+                        if (!entryNames.add(path))
                             log.warn("Duplicate package file "+path);
                         else {
                             byte[] content = FileUtilities.fileToBytes(f.toFile());

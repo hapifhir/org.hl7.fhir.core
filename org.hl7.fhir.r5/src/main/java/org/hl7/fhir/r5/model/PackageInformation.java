@@ -27,6 +27,14 @@ public class PackageInformation {
    */
   @Getter private boolean isMaster;
 
+  /**
+   * true if the package is an npm package that was loaded (a dependency, say), not something made up
+   * for content that isn't in one - the IG being built, or files being validated. A code system from a
+   * loaded package is the same as any other copy of that version, so a terminology server that lists that
+   * version already has it, and needn't be sent it (see BaseWorkerContext.addDependentCodeSystem)
+   */
+  @Getter private boolean fromNpmPackage;
+
   public PackageInformation(String id, String version, String fhirVersion, Date date, String name, String canonical, String web) {
     super();
     this.id = id;
@@ -54,6 +62,7 @@ public class PackageInformation {
     this.canonical = pi.canonical();
     this.web = pi.getWebLocation();
     this.fhirVersion = pi.fhirVersion();
+    this.fromNpmPackage = true;
     dependencies.addAll(pi.dependencies());
   }
 
@@ -67,6 +76,7 @@ public class PackageInformation {
     this.web = pi.getWebLocation();
     this.fhirVersion = pi.fhirVersion();
     this.isMaster = isMaster;
+    this.fromNpmPackage = true;
     dependencies.addAll(pi.dependencies());
   }
 

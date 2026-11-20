@@ -189,22 +189,27 @@ public class NpmPackageVersionConverter {
       throw new IOException("Error reading " + source + ": " + e.getMessage(), e);
     }
     Map<String, byte[]> content = new HashMap<>();
+    // refused as NpmPackage refuses them: a name with a .. segment, two files of the same name, or
+    // more than the default limit once decompressed
+    Map<String, String> names = new HashMap<>();
+    long loadedSize = 0;
 
     try (TarArchiveInputStream tarIn = NpmPackage.getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         String n = NpmPackage.getEntryName(entry);
-        if (n.contains("..")) {
-          throw new RuntimeException("Entry with an illegal name: " + n);
-        }
+        NpmPackage.checkEntryPath(n);
         if (!entry.isDirectory()) {
+          NpmPackage.checkDuplicateName(names, n, source);
           int count;
           byte[] data = new byte[BUFFER_SIZE];
           ByteArrayOutputStream fos = new ByteArrayOutputStream();
           try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
               dest.write(data, 0, count);
+              loadedSize = loadedSize + count;
+              NpmPackage.checkLoadedSize(loadedSize, NpmPackage.getDefaultMaxLoadSize(), source);
             }
           }
           fos.close();

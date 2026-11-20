@@ -82,16 +82,81 @@ public class ManagedFileAccess {
     ManagedFileAccess.accessPolicy = accessPolicy;
   }
 
+  /**
+   * Limits file access (in the DIRECT policy) to the files and folders under these folders. An empty list (the default)
+   * means no limit. The IG publisher uses this to keep a build to the IG's own folder, the temp folder and ~/.fhir
+   *
+   * @param paths the folders, absolute or relative to the current folder
+   */
+  public static void setAllowedPaths(List<String> paths) {
+    List<String> list = new ArrayList<>();
+    if (paths != null) {
+      for (String p : paths) {
+        if (p != null) {
+          java.nio.file.Path rp = realPath(p);
+          list.add(rp != null ? rp.toString() : java.nio.file.Paths.get(p).toAbsolutePath().normalize().toString());
+        }
+      }
+    }
+    // a path inside another one adds nothing (e.g. ~/.fhir/packages when ~/.fhir is there), and nor does the same one twice
+    List<String> res = new ArrayList<>();
+    for (String p : list) {
+      boolean covered = false;
+      for (String q : list) {
+        if (!p.equals(q) && java.nio.file.Paths.get(p).startsWith(java.nio.file.Paths.get(q))) {
+          covered = true;
+        }
+      }
+      if (!covered && !res.contains(p)) {
+        res.add(p);
+      }
+    }
+    allowedPaths = res;
+  }
+
+  public static List<String> getAllowedPaths() {
+    return new ArrayList<>(allowedPaths);
+  }
+
+  /**
+   * Whether the path is under one of the allowed folders, where it really is: . and .. are resolved, and so are
+   * symbolic links, as far as the path exists (the rest of it is yet to be created). Compared by path segments, so
+   * /ig-other isn't under /ig
+   */
   private static boolean inAllowedPaths(String pathname) {
     if (allowedPaths.isEmpty()) {
       return true;
     }
+    if (pathname == null) {
+      return false;
+    }
+    java.nio.file.Path p = realPath(pathname);
+    if (p == null) {
+      return false;
+    }
     for (String s : allowedPaths) {
-      if (pathname.startsWith(s)) {
+      if (p.startsWith(java.nio.file.Paths.get(s))) {
         return true;
       }
     }
     return false;
+  }
+
+  private static java.nio.file.Path realPath(String pathname) {
+    java.nio.file.Path p = java.nio.file.Paths.get(pathname).toAbsolutePath().normalize();
+    java.nio.file.Path existing = p;
+    while (existing != null && !java.nio.file.Files.exists(existing, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+      existing = existing.getParent();
+    }
+    if (existing == null) {
+      return p;
+    }
+    try {
+      return existing.toRealPath().resolve(existing.relativize(p)).normalize();
+    } catch (IOException e) {
+      // a link to nowhere: it isn't anywhere that's allowed
+      return null;
+    }
   }
 
   /** 
@@ -179,6 +244,9 @@ public class ManagedFileAccess {
    * @throws FileNotFoundException
    */
   public static FileInputStream inStream(File file) throws FileNotFoundException {
+    if (accessPolicy == FileAccessPolicy.DIRECT && !inAllowedPaths(file.getAbsolutePath())) {
+      throw new FileNotFoundException("The pathname '"+file.getAbsolutePath()+"' cannot be accessed by policy");
+    }
     return new FileInputStream(file);
   }
 
@@ -209,6 +277,9 @@ public class ManagedFileAccess {
    * @throws FileNotFoundException
    */
   public static FileOutputStream outStream(File file) throws FileNotFoundException {
+    if (accessPolicy == FileAccessPolicy.DIRECT && !inAllowedPaths(file.getAbsolutePath())) {
+      throw new FileNotFoundException("The pathname '"+file.getAbsolutePath()+"' cannot be accessed by policy");
+    }
     return new FileOutputStream(file);
   }
   

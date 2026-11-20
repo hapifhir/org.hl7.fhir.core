@@ -320,4 +320,19 @@ import org.junit.jupiter.api.*;
      }
      return read.length == versionOfFile(c).length;
    }
- } 
+
+   /** clearing with exemptions deletes a link in the folder, not what it links to */
+   @Test
+   void clearDirectoryWithExemptionsDoesNotFollowLinks() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("clear-links");
+     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     java.nio.file.Path cache = Files.createDirectories(dir.resolve("cache"));
+     Files.write(cache.resolve("keep.cache"), "k".getBytes(StandardCharsets.UTF_8));
+     Files.write(cache.resolve("other.cache"), "o".getBytes(StandardCharsets.UTF_8));
+     Files.createSymbolicLink(cache.resolve("sub"), precious);
+     FileUtilities.clearDirectory(cache.toString(), "keep.cache");
+     assertArrayEquals(new String[] {"keep.cache"}, cache.toFile().list());
+     assertTrue(Files.exists(precious.resolve("a.txt")));
+   }
+} 

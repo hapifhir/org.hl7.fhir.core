@@ -143,6 +143,28 @@ public class CIBuildClientTests {
     assertFalse(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage));
   }
 
+  @Test
+  void testIsCurrentBranchPackage() throws IOException, InterruptedException {
+    // a branch's ci-build (current$branch) is checked against the branch's own manifest
+    MockWebServer server = new MockWebServer();
+    CIBuildClient ciBuildClient = getCiBuildClient(server);
+
+    enqueueJson(server, dummyQas);
+    enqueueJson(server, dummyManifest);
+
+    NpmPackage npmPackage = Mockito.spy(NpmPackage.empty());
+    doReturn(DUMMY_PACKAGE_DATE).when(npmPackage).date();
+    assertTrue(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage, "my-branch"));
+
+    server.takeRequest(); // qas.json
+    // JsonParser.parseObjectFromUrl adds ?nocache=<time>, so compare the path without the query
+    assertThat(server.takeRequest().getRequestUrl().encodedPath()).isEqualTo("/ig/Dummy-Organisation/dummy-project/branches/my-branch/package.manifest.json");
+
+    enqueueJson(server, dummyManifest);
+    doReturn("1092302309").when(npmPackage).date();
+    assertFalse(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage, "my-branch"));
+  }
+
   private static void enqueueDummyTgzStream(MockWebServer server, String fake_tgz) {
     server.enqueue(
       new MockResponse()

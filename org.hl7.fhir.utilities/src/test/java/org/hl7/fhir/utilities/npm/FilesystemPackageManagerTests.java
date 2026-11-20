@@ -26,6 +26,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class FilesystemPackageManagerTests {
@@ -259,6 +260,17 @@ public class FilesystemPackageManagerTests {
 
     File dummyContentFile = ManagedFileAccess.file(dummyTempDirectory.getAbsolutePath(), "dummy.txt");
     assertThat(dummyContentFile).exists();
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "current$my-branch, true", "current$2026-11-gg-supplement-unversioned, true", "current$v1.2_x, true",
+    "current, false", "1.2.3, false", "dev, false",
+    // the branch name is used in a url and a folder name: no '/' (not supported), and nothing else odd
+    "current$, false", "current$a/b, false", "current$../x, false", "current$-x, false", "current$a b, false", "current$$x, false"
+  })
+  void testIsCurrentBranch(String version, boolean expected) {
+    assertEquals(expected, FilesystemPackageCacheManager.isCurrentBranch(version), version);
   }
 
   @Test

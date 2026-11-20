@@ -58,6 +58,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.npm.PackageEntryNames;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
@@ -100,6 +101,8 @@ public class NPMPackageGenerator {
 
   private String destFile;
   private Set<String> created = new HashSet<String>();
+  // what the duplicate check goes by: the same file to some systems is an error (see PackageEntryNames)
+  private PackageEntryNames entryNames = new PackageEntryNames();
   private TarArchiveOutputStream tar;
   private ByteArrayOutputStream OutputStream;
   private BufferedOutputStream bufferedOutputStream;
@@ -263,7 +266,7 @@ public class NPMPackageGenerator {
 
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory() + name;
-    if (created.contains(path))
+    if (!entryNames.add(path))
       log.warn("Duplicate package file " + path);
     else {
       created.add(path);
@@ -298,9 +301,9 @@ public class NPMPackageGenerator {
         if (f.isDirectory()) {
           loadFiles(root, f);
         } else {
-          String path = f.getAbsolutePath().substring(root.length() + 1);
+          String path = f.getAbsolutePath().substring(root.length() + 1).replace(File.separatorChar, '/'); // a tar entry's separator is /, on Windows too
           byte[] content = FileUtilities.fileToBytes(f);
-          if (created.contains(path))
+          if (!entryNames.add(path))
             log.warn("Duplicate package file " + path);
           else {
             created.add(path);
