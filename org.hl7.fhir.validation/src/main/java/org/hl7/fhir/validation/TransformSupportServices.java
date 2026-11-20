@@ -12,7 +12,11 @@ import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
+import org.hl7.fhir.model.core.Identifier;
 import org.hl7.fhir.services.fml.ITransformerServices;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 @Slf4j
 public class TransformSupportServices implements ITransformerServices {
@@ -20,13 +24,16 @@ public class TransformSupportServices implements ITransformerServices {
   private final PrintWriter mapLog;
   private final SimpleWorkerContext context;
   private List<Base> outputs;
+  private IHostApplicationServices validatorService;
 
   public TransformSupportServices(List<Base> outputs,
                                   PrintWriter mapLog,
-                                  SimpleWorkerContext context) {
+                                  SimpleWorkerContext context,
+                                  IHostApplicationServices validatorService) {
     this.outputs = outputs;
     this.mapLog = mapLog;
     this.context = context;
+    this.validatorService = validatorService;
   }
 
   @Override
@@ -56,8 +63,8 @@ public class TransformSupportServices implements ITransformerServices {
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url) throws FHIRException {
-    throw new FHIRException("resolveReference is not supported yet");
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
+    return validatorService.resolveReference(engine, new ValidationContext(appContext), url, identifier, refContext);
   }
 
   @Override
