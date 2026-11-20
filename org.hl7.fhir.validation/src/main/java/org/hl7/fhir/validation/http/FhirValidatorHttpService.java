@@ -147,6 +147,7 @@ public class FhirValidatorHttpService {
     addContext("/snapshot", new SnapshotHTTPHandler(context, this));
     addContext("/narrative", new NarrativeHTTPHandler(context, this));
     addContext("/transform", new TransformHTTPHandler(context, this));
+    addContext("/package", new PackageHTTPHandler(context, this));
     addContext("/version", new VersionHTTPHandler(context, this));
     addContext("/compile", new CompileHTTPHandler(context, this));
     addContext("/openapi.json", new OpenApiHTTPHandler());
