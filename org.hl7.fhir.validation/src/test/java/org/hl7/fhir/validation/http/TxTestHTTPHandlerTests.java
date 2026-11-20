@@ -52,6 +52,9 @@ class TxTestHTTPHandlerTests {
   private HttpResponse<String> send(String method, String path, String body) throws IOException, InterruptedException {
     HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://localhost:" + PORT + path));
     b.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+    if ("POST".equals(method)) {
+      b.header("Content-Type", "application/json");
+    }
     return client.send(b.build(), HttpResponse.BodyHandlers.ofString());
   }
 
@@ -89,6 +92,25 @@ class TxTestHTTPHandlerTests {
 
   @ParameterizedTest
   @CsvSource(delimiter = '|', quoteCharacter = '`', value = {
+    "/txTest/setup|{\"server\":\"http://localhost:1/fhir\"}|",
+    "/txTest/setup|{\"server\":\"http://localhost:1/fhir\"}|text/plain;json",
+    "/txTest/teardown?session=x||",
+    "/txTest/teardown?session=x||text/plain",
+  })
+  void undeclaredTypeIsRefused(String path, String body, String contentType) throws Exception {
+    // setup and teardown change the server's state, so even a body-less POST must declare JSON or
+    // XML: otherwise any web page could send one as a CORS simple request
+    HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://localhost:" + PORT + path));
+    b.POST(body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+    if (contentType != null) {
+      b.header("Content-Type", contentType);
+    }
+    HttpResponse<String> res = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
+    assertEquals(415, res.statusCode(), res.body());
+  }
+
+  @ParameterizedTest
+  @CsvSource(delimiter = '|', quoteCharacter = '`', value = {
     "POST|/txTest/setup|{\"server\":\"https://not-configured.invalid/fhir\"}",
     "GET|/txTest?suite=a&test=b&server=https://not-configured.invalid/fhir|",
   })
@@ -100,6 +122,9 @@ class TxTestHTTPHandlerTests {
     try {
       HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + NETWORK_PORT + path));
       b.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+      if ("POST".equals(method)) {
+        b.header("Content-Type", "application/json");
+      }
       HttpResponse<String> res = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
       assertEquals(403, res.statusCode(), res.body());
       assertTrue(res.body().contains("not configured in fhir-settings"), res.body());
@@ -121,6 +146,9 @@ class TxTestHTTPHandlerTests {
     try {
       HttpRequest.Builder b = HttpRequest.newBuilder(URI.create("http://localhost:" + DISABLED_PORT + path));
       b.method(method, body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body));
+      if ("POST".equals(method)) {
+        b.header("Content-Type", "application/json");
+      }
       HttpResponse<String> res = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
       assertEquals(404, res.statusCode(), res.body());
       assertTrue(res.body().contains("-txTests"), res.body());

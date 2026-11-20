@@ -104,8 +104,12 @@ reach, and see some of what comes back. See [SECURITY.md](../SECURITY.md).
 
 ## Request and response conventions
 
-**Input format** comes from `Content-Type`: a media type containing `xml` means XML, anything
-else - including a missing header - means JSON.
+**Input format** comes from `Content-Type`: a media type containing `xml` means XML and one
+containing `json` means JSON. A request body that declares neither - including a body sent with
+no `Content-Type` at all - is refused with `415`, so that a browser cannot drive the server from
+another page with a CORS-simple request. The media type is judged before any parameters, so `text/plain;json` is still refused. An empty body
+is not subject to this check, except on `/stop`, `/txTest/setup` and `/txTest/teardown`, which
+change the server's state: these need a JSON or XML `Content-Type` even when they carry no body.
 
 **Output format** comes from `Accept`: a media type containing `xml` means XML, anything else
 means JSON. `/convert` and `/transform` use this to pick their output format. `/snapshot`,
@@ -430,6 +434,9 @@ folder, so the last teardown's reports overwrite the others.
 
 Responds, then stops the server and exits the JVM roughly 100ms later. POST only - a GET
 returns `405`.
+
+It takes no body, but must still declare a JSON or XML type (`-H 'Content-Type: application/json'`),
+or it is refused with `415`.
 
 ## Documentation endpoints
 

@@ -129,10 +129,14 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       }
       if (path.endsWith("/setup")) {
         requireMethod(method, "POST");
-        setup(exchange);
+        if (requireDeclaredType(exchange)) {
+          setup(exchange);
+        }
       } else if (path.endsWith("/teardown")) {
         requireMethod(method, "POST");
-        teardown(exchange);
+        if (requireDeclaredType(exchange)) {
+          teardown(exchange);
+        }
       } else if (path.equals("/txTest") || path.equals("/txTest/")) {
         requireMethod(method, "GET");
         runTest(exchange);
