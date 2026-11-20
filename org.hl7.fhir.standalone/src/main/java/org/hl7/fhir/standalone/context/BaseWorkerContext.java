@@ -3869,15 +3869,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
-    return typeManager.getDefinitions(typeName);
+    synchronized (lock) {
+      return typeManager.getDefinitions(typeName);
+    }
   }
 
   public boolean isPrimitiveType(String type) {
-    return typeManager.isPrimitive(type);
+    synchronized (lock) {
+      return typeManager.isPrimitive(type);
+    }
   }
 
   public boolean isDataType(String type) {
-    return typeManager.isDataType(type);
+    synchronized (lock) {
+      return typeManager.isDataType(type);
+    }
   }
 
   public boolean isTlogging() {

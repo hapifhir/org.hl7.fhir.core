@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 import java.util.List;
@@ -61,10 +63,46 @@ class NpmPackageSignerTest {
     tar.closeArchiveEntry();
   }
 
+  // as Java encodes it, which has no public key in it
   private static String pkcs8Pem(KeyPair pair) {
-    return "-----BEGIN PRIVATE KEY-----\n"
-      + Base64.getMimeEncoder(64, "\n".getBytes(StandardCharsets.US_ASCII)).encodeToString(pair.getPrivate().getEncoded())
-      + "\n-----END PRIVATE KEY-----\n";
+    return pem("PRIVATE KEY", pair.getPrivate().getEncoded());
+  }
+
+  private static String pem(String label, byte[] der) {
+    return "-----BEGIN " + label + "-----\n"
+      + Base64.getMimeEncoder(64, "\n".getBytes(StandardCharsets.US_ASCII)).encodeToString(der)
+      + "\n-----END " + label + "-----\n";
+  }
+
+  private static byte[] der(int tag, byte[]... parts) {
+    ByteArrayOutputStream content = new ByteArrayOutputStream();
+    for (byte[] p : parts) {
+      content.write(p, 0, p.length);
+    }
+    ByteArrayOutputStream b = new ByteArrayOutputStream();
+    b.write(tag);
+    if (content.size() >= 0x80) {
+      b.write(0x81);
+    }
+    b.write(content.size());
+    b.write(content.toByteArray(), 0, content.size());
+    return b.toByteArray();
+  }
+
+  // SEC1 ECPrivateKey, as openssl writes it, with a public key (the pair's, or another)
+  private static byte[] sec1(KeyPair pair, KeyPair publicFrom) {
+    byte[] d = ((ECPrivateKey) pair.getPrivate()).getS().toByteArray();
+    byte[] d32 = new byte[32];
+    System.arraycopy(d, Math.max(0, d.length - 32), d32, Math.max(0, 32 - d.length), Math.min(32, d.length));
+    byte[] spki = publicFrom.getPublic().getEncoded();
+    byte[] point = java.util.Arrays.copyOfRange(spki, spki.length - 65, spki.length);
+    return der(0x30, new byte[] {2, 1, 1}, der(0x04, d32), der(0xa1, der(0x03, new byte[] {0}, point)));
+  }
+
+  // PKCS#8 holding a SEC1 key with its public key, as openssl genpkey writes it
+  private static String opensslPkcs8Pem(KeyPair pair) {
+    byte[] alg = Base64.getDecoder().decode("MBMGByqGSM49AgEGCCqGSM49AwEH");
+    return pem("PRIVATE KEY", der(0x30, new byte[] {2, 1, 0}, alg, der(0x04, sec1(pair, pair))));
   }
 
   private static KeyPair newKeyPair(String curve) throws Exception {
@@ -84,10 +122,21 @@ class NpmPackageSignerTest {
   }
 
   @Test
-  void loadsAPkcs8KeyAndWorksOutItsPublicKey() throws Exception {
+  void loadsAPkcs8KeyAndReadsItsPublicKey() throws Exception {
     KeyPair pair = newKeyPair("secp256r1");
-    NpmPackageSigner signer = NpmPackageSigner.fromPem(pkcs8Pem(pair));
+    NpmPackageSigner signer = NpmPackageSigner.fromPem(opensslPkcs8Pem(pair));
     assertEquals(Base64.getEncoder().encodeToString(pair.getPublic().getEncoded()), signer.getPublicKey());
+    assertEquals(signer.getPublicKey(), NpmPackageSigner.fromPem(pem("EC PRIVATE KEY", sec1(pair, pair))).getPublicKey());
+  }
+
+  /** The public key is read from the key file, not worked out: a file without one, or with another key's, is refused */
+  @Test
+  void refusesAKeyFileWithoutItsPublicKey() throws Exception {
+    KeyPair pair = newKeyPair("secp256r1");
+    IOException e = assertThrows(IOException.class, () -> NpmPackageSigner.fromPem(pkcs8Pem(pair)));
+    assertTrue(e.getMessage().contains("no public key"), e.getMessage());
+    e = assertThrows(IOException.class, () -> NpmPackageSigner.fromPem(pem("EC PRIVATE KEY", sec1(pair, newKeyPair("secp256r1")))));
+    assertTrue(e.getMessage().contains("not the private key's"), e.getMessage());
   }
 
   @Test
@@ -140,7 +189,7 @@ class NpmPackageSignerTest {
     assertEquals("pkg:npm/example.fhir.signed@1.0.0", statement.getJsonArray("subject").get(0).asJsonObject().asString("name"));
     assertEquals("test 1.0", statement.getJsonObject("predicate").asString("tool"));
 
-    VerifiedSignature v = NpmPackageSigner.verify(pkg, partner, trust(signer));
+    VerifiedSignature v = NpmPackageSigner.verify(pkg, partner, trust(signer), "example.fhir.signed", "1.0.0");
     assertEquals("example.fhir.signed", v.getName());
     assertEquals("1.0.0", v.getVersion());
     assertEquals(signer.getKeyId(), v.getKeyId());
@@ -151,20 +200,48 @@ class NpmPackageSignerTest {
   void readsPackagesWithDotSlashEntries() throws Exception {
     NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
     File pkg = write("package.tgz", tgz("./", "example.fhir.dotslash", "1.0.0"));
-    assertEquals("example.fhir.dotslash", NpmPackageSigner.verify(pkg, signer.sign(pkg, null), trust(signer)).getName());
+    assertEquals("example.fhir.dotslash", NpmPackageSigner.verify(pkg, signer.sign(pkg, null), trust(signer), "example.fhir.dotslash", "1.0.0").getName());
+  }
+
+  @Test
+  void signsWithTheNameAndVersionGiven() throws Exception {
+    NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
+    File pkg = write("package.tgz", tgz("", "example.fhir.given", "2.0.0"));
+    File partner = signer.sign(pkg, "example.fhir.given", "2.0.0", null);
+    assertEquals("2.0.0", NpmPackageSigner.verify(pkg, partner, trust(signer), "example.fhir.given", "2.0.0").getVersion());
+  }
+
+  /** Checking a signature is a hash and a signature over the bytes: the package is never opened */
+  @Test
+  void verifyingDoesntOpenThePackage() throws Exception {
+    NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
+    byte[] notATgz = "these bytes are not a tgz at all".getBytes(StandardCharsets.UTF_8);
+    JsonObject bundle = signer.createBundle(notATgz, "example.fhir.bytes", "1.0.0", null);
+    VerifiedSignature v = NpmPackageSigner.verify(notATgz, bundle, trust(signer));
+    assertEquals("example.fhir.bytes", v.getName());
+    assertEquals("1.0.0", v.getVersion());
+  }
+
+  @Test
+  void aPackageJsonOverOneMegabyteIsNotRead() throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    try (TarArchiveOutputStream tar = new TarArchiveOutputStream(new GzipCompressorOutputStream(out))) {
+      addEntry(tar, "package/package.json", "{\"name\":\"" + "x".repeat(1100000) + "\"}");
+    }
+    assertThrows(NpmPackageSigner.NotAPackageException.class, () -> NpmPackageSigner.readPackageJson(out.toByteArray()));
   }
 
   @Test
   void anUntrustedKeyFails() throws Exception {
     NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
-    NpmPackageSigner other = NpmPackageSigner.fromPem(pkcs8Pem(newKeyPair("secp256r1")));
+    NpmPackageSigner other = NpmPackageSigner.fromPem(opensslPkcs8Pem(newKeyPair("secp256r1")));
     assertNotEquals(signer.getKeyId(), other.getKeyId());
     File pkg = write("package.tgz", tgz("", "example.fhir.signed", "1.0.0"));
     File partner = signer.sign(pkg, null);
-    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(pkg, partner, trust(other)));
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(pkg, partner, trust(other), "example.fhir.signed", "1.0.0"));
     assertTrue(e.getMessage().contains(signer.getKeyId()), e.getMessage());
     // a trusted key id with someone else's key is no better
-    assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(pkg, partner, List.of(new SigningKey(signer.getKeyId(), other.getPublicKey()))));
+    assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(pkg, partner, List.of(new SigningKey(signer.getKeyId(), other.getPublicKey())), "example.fhir.signed", "1.0.0"));
   }
 
   @Test
@@ -176,7 +253,7 @@ class NpmPackageSignerTest {
     byte[] changed = tgz("", "example.fhir.signed", "1.0.0");
     changed = java.util.Arrays.copyOf(changed, changed.length + 1);
     File other = write("other.tgz", changed);
-    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(other, partner, trust(signer)));
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(other, partner, trust(signer), "example.fhir.signed", "1.0.0"));
     assertTrue(e.getMessage().contains("sha512"), e.getMessage());
   }
 
@@ -185,8 +262,10 @@ class NpmPackageSignerTest {
     NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
     byte[] content = tgz("", "example.fhir.signed", "1.0.0");
     JsonObject bundle = signer.createBundle(content, "example.fhir.signed", "1.0.1", null);
-    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(content, bundle, trust(signer)));
-    assertTrue(e.getMessage().contains("pkg:npm/example.fhir.signed@1.0.0"), e.getMessage());
+    // the signature is good, and says these bytes are 1.0.1: the caller loading 1.0.0 refuses it
+    assertEquals("1.0.1", NpmPackageSigner.verify(content, bundle, trust(signer)).getVersion());
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(content, bundle, trust(signer), "example.fhir.signed", "1.0.0"));
+    assertTrue(e.getMessage().contains("is for example.fhir.signed#1.0.1, not example.fhir.signed#1.0.0"), e.getMessage());
   }
 
   @Test
@@ -203,9 +282,75 @@ class NpmPackageSignerTest {
   @Test
   void anyTrustedKeyWillDo() throws Exception {
     NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
-    NpmPackageSigner other = NpmPackageSigner.fromPem(pkcs8Pem(newKeyPair("secp256r1")));
+    NpmPackageSigner other = NpmPackageSigner.fromPem(opensslPkcs8Pem(newKeyPair("secp256r1")));
     byte[] content = tgz("", "example.fhir.signed", "1.0.0");
     JsonObject bundle = signer.createBundle(content, "example.fhir.signed", "1.0.0", null);
     assertEquals(signer.getKeyId(), NpmPackageSigner.verify(content, bundle, trust(other, signer)).getKeyId());
+  }
+
+  /** S5: a statement of another kind (SLSA provenance, say) signed with the same key is not a package signature */
+  @Test
+  void anotherKindOfStatementFails() throws Exception {
+    NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
+    byte[] content = tgz("", "example.fhir.signed", "1.0.0");
+    JsonObject bundle = signer.createBundle(content, "example.fhir.signed", "1.0.0", null);
+    JsonObject envelope = bundle.getJsonObject("dsseEnvelope");
+    JsonObject statement = JsonParser.parseObject(Base64.getDecoder().decode(envelope.asString("payload")));
+    statement.set("predicateType", "https://slsa.dev/provenance/v1");
+    envelope.set("payload", Base64.getEncoder().encodeToString(JsonParser.composeBytes(statement, false)));
+    // (the predicateType is checked before the signature, which no longer matches the payload either)
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(content, bundle, trust(signer)));
+    assertTrue(e.getMessage().contains("predicateType is https://slsa.dev/provenance/v1"), e.getMessage());
+  }
+
+  /** S3: a key is trusted to sign some packages, not all */
+  @Test
+  void aKeyOnlySignsThePackagesItIsTrustedFor() throws Exception {
+    NpmPackageSigner signer = NpmPackageSigner.fromPem(OPENSSL_SEC1);
+    byte[] content = tgz("", "hl7.fhir.r4.core", "4.0.1");
+    JsonObject bundle = signer.createBundle(content, "hl7.fhir.r4.core", "4.0.1", null);
+    List<SigningKey> scoped = List.of(SigningKey.forPackages(signer.getKeyId(), signer.getPublicKey(), "example.*", "other.package"));
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(content, bundle, scoped));
+    assertTrue(e.getMessage().contains("not trusted to sign it"), e.getMessage());
+    assertTrue(scoped.get(0).mayPublish("example.fhir.x"));
+    assertTrue(scoped.get(0).mayPublish("other.package"));
+    assertFalse(scoped.get(0).mayPublish("other.package2"));
+    assertEquals("hl7.fhir.r4.core", NpmPackageSigner.verify(content, bundle, List.of(SigningKey.forPackages(signer.getKeyId(), signer.getPublicKey(), "hl7.fhir.*"))).getName());
+  }
+
+  /** S3: the registry's keys are trusted for what their feed may publish (package-restrictions, the first that matches) */
+  @Test
+  void keysFromTheRegistryAreTrustedForTheirFeedsPackages() throws Exception {
+    NpmPackageSigner hl7 = NpmPackageSigner.fromPem(OPENSSL_SEC1);
+    NpmPackageSigner other = NpmPackageSigner.fromPem(opensslPkcs8Pem(newKeyPair("secp256r1")));
+    JsonObject registry = JsonParser.parseObject("{\"feeds\": ["
+      + "{\"url\": \"http://hl7.org/fhir/package-feed.xml\", \"signing\": {\"keys\": [{\"keyid\": \"" + hl7.getKeyId() + "\", \"key\": \"" + hl7.getPublicKey() + "\"}]}},"
+      + "{\"url\": \"https://example.org/package-feed.xml\", \"signing\": {\"keys\": [{\"keyid\": \"" + other.getKeyId() + "\", \"key\": \"" + other.getPublicKey() + "\"}]}},"
+      + "{\"url\": \"https://unsigned.org/package-feed.xml\"}],"
+      + "\"package-restrictions\": [{\"mask\": \"hl7.fhir.uv.example.*\", \"feeds\": [\"https://example.org/package-feed.xml\"]},"
+      + "{\"mask\": \"hl7.*\", \"feeds\": [\"https://hl7.org/fhir/package-feed.xml\"]}]}");
+    List<SigningKey> keys = NpmPackageSigner.keysFromRegistry(registry);
+    assertEquals(2, keys.size());
+    SigningKey hl7Key = keys.get(0);
+    SigningKey otherKey = keys.get(1);
+    assertTrue(hl7Key.mayPublish("hl7.fhir.r4.core"));
+    assertFalse(hl7Key.mayPublish("hl7.fhir.uv.example.thing")); // the first restriction that matches names only example.org
+    assertTrue(hl7Key.mayPublish("example.fhir.x")); // no restriction: any feed
+    assertFalse(otherKey.mayPublish("hl7.fhir.r4.core"));
+    assertTrue(otherKey.mayPublish("hl7.fhir.uv.example.thing"));
+    assertTrue(otherKey.mayPublish("example.fhir.x"));
+
+    byte[] content = tgz("", "hl7.fhir.r4.core", "4.0.1");
+    assertEquals(hl7.getKeyId(), NpmPackageSigner.verify(content, hl7.createBundle(content, "hl7.fhir.r4.core", "4.0.1", null), keys).getKeyId());
+    PackageSignatureException e = assertThrows(PackageSignatureException.class, () -> NpmPackageSigner.verify(content, other.createBundle(content, "hl7.fhir.r4.core", "4.0.1", null), keys));
+    assertTrue(e.getMessage().contains("not trusted to sign it"), e.getMessage());
+  }
+
+  @Test
+  void parsesPackageUrls() {
+    assertEquals(List.of("hl7.fhir.uv.ips", "2.0.0"), List.of(NpmPackageSigner.parsePurl("pkg:npm/hl7.fhir.uv.ips@2.0.0")));
+    assertEquals(List.of("@scope/name", "1.0.0-ballot"), List.of(NpmPackageSigner.parsePurl("pkg:npm/%40scope/name@1.0.0-ballot")));
+    assertEquals(null, NpmPackageSigner.parsePurl("pkg:maven/x@1"));
+    assertEquals(null, NpmPackageSigner.parsePurl("pkg:npm/noversion"));
   }
 }
