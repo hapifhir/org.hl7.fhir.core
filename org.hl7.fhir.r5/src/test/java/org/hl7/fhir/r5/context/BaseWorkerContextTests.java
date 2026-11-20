@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.VersionResolutionRules;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
@@ -1155,6 +1156,58 @@ public class BaseWorkerContextTests {
         : context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), version);
     assertSame(cs, result);
     Mockito.verify(terminologyCache).getCodeSystem(canonical);
+  }
+
+  /**
+   * A ValueSet names a supplement in valueset-supplement and includes SNOMED CT codes, which are expanded on the
+   * server. When that include comes from the tx cache, the supplement has to be marked as seen just as a server
+   * answer marks it, or the local expansion fails with "Required supplement not found".
+   */
+  @Test
+  void cachedIncludeExpansionSeesRequiredSupplement() throws Exception {
+    assertCachedIncludeSeesSupplement("http://snomed.info/sct", new Parameters());
+  }
+
+  /** a supplement to one SNOMED CT edition is found through the system-version the expansion parameters pin */
+  @Test
+  void cachedIncludeExpansionSeesSupplementToPinnedVersion() throws Exception {
+    String edition = "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250101";
+    Parameters params = new Parameters();
+    params.addParameter("system-version", new CanonicalType(edition));
+    assertCachedIncludeSeesSupplement(edition, params);
+  }
+
+  private void assertCachedIncludeSeesSupplement(String supplementTarget, Parameters expansionParameters) throws Exception {
+    String sct = "http://snomed.info/sct";
+    String supplementUrl = "http://example.org/fhir/CodeSystem/sct-supplement";
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing();
+    ctxt.setExpansionParameters(expansionParameters);
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    ctxt.initTxCache(cache);
+    CodeSystem supplement = new CodeSystem();
+    supplement.setUrl(supplementUrl).setVersion("0.1").setStatus(Enumerations.PublicationStatus.ACTIVE);
+    supplement.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT).setSupplements(supplementTarget);
+    ctxt.cacheResource(supplement);
+
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://example.org/fhir/ValueSet/uses-supplement").setStatus(Enumerations.PublicationStatus.ACTIVE);
+    vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(supplementUrl));
+    vs.getCompose().setInactive(true).addInclude().setSystem(sct).addConcept().setCode("22298006");
+
+    // the include's server answer, as an earlier build left it in the tx cache
+    ValueSet include = new ValueSet();
+    include.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    include.getCompose().setInactive(true).getInclude().add(vs.getCompose().getIncludeFirstRep().copy());
+    ValueSet answer = new ValueSet();
+    answer.getExpansion().setTotal(1).addContains().setSystem(sct).setCode("22298006").setDisplay("Myocardial infarction");
+    cache.cacheExpansion(cache.generateExpandToken(include, new ExpansionOptions().withHierarchical(false)), new ValueSetExpansionOutcome(answer), false);
+
+    ValueSetExpansionOutcome res = ctxt.expandVS(new ExpansionOptions().withCacheOk(false), vs);
+
+    assertNull(res.getError());
+    assertEquals("22298006", res.getValueset().getExpansion().getContainsFirstRep().getCode());
+    // the supplements are collected in a copy, not in the context's expansion parameters
+    assertFalse(ctxt.getExpansionParameters().hasParameter("tx-resource"));
   }
 
   @Test

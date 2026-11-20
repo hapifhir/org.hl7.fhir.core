@@ -954,6 +954,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
+      if (opCtxt != null) {
+        // a server answer marks the supplements sent with it as seen (addDependentResources), so a cached one has
+        // to as well, or the caller reports them missing. No client, so nothing is sent
+        Parameters p = getExpansionParameters();
+        addDependentResources(opCtxt, null, p == null ? new Parameters() : p, vs);
+      }
       return res;
     }
     Set<String> systems = findRelevantSystems(vs);
@@ -2334,7 +2340,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean checkAddToParams(TerminologyClientContext tc, Parameters pin, CanonicalResource cr) {
     boolean cache = false;
     boolean addToParams = false;
-    if (tc.usingCache()) {
+    if (tc != null && tc.usingCache()) {
       if (!tc.alreadyCached(cr)) {
         tc.addToCache(cr);
 
