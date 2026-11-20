@@ -48,7 +48,7 @@ public class RdfParser extends RdfParserBase {
 
 
   protected void composeElement(Complex t, String parentType, String name, Element element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     if (index > -1)
       t.predicate("fhir:index", Integer.toString(index));
@@ -212,7 +212,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExtension(Complex parent, String parentType, String name, Extension element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -228,7 +228,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNarrative(Complex parent, String parentType, String name, Narrative element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -244,7 +244,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeReference(Complex parent, String parentType, String name, Reference element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -262,7 +262,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuantity(Complex parent, String parentType, String name, Quantity element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -284,7 +284,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePeriod(Complex parent, String parentType, String name, Period element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -300,7 +300,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAttachment(Complex parent, String parentType, String name, Attachment element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -328,7 +328,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDuration(Complex parent, String parentType, String name, Duration element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -340,7 +340,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCount(Complex parent, String parentType, String name, Count element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -352,7 +352,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRange(Complex parent, String parentType, String name, Range element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -368,7 +368,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAnnotation(Complex parent, String parentType, String name, Annotation element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -386,7 +386,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMoney(Complex parent, String parentType, String name, Money element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -398,7 +398,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeIdentifier(Complex parent, String parentType, String name, Identifier element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -422,7 +422,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCoding(Complex parent, String parentType, String name, Coding element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -445,7 +445,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSignature(Complex parent, String parentType, String name, Signature element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -469,7 +469,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSampledData(Complex parent, String parentType, String name, SampledData element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -495,7 +495,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRatio(Complex parent, String parentType, String name, Ratio element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -511,7 +511,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDistance(Complex parent, String parentType, String name, Distance element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -523,7 +523,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAge(Complex parent, String parentType, String name, Age element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -535,7 +535,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeableConcept(Complex parent, String parentType, String name, CodeableConcept element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -552,7 +552,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeta(Complex parent, String parentType, String name, Meta element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -574,7 +574,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAddress(Complex parent, String parentType, String name, Address element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -606,7 +606,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTriggerDefinition(Complex parent, String parentType, String name, TriggerDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -626,7 +626,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContributor(Complex parent, String parentType, String name, Contributor element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -644,7 +644,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataRequirement(Complex parent, String parentType, String name, DataRequirement element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -666,7 +666,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataRequirementDataRequirementCodeFilterComponent(Complex parent, String parentType, String name, DataRequirement.DataRequirementCodeFilterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -688,7 +688,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataRequirementDataRequirementDateFilterComponent(Complex parent, String parentType, String name, DataRequirement.DataRequirementDateFilterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -704,7 +704,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDosage(Complex parent, String parentType, String name, Dosage element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -744,7 +744,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRelatedArtifact(Complex parent, String parentType, String name, RelatedArtifact element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -768,7 +768,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContactDetail(Complex parent, String parentType, String name, ContactDetail element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -784,7 +784,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeHumanName(Complex parent, String parentType, String name, HumanName element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -810,7 +810,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContactPoint(Complex parent, String parentType, String name, ContactPoint element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -832,7 +832,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeUsageContext(Complex parent, String parentType, String name, UsageContext element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -848,7 +848,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTiming(Complex parent, String parentType, String name, Timing element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -866,7 +866,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTimingTimingRepeatComponent(Complex parent, String parentType, String name, Timing.TimingRepeatComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -908,7 +908,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinition(Complex parent, String parentType, String name, ElementDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -984,7 +984,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionSlicingComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionSlicingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1004,7 +1004,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionSlicingDiscriminatorComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1020,7 +1020,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionBaseComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionBaseComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1038,7 +1038,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionTypeRefComponent(Complex parent, String parentType, String name, ElementDefinition.TypeRefComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1060,7 +1060,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionExampleComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionExampleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1076,7 +1076,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionConstraintComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionConstraintComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1102,7 +1102,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionBindingComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionBindingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1120,7 +1120,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeElementDefinitionElementDefinitionMappingComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionMappingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1140,7 +1140,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeParameterDefinition(Complex parent, String parentType, String name, ParameterDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1178,7 +1178,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeParameters(Complex parent, String parentType, String name, Parameters element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1192,7 +1192,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeParametersParametersParameterComponent(Complex parent, String parentType, String name, Parameters.ParametersParameterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1223,7 +1223,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAccount(Complex parent, String parentType, String name, Account element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1259,7 +1259,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAccountCoverageComponent(Complex parent, String parentType, String name, Account.CoverageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1275,7 +1275,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAccountGuarantorComponent(Complex parent, String parentType, String name, Account.GuarantorComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1293,7 +1293,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeActivityDefinition(Complex parent, String parentType, String name, ActivityDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1373,7 +1373,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeActivityDefinitionActivityDefinitionParticipantComponent(Complex parent, String parentType, String name, ActivityDefinition.ActivityDefinitionParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1389,7 +1389,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeActivityDefinitionActivityDefinitionDynamicValueComponent(Complex parent, String parentType, String name, ActivityDefinition.ActivityDefinitionDynamicValueComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1409,7 +1409,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAdverseEvent(Complex parent, String parentType, String name, AdverseEvent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1453,7 +1453,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAdverseEventAdverseEventSuspectEntityComponent(Complex parent, String parentType, String name, AdverseEvent.AdverseEventSuspectEntityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1479,7 +1479,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAllergyIntolerance(Complex parent, String parentType, String name, AllergyIntolerance element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1521,7 +1521,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAllergyIntoleranceAllergyIntoleranceReactionComponent(Complex parent, String parentType, String name, AllergyIntolerance.AllergyIntoleranceReactionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1547,7 +1547,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAppointment(Complex parent, String parentType, String name, Appointment element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1599,7 +1599,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAppointmentAppointmentParticipantComponent(Complex parent, String parentType, String name, Appointment.AppointmentParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1619,7 +1619,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAppointmentResponse(Complex parent, String parentType, String name, AppointmentResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1647,7 +1647,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEvent(Complex parent, String parentType, String name, AuditEvent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1679,7 +1679,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEventAuditEventAgentComponent(Complex parent, String parentType, String name, AuditEvent.AuditEventAgentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1713,7 +1713,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEventAuditEventAgentNetworkComponent(Complex parent, String parentType, String name, AuditEvent.AuditEventAgentNetworkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1729,7 +1729,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEventAuditEventSourceComponent(Complex parent, String parentType, String name, AuditEvent.AuditEventSourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1747,7 +1747,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEventAuditEventEntityComponent(Complex parent, String parentType, String name, AuditEvent.AuditEventEntityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1779,7 +1779,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeAuditEventAuditEventEntityDetailComponent(Complex parent, String parentType, String name, AuditEvent.AuditEventEntityDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1795,7 +1795,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBasic(Complex parent, String parentType, String name, Basic element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1817,7 +1817,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBinary(Complex parent, String parentType, String name, Binary element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1835,7 +1835,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBodySite(Complex parent, String parentType, String name, BodySite element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1861,7 +1861,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundle(Complex parent, String parentType, String name, Bundle element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1885,7 +1885,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundleBundleLinkComponent(Complex parent, String parentType, String name, Bundle.BundleLinkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1901,7 +1901,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundleBundleEntryComponent(Complex parent, String parentType, String name, Bundle.BundleEntryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1925,7 +1925,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundleBundleEntrySearchComponent(Complex parent, String parentType, String name, Bundle.BundleEntrySearchComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1941,7 +1941,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundleBundleEntryRequestComponent(Complex parent, String parentType, String name, Bundle.BundleEntryRequestComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1965,7 +1965,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeBundleBundleEntryResponseComponent(Complex parent, String parentType, String name, Bundle.BundleEntryResponseComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -1987,7 +1987,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatement(Complex parent, String parentType, String name, CapabilityStatement element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2053,7 +2053,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementSoftwareComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementSoftwareComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2071,7 +2071,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementImplementationComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementImplementationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2087,7 +2087,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2115,7 +2115,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestSecurityComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestSecurityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2135,7 +2135,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestSecurityCertificateComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestSecurityCertificateComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2151,7 +2151,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestResourceComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestResourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2193,7 +2193,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementResourceInteractionComponent(Complex parent, String parentType, String name, CapabilityStatement.ResourceInteractionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2209,7 +2209,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestResourceSearchParamComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2229,7 +2229,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementSystemInteractionComponent(Complex parent, String parentType, String name, CapabilityStatement.SystemInteractionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2245,7 +2245,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementRestOperationComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementRestOperationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2261,7 +2261,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementMessagingComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementMessagingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2283,7 +2283,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementMessagingEndpointComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementMessagingEndpointComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2299,7 +2299,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementMessagingSupportedMessageComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2315,7 +2315,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementMessagingEventComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementMessagingEventComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2341,7 +2341,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCapabilityStatementCapabilityStatementDocumentComponent(Complex parent, String parentType, String name, CapabilityStatement.CapabilityStatementDocumentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2359,7 +2359,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCarePlan(Complex parent, String parentType, String name, CarePlan element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2411,7 +2411,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCarePlanCarePlanActivityComponent(Complex parent, String parentType, String name, CarePlan.CarePlanActivityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2433,7 +2433,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCarePlanCarePlanActivityDetailComponent(Complex parent, String parentType, String name, CarePlan.CarePlanActivityDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2477,7 +2477,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCareTeam(Complex parent, String parentType, String name, CareTeam element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2513,7 +2513,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCareTeamCareTeamParticipantComponent(Complex parent, String parentType, String name, CareTeam.CareTeamParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2533,7 +2533,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeChargeItem(Complex parent, String parentType, String name, ChargeItem element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2591,7 +2591,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeChargeItemChargeItemParticipantComponent(Complex parent, String parentType, String name, ChargeItem.ChargeItemParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2607,7 +2607,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaim(Complex parent, String parentType, String name, Claim element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2679,7 +2679,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimRelatedClaimComponent(Complex parent, String parentType, String name, Claim.RelatedClaimComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2697,7 +2697,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimPayeeComponent(Complex parent, String parentType, String name, Claim.PayeeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2715,7 +2715,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimCareTeamComponent(Complex parent, String parentType, String name, Claim.CareTeamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2737,7 +2737,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimSpecialConditionComponent(Complex parent, String parentType, String name, Claim.SpecialConditionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2761,7 +2761,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimDiagnosisComponent(Complex parent, String parentType, String name, Claim.DiagnosisComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2781,7 +2781,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimProcedureComponent(Complex parent, String parentType, String name, Claim.ProcedureComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2799,7 +2799,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimInsuranceComponent(Complex parent, String parentType, String name, Claim.InsuranceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2823,7 +2823,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimAccidentComponent(Complex parent, String parentType, String name, Claim.AccidentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2841,7 +2841,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimItemComponent(Complex parent, String parentType, String name, Claim.ItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2895,7 +2895,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimDetailComponent(Complex parent, String parentType, String name, Claim.DetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2931,7 +2931,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimSubDetailComponent(Complex parent, String parentType, String name, Claim.SubDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -2965,7 +2965,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponse(Complex parent, String parentType, String name, ClaimResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3023,7 +3023,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseItemComponent(Complex parent, String parentType, String name, ClaimResponse.ItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3043,7 +3043,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseAdjudicationComponent(Complex parent, String parentType, String name, ClaimResponse.AdjudicationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3063,7 +3063,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseItemDetailComponent(Complex parent, String parentType, String name, ClaimResponse.ItemDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3083,7 +3083,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseSubDetailComponent(Complex parent, String parentType, String name, ClaimResponse.SubDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3101,7 +3101,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseAddedItemComponent(Complex parent, String parentType, String name, ClaimResponse.AddedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3131,7 +3131,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseAddedItemsDetailComponent(Complex parent, String parentType, String name, ClaimResponse.AddedItemsDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3157,7 +3157,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseErrorComponent(Complex parent, String parentType, String name, ClaimResponse.ErrorComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3177,7 +3177,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponsePaymentComponent(Complex parent, String parentType, String name, ClaimResponse.PaymentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3201,7 +3201,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseNoteComponent(Complex parent, String parentType, String name, ClaimResponse.NoteComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3221,7 +3221,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClaimResponseInsuranceComponent(Complex parent, String parentType, String name, ClaimResponse.InsuranceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3245,7 +3245,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClinicalImpression(Complex parent, String parentType, String name, ClinicalImpression element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3295,7 +3295,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClinicalImpressionClinicalImpressionInvestigationComponent(Complex parent, String parentType, String name, ClinicalImpression.ClinicalImpressionInvestigationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3311,7 +3311,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeClinicalImpressionClinicalImpressionFindingComponent(Complex parent, String parentType, String name, ClinicalImpression.ClinicalImpressionFindingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3327,7 +3327,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystem(Complex parent, String parentType, String name, CodeSystem element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3389,7 +3389,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystemCodeSystemFilterComponent(Complex parent, String parentType, String name, CodeSystem.CodeSystemFilterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3409,7 +3409,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystemPropertyComponent(Complex parent, String parentType, String name, CodeSystem.PropertyComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3429,7 +3429,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystemConceptDefinitionComponent(Complex parent, String parentType, String name, CodeSystem.ConceptDefinitionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3453,7 +3453,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystemConceptDefinitionDesignationComponent(Complex parent, String parentType, String name, CodeSystem.ConceptDefinitionDesignationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3471,7 +3471,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCodeSystemConceptPropertyComponent(Complex parent, String parentType, String name, CodeSystem.ConceptPropertyComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3487,7 +3487,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCommunication(Complex parent, String parentType, String name, Communication element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3539,7 +3539,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCommunicationCommunicationPayloadComponent(Complex parent, String parentType, String name, Communication.CommunicationPayloadComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3553,7 +3553,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCommunicationRequest(Complex parent, String parentType, String name, CommunicationRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3605,7 +3605,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCommunicationRequestCommunicationRequestPayloadComponent(Complex parent, String parentType, String name, CommunicationRequest.CommunicationRequestPayloadComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3619,7 +3619,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCommunicationRequestCommunicationRequestRequesterComponent(Complex parent, String parentType, String name, CommunicationRequest.CommunicationRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3635,7 +3635,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompartmentDefinition(Complex parent, String parentType, String name, CompartmentDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3677,7 +3677,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompartmentDefinitionCompartmentDefinitionResourceComponent(Complex parent, String parentType, String name, CompartmentDefinition.CompartmentDefinitionResourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3695,7 +3695,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeComposition(Complex parent, String parentType, String name, Composition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3737,7 +3737,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompositionCompositionAttesterComponent(Complex parent, String parentType, String name, Composition.CompositionAttesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3755,7 +3755,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompositionCompositionRelatesToComponent(Complex parent, String parentType, String name, Composition.CompositionRelatesToComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3771,7 +3771,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompositionCompositionEventComponent(Complex parent, String parentType, String name, Composition.CompositionEventComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3789,7 +3789,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCompositionSectionComponent(Complex parent, String parentType, String name, Composition.SectionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3817,7 +3817,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMap(Complex parent, String parentType, String name, ConceptMap element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3865,7 +3865,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMapConceptMapGroupComponent(Complex parent, String parentType, String name, ConceptMap.ConceptMapGroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3889,7 +3889,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMapSourceElementComponent(Complex parent, String parentType, String name, ConceptMap.SourceElementComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3907,7 +3907,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMapTargetElementComponent(Complex parent, String parentType, String name, ConceptMap.TargetElementComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3931,7 +3931,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMapOtherElementComponent(Complex parent, String parentType, String name, ConceptMap.OtherElementComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3951,7 +3951,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConceptMapConceptMapGroupUnmappedComponent(Complex parent, String parentType, String name, ConceptMap.ConceptMapGroupUnmappedComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -3971,7 +3971,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCondition(Complex parent, String parentType, String name, Condition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4015,7 +4015,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConditionConditionStageComponent(Complex parent, String parentType, String name, Condition.ConditionStageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4031,7 +4031,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConditionConditionEvidenceComponent(Complex parent, String parentType, String name, Condition.ConditionEvidenceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4047,7 +4047,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsent(Complex parent, String parentType, String name, Consent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4095,7 +4095,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentConsentActorComponent(Complex parent, String parentType, String name, Consent.ConsentActorComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4111,7 +4111,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentConsentPolicyComponent(Complex parent, String parentType, String name, Consent.ConsentPolicyComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4127,7 +4127,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentConsentDataComponent(Complex parent, String parentType, String name, Consent.ConsentDataComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4143,7 +4143,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentExceptComponent(Complex parent, String parentType, String name, Consent.ExceptComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4175,7 +4175,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentExceptActorComponent(Complex parent, String parentType, String name, Consent.ExceptActorComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4191,7 +4191,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentExceptDataComponent(Complex parent, String parentType, String name, Consent.ExceptDataComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4207,7 +4207,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContract(Complex parent, String parentType, String name, Contract element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4265,7 +4265,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractAgentComponent(Complex parent, String parentType, String name, Contract.AgentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4281,7 +4281,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractSignatoryComponent(Complex parent, String parentType, String name, Contract.SignatoryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4299,7 +4299,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractValuedItemComponent(Complex parent, String parentType, String name, Contract.ValuedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4327,7 +4327,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractTermComponent(Complex parent, String parentType, String name, Contract.TermComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4365,7 +4365,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractTermAgentComponent(Complex parent, String parentType, String name, Contract.TermAgentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4381,7 +4381,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractTermValuedItemComponent(Complex parent, String parentType, String name, Contract.TermValuedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4409,7 +4409,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractFriendlyLanguageComponent(Complex parent, String parentType, String name, Contract.FriendlyLanguageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4423,7 +4423,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractLegalLanguageComponent(Complex parent, String parentType, String name, Contract.LegalLanguageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4437,7 +4437,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeContractComputableLanguageComponent(Complex parent, String parentType, String name, Contract.ComputableLanguageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4451,7 +4451,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCoverage(Complex parent, String parentType, String name, Coverage element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4495,7 +4495,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeCoverageGroupComponent(Complex parent, String parentType, String name, Coverage.GroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4531,7 +4531,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataElement(Complex parent, String parentType, String name, DataElement element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4575,7 +4575,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataElementDataElementMappingComponent(Complex parent, String parentType, String name, DataElement.DataElementMappingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4595,7 +4595,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDetectedIssue(Complex parent, String parentType, String name, DetectedIssue element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4629,7 +4629,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDetectedIssueDetectedIssueMitigationComponent(Complex parent, String parentType, String name, DetectedIssue.DetectedIssueMitigationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4647,7 +4647,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDevice(Complex parent, String parentType, String name, Device element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4693,7 +4693,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceDeviceUdiComponent(Complex parent, String parentType, String name, Device.DeviceUdiComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4719,7 +4719,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceComponent(Complex parent, String parentType, String name, DeviceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4751,7 +4751,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceComponentDeviceComponentProductionSpecificationComponent(Complex parent, String parentType, String name, DeviceComponent.DeviceComponentProductionSpecificationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4769,7 +4769,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceMetric(Complex parent, String parentType, String name, DeviceMetric element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4801,7 +4801,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceMetricDeviceMetricCalibrationComponent(Complex parent, String parentType, String name, DeviceMetric.DeviceMetricCalibrationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4819,7 +4819,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceRequest(Complex parent, String parentType, String name, DeviceRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4873,7 +4873,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceRequestDeviceRequestRequesterComponent(Complex parent, String parentType, String name, DeviceRequest.DeviceRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4889,7 +4889,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDeviceUseStatement(Complex parent, String parentType, String name, DeviceUseStatement element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4923,7 +4923,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDiagnosticReport(Complex parent, String parentType, String name, DiagnosticReport element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4969,7 +4969,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDiagnosticReportDiagnosticReportPerformerComponent(Complex parent, String parentType, String name, DiagnosticReport.DiagnosticReportPerformerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -4985,7 +4985,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDiagnosticReportDiagnosticReportImageComponent(Complex parent, String parentType, String name, DiagnosticReport.DiagnosticReportImageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5001,7 +5001,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentManifest(Complex parent, String parentType, String name, DocumentManifest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5037,7 +5037,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentManifestDocumentManifestContentComponent(Complex parent, String parentType, String name, DocumentManifest.DocumentManifestContentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5051,7 +5051,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentManifestDocumentManifestRelatedComponent(Complex parent, String parentType, String name, DocumentManifest.DocumentManifestRelatedComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5067,7 +5067,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentReference(Complex parent, String parentType, String name, DocumentReference element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5113,7 +5113,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentReferenceDocumentReferenceRelatesToComponent(Complex parent, String parentType, String name, DocumentReference.DocumentReferenceRelatesToComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5129,7 +5129,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentReferenceDocumentReferenceContentComponent(Complex parent, String parentType, String name, DocumentReference.DocumentReferenceContentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5145,7 +5145,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentReferenceDocumentReferenceContextComponent(Complex parent, String parentType, String name, DocumentReference.DocumentReferenceContextComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5171,7 +5171,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDocumentReferenceDocumentReferenceContextRelatedComponent(Complex parent, String parentType, String name, DocumentReference.DocumentReferenceContextRelatedComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5187,7 +5187,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityRequest(Complex parent, String parentType, String name, EligibilityRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5229,7 +5229,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityResponse(Complex parent, String parentType, String name, EligibilityResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5267,7 +5267,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityResponseInsuranceComponent(Complex parent, String parentType, String name, EligibilityResponse.InsuranceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5285,7 +5285,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityResponseBenefitsComponent(Complex parent, String parentType, String name, EligibilityResponse.BenefitsComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5315,7 +5315,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityResponseBenefitComponent(Complex parent, String parentType, String name, EligibilityResponse.BenefitComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5333,7 +5333,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEligibilityResponseErrorsComponent(Complex parent, String parentType, String name, EligibilityResponse.ErrorsComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5347,7 +5347,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounter(Complex parent, String parentType, String name, Encounter element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5401,7 +5401,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterStatusHistoryComponent(Complex parent, String parentType, String name, Encounter.StatusHistoryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5417,7 +5417,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterClassHistoryComponent(Complex parent, String parentType, String name, Encounter.ClassHistoryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5433,7 +5433,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterEncounterParticipantComponent(Complex parent, String parentType, String name, Encounter.EncounterParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5451,7 +5451,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterDiagnosisComponent(Complex parent, String parentType, String name, Encounter.DiagnosisComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5469,7 +5469,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterEncounterHospitalizationComponent(Complex parent, String parentType, String name, Encounter.EncounterHospitalizationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5499,7 +5499,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEncounterEncounterLocationComponent(Complex parent, String parentType, String name, Encounter.EncounterLocationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5517,7 +5517,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEndpoint(Complex parent, String parentType, String name, Endpoint element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5551,7 +5551,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEnrollmentRequest(Complex parent, String parentType, String name, EnrollmentRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5579,7 +5579,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEnrollmentResponse(Complex parent, String parentType, String name, EnrollmentResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5609,7 +5609,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEpisodeOfCare(Complex parent, String parentType, String name, EpisodeOfCare element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5645,7 +5645,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEpisodeOfCareEpisodeOfCareStatusHistoryComponent(Complex parent, String parentType, String name, EpisodeOfCare.EpisodeOfCareStatusHistoryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5661,7 +5661,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeEpisodeOfCareDiagnosisComponent(Complex parent, String parentType, String name, EpisodeOfCare.DiagnosisComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5679,7 +5679,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfile(Complex parent, String parentType, String name, ExpansionProfile element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5737,7 +5737,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileExpansionProfileFixedVersionComponent(Complex parent, String parentType, String name, ExpansionProfile.ExpansionProfileFixedVersionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5755,7 +5755,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileExpansionProfileExcludedSystemComponent(Complex parent, String parentType, String name, ExpansionProfile.ExpansionProfileExcludedSystemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5771,7 +5771,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileExpansionProfileDesignationComponent(Complex parent, String parentType, String name, ExpansionProfile.ExpansionProfileDesignationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5787,7 +5787,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileDesignationIncludeComponent(Complex parent, String parentType, String name, ExpansionProfile.DesignationIncludeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5801,7 +5801,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileDesignationIncludeDesignationComponent(Complex parent, String parentType, String name, ExpansionProfile.DesignationIncludeDesignationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5817,7 +5817,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileDesignationExcludeComponent(Complex parent, String parentType, String name, ExpansionProfile.DesignationExcludeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5831,7 +5831,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExpansionProfileDesignationExcludeDesignationComponent(Complex parent, String parentType, String name, ExpansionProfile.DesignationExcludeDesignationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5847,7 +5847,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefit(Complex parent, String parentType, String name, ExplanationOfBenefit element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5937,7 +5937,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitRelatedClaimComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.RelatedClaimComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5955,7 +5955,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitPayeeComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.PayeeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5973,7 +5973,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitSupportingInformationComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.SupportingInformationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -5997,7 +5997,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitCareTeamComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.CareTeamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6019,7 +6019,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitDiagnosisComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.DiagnosisComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6039,7 +6039,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitProcedureComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.ProcedureComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6057,7 +6057,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitInsuranceComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.InsuranceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6073,7 +6073,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitAccidentComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.AccidentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6091,7 +6091,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitItemComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.ItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6149,7 +6149,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitAdjudicationComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.AdjudicationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6169,7 +6169,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitDetailComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.DetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6211,7 +6211,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitSubDetailComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.SubDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6251,7 +6251,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitAddedItemComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.AddedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6281,7 +6281,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitAddedItemsDetailComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.AddedItemsDetailComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6307,7 +6307,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitPaymentComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.PaymentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6331,7 +6331,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitNoteComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.NoteComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6351,7 +6351,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitBenefitBalanceComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.BenefitBalanceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6381,7 +6381,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeExplanationOfBenefitBenefitComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.BenefitComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6399,7 +6399,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeFamilyMemberHistory(Complex parent, String parentType, String name, FamilyMemberHistory element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6447,7 +6447,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeFamilyMemberHistoryFamilyMemberHistoryConditionComponent(Complex parent, String parentType, String name, FamilyMemberHistory.FamilyMemberHistoryConditionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6467,7 +6467,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeFlag(Complex parent, String parentType, String name, Flag element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6495,7 +6495,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGoal(Complex parent, String parentType, String name, Goal element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6537,7 +6537,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGoalGoalTargetComponent(Complex parent, String parentType, String name, Goal.GoalTargetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6555,7 +6555,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGraphDefinition(Complex parent, String parentType, String name, GraphDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6597,7 +6597,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGraphDefinitionGraphDefinitionLinkComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6621,7 +6621,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGraphDefinitionGraphDefinitionLinkTargetComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkTargetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6641,7 +6641,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGraphDefinitionGraphDefinitionLinkTargetCompartmentComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6661,7 +6661,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGroup(Complex parent, String parentType, String name, Group element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6691,7 +6691,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGroupGroupCharacteristicComponent(Complex parent, String parentType, String name, Group.GroupCharacteristicComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6711,7 +6711,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGroupGroupMemberComponent(Complex parent, String parentType, String name, Group.GroupMemberComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6729,7 +6729,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeGuidanceResponse(Complex parent, String parentType, String name, GuidanceResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6769,7 +6769,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeHealthcareService(Complex parent, String parentType, String name, HealthcareService element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6829,7 +6829,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeHealthcareServiceHealthcareServiceAvailableTimeComponent(Complex parent, String parentType, String name, HealthcareService.HealthcareServiceAvailableTimeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6849,7 +6849,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeHealthcareServiceHealthcareServiceNotAvailableComponent(Complex parent, String parentType, String name, HealthcareService.HealthcareServiceNotAvailableComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6865,7 +6865,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingManifest(Complex parent, String parentType, String name, ImagingManifest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6889,7 +6889,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingManifestStudyComponent(Complex parent, String parentType, String name, ImagingManifest.StudyComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6909,7 +6909,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingManifestSeriesComponent(Complex parent, String parentType, String name, ImagingManifest.SeriesComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6927,7 +6927,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingManifestInstanceComponent(Complex parent, String parentType, String name, ImagingManifest.InstanceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6943,7 +6943,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingStudy(Complex parent, String parentType, String name, ImagingStudy element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -6993,7 +6993,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingStudyImagingStudySeriesComponent(Complex parent, String parentType, String name, ImagingStudy.ImagingStudySeriesComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7029,7 +7029,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImagingStudyImagingStudySeriesInstanceComponent(Complex parent, String parentType, String name, ImagingStudy.ImagingStudySeriesInstanceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7049,7 +7049,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunization(Complex parent, String parentType, String name, Immunization element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7103,7 +7103,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationImmunizationPractitionerComponent(Complex parent, String parentType, String name, Immunization.ImmunizationPractitionerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7119,7 +7119,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationImmunizationExplanationComponent(Complex parent, String parentType, String name, Immunization.ImmunizationExplanationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7135,7 +7135,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationImmunizationReactionComponent(Complex parent, String parentType, String name, Immunization.ImmunizationReactionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7153,7 +7153,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationImmunizationVaccinationProtocolComponent(Complex parent, String parentType, String name, Immunization.ImmunizationVaccinationProtocolComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7181,7 +7181,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationRecommendation(Complex parent, String parentType, String name, ImmunizationRecommendation element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7199,7 +7199,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationRecommendationImmunizationRecommendationRecommendationComponent(Complex parent, String parentType, String name, ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7229,7 +7229,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationRecommendationImmunizationRecommendationRecommendationDateCriterionComponent(Complex parent, String parentType, String name, ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7245,7 +7245,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImmunizationRecommendationImmunizationRecommendationRecommendationProtocolComponent(Complex parent, String parentType, String name, ImmunizationRecommendation.ImmunizationRecommendationRecommendationProtocolComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7265,7 +7265,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuide(Complex parent, String parentType, String name, ImplementationGuide element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7313,7 +7313,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuideImplementationGuideDependencyComponent(Complex parent, String parentType, String name, ImplementationGuide.ImplementationGuideDependencyComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7329,7 +7329,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuideImplementationGuidePackageComponent(Complex parent, String parentType, String name, ImplementationGuide.ImplementationGuidePackageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7347,7 +7347,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuideImplementationGuidePackageResourceComponent(Complex parent, String parentType, String name, ImplementationGuide.ImplementationGuidePackageResourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7371,7 +7371,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuideImplementationGuideGlobalComponent(Complex parent, String parentType, String name, ImplementationGuide.ImplementationGuideGlobalComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7387,7 +7387,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeImplementationGuideImplementationGuidePageComponent(Complex parent, String parentType, String name, ImplementationGuide.ImplementationGuidePageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7413,7 +7413,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeLibrary(Complex parent, String parentType, String name, Library element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7477,7 +7477,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeLinkage(Complex parent, String parentType, String name, Linkage element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7495,7 +7495,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeLinkageLinkageItemComponent(Complex parent, String parentType, String name, Linkage.LinkageItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7511,7 +7511,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeListResource(Complex parent, String parentType, String name, ListResource element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7549,7 +7549,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeListResourceListEntryComponent(Complex parent, String parentType, String name, ListResource.ListEntryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7569,7 +7569,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeLocation(Complex parent, String parentType, String name, Location element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7611,7 +7611,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeLocationLocationPositionComponent(Complex parent, String parentType, String name, Location.LocationPositionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7629,7 +7629,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasure(Complex parent, String parentType, String name, Measure element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7715,7 +7715,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureMeasureGroupComponent(Complex parent, String parentType, String name, Measure.MeasureGroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7737,7 +7737,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureMeasureGroupPopulationComponent(Complex parent, String parentType, String name, Measure.MeasureGroupPopulationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7759,7 +7759,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureMeasureGroupStratifierComponent(Complex parent, String parentType, String name, Measure.MeasureGroupStratifierComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7777,7 +7777,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureMeasureSupplementalDataComponent(Complex parent, String parentType, String name, Measure.MeasureSupplementalDataComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7797,7 +7797,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReport(Complex parent, String parentType, String name, MeasureReport element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7829,7 +7829,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReportMeasureReportGroupComponent(Complex parent, String parentType, String name, MeasureReport.MeasureReportGroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7849,7 +7849,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReportMeasureReportGroupPopulationComponent(Complex parent, String parentType, String name, MeasureReport.MeasureReportGroupPopulationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7869,7 +7869,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReportMeasureReportGroupStratifierComponent(Complex parent, String parentType, String name, MeasureReport.MeasureReportGroupStratifierComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7885,7 +7885,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReportStratifierGroupComponent(Complex parent, String parentType, String name, MeasureReport.StratifierGroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7903,7 +7903,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMeasureReportStratifierGroupPopulationComponent(Complex parent, String parentType, String name, MeasureReport.StratifierGroupPopulationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7923,7 +7923,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedia(Complex parent, String parentType, String name, Media element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -7971,7 +7971,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedication(Complex parent, String parentType, String name, Medication element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8001,7 +8001,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationMedicationIngredientComponent(Complex parent, String parentType, String name, Medication.MedicationIngredientComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8019,7 +8019,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationMedicationPackageComponent(Complex parent, String parentType, String name, Medication.MedicationPackageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8037,7 +8037,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationMedicationPackageContentComponent(Complex parent, String parentType, String name, Medication.MedicationPackageContentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8053,7 +8053,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationMedicationPackageBatchComponent(Complex parent, String parentType, String name, Medication.MedicationPackageBatchComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8069,7 +8069,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationAdministration(Complex parent, String parentType, String name, MedicationAdministration element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8121,7 +8121,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationAdministrationMedicationAdministrationPerformerComponent(Complex parent, String parentType, String name, MedicationAdministration.MedicationAdministrationPerformerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8137,7 +8137,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationAdministrationMedicationAdministrationDosageComponent(Complex parent, String parentType, String name, MedicationAdministration.MedicationAdministrationDosageComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8161,7 +8161,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationDispense(Complex parent, String parentType, String name, MedicationDispense element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8221,7 +8221,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationDispenseMedicationDispensePerformerComponent(Complex parent, String parentType, String name, MedicationDispense.MedicationDispensePerformerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8237,7 +8237,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationDispenseMedicationDispenseSubstitutionComponent(Complex parent, String parentType, String name, MedicationDispense.MedicationDispenseSubstitutionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8257,7 +8257,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationRequest(Complex parent, String parentType, String name, MedicationRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8317,7 +8317,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationRequestMedicationRequestRequesterComponent(Complex parent, String parentType, String name, MedicationRequest.MedicationRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8333,7 +8333,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationRequestMedicationRequestDispenseRequestComponent(Complex parent, String parentType, String name, MedicationRequest.MedicationRequestDispenseRequestComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8355,7 +8355,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationRequestMedicationRequestSubstitutionComponent(Complex parent, String parentType, String name, MedicationRequest.MedicationRequestSubstitutionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8371,7 +8371,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMedicationStatement(Complex parent, String parentType, String name, MedicationStatement element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8419,7 +8419,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageDefinition(Complex parent, String parentType, String name, MessageDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8477,7 +8477,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageDefinitionMessageDefinitionFocusComponent(Complex parent, String parentType, String name, MessageDefinition.MessageDefinitionFocusComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8497,7 +8497,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageDefinitionMessageDefinitionAllowedResponseComponent(Complex parent, String parentType, String name, MessageDefinition.MessageDefinitionAllowedResponseComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8513,7 +8513,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageHeader(Complex parent, String parentType, String name, MessageHeader element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8549,7 +8549,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageHeaderMessageDestinationComponent(Complex parent, String parentType, String name, MessageHeader.MessageDestinationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8567,7 +8567,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageHeaderMessageSourceComponent(Complex parent, String parentType, String name, MessageHeader.MessageSourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8589,7 +8589,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeMessageHeaderMessageHeaderResponseComponent(Complex parent, String parentType, String name, MessageHeader.MessageHeaderResponseComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8607,7 +8607,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNamingSystem(Complex parent, String parentType, String name, NamingSystem element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8647,7 +8647,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNamingSystemNamingSystemUniqueIdComponent(Complex parent, String parentType, String name, NamingSystem.NamingSystemUniqueIdComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8669,7 +8669,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrder(Complex parent, String parentType, String name, NutritionOrder element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8705,7 +8705,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderOralDietComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderOralDietComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8729,7 +8729,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderOralDietNutrientComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderOralDietNutrientComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8745,7 +8745,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderOralDietTextureComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderOralDietTextureComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8761,7 +8761,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderSupplementComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderSupplementComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8783,7 +8783,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderEnteralFormulaComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderEnteralFormulaComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8813,7 +8813,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeNutritionOrderNutritionOrderEnteralFormulaAdministrationComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8831,7 +8831,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeObservation(Complex parent, String parentType, String name, Observation element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8885,7 +8885,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeObservationObservationReferenceRangeComponent(Complex parent, String parentType, String name, Observation.ObservationReferenceRangeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8909,7 +8909,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeObservationObservationRelatedComponent(Complex parent, String parentType, String name, Observation.ObservationRelatedComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8925,7 +8925,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeObservationObservationComponentComponent(Complex parent, String parentType, String name, Observation.ObservationComponentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -8947,7 +8947,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationDefinition(Complex parent, String parentType, String name, OperationDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9005,7 +9005,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationDefinitionOperationDefinitionParameterComponent(Complex parent, String parentType, String name, OperationDefinition.OperationDefinitionParameterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9037,7 +9037,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationDefinitionOperationDefinitionParameterBindingComponent(Complex parent, String parentType, String name, OperationDefinition.OperationDefinitionParameterBindingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9053,7 +9053,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationDefinitionOperationDefinitionOverloadComponent(Complex parent, String parentType, String name, OperationDefinition.OperationDefinitionOverloadComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9069,7 +9069,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationOutcome(Complex parent, String parentType, String name, OperationOutcome element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9083,7 +9083,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOperationOutcomeOperationOutcomeIssueComponent(Complex parent, String parentType, String name, OperationOutcome.OperationOutcomeIssueComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9107,7 +9107,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOrganization(Complex parent, String parentType, String name, Organization element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9139,7 +9139,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeOrganizationOrganizationContactComponent(Complex parent, String parentType, String name, Organization.OrganizationContactComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9159,7 +9159,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePatient(Complex parent, String parentType, String name, Patient element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9205,7 +9205,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePatientContactComponent(Complex parent, String parentType, String name, Patient.ContactComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9231,7 +9231,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePatientAnimalComponent(Complex parent, String parentType, String name, Patient.AnimalComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9249,7 +9249,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePatientPatientCommunicationComponent(Complex parent, String parentType, String name, Patient.PatientCommunicationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9265,7 +9265,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePatientPatientLinkComponent(Complex parent, String parentType, String name, Patient.PatientLinkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9281,7 +9281,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePaymentNotice(Complex parent, String parentType, String name, PaymentNotice element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9313,7 +9313,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePaymentReconciliation(Complex parent, String parentType, String name, PaymentReconciliation element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9353,7 +9353,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePaymentReconciliationDetailsComponent(Complex parent, String parentType, String name, PaymentReconciliation.DetailsComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9379,7 +9379,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePaymentReconciliationNotesComponent(Complex parent, String parentType, String name, PaymentReconciliation.NotesComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9395,7 +9395,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePerson(Complex parent, String parentType, String name, Person element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9427,7 +9427,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePersonPersonLinkComponent(Complex parent, String parentType, String name, Person.PersonLinkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9443,7 +9443,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinition(Complex parent, String parentType, String name, PlanDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9507,7 +9507,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionGoalComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionGoalComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9533,7 +9533,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionGoalTargetComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionGoalTargetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9551,7 +9551,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionActionComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9613,7 +9613,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionActionConditionComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionActionConditionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9633,7 +9633,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionActionRelatedActionComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionActionRelatedActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9651,7 +9651,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionActionParticipantComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionActionParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9667,7 +9667,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePlanDefinitionPlanDefinitionActionDynamicValueComponent(Complex parent, String parentType, String name, PlanDefinition.PlanDefinitionActionDynamicValueComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9687,7 +9687,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePractitioner(Complex parent, String parentType, String name, Practitioner element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9719,7 +9719,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePractitionerPractitionerQualificationComponent(Complex parent, String parentType, String name, Practitioner.PractitionerQualificationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9739,7 +9739,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePractitionerRole(Complex parent, String parentType, String name, PractitionerRole element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9779,7 +9779,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePractitionerRolePractitionerRoleAvailableTimeComponent(Complex parent, String parentType, String name, PractitionerRole.PractitionerRoleAvailableTimeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9799,7 +9799,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composePractitionerRolePractitionerRoleNotAvailableComponent(Complex parent, String parentType, String name, PractitionerRole.PractitionerRoleNotAvailableComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9815,7 +9815,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcedure(Complex parent, String parentType, String name, Procedure element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9879,7 +9879,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcedureProcedurePerformerComponent(Complex parent, String parentType, String name, Procedure.ProcedurePerformerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9897,7 +9897,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcedureProcedureFocalDeviceComponent(Complex parent, String parentType, String name, Procedure.ProcedureFocalDeviceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9913,7 +9913,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcedureRequest(Complex parent, String parentType, String name, ProcedureRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9977,7 +9977,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcedureRequestProcedureRequestRequesterComponent(Complex parent, String parentType, String name, ProcedureRequest.ProcedureRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -9993,7 +9993,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcessRequest(Complex parent, String parentType, String name, ProcessRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10035,7 +10035,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcessRequestItemsComponent(Complex parent, String parentType, String name, ProcessRequest.ItemsComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10049,7 +10049,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcessResponse(Complex parent, String parentType, String name, ProcessResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10087,7 +10087,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProcessResponseProcessResponseProcessNoteComponent(Complex parent, String parentType, String name, ProcessResponse.ProcessResponseProcessNoteComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10103,7 +10103,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProvenance(Complex parent, String parentType, String name, Provenance element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10135,7 +10135,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProvenanceProvenanceAgentComponent(Complex parent, String parentType, String name, Provenance.ProvenanceAgentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10155,7 +10155,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeProvenanceProvenanceEntityComponent(Complex parent, String parentType, String name, Provenance.ProvenanceEntityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10173,7 +10173,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaire(Complex parent, String parentType, String name, Questionnaire element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10227,7 +10227,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireQuestionnaireItemComponent(Complex parent, String parentType, String name, Questionnaire.QuestionnaireItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10269,7 +10269,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireQuestionnaireItemEnableWhenComponent(Complex parent, String parentType, String name, Questionnaire.QuestionnaireItemEnableWhenComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10287,7 +10287,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireQuestionnaireItemOptionComponent(Complex parent, String parentType, String name, Questionnaire.QuestionnaireItemOptionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10301,7 +10301,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireResponse(Complex parent, String parentType, String name, QuestionnaireResponse element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10335,7 +10335,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireResponseQuestionnaireResponseItemComponent(Complex parent, String parentType, String name, QuestionnaireResponse.QuestionnaireResponseItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10359,7 +10359,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeQuestionnaireResponseQuestionnaireResponseItemAnswerComponent(Complex parent, String parentType, String name, QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10375,7 +10375,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeReferralRequest(Complex parent, String parentType, String name, ReferralRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10433,7 +10433,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeReferralRequestReferralRequestRequesterComponent(Complex parent, String parentType, String name, ReferralRequest.ReferralRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10449,7 +10449,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRelatedPerson(Complex parent, String parentType, String name, RelatedPerson element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10483,7 +10483,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRequestGroup(Complex parent, String parentType, String name, RequestGroup element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10525,7 +10525,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRequestGroupRequestGroupActionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10573,7 +10573,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRequestGroupRequestGroupActionConditionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionConditionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10593,7 +10593,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRequestGroupRequestGroupActionRelatedActionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionRelatedActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10611,7 +10611,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeResearchStudy(Complex parent, String parentType, String name, ResearchStudy element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10663,7 +10663,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeResearchStudyResearchStudyArmComponent(Complex parent, String parentType, String name, ResearchStudy.ResearchStudyArmComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10681,7 +10681,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeResearchSubject(Complex parent, String parentType, String name, ResearchSubject element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10709,7 +10709,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRiskAssessment(Complex parent, String parentType, String name, RiskAssessment element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10753,7 +10753,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeRiskAssessmentRiskAssessmentPredictionComponent(Complex parent, String parentType, String name, RiskAssessment.RiskAssessmentPredictionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10777,7 +10777,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSchedule(Complex parent, String parentType, String name, Schedule element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10805,7 +10805,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSearchParameter(Complex parent, String parentType, String name, SearchParameter element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10865,7 +10865,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSearchParameterSearchParameterComponentComponent(Complex parent, String parentType, String name, SearchParameter.SearchParameterComponentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10881,7 +10881,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSequence(Complex parent, String parentType, String name, Sequence element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10923,7 +10923,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSequenceSequenceReferenceSeqComponent(Complex parent, String parentType, String name, Sequence.SequenceReferenceSeqComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10951,7 +10951,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSequenceSequenceVariantComponent(Complex parent, String parentType, String name, Sequence.SequenceVariantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -10975,7 +10975,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSequenceSequenceQualityComponent(Complex parent, String parentType, String name, Sequence.SequenceQualityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11015,7 +11015,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSequenceSequenceRepositoryComponent(Complex parent, String parentType, String name, Sequence.SequenceRepositoryComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11039,7 +11039,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeServiceDefinition(Complex parent, String parentType, String name, ServiceDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11101,7 +11101,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSlot(Complex parent, String parentType, String name, Slot element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11135,7 +11135,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSpecimen(Complex parent, String parentType, String name, Specimen element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11171,7 +11171,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSpecimenSpecimenCollectionComponent(Complex parent, String parentType, String name, Specimen.SpecimenCollectionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11193,7 +11193,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSpecimenSpecimenProcessingComponent(Complex parent, String parentType, String name, Specimen.SpecimenProcessingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11213,7 +11213,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSpecimenSpecimenContainerComponent(Complex parent, String parentType, String name, Specimen.SpecimenContainerComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11237,7 +11237,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureDefinition(Complex parent, String parentType, String name, StructureDefinition element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11305,7 +11305,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureDefinitionStructureDefinitionMappingComponent(Complex parent, String parentType, String name, StructureDefinition.StructureDefinitionMappingComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11325,7 +11325,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureDefinitionStructureDefinitionSnapshotComponent(Complex parent, String parentType, String name, StructureDefinition.StructureDefinitionSnapshotComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11339,7 +11339,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureDefinitionStructureDefinitionDifferentialComponent(Complex parent, String parentType, String name, StructureDefinition.StructureDefinitionDifferentialComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11353,7 +11353,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMap(Complex parent, String parentType, String name, StructureMap element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11401,7 +11401,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapStructureComponent(Complex parent, String parentType, String name, StructureMap.StructureMapStructureComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11421,7 +11421,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11445,7 +11445,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupInputComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupInputComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11465,7 +11465,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupRuleComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupRuleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11489,7 +11489,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupRuleSourceComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupRuleSourceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11521,7 +11521,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupRuleTargetComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupRuleTargetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11549,7 +11549,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupRuleTargetParameterComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupRuleTargetParameterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11563,7 +11563,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeStructureMapStructureMapGroupRuleDependentComponent(Complex parent, String parentType, String name, StructureMap.StructureMapGroupRuleDependentComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11579,7 +11579,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSubscription(Complex parent, String parentType, String name, Subscription element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11607,7 +11607,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSubscriptionSubscriptionChannelComponent(Complex parent, String parentType, String name, Subscription.SubscriptionChannelComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11627,7 +11627,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSubstance(Complex parent, String parentType, String name, Substance element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11653,7 +11653,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSubstanceSubstanceInstanceComponent(Complex parent, String parentType, String name, Substance.SubstanceInstanceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11671,7 +11671,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSubstanceSubstanceIngredientComponent(Complex parent, String parentType, String name, Substance.SubstanceIngredientComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11687,7 +11687,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSupplyDelivery(Complex parent, String parentType, String name, SupplyDelivery element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11721,7 +11721,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSupplyDeliverySupplyDeliverySuppliedItemComponent(Complex parent, String parentType, String name, SupplyDelivery.SupplyDeliverySuppliedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11737,7 +11737,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSupplyRequest(Complex parent, String parentType, String name, SupplyRequest element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11773,7 +11773,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSupplyRequestSupplyRequestOrderedItemComponent(Complex parent, String parentType, String name, SupplyRequest.SupplyRequestOrderedItemComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11789,7 +11789,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeSupplyRequestSupplyRequestRequesterComponent(Complex parent, String parentType, String name, SupplyRequest.SupplyRequestRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11805,7 +11805,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTask(Complex parent, String parentType, String name, Task element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11871,7 +11871,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTaskTaskRequesterComponent(Complex parent, String parentType, String name, Task.TaskRequesterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11887,7 +11887,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTaskTaskRestrictionComponent(Complex parent, String parentType, String name, Task.TaskRestrictionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11905,7 +11905,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTaskParameterComponent(Complex parent, String parentType, String name, Task.ParameterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11921,7 +11921,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTaskTaskOutputComponent(Complex parent, String parentType, String name, Task.TaskOutputComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11937,7 +11937,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReport(Complex parent, String parentType, String name, TestReport element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11973,7 +11973,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTestReportParticipantComponent(Complex parent, String parentType, String name, TestReport.TestReportParticipantComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -11991,7 +11991,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTestReportSetupComponent(Complex parent, String parentType, String name, TestReport.TestReportSetupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12005,7 +12005,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportSetupActionComponent(Complex parent, String parentType, String name, TestReport.SetupActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12021,7 +12021,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportSetupActionOperationComponent(Complex parent, String parentType, String name, TestReport.SetupActionOperationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12039,7 +12039,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportSetupActionAssertComponent(Complex parent, String parentType, String name, TestReport.SetupActionAssertComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12057,7 +12057,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTestReportTestComponent(Complex parent, String parentType, String name, TestReport.TestReportTestComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12075,7 +12075,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTestActionComponent(Complex parent, String parentType, String name, TestReport.TestActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12091,7 +12091,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTestReportTeardownComponent(Complex parent, String parentType, String name, TestReport.TestReportTeardownComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12105,7 +12105,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestReportTeardownActionComponent(Complex parent, String parentType, String name, TestReport.TeardownActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12119,7 +12119,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScript(Complex parent, String parentType, String name, TestScript element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12183,7 +12183,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptOriginComponent(Complex parent, String parentType, String name, TestScript.TestScriptOriginComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12199,7 +12199,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptDestinationComponent(Complex parent, String parentType, String name, TestScript.TestScriptDestinationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12215,7 +12215,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptMetadataComponent(Complex parent, String parentType, String name, TestScript.TestScriptMetadataComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12231,7 +12231,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptMetadataLinkComponent(Complex parent, String parentType, String name, TestScript.TestScriptMetadataLinkComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12247,7 +12247,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptMetadataCapabilityComponent(Complex parent, String parentType, String name, TestScript.TestScriptMetadataCapabilityComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12273,7 +12273,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptFixtureComponent(Complex parent, String parentType, String name, TestScript.TestScriptFixtureComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12291,7 +12291,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptVariableComponent(Complex parent, String parentType, String name, TestScript.TestScriptVariableComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12319,7 +12319,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptRuleComponent(Complex parent, String parentType, String name, TestScript.TestScriptRuleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12335,7 +12335,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptRuleParamComponent(Complex parent, String parentType, String name, TestScript.RuleParamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12351,7 +12351,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptRulesetComponent(Complex parent, String parentType, String name, TestScript.TestScriptRulesetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12367,7 +12367,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptRulesetRuleComponent(Complex parent, String parentType, String name, TestScript.RulesetRuleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12383,7 +12383,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptRulesetRuleParamComponent(Complex parent, String parentType, String name, TestScript.RulesetRuleParamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12399,7 +12399,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptSetupComponent(Complex parent, String parentType, String name, TestScript.TestScriptSetupComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12413,7 +12413,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptSetupActionComponent(Complex parent, String parentType, String name, TestScript.SetupActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12429,7 +12429,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptSetupActionOperationComponent(Complex parent, String parentType, String name, TestScript.SetupActionOperationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12473,7 +12473,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptSetupActionOperationRequestHeaderComponent(Complex parent, String parentType, String name, TestScript.SetupActionOperationRequestHeaderComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12489,7 +12489,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptSetupActionAssertComponent(Complex parent, String parentType, String name, TestScript.SetupActionAssertComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12549,7 +12549,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptActionAssertRuleComponent(Complex parent, String parentType, String name, TestScript.ActionAssertRuleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12565,7 +12565,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptActionAssertRuleParamComponent(Complex parent, String parentType, String name, TestScript.ActionAssertRuleParamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12581,7 +12581,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptActionAssertRulesetComponent(Complex parent, String parentType, String name, TestScript.ActionAssertRulesetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12597,7 +12597,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptActionAssertRulesetRuleComponent(Complex parent, String parentType, String name, TestScript.ActionAssertRulesetRuleComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12613,7 +12613,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptActionAssertRulesetRuleParamComponent(Complex parent, String parentType, String name, TestScript.ActionAssertRulesetRuleParamComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12629,7 +12629,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptTestComponent(Complex parent, String parentType, String name, TestScript.TestScriptTestComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12647,7 +12647,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestActionComponent(Complex parent, String parentType, String name, TestScript.TestActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12663,7 +12663,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTestScriptTeardownComponent(Complex parent, String parentType, String name, TestScript.TestScriptTeardownComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12677,7 +12677,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeTestScriptTeardownActionComponent(Complex parent, String parentType, String name, TestScript.TeardownActionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12691,7 +12691,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSet(Complex parent, String parentType, String name, ValueSet element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12741,7 +12741,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetValueSetComposeComponent(Complex parent, String parentType, String name, ValueSet.ValueSetComposeComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12761,7 +12761,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetConceptSetComponent(Complex parent, String parentType, String name, ValueSet.ConceptSetComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12783,7 +12783,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetConceptReferenceComponent(Complex parent, String parentType, String name, ValueSet.ConceptReferenceComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12801,7 +12801,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetConceptReferenceDesignationComponent(Complex parent, String parentType, String name, ValueSet.ConceptReferenceDesignationComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12819,7 +12819,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetConceptSetFilterComponent(Complex parent, String parentType, String name, ValueSet.ConceptSetFilterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12837,7 +12837,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetValueSetExpansionComponent(Complex parent, String parentType, String name, ValueSet.ValueSetExpansionComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12861,7 +12861,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetValueSetExpansionParameterComponent(Complex parent, String parentType, String name, ValueSet.ValueSetExpansionParameterComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12877,7 +12877,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeValueSetValueSetExpansionContainsComponent(Complex parent, String parentType, String name, ValueSet.ValueSetExpansionContainsComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12905,7 +12905,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeVisionPrescription(Complex parent, String parentType, String name, VisionPrescription element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
@@ -12933,7 +12933,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeVisionPrescriptionVisionPrescriptionDispenseComponent(Complex parent, String parentType, String name, VisionPrescription.VisionPrescriptionDispenseComponent element, int index) {
-    if (element == null) 
+    if (element == null || element.isEmpty()) 
       return;
     Complex t;
     if (Utilities.noString(parentType))
