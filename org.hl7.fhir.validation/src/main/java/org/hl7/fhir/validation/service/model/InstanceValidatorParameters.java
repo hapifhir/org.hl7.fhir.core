@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -54,12 +53,22 @@ public class InstanceValidatorParameters {
     this.bundleValidationRules = new ArrayList<>(instanceValidatorParameters.bundleValidationRules);
     this.jurisdiction = instanceValidatorParameters.jurisdiction;
     this.timeout = instanceValidatorParameters.timeout;
-    this.checkDisplay = instanceValidatorParameters.checkDisplay;
     this.resourceIdRule = instanceValidatorParameters.resourceIdRule;
     this.maxValidationMessages = instanceValidatorParameters.getMaxValidationMessages();
     this.codeSystemValidationSizeLimit = instanceValidatorParameters.codeSystemValidationSizeLimit;
   }
 
+  /**
+   * When a reference that hasn't been resolved looks like a RESTful reference (e.g. Patient/123), take the resource
+   * type from the URL as given, and check it against the allowed target types and profiles.
+   * <p>
+   * This does NOT stop the validator trying to resolve references, or reporting the ones it can't resolve
+   * (REFERENCE_REF_CANTRESOLVE). Whether a reference has to exist is decided by the reference policy - the
+   * IValidationPolicyAdvisor. The CLI (ValidationService) ignores external references unless -check-references is
+   * used, but a ValidationEngine or InstanceValidator set up directly checks them all unless it is given a policy
+   * advisor that says otherwise, e.g. new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE, null)
+   * (see core#2666)
+   */
   @JsonProperty("assumeValidRestReferences")
   @SerializedName("assumeValidRestReferences")
   private boolean assumeValidRestReferences = false;
@@ -649,23 +658,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @JsonProperty("checkDisplay")
-  @SerializedName("checkDisplay")
-  private CheckDisplayOption checkDisplay = null;
-
-  @SerializedName("checkDisplay")
-  @JsonProperty("checkDisplay")
-  public CheckDisplayOption getCheckDisplay() {
-    return checkDisplay;
-  }
-
-  @SerializedName("checkDisplay")
-  @JsonProperty("checkDisplay")
-  public InstanceValidatorParameters setCheckDisplay(CheckDisplayOption checkDisplay) {
-    this.checkDisplay = checkDisplay;
-    return this;
-  }
-
   @JsonProperty("resourceIdRule")
   @SerializedName("resourceIdRule")
   private IdStatus resourceIdRule = null;
@@ -718,7 +710,6 @@ public class InstanceValidatorParameters {
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
       && Objects.equals(jurisdiction, that.jurisdiction)
       && timeout == that.timeout
-      && Objects.equals(checkDisplay, that.checkDisplay)
       && Objects.equals(resourceIdRule, that.resourceIdRule)
       && Objects.equals(maxValidationMessages, that.maxValidationMessages)
       && codeSystemValidationSizeLimit == that.codeSystemValidationSizeLimit;
@@ -726,7 +717,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -762,7 +753,6 @@ public class InstanceValidatorParameters {
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
       ", timeout=" + timeout +
-      ", checkDisplay=" + checkDisplay +
       ", resourceIdRule=" + resourceIdRule +
       ", maxValidationMessages=" + maxValidationMessages +
       ", codeSystemValidationSizeLimit=" + codeSystemValidationSizeLimit +

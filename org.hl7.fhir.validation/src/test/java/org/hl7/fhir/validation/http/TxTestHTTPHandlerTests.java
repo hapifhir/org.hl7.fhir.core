@@ -62,6 +62,7 @@ class TxTestHTTPHandlerTests {
     "POST|/txTest/setup|{\"test-version\":\"1.9.6\"}|400|'server'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"mode\":\"general\"}|400|Unknown setup parameter 'mode'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"test-version\":\"../../etc\"}|400|not a path",
+    "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"test-version\":\"current$a/b\"}|400|not a path",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"externals\":3}|400|'externals'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"folder\":\"a/b\"}|400|'folder'",
     "GET|/txTest?suite=a&test=b||400|'session'",
@@ -127,6 +128,18 @@ class TxTestHTTPHandlerTests {
     } finally {
       disabled.stop();
     }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1.9.6, true", "current, true", "dev, true",
+    // the ci-build of a branch of the tests
+    "current$my-branch, true", "current$2026-11-gg-supplement-unversioned, true", "current$v1.2_x, true",
+    "current$, false", "current$a/b, false", "current$../x, false", "current$-x, false",
+    "$current, false", "1.9.6$x, false", "current$$x, false", "../../etc, false", "'', false"
+  })
+  void testVersions(String version, boolean valid) {
+    assertEquals(valid, TxTestHTTPHandler.isValidTestVersion(version), version);
   }
 
   @Test

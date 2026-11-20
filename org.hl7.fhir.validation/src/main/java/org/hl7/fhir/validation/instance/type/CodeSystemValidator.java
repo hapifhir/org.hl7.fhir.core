@@ -827,6 +827,15 @@ public class CodeSystemValidator extends BaseValidator {
         NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG);
       }
+      // a supplement with the url of the code system it supplements claims to be a version of that
+      // code system (url|version), which it is not
+      if (!Utilities.noString(url)) {
+        String suppUrl = supp.contains("|") ? supp.substring(0, supp.indexOf("|")) : supp;
+        NodeStack s = stack.push(cs.getNamedChild("url", false), -1, null, null);
+        String version = cs.getNamedChildValue("version", false);
+        // (url|version, as the terminology server names it in its warning)
+        rule(errors, "2026-11-19", IssueType.BUSINESSRULE, s.getLiteralPath(), !url.equals(suppUrl), I18nConstants.CODESYSTEM_CS_SUPP_SAME_URL, Utilities.noString(version) ? url : url + "|" + version);
+      }
       if (!Utilities.noString(caseSensitive)) {
         NodeStack s = stack.push(cs.getNamedChild("caseSensitive", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "caseSensitive");

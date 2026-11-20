@@ -35,7 +35,6 @@ import org.hl7.fhir.validation.codesystem.BCP47Checker;
 import org.hl7.fhir.validation.codesystem.CPTChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemBasedChecker;
 import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemChecker.StringWithFlag;
 import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.LoincChecker;
 import org.hl7.fhir.validation.codesystem.RxNormChecker;
@@ -103,7 +102,6 @@ public class ValueSetValidator extends BaseValidator {
     private EnumSet<PropertyOperation> ops;
     private List<String> codeList = new ArrayList<>();
     private boolean change;
-    private boolean active;
 
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
@@ -146,13 +144,6 @@ public class ValueSetValidator extends BaseValidator {
     }
     public PropertyValidationRules setChange(boolean change) {
       this.change = change;
-      return this;
-    }
-    public boolean isActive() {
-      return active;
-    }
-    public PropertyValidationRules setActive(boolean active) {
-      this.active = active;
       return this;
     }
 
@@ -683,16 +674,7 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, expr == null, I18nConstants.VALUESET_BAD_FILTER_EXPR_AND_VALUE) && ok;
             
-            if (rules.isActive()) {
-              StringWithFlag msg = csChecker.checkFilterValue(system, version, property, op, value, rules, ValidationOptions.defaults());
-              if (msg == null) {
-                // nothing
-              } else if (msg.isFail()) {
-                warning(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_CANT_CHECK, property, value, msg.getMsg());
-              } else {
-                ok = rule(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_INVALID, property, value, msg.getMsg()) && ok;                
-              }
-            } else if ("exists".equals(op)) {
+            if ("exists".equals(op)) {
               ok = checkFilterValue(errors, stack, system, version, ok, property, op, value,  new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
             } else if ("regex".equals(op)) {
               String err = null;

@@ -41,7 +41,7 @@ public class InstanceValidatorOptions {
 
   // Boolean flags
   @CommandLine.Option(names = {"-assumeValidRestReferences"},
-    description = "If present, assume that URLs that reference resources follow the RESTful URI pattern and it is safe to infer the type from the URL",
+    description = "If present, assume that URLs that reference resources follow the RESTful URI pattern and it is safe to infer the type from the URL. This does not affect whether references are resolved - see -check-references",
     arity = "0")
   @With
   public boolean assumeValidRestReferences = false;
@@ -239,20 +239,6 @@ public class InstanceValidatorOptions {
     arity = "1")
   @With
   public Long validationTimeout = 0L;
-
-  // Created by claude-sonnet-4-6
-  @CommandLine.Option(names = {"-check-display"},
-    description = """
-      How to validate the display text on coded elements (Coding, CodeableConcept).
-                 * Ignore (default): display text is not checked
-                 * Check: display must exactly match the code system's canonical text
-                 * CheckCase: match ignoring case differences
-                 * CheckSpace: match ignoring whitespace differences
-                 * CheckCaseAndSpace: match ignoring both case and whitespace differences
-    """,
-    arity = "1")
-  @With
-  public String checkDisplay = null;
 
   // Created by claude-sonnet-4-6
   @CommandLine.Option(names = {"-resource-id-rule"},

@@ -166,7 +166,7 @@ class FhirValidatorHttpServiceTest {
       setUpService(getValidationEngine());
 
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&extension=any&bestPractice=Ignore&checkDisplay=Ignore"))
+        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&extension=any&bestPractice=Ignore"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .header("Accept", "application/fhir+json")
@@ -206,7 +206,7 @@ class FhirValidatorHttpServiceTest {
       setUpService(getValidationEngine());
 
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&bestPractice=Warning&checkDisplay=Check"))
+        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&bestPractice=Warning"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_XML))
         .header("Content-Type", "application/fhir+xml")
         .header("Accept", "application/fhir+xml")
@@ -460,8 +460,7 @@ class FhirValidatorHttpServiceTest {
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(BASE_URL + "/validateResource?" +
           "&resourceIdRule=PROHIBITED" +
-          "&bestPractice=Ignore" +
-          "&checkDisplay=CheckCaseAndSpace"))
+          "&bestPractice=Ignore"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .build();
@@ -1392,8 +1391,7 @@ class FhirValidatorHttpServiceTest {
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(BASE_URL + "/validateResource" +
           "?resourceIdRule=INVALID" +
-          "&bestPractice=INVALID" +
-          "&checkDisplay=INVALID"))
+          "&bestPractice=INVALID"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .build();

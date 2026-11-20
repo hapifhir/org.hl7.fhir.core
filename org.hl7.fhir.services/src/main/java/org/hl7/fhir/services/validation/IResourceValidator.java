@@ -39,7 +39,6 @@ import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -59,12 +58,6 @@ import java.util.List;
 public interface IResourceValidator {
   
   IWorkerContext getContext();
-
-  /**
-   * how much to check displays for coded elements 
-   */
-  CheckDisplayOption getCheckDisplay();
-  void setCheckDisplay(CheckDisplayOption checkDisplay);
 
   /**
    * whether the resource must have an id or not (depends on context)

@@ -801,7 +801,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    * @deprecated
    */
   @Deprecated(since="2026-02-20")
-  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
@@ -809,7 +809,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType);
     validator.setResourceIdRule(resourceIdRule);
     validator.setBestPracticeWarningLevel(bpWarnings);
-    validator.setCheckDisplay(displayOption);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }

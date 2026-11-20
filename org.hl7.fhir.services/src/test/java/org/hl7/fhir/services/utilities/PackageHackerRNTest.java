@@ -2,12 +2,22 @@ package org.hl7.fhir.services.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
+import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.model.core.PackageInformation;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.UriType;
+import org.hl7.fhir.model.core.UrlType;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -115,5 +125,87 @@ class PackageHackerRNTest {
 
   private static Stream<Arguments> rootMaxCases() {
     return Stream.of(Arguments.of(true), Arguments.of(false));
+  }
+
+  /**
+   * an element based on Resource.id, with the fhir-type extension as R4 publishes it ('string'), with none, or already right
+   */
+  private StructureDefinition makeResourceWithId(String fhirType) {
+    StructureDefinition sd = new StructureDefinition();
+    sd.setUrl("http://example.org/StructureDefinition/test-patient");
+    sd.setType("Patient");
+    for (List<ElementDefinition> list : List.of(sd.getDifferential().getElementList(), sd.getSnapshot().getElementList())) {
+      ElementDefinition ed = new ElementDefinition();
+      ed.setId("Patient.id");
+      ed.setPath("Patient.id");
+      ed.getBase().setPath("Resource.id");
+      TypeRefComponent t = ed.addType().setCode("http://hl7.org/fhirpath/System.String");
+      if (fhirType != null) {
+        t.addExtension(ExtensionDefinitions.EXT_FHIR_TYPE, new UrlType(fhirType));
+      }
+      list.add(ed);
+      // Element.id is a string, and must stay that way
+      ElementDefinition eid = new ElementDefinition();
+      eid.setId("Patient.contact.id");
+      eid.setPath("Patient.contact.id");
+      eid.getBase().setPath("Element.id");
+      eid.addType().setCode("http://hl7.org/fhirpath/System.String").addExtension(ExtensionDefinitions.EXT_FHIR_TYPE, new UrlType("string"));
+      list.add(eid);
+    }
+    return sd;
+  }
+
+  private static Stream<Arguments> resourceIdCases() {
+    return Stream.of(Arguments.of("string"), Arguments.of((String) null), Arguments.of("id"));
+  }
+
+  @ParameterizedTest
+  @MethodSource("resourceIdCases")
+  void fixesResourceIdType(String fhirType) {
+    StructureDefinition sd = makeResourceWithId(fhirType);
+    Extension before = sd.getSnapshot().getElementList().get(0).getTypeFirstRep().getExtensionByUrl(ExtensionDefinitions.EXT_FHIR_TYPE);
+
+    PackageHackerRN.fixLoadedResource(sd);
+    PackageHackerRN.fixLoadedResource(sd); // idempotent
+
+    for (List<ElementDefinition> list : List.of(sd.getDifferential().getElementList(), sd.getSnapshot().getElementList())) {
+      TypeRefComponent t = list.get(0).getTypeFirstRep();
+      assertEquals("http://hl7.org/fhirpath/System.String", t.getCode());
+      assertEquals(1, t.getExtensionsByUrl(ExtensionDefinitions.EXT_FHIR_TYPE).size());
+      assertEquals("id", t.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE));
+      assertEquals("string", list.get(1).getTypeFirstRep().getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE));
+    }
+    if ("id".equals(fhirType)) {
+      // already right: nothing is written (#2470 - shared definitions must not be modified)
+      assertSame(before, sd.getSnapshot().getElementList().get(0).getTypeFirstRep().getExtensionByUrl(ExtensionDefinitions.EXT_FHIR_TYPE));
+    }
+  }
+
+  @Test
+  void fixPackageResourceAppliesRegistrationAndLoadHacks() {
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://terminology.hl7.org/CodeSystem/v2-0391|2.6");
+    cs.setVersion("2.6");
+    PackageHackerRN.fixPackageResource(cs, new PackageInformation("hl7.fhir.r4.core", "4.0.1", "4.0.1", new Date()));
+    assertEquals("http://terminology.hl7.org/CodeSystem/v2-0391-2.6", cs.getUrl());
+    assertEquals("2.6", cs.getVersion());
+
+    StructureDefinition sd = makeResourceWithId("string");
+    PackageHackerRN.fixPackageResource(sd, new PackageInformation("hl7.fhir.r4.core", "4.0.1", "4.0.1", new Date()));
+    assertEquals("id", sd.getSnapshot().getElementList().get(0).getTypeFirstRep().getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE));
+    assertEquals("http://example.org/StructureDefinition/test-patient", sd.getUrl());
+  }
+
+  @Test
+  void fixPackageResourceWithoutPackageInformation() {
+    // no package information: only the load hacks apply
+    CodeSystem cs = new CodeSystem();
+    cs.setUrl("http://terminology.hl7.org/CodeSystem/v2-0391|2.6");
+    PackageHackerRN.fixPackageResource(cs, null);
+    assertEquals("http://terminology.hl7.org/CodeSystem/v2-0391|2.6", cs.getUrl());
+
+    StructureDefinition sd = makeResourceWithId("string");
+    PackageHackerRN.fixPackageResource(sd, null);
+    assertEquals("id", sd.getSnapshot().getElementList().get(0).getTypeFirstRep().getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE));
   }
 }

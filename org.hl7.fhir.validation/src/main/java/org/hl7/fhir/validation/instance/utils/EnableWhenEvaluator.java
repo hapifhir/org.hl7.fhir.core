@@ -170,6 +170,37 @@ public class EnableWhenEvaluator {
     }
   }
 
+  /**
+   * The outcome of evaluating a boolean expression from the Questionnaire against the response: the result, or, when
+   * it couldn't be evaluated, why not
+   */
+  public static class ExpressionOutcome {
+    private final boolean result;
+    private final String uncheckable;
+
+    private ExpressionOutcome(boolean result, String uncheckable) {
+      this.result = result;
+      this.uncheckable = uncheckable;
+    }
+
+    public static ExpressionOutcome evaluated(boolean result) {
+      return new ExpressionOutcome(result, null);
+    }
+
+    public static ExpressionOutcome notEvaluated(String reason) {
+      return new ExpressionOutcome(false, reason);
+    }
+
+    public boolean getResult() {
+      return result;
+    }
+
+    /** null if the expression was evaluated; otherwise why it wasn't */
+    public String getUncheckable() {
+      return uncheckable;
+    }
+  }
+
   public static class EnableWhenResult {
     private final boolean enabled;
     private final QuestionnaireItemEnableWhenComponent enableWhenCondition;
@@ -217,26 +248,14 @@ public class EnableWhenEvaluator {
    */
   public EnableWhenOutcome checkQuestionEnabled(ValidationContext hostContext, QuestionnaireItemComponent qitem, QStack qstack, FHIRPathEngine engine) {
     if (hasExpressionExtension(qitem)) {
-      List<String> unresolved = new ArrayList<>();
+      ExpressionOutcome outcome;
       try {
-        Map<String, List<Base>> variables = collectVariables(hostContext, qitem, qstack, engine, unresolved);
-        String expr = getExpression(qitem);
-        ExpressionNode node = engine.parse(expr);
-        // an expression that names something we can't supply doesn't fail - the FHIRPath host
-        // services answer an unknown %name with an empty list - it quietly evaluates to false, and
-        // the item gets reported as disabled. So look for those names first (#2404)
-        Set<String> missing = new LinkedHashSet<>();
-        findUnsuppliableVariables(node, variables.keySet(), collectDefinedVariableNames(node, new LinkedHashSet<>()), missing);
-        if (!missing.isEmpty()) {
-          return EnableWhenOutcome.notEvaluated(describeMissing(missing, unresolved));
-        }
-        return EnableWhenOutcome.evaluated(engine.evaluateToBoolean(hostContext, qstack.a, qstack.a, qstack.a, node, variables));
+        outcome = evaluateExpression(hostContext, qitem, qstack, engine, qstack.a, getExpression(qitem));
       } catch (FHIRException e) {
-        // a FHIRPath problem - the expression, or something it referred to, could not be evaluated.
-        // Deliberately not catching Exception: anything else here is a bug in this code, and must
-        // not be disguised as an unevaluatable expression
-        return EnableWhenOutcome.notEvaluated(describeFailure(e, unresolved));
+        // getExpression: the expression is in a language other than FHIRPath
+        outcome = ExpressionOutcome.notEvaluated(describeFailure(e, new ArrayList<>()));
       }
+      return outcome.getUncheckable() != null ? EnableWhenOutcome.notEvaluated(outcome.getUncheckable()) : EnableWhenOutcome.evaluated(outcome.getResult());
     }
 
     if (!qitem.hasEnableWhen()) {
@@ -248,6 +267,34 @@ public class EnableWhenEvaluator {
       evaluationResults.add(evaluateCondition(enableCondition, qitem, qstack));
     }
     return EnableWhenOutcome.evaluated(checkConditionResults(evaluationResults, qitem));
+  }
+
+  /**
+   * Evaluate a boolean FHIRPath expression from the Questionnaire - an enableWhenExpression, or a targetConstraint -
+   * with focus as its context (the QuestionnaireResponse, or one of its items), and with the variables in scope for
+   * qitem (or, when qitem is null, the Questionnaire's own), plus %questionnaire, and %qitem for an item.
+   *
+   * <p>An expression that names something we can't supply doesn't fail - the FHIRPath host services answer an unknown
+   * %name with an empty list - so it would quietly evaluate to false. So those names are looked for first, and the
+   * expression is reported as not evaluated (#2404)
+   */
+  public ExpressionOutcome evaluateExpression(ValidationContext hostContext, QuestionnaireItemComponent qitem, QStack qstack, FHIRPathEngine engine, Base focus, String expr) {
+    List<String> unresolved = new ArrayList<>();
+    try {
+      Map<String, List<Base>> variables = collectVariables(hostContext, qitem, qstack, engine, unresolved);
+      ExpressionNode node = engine.parse(expr);
+      Set<String> missing = new LinkedHashSet<>();
+      findUnsuppliableVariables(node, variables.keySet(), collectDefinedVariableNames(node, new LinkedHashSet<>()), missing);
+      if (!missing.isEmpty()) {
+        return ExpressionOutcome.notEvaluated(describeMissing(missing, unresolved));
+      }
+      return ExpressionOutcome.evaluated(engine.evaluateToBoolean(hostContext, qstack.a, qstack.a, focus, node, variables));
+    } catch (FHIRException e) {
+      // a FHIRPath problem - the expression, or something it referred to, could not be evaluated.
+      // Deliberately not catching Exception: anything else here is a bug in this code, and must
+      // not be disguised as an unevaluatable expression
+      return ExpressionOutcome.notEvaluated(describeFailure(e, unresolved));
+    }
   }
 
   /**
@@ -360,6 +407,13 @@ public class EnableWhenEvaluator {
     // a launch context is what a name falls back to when the questionnaire does not define a
     // variable of that name itself, so seed with them and let any variable declaration shadow one
     Map<String, List<Base>> variables = new LinkedHashMap<>(qstack.getLaunchContexts());
+    // SDC's %questionnaire and %qitem: the Questionnaire, and the item the expression is on
+    if (qstack.getQ() != null && qstack.getQ().q() != null) {
+      variables.put("questionnaire", new ArrayList<>(List.of(qstack.getQ().q())));
+    }
+    if (qitem != null) {
+      variables.put("qitem", new ArrayList<>(List.of(qitem)));
+    }
     if (qstack.getQ() != null && qstack.getQ().q() != null) {
       addVariables(hostContext, qstack.getQ().q().getExtensionsByUrl(ExtensionDefinitions.EXT_VARIABLE), qstack.a, engine, variables, unresolved);
     }
@@ -368,7 +422,9 @@ public class EnableWhenEvaluator {
         addVariables(hostContext, pair.getQ().getExtensionsByUrl(ExtensionDefinitions.EXT_VARIABLE), qstack.a, engine, variables, unresolved);
       }
     }
-    addVariables(hostContext, qitem.getExtensionsByUrl(ExtensionDefinitions.EXT_VARIABLE), qstack.a, engine, variables, unresolved);
+    if (qitem != null) {
+      addVariables(hostContext, qitem.getExtensionsByUrl(ExtensionDefinitions.EXT_VARIABLE), qstack.a, engine, variables, unresolved);
+    }
     return variables;
   }
 

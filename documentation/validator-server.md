@@ -40,7 +40,7 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
 | `-tx` | Terminology server to use; `n/a` for no terminology server. Nominating a server turns the terminology ecosystem off unless `-ecosystem` is given too. |
 | `-ecosystem` | Terminology ecosystem coordination server (tx-reg) to consult for routing; `n/a` to turn the ecosystem off. Default `https://ecosystem.hl7.org/tx-reg`. |
-| instance validator options | `-profile`, `-level`, `-best-practice`, `-check-display`, ... - these become the *defaults* for every request, and each can be overridden per request by a query parameter. |
+| instance validator options | `-profile`, `-level`, `-best-practice`, ... - these become the *defaults* for every request, and each can be overridden per request by a query parameter. |
 
 Any remaining positional arguments after the port are treated as sources, but in server mode
 they are used only to infer the FHIR version when `-version` is absent - they are not validated
@@ -175,11 +175,10 @@ IG that defines it first, with `/loadIG`.
 | `expansionParameters` | reference | Fixed code system / value set versions for expansions. |
 | `level` | `hints`, `warnings`, `errors` | Minimum severity reported. Default `hints`. |
 | `bestPractice` | `Ignore`, `Hint`, `Warning`, `Error` | **Case sensitive** - matched against the enum constant name. |
-| `checkDisplay` | `Ignore`, `Check`, `CheckCaseAndSpace`, `CheckCase`, `CheckSpace` | **Case sensitive.** |
 | `resourceIdRule` | `optional`, `required`, `prohibited` | Applies to the outermost resource only. |
 | `questionnaire` | `none`, `check`, `required` | QuestionnaireResponse handling. |
 | `htmlInMarkdown` | `ignore`, `warning`, `error` | Level for HTML found in markdown. |
-| `assumeValidRestReferences` | boolean | Infer types from RESTful-looking references. |
+| `assumeValidRestReferences` | boolean | Infer types from RESTful-looking references (`Patient/123`) that aren't resolved. Doesn't affect whether references are resolved, or reported when they can't be - that's `-check-references` at startup. |
 | `hintAboutNonMustSupport` | boolean | Hint on elements not marked mustSupport. |
 | `wantInvariantsInMessages` | boolean | Include invariant FHIRPath in messages. |
 | `noInvariants` | boolean | Skip invariant checking. |
@@ -362,7 +361,7 @@ during it:
 | Property | Required | Default |
 | --- | --- | --- |
 | `server` | yes | - |
-| `test-version` | no | `current` - the version of the test cases (e.g. `1.9.6`), not a FHIR version |
+| `test-version` | no | `current` - the version of the test cases (e.g. `1.9.6`), not a FHIR version. `current$<branch>` is the ci-build of a branch of the tests, to test a server change against test changes that aren't merged yet (branch names with a `/` aren't supported) |
 | `externals` | no | none - the *content* of an externals file, as a JSON object, not a file name |
 | `folder` | no | the server's host name - the run's folder in the temporary directory |
 | `tester` | no | `HL7 Ecosystem Test Runner` - for `TestReport.tester` |

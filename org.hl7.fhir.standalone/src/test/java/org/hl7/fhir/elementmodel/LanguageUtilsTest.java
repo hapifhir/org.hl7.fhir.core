@@ -6,6 +6,8 @@ import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.Composition;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.services.testing.CompareUtilities;
@@ -14,10 +16,12 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,6 +105,79 @@ class LanguageUtilsTest implements ResourceLoaderTests {
   @Test
   void convertCustomFrenchGenerated() throws Exception {
     checkDivConvert("Patient-div-fr-generated");
+  }
+
+  /*
+   * A document whose narratives are all in de-CH, switched to the default language (en)
+   * (see https://github.com/HL7/fhir-ig-publisher/issues/1487)
+   * Expected behavior: the generated resource narrative is dropped so it gets regenerated, but the
+   * section narrative can't be regenerated, so it is kept as it is
+   */
+  private static final String DOCUMENT_DE_CH = """
+    {
+      "resourceType" : "Bundle",
+      "id" : "doc",
+      "language" : "de-CH",
+      "type" : "document",
+      "entry" : [{
+        "fullUrl" : "http://example.org/Composition/comp",
+        "resource" : {
+          "resourceType" : "Composition",
+          "id" : "comp",
+          "language" : "de-CH",
+          "text" : {
+            "status" : "generated",
+            "div" : "<div xmlns='http://www.w3.org/1999/xhtml' xml:lang='de-CH' lang='de-CH'><p>Notfallpass</p></div>"
+          },
+          "status" : "final",
+          "title" : "Notfallpass",
+          "section" : [{
+            "title" : "Implantate",
+            "text" : {
+              "status" : "generated",
+              "div" : "<div xmlns='http://www.w3.org/1999/xhtml'><p>Herzschrittmacher</p></div>"
+            }
+          }]
+        }
+      }]
+    }
+    """;
+
+  @Test
+  void keepSectionNarrativeElement() throws Exception {
+    IWorkerContext context = TestingUtilities.getSharedWorkerContext();
+    List<ValidationMessage> lvm = new ArrayList<>();
+    LanguageUtils languageUtils = new LanguageUtils(context);
+
+    org.hl7.fhir.services.elementmodel.JsonParser jp = new org.hl7.fhir.services.elementmodel.JsonParser(context);
+    Element bundle = jp.parseSingle(new ByteArrayInputStream(DOCUMENT_DE_CH.getBytes(StandardCharsets.UTF_8)), null);
+    Element en = languageUtils.copyToLanguage(bundle, "en", true, "de-CH", "en", lvm);
+
+    Element comp = en.getNamedChild("entry").getNamedChild("resource");
+    Assertions.assertFalse(comp.getNamedChild("text").hasChild("div"), "the resource narrative should be dropped so it is regenerated");
+    Element sectionText = comp.getNamedChild("section").getNamedChild("text");
+    Assertions.assertTrue(sectionText.hasChild("div"), "the section narrative should be kept");
+    Assertions.assertTrue(new XhtmlComposer(true).compose(sectionText.getNamedChild("div").getXhtml()).contains("Herzschrittmacher"));
+
+    // the source is not changed
+    Assertions.assertTrue(bundle.getNamedChild("entry").getNamedChild("resource").getNamedChild("text").hasChild("div"));
+  }
+
+  @Test
+  void keepSectionNarrativeResource() throws Exception {
+    IWorkerContext context = TestingUtilities.getSharedWorkerContext();
+    List<ValidationMessage> lvm = new ArrayList<>();
+    LanguageUtils languageUtils = new LanguageUtils(context);
+
+    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext());
+    Resource bundle = jp.parse(DOCUMENT_DE_CH);
+    Bundle en = (Bundle) languageUtils.copyToLanguage(bundle, "en", true, "en", lvm);
+
+    Composition comp = (Composition) en.getEntryFirstRep().getResource();
+    Assertions.assertFalse(comp.hasText() && comp.getText().hasDiv(), "the resource narrative should be dropped so it is regenerated");
+    Composition.SectionComponent section = comp.getSectionFirstRep();
+    Assertions.assertTrue(section.hasText() && section.getText().hasDiv(), "the section narrative should be kept");
+    Assertions.assertTrue(new XhtmlComposer(true).compose(section.getText().getDiv()).contains("Herzschrittmacher"));
   }
 
   private void checkDivConvert(String fName) throws Exception {

@@ -86,7 +86,7 @@ final class PackageDependencyPlanner {
       hasVersion = d.hasVersion();
       hasUri = d.hasUri();
       Base[] storedPackageId = d.getNamedValue("packageId", false);
-      aliased = storedPackageId.length != 0 && storedPackageId[0].hasUserData(UserDataNames.IG_DEP_ALIASED);
+      aliased = storedPackageId.length != 0 && storedPackageId[0].getUserData(UserDataNames.IG_DEP_ALIASED) != null; // the value: a marker set to null is not an alias
       suppressed = d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE);
       key = aliased ? id + "@npm:" + packageId : packageId;
     }

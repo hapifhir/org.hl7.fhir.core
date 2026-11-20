@@ -18,6 +18,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_IS_DERIVED = "derived.fact";
   public static final String SNAPSHOT_INHERITED_INLINE_EXTENSION = "SNAPSHOT_INHERITED_INLINE_EXTENSION";
   public static final String SNAPSHOT_GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
+  public static final String SNAPSHOT_DIFF_ERROR_REPORTED = "profileutilities.snapshot.error-reported"; // on a differential element: Boolean - a specific error has been given for it, so the generic 'No match found' one isn't needed (#2596)
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
   public static final String SNAPSHOT_ERRORS = "profileutils.snapshot.errors";

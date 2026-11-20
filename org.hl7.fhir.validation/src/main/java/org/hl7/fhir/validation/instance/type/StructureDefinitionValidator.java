@@ -875,14 +875,18 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     if (snapshot && element.hasChild("slicing", false) && isTypeSlicing(element.getNamedChild("slicing", false)) && typeCharacteristics.size() > 1) {
-      // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false), "can-bind", "Binding");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false), "has-length", "MaxLength");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false), "has-range", "MinValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false), "has-range", "MaxValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size");
+      // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others.
+      // Like the slices, only what the differential states is reported: a constraint inherited from the base (e.g. the binding on a
+      // choice element in a core resource) isn't something this profile did (#2699)
+      Element slicerDiff = diffById == null || diffById.isEmpty() ? null : diffById.get(element.getNamedChildValue("id", false));
+      boolean anyDiff = diffById != null && !diffById.isEmpty();
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false) && statedOnSlicer(anyDiff, slicerDiff, "binding", false), "can-bind", "Binding");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false) && statedOnSlicer(anyDiff, slicerDiff, "maxLength", false), "has-length", "MaxLength");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MIN_LENGTH, true), "has-length", "MinLength Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false) && statedOnSlicer(anyDiff, slicerDiff, "minValue", false), "has-range", "MinValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false) && statedOnSlicer(anyDiff, slicerDiff, "maxValue", false), "has-range", "MaxValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MAX_DECIMALS, true), "is-continuous", "Max Decimal Places Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MAX_SIZE, true), "has-size", "Max Size");
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
@@ -1684,6 +1688,20 @@ public class StructureDefinitionValidator extends BaseValidator {
       return false; // e.g. an implied type slice
     }
     return extension ? diffElement.hasExtension(name) : diffElement.hasChild(name, false);
+  }
+
+  /**
+   * whether the differential states the constraint on a type slicer. When the structure has no differential at all,
+   * there's no telling what's inherited, so it's taken as stated
+   */
+  private boolean statedOnSlicer(boolean anyDiff, Element slicerDiff, String name, boolean extension) {
+    if (!anyDiff) {
+      return true;
+    }
+    if (slicerDiff == null) {
+      return false;
+    }
+    return extension ? slicerDiff.hasExtension(name) : slicerDiff.hasChild(name, false);
   }
 
   private boolean isTypeSlicing(Element slicing) {

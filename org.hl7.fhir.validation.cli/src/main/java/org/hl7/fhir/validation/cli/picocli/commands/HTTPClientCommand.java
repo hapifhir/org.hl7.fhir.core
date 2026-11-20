@@ -233,9 +233,6 @@ public class HTTPClientCommand implements Callable<Integer> {
     if (instanceValidatorOptions.htmlInMarkdownCheck != null) {
       uriBuilder.addParameter(ParamNames.HTML_IN_MARKDOWN_CHECK, instanceValidatorOptions.htmlInMarkdownCheck);
     }
-    if (instanceValidatorOptions.checkDisplay != null) {
-      uriBuilder.addParameter(ParamNames.CHECK_DISPLAY, instanceValidatorOptions.checkDisplay);
-    }
     if (instanceValidatorOptions.resourceIdRule != null) {
       uriBuilder.addParameter(ParamNames.RESOURCE_ID_RULE, instanceValidatorOptions.resourceIdRule);
     }

@@ -32,6 +32,7 @@ import org.hl7.fhir.model.core.DateTimeType;
 import org.hl7.fhir.model.core.DateType;
 import org.hl7.fhir.model.core.DecimalType;
 import org.hl7.fhir.model.core.Enumerations.QuantityComparator;
+import org.hl7.fhir.model.core.Expression;
 import org.hl7.fhir.model.core.Extension;
 import org.hl7.fhir.model.core.IntegerType;
 import org.hl7.fhir.model.core.Quantity;
@@ -70,6 +71,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.EnableWhenOutcome;
+import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.ExpressionOutcome;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.QStack;
 
 import ca.uhn.fhir.util.ObjectUtil;
@@ -559,8 +561,9 @@ public class QuestionnaireValidator extends BaseValidator {
       if (qok) {
         boolean notCompleted = !Utilities.existsInList(element.getNamedChildValue("status", false), "completed", "amended");
         ok = checkAuthoringDate(errors,  stack, element, qsrc.q) && ok;
-        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItemList(), errors, element, stack, notCompleted, element,
-            new QStack(qsrc, element, loadLaunchContexts(errors, element, stack, qsrc.q()))) && ok;
+        QStack rootStack = new QStack(qsrc, element, loadLaunchContexts(errors, element, stack, qsrc.q()));
+        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItemList(), errors, element, stack, notCompleted, element, rootStack) && ok;
+        ok = checkTargetConstraints(errors, hostContext, qsrc.q().getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_CONSTRAINT), null, rootStack, element, stack, notCompleted) && ok;
       }
     }
     return ok;
@@ -736,7 +739,48 @@ public class QuestionnaireValidator extends BaseValidator {
       ok.see(rule(errors, "2025-05-07", IssueType.INVARIANT, stack, !qItem.getRequired() || items.size() > 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP_REQUIRED));
       ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItemList(), errors, element, stack, notCompleted, questionnaireResponseRoot, qstack));
     }
+    // an item's constraints are checked once for each occurrence of the item in the response, and not at all when
+    // it isn't there
+    ok.see(checkTargetConstraints(errors, hostContext, qItem.getExtensionsByUrl(ExtensionDefinitions.EXT_TARGET_CONSTRAINT), qItem, qstack, element, stack, notCompleted));
     return ok.ok();
+  }
+
+  /**
+   * The SDC targetConstraint extension, on the Questionnaire (qItem is null, and focus is the QuestionnaireResponse) or
+   * on an item (focus is the response item). The expression is evaluated with the same variables an
+   * enableWhenExpression gets. An 'error' constraint SHALL be met before the response is completed, so it is an error
+   * on a completed (or amended) response, and a warning otherwise; a 'warning' constraint is always a warning. The
+   * problem is reported where it is - on the response item, or the response - so location is not used (#2788)
+   */
+  private boolean checkTargetConstraints(List<ValidationMessage> errors, ValidationContext hostContext, List<Extension> constraints, QuestionnaireItemComponent qItem, QStack qstack, Element focus, NodeStack stack, boolean notCompleted) {
+    boolean ok = true;
+    for (Extension tc : constraints) {
+      String key = tc.getExtensionString("key");
+      String human = tc.getExtensionString("human");
+      String severity = tc.getExtensionString("severity");
+      Extension exprExt = tc.getExtensionByUrl("expression");
+      if (exprExt == null || !(exprExt.getValue() instanceof Expression) || !((Expression) exprExt.getValue()).hasExpression()) {
+        continue; // not a valid targetConstraint - that's for validating the Questionnaire to report
+      }
+      Expression expr = (Expression) exprExt.getValue();
+      String label = key != null ? key : "?";
+      if (expr.hasLanguage() && !"text/fhirpath".equals(expr.getLanguage())) {
+        hint(errors, "2026-11-17", IssueType.INFORMATIONAL, focus.line(), focus.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE, label, expr.getLanguage());
+        continue;
+      }
+      ExpressionOutcome outcome = myEnableWhenEvaluator.evaluateExpression(hostContext, qItem, qstack, fpe, focus, expr.getExpression());
+      if (outcome.getUncheckable() != null) {
+        warning(errors, "2026-11-17", IssueType.INCOMPLETE, focus.line(), focus.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE, label, outcome.getUncheckable());
+      } else if (!outcome.getResult()) {
+        String msg = human != null ? human : expr.getExpression();
+        if ("error".equals(severity) && !notCompleted) {
+          ok = rule(errors, "2026-11-17", IssueType.INVARIANT, focus.line(), focus.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED, label, msg) && ok;
+        } else {
+          warning(errors, "2026-11-17", IssueType.INVARIANT, focus.line(), focus.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED, label, msg);
+        }
+      }
+    }
+    return ok;
   }
 
 

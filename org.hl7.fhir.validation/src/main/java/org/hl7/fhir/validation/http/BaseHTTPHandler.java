@@ -7,7 +7,6 @@ import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 
 import java.io.ByteArrayOutputStream;
@@ -107,11 +106,6 @@ public class BaseHTTPHandler {
   protected BestPracticeWarningLevel parseBestPracticeWarningLevel(String param) {
     if (param == null) return BestPracticeWarningLevel.Ignore;
     return BestPracticeWarningLevel.valueOf(param);
-  }
-
-  protected CheckDisplayOption parseCheckDisplayOption(String param) {
-    if (param == null) return CheckDisplayOption.Ignore;
-    return CheckDisplayOption.valueOf(param);
   }
 
   protected void sendOperationOutcome(HttpExchange exchange, int statusCode, OperationOutcome outcome, String format) throws IOException {

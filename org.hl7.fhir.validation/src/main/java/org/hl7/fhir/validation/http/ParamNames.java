@@ -19,7 +19,6 @@ public final class ParamNames  {
   public static final String LEVEL = "level";
   public static final String BEST_PRACTICE_LEVEL = "bestPractice";
   public static final String HTML_IN_MARKDOWN_CHECK = "htmlInMarkdown";
-  public static final String CHECK_DISPLAY = "checkDisplay";
   public static final String RESOURCE_ID_RULE = "resourceIdRule";
   public static final String ASSUME_VALID_REST_REFERENCES = "assumeValidRestReferences";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "hintAboutNonMustSupport";

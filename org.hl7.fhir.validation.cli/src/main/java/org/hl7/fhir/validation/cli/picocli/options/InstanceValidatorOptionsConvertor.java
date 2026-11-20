@@ -7,7 +7,6 @@ import java.util.Map;
 import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
@@ -146,10 +145,6 @@ public class InstanceValidatorOptionsConvertor {
       instanceValidatorParameters.setCodeSystemValidationSizeLimit(options.codeSystemValidationSizeLimit);
     }
 
-    if (options.checkDisplay != null) {
-      instanceValidatorParameters.setCheckDisplay(parseCheckDisplayOption(options.checkDisplay));
-    }
-
     if (options.resourceIdRule != null) {
       instanceValidatorParameters.setResourceIdRule(parseIdStatus(options.resourceIdRule));
     }
@@ -160,11 +155,6 @@ public class InstanceValidatorOptionsConvertor {
   static IdStatus parseIdStatus(String param) {
     if (param == null) return IdStatus.OPTIONAL;
     return IdStatus.valueOf(param.toUpperCase());
-  }
-
-  static CheckDisplayOption parseCheckDisplayOption(String param) {
-    if (param == null) return CheckDisplayOption.Ignore;
-    return CheckDisplayOption.valueOf(param);
   }
 
   static BestPracticeWarningLevel readBestPractice(String s) {
