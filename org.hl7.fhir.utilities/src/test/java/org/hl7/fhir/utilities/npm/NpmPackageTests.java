@@ -9,12 +9,14 @@ import java.io.ByteArrayInputStream;import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.apache.commons.compress.archivers.tar.TarUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -224,13 +226,38 @@ class NpmPackageTests implements ResourceLoaderTests {
   private static byte[] buildTgz(String encoding, String entryName, byte[] fileContent) throws IOException {
     byte[] packageJson = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
       .getBytes(StandardCharsets.UTF_8);
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos);
-         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzipOut, encoding)) {
+    // TarArchiveEntry turns the platform file separator into /, so on Windows it can't write a name with a \ in it.
+    // Write the entry with / and put the \ back into its header afterwards, so every platform gets the same archive
+    String written = entryName.replace('\\', '/');
+    ByteArrayOutputStream tar = new ByteArrayOutputStream();
+    try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(tar, encoding)) {
       addTarEntry(tarOut, "package/package.json", packageJson);
-      addTarEntry(tarOut, entryName, fileContent);
+      addTarEntry(tarOut, written, fileContent);
+    }
+    byte[] bytes = tar.toByteArray();
+    if (!written.equals(entryName)) {
+      setTarEntryName(bytes, written, entryName, encoding);
+    }
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos)) {
+      gzipOut.write(bytes);
     }
     return baos.toByteArray();
+  }
+
+  /** rewrites the name in an entry's header (same length names only) and fixes the header checksum */
+  private static void setTarEntryName(byte[] tar, String oldName, String newName, String encoding) throws IOException {
+    byte[] o = oldName.getBytes(encoding);
+    byte[] n = newName.getBytes(encoding);
+    for (int h = 0; h + 512 <= tar.length; h += 512) {
+      if (Arrays.equals(tar, h, h + o.length, o, 0, o.length) && (o.length == 100 || tar[h + o.length] == 0)) {
+        System.arraycopy(n, 0, tar, h, n.length);
+        Arrays.fill(tar, h + 148, h + 156, (byte) ' ');
+        TarUtils.formatCheckSumOctalBytes(TarUtils.computeCheckSum(Arrays.copyOfRange(tar, h, h + 512)), tar, h + 148, 8);
+        return;
+      }
+    }
+    throw new IOException("No tar header for " + oldName);
   }
 
   // Created by claude-sonnet-4-6
