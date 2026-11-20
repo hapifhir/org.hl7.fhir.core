@@ -143,6 +143,7 @@ public class FhirValidatorHttpService {
     addContext("/matchetype", new MatchetypeHTTPHandler(context, this));
     addContext("/testdata", new TestDataHTTPHandler(context, this));
     addContext("/loadIG", new LoadIGHTTPHandler(context, this));
+    addContext("/loadResource", new LoadResourceHTTPHandler(context, this));
     addContext("/convert", new ConvertHTTPHandler(context, this));
     addContext("/snapshot", new SnapshotHTTPHandler(context, this));
     addContext("/narrative", new NarrativeHTTPHandler(context, this));
