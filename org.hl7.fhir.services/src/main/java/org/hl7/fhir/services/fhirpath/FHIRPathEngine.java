@@ -2762,7 +2762,9 @@ public class FHIRPathEngine {
         return null;
       }
     } else if (left.hasUnit() || right.hasUnit()) {
-      if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
+      left = calendarYearsAsMonths(left, right);
+      right = calendarYearsAsMonths(right, left);
+      if (!(left.hasUnit() && right.hasUnit()) || !calendarUnit(left.getUnit()).equals(calendarUnit(right.getUnit()))) {
         return null;
       }
     }
@@ -2900,6 +2902,8 @@ public class FHIRPathEngine {
     if (lq == null || rq == null || !lq.hasValue() || !rq.hasValue()) {
       return null;
     }
+    lq = calendarYearsAsMonths(lq, rq);
+    rq = calendarYearsAsMonths(rq, lq);
     if (sameUnit(lq, rq)) {
       return lq.getValue().compareTo(rq.getValue());
     }
@@ -2928,6 +2932,14 @@ public class FHIRPathEngine {
       return unit.substring(0, unit.length() - 1);
     }
     return unit;
+  }
+
+  // a calendar year is 12 calendar months, so years are compared with months as months
+  private Quantity calendarYearsAsMonths(Quantity q, Quantity other) {
+    if (!q.hasCode() && !other.hasCode() && "year".equals(calendarUnit(q.getUnit())) && "month".equals(calendarUnit(other.getUnit()))) {
+      return new Quantity().setValue(q.getValue().multiply(BigDecimal.valueOf(12))).setUnit("months");
+    }
+    return q;
   }
 
   private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
