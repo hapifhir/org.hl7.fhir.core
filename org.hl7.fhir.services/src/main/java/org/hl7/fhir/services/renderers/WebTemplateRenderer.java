@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.ElementDefinition;
 import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
 import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.services.renderers.utils.RenderingContext.KnownLinkType;
@@ -22,11 +25,15 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
 public class WebTemplateRenderer extends ResourceRenderer {
+
+  private static final String OPENEHR_CODESYSTEM_PREFIX = "https://specifications.openehr.org/fhir/codesystem-";
   
   public WebTemplateRenderer(RenderingContext context) { 
     super(context); 
@@ -63,7 +70,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     String lang = context.getLocale() != null ? context.getLocale().getLanguage() : null;
     String defLang = wt.primitiveValue("defaultLanguage");
     // first we add a root for the WebTemplate itself
-    Row row = addItem(gen, model.getRows(), wt.child("tree"), lang, defLang);
+    Row row = addItem(gen, model.getRows(), wt.child("tree"), null, lang, defLang);
 //    for (ResourceWrapper select : vd.children("select")) { 
 //      renderSelect(status, gen, row.getSubRows(), vd, select); 
 //    } 
@@ -73,7 +80,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     
   } 
 
-  private Row addItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper item, String lang, String defLang) {
+  private Row addItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper item, String parentRmType, String lang, String defLang) {
     Row r = gen.new Row();
     rows.add(r);
 
@@ -84,7 +91,16 @@ public class WebTemplateRenderer extends ResourceRenderer {
     if (Utilities.noString(name)) {
       name = item.primitiveValue("id");
     }
-    Cell cell = gen.new Cell(null, null, name, item.primitiveValue("aqlPath"), null);
+    // A node without a nodeId is an RM attribute (category, setting, language...): link it to
+    // the RM class that declares it, provided the RM logical model really has that attribute
+    ElementDefinition rmElement = Utilities.noString(def) ? findRmElement(parentRmType, item.primitiveValue("id")) : null;
+    Cell cell;
+    if (rmElement != null) {
+      cell = gen.new Cell(null, linkForType(parentRmType), name,
+          "openEHR RM attribute "+parentRmType+"."+item.primitiveValue("id")+" ("+item.primitiveValue("aqlPath")+")", null);
+    } else {
+      cell = gen.new Cell(null, null, name, item.primitiveValue("aqlPath"), null);
+    }
     if (!Utilities.noString(def)) {
       cell.addPiece(gen.new Piece(null, " ["+def+"]", item.primitiveValue("aqlPath")));
     }
@@ -92,10 +108,13 @@ public class WebTemplateRenderer extends ResourceRenderer {
 
     r.getCells().add(gen.new Cell(null, null, item.primitiveValue("min")+".."+("-1".equals(item.primitiveValue("max")) ? "*" : item.primitiveValue("max")), null, null));
 
-    // Description: the node description in the rendering language, then any term bindings
+    // Description: the node description in the rendering language, then any RM binding and term bindings
     String desc = getLocalizedDescription(item, lang, defLang);
     cell = gen.new Cell(null, null, desc, null, null);
     r.getCells().add(cell);
+    if (rmElement != null && rmElement.hasBinding()) {
+      addRmBinding(gen, cell, rmElement);
+    }
     addTermBindings(gen, cell, item);
     
     
@@ -110,12 +129,12 @@ public class WebTemplateRenderer extends ResourceRenderer {
       } else {
         cell.getPieces().add(gen.new Piece("br"));
       }
-      addInput(gen, cell, input);
+      addInput(gen, cell, input, rmElement != null);
     }
     
     
     for (ResourceWrapper child : item.children("children")) {
-      addItem(gen, r.getSubRows(), child, lang, defLang);
+      addItem(gen, r.getSubRows(), child, item.primitiveValue("rmType"), lang, defLang);
     }
     return r;
   }
@@ -146,7 +165,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     return byDefault != null ? byDefault : first;
   }
 
-  private void addInput(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper input) {
+  private void addInput(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper input, boolean rmAttribute) {
     if (input.has("suffix")) {
       cell.getPieces().add(gen.new Piece(null, input.primitiveValue("suffix"), null));
       cell.getPieces().add(gen.new Piece(null, " ", null));      
@@ -161,7 +180,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
       addValidation(gen, cell, input.child("validation"));
     }
     if (input.has("list")) {
-      addList(gen, cell, input.children("list"));
+      addList(gen, cell, input.children("list"), input.primitiveValue("terminology"), rmAttribute);
     }
   }
 
@@ -205,13 +224,93 @@ public class WebTemplateRenderer extends ResourceRenderer {
     
   }
 
-  private void addList(HierarchicalTableGenerator gen, Cell cell, List<ResourceWrapper> list) {
+  private void addList(HierarchicalTableGenerator gen, Cell cell, List<ResourceWrapper> list, String terminology, boolean rmAttribute) {
+    // Codes from the openEHR terminology are unique across all its groups, so each one
+    // identifies the openEHR CodeSystem it comes from: link the codes to their concepts.
+    // Some exports omit terminology on RM attributes (e.g. ISM_TRANSITION.current_state):
+    // there, treat the list as openEHR codes only if every code is found in the openEHR terminology
+    boolean openehr = "openehr".equals(terminology);
+    if (!openehr && terminology == null && rmAttribute && !list.isEmpty()) {
+      openehr = true;
+      for (ResourceWrapper item : list) {
+        openehr = openehr && findOpenehrCodeSystem(item.primitiveValue("value")) != null;
+      }
+    }
+    if (openehr && !list.isEmpty()) {
+      CodeSystem cs = findOpenehrCodeSystem(list.get(0).primitiveValue("value"));
+      if (cs != null) {
+        cell.getPieces().add(gen.new Piece(null, " from ", null));
+        cell.getPieces().add(gen.new Piece(cs.getWebPath(), cs.hasTitle() ? cs.getTitle() : cs.getName(), cs.getUrl()));
+      }
+    }
     for (ResourceWrapper item : list) {
       cell.getPieces().add(gen.new Piece("br"));
       cell.getPieces().add(gen.new Piece(null, "• ", null));
-      cell.getPieces().add(gen.new Piece(null, item.primitiveValue("label"), item.primitiveValue("value")));      
+      String code = item.primitiveValue("value");
+      CodeSystem cs = openehr ? findOpenehrCodeSystem(code) : null;
+      if (cs != null) {
+        String link = getLinkForCode(cs.getUrl(), null, code, item.getResourceNative());
+        cell.getPieces().add(gen.new Piece(link, item.primitiveValue("label"), "openEHR "+(cs.hasTitle() ? cs.getTitle() : cs.getName())+" "+code));
+      } else {
+        cell.getPieces().add(gen.new Piece(null, item.primitiveValue("label"), code));
+      }
     }
-    
+  }
+
+  private Map<String, CodeSystem> openehrCodes;
+
+  /** Finds the openEHR terminology CodeSystem (from openehr.base) that defines this code. */
+  private CodeSystem findOpenehrCodeSystem(String code) {
+    if (code == null) {
+      return null;
+    }
+    if (openehrCodes == null) {
+      openehrCodes = new HashMap<>();
+      for (CodeSystem cs : context.getContext().fetchResourcesByType(CodeSystem.class)) {
+        if (cs.getUrl() != null && cs.getUrl().startsWith(OPENEHR_CODESYSTEM_PREFIX)) {
+          indexCodes(cs, cs.getConceptList());
+        }
+      }
+    }
+    return openehrCodes.get(code);
+  }
+
+  private void indexCodes(CodeSystem cs, List<CodeSystem.ConceptDefinitionComponent> concepts) {
+    for (CodeSystem.ConceptDefinitionComponent c : concepts) {
+      openehrCodes.putIfAbsent(c.getCode(), cs);
+      indexCodes(cs, c.getConceptList());
+    }
+  }
+
+  /** Finds the element for an RM attribute in the openehr.base logical model of its class. */
+  private ElementDefinition findRmElement(String rmType, String attribute) {
+    if (rmType == null || attribute == null) {
+      return null;
+    }
+    StructureDefinition sd = fetchRmType(rmType);
+    if (sd == null || !sd.hasSnapshot()) {
+      return null;
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      String path = ed.getPath();
+      if (path.indexOf('.') > 0 && path.indexOf('.') == path.lastIndexOf('.') && path.endsWith("."+attribute)) {
+        return ed;
+      }
+    }
+    return null;
+  }
+
+  private void addRmBinding(HierarchicalTableGenerator gen, Cell cell, ElementDefinition ed) {
+    String url = ed.getBinding().getValueSet();
+    ValueSet vs = context.getContext().fetchResource(ValueSet.class, url);
+    if (cell.getPieces().size() > 0) {
+      cell.getPieces().add(gen.new Piece("br"));
+    }
+    cell.getPieces().add(gen.new Piece(null, "Binding: ", null).styleAsBold());
+    cell.getPieces().add(gen.new Piece(vs != null ? vs.getWebPath() : null, vs != null ? (vs.hasTitle() ? vs.getTitle() : vs.getName()) : url, url));
+    if (ed.getBinding().hasStrength()) {
+      cell.getPieces().add(gen.new Piece(null, " ("+ed.getBinding().getStrength().toCode()+")", null));
+    }
   }
 
   private void addTermBindings(HierarchicalTableGenerator gen, Cell cell, ResourceWrapper item) {
@@ -255,17 +354,22 @@ public class WebTemplateRenderer extends ResourceRenderer {
   }
 
   private String linkForType(String t) {
+    StructureDefinition sd = fetchRmType(t);
+    return sd != null ? sd.getWebPath() : null;
+  }
+
+  private StructureDefinition fetchRmType(String t) {
     if (t == null) {
       return null;
     }
     StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, "http://openehr.org/fhir/StructureDefinition/"+t, VersionResolutionRules.defaultRule());
+    if (sd == null && t.contains("_")) {
+      sd = context.getContext().fetchResource(StructureDefinition.class, "http://openehr.org/fhir/StructureDefinition/"+t.replace("_", "-"), VersionResolutionRules.defaultRule());
+    }
     if (sd == null) {
       sd = context.getContext().fetchTypeDefinition(t);
     }
-    if (sd != null) {
-      return sd.getWebPath();
-    }
-    return null;
+    return sd;
   }
 
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
