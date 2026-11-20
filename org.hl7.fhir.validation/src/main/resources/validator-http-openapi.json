@@ -923,8 +923,8 @@
         "tags": [
           "Conversion"
         ],
-        "summary": "Convert a resource between JSON and XML",
-        "description": "Re-serialises the posted resource. The input format comes from `Content-Type` and the output format from `Accept`; the FHIR version is unchanged.",
+        "summary": "Convert a resource between JSON and XML, or FHIR Mapping Language to a StructureMap",
+        "description": "Re-serialises the posted resource. The input format comes from `Content-Type` and the output format from `Accept`; the FHIR version is unchanged. FHIR Mapping Language (`text/fhir-mapping`, or `text/fhir+fml`) is accepted as input, since it is the text form of a StructureMap: the map is parsed and returned as a StructureMap, with the structure of the FHIR version the engine is running.",
         "requestBody": {
           "required": true,
           "content": {
@@ -934,6 +934,11 @@
               }
             },
             "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/fhir-mapping": {
               "schema": {
                 "type": "string"
               }

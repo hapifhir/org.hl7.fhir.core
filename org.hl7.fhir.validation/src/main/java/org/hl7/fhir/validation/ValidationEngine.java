@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
@@ -1059,9 +1060,33 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public byte[] convertFormat(byte[] resource, FhirFormat inputFormat, FhirFormat outputFormat) throws FHIRException, IOException {
+    if (inputFormat == FhirFormat.FML) {
+      // FML is the text form of a StructureMap; parse it the way the engine loads maps, so the
+      // result has the structure of the runtime FHIR version
+      return parseStructureMap(new String(resource, StandardCharsets.UTF_8), null, outputFormat);
+    }
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), inputFormat);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  /**
+   * Parse FHIR Mapping Language (FML) text into a StructureMap, returned in the structure of
+   * the engine's runtime FHIR version: an R4-mode validator gets an R4-shaped StructureMap
+   * (dependent variables as strings), so that it round-trips through /loadResource without
+   * losing fields.
+   *
+   * @param fml          the FML map source text
+   * @param srcName      a name for the source, used in parse error messages; defaults to "map"
+   * @param outputFormat format of the returned bytes (JSON or XML)
+   */
+  public byte[] parseStructureMap(String fml, String srcName, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMapTools scu = new StructureMapTools(context);
+    StructureMap map = scu.parse(fml, (srcName == null || srcName.trim().isEmpty()) ? "map" : srcName.trim());
+    String targetVersion = version != null ? version : context.getFHIRVersion();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    handleOutputToStream(map, outputFormat == FhirFormat.XML ? "map.xml" : "map.json", baos, targetVersion);
     return baos.toByteArray();
   }
 
