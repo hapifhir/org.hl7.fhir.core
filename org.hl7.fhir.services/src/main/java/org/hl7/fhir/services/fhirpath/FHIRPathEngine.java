@@ -987,11 +987,11 @@ public class FHIRPathEngine {
       Quantity q = makeQuantity(item);
       if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
-        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+q.getUnit();
+        return (q.hasValue() ? decimalToString(q.getValue()) : "")+" "+q.getUnit();
       }
       if ("http://unitsofmeasure.org".equals(q.getSystem())) {
         String u = "'"+q.getCode()+"'";
-        return (q.hasValue() ? q.getValue().toPlainString() : "")+" "+u;
+        return (q.hasValue() ? decimalToString(q.getValue()) : "")+" "+u;
       } else {
         return item.toString();
       }
@@ -1054,6 +1054,8 @@ public class FHIRPathEngine {
     private List<Base> total;
     private int index;
     private Map<String, List<Base>> definedVariables;
+    // when the evaluation must stop: set when it starts (0 = not yet), and passed on to every context made from this one
+    private long deadline;
 
     public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem) {
       this.appInfo = appInfo;
@@ -1166,6 +1168,20 @@ public class FHIRPathEngine {
   // bounds the parser's recursion, so that a hostile or broken expression - e.g. "(".repeat(4000) - gets a
   // parse error, not a StackOverflowError. Real expressions don't go much deeper than 15-20
   private static final int MAX_PARSE_DEPTH = 100;
+  /** the most rounds repeat() can go: each round adds what the expression finds for the items the last one added */
+  public static final int MAX_REPEAT_ROUNDS = 1000;
+  /** the longest an evaluation can take (ms): an expression comes from content (e.g. an invariant), and can be written so it doesn't end */
+  public static final long MAX_EXECUTION_MILLIS = 60000;
+  private long maxExecutionMillis = MAX_EXECUTION_MILLIS;
+
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  /** how long an evaluation can take (ms); MAX_EXECUTION_MILLIS unless set */
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
 
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal, int depth) throws FHIRLexerException {
     if (depth > MAX_PARSE_DEPTH) {
@@ -1594,6 +1610,12 @@ public class FHIRPathEngine {
   }
 
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+    long now = System.currentTimeMillis();
+    if (inContext.deadline == 0) {
+      inContext.deadline = now + maxExecutionMillis;
+    } else if (now > inContext.deadline) {
+      throw makeException(exp, I18nConstants.FHIRPATH_TIMEOUT, maxExecutionMillis % 1000 == 0 ? Long.toString(maxExecutionMillis / 1000) : Double.toString(maxExecutionMillis / 1000.0));
+    }
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -2770,7 +2792,7 @@ public class FHIRPathEngine {
   }
 
   private Pair qtyToCanonicalPair(Quantity q) {
-    if (!"http://unitsofmeasure.org".equals(q.getSystem())) {
+    if (!"http://unitsofmeasure.org".equals(q.getSystem()) || !isNormalSizeDecimal(q.getValue())) {
       return null;
     }
     try {
@@ -2904,7 +2926,7 @@ public class FHIRPathEngine {
       return lq.getValue().compareTo(rq.getValue());
     }
     // only values of a normal size are converted to canonical units
-    if (worker.getUcumService() != null && Math.abs(lq.getValue().scale()) < 1000 && Math.abs(rq.getValue().scale()) < 1000) {
+    if (worker.getUcumService() != null && isNormalSizeDecimal(lq.getValue()) && isNormalSizeDecimal(rq.getValue())) {
       Pair dl = qtyToCanonicalPair(lq);
       Pair dr = qtyToCanonicalPair(rq);
       if (dl != null && dr != null && dl.getCode().equals(dr.getCode())) {
@@ -2912,6 +2934,35 @@ public class FHIRPathEngine {
       }
     }
     return null;
+  }
+
+  // A decimal with this many digits, or an exponent this large (either way), is never written out in full or handed to
+  // the UCUM library (which works on plain digits): 1e999999999 is a billion digits long. Arithmetic, rounding and
+  // boundaries on such a value give empty, quantities holding one are not converted to canonical units, and toString()
+  // keeps the exponent
+  private static final int MAX_DECIMAL_SIZE = 1000;
+
+  private boolean isNormalSizeDecimal(BigDecimal value) {
+    return value == null || (value.precision() < MAX_DECIMAL_SIZE && Math.abs((long) value.scale()) < MAX_DECIMAL_SIZE);
+  }
+
+  private boolean isNormalSizeDecimal(Base value) {
+    return isNormalSizeDecimal(value.primitiveValue());
+  }
+
+  private boolean isNormalSizeDecimal(String s) {
+    if (s == null) {
+      return true;
+    }
+    try {
+      return isNormalSizeDecimal(new BigDecimal(s));
+    } catch (NumberFormatException e) {
+      return true; // not a decimal: whatever handles it reports the problem
+    }
+  }
+
+  private String decimalToString(BigDecimal value) {
+    return isNormalSizeDecimal(value) ? value.toPlainString() : value.toString();
   }
 
   private boolean sameUnit(Quantity left, Quantity right) {
@@ -3186,21 +3237,29 @@ public class FHIRPathEngine {
       result.add(new StringType(l.primitiveValue() + r.primitiveValue()));
     } else if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
-    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
-      DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
+      DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue());
       var rq = makeQuantity(r);
-      result.add(dateAdd(dl, rq, false, expr));
+      if (isNormalSizeDecimal(rq.getValue())) {
+        result.add(dateAdd(dl, rq, false, expr));
+      }
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
-      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
+      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
       var rq = makeQuantity(r);
-      result.add(dateAdd(dl, rq, false, expr));
+      if (isNormalSizeDecimal(rq.getValue())) {
+        result.add(dateAdd(dl, rq, false, expr));
+      }
     } else if (l.hasType("time") && r.hasType("Quantity")) {
-      TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
+      TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue());
       var rq = makeQuantity(r);
-      var rdt = timeAdd(dl, rq, false, expr);
-      result.add(rdt); // we only want the time part
+      if (isNormalSizeDecimal(rq.getValue())) {
+        var rdt = timeAdd(dl, rq, false, expr);
+        result.add(rdt); // we only want the time part
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3328,9 +3387,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
     if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) * Integer.parseInt(r.primitiveValue())));
-    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).multiply(new BigDecimal(r.primitiveValue()))));
+    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).multiply(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (lq instanceof Quantity && rq instanceof Quantity && worker.getUcumService() != null) {
+      if (!isNormalSizeDecimal(lq.getValue()) || !isNormalSizeDecimal(rq.getValue())) {
+        return result;
+      }
       Pair pl = qtyToPair(lq);
       Pair pr = qtyToPair(rq);
       Pair p;
@@ -3501,7 +3565,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) - Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (l.hasType("decimal", "integer", "Quantity") && r.hasType("Quantity")) { 
       String s = l.primitiveValue();
       if ("0".equals(s)) {
@@ -3510,14 +3576,23 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
-      result.add(dateAdd(dl, makeQuantity(r), true, expr));
+      Quantity rq = makeQuantity(r);
+      if (isNormalSizeDecimal(rq.getValue())) {
+        result.add(dateAdd(dl, rq, true, expr));
+      }
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, makeQuantity(r), true, expr));
+      Quantity rq = makeQuantity(r);
+      if (isNormalSizeDecimal(rq.getValue())) {
+        result.add(dateAdd(dl, rq, true, expr));
+      }
     } else if (l.hasType("time") && r.hasType("Quantity")) {
       TimeType dl = l instanceof TimeType ? (TimeType) l : new TimeType(l.primitiveValue()); 
-      var rdt = timeAdd(dl, makeQuantity(r), true, expr);
-      result.add(rdt); // we only want the time part
+      Quantity rq = makeQuantity(r);
+      if (isNormalSizeDecimal(rq.getValue())) {
+        var rdt = timeAdd(dl, rq, true, expr);
+        result.add(rdt); // we only want the time part
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3548,6 +3623,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base r = right.get(0);
 
     if (l.hasType("integer", "decimal", "unsignedInt", "positiveInt") && r.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -3559,6 +3637,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         // just return nothing
       }
     } else if (lq instanceof Quantity && rq instanceof Quantity && worker.getUcumService() != null) {
+      if (!isNormalSizeDecimal(lq.getValue()) || !isNormalSizeDecimal(rq.getValue())) {
+        return result;
+      }
       Pair pl = qtyToPair(lq);
       Pair pr = qtyToPair(rq);
       Pair p;
@@ -3600,7 +3681,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if (divisor != 0) { 
         result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) / divisor));
       }
-    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
+    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -3643,6 +3727,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) % modulus));
       }
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -4992,7 +5079,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     
     if (base.hasType("decimal")) {
-      if (precision == null || (precision >= 0 && precision < 17)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(base)) {
         result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("integer")) {
@@ -5007,9 +5094,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_NOTHING);
-      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
-      result.add(v);
+      if (isNormalSizeDecimal(value)) {
+        Base v = base.copy(Base.COPY_NOTHING);
+        v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
+        result.add(v);
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -5036,7 +5125,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("decimal")) {
-      if (precision == null || (precision >= 0 && precision < 17)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(base)) {
         result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("integer")) {
@@ -5051,9 +5140,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_NOTHING);
-      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
-      result.add(v);
+      if (isNormalSizeDecimal(value)) {
+        Base v = base.copy(Base.COPY_NOTHING);
+        v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
+        result.add(v);
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -5100,7 +5191,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         i = Integer.parseInt(n1.get(0).primitiveValue());
       }
       BigDecimal  d = new BigDecimal (base.primitiveValue());
-      result.add(new DecimalType(d.setScale(i, RoundingMode.HALF_UP)));
+      if (isNormalSizeDecimal(d)) {
+        result.add(new DecimalType(d.setScale(i, RoundingMode.HALF_UP)));
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "round", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -5548,6 +5641,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
     ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, newThis);
+    newContext.deadline = context.deadline;
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
@@ -5559,6 +5653,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
     ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
+    newContext.deadline = context.deadline;
     newContext.total = context.total;
     newContext.index = context.index;
     // append all of the defined variables from the context into the new context
@@ -6135,7 +6230,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     current.addAll(focus);
     List<Base> added = new ArrayList<Base>();
     boolean more = true;
+    int rounds = 0;
     while (more) {
+      rounds++;
+      if (rounds > MAX_REPEAT_ROUNDS) {
+        throw makeException(exp, I18nConstants.FHIRPATH_REPEAT_TOO_MANY_ROUNDS, Integer.toString(MAX_REPEAT_ROUNDS));
+      }
       added.clear();
       List<Base> pc = new ArrayList<Base>();
       for (Base item : current) {

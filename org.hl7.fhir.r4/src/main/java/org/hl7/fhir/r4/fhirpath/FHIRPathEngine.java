@@ -934,11 +934,11 @@ public class FHIRPathEngine {
       Quantity q = (Quantity) item;
       if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
           && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
-        return q.getValue().toPlainString()+" "+q.getUnit();
+        return decimalToString(q.getValue())+" "+q.getUnit();
       }
       if (q.getSystem().equals("http://unitsofmeasure.org")) {
         String u = "'"+q.getCode()+"'";
-        return q.getValue().toPlainString()+" "+u;
+        return decimalToString(q.getValue())+" "+u;
       } else {
         return item.toString();
       }
@@ -2649,7 +2649,7 @@ public class FHIRPathEngine {
   }
 
   private Pair qtyToCanonicalPair(Quantity q) {
-    if (!"http://unitsofmeasure.org".equals(q.getSystem())) {
+    if (!"http://unitsofmeasure.org".equals(q.getSystem()) || !isNormalSizeDecimal(q.getValue())) {
       return null;
     }
     try {
@@ -2783,7 +2783,7 @@ public class FHIRPathEngine {
       return lq.getValue().compareTo(rq.getValue());
     }
     // only values of a normal size are converted to canonical units
-    if (worker.getUcumService() != null && Math.abs(lq.getValue().scale()) < 1000 && Math.abs(rq.getValue().scale()) < 1000) {
+    if (worker.getUcumService() != null && isNormalSizeDecimal(lq.getValue()) && isNormalSizeDecimal(rq.getValue())) {
       Pair dl = qtyToCanonicalPair(lq);
       Pair dr = qtyToCanonicalPair(rq);
       if (dl != null && dr != null && dl.getCode().equals(dr.getCode())) {
@@ -2791,6 +2791,35 @@ public class FHIRPathEngine {
       }
     }
     return null;
+  }
+
+  // A decimal with this many digits, or an exponent this large (either way), is never written out in full or handed to
+  // the UCUM library (which works on plain digits): 1e999999999 is a billion digits long. Arithmetic, rounding and
+  // boundaries on such a value give empty, quantities holding one are not converted to canonical units, and toString()
+  // keeps the exponent
+  private static final int MAX_DECIMAL_SIZE = 1000;
+
+  private boolean isNormalSizeDecimal(BigDecimal value) {
+    return value == null || (value.precision() < MAX_DECIMAL_SIZE && Math.abs((long) value.scale()) < MAX_DECIMAL_SIZE);
+  }
+
+  private boolean isNormalSizeDecimal(Base value) {
+    return isNormalSizeDecimal(value.primitiveValue());
+  }
+
+  private boolean isNormalSizeDecimal(String s) {
+    if (s == null) {
+      return true;
+    }
+    try {
+      return isNormalSizeDecimal(new BigDecimal(s));
+    } catch (NumberFormatException e) {
+      return true; // not a decimal: whatever handles it reports the problem
+    }
+  }
+
+  private String decimalToString(BigDecimal value) {
+    return isNormalSizeDecimal(value) ? value.toPlainString() : value.toString();
   }
 
   private boolean sameUnit(Quantity left, Quantity right) {
@@ -3084,13 +3113,19 @@ public class FHIRPathEngine {
     } else if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, false, expr));
+      if (isNormalSizeDecimal(((Quantity) r).getValue())) {
+        result.add(dateAdd(dl, (Quantity) r, false, expr));
+      }
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, false, expr));
+      if (isNormalSizeDecimal(((Quantity) r).getValue())) {
+        result.add(dateAdd(dl, (Quantity) r, false, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3174,8 +3209,13 @@ public class FHIRPathEngine {
     if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) * Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).multiply(new BigDecimal(r.primitiveValue()))));
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).multiply(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (l instanceof Quantity && r instanceof Quantity && worker.getUcumService() != null) {
+      if (!isNormalSizeDecimal(((Quantity) l).getValue()) || !isNormalSizeDecimal(((Quantity) r).getValue())) {
+        return result;
+      }
       Pair pl = qtyToPair((Quantity) l);
       Pair pr = qtyToPair((Quantity) r);
       Pair p;
@@ -3346,7 +3386,9 @@ public class FHIRPathEngine {
     if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) - Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
-      result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+      if (isNormalSizeDecimal(l) && isNormalSizeDecimal(r)) {
+        result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+      }
     } else if (l.hasType("decimal", "integer", "Quantity") && r.hasType("Quantity")) { 
       String s = l.primitiveValue();
       if ("0".equals(s)) {
@@ -3355,10 +3397,14 @@ public class FHIRPathEngine {
       }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, true, expr));
+      if (isNormalSizeDecimal(((Quantity) r).getValue())) {
+        result.add(dateAdd(dl, (Quantity) r, true, expr));
+      }
     } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, true, expr));
+      if (isNormalSizeDecimal(((Quantity) r).getValue())) {
+        result.add(dateAdd(dl, (Quantity) r, true, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3387,6 +3433,9 @@ public class FHIRPathEngine {
     Base r = right.get(0);
 
     if (l.hasType("integer", "decimal", "unsignedInt", "positiveInt") && r.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -3398,6 +3447,9 @@ public class FHIRPathEngine {
         // just return nothing
       }
     } else if (l instanceof Quantity && r instanceof Quantity && worker.getUcumService() != null) {
+      if (!isNormalSizeDecimal(((Quantity) l).getValue()) || !isNormalSizeDecimal(((Quantity) r).getValue())) {
+        return result;
+      }
       Pair pl = qtyToPair((Quantity) l);
       Pair pr = qtyToPair((Quantity) r);
       Pair p;
@@ -3439,7 +3491,10 @@ public class FHIRPathEngine {
       if (divisor != 0) { 
         result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) / divisor));
       }
-    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
+    } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -3482,6 +3537,9 @@ public class FHIRPathEngine {
         result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) % modulus));
       }
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) {
+      if (!isNormalSizeDecimal(l) || !isNormalSizeDecimal(r)) {
+        return result;
+      }
       Decimal d1;
       try {
         d1 = new Decimal(l.primitiveValue());
@@ -4767,7 +4825,7 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     
     if (base.hasType("decimal")) {
-      if (precision == null || (precision >= 0 && precision < 17)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(base)) {
         result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("integer")) {
@@ -4782,9 +4840,11 @@ public class FHIRPathEngine {
       result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
-      result.add(v);
+      if (isNormalSizeDecimal(value)) {
+        Base v = base.copy();
+        v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
+        result.add(v);
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -4811,7 +4871,7 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("decimal")) {
-      if (precision == null || (precision >= 0 && precision < 17)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(base)) {
         result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("integer")) {
@@ -4826,9 +4886,11 @@ public class FHIRPathEngine {
       result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
-      result.add(v);
+      if (isNormalSizeDecimal(value)) {
+        Base v = base.copy();
+        v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
+        result.add(v);
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
@@ -4869,7 +4931,9 @@ public class FHIRPathEngine {
         i = Integer.parseInt(n1.get(0).primitiveValue());
       }
       BigDecimal  d = new BigDecimal (base.primitiveValue());
-      result.add(new DecimalType(d.setScale(i, RoundingMode.HALF_UP)));
+      if (isNormalSizeDecimal(d)) {
+        result.add(new DecimalType(d.setScale(i, RoundingMode.HALF_UP)));
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "round", "(focus)", base.fhirType(), "integer or decimal");
     }
