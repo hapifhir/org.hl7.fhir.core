@@ -32,7 +32,7 @@ class NpmPackageTests implements ResourceLoaderTests {
 
   @Test
   void testEvilTgz() {
-    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> {
       InputStream tgzStream = getResourceAsInputStream("npm", "tar", "tgz-evil.tgz");
       NpmPackage.fromPackage(tgzStream);
     });
@@ -67,7 +67,8 @@ class NpmPackageTests implements ResourceLoaderTests {
     byte[] content = ("{\"resourceType\":\"Basic\",\"id\":\"big\",\"language\":\""+"x".repeat(200000)+"\"}").getBytes(StandardCharsets.UTF_8);
     byte[] tgz = buildTgz("UTF-8", "package/big.json", content);
 
-    // no limit (the default) - loads fine
+    // the default limit is 1.5 GB - loads fine
+    assertEquals(1536L * 1024 * 1024, NpmPackage.getDefaultMaxLoadSize());
     assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
 
     // generous per-instance limit - loads fine
@@ -85,7 +86,7 @@ class NpmPackageTests implements ResourceLoaderTests {
       // but an explicit per-instance limit still wins
       assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz), "test", false, 1000000));
     } finally {
-      NpmPackage.setDefaultMaxLoadSize(0);
+      NpmPackage.setDefaultMaxLoadSize(NpmPackage.DEFAULT_MAX_LOAD_SIZE);
     }
   }
 
@@ -145,6 +146,56 @@ class NpmPackageTests implements ResourceLoaderTests {
     assertFalse(NpmPackage.isExampleFolder(null));
   }
 
+  @Test
+  void testEntryNameKey() {
+    assertEquals("package/examples/x.json", NpmPackage.entryNameKey("./package//Examples/X.json"));
+    assertEquals("package/examples/x.json", NpmPackage.entryNameKey("package\\examples\\x.json"));
+    assertEquals("package/package.json", NpmPackage.entryNameKey("/package/./package.json"));
+    // NFC and NFD are the same name
+    assertEquals(NpmPackage.entryNameKey("package/K\u00FDnigstein.json"), NpmPackage.entryNameKey("package/Ky\u0301nigstein.json"));
+  }
+
+  /** Two files of the same name (after normalisation, ignoring case): readers differ on which wins, so the package is refused */
+  @Test
+  void testDuplicateNames(@TempDir Path tempDir) throws IOException {
+    byte[] exact = buildTgz("UTF-8", "package/package.json", "{\"name\":\"other\",\"version\":\"9.9.9\"}".getBytes(StandardCharsets.UTF_8));
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(exact)));
+    assertTrue(thrown.getMessage().contains("more than one file named package/package.json"), thrown.getMessage());
+
+    byte[] variant = buildTgz("UTF-8", "./package/Package.JSON", PACKAGE_JSON);
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(variant)));
+    assertTrue(thrown.getMessage().contains("which are the same file to some systems"), thrown.getMessage());
+
+    // extracting to disk, as the package cache does
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.extractFromTgz(new ByteArrayInputStream(exact), "test", tempDir.resolve("x").toString(), true));
+    assertTrue(thrown.getMessage().contains("more than one file named"), thrown.getMessage());
+
+    // a zip (it can't hold the exact same name twice, but can hold two that differ in case)
+    java.io.ByteArrayOutputStream zipBytes = new java.io.ByteArrayOutputStream();
+    try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(zipBytes)) {
+      for (String name : new String[] {"package/package.json", "package/PACKAGE.json"}) {
+        zip.putNextEntry(new java.util.zip.ZipEntry(name));
+        zip.write(PACKAGE_JSON);
+        zip.closeEntry();
+      }
+    }
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromZip(new ByteArrayInputStream(zipBytes.toByteArray()), false, "test"));
+    assertTrue(thrown.getMessage().contains("which are the same file to some systems"), thrown.getMessage());
+  }
+
+  /** A name with a .. segment (/ or \\ separated) is refused by every reader; .. elsewhere in a name is fine */
+  @Test
+  void testDotDotSegments(@TempDir Path tempDir) throws IOException {
+    for (String name : new String[] {"package/../evil.json", "package\\..\\evil.json", "package/examples/.."}) {
+      byte[] tgz = buildTgz("UTF-8", name, PACKAGE_JSON);
+      IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(tgz)), name);
+      assertEquals("Entry with an illegal name: " + name, thrown.getMessage());
+      thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.extractFromTgz(new ByteArrayInputStream(tgz), "test", tempDir.resolve("x").toString(), true), name);
+      assertEquals("Entry with an illegal name: " + name, thrown.getMessage());
+    }
+    assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(buildTgz("UTF-8", "package/Patient-a..b.json", patient("a")))));
+  }
+
   private static final byte[] PACKAGE_JSON = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
     .getBytes(StandardCharsets.UTF_8);
 
@@ -190,5 +241,23 @@ class NpmPackageTests implements ResourceLoaderTests {
     tar.write(content);
     tar.closeArchiveEntry();
   }
-}
 
+  /**
+   * A zip (a template from a github repository) can't contain a name with ".." in it, any more than a tgz can:
+   * unpacked, package/content/../scripts/ant.xml would replace scripts/ant.xml
+   */
+  @Test
+  void testEvilZip() throws IOException {
+    java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
+    try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(bytes)) {
+      zip.putNextEntry(new java.util.zip.ZipEntry("repo-main/package/package.json"));
+      zip.write("{\"name\" : \"test.template\", \"version\" : \"1.0.0\"}".getBytes(StandardCharsets.UTF_8));
+      zip.closeEntry();
+      zip.putNextEntry(new java.util.zip.ZipEntry("repo-main/package/content/../scripts/ant.xml"));
+      zip.write("<project/>".getBytes(StandardCharsets.UTF_8));
+      zip.closeEntry();
+    }
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromZip(new ByteArrayInputStream(bytes.toByteArray()), true, "test"));
+    assertEquals("Entry with an illegal name: repo-main/package/content/../scripts/ant.xml", thrown.getMessage());
+  }
+}

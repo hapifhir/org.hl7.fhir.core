@@ -36,6 +36,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -48,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -420,7 +422,13 @@ public class NpmPackage {
   private int size;
   private boolean warned = false;
   private static boolean loadCustomResources;
-  private static long defaultMaxLoadSize = 0; // 0 = no limit
+  /**
+   * The default limit on what a package may decompress to: 1.5 GB. The largest real package is
+   * us.nlm.vsac#0.18.0, 1.25 GB decompressed (Nov 2026); anything more is refused as soon as it passes this, so a
+   * decompression bomb can't exhaust memory or disk. FHIRsmith uses the same limit
+   */
+  public static final long DEFAULT_MAX_LOAD_SIZE = 1536L * 1024 * 1024;
+  private static long defaultMaxLoadSize = DEFAULT_MAX_LOAD_SIZE; // 0 = no limit
   private long maxLoadSize = defaultMaxLoadSize;
 
   /**
@@ -612,11 +620,13 @@ public class NpmPackage {
     }
     try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
+      Map<String, String> names = new HashMap<>();
 
       while ((entry = tarIn.getNextEntry()) != null) {
         String n = getEntryName(entry);
-        if (n.contains("/..") || n.contains("../")) {
-          throw new RuntimeException("Entry with an illegal name: " + n);
+        checkEntryPath(n);
+        if (!entry.isDirectory()) {
+          checkDuplicateName(names, n, desc);
         }
         if (entry.isDirectory()) {
           if (!Utilities.noString(n)) {
@@ -706,10 +716,12 @@ public class NpmPackage {
     try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
       NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
+      Map<String, String> names = new HashMap<>();
       while ((entry = tarIn.getNextEntry()) != null) {
         String entryName = getEntryName(entry);
-        if (entryName.contains("..")) {
-          throw new RuntimeException("Entry with an illegal name: " + entryName);
+        checkEntryPath(entryName);
+        if (!entry.isDirectory()) {
+          checkDuplicateName(names, entryName, desc);
         }
         if (entry.isDirectory()) {
           String dir = entryName.substring(0, entryName.length()-1);
@@ -755,7 +767,57 @@ public class NpmPackage {
     checkIndexed(desc);
   }
 
-  private static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
+  /**
+   * The name a file in a package is compared by, to find two files with the same name. A
+   * package with two is refused: readers don't agree which copy wins (this class keeps the
+   * last, a reader that stops at the first one it wants keeps the first), so a package with two
+   * package.json files could be one package to one reader and another package to another.
+   * <p/>
+   * Names that are different strings but the same file to some reader or file system count as
+   * the same: \ is /, runs of / are one, . segments and leading / are dropped (./package/x and
+   * package//x are package/x), Unicode is NFC (macOS file systems don't tell NFC and NFD apart),
+   * and case is ignored (macOS and Windows file systems don't tell Package.json from
+   * package.json). FHIRsmith (library/package-names.js) normalises the same way.
+   */
+  public static String entryNameKey(String name) {
+    String n = Normalizer.normalize(name, Normalizer.Form.NFC).replace('\\', '/');
+    StringBuilder b = new StringBuilder();
+    for (String s : n.split("/")) {
+      if (!s.isEmpty() && !s.equals(".")) {
+        if (b.length() > 0) {
+          b.append('/');
+        }
+        b.append(s);
+      }
+    }
+    return b.toString().toLowerCase(Locale.ROOT);
+  }
+
+  /**
+   * A package is refused if any entry's name has a .. segment, with / or \ as the separator:
+   * unpacked, it names a file outside the package, or outside the folder it claims to be in.
+   * FHIRsmith (library/package-names.js) refuses the same names
+   */
+  public static void checkEntryPath(String name) throws IOException {
+    for (String s : name.split("[/\\\\]")) {
+      if ("..".equals(s)) {
+        throw new IOException("Entry with an illegal name: " + name);
+      }
+    }
+  }
+
+  /** Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey */
+  public static void checkDuplicateName(Map<String, String> names, String name, String desc) throws IOException {
+    String earlier = names.putIfAbsent(entryNameKey(name), name);
+    if (earlier != null) {
+      throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- "+(earlier.equals(name)
+        ? "it has more than one file named "+name
+        : "it has files named "+earlier+" and "+name+", which are the same file to some systems"));
+    }
+  }
+
+  /** Refuses a package once what has been decompressed passes maxLoadSize (0 = no limit) */
+  public static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
     if (maxLoadSize > 0 && loadedSize > maxLoadSize) {
       throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- the decompressed size exceeds the limit of "+maxLoadSize+" bytes");
     }
@@ -849,7 +911,14 @@ public class NpmPackage {
     long loadedSize = 0;
     ZipInputStream zip = new ZipInputStream(stream);
     ZipEntry ze;
+    Map<String, String> names = new HashMap<>();
     while ((ze = zip.getNextEntry()) != null) {
+      // as for tgz packages: no entry name may have a .. segment. Unpacked, content/../scripts/ant.xml is written
+      // over scripts/ant.xml, but the list of files unpacked still says content/../scripts/ant.xml
+      checkEntryPath(ze.getName());
+      if (!ze.isDirectory()) {
+        checkDuplicateName(names, ze.getName(), desc);
+      }
       int size;
       byte[] buffer = new byte[2048];
 
@@ -1767,8 +1836,8 @@ public class NpmPackage {
 
   /**
    * The default limit on the total decompressed size of a package being loaded, in bytes
-   * (0 = no limit, which is the default). Servers that load packages from untrusted sources
-   * should set this to guard against zip bombs. Applies to packages
+   * (0 = no limit). It is {@link #DEFAULT_MAX_LOAD_SIZE} (1.5 GB) unless it is changed; it guards
+   * against decompression bombs, so only set it to 0 where every package is trusted. Applies to packages
    * loaded after it is set; can be overridden per package instance (see
    * {@link #fromPackage(InputStream, String, boolean, long)})
    */
