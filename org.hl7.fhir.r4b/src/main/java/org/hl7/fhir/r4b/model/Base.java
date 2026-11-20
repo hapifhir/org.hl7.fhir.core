@@ -22,9 +22,12 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   /**
    * Stored in place of a null value, which a ConcurrentHashMap can't hold: setUserData(name, null) has always
-   * left hasUserData(name) true (and getUserData(name) null), and callers (e.g. HAPI) depend on that
+   * left hasUserData(name) true (and getUserData(name) null), and callers (e.g. HAPI) depend on that.
+   * It's an enum constant, not a plain Object, because userData is serialized with the resource: an enum is
+   * serializable, and deserializes to this same instance, so the == checks still recognise it
    */
-  private static final Object NULL_USER_DATA = new Object();
+  private enum NullUserData { INSTANCE }
+  private static final NullUserData NULL_USER_DATA = NullUserData.INSTANCE;
 
   @SuppressWarnings("rawtypes")
   private static final java.util.concurrent.atomic.AtomicReferenceFieldUpdater<Base, Map> USER_DATA =
