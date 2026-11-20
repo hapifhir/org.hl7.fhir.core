@@ -65,6 +65,12 @@ public abstract class Base implements Serializable, IBase, IElement {
    */
   private transient volatile Map<String, Object> userData;
 
+  /**
+   * Stored in place of a null value, which a ConcurrentHashMap can't hold: setUserData(name, null) leaves
+   * hasUserData(name) true (and getUserData(name) null), as it always has in R4 (HAPI depends on that)
+   */
+  private static final Object NULL_USER_DATA = new Object();
+
   @SuppressWarnings("rawtypes")
   private static final java.util.concurrent.atomic.AtomicReferenceFieldUpdater<Base, Map> USER_DATA =
       java.util.concurrent.atomic.AtomicReferenceFieldUpdater.newUpdater(Base.class, Map.class, "userData");
@@ -231,21 +237,23 @@ public abstract class Base implements Serializable, IBase, IElement {
   //endregion
 
   //region User Data
-  /** the user data item with the given name, or null if there isn't one */
+  /**
+   * The named user data item, or null if it is absent or was set to null (hasUserData tells those apart)
+   */
   public Object getUserData(String name) {
     Map<String, Object> ud = userData;
     if (ud == null)
       return null;
-    return ud.get(name);
+    Object v = ud.get(name);
+    return v == NULL_USER_DATA ? null : v;
   }
   
-  /** set the named user data item, replacing any existing value */
+  /**
+   * Set the named user data item, replacing any existing value. A null value is kept as a value:
+   * the name stays present, so hasUserData(name) is true and getUserData(name) returns null (clearUserData(name) removes it)
+   */
   public void setUserData(String name, Object value) {
-    if (value == null) {
-      clearUserData(name);
-    } else {
-      userDataForWrite().put(name, value);
-    }
+    userDataForWrite().put(name, value == null ? NULL_USER_DATA : value);
   }
 
   /** remove the named user data item, if present */
@@ -269,13 +277,17 @@ public abstract class Base implements Serializable, IBase, IElement {
     userDataForWrite().put(name, value);
   }
 
-  /** true if the named user data item is present with a non-null value */
+  /**
+   * True if the named user data item is present - including when it was set to null (setUserData(name, null))
+   */
   public boolean hasUserData(String name) {
     Map<String, Object> ud = userData;
-    return ud != null && ud.get(name) != null;
+    return ud != null && ud.containsKey(name);
   }
 
-  /** the named user data item as a string (toString() for non-strings), or null if absent */
+  /**
+   * The named user data item as a String (toString() for anything else), or null if it is absent or was set to null
+   */
 	public String getUserString(String name) {
     Object ud = getUserData(name);
     if (ud == null)
@@ -285,11 +297,12 @@ public abstract class Base implements Serializable, IBase, IElement {
     return ud.toString();
   }
 
-  /** the named user data item as an int, or 0 if absent (throws if present but not an Integer) */
+  /**
+   * The named user data item as an int (it must be an Integer), or 0 if it is absent or was set to null
+   */
   public int getUserInt(String name) {
-    if (!hasUserData(name))
-      return 0;
-    return (Integer) getUserData(name);
+    Object v = getUserData(name);
+    return v == null ? 0 : (Integer) v;
   }
 
   /** merge the other object's user data into this one - shared names are overwritten, others are kept */
@@ -300,9 +313,7 @@ public abstract class Base implements Serializable, IBase, IElement {
       Map<String, Object> ud = userDataForWrite();
       for (String n : names) {
         Object v = other.getUserData(n);
-        if (v != null) {
-          ud.put(n, v);
-        }
+        ud.put(n, v == null ? NULL_USER_DATA : v);
       }
     }
   }
