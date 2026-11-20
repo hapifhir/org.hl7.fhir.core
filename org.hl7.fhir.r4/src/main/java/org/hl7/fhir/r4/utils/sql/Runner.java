@@ -67,19 +67,24 @@ public class Runner implements IHostApplicationServices {
    * The evaluation scope threaded through select recursion, and the appContext
    * handed to the FHIRPath engine. It is immutable, so a nested scope cannot
    * disturb its parent, and the row index that reaches resolveConstant always
-   * belongs to the select currently being evaluated.
+   * belongs to the select currently being evaluated. It also carries the resource
+   * being processed, which getReferenceKey() hands to the provider so that references
+   * that only make sense relative to it (contained #id references, or references
+   * inside a Bundle) can be resolved.
    */
   private static class ExecutionContext {
     private final JsonObject vd;
+    private final Base rootResource;
     private final int rowIndex;
 
-    private ExecutionContext(JsonObject vd, int rowIndex) {
+    private ExecutionContext(JsonObject vd, Base rootResource, int rowIndex) {
       this.vd = vd;
+      this.rootResource = rootResource;
       this.rowIndex = rowIndex;
     }
 
     private ExecutionContext withRowIndex(int rowIndex) {
-      return new ExecutionContext(vd, rowIndex);
+      return new ExecutionContext(vd, rootResource, rowIndex);
     }
   }
 
@@ -228,7 +233,7 @@ public class Runner implements IHostApplicationServices {
     }
     // The resource is row 0 of its own scope: %rowIndex is 0 until a select
     // starts iterating.
-    ExecutionContext ctx = new ExecutionContext(vd, 0);
+    ExecutionContext ctx = new ExecutionContext(vd, b, 0);
     boolean ok = true;
     for (JsonObject w : vd.getJsonObjects("where")) {
       String expr = w.asString("path");
@@ -595,6 +600,10 @@ public class Runner implements IHostApplicationServices {
     }
   }
 
+  private Base rootResourceOf(Object appContext) {
+    return appContext instanceof ExecutionContext ? ((ExecutionContext) appContext).rootResource : null;
+  }
+
   private int rowIndexOf(Object appContext) {
     return appContext instanceof ExecutionContext ? ((ExecutionContext) appContext).rowIndex : 0;
   }
@@ -638,7 +647,7 @@ public class Runner implements IHostApplicationServices {
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
-    case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
+    case "getReferenceKey" : return executeReferenceKey(rootResourceOf(appContext), focus, parameters);
     default: throw new FHIRException("Unknown function "+functionName);
     }
   }
