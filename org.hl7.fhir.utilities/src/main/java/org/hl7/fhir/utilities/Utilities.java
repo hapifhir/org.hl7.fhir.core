@@ -2205,6 +2205,14 @@ public class Utilities {
     if (cnt == null) {
       return new String[] {};
     }
+    if (div != null && div.isEmpty() && !cnt.isEmpty()) {
+      // each character on its own (as Java's and JavaScript's split do): an empty divider matches everywhere, and never moves on
+      String[] res = new String[cnt.length()];
+      for (int i = 0; i < cnt.length(); i++) {
+        res[i] = cnt.substring(i, i + 1);
+      }
+      return res;
+    }
     List<String> parts = new ArrayList<>();
     int cursor = 0;
     int last = 0;

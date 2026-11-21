@@ -494,6 +494,9 @@ class UtilitiesTest {
     checkEquals(new String[] {"A", "B"}, Utilities.simpleSplit("A,B", ","));
     checkEquals(new String[] {"", "A", "", "B", ""}, Utilities.simpleSplit(",A,,B,", ","));
     checkEquals(new String[] {"", "ONE", "", "TWO", "", "", "THREE", "", ""}, Utilities.simpleSplit("[stop]ONE[stop][stop]TWO[stop][stop][stop]THREE[stop][stop]", "[stop]"));
+    // an empty divider: each character (this went round for ever)
+    checkEquals(new String[] {"A", "B", "C"}, Utilities.simpleSplit("ABC", ""));
+    checkEquals(new String[] {""}, Utilities.simpleSplit("", ""));
   }
 
   private void checkEquals(String[] left, String[] right) {

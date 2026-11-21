@@ -152,6 +152,8 @@ public class Parser {
         lexType = LexType.gqlltPunctuation;
         token.append(ch);
       } else if (ch == '.') {
+        // punctuation, whatever came before it (it was left as the type of the token before, so "id ...F" read ... as a name)
+        lexType = LexType.gqlltPunctuation;
         do {
           token.append(ch);
           ch = getNextChar();
@@ -239,7 +241,30 @@ public class Parser {
     next();
   }
 
+  /**
+   * How deeply selections (and object values) can nest. A query comes from whoever sends it, and one nested deeply
+   * enough would run the parser out of stack
+   */
+  public static final int MAX_DEPTH = 100;
+  private int depth;
+
+  private void enter() throws EGraphQLException {
+    depth++;
+    if (depth > MAX_DEPTH) {
+      throw new EGraphQLException("The GraphQL is nested too deeply (more than " + MAX_DEPTH + " levels)");
+    }
+  }
+
   private Value parseValue() throws EGraphQLException, IOException {
+    enter();
+    try {
+      return parseValueInner();
+    } finally {
+      depth--;
+    }
+  }
+
+  private Value parseValueInner() throws EGraphQLException, IOException {
     Value result = null;
     switch (lexType) {
     case gqlltNull: throw new EGraphQLException("Attempt to read a value after reading off the } of the GraphQL statement");
@@ -421,6 +446,15 @@ public class Parser {
   }
 
   private Selection parseSelection() throws EGraphQLException, IOException {
+    enter();
+    try {
+      return parseSelectionInner();
+    } finally {
+      depth--;
+    }
+  }
+
+  private Selection parseSelectionInner() throws EGraphQLException, IOException {
     Selection result = new Selection();
     if (hasPunctuation("...")) {
       consumePunctuation("...");

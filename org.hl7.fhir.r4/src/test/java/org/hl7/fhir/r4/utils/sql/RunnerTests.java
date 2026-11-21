@@ -192,4 +192,71 @@ class RunnerTests {
     assertEquals("Patient/p1", row.asString("pat"));
     assertTrue(row.get("grp") instanceof JsonNull, "a contained Patient is not a Group");
   }
+
+  // six names, each with six given names
+  private static final String SIX_NAMES = "{\"resourceType\":\"Patient\",\"id\":\"p1\",\"name\":["
+      + "{\"family\":\"a\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"b\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"c\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"d\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"e\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"f\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]}"
+      + "]}";
+
+  // each forEach multiplies the rows by the items it iterates (here, 6 names x 6 given names): nested ones can make
+  // millions of rows from one resource, so the rows one resource can make are capped (configurably)
+  private static final String NAMES_BY_NAMES = "{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+      + "\"resource\":\"Patient\",\"select\":[{\"forEach\":\"name\",\"column\":[{\"name\":\"f1\",\"path\":\"family\"}],"
+      + "\"select\":[{\"forEach\":\"given\",\"column\":[{\"name\":\"g\",\"path\":\"$this\"}]}]}]}";
+
+  @Test
+  void rowsBeyondTheLimitFail() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(20);
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(JsonParser.parseObject(NAMES_BY_NAMES)));
+    assertTrue(e.getMessage().contains("more than 20 rows"), e.getMessage());
+  }
+
+  @Test
+  void rowsUpToTheLimitAreFine() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(36);
+    runner.execute(JsonParser.parseObject(NAMES_BY_NAMES));
+    assertEquals(36, storage.getResults().size());
+  }
+
+  // the time limit is for each resource, and the FHIRPath the view runs spends it
+  @Test
+  void aResourceThatTakesTooLongFails() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxExecutionMillis(200);
+    String slow = "(1).repeat(iif($this < 1000, $this + 1, {})).select((1).repeat(iif($this < 1000, $this + 1, {})).count()).count()";
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"column\":[{\"name\":\"n\",\"path\":\"" + slow + "\"}]}]}");
+    long start = System.currentTimeMillis();
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("didn't finish"), e.getMessage());
+    assertTrue(System.currentTimeMillis() - start < 30000);
+  }
+  /** a collection column's values go in every row: rows times values is limited */
+  @Test
+  void aCollectionColumnInManyRowsFails() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(5000);
+    String thousand = "(1).repeat(iif($this < 1000, $this + 1, {}))";
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"forEach\":\"" + thousand + "\",\"column\":[{\"name\":\"n\",\"path\":\"$this\"}]},"
+        + "{\"column\":[{\"name\":\"m\",\"collection\":true,\"path\":\"" + thousand + ".select(" + thousand + ")\"}]}]}");
+    long start = System.currentTimeMillis();
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("values in a column"), e.getMessage());
+    assertTrue(System.currentTimeMillis() - start < 30000);
+  }
 }

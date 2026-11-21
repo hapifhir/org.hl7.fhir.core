@@ -901,7 +901,8 @@ public class FHIRPathEngine {
   }
 
   public String evaluateToString(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node) throws FHIRException {
-    return convertToString(evaluate(appInfo, focusResource, rootResource, base, node));
+    // the string the run makes is limited as the strings it makes along the way are
+    return convertToString(evaluate(appInfo, focusResource, rootResource, base, node), limitsFor(appInfo).getMaxStringLength());
   }
 
   /**
@@ -911,6 +912,14 @@ public class FHIRPathEngine {
    * @return
    */
   public String convertToString(List<Base> items) {
+    return convertToString(items, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH);
+  }
+
+  /**
+   * as convertToString(items), but no more than maxLength characters (0 or less: no limit): a collection of strings can
+   * add up to far more than any one of them
+   */
+  public String convertToString(List<Base> items, int maxLength) {
     StringBuilder b = new StringBuilder();
     boolean first = true;
     for (Base item : items) {
@@ -921,6 +930,9 @@ public class FHIRPathEngine {
       }
 
       b.append(convertToString(item));
+      if (maxLength > 0 && b.length() > maxLength) {
+        throw makeException(null, I18nConstants.FHIRPATH_STRING_TOO_LONG, Integer.toString(maxLength));
+      }
     }
     return b.toString();
   }
@@ -992,7 +1004,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ExecutionContext {
+  private class ExecutionContext extends org.hl7.fhir.utilities.LimitedExecutionContext {
     private Object appInfo;
     private Base focusResource;
     private Base rootResource;
@@ -1003,6 +1015,12 @@ public class FHIRPathEngine {
     private Map<String, List<Base>> definedVariables;
 
     public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem) {
+      this(appInfo, resource, rootResource, context, thisItem, null);
+    }
+
+    /** limits: the run's, for a context within a run; null to take them from the app context, or make new ones */
+    private ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem, org.hl7.fhir.utilities.ExecutionLimits limits) {
+      super(limits != null ? limits : FHIRPathEngine.this.limitsFor(appInfo));
       this.appInfo = appInfo;
       this.context = context;
       this.focusResource = resource; 
@@ -1530,7 +1548,85 @@ public class FHIRPathEngine {
     return false;
   }
 
+  /** the most rounds repeat() can go: each round adds what the expression finds for the items the last one added */
+  public static final int MAX_REPEAT_ROUNDS = 1000;
+  /** the longest an evaluation can take (ms): an expression comes from content (e.g. an invariant), and can be written so it doesn't end */
+  public static final long MAX_EXECUTION_MILLIS = 60000;
+  private long maxExecutionMillis = MAX_EXECUTION_MILLIS;
+
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  /** how long an evaluation can take (ms); MAX_EXECUTION_MILLIS unless set. 0 or less: no limit */
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
+
+  /**
+   * The limits of an evaluation: those of the app context, if it's the context of a run of another engine (Liquid's,
+   * when Liquid runs FHIRPath), so that the whole run has one budget; otherwise new ones, from this engine's settings
+   */
+  private org.hl7.fhir.utilities.ExecutionLimits limitsFor(Object appInfo) {
+    org.hl7.fhir.utilities.ExecutionLimits limits = org.hl7.fhir.utilities.LimitedExecutionContext.limitsOf(appInfo);
+    return limits != null ? limits : makeExecutionLimits();
+  }
+
+  /** a budget for a run, from this engine's settings (Liquid makes the budget for a template's run with this) */
+  public org.hl7.fhir.utilities.ExecutionLimits makeExecutionLimits() {
+    return new org.hl7.fhir.utilities.ExecutionLimits(maxExecutionMillis, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_DEPTH,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH);
+  }
+
+  /**
+   * Checks the run's budget: the time, and the size of a collection being made (null if there isn't one). Called as
+   * each expression starts and ends, and in loops that can run long or make big collections without evaluating
+   * anything (distinct(), union(), subsetOf()...)
+   */
+  private void checkLimits(ExecutionContext context, ExpressionNode exp, List<Base> list) {
+    org.hl7.fhir.utilities.ExecutionLimits limits = context.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw makeException(exp, I18nConstants.FHIRPATH_TIMEOUT, limits.maxSeconds());
+    }
+    if (list != null && limits.isTooManyItems(list.size())) {
+      throw makeException(exp, I18nConstants.FHIRPATH_TOO_MANY_ITEMS, Integer.toString(limits.getMaxItems()));
+    }
+  }
+
+  /** checks the length of a string about to be made (+, &, replace() - each can double a string) */
+  private void checkLength(ExecutionContext context, ExpressionNode exp, long length) {
+    if (context.getExecutionLimits().isTooLong(length)) {
+      throw makeException(exp, I18nConstants.FHIRPATH_STRING_TOO_LONG, Integer.toString(context.getExecutionLimits().getMaxStringLength()));
+    }
+  }
+
+  /** the strings a function made mustn't be too long */
+  private List<Base> checkLengths(ExecutionContext context, ExpressionNode exp, List<Base> result) {
+    for (Base b : result) {
+      String v = b.primitiveValue();
+      if (v != null) {
+        checkLength(context, exp, v.length());
+      }
+    }
+    return result;
+  }
+
+  /** how long f.replace(t, r) will be, without making it */
+  private static long replacedLength(String f, String t, String r) {
+    if (t.isEmpty()) {
+      return f.length() + (long) (f.length() + 1) * r.length();
+    }
+    long count = 0;
+    int i = f.indexOf(t);
+    while (i >= 0) {
+      count++;
+      i = f.indexOf(t, i + t.length());
+    }
+    return f.length() + count * (r.length() - t.length());
+  }
+
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+    checkLimits(inContext, exp, null);
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -1591,6 +1687,7 @@ public class FHIRPathEngine {
         next = next.getOpNext();
       }
     }
+    checkLimits(context, exp, work);
     return work;
   }
 
@@ -2206,25 +2303,25 @@ public class FHIRPathEngine {
   private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right, ExpressionNode holder) throws FHIRException {
     switch (operation) {
     case Equals: return opEquals(left, right, holder);
-    case Equivalent: return opEquivalent(left, right, holder);
+    case Equivalent: return opEquivalent(context, left, right, holder);
     case NotEquals: return opNotEquals(left, right, holder);
-    case NotEquivalent: return opNotEquivalent(left, right, holder);
+    case NotEquivalent: return opNotEquivalent(context, left, right, holder);
     case LessThan: return opLessThan(left, right, holder);
     case Greater: return opGreater(left, right, holder);
     case LessOrEqual: return opLessOrEqual(left, right, holder);
     case GreaterOrEqual: return opGreaterOrEqual(left, right, holder);
-    case Union: return opUnion(left, right, holder);
+    case Union: return opUnion(context, left, right, holder);
     case In: return opIn(left, right, holder);
     case MemberOf: return opMemberOf(context, left, right, holder);
-    case Contains: return opContains(left, right, holder);
+    case Contains: return opContains(context, left, right, holder);
     case Or:  return opOr(left, right, holder);
     case And:  return opAnd(left, right, holder);
     case Xor: return opXor(left, right, holder);
     case Implies: return opImplies(left, right, holder);
-    case Plus: return opPlus(left, right, holder);
+    case Plus: return opPlus(context, left, right, holder);
     case Times: return opTimes(left, right, holder);
     case Minus: return opMinus(left, right, holder);
-    case Concatenate: return opConcatenate(left, right, holder);
+    case Concatenate: return opConcatenate(context, left, right, holder);
     case DivideBy: return opDivideBy(left, right, holder);
     case Div: return opDiv(left, right, holder);
     case Mod: return opMod(left, right, holder);
@@ -2726,13 +2823,14 @@ public class FHIRPathEngine {
 
 
 
-  private List<Base> opEquivalent(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+  private List<Base> opEquivalent(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() != right.size()) {
       return makeBoolean(false);
     }
 
     boolean res = true;
     for (int i = 0; i < left.size(); i++) {
+      checkLimits(context, expr, null);
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
         if (doEquivalent(left.get(i), right.get(j))) {
@@ -2748,13 +2846,14 @@ public class FHIRPathEngine {
     return makeBoolean(res);
   }
 
-  private List<Base> opNotEquivalent(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+  private List<Base> opNotEquivalent(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() != right.size()) {
       return makeBoolean(true);
     }
 
     boolean res = true;
     for (int i = 0; i < left.size(); i++) {
+      checkLimits(context, expr, null);
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
         if (doEquivalent(left.get(i), right.get(j))) {
@@ -2798,6 +2897,15 @@ public class FHIRPathEngine {
   // boundaries on such a value give empty, quantities holding one are not converted to canonical units, and toString()
   // keeps the exponent
   private static final int MAX_DECIMAL_SIZE = 1000;
+
+  /** a precision argument: one that isn't a number an int can hold is -1, which is out of range */
+  private static int precisionValue(String s) {
+    try {
+      return Integer.parseInt(s);
+    } catch (NumberFormatException e) {
+      return -1;
+    }
+  }
 
   private boolean isNormalSizeDecimal(BigDecimal value) {
     return value == null || (value.precision() < MAX_DECIMAL_SIZE && Math.abs((long) value.scale()) < MAX_DECIMAL_SIZE);
@@ -3019,6 +3127,7 @@ public class FHIRPathEngine {
     ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
     if (vs != null) {
       for (Base l : left) {
+        checkLimits(context, expr, null);
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
           if (worker.validateCode(terminologyServiceOptions.withGuessSystem() , l.castToCoding(l), vs).isOk()) {
             ans = true;
@@ -3066,12 +3175,13 @@ public class FHIRPathEngine {
     return makeBoolean(ans);
   }
 
-  private List<Base> opContains(List<Base> left, List<Base> right, ExpressionNode expr) {
+  private List<Base> opContains(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
     }
     boolean ans = true;
     for (Base r : right) {
+      checkLimits(context, expr, null);
       boolean f = false;
       for (Base l : left) {
         Boolean eq = doEquals(l, r);
@@ -3088,7 +3198,7 @@ public class FHIRPathEngine {
     return makeBoolean(ans);
   }
 
-  private List<Base> opPlus(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+  private List<Base> opPlus(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
     }
@@ -3109,6 +3219,7 @@ public class FHIRPathEngine {
     Base l = left.get(0);
     Base r = right.get(0);
     if (l.hasType(FHIR_TYPES_STRING) && r.hasType(FHIR_TYPES_STRING)) { 
+      checkLength(context, expr, (long) l.primitiveValue().length() + r.primitiveValue().length());
       result.add(new StringType(l.primitiveValue() + r.primitiveValue()));
     } else if (l.hasType("integer") && r.hasType("integer")) { 
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
@@ -3232,7 +3343,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> opConcatenate(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+  private List<Base> opConcatenate(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() > 1) {
       throw makeExceptionPlural(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE, "&");
     }
@@ -3249,18 +3360,21 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     String l = left.size() == 0 ? "" : left.get(0).primitiveValue();
     String r = right.size() == 0 ? "" : right.get(0).primitiveValue();
+    checkLength(context, expr, (long) l.length() + r.length());
     result.add(new StringType(l + r));
     return result;
   }
 
-  private List<Base> opUnion(List<Base> left, List<Base> right, ExpressionNode expr) {
+  private List<Base> opUnion(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : left) {
+      checkLimits(context, expr, result);
       if (!doContains(result, item)) {
         result.add(item);
       }
     }
     for (Base item : right) {
+      checkLimits(context, expr, result);
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -4485,10 +4599,10 @@ public class FHIRPathEngine {
     case AnyTrue: return funcAnyTrue(context, focus, exp);
     case AllTrue: return funcAllTrue(context, focus, exp);
     case HasValue : return funcHasValue(context, focus, exp);
-    case Encode : return funcEncode(context, focus, exp);
+    case Encode : return checkLengths(context, exp, funcEncode(context, focus, exp));
     case Decode : return funcDecode(context, focus, exp);
-    case Escape : return funcEscape(context, focus, exp);
-    case Unescape : return funcUnescape(context, focus, exp);
+    case Escape : return checkLengths(context, exp, funcEscape(context, focus, exp));
+    case Unescape : return checkLengths(context, exp, funcUnescape(context, focus, exp));
     case Trim : return funcTrim(context, focus, exp);
     case Split : return funcSplit(context, focus, exp);
     case Join : return funcJoin(context, focus, exp); 
@@ -4840,7 +4954,7 @@ public class FHIRPathEngine {
       result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      if (isNormalSizeDecimal(value)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(value)) {
         Base v = base.copy();
         v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
         result.add(v);
@@ -4886,7 +5000,7 @@ public class FHIRPathEngine {
       result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      if (isNormalSizeDecimal(value)) {
+      if ((precision == null || (precision >= 0 && precision < 17)) && isNormalSizeDecimal(value)) {
         Base v = base.copy();
         v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
         result.add(v);
@@ -4926,12 +5040,13 @@ public class FHIRPathEngine {
       if (expr.getParameters().size() == 1) {
         List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
         if (n1.size() != 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "0", "Multiple Values", "integer");
+          throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "round", "0", "Multiple Values", "integer");
         }
-        i = Integer.parseInt(n1.get(0).primitiveValue());
+        i = precisionValue(n1.get(0).primitiveValue());
       }
       BigDecimal  d = new BigDecimal (base.primitiveValue());
-      if (isNormalSizeDecimal(d)) {
+      // the precision is how many digits there will be: a huge one is as bad as a huge decimal (GHSA-994m-hm9j-92v9)
+      if (i >= 0 && i < MAX_DECIMAL_SIZE && isNormalSizeDecimal(d)) {
         result.add(new DecimalType(d.setScale(i, RoundingMode.HALF_UP)));
       }
     } else {
@@ -5085,6 +5200,12 @@ public class FHIRPathEngine {
     }
     
     List<Base> result = new ArrayList<Base>();
+    long length = 0;
+    for (Base i : focus) {
+      String v = i.primitiveValue();
+      length = length + (v == null ? 0 : v.length()) + Math.max(param == null ? 0 : param.length(), param2 == null ? 0 : param2.length());
+    }
+    checkLength(context, exp, length);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(param, param2);
     for (Base i : focus) {
       b.append(i.primitiveValue());    
@@ -5351,7 +5472,7 @@ public class FHIRPathEngine {
 
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
-    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, newThis);
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, newThis, context.getExecutionLimits());
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
@@ -5362,7 +5483,7 @@ public class FHIRPathEngine {
   }
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
-    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem, context.getExecutionLimits());
     newContext.total = context.total;
     newContext.index = context.index;
     // append all of the defined variables from the context into the new context
@@ -5444,9 +5565,11 @@ public class FHIRPathEngine {
       added.clear();
       for (Base item : current) {
         getChildrenByName(item, "*", added);
+        checkLimits(context, exp, added);
       }
       more = !added.isEmpty();
       result.addAll(added);
+      checkLimits(context, exp, result);
       current.clear();
       current.addAll(added);
     }
@@ -5478,6 +5601,7 @@ public class FHIRPathEngine {
         if (Utilities.noString(f)) {
           result.add(new StringType(""));
         } else {
+          checkLength(context, expr, replacedLength(f, t, r));
           String n = f.replace(t, r);
           result.add(new StringType(n));
         }
@@ -5504,7 +5628,10 @@ public class FHIRPathEngine {
         try {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
-          String replaced = RegexTimeout.replaceAll(f, regex, repl);
+          String replaced = RegexTimeout.replaceAllWithLimit(f, regex, repl, context.getExecutionLimits().getMaxStringLength());
+          if (replaced == null) {
+            throw makeException(exp, I18nConstants.FHIRPATH_STRING_TOO_LONG, Integer.toString(context.getExecutionLimits().getMaxStringLength()));
+          }
           result.add(new StringType(replaced).noExtensions());
         } catch (TimeoutException te) {
           throw new FHIRException("Timeout evaluating regex: " + regex, te);
@@ -5671,11 +5798,13 @@ public class FHIRPathEngine {
   private List<Base> funcUnion(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
+      checkLimits(context, exp, result);
       if (!doContains(result, item)) {
         result.add(item);
       }
     }
     for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
+      checkLimits(context, exp, result);
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -5699,6 +5828,7 @@ public class FHIRPathEngine {
     List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
+      checkLimits(context, exp, result);
       if (!doContains(result, item) && doContains(other, item)) {
         result.add(item);
       }
@@ -5711,6 +5841,7 @@ public class FHIRPathEngine {
     List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
 
     for (Base item : focus) {
+      checkLimits(context, exp, result);
       if (!doContains(other, item)) {
         result.add(item);
       }
@@ -5899,17 +6030,24 @@ public class FHIRPathEngine {
     current.addAll(focus);
     List<Base> added = new ArrayList<Base>();
     boolean more = true;
+    int rounds = 0;
     while (more) {
+      rounds++;
+      if (rounds > MAX_REPEAT_ROUNDS) {
+        throw makeException(exp, I18nConstants.FHIRPATH_REPEAT_TOO_MANY_ROUNDS, Integer.toString(MAX_REPEAT_ROUNDS));
+      }
       added.clear();
       List<Base> pc = new ArrayList<Base>();
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+        checkLimits(context, exp, added);
       }
       more = false;
       current.clear();
       for (Base b : added) {
+        checkLimits(context, exp, result);
         boolean isnew = true;
         for (Base t : result) {
           if (b.equalsDeep(t)) {
@@ -5955,6 +6093,7 @@ public class FHIRPathEngine {
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
+      checkLimits(context, exp, null);
       for (int j = i+1; j < focus.size(); j++) {
         Boolean eq = doEquals(focus.get(j), focus.get(i));
         if (eq == null) {
@@ -5974,6 +6113,7 @@ public class FHIRPathEngine {
 
     boolean valid = true;
     for (Base item : target) {
+      checkLimits(context, exp, null);
       boolean found = false;
       for (Base t : focus) {
         if (Base.compareDeep(item, t, false)) {
@@ -5997,6 +6137,7 @@ public class FHIRPathEngine {
 
     boolean valid = true;
     for (Base item : focus) {
+      checkLimits(context, exp, null);
       boolean found = false;
       for (Base t : target) {
         if (Base.compareDeep(item, t, false)) {
@@ -6048,6 +6189,7 @@ public class FHIRPathEngine {
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
+      checkLimits(context, exp, null);
       Base refContext = item;
       String url = null;
       Identifier id = null;
@@ -6299,6 +6441,7 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     for (int i = 0; i < focus.size(); i++) {
       boolean found = false;
+      checkLimits(context, exp, null);
       for (int j = i+1; j < focus.size(); j++) {
         Boolean eq = doEquals(focus.get(j), focus.get(i));
         if (eq == null)
@@ -6929,6 +7072,7 @@ public class FHIRPathEngine {
       pc.clear();
       pc.add(item);
       result.addAll(execute(changeThis(context, item).setIndex(i), pc, exp.getParameters().get(0), true));
+      checkLimits(context, exp, result);
       i++;
     }
     return result;

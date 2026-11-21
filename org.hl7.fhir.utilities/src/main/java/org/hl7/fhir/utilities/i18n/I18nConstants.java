@@ -1662,6 +1662,11 @@ public class I18nConstants {
   public static final String FHIRPATH_TIMEOUT = "FHIRPATH_TIMEOUT";
   public static final String FHIRPATH_REPEAT_TOO_MANY_ROUNDS = "FHIRPATH_REPEAT_TOO_MANY_ROUNDS";
   public static final String LIQUID_TOO_DEEP = "LIQUID_TOO_DEEP";
+  public static final String LIQUID_TIMEOUT = "LIQUID_TIMEOUT";
+  public static final String LIQUID_OUTPUT_TOO_LONG = "LIQUID_OUTPUT_TOO_LONG";
+  public static final String LIQUID_TOO_MANY_ITEMS = "LIQUID_TOO_MANY_ITEMS";
+  public static final String FHIRPATH_TOO_MANY_ITEMS = "FHIRPATH_TOO_MANY_ITEMS";
+  public static final String FHIRPATH_STRING_TOO_LONG = "FHIRPATH_STRING_TOO_LONG";
   public static final String TRANSLATION_WARNING_NOMAP = "TRANSLATION_WARNING_NOMAP";
   public static final String TRANSLATION_WARNING_DENIED = "TRANSLATION_WARNING_DENIED";
   public static final String TRANSLATION_WARNING_OTHER = "TRANSLATION_WARNING_OTHER";
