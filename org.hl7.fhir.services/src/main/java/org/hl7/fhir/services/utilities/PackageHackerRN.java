@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.utilities;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.CanonicalResource;
@@ -29,15 +30,16 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  * - fixRegisteredResource(proxy, packageInfo): when a resource is registered from a package (before it is loaded)
  * - fixLoadedResource(resource): when a resource is actually loaded from a package
+ * - fixPackageResource(resource, packageInfo): both of the above, for a resource from a package that is loaded
+ *   directly rather than lazily (SimpleWorkerContext.loadDefinitionItem)
  * - fixBindingDescriptions(context, md): when a binding description is rendered
  *
  * The R5 equivalent is org.hl7.fhir.r5.utils.PackageHackerR5
  *
- * Known limitation (a bug, not yet fixed): these fixes are only applied to resources that are
- * registered and loaded through the package path (registerResourceFromPackage / PackageResourceLoader).
- * Resources loaded through SimpleWorkerContext.loadDefinitionItem - package entries without an id in
- * the index, loose files and zips, and the definitions loaded by loadFromPackage for the core spec
- * source - bypass them, and so do not get fixed.
+ * These fixes are applied to everything loaded from a package, lazily (registerResourceFromPackage /
+ * PackageResourceLoader) or not (SimpleWorkerContext.loadDefinitionItem with package information). Loose
+ * files and zips loaded without package information don't get them. Code that loads definitions some
+ * other way (e.g. HAPI) should call these methods itself.
  */
 public class PackageHackerRN {
 
@@ -232,6 +234,28 @@ public class PackageHackerRN {
         ed.setFixed(new UriType(name));
       }
     }
+  }
+
+  /**
+   * Applies all the package hacks - fixRegisteredResource, then fixLoadedResource - to a resource from a package
+   * that has been loaded directly, rather than registered with a proxy and loaded on demand. That happens when
+   * the package can't be lazy loaded, when lazy loading is turned off, or when the package index entry has no id
+   */
+  public static CanonicalResource fixPackageResource(CanonicalResource cr, PackageInformation packageInfo) {
+    if (packageInfo != null) {
+      CanonicalResourceProxy proxy = new CanonicalResourceProxy(cr.fhirType(), cr.getId(), cr.getUrl(), cr.getVersion(), null, null, null) {
+        @Override
+        public CanonicalResource loadResource() {
+          return cr;
+        }
+      };
+      proxy.setResource(cr);
+      fixRegisteredResource(proxy, packageInfo);
+      if (!Objects.equals(proxy.getUrl(), cr.getUrl()) || !Objects.equals(proxy.getVersion(), cr.getVersion())) {
+        cr.setUrl(proxy.getUrl()).setVersion(proxy.getVersion());
+      }
+    }
+    return fixLoadedResource(cr);
   }
 
   /**

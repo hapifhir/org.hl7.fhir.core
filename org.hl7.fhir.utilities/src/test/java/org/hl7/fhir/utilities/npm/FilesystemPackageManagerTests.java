@@ -26,6 +26,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class FilesystemPackageManagerTests {
@@ -259,6 +260,30 @@ public class FilesystemPackageManagerTests {
 
     File dummyContentFile = ManagedFileAccess.file(dummyTempDirectory.getAbsolutePath(), "dummy.txt");
     assertThat(dummyContentFile).exists();
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "current$my-branch, true", "current$2026-11-gg-supplement-unversioned, true", "current$v1.2_x, true",
+    "current, false", "1.2.3, false", "dev, false",
+    // the branch name is used in a url and a folder name: no '/' (not supported), and nothing else odd
+    "current$, false", "current$a/b, false", "current$../x, false", "current$-x, false", "current$a b, false", "current$$x, false"
+  })
+  void testIsCurrentBranch(String version, boolean expected) {
+    assertEquals(expected, FilesystemPackageCacheManager.isCurrentBranch(version), version);
+  }
+
+  /**
+   * A current$branch with a bad branch name is refused before it's looked for in the cache or fetched: the branch is
+   * used in a folder name and in a url (current$../../x would be fetched from build.fhir.org/ig/../../x)
+   */
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(strings = {"current$../../x", "current$a/b", "current$", "current$-x"})
+  void aBadBranchIsRefusedBeforeItIsUsed(String version) throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch"));
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    org.hl7.fhir.exceptions.FHIRException e = org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> pcm.loadPackage("example.fhir.uv.myig", version));
+    assertTrue(e.getMessage().contains("illegal"), e.getMessage());
   }
 
   @Test

@@ -25,23 +25,6 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public abstract class CodeSystemChecker extends BaseValidator {
 
-  public class StringWithFlag {
-
-    private String msg;
-    private boolean fail;
-    public StringWithFlag(String msg, boolean fail) {
-      super();
-      this.msg = msg;
-      this.fail = fail;
-    }
-    public String getMsg() {
-      return msg;
-    }
-    public boolean isFail() {
-      return fail;
-    }
-
-  }
   private boolean noDisplay = false;
   private boolean hasDisplay = false;
   protected List<ValidationMessage> errors;
@@ -125,15 +108,6 @@ public abstract class CodeSystemChecker extends BaseValidator {
     case "comment" : return null;
     case "itemWeight" : return new PropertyValidationRules(PropertyFilterType.Decimal, null, ops);
     }
-    return null;
-  }
-
-  public String checkFilterValue(String system, String version, String property, String op, String value, PropertyValidationRules rules) {
-    return null;
-  }
-
-  public StringWithFlag checkFilterValue(String system, String version, String property, String op, String value,
-      PropertyValidationRules rules, ValidationOptions options) {
     return null;
   }
 

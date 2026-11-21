@@ -57,6 +57,9 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 
 public class ProfileBasedFactory {
 
+  /** how deeply the factory will go into a profile's elements (a profile can recurse, e.g. Questionnaire.item.item) */
+  public static final int MAX_DEPTH = 100;
+
   private BaseDataTableProvider baseData;
   private TableDataProvider data;
   private JsonArray mappings;
@@ -65,6 +68,8 @@ public class ProfileBasedFactory {
   private PrintStream log;
   private boolean testing;
   private boolean markProfile;
+  private org.hl7.fhir.utilities.LimitedExecutionContext externalRun;
+  private org.hl7.fhir.utilities.LimitedExecutionContext run;
   
   private static class LogSet {
     public LogSet(String msg) {
@@ -94,6 +99,7 @@ public class ProfileBasedFactory {
     PEBuilder builder = new PEBuilder(fpe.getWorker(), PEElementPropertiesPolicy.NONE, true);
     PEDefinition definition = builder.buildPEDefinition(profile);
     Element element = Manager.build(fpe.getWorker(), profile);
+    startRun();
 
     log("--------------------------------");
     log("Build Row "+data.cell("counter")+" for "+profile.getVersionedUrl());
@@ -126,6 +132,7 @@ public class ProfileBasedFactory {
     PEBuilder builder = new PEBuilder(fpe.getWorker(), PEElementPropertiesPolicy.NONE, true);
     PEDefinition definition = builder.buildPEDefinition(profile);
     Element element = Manager.build(fpe.getWorker(), profile);
+    startRun();
 
     log("--------------------------------");
     log("Build Row "+data.cell("counter")+" for "+profile.getVersionedUrl());
@@ -145,7 +152,39 @@ public class ProfileBasedFactory {
     return element;
   }
   
+  /**
+   * The run this factory belongs to, whose budget it spends (TestDataFactory sets itself). If there isn't one, each
+   * instance generated has a budget of its own
+   */
+  public org.hl7.fhir.utilities.LimitedExecutionContext getRun() {
+    return externalRun;
+  }
+
+  public void setRun(org.hl7.fhir.utilities.LimitedExecutionContext run) {
+    this.externalRun = run;
+  }
+
+  private void startRun() {
+    run = externalRun != null ? externalRun : new org.hl7.fhir.utilities.LimitedExecutionContext(new org.hl7.fhir.utilities.ExecutionLimits(
+        TestDataFactory.DEFAULT_MAX_EXECUTION_MILLIS, MAX_DEPTH, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH)) {};
+  }
+
+  /** going into an element: the run mustn't be out of time, and the profile mustn't be recursing too deeply */
+  private void checkLimits(int level, PEDefinition definition) {
+    if (run == null) {
+      startRun();
+    }
+    if (run.getExecutionLimits().isOutOfTime()) {
+      throw new FHIRException("The test data factory didn't finish within "+run.getExecutionLimits().maxSeconds()+" seconds");
+    }
+    if (level > MAX_DEPTH) {
+      throw new FHIRException("The profile is nested too deeply (more than "+MAX_DEPTH+" levels, at "+definition.path()+"): does an element that recurses have a minimum cardinality?");
+    }
+  }
+
   protected void populateByProfile(Element element, PEDefinition definition, int level, String path, Map<String, String> values) throws SQLException, IOException {
+    checkLimits(level, definition);
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
         if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
@@ -579,9 +618,12 @@ public class ProfileBasedFactory {
     
     String val = null;
     try {
-      val = fpe.evaluateToString(null, null, null, csv, expr);
+      val = fpe.evaluateToString(run, null, null, csv, expr);
       log.add(name+" ==> '"+val+"' (from "+expr.toString()+")");
     } catch (Exception e) {
+      if (run != null && run.getExecutionLimits().isOutOfTime()) {
+        throw new FHIRException("The test data factory didn't finish within "+run.getExecutionLimits().maxSeconds()+" seconds", e);
+      }
       log.add(name+" ==> null because "+e.getMessage()+" (from "+expr.toString()+")");      
     }
     return val;

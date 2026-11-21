@@ -242,6 +242,22 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   public ValidationResult validateCode(String path, CodeableConcept code) throws FHIRException {
+    return withSameUrlSupplementIssues(doValidateCode(path, code));
+  }
+
+  /**
+   * The warnings about supplements with the url of a code system the operation looked up (see
+   * ValueSetProcessBase.noteSupplementsWithCodeSystemUrl) go with whatever the answer is - they
+   * don't change it
+   */
+  private ValidationResult withSameUrlSupplementIssues(ValidationResult res) {
+    if (res != null && !sameUrlSupplements.isEmpty()) {
+      addSameUrlSupplementIssues(res.getIssues());
+    }
+    return res;
+  }
+
+  private ValidationResult doValidateCode(String path, CodeableConcept code) throws FHIRException {
     opContext.deadCheck("validate "+code.toString());
     checkValueSetOptions();
 
@@ -685,6 +701,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   public CodeSystem resolveCodeSystem(String system, String version, Element ctxt, Resource source) {
+    noteSupplementsWithCodeSystemUrl(system);
     for (CodeSystem t : localSystems) {
       if (t.getUrl().equals(system) && versionsMatch(version, t.getVersion())) {
         return t;
@@ -765,10 +782,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   public ValidationResult validateCode(String path, Coding code) throws FHIRException {
+    return withSameUrlSupplementIssues(doValidateCode(path, code));
+  }
+
+  private ValidationResult doValidateCode(String path, Coding code) throws FHIRException {
     opContext.deadCheck("validate "+code.toString());
     checkValueSetOptions();
     
     String warningMessage = null;
+    // when the code system is unknown, and the coding asks for a version of it (that the value set doesn't fix)
+    String unknownVersionMessage = null;
     // first, we validate the concept itself
 
     ValidationResult res = null;
@@ -864,6 +887,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 msgid = I18nConstants.UNKNOWN_CODESYSTEM;
                 warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
                 unknownSystems.add(system);
+                if (code.hasVersion()) {
+                  // the coding asks for a version of it too (that the value set doesn't fix): there's no such version either
+                  unknownVersionMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION_NONE, system, code.getVersion());
+                }
               } else {
                 msgid = getUnknownCodeSystemMessageId(system, wv);
                 warningMessage = getUnknownCodeSystemMessage(system, wv);
@@ -880,6 +907,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
               } else {
                 issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path+".system", warningMessage, oic, null, msgid));
                 res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
+                if (code.hasVersion()) {
+                  res.setVersion(code.getVersion()); // the version asked for, though it can't be found
+                }
                 if (valueset == null) {
                   throw new VSCheckerException(warningMessage, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
                 } else {
@@ -897,7 +927,22 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && (cs.hasSupplements() || cs.getContent() == CodeSystemContentMode.SUPPLEMENT)) {
           String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getVersionedUrl());
-          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData, null, I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT));        
+          List<OperationOutcomeIssueComponent> suppIssues = makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData, null, I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT);
+          if (isSupplementWithCodeSystemUrl(cs) && cs.hasVersion()) {
+            // a supplement with the url of the code system it supplements: its version is not a
+            // version of that code system either, so the code system version is unknown too
+            String msgid = getUnknownCodeSystemMessageId(system, cs.getVersion());
+            List<OperationOutcomeIssueComponent> list = new ArrayList<>();
+            list.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".system", getUnknownCodeSystemMessage(system, cs.getVersion()), OpIssueCode.NotFound, null, msgid));
+            list.addAll(suppIssues);
+            ValidationResult vr = new ValidationResult(IssueSeverity.ERROR, null, list);
+            vr.setSystem(system);
+            vr.setVersion(cs.getVersion());
+            vr.setUnknownSystems(unknownSystems);
+            vr.setErrorClass(unknownSystemError != null ? unknownSystemError : TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+            return vr;
+          }
+          return new ValidationResult(IssueSeverity.ERROR, msg, suppIssues);
         }
         if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
           warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition ";
@@ -1083,6 +1128,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (unknownSystemError != null) {
         res.setErrorClass(unknownSystemError);
       }
+    }
+    if (res != null && unknownVersionMessage != null) {
+      res.addMessage(unknownVersionMessage);
     }
 
     return res;

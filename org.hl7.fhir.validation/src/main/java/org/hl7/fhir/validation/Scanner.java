@@ -343,10 +343,12 @@ public class Scanner {
     while (entry != null) {
       String filePath = destDirectory + File.separator + entry.getName();
 
-      final File zipEntryFile = ManagedFileAccess.file(destDirectory, entry.getName());
-      if (!zipEntryFile.toPath().normalize().startsWith(destDirectory)) {
+      // checked before ManagedFileAccess.file(), which refuses a name that leads out of the folder too, but with an
+      // IOException that doesn't say it's the zip entry that's wrong
+      if (!java.nio.file.Paths.get(destDirectory).resolve(entry.getName()).normalize().startsWith(java.nio.file.Paths.get(destDirectory).normalize())) {
         throw new RuntimeException("Entry with an illegal path: " + entry.getName());
       }
+      final File zipEntryFile = ManagedFileAccess.file(destDirectory, entry.getName());
 
       if (!entry.isDirectory()) {
         // if the entry is a file, extract it

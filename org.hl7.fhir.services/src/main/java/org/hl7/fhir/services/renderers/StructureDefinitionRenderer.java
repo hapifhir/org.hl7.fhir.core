@@ -6201,19 +6201,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       e.setType("Choice", null, "Choice of "+CommaSeparatedStringBuilder.join(",", list), "icon_choice.gif");     
       e.getConstraints().add(TableElementConstraint.makeTypes(TableElementConstraintType.CHOICE, null, snapDefn.getTypeList(), profile));
     } else {
-      StructureDefinition sd = context.getContext().fetchTypeDefinition(snapDefn.getTypeFirstRep().getWorkingCode());
+      // no type at all (the root, or a contentReference) is rendered as an unknown type, as it was; but not by
+      // getTypeFirstRep() adds an empty type when there isn't one, and this is reading, not changing, the definition
+      TypeRefComponent snapType = snapDefn.hasType() ? snapDefn.getTypeFirstRep() : new TypeRefComponent();
+      StructureDefinition sd = context.getContext().fetchTypeDefinition(snapType.getWorkingCode());
       if (sd == null) {
-        e.setType(snapDefn.getTypeFirstRep().getWorkingCode(), null, "Unknown Type", "icon_element.gif");        
+        e.setType(snapType.getWorkingCode(), null, "Unknown Type", "icon_element.gif");        
       } else if (Utilities.existsInList(sd.getType(), "Element", "BackboneElement")) {
-        e.setType("Group", sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapDefn.getTypeFirstRep()));
+        e.setType("Group", sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapType));
       } else {
-        e.setType(sd.present(), sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapDefn.getTypeFirstRep()));
+        e.setType(sd.present(), sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapType));
       }
-      if (snapDefn.getTypeFirstRep().hasProfile()) {
-        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.PROFILE, null, snapDefn.getTypeFirstRep().getProfileList(), profile));
+      if (snapType.hasProfile()) {
+        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.PROFILE, null, snapType.getProfileList(), profile));
       }
-      if (snapDefn.getTypeFirstRep().hasTargetProfile()) {
-        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.TARGET, null, snapDefn.getTypeFirstRep().getTargetProfileList(), profile));
+      if (snapType.hasTargetProfile()) {
+        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.TARGET, null, snapType.getTargetProfileList(), profile));
       }
     }
 

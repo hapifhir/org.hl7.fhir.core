@@ -60,16 +60,26 @@ public interface IResourceValidator {
   IWorkerContext getContext();
 
   /**
-   * how much to check displays for coded elements 
-   */
-  CheckDisplayOption getCheckDisplay();
-  void setCheckDisplay(CheckDisplayOption checkDisplay);
-
-  /**
    * whether the resource must have an id or not (depends on context)
    */
 	IdStatus getResourceIdRule();
 	void setResourceIdRule(IdStatus resourceIdRule);
+
+  /**
+   * @deprecated this has never had any effect, and is ignored. It will be removed
+   */
+  @Deprecated
+  default CheckDisplayOption getCheckDisplay() {
+    return CheckDisplayOption.Ignore;
+  }
+
+  /**
+   * @deprecated this has never had any effect, and is ignored. It will be removed
+   */
+  @Deprecated
+  default void setCheckDisplay(CheckDisplayOption checkDisplay) {
+    // ignored - see getCheckDisplay()
+  }
   
   /**
    * whether the validator should enforce best practice guidelines

@@ -349,9 +349,30 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    if (!(Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version, true))) {
-      throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current' or 'dev'");
+    if (!(Utilities.existsInList(version, "current", "dev") || isCurrentBranch(version) || VersionUtilities.isSemVer(version, true))) {
+      throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current', 'current$branch' or 'dev'");
     }
+  }
+
+  /**
+   * Whether the version is the ci-build of a branch: current$branch. The branch name is used in a
+   * url and a folder name, so it is limited to letters, digits, '.', '_' and '-' (not starting with
+   * one of those three): a branch with a '/' in its name is not supported
+   */
+  public static boolean isCurrentBranch(String version) {
+    if (version == null || !version.startsWith("current$") || version.length() == 8) {
+      return false;
+    }
+    String branch = version.substring(8);
+    for (int i = 0; i < branch.length(); i++) {
+      char ch = branch.charAt(i);
+      boolean ok = (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')
+        || (i > 0 && (ch == '.' || ch == '_' || ch == '-'));
+      if (!ok) {
+        return false;
+      }
+    }
+    return true;
   }
 
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) throws FileNotFoundException {
@@ -639,7 +660,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
         tempPackage.buildIndexes(packageRoot);
 
-        if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
+        // a ci-build (current, or a branch's current$branch) replaces the copy it is newer than
+        if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev") || isCurrentBranch(version)) {
           FileUtilities.createDirectory(packageRoot);
           try {
             FileUtilities.clearDirectory(packageRoot);
@@ -723,6 +745,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String actualVersion = checkOKToLoadPackage(statedId, version);
+    // the branch of a current$branch is used in a folder name and a url: check it before either is made
+    if (actualVersion != null && actualVersion.startsWith("current$") && !isCurrentBranch(actualVersion)) {
+      throw new FHIRException("Cannot load package " + statedId + " - the version '" + actualVersion + "' is illegal: the branch must be letters, digits, '.', '_' and '-' (not starting with one of those three)");
+    }
 
     String id = stripAlias(statedId);
     //ok, try to resolve locally
@@ -733,7 +759,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     NpmPackage p = loadPackageFromCacheOnly(id, actualVersion);
     if (p != null) {
       if ("current".equals(actualVersion)) {
-        p = nullIfNotCurrentPackage(id, p);
+        p = nullIfNotCurrentPackage(id, p, null);
+      } else if (isCurrentBranch(actualVersion)) {
+        // a branch's ci-build rolls over too, each time the branch is pushed
+        p = nullIfNotCurrentPackage(id, p, actualVersion.substring(8));
       }
       if (p != null)
         return p;
@@ -741,7 +770,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     if ("dev".equals(actualVersion)) {
       p = loadPackageFromCacheOnly(id, "current");
-      p = nullIfNotCurrentPackage(id, p);
+      p = nullIfNotCurrentPackage(id, p, null);
       if (p != null)
         return p;
       actualVersion = "current";
@@ -758,7 +787,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       source = fetchSourceFromUrlSpecific(actualVersion);
     } else if ("current".equals(actualVersion) || (actualVersion != null && actualVersion.startsWith("current$"))) {
       // special case - fetch from ci-build server
-      source = ciBuildClient.loadFromCIBuild(id, actualVersion.startsWith("current$") ? version.substring(8) : null);
+      source = ciBuildClient.loadFromCIBuild(id, actualVersion.startsWith("current$") ? actualVersion.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, actualVersion);
     }
@@ -851,10 +880,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @param npmPackage
    * @return
    */
-  private NpmPackage nullIfNotCurrentPackage(String id, NpmPackage npmPackage) {
+  private NpmPackage nullIfNotCurrentPackage(String id, NpmPackage npmPackage, String branch) {
     // special case: current versions roll over, and we have to check their currency
     try {
-      return ciBuildClient.isCurrent(id, npmPackage) ? npmPackage : null;
+      return ciBuildClient.isCurrent(id, npmPackage, branch) ? npmPackage : null;
     } catch (Exception e) {
       log.info("Unable to check package currency: " + id + ": " + id);
     }

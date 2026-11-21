@@ -34,6 +34,7 @@ public class ValidatorSettings extends ValidationOptions {
    * the reference it was given as - a file name or a URL. See the -launch-context parameter.
    */
   private Map<String, String> launchContexts = new HashMap<String, String>(); // @configuration
+  /** see InstanceValidatorParameters.assumeValidRestReferences: this does not turn off checking that references resolve */
   private boolean assumeValidRestReferences;
   private Map<String, byte[]> certificates = new HashMap<>();
   private List<String> certificateFolders = new ArrayList<>();

@@ -195,4 +195,66 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     }
   }
 
+  // a query comes from whoever sends it: a fragment that uses itself, or lookups nested so they multiply, are stopped
+
+  private GraphQLEngine limitsEngine(String query) throws IOException, EGraphQLException, EGraphEngine {
+    GraphQLEngine gql = new GraphQLEngine(TestingUtilities.getSharedWorkerContext());
+    gql.setServices(this);
+    gql.setGraphQL(Parser.parse(query));
+    return gql;
+  }
+
+  @Test
+  void aFragmentThatUsesItselfIsStopped() throws Exception {
+    GraphQLEngine gql = limitsEngine("query q { id ...F } fragment F on Patient { id ...F }");
+    gql.setFocus(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
+    EGraphQLException e = Assertions.assertThrows(EGraphQLException.class, () -> gql.execute());
+    Assertions.assertTrue(e.getMessage().contains("nested too deeply"), e.getMessage());
+  }
+
+  @Test
+  void lookupsAreLimited() throws Exception {
+    String query = "{ PatientList { id } ConditionList(patient: \"Patient/example\") { id } }";
+    GraphQLEngine gql = limitsEngine(query);
+    gql.setMaxLookups(2);
+    gql.execute();
+    GraphQLEngine gql2 = limitsEngine(query);
+    gql2.setMaxLookups(1);
+    EGraphQLException e = Assertions.assertThrows(EGraphQLException.class, () -> gql2.execute());
+    Assertions.assertTrue(e.getMessage().contains("more than 1 lookups"), e.getMessage());
+  }
+
+  @Test
+  void deepNestingIsStoppedWhenParsing() {
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < Parser.MAX_DEPTH + 1; i++) {
+      b.append("{ a ");
+    }
+    for (int i = 0; i < Parser.MAX_DEPTH + 1; i++) {
+      b.append("}");
+    }
+    EGraphQLException e = Assertions.assertThrows(EGraphQLException.class, () -> Parser.parse(b.toString()));
+    Assertions.assertTrue(e.getMessage().contains("nested too deeply"), e.getMessage());
+  }
+  /** fragments that each use the next one twice: 2^30 objects from a query a few lines long */
+  @Test
+  void fragmentsThatMultiplyAreStopped() throws Exception {
+    StringBuilder b = new StringBuilder("query q { ...F0 }");
+    for (int i = 0; i < 30; i++) {
+      b.append(" fragment F").append(i).append(" on Patient { ...F").append(i + 1).append(" ...F").append(i + 1).append(" }");
+    }
+    b.append(" fragment F30 on Patient { id }");
+    GraphQLEngine gql = limitsEngine(b.toString());
+    gql.setFocus(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
+    long start = System.currentTimeMillis();
+    EGraphQLException e = Assertions.assertThrows(EGraphQLException.class, () -> gql.execute());
+    Assertions.assertTrue(e.getMessage().contains("more than 1000000 objects"), e.getMessage());
+    Assertions.assertTrue(System.currentTimeMillis() - start < 30000);
+    // and the limit can be set
+    GraphQLEngine gql2 = limitsEngine("query q { id name { given } }");
+    gql2.setFocus(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
+    gql2.setMaxObjects(2);
+    e = Assertions.assertThrows(EGraphQLException.class, () -> gql2.execute());
+    Assertions.assertTrue(e.getMessage().contains("more than 2 objects"), e.getMessage());
+  }
 }

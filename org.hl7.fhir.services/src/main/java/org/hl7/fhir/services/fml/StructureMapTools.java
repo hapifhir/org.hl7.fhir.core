@@ -1117,12 +1117,74 @@ public class StructureMapTools {
         result.add(v);
   }
 
+  /** the most deeply groups can call each other in a transform (each call of a group from a rule is one level) */
+  public static final int MAX_GROUP_DEPTH = 500;
+  /** the longest a transform can take (ms), including the FHIRPath it runs; 0 or less is no limit */
+  private long maxExecutionMillis = org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_MILLIS;
+  /**
+   * the most rules a transform can run: a map can call groups recursively, and one that calls two of them each time
+   * goes exponential, and runs out of memory long before it runs out of time. 0 or less is no limit
+   */
+  private long maxRules = 1000000;
+
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
+
+  public long getMaxRules() {
+    return maxRules;
+  }
+
+  public void setMaxRules(long maxRules) {
+    this.maxRules = maxRules;
+  }
+
+  /** the budget for a transform */
+  private org.hl7.fhir.utilities.ExecutionLimits makeExecutionLimits() {
+    return new org.hl7.fhir.utilities.ExecutionLimits(maxExecutionMillis, MAX_GROUP_DEPTH, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH, maxRules);
+  }
+
+  /** before each rule: the transform mustn't be out of time, or have run too many rules */
+  /** the transform mustn't be out of time (as each item a rule's source finds is processed) */
+  private void checkTime(Variables vars) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = vars.getExecutionLimits();
+    if (limits != null && limits.isOutOfTime()) {
+      throw new FHIRException("The transform didn't finish within " + limits.maxSeconds() + " seconds");
+    }
+  }
+
+  /** a string a transform made (append) mustn't be too long: append(v, v) doubles it, rule after rule */
+  private void checkLength(Variables vars, int length) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = vars.getExecutionLimits();
+    if (limits != null && limits.isTooLong(length)) {
+      throw new FHIRException("The transform made a string of more than " + limits.getMaxStringLength() + " characters");
+    }
+  }
+
+  private void checkRule(Variables vars) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = vars.getExecutionLimits();
+    if (limits == null) {
+      return;
+    }
+    if (limits.isOutOfTime()) {
+      throw new FHIRException("The transform didn't finish within " + limits.maxSeconds() + " seconds");
+    }
+    if (!limits.step()) {
+      throw new FHIRException("The transform ran more than " + limits.getMaxSteps() + " rules (groups calling groups too many times?)");
+    }
+  }
+
   public void transform(Object appInfo, Base source, StructureMap map, Base target) throws FHIRException {
     TransformContext context = new TransformContext(appInfo);
     log("Start Transform " + map.getUrl());
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
 
-    Variables vars = new Variables();
+    Variables vars = new Variables(makeExecutionLimits());
     vars.add(VariableMode.INPUT, getInputName(g, StructureMap.StructureMapInputModeVS.SOURCE, "source"), source);
     if (target != null)
       vars.add(VariableMode.OUTPUT, getInputName(g, StructureMap.StructureMapInputModeVS.TARGET, "target"), target);
@@ -1161,6 +1223,20 @@ public class StructureMapTools {
   }
 
   private void executeGroup(String indent, TransformContext context, StructureMap map, Variables vars, StructureMap.StructureMapGroupComponent group, boolean atRoot) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = vars.getExecutionLimits();
+    if (limits != null && !limits.enter()) {
+      throw new FHIRException("The transform's groups call each other too deeply (more than " + limits.getMaxDepth() + " levels)");
+    }
+    try {
+      executeGroupInner(indent, context, map, vars, group, atRoot);
+    } finally {
+      if (limits != null) {
+        limits.exit();
+      }
+    }
+  }
+
+  private void executeGroupInner(String indent, TransformContext context, StructureMap map, Variables vars, StructureMap.StructureMapGroupComponent group, boolean atRoot) throws FHIRException {
     // constants belong to the map that declares them: a group runs with its own map's constants,
     // whichever map it was called from, and the caller's are restored when it returns
     StructureMapConstantResolver callerConstants = vars.getConstants();
@@ -1182,6 +1258,7 @@ public class StructureMapTools {
   }
 
   private void executeRule(String indent, TransformContext context, StructureMap map, Variables vars, StructureMap.StructureMapGroupComponent group, StructureMap.StructureMapGroupRuleComponent rule, boolean atRoot) throws FHIRException {
+    checkRule(vars);
     log(indent + "rule : " + rule.getName() + "; vars = " + vars.summary());
     Variables srcVars = vars.copy();
     if (rule.getSourceList().size() != 1)
@@ -1189,6 +1266,7 @@ public class StructureMapTools {
     List<Variables> source = processSource(rule.getName(), context, srcVars, rule.getSourceList().get(0), map.getUrl(), indent);
     if (source != null) {
       for (Variables v : source) {
+        checkTime(vars);
         for (StructureMap.StructureMapGroupRuleTargetComponent t : rule.getTargetList()) {
           processTarget(map.getName()+"|"+group.getName()+"|"+rule.getName(), context, v, map, group, t, rule.getSourceList().size() == 1 ? rule.getSourceFirstRep().getVariable() : null, atRoot, vars);
         }
@@ -1211,7 +1289,7 @@ public class StructureMapTools {
           String tgtType = tgt.fhirType();
           ResolvedGroup defGroup = resolveGroupByTypes(map, rule.getName(), group, srcType, tgtType);
           if (defGroup != null) {
-            Variables vdef = new Variables();
+            Variables vdef = new Variables(vars.getExecutionLimits());
             vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInputList().get(0).getName(), src);
             vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInputList().get(1).getName(), tgt);
             executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
@@ -1232,7 +1310,7 @@ public class StructureMapTools {
     if (rg.getTargetGroup().getInputList().size() != dependent.getParameterList().size()) {
       throw new FHIRException("Rule '" + dependent.getName() + "' has " + rg.getTargetGroup().getInputList().size() + " but the invocation has " + dependent.getParameterList().size() + " variables");
     }
-    Variables v = new Variables();
+    Variables v = new Variables(vin.getExecutionLimits());
     for (int i = 0; i < rg.getTargetGroup().getInputList().size(); i++) {
       StructureMap.StructureMapGroupInputComponent input = rg.getTargetGroup().getInputList().get(i);
       StructureMap.StructureMapGroupRuleDependentParameterComponent rdp = dependent.getParameterList().get(i);
@@ -1577,6 +1655,9 @@ public class StructureMapTools {
             varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
         }
         b.appendIfNotNull(fpe.evaluateToString(varsForSource, null, null, item, expr));
+        if (b.length() > org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH) {
+          break; // the log is long enough
+        }
       }
       if (b.length() > 0) {
         // the map's log(...) output is for the user: it goes to the transformer services, not just the debug log
@@ -1884,6 +1965,7 @@ public class StructureMapTools {
             var appValue = getParamString(vars, tgt.getParameterList().get(i));
             sb.append(appValue == null ? "" : appValue);
           }
+          checkLength(vars, sb.length());
           return new StringType(sb.toString());
         case TRANSLATE:
           return translate(context, map, vars, tgt.getParameterList());

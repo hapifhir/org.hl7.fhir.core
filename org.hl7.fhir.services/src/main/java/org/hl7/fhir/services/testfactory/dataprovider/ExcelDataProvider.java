@@ -34,7 +34,7 @@ public class ExcelDataProvider extends TableDataProvider {
    * @throws IOException If an I/O error occurs.
    */
   public ExcelDataProvider(String filename, String sheetName, String range, Locale locale) throws IOException {
-    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
+    FileInputStream fis = ManagedFileAccess.inStream(filename);
     this.workbook = WorkbookFactory.create(fis);
     if (sheetName != null) {
       this.sheet = workbook.getSheet(sheetName);
@@ -70,7 +70,7 @@ public class ExcelDataProvider extends TableDataProvider {
 
 
   public ExcelDataProvider(String filename) throws IOException {
-    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
+    FileInputStream fis = ManagedFileAccess.inStream(filename);
     this.workbook = WorkbookFactory.create(fis);
     this.sheet = workbook.getSheetAt(0);
     loadColumnHeaders();

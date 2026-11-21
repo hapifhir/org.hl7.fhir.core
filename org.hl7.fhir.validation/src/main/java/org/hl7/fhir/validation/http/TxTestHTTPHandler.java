@@ -60,10 +60,14 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   /** The modes used when a test call doesn't say: everything except the server specific tx.fhir.org tests. */
   static final List<String> DEFAULT_MODES = Collections.unmodifiableList(Arrays.asList("general", "snomed", "omop", "mimetypes", "icd-11", "icf", "loinc"));
 
-  /** A version of the test cases: a version, or a package label such as 'current' - never a path. */
+  /**
+   * A version of the test cases: a version, a package label such as 'current', or the ci-build of a
+   * branch of the tests, 'current$branch' (to test a server change against test changes that are not
+   * merged yet) - never a path. Branch names with a '/' in them are not supported.
+   */
   @SuppressWarnings("checkstyle:patternUsage")
   //a fixed literal reviewed here; bounded, no nested quantifiers; the input is what is matched, not the pattern
-  private static final Pattern TEST_VERSION = Pattern.compile("^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$");
+  private static final Pattern TEST_VERSION = Pattern.compile("^(current\\$)?[A-Za-z0-9][A-Za-z0-9._-]{0,63}$");
 
   /** The parameters fixed by setup, which a test call in a session may not pass. */
   private static final Set<String> SETUP_ONLY = new LinkedHashSet<>(Arrays.asList("server", "test-version", "version", "externals", "folder"));
@@ -209,16 +213,21 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     sendResponse(exchange, 200, JsonParser.compose(res, true), "application/json");
   }
 
+  /** Whether this is a test-version setup accepts (see TEST_VERSION). */
+  static boolean isValidTestVersion(String testVersion) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: Matcher.matches() on TEST_VERSION, which is reviewed above
+    boolean valid = testVersion != null && TEST_VERSION.matcher(testVersion).matches();
+    return valid;
+  }
+
   private ServerTxTester createTester(String server, String testVersion, JsonObject externals, String externalsName, String folder, String testerName) throws Exception {
     checkServerPermitted(server);
     if (testVersion == null) {
       testVersion = "current";
     }
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //False positive: Matcher.matches() on TEST_VERSION, which is reviewed above
-    boolean versionIsValid = TEST_VERSION.matcher(testVersion).matches();
-    if (!versionIsValid) {
-      throw new RequestException(400, "Invalid 'test-version' '" + testVersion + "': it is a version of the test cases (e.g. 1.9.6, or current), not a path");
+    if (!isValidTestVersion(testVersion)) {
+      throw new RequestException(400, "Invalid 'test-version' '" + testVersion + "': it is a version of the test cases (e.g. 1.9.6, current, or current$branch for a branch's ci-build), not a path");
     }
     if (folder != null) {
       String err = TxTester.checkFolderName(folder);

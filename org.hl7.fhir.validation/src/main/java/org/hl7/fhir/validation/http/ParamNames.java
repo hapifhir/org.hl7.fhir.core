@@ -19,6 +19,11 @@ public final class ParamNames  {
   public static final String LEVEL = "level";
   public static final String BEST_PRACTICE_LEVEL = "bestPractice";
   public static final String HTML_IN_MARKDOWN_CHECK = "htmlInMarkdown";
+  /**
+   * @deprecated never had any effect. Accepted and ignored (with a warning in the server log) so existing
+   * clients don't start getting a 400. Will be removed
+   */
+  @Deprecated
   public static final String CHECK_DISPLAY = "checkDisplay";
   public static final String RESOURCE_ID_RULE = "resourceIdRule";
   public static final String ASSUME_VALID_REST_REFERENCES = "assumeValidRestReferences";

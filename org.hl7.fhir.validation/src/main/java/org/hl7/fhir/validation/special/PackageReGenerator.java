@@ -40,6 +40,7 @@ import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -676,6 +677,7 @@ public class PackageReGenerator {
 
   private void produceFolder() throws IOException {
     log.info("Producing Output in folder "+output);
+    checkOutputFolderCanBeCleared(output);
     FileUtilities.createDirectory(output);
     FileUtilities.clearDirectory(output);
     Set<String> names = new HashSet<>();
@@ -690,6 +692,17 @@ public class PackageReGenerator {
     }
   }
 
+
+  /**
+   * The output folder is emptied before the output is written. That's only safe if it's empty already, or holds the
+   * output of an earlier run (which has a manifest): anything else was put there by something else
+   */
+  static void checkOutputFolderCanBeCleared(String output) throws IOException {
+    String[] existing = ManagedFileAccess.file(output).list();
+    if (existing != null && existing.length > 0 && !Utilities.existsInList("manifest.json", existing) && !Utilities.existsInList("manifest.xml", existing)) {
+      throw new IOException("The output folder "+output+" isn't empty, and doesn't contain the output of an earlier run (no manifest.json or manifest.xml), so it won't be cleared. Choose an empty or new folder");
+    }
+  }
 
   private byte[] composeResource(CanonicalResource cr) throws IOException {
     if (json) {

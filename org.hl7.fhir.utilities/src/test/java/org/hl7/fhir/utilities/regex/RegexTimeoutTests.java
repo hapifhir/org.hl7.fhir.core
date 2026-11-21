@@ -10,6 +10,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RegexTimeoutTests {
@@ -98,5 +100,16 @@ class RegexTimeoutTests {
   @Test
   void test_NormalRegex_SplitWithLimit() throws TimeoutException {
     assertThat(RegexTimeout.split("a,b,c", ",", 2)).isEqualTo(new String[]{"a", "b,c"});
+  }
+  @Test
+  void replaceAllWithLimitStopsWhenTheResultIsTooLong() throws Exception {
+    assertEquals("axc", RegexTimeout.replaceAllWithLimit("abc", "b", "x", 10));
+    // a pattern that matches the empty string matches between every character: 11 x 10 + 10
+    assertEquals(120, RegexTimeout.replaceAllWithLimit("aaaaaaaaaa", "(?:)", "bbbbbbbbbb", 120).length());
+    assertNull(RegexTimeout.replaceAllWithLimit("aaaaaaaaaa", "(?:)", "bbbbbbbbbb", 119));
+    // 0: no limit
+    assertEquals(120, RegexTimeout.replaceAllWithLimit("aaaaaaaaaa", "(?:)", "bbbbbbbbbb", 0).length());
+    // the same as replaceAll, groups included
+    assertEquals(RegexTimeout.replaceAll("a1b22c333", "([0-9]+)", "<$1>"), RegexTimeout.replaceAllWithLimit("a1b22c333", "([0-9]+)", "<$1>", 100));
   }
 }

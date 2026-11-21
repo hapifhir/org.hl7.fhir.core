@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -23,7 +24,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -81,6 +84,11 @@ class TerminologyClientManagerFailureTest {
 
   // expandDown: every $expand fails; otherwise it is answered with nothing
   private static ITerminologyClient5 makeFakeClient(final String address, final boolean serverDown, final boolean expandDown) {
+    return makeFakeClient(address, serverDown, expandDown, null);
+  }
+
+  // searchResult: what every search is answered with (when it doesn't fail), and what a read finds
+  private static ITerminologyClient5 makeFakeClient(final String address, final boolean serverDown, final boolean expandDown, final Bundle searchResult) {
     return (ITerminologyClient5) Proxy.newProxyInstance(TerminologyClientManagerFailureTest.class.getClassLoader(),
         new Class<?>[] { ITerminologyClient5.class }, (proxy, method, args) -> {
       switch (method.getName()) {
@@ -93,7 +101,16 @@ class TerminologyClientManagerFailureTest {
         if (serverDown) {
           throw new SocketTimeoutException("Read timed out");
         }
-        return new Bundle();
+        return searchResult != null ? searchResult : new Bundle();
+      case "read":
+        if (searchResult != null) {
+          for (Bundle.BundleEntryComponent be : searchResult.getEntry()) {
+            if (be.getResource().getIdBase().equals(args[1])) {
+              return be.getResource();
+            }
+          }
+        }
+        return null;
       case "expandValueset":
         if (expandDown) {
           throw new SocketTimeoutException("Read timed out");
@@ -113,18 +130,26 @@ class TerminologyClientManagerFailureTest {
   }
 
   private TestManager makeManager(boolean registryDown, boolean serverDown) throws IOException {
-    TestManager mgr = new TestManager(factory(serverDown));
+    return makeManager(registryDown, serverDown, null);
+  }
+
+  private TestManager makeManager(boolean registryDown, boolean serverDown, Bundle searchResult) throws IOException {
+    TestManager mgr = new TestManager(factory(serverDown, searchResult));
     mgr.registryDown = registryDown;
     mgr.setCache(makeCache());
-    mgr.setMasterClient(makeFakeClient(MAIN, serverDown), "http://main.example.org/tx-reg");
+    mgr.setMasterClient(makeFakeClient(MAIN, serverDown, false, searchResult), "http://main.example.org/tx-reg");
     return mgr;
   }
 
   private static ITerminologyClientFactory5 factory(boolean serverDown) {
+    return factory(serverDown, null);
+  }
+
+  private static ITerminologyClientFactory5 factory(boolean serverDown, Bundle searchResult) {
     return new ITerminologyClientFactory5() {
       @Override
       public ITerminologyClient5 makeClientR5(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
-        return makeFakeClient(url, serverDown);
+        return makeFakeClient(url, serverDown, false, searchResult);
       }
       @Override
       public String getVersion() {
@@ -245,5 +270,36 @@ class TerminologyClientManagerFailureTest {
     mgr.setMasterClient(makeFakeClient(MAIN, false, true), "http://main.example.org/tx-reg");
     assertNull(mgr.findValueSetOnServer(sct));
     assertTrue(mgr.lookupFailed(sct));
+  }
+
+  private static ValueSet valueSet(String id, String url) {
+    ValueSet vs = new ValueSet();
+    vs.setId(id);
+    vs.setUrl(url);
+    vs.setVersion("20260321");
+    return vs;
+  }
+
+  @Test
+  void aValueSetIsFoundByItsUrlNotByAPrefixOfAnother() throws IOException {
+    // a server that left matches the url answers ...1267.3 with ...1267.39 too, and ...1267.39 sorts last
+    String url = "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.3";
+    Bundle both = new Bundle();
+    both.addEntry().setResource(valueSet("vs3", url));
+    both.addEntry().setResource(valueSet("vs39", url + "9"));
+    TestManager mgr = makeManager(false, false, both);
+    TerminologyCache.SourcedValueSet svs = mgr.findValueSetOnServer(url);
+    assertNotNull(svs);
+    assertEquals(url, svs.getVs().getUrl());
+    svs = mgr.findValueSetOnServer(url + "|20260321");
+    assertNotNull(svs);
+    assertEquals(url, svs.getVs().getUrl());
+
+    // only the other one: not found (an answer, not a failure)
+    Bundle other = new Bundle();
+    other.addEntry().setResource(valueSet("vs39", url + "9"));
+    mgr = makeManager(false, false, other);
+    assertNull(mgr.findValueSetOnServer(url));
+    assertFalse(mgr.lookupFailed(url));
   }
 }

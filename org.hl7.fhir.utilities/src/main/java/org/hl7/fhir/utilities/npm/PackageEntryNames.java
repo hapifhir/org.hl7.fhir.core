@@ -23,6 +23,14 @@ public class PackageEntryNames {
    *   has been added already
    * @throws FHIRException if a different name for the same file has been added
    */
+  /**
+   * Whether the name, or a name that is the same file to some systems, has been added: adding it would then skip it,
+   * or fail
+   */
+  public boolean contains(String path) {
+    return names.containsKey(NpmPackage.entryNameKey(path));
+  }
+
   public boolean add(String path) {
     String earlier = names.putIfAbsent(NpmPackage.entryNameKey(path), path);
     if (earlier == null) {

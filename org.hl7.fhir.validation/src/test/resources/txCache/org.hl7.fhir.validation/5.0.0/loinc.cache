@@ -2977,3 +2977,57 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP7753-9"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Qn",
+  "code" : "LP7753-9",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP7753-9 (\"undefined\")]\"\n1ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP7753-9\"\n1ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n1ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n1ms http://loinc.org/vs|2.83: Code \"LP7753-9\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP6826-4"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mass",
+  "code" : "LP6826-4",
+  "system" : "http://loinc.org",
+  "version" : "2.83",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.83: Validate \"[http://loinc.org#LP6826-4 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.83: Check \"http://loinc.org#LP6826-4\"\n3ms http://loinc.org/vs|2.83: CodeSystem found: http://loinc.org|2.83 for http://loinc.org|2.83\n3ms http://loinc.org/vs|2.83: check code in (http://loinc.org) at Coding\n3ms http://loinc.org/vs|2.83: Code \"LP6826-4\" found in http://loinc.org|2.83",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

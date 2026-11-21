@@ -798,10 +798,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   /**
+   * @deprecated displayOption has never had any effect, and is ignored
+   */
+  @Deprecated(since="2026-11-21")
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, org.hl7.fhir.services.validation.constants.CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
+    return validate(location, source, cntType, profiles, resourceIdRule, anyExtensionsAllowed, bpWarnings);
+  }
+
+  /**
    * @deprecated
    */
   @Deprecated(since="2026-02-20")
-  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
@@ -809,7 +817,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType);
     validator.setResourceIdRule(resourceIdRule);
     validator.setBestPracticeWarningLevel(bpWarnings);
-    validator.setCheckDisplay(displayOption);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
@@ -1013,7 +1020,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     // Ensure base test data SQLite file is available
     String baseDataPath = Utilities.path("[tmp]", "fhir-test-data.db");
-    File baseDataFile = new File(baseDataPath);
+    File baseDataFile = ManagedFileAccess.file(baseDataPath);
     if (!baseDataFile.exists()) {
       try {
         org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("https://www.fhir.org/downloads/test-data-versions.json");

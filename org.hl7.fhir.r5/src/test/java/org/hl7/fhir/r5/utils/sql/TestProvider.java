@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
@@ -56,6 +57,12 @@ public class TestProvider implements Provider {
     // Patient/p3, which is not loaded, and expects that row to compare false rather than to be
     // empty. Resolving only against the loaded resources returned null there and the whole
     // expression collapsed to empty
+    // A contained reference only means something inside the resource that contains it, which is
+    // why the runner hands over the resource being processed
+    if (ref.startsWith("#")) {
+      return resolveContained(rootResource, ref.substring(1), specifiedResourceType);
+    }
+
     String work = ref;
     int h = work.indexOf("/_history/");
     if (h > -1) {
@@ -89,6 +96,24 @@ public class TestProvider implements Provider {
     } catch (Exception e) {
       return null; // not a resource type, so there is no key
     }
+  }
+
+  private Base resolveContained(Base rootResource, String id, String specifiedResourceType) {
+    if (!(rootResource instanceof DomainResource)) {
+      return null;
+    }
+    String wanted = specifiedResourceType == null || specifiedResourceType.isEmpty() ? null
+        : specifiedResourceType.startsWith("FHIR.") ? specifiedResourceType.substring(5) : specifiedResourceType;
+    for (Resource c : ((DomainResource) rootResource).getContained()) {
+      String cid = c.getIdBase();
+      if (cid != null && cid.startsWith("#")) {
+        cid = cid.substring(1);
+      }
+      if (id.equals(cid)) {
+        return wanted == null || wanted.equals(c.fhirType()) ? c : null;
+      }
+    }
+    return null;
   }
 
   /**

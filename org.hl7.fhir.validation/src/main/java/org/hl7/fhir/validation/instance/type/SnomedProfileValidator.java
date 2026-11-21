@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.Coding;
@@ -20,10 +21,12 @@ import org.hl7.fhir.validation.instance.utils.SnomedRules;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Concept;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Kind;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Side;
+import org.hl7.fhir.validation.instance.utils.SnomedRules.ValueKind;
 
 /**
  * Checks the SNOMED CT codes a profile fixes, as SnomedResourceValidator checks instances: the
- * kind of concept against the element; a planned procedure with its status fixed to completed;
+ * kind of concept against the element (a finding as an observation's code only when the profile
+ * makes its value a result - otherwise the instance decides); a planned procedure with its status fixed to completed;
  * and laterality - a fixed code, a fixed body site and a fixed laterality extension that give
  * different sides, or a side for a structure that doesn't have one. (A profile that doesn't fix
  * a side is fine: the instance gives it.)
@@ -64,9 +67,9 @@ public class SnomedProfileValidator extends BaseValidator {
       laterality(errors, path, "Procedure", true);
       break;
     case "Observation":
-      ok = kind(errors, path, "Observation.code", Kind.OBSERVATION) && ok;
+      ok = kind(errors, path, "Observation.code", Kind.OBSERVATION, () -> valueKind("Observation")) && ok;
       for (ElementDefinition comp : fixed.slices("Observation.component")) {
-        ok = kind(errors, path, comp.getId() + ".code", Kind.OBSERVATION) && ok;
+        ok = kind(errors, path, comp.getId() + ".code", Kind.OBSERVATION, () -> valueKind(comp.getId())) && ok;
       }
       ok = kind(errors, path, "Observation.bodySite", Kind.BODY_SITE) && ok;
       laterality(errors, path, "Observation", false);
@@ -124,10 +127,52 @@ public class SnomedProfileValidator extends BaseValidator {
     return c.getCode().contains(":") || c.getCode().contains("|") ? null : rules.lookup(c.getCode(), c.getVersion(), c.getDisplay());
   }
 
+  /**
+   * what the profile makes the value of an observation (or component slice, by its id): none if it
+   * prohibits it; yes/no if it's only a boolean, or fixes a yes/no code; a result if it fixes a
+   * result code, or only allows kinds of value that are results (not boolean or CodeableConcept);
+   * otherwise unknown - the instance decides
+   */
+  private ValueKind valueKind(String owner) {
+    ElementDefinition ed = fixed.get(owner + ".value[x]");
+    if (ed == null) {
+      return ValueKind.UNKNOWN;
+    }
+    if ("0".equals(ed.getMax())) {
+      return ValueKind.NONE;
+    }
+    for (String id : new String[] { owner + ".value[x]", owner + ".value[x]:valueCodeableConcept", owner + ".value[x]:valueBoolean" }) {
+      DataType v = ProfileFixedCodes.fixedOrPattern(fixed.get(id));
+      if (v != null && "boolean".equals(v.fhirType())) {
+        return ValueKind.YES_NO;
+      }
+      if (v instanceof CodeableConcept) {
+        ValueKind k = rules.classifyCodes(((CodeableConcept) v).getCodingList());
+        if (k != ValueKind.UNKNOWN) {
+          return k;
+        }
+      }
+    }
+    boolean bool = false;
+    boolean cc = false;
+    for (TypeRefComponent t : ed.getTypeList()) {
+      bool = bool || "boolean".equals(t.getWorkingCode());
+      cc = cc || "CodeableConcept".equals(t.getWorkingCode());
+    }
+    if (ed.getTypeList().isEmpty() || cc) {
+      return ValueKind.UNKNOWN;
+    }
+    return bool ? (ed.getTypeList().size() == 1 ? ValueKind.YES_NO : ValueKind.UNKNOWN) : ValueKind.RESULT;
+  }
+
   private boolean kind(List<ValidationMessage> errors, String path, String id, Kind kind) {
+    return kind(errors, path, id, kind, null);
+  }
+
+  private boolean kind(List<ValidationMessage> errors, String path, String id, Kind kind, Supplier<ValueKind> value) {
     boolean ok = true;
     for (Coding c : sct(id)) {
-      SnomedRules.Judgement j = rules.judge(kind, lookup(c));
+      SnomedRules.Judgement j = rules.judge(kind, lookup(c), value);
       if (j != null) {
         ok = report(errors, path, name(id), j.getLevel(), j.getMessageId(), j.getArgs()) && ok;
       }

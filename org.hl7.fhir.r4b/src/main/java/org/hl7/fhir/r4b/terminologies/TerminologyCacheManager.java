@@ -127,7 +127,7 @@ public class TerminologyCacheManager {
 
   private void zipDirectory(OutputStream outputStream) throws IOException {
     try (ZipOutputStream zs = new ZipOutputStream(outputStream)) {
-      Path pp = Paths.get(cacheFolder);
+      Path pp = ManagedFileAccess.file(cacheFolder).toPath();
       Files.walk(pp).forEach(path -> {
         try {
           if (Files.isDirectory(path)) {

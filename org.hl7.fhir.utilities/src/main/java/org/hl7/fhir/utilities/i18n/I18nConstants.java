@@ -124,6 +124,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_SUPP_NO_LANGUAGE = "CODESYSTEM_CS_SUPP_NO_LANGUAGE";
   public static final String CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY = "CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY";
   public static final String CODESYSTEM_CS_SUPP_NO_SUPP = "CODESYSTEM_CS_SUPP_NO_SUPP";
+  public static final String CODESYSTEM_CS_SUPP_SAME_URL = "CODESYSTEM_CS_SUPP_SAME_URL";
   public static final String CODESYSTEM_CS_SUPP_TOO_MANY_CODES = "CODESYSTEM_CS_SUPP_TOO_MANY_CODES";
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
   public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
@@ -233,6 +234,7 @@ public class I18nConstants {
   public static final String DUPLICATE_ID = "DUPLICATE_ID";
   public static final String DUPLICATE_JSON_PROPERTY_KEY = "DUPLICATE_JSON_PROPERTY_KEY";
   public static final String DUPLICATE_RESOURCE_ = "Duplicate_Resource_";
+  public static final String ECOSYSTEM_SERVER_UNAVAILABLE = "ECOSYSTEM_SERVER_UNAVAILABLE";
   public static final String ED_CONTEXT_INVARIANT_EXPRESSION_ERROR = "ED_CONTEXT_INVARIANT_EXPRESSION_ERROR";
   public static final String ED_INVARIANT_DIFF_NO_SOURCE = "ED_INVARIANT_DIFF_NO_SOURCE";
   public static final String ED_INVARIANT_EXPRESSION_CONFLICT = "ED_INVARIANT_EXPRESSION_CONFLICT";
@@ -543,6 +545,8 @@ public class I18nConstants {
   public static final String MUSTSUPPORT_VAL_MUSTSUPPORT = "MustSupport_VAL_MustSupport";
   public static final String NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE = "Named_items_are_out_of_order_in_the_slice";
   public static final String NARRATIVE_NOT_TRANSLATED = "NARRATIVE_NOT_TRANSLATED";
+  public static final String NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED = "NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED";
+  public static final String NARRATIVE_NOT_TRANSLATED_KEPT_SECTION = "NARRATIVE_NOT_TRANSLATED_KEPT_SECTION";
   public static final String NDJSON_EMPTY_LINE_WARNING = "NDJSON_EMPTY_LINE_WARNING";
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
@@ -657,6 +661,9 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED = "Questionnaire_QR_Item_StringNotAllowed";
   public static final String QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE = "Questionnaire_QR_Item_EnableWhen_Uncheckable";
+  public static final String QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED = "QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED";
+  public static final String QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE = "QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE";
+  public static final String QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE = "QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE";
   public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED = "Questionnaire_QR_LaunchContext_NotLoaded";
   public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE = "Questionnaire_QR_LaunchContext_WrongType";
   public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
@@ -1654,5 +1661,16 @@ public class I18nConstants {
   public static final String NEGATION_REFUTED_NO_INFO = "NEGATION_REFUTED_NO_INFO";
   public static final String NEGATION_ALLERGY_REACTION = "NEGATION_ALLERGY_REACTION";
   public static final String NEGATION_ALLERGY_REACTION_NO_INFO = "NEGATION_ALLERGY_REACTION_NO_INFO";
+  public static final String FHIRPATH_TIMEOUT = "FHIRPATH_TIMEOUT";
+  public static final String FHIRPATH_REPEAT_TOO_MANY_ROUNDS = "FHIRPATH_REPEAT_TOO_MANY_ROUNDS";
+  public static final String LIQUID_TOO_DEEP = "LIQUID_TOO_DEEP";
+  public static final String LIQUID_TIMEOUT = "LIQUID_TIMEOUT";
+  public static final String LIQUID_OUTPUT_TOO_LONG = "LIQUID_OUTPUT_TOO_LONG";
+  public static final String LIQUID_TOO_MANY_ITEMS = "LIQUID_TOO_MANY_ITEMS";
+  public static final String FHIRPATH_TOO_MANY_ITEMS = "FHIRPATH_TOO_MANY_ITEMS";
+  public static final String FHIRPATH_STRING_TOO_LONG = "FHIRPATH_STRING_TOO_LONG";
+  public static final String TRANSLATION_WARNING_NOMAP = "TRANSLATION_WARNING_NOMAP";
+  public static final String TRANSLATION_WARNING_DENIED = "TRANSLATION_WARNING_DENIED";
+  public static final String TRANSLATION_WARNING_OTHER = "TRANSLATION_WARNING_OTHER";
 
 }

@@ -103,6 +103,23 @@ public interface IWorkerContext {
   public Object retrieveAnalysis(Class className);
 
   /**
+   * As storeAnalysis(className, analysis), for an analysis that was worked out from the definitions as they were when
+   * getDefinitionsVersion() was startingDefinitionsVersion (asked before the work started). If they've changed since -
+   * something was loaded while it was being worked out - the analysis may be out of date, and it isn't kept (the
+   * caller can still use it). Without this, an analysis that missed what was just loaded could be kept until the next
+   * time something was loaded
+   *
+   * A context that doesn't track this stores the analysis anyway
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @param analysis the object to store
+   * @param startingDefinitionsVersion the value of getDefinitionsVersion() before the analysis was started
+   */
+  default void storeAnalysis(Class className, Object analysis, long startingDefinitionsVersion) {
+    storeAnalysis(className, analysis);
+  }
+
+  /**
    * @return The URL that points to the base specification for the version loaded
    */
   public String getSpecUrl();
