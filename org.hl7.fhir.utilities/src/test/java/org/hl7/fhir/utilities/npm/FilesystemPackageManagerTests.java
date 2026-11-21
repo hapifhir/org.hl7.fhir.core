@@ -273,6 +273,19 @@ public class FilesystemPackageManagerTests {
     assertEquals(expected, FilesystemPackageCacheManager.isCurrentBranch(version), version);
   }
 
+  /**
+   * A current$branch with a bad branch name is refused before it's looked for in the cache or fetched: the branch is
+   * used in a folder name and in a url (current$../../x would be fetched from build.fhir.org/ig/../../x)
+   */
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(strings = {"current$../../x", "current$a/b", "current$", "current$-x"})
+  void aBadBranchIsRefusedBeforeItIsUsed(String version) throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch"));
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    org.hl7.fhir.exceptions.FHIRException e = org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> pcm.loadPackage("example.fhir.uv.myig", version));
+    assertTrue(e.getMessage().contains("illegal"), e.getMessage());
+  }
+
   @Test
   void testCreatesIniIfDoesntExistAndCacheStaysIntact() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));

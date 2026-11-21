@@ -62,6 +62,17 @@ public class CIBuildClientTests {
     "  \"jurisdiction\" : \"urn:iso:std:iso:3166#CA\"\n" +
     "}";
 
+  /** a branch name goes in a url: a bad one is refused before anything is asked of the server */
+  @Test
+  public void aBadBranchIsRefused() throws IOException {
+    MockWebServer server = new MockWebServer();
+    CIBuildClient ciBuildClient = getCiBuildClient(server);
+    for (String branch : new String[] {"../../x", "a/b", "-x", ""}) {
+      org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> ciBuildClient.loadFromCIBuild(DUMMY_PACKAGE, branch), branch);
+    }
+    assertThat(server.getRequestCount()).isEqualTo(0);
+  }
+
   @Test
   public void testOnlyOneQasQueryUnderRefreshThreshold() throws IOException, InterruptedException {
     MockWebServer server = new MockWebServer();

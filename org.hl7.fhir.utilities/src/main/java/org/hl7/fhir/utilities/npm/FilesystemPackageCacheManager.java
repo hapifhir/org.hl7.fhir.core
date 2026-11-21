@@ -745,6 +745,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String actualVersion = checkOKToLoadPackage(statedId, version);
+    // the branch of a current$branch is used in a folder name and a url: check it before either is made
+    if (actualVersion != null && actualVersion.startsWith("current$") && !isCurrentBranch(actualVersion)) {
+      throw new FHIRException("Cannot load package " + statedId + " - the version '" + actualVersion + "' is illegal: the branch must be letters, digits, '.', '_' and '-' (not starting with one of those three)");
+    }
 
     String id = stripAlias(statedId);
     //ok, try to resolve locally
