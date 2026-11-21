@@ -330,3 +330,5 @@ org.hl7.fhir.validation/src/test/java/org/hl7/fhir/terminology/tests/LocalTermin
 release-notes-next.md
 
 claude/
+
+Claude outputs/

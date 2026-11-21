@@ -5087,7 +5087,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
         } else if (url.startsWith("file:")) {
-          try (InputStream stream = new FileInputStream(ManagedFileAccess.file(url.substring(5)))) {
+          try (InputStream stream = ManagedFileAccess.inStream(url.substring(5))) {
             summariseContent(res, stream, wantHash);
           }
         } else if (isDirectlyAccessibleUrl(url)) {

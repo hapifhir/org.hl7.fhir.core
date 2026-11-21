@@ -1012,7 +1012,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     // Ensure base test data SQLite file is available
     String baseDataPath = Utilities.path("[tmp]", "fhir-test-data.db");
-    File baseDataFile = new File(baseDataPath);
+    File baseDataFile = ManagedFileAccess.file(baseDataPath);
     if (!baseDataFile.exists()) {
       try {
         org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("https://www.fhir.org/downloads/test-data-versions.json");

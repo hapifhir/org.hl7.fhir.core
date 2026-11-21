@@ -13,6 +13,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 import static org.hl7.fhir.utilities.i18n.POUtilities.isOutdated;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @Slf4j
 public class POSource {
@@ -38,7 +39,7 @@ public class POSource {
   }
   
   public static POSource loadPOFile(String dest) throws FileNotFoundException, IOException {
-    return loadPOFile(FileUtilities.fileToLines(new File(dest)));
+    return loadPOFile(FileUtilities.fileToLines(ManagedFileAccess.file(dest)));
   }
   
   private static POSource loadPOFile(String[] lines) throws FileNotFoundException, IOException {

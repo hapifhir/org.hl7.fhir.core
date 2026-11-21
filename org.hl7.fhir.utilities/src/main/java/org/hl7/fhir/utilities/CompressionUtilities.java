@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class CompressionUtilities {
   public static void unzip(InputStream zip, String target) throws IOException {
@@ -15,6 +16,7 @@ public class CompressionUtilities {
   }
 
   public static void unzip(InputStream zip, Path target) throws IOException {
+    ManagedFileAccess.fromPath(target); // the folder unzipped into has to be one that may be written to
     try (ZipInputStream zis = new ZipInputStream(zip)) {
       ZipEntry zipEntry = zis.getNextEntry();
       while (zipEntry != null) {

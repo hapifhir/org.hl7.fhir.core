@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
  * Runtime loader for editor-supplied {@code .po} translation files. Lets a
@@ -284,7 +285,7 @@ public class RuntimePOLoader {
       throw new IOException("Not a directory: " + dir);
     }
     List<File> out = new ArrayList<>();
-    try (java.util.stream.Stream<java.nio.file.Path> stream = Files.list(dir.toPath())) {
+    try (java.util.stream.Stream<java.nio.file.Path> stream = Files.list(ManagedFileAccess.fromPath(dir.toPath()).toPath())) {
       stream.filter(p -> p.toString().toLowerCase().endsWith(".po"))
             .forEach(p -> out.add(p.toFile()));
     }

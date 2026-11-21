@@ -500,8 +500,8 @@ public class NPMPackageGenerator {
   }
 
     public void loadFiles(String root, String ignoreFile, File dir, String... noload) throws IOException {
-        Path rootPath = Paths.get(root);
-        Path dirPath = dir == null ? rootPath : dir.toPath();
+        Path rootPath = ManagedFileAccess.file(root).toPath();
+        Path dirPath = dir == null ? rootPath : ManagedFileAccess.fromPath(dir.toPath()).toPath();
         // Ensure the directory to scan is inside the root
         Path normalizedRoot = rootPath.toAbsolutePath().normalize();
         Path normalizedDir = dirPath.toAbsolutePath().normalize();

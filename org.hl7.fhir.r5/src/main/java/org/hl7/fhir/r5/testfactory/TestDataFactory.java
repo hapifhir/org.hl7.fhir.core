@@ -225,7 +225,7 @@ public class TestDataFactory {
     if (Utilities.noString(name)) {
       throw new FHIRException("Factory has no name");
     }
-    testLog = new PrintStream(new FileOutputStream(Utilities.path(logFolder, name+".log")));
+    testLog = new PrintStream(ManagedFileAccess.outStream(Utilities.path(logFolder, name+".log")));
     format = "json".equals(details.asString("format")) ? FhirFormat.JSON : FhirFormat.XML;
   }
   
