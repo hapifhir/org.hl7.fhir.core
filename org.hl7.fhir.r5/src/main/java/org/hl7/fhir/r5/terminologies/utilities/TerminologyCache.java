@@ -724,7 +724,7 @@ public class TerminologyCache {
       cancelFlush(nc);
     }
     if (folder != null) {
-      FileUtilities.clearDirectory(folder);
+      deleteCacheFiles();
     }
     caches.clear();
     vsCache.clear();
@@ -733,6 +733,33 @@ public class TerminologyCache {
     csTransient.clear();
   }
   
+  /**
+   * Deletes the files the cache keeps in its folder, and nothing else: the folder is chosen by the user (e.g. in an
+   * IG, or by -tx-cache), so other things may be kept in it, and it mustn't be emptied
+   */
+  private void deleteCacheFiles() throws IOException {
+    String[] names = ManagedFileAccess.file(folder).list();
+    if (names == null) {
+      return;
+    }
+    for (String fn : names) {
+      if (isCacheFile(fn)) {
+        java.nio.file.Path p = ManagedFileAccess.file(Utilities.path(folder, fn)).toPath();
+        if (!java.nio.file.Files.isDirectory(p, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+          java.nio.file.Files.deleteIfExists(p);
+        }
+      }
+    }
+  }
+
+  /** whether a file in the folder is one the cache writes */
+  static boolean isCacheFile(String fn) {
+    return fn.endsWith(CACHE_FILE_EXTENSION) || fn.endsWith(NONCE_FILE_EXTENSION)
+        || (fn.endsWith(TEMP_FILE_EXTENSION) && fn.contains(CACHE_FILE_EXTENSION+"."))
+        || Utilities.existsInList(fn, "version.ctl", "servers.ini", "vs-externals.json", "cs-externals.json")
+        || ((fn.startsWith("vs-") || fn.startsWith("cs-")) && fn.endsWith(".json"));
+  }
+
   public boolean hasCapabilityStatement(String address) {
     return capabilityStatementCache.containsKey(address);
   }

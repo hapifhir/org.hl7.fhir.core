@@ -335,4 +335,113 @@ import org.junit.jupiter.api.*;
      assertArrayEquals(new String[] {"keep.cache"}, cache.toFile().list());
      assertTrue(Files.exists(precious.resolve("a.txt")));
    }
+
+   /** clearing never follows a link, however deep in the folder it is */
+   @Test
+   void clearDirectoryDoesNotFollowLinks() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("clear-deep-links");
+     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     java.nio.file.Path target = Files.createDirectories(dir.resolve("target").resolve("sub").resolve("deeper"));
+     Files.createSymbolicLink(target.resolve("link"), precious);
+     Files.createSymbolicLink(dir.resolve("target").resolve("file-link"), precious.resolve("a.txt"));
+     FileUtilities.clearDirectory(dir.resolve("target").toString());
+     assertArrayEquals(new String[0], dir.resolve("target").toFile().list());
+     assertTrue(Files.exists(precious.resolve("a.txt")));
+   }
+
+   /** a folder that is itself a link isn't cleared */
+   @Test
+   void clearDirectoryRefusesALink() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("clear-link-root");
+     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("output"), precious);
+     assertThrows(IOException.class, () -> FileUtilities.clearDirectory(link.toString()));
+     assertThrows(IOException.class, () -> FileUtilities.deleteAllFiles(link.toString()));
+     assertTrue(Files.exists(precious.resolve("a.txt")));
+   }
+
+   static java.util.stream.Stream<String> foldersNeverEmptied() {
+     String home = System.getProperty("user.home");
+     return java.util.stream.Stream.of(
+         File.listRoots()[0].getAbsolutePath(),
+         home,
+         new File(home, "Documents").getAbsolutePath(),
+         new File(home, "Desktop").getAbsolutePath(),
+         new File(home, ".fhir").getAbsolutePath(),
+         System.getProperty("java.io.tmpdir"),
+         ".",
+         "..");
+   }
+
+   /** these are refused before anything is looked at, so a test can safely try to empty them (all but a file "*" is kept anyway) */
+   @org.junit.jupiter.params.ParameterizedTest
+   @org.junit.jupiter.params.provider.MethodSource("foldersNeverEmptied")
+   void someFoldersAreNeverEmptied(String folder) throws IOException {
+     if (new File(folder).exists()) {
+       assertNotNull(FileUtilities.whyNotSafeToEmpty(folder), folder);
+       assertThrows(IOException.class, () -> FileUtilities.clearDirectory(folder, "*"), folder);
+     }
+   }
+
+   @Test
+   void aGitRepositoryIsNeverEmptied() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("clear-git");
+     Files.createDirectories(dir.resolve(".git"));
+     Files.write(dir.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     assertThrows(IOException.class, () -> FileUtilities.clearDirectory(dir.toString()));
+     assertThrows(IOException.class, () -> FileUtilities.atomicDeleteDirectory(dir.toString()));
+     assertTrue(Files.exists(dir.resolve("a.txt")));
+   }
+
+   /** a link to the home folder can't be used to get it emptied */
+   @Test
+   void aLinkDoesNotHideWhereTheFolderIs() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("clear-home-link");
+     java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("home"), java.nio.file.Paths.get(System.getProperty("user.home")));
+     assertNotNull(FileUtilities.whyNotSafeToEmpty(link.toString()));
+     assertNull(FileUtilities.whyNotSafeToEmpty(dir.toString()));
+   }
+
+   /** deleting a folder that is a link deletes the link */
+   @Test
+   void atomicDeleteDirectoryOfALinkDeletesTheLink() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("delete-link");
+     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("pkg"), precious);
+     FileUtilities.atomicDeleteDirectory(link.toString());
+     assertFalse(Files.exists(link, java.nio.file.LinkOption.NOFOLLOW_LINKS));
+     assertTrue(Files.exists(precious.resolve("a.txt")));
+   }
+
+   @Test
+   void deleteAllFilesDoesNotFollowLinks() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("delete-all-links");
+     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     java.nio.file.Path work = Files.createDirectories(dir.resolve("work").resolve("sub"));
+     Files.write(work.resolve("b.txt"), "b".getBytes(StandardCharsets.UTF_8));
+     Files.write(work.resolve("c.html"), "c".getBytes(StandardCharsets.UTF_8));
+     Files.createSymbolicLink(work.resolve("link"), precious);
+     FileUtilities.deleteAllFiles(dir.resolve("work").toString(), ".txt");
+     assertFalse(Files.exists(work.resolve("b.txt")));
+     assertTrue(Files.exists(work.resolve("c.html")));
+     FileUtilities.deleteAllFiles(dir.resolve("work").toString());
+     assertArrayEquals(new String[0], work.toFile().list());
+     assertTrue(Files.exists(precious.resolve("a.txt")));
+   }
+
+   @Test
+   void deleteEmptyFoldersDoesNotFollowLinks() throws IOException {
+     java.nio.file.Path dir = Files.createTempDirectory("delete-empty-links");
+     java.nio.file.Path empty = Files.createDirectories(dir.resolve("elsewhere").resolve("empty"));
+     java.nio.file.Path work = Files.createDirectories(dir.resolve("work").resolve("a").resolve("b"));
+     Files.createSymbolicLink(dir.resolve("work").resolve("link"), dir.resolve("elsewhere"));
+     FileUtilities.deleteEmptyFolders(dir.resolve("work").toFile());
+     assertFalse(Files.exists(work));
+     assertTrue(Files.exists(empty));
+     assertTrue(Files.exists(dir.resolve("work").resolve("link"), java.nio.file.LinkOption.NOFOLLOW_LINKS));
+   }
 } 

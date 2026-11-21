@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -449,6 +450,12 @@ public class FileUtilities {
   public static void atomicDeleteDirectory(String path) throws IOException {
 
       File directory = ManagedFileAccess.file(path);
+      if (isLink(directory.toPath())) {
+        // the link is what's deleted, not what it links to
+        Files.delete(directory.toPath());
+        return;
+      }
+      checkSafeToEmpty(directory.toPath());
 
       String tempDirectoryPath = Utilities.generateUniqueRandomUUIDPath(directory.getParent());
       File tempDirectory = ManagedFileAccess.file(tempDirectoryPath);
@@ -513,7 +520,7 @@ public class FileUtilities {
 
   public static File createTempFile(String prefix, String suffix) throws IOException {
     // this allows use to eaily identify all our dtemp files and delete them, since delete on Exit doesn't really work.
-    File file = File.createTempFile("ohfu-" + prefix, suffix);
+    File file = ManagedFileAccess.createTempFile("ohfu-" + prefix, suffix);
     file.deleteOnExit();
     return file;
   }
@@ -533,57 +540,180 @@ public class FileUtilities {
     }
   }
 
+  /**
+   * Empties a folder. Symbolic links (and, on Windows, junctions) are never followed: a link in the folder (or anywhere
+   * below it) is deleted, not what it links to, and a folder that is itself a link isn't cleared at all.
+   *
+   * Some folders are never cleared, whatever they are called and however they are reached - see
+   * {@link #whyNotSafeToEmpty(String)}
+   *
+   * @param exemptions names of files directly in the folder to keep
+   */
   public static void clearDirectory(String folder, String... exemptions) throws IOException {
-    File dir = ManagedFileAccess.file(folder);
-    if (dir.exists()) {
-      if (exemptions.length == 0)
-        FileUtils.cleanDirectory(dir);
-      else {
-        String[] files = ManagedFileAccess.csfile(folder).list();
-        if (files != null) {
-          for (String f : files) {
-            if (!Utilities.existsInList(f, exemptions)) {
-              File link = ManagedFileAccess.file(folder + File.separatorChar + f);
-              if (java.nio.file.Files.isSymbolicLink(link.toPath())) {
-                // a link in the folder is deleted, not what it links to (as FileUtils.cleanDirectory does, above). (and
-                // before CSFile, whose case check fails on a link)
-                link.delete();
-              } else {
-                File fh = ManagedFileAccess.csfile(folder + File.separatorChar + f);
-                if (fh.isDirectory())
-                  clearDirectory(fh.getAbsolutePath());
-                fh.delete();
-              }
-            }
-          }
-        }
+    Path dir = ManagedFileAccess.file(folder).toPath();
+    if (!Files.exists(dir, LinkOption.NOFOLLOW_LINKS)) {
+      return;
+    }
+    if (isLink(dir)) {
+      throw new IOException("The folder "+folder+" is a link to somewhere else, so it won't be cleared");
+    }
+    if (!Files.isDirectory(dir, LinkOption.NOFOLLOW_LINKS)) {
+      return;
+    }
+    checkSafeToEmpty(dir);
+    List<String> keep = Arrays.asList(exemptions);
+    for (Path e : listEntries(dir)) {
+      if (!keep.contains(e.getFileName().toString())) {
+        deleteNoFollow(e);
       }
     }
   }
 
+  /**
+   * Deletes all the files below the folder whose name ends with type, leaving the folders. Links aren't followed (a
+   * link whose name ends with type is deleted, not what it links to)
+   */
   public static void deleteAllFiles(String folder, String type) throws IOException {
-    File src = ManagedFileAccess.file(folder);
-    String[] files = src.list();
-    for (String f : files) {
-      if (ManagedFileAccess.file(folder + File.separator + f).isDirectory()) {
-        deleteAllFiles(folder + File.separator + f, type);
-      } else if (f.endsWith(type)) {
-        ManagedFileAccess.file(folder + File.separator + f).delete();
-      }
-    }
-
+    Path dir = ManagedFileAccess.file(folder).toPath();
+    checkFolderToEmpty(folder, dir);
+    deleteAllFilesNoFollow(dir, type);
   }
+
+  /**
+   * Deletes all the files below the folder, leaving the folders. Links aren't followed (a link is deleted, not what it
+   * links to)
+   */
   public static void deleteAllFiles(String folder) throws IOException {
-    File src = ManagedFileAccess.file(folder);
-    String[] files = src.list();
-    for (String f : files) {
-      if (ManagedFileAccess.file(folder + File.separator + f).isDirectory()) {
-        deleteAllFiles(folder + File.separator + f);
-      } else {
-        ManagedFileAccess.file(folder + File.separator + f).delete();
+    Path dir = ManagedFileAccess.file(folder).toPath();
+    checkFolderToEmpty(folder, dir);
+    deleteAllFilesNoFollow(dir, null);
+  }
+
+  private static void checkFolderToEmpty(String folder, Path dir) throws IOException {
+    if (isLink(dir)) {
+      throw new IOException("The folder "+folder+" is a link to somewhere else, so its files won't be deleted");
+    }
+    if (!Files.isDirectory(dir, LinkOption.NOFOLLOW_LINKS)) {
+      throw new IOException("The folder "+folder+" doesn't exist");
+    }
+    checkSafeToEmpty(dir);
+  }
+
+  private static void deleteAllFilesNoFollow(Path dir, String type) throws IOException {
+    for (Path e : listEntries(dir)) {
+      if (!isLink(e) && Files.isDirectory(e, LinkOption.NOFOLLOW_LINKS)) {
+        deleteAllFilesNoFollow(e, type);
+      } else if (type == null || e.getFileName().toString().endsWith(type)) {
+        Files.deleteIfExists(e);
       }
     }
+  }
 
+  /** a symbolic link, or something else that isn't a plain file or folder (on Windows, a junction is one) */
+  private static boolean isLink(Path p) {
+    try {
+      java.nio.file.attribute.BasicFileAttributes a = Files.readAttributes(p, java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+      return a.isSymbolicLink() || a.isOther();
+    } catch (IOException e) {
+      return false;
+    }
+  }
+
+  private static List<Path> listEntries(Path dir) throws IOException {
+    List<Path> res = new ArrayList<>();
+    try (java.nio.file.DirectoryStream<Path> ds = Files.newDirectoryStream(dir)) {
+      for (Path e : ds) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
+  private static void deleteNoFollow(Path p) throws IOException {
+    if (!isLink(p) && Files.isDirectory(p, LinkOption.NOFOLLOW_LINKS)) {
+      for (Path c : listEntries(p)) {
+        deleteNoFollow(c);
+      }
+    }
+    Files.deleteIfExists(p);
+  }
+
+  private static void checkSafeToEmpty(Path dir) throws IOException {
+    String reason = whyNotSafeToEmpty(dir.toString());
+    if (reason != null) {
+      throw new IOException("Refusing to empty or delete the folder "+dir+": "+reason);
+    }
+  }
+
+  // folders at the top of a file system (/ or C:\) whose direct sub-folders aren't emptied either. compared in lower case
+  private static final List<String> SYSTEM_FOLDERS = Arrays.asList("applications", "bin", "boot", "cores", "dev", "etc", "home",
+      "lib", "lib32", "lib64", "libx32", "library", "media", "mnt", "opt", "private", "proc", "root", "run", "sbin", "snap",
+      "srv", "sys", "system", "users", "usr", "var", "volumes",
+      "windows", "program files", "program files (x86)", "programdata", "$recycle.bin", "system volume information", "recovery");
+  // folders in a user's home folder that aren't emptied. compared in lower case
+  private static final List<String> HOME_FOLDERS = Arrays.asList("desktop", "documents", "my documents", "downloads", "library",
+      "pictures", "movies", "music", "videos", "public", "applications", "appdata", "dropbox", "google drive", "icloud drive",
+      ".ssh", ".config", ".m2", ".fhir");
+
+  /**
+   * Whether a folder must never be emptied or deleted, whatever is asked: these are folders that are never scratch
+   * folders, so a request to empty one is a mistake or an attack (e.g. a link, or a setting, that leads somewhere
+   * else). Where the folder really is is what's looked at (links are followed to get there).
+   *
+   * @return null if the folder may be emptied, else why not
+   */
+  public static String whyNotSafeToEmpty(String folder) {
+    Path real;
+    try {
+      real = Paths.get(folder).toAbsolutePath().normalize().toRealPath();
+    } catch (Exception e) {
+      return null; // it doesn't exist, so there's nothing to empty
+    }
+    if (real.getNameCount() == 0) {
+      return "it is the root of a file system";
+    }
+    if (real.getNameCount() == 1) {
+      return "it is a top level folder";
+    }
+    if (real.getNameCount() == 2 && SYSTEM_FOLDERS.contains(real.getName(0).toString().toLowerCase())) {
+      return "it is a system folder";
+    }
+    Path home = realPathOf(System.getProperty("user.home"));
+    if (home != null) {
+      if (home.startsWith(real)) {
+        return "it is the user's home folder, or contains it";
+      }
+      String name = real.getFileName().toString().toLowerCase();
+      if (home.equals(real.getParent()) && (HOME_FOLDERS.contains(name) || name.startsWith("onedrive"))) {
+        return "it is one of the standard folders in the user's home folder";
+      }
+      if (real.equals(realPathOf(home.resolve(".fhir").resolve("packages").toString()))) {
+        return "it is the FHIR package cache";
+      }
+    }
+    Path tmp = realPathOf(System.getProperty("java.io.tmpdir"));
+    if (tmp != null && tmp.startsWith(real)) {
+      return "it is the system temporary folder, or contains it";
+    }
+    Path cwd = realPathOf(Paths.get("").toAbsolutePath().toString());
+    if (cwd != null && cwd.startsWith(real)) {
+      return "it is the current folder, or contains it";
+    }
+    if (Files.exists(real.resolve(".git"), LinkOption.NOFOLLOW_LINKS)) {
+      return "it is the root of a git repository";
+    }
+    return null;
+  }
+
+  private static Path realPathOf(String path) {
+    if (path == null) {
+      return null;
+    }
+    try {
+      return Paths.get(path).toAbsolutePath().normalize().toRealPath();
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   public static String changeFileExt(String name, String ext) {
@@ -597,18 +727,25 @@ public class FileUtilities {
     return Utilities.existsInList(file.getName(), ".DS_Store");
   }
 
+  /**
+   * Deletes the empty folders below (and including) df. Links aren't followed, and aren't empty folders
+   */
   public static void deleteEmptyFolders(File df) {
-    for (File f : df.listFiles()) {
-      if (f.isDirectory()) {
-        deleteEmptyFolders(f);
-      }
+    Path dir = df.toPath();
+    if (isLink(dir) || !Files.isDirectory(dir, LinkOption.NOFOLLOW_LINKS)) {
+      return;
     }
-    boolean empty = true;
-    for (File f : df.listFiles()) {
-      empty = false;
-      break;
+    List<Path> entries;
+    try {
+      entries = listEntries(dir);
+    } catch (IOException e) {
+      return;
     }
-    if (empty) {
+    for (Path e : entries) {
+      deleteEmptyFolders(e.toFile());
+    }
+    String[] left = df.list();
+    if (left != null && left.length == 0) {
       df.delete();
     }
   }

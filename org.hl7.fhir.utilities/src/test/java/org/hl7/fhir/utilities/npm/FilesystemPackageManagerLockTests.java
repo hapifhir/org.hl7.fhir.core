@@ -244,6 +244,42 @@ public class FilesystemPackageManagerLockTests {
     lockThread.join();
   }
 
+  /**
+   * Another process holds the lock (installing the same package, say), and moves the lock file away when it's done
+   * with it. The write that was waiting must then lock the lock file, not the file that was moved away
+   */
+  @Test
+  void testWriteWhenLockedByAnotherProcess() throws InterruptedException, TimeoutException, IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    final File lockFile = getPackageLockFile();
+
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 3);
+    LockfileTestUtility.waitForLockfileCreation(cachePath, lockFile.getName());
+
+    String result = packageLock.doWriteWithLock(() -> {
+      assertThat(lockFile).exists();
+      return "done";
+    }, new FilesystemPackageCacheManagerLocks.LockParameters(20L, TimeUnit.SECONDS));
+
+    assertThat(result).isEqualTo("done");
+    assertThat(lockFile).doesNotExist();
+    lockThread.join();
+    // and the package can be written again
+    packageLock.doWriteWithLock(() -> null, null);
+  }
+
+  /** if what the write does fails, the locks are still released, so the package can be used again */
+  @Test
+  void testWriteThatFailsReleasesTheLocks() throws IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    assertThrows(IOException.class, () -> packageLock.doWriteWithLock(() -> {
+      throw new IOException("failed");
+    }, null));
+    assertThat(getPackageLockFile()).doesNotExist();
+    packageLock.doWriteWithLock(() -> null, null);
+    filesystemPackageCacheLockManager.getCacheLock().doWriteWithLock(() -> null);
+  }
+
   private File getPackageLockFile() {
     return Path.of(cachePath, DUMMY_PACKAGE + ".lock").toFile();
   }

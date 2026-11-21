@@ -179,41 +179,28 @@ public class FilesystemPackageCacheManagerLocks {
      */
     private void waitForLockFileDeletion(File lockFile, @Nonnull LockParameters lockParameters) throws IOException, InterruptedException {
       log.debug("waiting for lockFile deletion: " + lockFile.getName());
+      long deadline = System.nanoTime() + lockParameters.lockTimeoutTimeUnit.toNanos(lockParameters.lockTimeoutTime);
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
-
-        WatchKey key = watchService.poll(lockParameters.lockTimeoutTime, lockParameters.lockTimeoutTimeUnit);
-        if (key == null) {
-          log.debug("watch key is null for lockFile: " + lockFile.getName());
-          // It is possible that the lock file is deleted before the watch service is registered, so if we timeout at
-          // this point, we should check if the lock file still exists.
-          if (lockFile.exists()) {
+        // other files in the folder are deleted too (another process renaming the package it just installed into
+        // place, say), so keep waiting until it's this one that's gone. The watch only says something was deleted:
+        // whether the lock file still exists is what's checked. And it may have gone before the watch started
+        while (lockFile.exists()) {
+          long left = deadline - System.nanoTime();
+          if (left <= 0) {
             throw new TimeoutException("Timeout waiting for lock file deletion: " + lockFile.getName());
           }
-        } else {
-          log.debug("watch key is watching for lockFile deletion: " + lockFile.getName());
-
-          for (WatchEvent<?> event : key.pollEvents()) {
-            WatchEvent.Kind<?> kind = event.kind();
-            if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-              log.debug("watch saw lockFile deletion: " + lockFile.getName());
-
-              Path deletedFilePath = (Path) event.context();
-              if (deletedFilePath.toString().equals(lockFile.getName())) {
-                key.cancel();
-                return;
-              } else {
-                log.error("watch saw lockFile deletion for " +deletedFilePath + " which does not match " + lockFile.getName());
-              }
-            }
+          WatchKey key = watchService.poll(Math.min(left, TimeUnit.SECONDS.toNanos(1)), TimeUnit.NANOSECONDS);
+          if (key != null) {
+            key.pollEvents();
             key.reset();
           }
         }
+        log.debug("lockFile deleted: " + lockFile.getName());
       } catch (TimeoutException e) {
         throw new IOException("Package cache timed out waiting for lock.", e);
       }
-      log.error("waiting for lockFile deletion ended in uncertain state: " + lockFile.getName());
     }
 
 
@@ -275,52 +262,106 @@ public class FilesystemPackageCacheManagerLocks {
        /*TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
           the test code.
         */
-      try (FileChannel channel = getFileChannel(openOptions)) {
-
-        final FileLock fileLock = getFileLock(channel, resolvedLockParameters);
-
-        if (!lockFile.isFile() && !lockFile.exists()) {
-          final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
-          final int bytesWritten = channel.write(buff);
-          log.debug(bytesWritten + " bytes written to lock file: " + lockFile.getName());
-        }
-        T result = null;
-        try {
-          result = function.get();
-        } finally {
-          final File toDelete;
-
-          // Windows based file systems do not allow renames for 'open' files, but others do, and it is atomic. So do a
-          // rename if we can before releasing our lock.
-         if (!SystemUtils.IS_OS_WINDOWS) {
-            log.debug("Attempting lockFile removal by move: " + lockFile.toPath());
-            toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), LOCK_DELETION_EXTENSION, lockFile.getParentFile()).getAbsolutePath());
-            Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-            log.debug("Removed lockFile by moving from: " + lockFile.toPath() + " to " + toDelete.toPath());
-          } else {
-            toDelete = lockFile;
-          }
-
-          fileLock.release();
-
-          // Non-Windows file systems will have atomically renamed the file at this point, so we should delete the file it was named to.
-          // Windows file systems will have to delete the original file itself.
-          try {
-            log.debug("Attempting lockFile deletion " + toDelete.toPath());
-            Files.delete(toDelete.toPath());
-            log.debug("Removed lockFile by deleting " + toDelete.toPath());
-          } catch (IOException e) {
-            log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
-            toDelete.deleteOnExit();
-          }
-
-          lock.writeLock().unlock();
-          cacheLock.getLock().writeLock().unlock();
-        }
-        return result;
+      FileChannel lockedChannel;
+      FileLock[] fileLock = new FileLock[1];
+      try {
+        lockedChannel = lockTheLockFile(openOptions, resolvedLockParameters, fileLock);
       } catch (InterruptedException e) {
+        lock.writeLock().unlock();
+        cacheLock.getLock().writeLock().unlock();
         Thread.currentThread().interrupt();
         throw new IOException("Thread interrupted while waiting for lock", e);
+      } catch (IOException | RuntimeException e) {
+        lock.writeLock().unlock();
+        cacheLock.getLock().writeLock().unlock();
+        throw e;
+      }
+      try {
+        if (!lockFile.isFile() && !lockFile.exists()) {
+          final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
+          final int bytesWritten = lockedChannel.write(buff);
+          log.debug(bytesWritten + " bytes written to lock file: " + lockFile.getName());
+        }
+        return function.get();
+      } finally {
+        // whatever happens, the locks are released: if they weren't, nothing in this process could use the package again
+        try {
+          removeLockFile(fileLock[0]);
+        } finally {
+          try {
+            lockedChannel.close();
+          } finally {
+            lock.writeLock().unlock();
+            cacheLock.getLock().writeLock().unlock();
+          }
+        }
+      }
+    }
+
+    private void removeLockFile(FileLock fileLock) throws IOException {
+      File toDelete = lockFile;
+      try {
+        // Windows based file systems do not allow renames for 'open' files, but others do, and it is atomic. So do a
+        // rename if we can before releasing our lock.
+        if (!SystemUtils.IS_OS_WINDOWS) {
+          log.debug("Attempting lockFile removal by move: " + lockFile.toPath());
+          toDelete = ManagedFileAccess.createTempFile(lockFile.getParentFile(), lockFile.getName(), LOCK_DELETION_EXTENSION);
+          Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+          log.debug("Removed lockFile by moving from: " + lockFile.toPath() + " to " + toDelete.toPath());
+        }
+      } finally {
+        fileLock.release();
+        // Non-Windows file systems will have atomically renamed the file at this point, so we should delete the file it was named to.
+        // Windows file systems will have to delete the original file itself.
+        try {
+          log.debug("Attempting lockFile deletion " + toDelete.toPath());
+          Files.deleteIfExists(toDelete.toPath());
+          log.debug("Removed lockFile by deleting " + toDelete.toPath());
+        } catch (IOException e) {
+          log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
+          toDelete.deleteOnExit();
+        }
+      }
+    }
+
+    /**
+     * Opens and locks the lock file. Another process that holds the lock moves the lock file away before it releases
+     * it (see doWriteWithLock), so a process that was waiting for it can end up with a lock on that moved file, which
+     * no longer is the lock file - and then two processes think they have the package. So once locked, check that
+     * the file locked is still the one called lockFile, and if it isn't, try again
+     */
+    private FileChannel lockTheLockFile(Set<OpenOption> openOptions, LockParameters lockParameters, FileLock[] fileLock) throws IOException, InterruptedException {
+      final int attempts = 10;
+      for (int i = 1; ; i++) {
+        FileChannel channel = getFileChannel(openOptions);
+        try {
+          // the file just opened (the window between opening and looking is tiny, where the window this closes is
+          // all the time spent waiting for the lock)
+          Object opened = fileKey(lockFile);
+          FileLock fl = getFileLock(channel, lockParameters);
+          if (SystemUtils.IS_OS_WINDOWS || (opened != null && opened.equals(fileKey(lockFile)))) {
+            fileLock[0] = fl;
+            return channel;
+          }
+          log.debug("lockFile was replaced while waiting for it, trying again: " + lockFile.getName());
+          fl.release();
+        } catch (IOException | InterruptedException | RuntimeException e) {
+          channel.close();
+          throw e;
+        }
+        channel.close();
+        if (i == attempts) {
+          throw new IOException("Unable to lock " + lockFile.getName() + ": it kept being replaced by other processes");
+        }
+      }
+    }
+
+    /** identifies the file the name refers to (on Windows, there's no key, and the lock file isn't moved anyway) */
+    private Object fileKey(File file) {
+      try {
+        return Files.readAttributes(file.toPath(), java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS).fileKey();
+      } catch (IOException e) {
+        return null;
       }
     }
 

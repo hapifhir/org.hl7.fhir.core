@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
  * see security.md - manages access to the local file system by the FHIR HAPI Core library
@@ -327,6 +328,49 @@ public class ManagedFileAccess {
       return f.listFiles();
     case MANAGED:
       return accessor.listFiles(f);
+    case PROHIBITED:
+      throw new IOException("Access to files is not allowed by local security policy");
+    default:
+      throw new IOException("Internal Error");
+    }
+  }
+
+  /**
+   * Creates a new empty file in the system temp folder (java.io.tmpdir), as File.createTempFile does, conforming to
+   * local security policy: the temp folder has to be one that may be accessed
+   */
+  public static File createTempFile(String prefix, String suffix) throws IOException {
+    return createTempFile(null, prefix, suffix);
+  }
+
+  /**
+   * As createTempFile(prefix, suffix), in the folder dir (null for the system temp folder), which has to be one that
+   * may be accessed
+   */
+  public static File createTempFile(File dir, String prefix, String suffix) throws IOException {
+    return File.createTempFile(prefix, suffix, tempFolder(dir));
+  }
+
+  /**
+   * Creates a new empty folder in the system temp folder (java.io.tmpdir), as Files.createTempDirectory does,
+   * conforming to local security policy: the temp folder has to be one that may be accessed
+   */
+  public static File createTempDirectory(String prefix) throws IOException {
+    return java.nio.file.Files.createTempDirectory(tempFolder(null).toPath(), prefix).toFile();
+  }
+
+  /** the folder to make a temporary file or folder in (null for the system temp folder), once policy allows it */
+  private static File tempFolder(File dir) throws IOException {
+    File folder = dir != null ? dir : new File(System.getProperty("java.io.tmpdir"));
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(folder.getAbsolutePath())) {
+        throw new IOException("The pathname '"+folder.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return folder;
+    case MANAGED:
+      // an IFileAccessor has no way to make one
+      throw new IOException("Temporary files are not supported by the managed file access policy");
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:

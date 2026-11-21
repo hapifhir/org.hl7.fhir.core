@@ -34,8 +34,6 @@ package org.hl7.fhir.utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -674,14 +672,14 @@ public final class IniFile
         String     strTemp   = null;
         Iterator<String>   itrSec    = null;
         INISection objSec    = null;
-        FileWriter objWriter = null;
+        Writer objWriter = null;
 
         try
         {
             if (this.iniSections.size() == 0) return false;
             objFile = ManagedFileAccess.csfile(this.filepath);
             if (objFile.exists()) objFile.delete();
-            objWriter = new FileWriter(objFile);
+            objWriter = new OutputStreamWriter(ManagedFileAccess.outStream(objFile)); // the platform charset, as FileWriter
             itrSec = this.iniSections.keySet().iterator();
             while (itrSec.hasNext())
             {
@@ -938,12 +936,12 @@ public final class IniFile
         String         strSection = null;
         String         strRemarks = null;
         BufferedReader objBRdr    = null;
-        FileReader     objFRdr    = null;
+        Reader         objFRdr    = null;
         INISection     objSec     = null;
 
         try
         {
-            objFRdr = new FileReader(this.filepath);
+            objFRdr = new InputStreamReader(ManagedFileAccess.inStream(this.filepath)); // the platform charset, as FileReader
             if (objFRdr != null)
             {
                 objBRdr = new BufferedReader(objFRdr);

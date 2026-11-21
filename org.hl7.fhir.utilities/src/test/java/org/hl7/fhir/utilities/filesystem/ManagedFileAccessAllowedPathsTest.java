@@ -2,7 +2,9 @@ package org.hl7.fhir.utilities.filesystem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -93,5 +95,30 @@ class ManagedFileAccessAllowedPathsTest {
     Path igOther = Files.createDirectories(dir.resolve("ig-other"));
     ManagedFileAccess.setAllowedPaths(java.util.Arrays.asList(ig.toString(), fhir.toString(), packages.toString(), settings.toString(), ig.toString(), igOther.toString()));
     assertEquals(List.of(ig.toRealPath().toString(), fhir.toRealPath().toString(), igOther.toRealPath().toString()), ManagedFileAccess.getAllowedPaths());
+  }
+
+  /** a temporary file is made in a folder that may be accessed, and not in one that can't */
+  @Test
+  void tempFilesGoWherePolicyAllows() throws IOException {
+    Path ig = setUp();
+    File f = ManagedFileAccess.createTempFile(ig.toFile(), "tmp-", ".txt");
+    assertTrue(f.isFile());
+    assertEquals(ig.toRealPath(), f.getParentFile().toPath().toRealPath());
+    assertThrows(IOException.class, () -> ManagedFileAccess.createTempFile(dir.resolve("ig-other").toFile(), "tmp-", ".txt"));
+  }
+
+  /** without a folder, temporary files and folders go in the system temp folder, which has to be one that may be accessed */
+  @Test
+  void theSystemTempFolderHasToBeAllowed() throws IOException {
+    setUp(); // only the IG's folder
+    assertThrows(IOException.class, () -> ManagedFileAccess.createTempFile("tmp-", ".txt"));
+    assertThrows(IOException.class, () -> ManagedFileAccess.createTempDirectory("tmp-"));
+    ManagedFileAccess.setAllowedPaths(List.of(System.getProperty("java.io.tmpdir")));
+    File f = ManagedFileAccess.createTempFile("tmp-", ".txt");
+    f.deleteOnExit();
+    assertTrue(f.isFile());
+    File d = ManagedFileAccess.createTempDirectory("tmp-");
+    d.deleteOnExit();
+    assertTrue(d.isDirectory());
   }
 }

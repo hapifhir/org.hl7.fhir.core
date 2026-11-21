@@ -109,6 +109,23 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder("banana"));
   }
 
+  /** the cache's folder is chosen by the user, so clearing the cache deletes only the files the cache keeps there */
+  @Test
+  void testClearDeletesOnlyTheCachesOwnFiles() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    Path dir = Path.of(cache.getFolder());
+    for (String fn : new String[] {"a.cache", "a.cache.nonce", "a.cache.1234.tmp", "servers.ini", "vs-externals.json", "vs-1234.json", "cs-1234.json", "notes.md", "other.json"}) {
+      Files.writeString(dir.resolve(fn), "x");
+    }
+    Files.createDirectories(dir.resolve("sub"));
+    Files.writeString(dir.resolve("sub").resolve("b.cache"), "x");
+    cache.clear();
+    String[] left = dir.toFile().list();
+    Arrays.sort(left);
+    assertArrayEquals(new String[] {"notes.md", "other.json", "sub"}, left);
+    assertTrue(Files.exists(dir.resolve("sub").resolve("b.cache")));
+  }
+
   public Path createTempCacheDirectory() throws IOException {
     Path tmp = Files.createTempDirectory("integrationTestCache");
     ManagedFileAccess.fromPath(tmp).deleteOnExit();
