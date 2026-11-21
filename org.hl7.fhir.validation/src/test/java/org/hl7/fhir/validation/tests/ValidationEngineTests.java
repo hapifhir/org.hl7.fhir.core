@@ -1,23 +1,13 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
-import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -33,8 +23,17 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-
 import org.junit.jupiter.api.*;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ValidationEngineTests {

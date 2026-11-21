@@ -28,36 +28,25 @@ package org.hl7.fhir.validation.instance.utils;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.services.fhirpath.ExpressionNode;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.core.BooleanType;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.Expression;
-import org.hl7.fhir.model.core.Extension;
-import org.hl7.fhir.model.core.PrimitiveType;
-import org.hl7.fhir.model.core.Quantity;
+import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Questionnaire.EnableWhenBehavior;
 import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemEnableWhenComponent;
 import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemOperator;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 
-import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Evaluates Questionnaire.item.enableWhen against a QuestionnaireResponse.

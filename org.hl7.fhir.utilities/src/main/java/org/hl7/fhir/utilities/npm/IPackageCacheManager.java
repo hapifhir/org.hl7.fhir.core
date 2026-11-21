@@ -1,11 +1,10 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.InputStream;
 
 public interface IPackageCacheManager {
 

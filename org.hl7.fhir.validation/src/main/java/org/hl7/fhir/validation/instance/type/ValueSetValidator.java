@@ -1,29 +1,24 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.utilities.CodeSystemUtilities;
-import org.hl7.fhir.model.utilities.TerminologyUtilities;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -31,18 +26,15 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.codesystem.BCP47Checker;
-import org.hl7.fhir.validation.codesystem.CPTChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemBasedChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
-import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
-import org.hl7.fhir.validation.codesystem.LoincChecker;
-import org.hl7.fhir.validation.codesystem.RxNormChecker;
-import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
-import org.hl7.fhir.validation.codesystem.UcumChecker;
+import org.hl7.fhir.validation.codesystem.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @Slf4j
 public class ValueSetValidator extends BaseValidator {

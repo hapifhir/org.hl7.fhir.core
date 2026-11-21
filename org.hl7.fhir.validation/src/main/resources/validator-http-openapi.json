@@ -1354,7 +1354,7 @@
                   "test-version": {
                     "type": "string",
                     "default": "current",
-                    "description": "Which published version of the test cases to run, e.g. `1.9.6` - a version of the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes whenever the tests do: pin a version in a pipeline.",
+                    "description": "Which published version of the test cases to run, e.g. `1.9.6` - a version of the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes whenever the tests do: pin a version in a pipeline. `current$<branch>` is the ci-build of a branch of the tests (branch names with a `/` aren't supported).",
                     "example": "1.9.6"
                   },
                   "externals": {

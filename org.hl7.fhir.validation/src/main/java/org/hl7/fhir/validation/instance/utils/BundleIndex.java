@@ -1,16 +1,11 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.UserDataNames;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * An index of the entries in a bundle, so that references between entries can be

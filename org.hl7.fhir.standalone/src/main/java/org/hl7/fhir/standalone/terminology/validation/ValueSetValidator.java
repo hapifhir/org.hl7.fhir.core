@@ -2315,7 +2315,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         opContext.deadCheck("hit server "+vs.getVersionedUrl());
         ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
-        if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
+        if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED) {
           if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
             // server didn't know the code system either - we'll take it face value
             if (!info.hasNotFound(system)) {

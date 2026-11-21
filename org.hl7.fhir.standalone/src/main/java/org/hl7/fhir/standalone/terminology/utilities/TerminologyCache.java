@@ -1109,7 +1109,7 @@ public class TerminologyCache {
    * Is this a failure to get an answer from the terminology server, rather than an answer about the content?
    *
    * Deliberately not {@link TerminologyServiceErrorClass#isInfrastructure()}, which also covers
-   * VALUESET_UNSUPPORTED: that describes the request the server was asked to answer, and is
+   * RESOURCE_UNSUPPORTED: that describes the request the server was asked to answer, and is
    * reproducible, where these describe the server (or this side) at one moment in time. INTERNAL_ERROR
    * is a server that failed rather than answered (a 500), or a request that failed on this side; even
    * where it is reproducible, it is likely to be fixed, so it is asked again next run.
@@ -1656,7 +1656,7 @@ public class TerminologyCache {
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
     if (e == 'e') {
-      TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
+      TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.fromName(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
         ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
@@ -1694,7 +1694,7 @@ public class TerminologyCache {
       OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("issues")) : null;
       Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
-      TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
+      TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.fromName(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new CodeSystem.ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
       ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
       ce.v.setServer(server);

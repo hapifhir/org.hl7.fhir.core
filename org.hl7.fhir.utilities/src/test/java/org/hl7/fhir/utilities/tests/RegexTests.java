@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class RegexTests {
 

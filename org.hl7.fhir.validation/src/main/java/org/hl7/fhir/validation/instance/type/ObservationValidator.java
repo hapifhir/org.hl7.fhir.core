@@ -1,10 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.ValidationInformation.ValidationMode;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -14,6 +11,9 @@ import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 import org.hl7.fhir.validation.instance.utils.LoincObservationRules;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObservationValidator extends BaseValidator {
 

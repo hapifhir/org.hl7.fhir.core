@@ -30,35 +30,6 @@ package org.hl7.fhir.utilities.npm;
  */
 
 
-
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
-import java.text.Normalizer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.zip.Deflater;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.annotation.Nonnull;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -68,9 +39,11 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -82,6 +55,21 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.regex.RegexUtils;
+
+import javax.annotation.Nonnull;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * info and loader for a package 
@@ -610,50 +598,27 @@ public class NpmPackage {
   public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
     FileUtilities.createDirectory(tempDir);
 
-    int size = 0;
-    
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(tgz);
-    } catch (Exception e) {
-      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
-    }
-    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-      Map<String, String> names = new HashMap<>();
-
-      while ((entry = tarIn.getNextEntry()) != null) {
-        String n = getEntryName(entry);
-        checkEntryPath(n);
-        if (!entry.isDirectory()) {
-          checkDuplicateName(names, n, desc);
-        }
-        if (entry.isDirectory()) {
-          if (!Utilities.noString(n)) {
-            String dir = n.substring(0, n.length()-1);
-            FileUtilities.createDirectory(Utilities.path(tempDir, dir));
-          }
-        } else {
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          String filename = Utilities.path(tempDir, n);
-          String folder = FileUtilities.getDirectoryForFile(filename);
-          FileUtilities.createDirectory(folder);
-          FileOutputStream fos = ManagedFileAccess.outStream(filename);
-          try (BufferedOutputStream dst = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dst.write(data, 0, count);
-              size = size + count;
-              checkLoadedSize(size, defaultMaxLoadSize, desc); // no instance yet, so only the default limit applies here
-            }
-          }
-          fos.close();
+    // no instance yet, so only the default limit applies here
+    long size = readTgz(tgz, desc, defaultMaxLoadSize, new TgzEntryHandler() {
+      @Override
+      public void folder(String name) throws IOException {
+        if (!Utilities.noString(name)) {
+          FileUtilities.createDirectory(Utilities.path(tempDir, name.substring(0, name.length()-1)));
         }
       }
-    } 
+
+      @Override
+      public void file(String name, InputStream content) throws IOException {
+        String filename = Utilities.path(tempDir, name);
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(filename));
+        try (OutputStream dst = new BufferedOutputStream(ManagedFileAccess.outStream(filename), BUFFER_SIZE)) {
+          content.transferTo(dst);
+        }
+      }
+    });
     try {
       NpmPackage npm = NpmPackage.fromFolderMinimal(tempDir);
-      npm.setSize(size);
+      npm.setSize((int) Math.min(size, Integer.MAX_VALUE));
       if (!minimal) {
         npm.checkIndexed(desc);
       }
@@ -703,58 +668,35 @@ public class NpmPackage {
   }
 
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(tgz);
-    } catch (Exception e) {
-      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
-    }
+    NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
+    readTgz(tgz, desc, maxLoadSize, new TgzEntryHandler() {
+      private boolean haveLoggedDotSlashPrefixWarning = false;
 
-    boolean haveLoggedDotSlashPrefixWarning = false;
-    long loadedSize = 0;
-
-    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-      NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
-      Map<String, String> names = new HashMap<>();
-      while ((entry = tarIn.getNextEntry()) != null) {
-        String entryName = getEntryName(entry);
-        checkEntryPath(entryName);
-        if (!entry.isDirectory()) {
-          checkDuplicateName(names, entryName, desc);
+      @Override
+      public void folder(String name) {
+        String dir = name.substring(0, name.length()-1);
+        // If resource paths in the TGZ file are prefixed with "./", be tolerant
+        // and strip that
+        if (dir.startsWith("./")) {
+          if (!haveLoggedDotSlashPrefixWarning) {
+            log.warn("The NPM file contains resource paths that are prefixed with \"./\". This is invalid and should be corrected in the source package.");
+            haveLoggedDotSlashPrefixWarning = true;
+          }
+          dir = dir.substring(2);
         }
-        if (entry.isDirectory()) {
-          String dir = entryName.substring(0, entryName.length()-1);
-          // If resource paths in the TGZ file are prefixed with "./", be tolerant
-          // and strip that
-          if (dir.startsWith("./")) {
-            if (!haveLoggedDotSlashPrefixWarning) {
-              log.warn("The NPM file contains resource paths that are prefixed with \"./\". This is invalid and should be corrected in the source package.");
-              haveLoggedDotSlashPrefixWarning = true;
-            }
-            dir = dir.substring(2);
-          }
-          if (dir.startsWith("package/")) {
-            dir = dir.substring(8);
-          }
-          folders.put(dir, new NpmPackageFolder(dir));
-        } else {
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          ByteArrayOutputStream fos = new ByteArrayOutputStream();
-          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dest.write(data, 0, count);
-              loadedSize = loadedSize + count;
-              checkLoadedSize(loadedSize, maxLoadSize, desc);
-            }
-          }
-          fos.close();
-          loadFile(entryName, fos.toByteArray());
+        if (dir.startsWith("package/")) {
+          dir = dir.substring(8);
         }
-        readLogger.entry(entryName);
+        folders.put(dir, new NpmPackageFolder(dir));
+        readLogger.entry(name);
       }
-    } 
+
+      @Override
+      public void file(String name, InputStream content) throws IOException {
+        loadFile(name, content.readAllBytes());
+        readLogger.entry(name);
+      }
+    });
     NpmPackageFolder packageFolder = folders.get("package");
     Validate.notNull(packageFolder, "Package folder not found in NPM file");
     byte[] packageJsonBytes = packageFolder.fetchFile("package.json");
@@ -818,6 +760,78 @@ public class NpmPackage {
     }
     res.add(name.substring(start));
     return res;
+  }
+
+  /** What {@link #readTgz} hands the entries of a package to, in the order they are in the package */
+  public interface TgzEntryHandler {
+    /** a folder entry: the name ends with '/' */
+    void folder(String name) throws IOException;
+
+    /**
+     * a file entry. Reading content takes the file's bytes from the package, and throws an IOException if that takes
+     * what has been decompressed past the limit. Content doesn't need to be closed, and can't be read once this returns
+     */
+    void file(String name, InputStream content) throws IOException;
+  }
+
+  /**
+   * Reads a package (a tgz), entry by entry. This is where all the readers of packages refuse what they refuse: a
+   * name with a .. segment ({@link #checkEntryPath}), two files of the same name ({@link #checkDuplicateName}), and
+   * more than maxLoadSize decompressed ({@link #checkLoadedSize}; 0 = no limit)
+   *
+   * @return how many bytes the files decompressed to
+   */
+  public static long readTgz(InputStream tgz, String desc, long maxLoadSize, TgzEntryHandler handler) throws IOException {
+    GzipCompressorInputStream gzipIn;
+    try {
+      gzipIn = new GzipCompressorInputStream(tgz);
+    } catch (Exception e) {
+      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);
+    }
+    Map<String, String> names = new HashMap<>();
+    long[] loadedSize = {0};
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
+      TarArchiveEntry entry;
+      while ((entry = tarIn.getNextEntry()) != null) {
+        String name = getEntryName(entry);
+        checkEntryPath(name);
+        if (entry.isDirectory()) {
+          handler.folder(name);
+        } else {
+          checkDuplicateName(names, name, desc);
+          handler.file(name, new FilterInputStream(tarIn) {
+            @Override
+            public int read() throws IOException {
+              int b = super.read();
+              if (b != -1) {
+                count(1);
+              }
+              return b;
+            }
+
+            @Override
+            public int read(byte[] buf, int off, int len) throws IOException {
+              int n = super.read(buf, off, len);
+              if (n > 0) {
+                count(n);
+              }
+              return n;
+            }
+
+            private void count(int n) throws IOException {
+              loadedSize[0] = loadedSize[0] + n;
+              checkLoadedSize(loadedSize[0], maxLoadSize, desc);
+            }
+
+            @Override
+            public void close() {
+              // the tar stream carries on to the next entry
+            }
+          });
+        }
+      }
+    }
+    return loadedSize[0];
   }
 
   /** Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey */

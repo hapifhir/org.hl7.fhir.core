@@ -1,18 +1,15 @@
 package org.hl7.fhir.validation.testexecutor;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.util.Arrays;
-import java.util.List;
-
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class TestExecutorTests {
 

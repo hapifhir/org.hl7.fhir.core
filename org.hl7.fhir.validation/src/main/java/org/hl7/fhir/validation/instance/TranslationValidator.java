@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.instance;
 
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupUnmappedComponent;
-import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupUnmappedMode;
-import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.model.core.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.ConceptMap;
+import org.hl7.fhir.model.core.ConceptMap.*;
 import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.terminology.ExpansionOptions;
@@ -24,15 +24,7 @@ import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -252,17 +244,9 @@ public class TranslationValidator extends BaseValidator {
     if (canonical.contains("|")) {
       String system = canonical.substring(0, canonical.indexOf("|"));
       String version = canonical.substring(canonical.indexOf("|") + 1);
-      return c.getSystem().equals(system) && c.hasVersion() && versionMatchesHere(version, c.getVersion());
+      return c.getSystem().equals(system) && c.hasVersion() && VersionUtilities.versionMatchesGeneral(version, c.getVersion());
     }
     return false;
-  }
-
-  private boolean versionMatchesHere(String criteria, String candidate) {
-    if (VersionUtilities.isSemVerWithWildcards(criteria)) {
-      return VersionUtilities.versionMatches(criteria, candidate);
-    }
-    // if is date...)
-    return candidate.startsWith(criteria);
   }
 
   private void checkCodingAgainstMap(Map<String, Finding> findings, Coding source, List<Coding> candidates, GroupWithMap map) {
@@ -381,22 +365,37 @@ public class TranslationValidator extends BaseValidator {
     return system.equals(unversioned(canonical));
   }
 
+  /**
+   * Not computeIfAbsent: the expansion can go to the terminology server, and that would hold the map's lock while it
+   * did. Two threads may expand the same value set at once; the first answer stored is the one kept
+   */
   private List<ValueSetExpansionContainsComponent> expand(String valueSet) {
-    return expansions.computeIfAbsent(valueSet, url -> {
-      List<ValueSetExpansionContainsComponent> list = new ArrayList<>();
-      try {
-        ExpansionOptions options = new ExpansionOptions(true, false, MAX_EXPANSION_SIZE, false, null);
-        ValueSet vs = context.findTxResource(ValueSet.class, url);
-        // if we don't have it, the terminology server might
-        ValueSetExpansionOutcome exp = vs != null ? context.expandVS(options, vs) : context.expandVS(options, url);
-        if (exp != null && exp.isOk() && exp.getValueset() != null) {
-          flatten(list, exp.getValueset().getExpansion().getContainsList());
-        }
-      } catch (Exception e) {
-        // if we can't expand it, we just don't have anything to say about it
+    List<ValueSetExpansionContainsComponent> list = expansions.get(valueSet);
+    if (list == null) {
+      list = doExpand(valueSet);
+      List<ValueSetExpansionContainsComponent> stored = expansions.putIfAbsent(valueSet, list);
+      if (stored != null) {
+        list = stored;
       }
-      return list;
-    });
+    }
+    return list;
+  }
+
+  private List<ValueSetExpansionContainsComponent> doExpand(String url) {
+    List<ValueSetExpansionContainsComponent> list = new ArrayList<>();
+    try {
+      ExpansionOptions options = new ExpansionOptions(true, false, MAX_EXPANSION_SIZE, false, null);
+      ValueSet vs = context.findTxResource(ValueSet.class, url);
+      // if we don't have it, the terminology server might
+      ValueSetExpansionOutcome exp = vs != null ? context.expandVS(options, vs) : context.expandVS(options, url);
+      if (exp != null && exp.isOk() && exp.getValueset() != null) {
+        flatten(list, exp.getValueset().getExpansion().getContainsList());
+      }
+    } catch (FHIRException e) {
+      // if we can't expand it (unknown, too big, the terminology server failed), we just don't have anything to say
+      // about it. Deliberately not catching Exception: anything else is a bug, and must be seen
+    }
+    return list;
   }
 
   private void flatten(List<ValueSetExpansionContainsComponent> list, List<ValueSetExpansionContainsComponent> contains) {

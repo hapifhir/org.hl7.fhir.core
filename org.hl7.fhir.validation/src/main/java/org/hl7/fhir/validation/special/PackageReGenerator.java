@@ -1,6 +1,9 @@
 package org.hl7.fhir.validation.special;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -695,13 +698,69 @@ public class PackageReGenerator {
 
   /**
    * The output folder is emptied before the output is written. That's only safe if it's empty already, or holds the
-   * output of an earlier run (which has a manifest): anything else was put there by something else
+   * output of an earlier run, and nothing else: a manifest (a Parameters resource), and files named as the resources
+   * are (Type-id.json or .xml), with no folders. Anything else was put there by something else
    */
   static void checkOutputFolderCanBeCleared(String output) throws IOException {
-    String[] existing = ManagedFileAccess.file(output).list();
-    if (existing != null && existing.length > 0 && !Utilities.existsInList("manifest.json", existing) && !Utilities.existsInList("manifest.xml", existing)) {
-      throw new IOException("The output folder "+output+" isn't empty, and doesn't contain the output of an earlier run (no manifest.json or manifest.xml), so it won't be cleared. Choose an empty or new folder");
+    File folder = ManagedFileAccess.file(output);
+    String[] existing = folder.list();
+    if (existing == null || existing.length == 0) {
+      return;
     }
+    String problem = null;
+    File manifest = null;
+    for (String name : existing) {
+      File f = ManagedFileAccess.file(Utilities.path(output, name));
+      if (Utilities.existsInList(name, "manifest.json", "manifest.xml")) {
+        manifest = f;
+      } else if (f.isDirectory()) {
+        problem = "it has a folder in it ("+name+")";
+      } else if (!looksLikeOutputFileName(name)) {
+        problem = "it has a file that isn't output ("+name+")";
+      }
+      if (problem != null) {
+        break;
+      }
+    }
+    if (problem == null && manifest == null) {
+      problem = "there's no manifest.json or manifest.xml";
+    }
+    if (problem == null && (manifest.isDirectory() || !isParameters(manifest))) {
+      problem = "the manifest isn't a Parameters resource";
+    }
+    if (problem != null) {
+      throw new IOException("The output folder "+output+" isn't empty, and doesn't look like the output of an earlier run ("+problem+"), so it won't be cleared. Choose an empty or new folder");
+    }
+  }
+
+  /** whether name is a name that {@link #resourceFileName} could give a file: [Type]-[something].json or .xml */
+  private static boolean looksLikeOutputFileName(String name) {
+    if (!name.endsWith(".json") && !name.endsWith(".xml")) {
+      return false;
+    }
+    int i = name.indexOf('-');
+    if (i < 1 || i == name.lastIndexOf('.') - 1 || !Character.isUpperCase(name.charAt(0))) {
+      return false;
+    }
+    for (int j = 0; j < i; j++) {
+      if (!Character.isLetter(name.charAt(j))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /** whether the manifest an earlier run wrote is a Parameters resource, going by the start of it */
+  private static boolean isParameters(File manifest) throws IOException {
+    byte[] start = new byte[1024];
+    int n;
+    try (InputStream in = ManagedFileAccess.inStream(manifest)) {
+      n = in.readNBytes(start, 0, start.length);
+    }
+    String s = new String(start, 0, n, StandardCharsets.UTF_8);
+    return manifest.getName().endsWith(".json")
+      ? s.replace(" ", "").contains("\"resourceType\":\"Parameters\"")
+      : s.contains("<Parameters");
   }
 
   private byte[] composeResource(CanonicalResource cr) throws IOException {

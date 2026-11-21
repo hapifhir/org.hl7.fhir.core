@@ -1,10 +1,6 @@
 package org.hl7.fhir.terminology.tests;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
+import com.google.common.base.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -15,13 +11,9 @@ import org.hl7.fhir.model.core.Constants;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
-
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
@@ -32,7 +24,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.base.Charsets;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @RunWith(Parameterized.class)
 

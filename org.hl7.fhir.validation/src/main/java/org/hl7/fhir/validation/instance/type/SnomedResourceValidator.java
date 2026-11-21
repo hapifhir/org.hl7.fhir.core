@@ -1,9 +1,5 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -16,6 +12,10 @@ import org.hl7.fhir.validation.instance.utils.SnomedRules.Concept;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Kind;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Side;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.ValueKind;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Checks SNOMED CT codes against what SNOMED CT says about them, wherever they are used in the

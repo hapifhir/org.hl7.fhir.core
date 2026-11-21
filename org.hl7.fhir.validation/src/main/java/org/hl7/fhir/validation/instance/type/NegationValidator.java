@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.List;
-
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -9,6 +7,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.SnomedRules;
+
+import java.util.List;
 
 /**
  * Negation codes: codes that say something is known to be absent (No known allergy, No current

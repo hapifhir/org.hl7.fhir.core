@@ -1,15 +1,15 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 /**
  * What a SNOMED CT concept says about where it's used - its semantic tag (from the fully

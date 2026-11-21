@@ -1,12 +1,12 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.hl7.fhir.utilities.http.HTTPResultException;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.LongSupplier;
 import java.util.function.Predicate;
-
-import org.hl7.fhir.utilities.http.HTTPResultException;
 
 /**
  * Answers from the package registries (catalog searches and version lists), kept for a while so that a

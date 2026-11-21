@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * The registry answers the IG validator keeps belong to the host: an engine shares one cache with the validators

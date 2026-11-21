@@ -1,9 +1,5 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -12,6 +8,10 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class PackageCacheTests {
 

@@ -1,11 +1,5 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.stream.Stream;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.ContactPoint;
 import org.hl7.fhir.model.core.Identifier;
@@ -20,6 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * R6 StructureMap transforms (StructureMapTools): the id, cp and qty transforms, map constants,

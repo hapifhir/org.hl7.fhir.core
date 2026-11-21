@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import java.util.List;
+import java.util.ArrayList;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class PackageEntryNamesTests {
 
@@ -30,5 +30,16 @@ class PackageEntryNamesTests {
     assertTrue(names.contains("package/ValueSet-ABC.json"));
     assertTrue(names.contains("./package//ValueSet-abc.json"));
     assertFalse(names.contains("package/ValueSet-abd.json"));
+  }
+
+  @Test
+  void namesAreTheNamesAsAddedInTheOrderAdded() {
+    PackageEntryNames names = new PackageEntryNames();
+    names.add("package/b.json");
+    names.add("package/a.json");
+    names.add("package/b.json");
+    assertEquals(List.of("package/b.json", "package/a.json"), new ArrayList<>(names.getNames()));
+    assertTrue(names.contains("./package/a.json"));
+    assertFalse(names.getNames().contains("./package/a.json"));
   }
 }

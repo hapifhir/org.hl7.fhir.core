@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities.i18n;
 
-import java.util.Locale;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
 
 public class LocaleTests {
 

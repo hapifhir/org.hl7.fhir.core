@@ -16,9 +16,7 @@ import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
@@ -52,8 +50,6 @@ import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
 @Slf4j
 public class NpmPackageVersionConverter {
-
-  private static final int BUFFER_SIZE = 1024;
 
   private final String source;
   private final String dest;
@@ -182,41 +178,19 @@ public class NpmPackageVersionConverter {
 
   @Nonnull
   public Map<String, byte[]> loadContentMap(InputStream inputStream) throws IOException {
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(inputStream);
-    } catch (Exception e) {
-      throw new IOException("Error reading " + source + ": " + e.getMessage(), e);
-    }
     Map<String, byte[]> content = new HashMap<>();
-    // refused as NpmPackage refuses them: a name with a .. segment, two files of the same name, or
-    // more than the default limit once decompressed
-    Map<String, String> names = new HashMap<>();
-    long loadedSize = 0;
-
-    try (TarArchiveInputStream tarIn = NpmPackage.getTarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-
-      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        String n = NpmPackage.getEntryName(entry);
-        NpmPackage.checkEntryPath(n);
-        if (!entry.isDirectory()) {
-          NpmPackage.checkDuplicateName(names, n, source);
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          ByteArrayOutputStream fos = new ByteArrayOutputStream();
-          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dest.write(data, 0, count);
-              loadedSize = loadedSize + count;
-              NpmPackage.checkLoadedSize(loadedSize, NpmPackage.getDefaultMaxLoadSize(), source);
-            }
-          }
-          fos.close();
-          content.put(n, fos.toByteArray());
-        }
+    // read as NpmPackage reads a package, so refused as it refuses one
+    NpmPackage.readTgz(inputStream, source, NpmPackage.getDefaultMaxLoadSize(), new NpmPackage.TgzEntryHandler() {
+      @Override
+      public void folder(String name) {
+        // nothing to keep
       }
-    }
+
+      @Override
+      public void file(String name, InputStream in) throws IOException {
+        content.put(name, in.readAllBytes());
+      }
+    });
     return content;
   }
 

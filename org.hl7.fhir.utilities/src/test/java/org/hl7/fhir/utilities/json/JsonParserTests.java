@@ -1,21 +1,13 @@
 package org.hl7.fhir.utilities.json;
 
-import java.io.IOException;
-
-import org.hl7.fhir.utilities.json.model.JsonArray;
-import org.hl7.fhir.utilities.json.model.JsonBoolean;
-import org.hl7.fhir.utilities.json.model.JsonElement;
-import org.hl7.fhir.utilities.json.model.JsonElementType;
-import org.hl7.fhir.utilities.json.model.JsonNull;
-import org.hl7.fhir.utilities.json.model.JsonNumber;
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.model.JsonProperty;
-import org.hl7.fhir.utilities.json.model.JsonString;
+import org.hl7.fhir.utilities.json.model.*;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.io.IOException;
 
 public class JsonParserTests {
 

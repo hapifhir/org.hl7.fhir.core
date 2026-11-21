@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.instance;
 
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.formats.JsonParser;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.core.formats.JsonParser;
-import org.hl7.fhir.model.core.StructureDefinition;
 
 public class SpecialExtensions {
 

@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -178,6 +179,26 @@ class PackageHackerRNTest {
     if ("id".equals(fhirType)) {
       // already right: nothing is written (#2470 - shared definitions must not be modified)
       assertSame(before, sd.getSnapshot().getElementList().get(0).getTypeFirstRep().getExtensionByUrl(ExtensionDefinitions.EXT_FHIR_TYPE));
+    }
+  }
+
+  /**
+   * DSTU2 and STU3 give Resource.id the type 'id' itself, with no fhir-type extension: that's right, and isn't
+   * touched (the fix is for R4 and later, which give it as System.String)
+   */
+  @Test
+  void leavesResourceIdTypedAsIdAlone() {
+    StructureDefinition sd = makeResourceWithId(null);
+    for (List<ElementDefinition> list : List.of(sd.getDifferential().getElementList(), sd.getSnapshot().getElementList())) {
+      list.get(0).getTypeFirstRep().setCode("id");
+    }
+
+    PackageHackerRN.fixLoadedResource(sd);
+
+    for (List<ElementDefinition> list : List.of(sd.getDifferential().getElementList(), sd.getSnapshot().getElementList())) {
+      TypeRefComponent t = list.get(0).getTypeFirstRep();
+      assertEquals("id", t.getCode());
+      assertFalse(t.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE));
     }
   }
 

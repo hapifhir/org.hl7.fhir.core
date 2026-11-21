@@ -1,9 +1,5 @@
 package org.hl7.fhir.utilities.xhtml;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +9,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 class XhtmlParserTests {
 

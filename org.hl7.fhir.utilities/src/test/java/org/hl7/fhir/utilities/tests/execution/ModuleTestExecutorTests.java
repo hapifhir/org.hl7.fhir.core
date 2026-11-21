@@ -1,13 +1,13 @@
 package org.hl7.fhir.utilities.tests.execution;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Arrays;
-
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
 import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 public class ModuleTestExecutorTests {

@@ -1,19 +1,12 @@
 package org.hl7.fhir.validation;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.Resource;
-
-import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.r5.Constants;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -21,6 +14,11 @@ import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResourceValidationTests {
 

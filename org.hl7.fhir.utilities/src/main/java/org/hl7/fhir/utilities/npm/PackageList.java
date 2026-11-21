@@ -1,14 +1,5 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -16,6 +7,13 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PackageList {
 

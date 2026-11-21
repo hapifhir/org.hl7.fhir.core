@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,9 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 /**
  * Loads an {@link NpmPackage} from a folder or a {@code .tgz} file, walks every

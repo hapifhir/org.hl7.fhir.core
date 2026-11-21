@@ -1,14 +1,14 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @SuppressWarnings("checkstyle:systemout")
 public class ResourceRenamer {

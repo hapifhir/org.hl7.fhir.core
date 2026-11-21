@@ -1,31 +1,13 @@
 package org.hl7.fhir.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.model.core.VersionResolutionRules;
-import org.hl7.fhir.services.context.IWorkerContext;
-
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.model.core.ImplementationGuide;
 import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +17,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class IgLoaderTests {

@@ -632,6 +632,21 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     return host == null ? null : usage == null ? host : host + "|" + usage;
   }
 
+  /** Whether the registry has said, in this run, that it knows of no code system on url's host */
+  private boolean isUnknownHost(String url) {
+    String hostKey = unknownHostKey(url);
+    return hostKey != null && unknownHosts.contains(hostKey);
+  }
+
+  /**
+   * The search for a canonical (url|version) on a server: by url, and by version if there is one. The url is
+   * what's before the first '|' (a url can't have a '|' in it; a version could)
+   */
+  static String searchCriteria(String canonical) {
+    CanonicalPair cp = CanonicalPair.of(canonical);
+    return "?_format=json&url="+Utilities.URLEncode(cp.getUrl())+(cp.hasVersion() ? "&version="+Utilities.URLEncode(cp.getVersion()) : "");
+  }
+
   /**
    * When a resolution of url found nothing, remember it if the registry said that it knows
    * of no code system on url's host at all
@@ -664,8 +679,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
     }
-    String hostKey = unknownHostKey(url);
-    if (hostKey != null && unknownHosts.contains(hostKey)) {
+    if (isUnknownHost(url)) {
       // the registry has said it knows of no code system on this host
       ServerOptionList ret = new ServerOptionList(url);
       ret.language = language;
@@ -1106,15 +1120,13 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
       final TerminologyClientContext tcc = client;
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
       Bundle bnd = tcc.send(again -> tcc.getClient().search("ValueSet", criteria));
       // only a value set with the url asked for is an answer: a server may return others too
       // (one that left matches the url found ...1267.39 for ...1267.3), and the url decides the
       // order they are sorted in below, so the wrong one can win
-      String vsUrl = canonical.contains("|") ? canonical.substring(0, canonical.lastIndexOf("|")) : canonical;
+      String vsUrl = CanonicalPair.of(canonical).getUrl();
       List<ValueSet> vslist = new ArrayList<>();
       for (BundleEntryComponent be : bnd.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof ValueSet && vsUrl.equals(((ValueSet) be.getResource()).getUrl())) {
@@ -1168,8 +1180,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       return null;
     }
-    String hostKey = unknownHostKey(canonical);
-    if (hostKey != null && unknownHosts.contains(hostKey)) {
+    if (isUnknownHost(canonical)) {
       return null; // the registry has said it knows of no code system on this host
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
@@ -1211,9 +1222,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       final TerminologyClientContext tcc = client;
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
       Bundle bnd = tcc.send(again -> tcc.getClient().search("CodeSystem", criteria));
       String rid = null;

@@ -1,13 +1,5 @@
 package org.hl7.fhir.validation.instance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.ConceptMap;
@@ -20,6 +12,11 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The index of ConceptMap groups means looking at every ConceptMap in the context: the context keeps it, so every

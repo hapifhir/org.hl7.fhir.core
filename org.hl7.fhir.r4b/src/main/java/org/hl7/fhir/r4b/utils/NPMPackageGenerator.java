@@ -111,7 +111,6 @@ public class NPMPackageGenerator {
   }
 
   private String destFile;
-  private Set<String> created = new HashSet<String>();
   // what the duplicate check goes by: the same file to some systems is an error (see PackageEntryNames)
   private PackageEntryNames entryNames = new PackageEntryNames();
   private TarArchiveOutputStream tar;
@@ -544,7 +543,6 @@ public class NPMPackageGenerator {
     if (!entryNames.add(path)) {
       log.warn("Duplicate package file " + path);
     } else {
-      created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
       tar.putArchiveEntry(entry);
@@ -605,7 +603,6 @@ public class NPMPackageGenerator {
           if (!entryNames.add(path))
             log.warn("Duplicate package file " + path);
           else {
-            created.add(path);
             TarArchiveEntry entry = new TarArchiveEntry(path);
             entry.setSize(content.length);
             tar.putArchiveEntry(entry);

@@ -1013,9 +1013,55 @@ public class BaseWorkerContextTests {
     }
   }
 
+  /**
+   * The registry answers, and names no server for the value set: that's an answer (RESOURCE_UNSUPPORTED), not a missing
+   * terminology service (NOSERVICE), so it's kept for later runs like other answers
+   */
+  @Test
+  void testExpandUrlRegistryNoServerIsReloaded(@TempDir java.nio.file.Path folder) throws IOException {
+    com.sun.net.httpserver.HttpServer registryServer = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("localhost", 0), 0);
+    registryServer.createContext("/", exchange -> {
+      byte[] body = "{\"formatVersion\":\"1\",\"authoritative\":[],\"candidates\":[]}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+      exchange.getResponseHeaders().add("Content-Type", "application/json");
+      exchange.sendResponseHeaders(200, body.length);
+      exchange.getResponseBody().write(body);
+      exchange.close();
+    });
+    registryServer.start();
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(false);
+    try {
+      String registry = "http://localhost:" + registryServer.getAddress().getPort();
+      // before the real cache, which can't save the mock's capabilities
+      context.terminologyClientManager.setMasterClient(terminologyClient, registry);
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+      context.initTxCache(cache);
+      context.expansionParameters = new AtomicReference<>(new Parameters());
+      ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+      ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, res.getErrorClass(), res.getError());
+      cache.save();
+      TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+      ValueSetExpansionOutcome reloaded = next.getExpansion(next.generateExpandToken(DUMMY_URL, opt));
+      assertNotNull(reloaded);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, reloaded.getErrorClass());
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(true);
+      registryServer.stop(0);
+    }
+  }
+
+  @Test
+  void testErrorClassReadsTheOldName() {
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("VALUESET_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("RESOURCE_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.NOSERVICE, TerminologyServiceErrorClass.fromName("NOSERVICE"));
+    assertThrows(IllegalArgumentException.class, () -> TerminologyServiceErrorClass.fromName("NOT_A_CLASS"));
+  }
+
   @Test
   void testExpandUrlNoServerIsForThisRun(@TempDir java.nio.file.Path folder) throws IOException {
-    // no server at all, with no failed registry call: NOSERVICE, so it is asked again next run
+    // no terminology server at all: NOSERVICE, so it is asked again next run
     BaseWorkerContext ctx = getBaseWorkerContext();
     TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
     ctx.initTxCache(cache);

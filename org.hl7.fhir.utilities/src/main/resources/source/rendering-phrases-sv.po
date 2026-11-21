@@ -654,6 +654,11 @@ msgstr "Sammanfattning av systemövergripande sökparametrar"
 msgid "support"
 msgstr "stöd"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"

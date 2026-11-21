@@ -1,26 +1,19 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.core.VersionResolutionRules;
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
-import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
@@ -34,6 +27,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
 
 public class CodeSystemValidator extends BaseValidator {
 

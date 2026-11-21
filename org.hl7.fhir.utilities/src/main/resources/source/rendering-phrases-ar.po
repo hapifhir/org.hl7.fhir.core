@@ -754,6 +754,11 @@ msgstr ""
 msgid "support"
 msgstr "الدعم"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 #, fuzzy

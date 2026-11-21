@@ -1,12 +1,5 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.*;
-
-import java.util.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
@@ -23,6 +16,14 @@ import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

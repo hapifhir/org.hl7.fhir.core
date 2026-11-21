@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.service.model;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
 
 public class ValidationContextTests {
     @Test

@@ -1,16 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.model.core.Quantity;
-import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -19,6 +10,11 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.LoincObservationRules;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ProfileFixedCodes;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Checks a profile on Observation that fixes a LOINC code - on Observation.code, or on the code

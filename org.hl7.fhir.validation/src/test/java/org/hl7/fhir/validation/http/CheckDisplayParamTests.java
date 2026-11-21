@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.http;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * checkDisplay on /validateResource never had any effect. It's deprecated: accepted and ignored, so that existing

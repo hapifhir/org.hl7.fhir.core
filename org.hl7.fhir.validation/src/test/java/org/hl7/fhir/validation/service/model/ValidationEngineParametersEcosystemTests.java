@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.service.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Which ecosystem (tx-reg) a validation uses, when it's set up from ValidationEngineParameters - as the

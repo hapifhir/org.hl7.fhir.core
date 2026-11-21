@@ -341,9 +341,17 @@ public class PackageHackerRN {
    * <p>
    * So force it here, at load, for every element based on Resource.id, regardless of what the
    * definition says. Remove this once the spec build emits it consistently
+   * <p>
+   * Only where the type is FHIRPath's System.String, which is how R4 and later publish it (and where the
+   * fhir-type extension says what the FHIR type is). DSTU2 and STU3 give the type as 'id' itself, and are left
+   * alone: that is the R4-and-later check the snapshot generator had, decided by the definition rather than by
+   * the version of the package it came from
    */
+  private static final String FHIRPATH_STRING = "http://hl7.org/fhirpath/System.String";
+
   private static void fixResourceIdType(ElementDefinition ed) {
-    if (ed.hasBase() && "Resource.id".equals(ed.getBase().getPath()) && ed.getTypeList().size() == 1) {
+    if (ed.hasBase() && "Resource.id".equals(ed.getBase().getPath()) && ed.getTypeList().size() == 1
+        && FHIRPATH_STRING.equals(ed.getTypeFirstRep().getCode())) {
       ElementDefinition.TypeRefComponent t = ed.getTypeFirstRep();
       if (!"id".equals(t.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE))) {
         t.removeExtension(ExtensionDefinitions.EXT_FHIR_TYPE);

@@ -1,20 +1,15 @@
 package org.hl7.fhir.validation.special;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Which of a test's responses applies, given what the server did - see TxTestResponses.

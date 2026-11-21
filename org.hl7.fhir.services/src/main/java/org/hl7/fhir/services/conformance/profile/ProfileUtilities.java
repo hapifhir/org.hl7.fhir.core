@@ -792,8 +792,11 @@ public class ProfileUtilities {
         // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
 
-        for (ElementDefinition e : derived.getDifferential().getElementList()) 
+        // left from an earlier generation of this snapshot, these would stand in for errors that have to be found again
+        for (ElementDefinition e : derived.getDifferential().getElementList()) {
           e.clearUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
+          e.clearUserData(UserDataNames.SNAPSHOT_DIFF_ERROR_REPORTED);
+        }
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
@@ -1123,9 +1126,9 @@ public class ProfileUtilities {
     Map<String, ElementDefinitionCounter> slicesByName = new HashMap<>();
     int i = 0;
     for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
-      if (ed.hasSlicing()) {
+      if (ed.hasSlicing() && !ed.hasSliceName()) {
         slices.put(ed.getPath(), new ElementDefinitionCounter(ed, i));            
-      } else {
+      } else if (!ed.hasSlicing()) {
         Set<String> toRemove = new HashSet<>();
         for (String s : slices.keySet()) {
           if (Utilities.charCount(s, '.') >= Utilities.charCount(ed.getPath(), '.') && !s.equals(ed.getPath())) {
@@ -1182,17 +1185,28 @@ public class ProfileUtilities {
   /**
    * The reslices of a slice are checked against that slice, the same way the slices are checked against the slicer.
    * A resliced slice is never one the snapshot generator added, so a minimum that its reslices add up to more than is
-   * reported (SD_SLICE_MIN_EXCEEDS_SLICER), not fixed. For the slicer, a resliced slice counts for whichever is more:
-   * its own minimum, or what its reslices add up to (#846)
+   * reported (SD_SLICE_MIN_EXCEEDS_SLICER), not fixed. For what it is a slice of, a resliced slice counts for whichever
+   * is more: its own minimum, or what its reslices add up to (#846). What it is a slice of is the slicer, or, for a reslice
+   * that is resliced again (a/b, with a/b/c), the slice it reslices (a): so the deepest are checked first
    */
   private void checkResliceCounts(String path, ElementDefinitionCounter slicer, Map<String, ElementDefinitionCounter> reslices) {
-    for (String key : new ArrayList<>(reslices.keySet())) {
+    List<String> keys = new ArrayList<>();
+    for (String key : reslices.keySet()) {
       if (key.startsWith(path+":")) {
-        ElementDefinitionCounter resliced = reslices.remove(key);
-        checkSliceCounts(resliced);
-        if (resliced.countMin > resliced.getFocus().getMin()) {
-          slicer.countMin = slicer.countMin + resliced.countMin - resliced.getFocus().getMin();
+        keys.add(key);
+      }
+    }
+    keys.sort((k1, k2) -> Integer.compare(Utilities.charCount(k2, '/'), Utilities.charCount(k1, '/')));
+    for (String key : keys) {
+      ElementDefinitionCounter resliced = reslices.remove(key);
+      checkSliceCounts(resliced);
+      if (resliced.countMin > resliced.getFocus().getMin()) {
+        String sliceName = key.substring(path.length()+1);
+        ElementDefinitionCounter parent = sliceName.contains("/") ? reslices.get(path+":"+sliceName.substring(0, sliceName.lastIndexOf('/'))) : null;
+        if (parent == null) {
+          parent = slicer;
         }
+        parent.countMin = parent.countMin + resliced.countMin - resliced.getFocus().getMin();
       }
     }
   }

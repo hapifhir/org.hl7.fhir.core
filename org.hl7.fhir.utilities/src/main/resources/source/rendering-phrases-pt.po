@@ -743,6 +743,11 @@ msgstr "Resumo das operações a nível do parâmetros de pesquisa"
 msgid "support"
 msgstr "apoio"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 #, fuzzy

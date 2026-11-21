@@ -1,16 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
-
-import org.hl7.fhir.model.core.CodeableConcept;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -22,6 +13,11 @@ import org.hl7.fhir.validation.instance.utils.SnomedRules.Concept;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Kind;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Side;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.ValueKind;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Checks the SNOMED CT codes a profile fixes, as SnomedResourceValidator checks instances: the

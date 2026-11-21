@@ -1,8 +1,8 @@
 package org.hl7.fhir.utilities.xml;
 
 import net.sf.saxon.trans.XPathException;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.XsltUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -18,7 +18,6 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;

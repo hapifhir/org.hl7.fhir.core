@@ -2,11 +2,11 @@
 
 How FHIR NPM packages are signed and checked across the IG Publisher (igpub), org.hl7.fhir.core and FHIRsmith, plus the package-reading hardening done alongside. Status: built and uncommitted at the time of writing (core, igpub, FHIRsmith), except where noted as deferred.
 
-Note that this whole system of signing should be regard ed as under development; the community is still developing
-tools, policies, and practices to make use of signatures, and given the typicaly workflow involves running 
+Note that this whole system of signing should be regarded as under development; the community is still developing
+tools, policies, and practices to make use of signatures, and given the typically workflow involves running 
 on a local machine, it's not clear what signing even achieves. 
 
-The system mayb e changed and all signatures regenerated at any time in the future.
+The system may be changed and all signatures regenerated at any time in the future.
 
 ## Two kinds of signature
 

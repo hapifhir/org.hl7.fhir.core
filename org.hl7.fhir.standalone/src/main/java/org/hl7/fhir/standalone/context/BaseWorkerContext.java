@@ -1127,8 +1127,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     } catch (Exception e) {
       boolean registryFailed = tc == null && terminologyClientManager.lookupFailed(url);
-      // no server to ask: the registry couldn't be reached (SERVER_ERROR), or no server is known to have it (NOSERVICE)
-      TerminologyServiceErrorClass errorClass = registryFailed ? TerminologyServiceErrorClass.SERVER_ERROR : tc == null ? TerminologyServiceErrorClass.NOSERVICE : classifyExpansionFailure(e);
+      // no server to ask: there's no terminology service (NOSERVICE), the registry couldn't be reached (SERVER_ERROR), or
+      // the registry answered that no server has the value set (RESOURCE_UNSUPPORTED) - an answer, kept as one
+      TerminologyServiceErrorClass errorClass = registryFailed ? TerminologyServiceErrorClass.SERVER_ERROR
+        : tc == null ? (terminologyClientManager.hasClient() ? TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED : TerminologyServiceErrorClass.NOSERVICE)
+        : classifyExpansionFailure(e);
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), errorClass, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
@@ -2797,7 +2800,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             } else if (it == IssueType.NOTFOUND) {
               err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
             } else if (it == IssueType.NOTSUPPORTED) {
-              err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
+              err = TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED;
             } else {
               err = null;
             }

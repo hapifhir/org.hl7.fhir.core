@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.hl7.fhir.utilities.VersionUtilities;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
  * Hack work around for past publication of wrong FHIRPath expressions (and a couple of regexes).

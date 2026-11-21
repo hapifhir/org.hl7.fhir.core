@@ -92,11 +92,11 @@ public class NPMPackageGenerator {
   }
 
   private String destFile;
-  private Set<String> created = new HashSet<String>();
   // what the duplicate check goes by: the same file to some systems is an error (see PackageEntryNames)
   private PackageEntryNames entryNames = new PackageEntryNames();
+  /** the names of the files in the package */
   public Set<String> getCreated() {
-    return created;
+    return entryNames.getNames();
   }
 
   // files whose path was too long for a tar entry, and so are in the package under another name:
@@ -416,7 +416,7 @@ public class NPMPackageGenerator {
       path = cat.getDirectory()+name;
     }
       
-    return created.contains(path) || entryNames.contains(path);
+    return entryNames.contains(path);
   }
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
@@ -431,7 +431,6 @@ public class NPMPackageGenerator {
     if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
-      created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
       tar.putArchiveEntry(entry);
@@ -458,7 +457,6 @@ public class NPMPackageGenerator {
     if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
-      created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
       tar.putArchiveEntry(entry);
@@ -584,7 +582,6 @@ public class NPMPackageGenerator {
                             try (java.io.InputStream in = ManagedFileAccess.inStream(f.toFile())) {
                                 content = in.readAllBytes();
                             }
-                            created.add(path);
                             TarArchiveEntry entry = new TarArchiveEntry(path);
                             entry.setSize(content.length);
                             tar.putArchiveEntry(entry);

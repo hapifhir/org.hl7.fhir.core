@@ -2,13 +2,12 @@ package org.hl7.fhir.utilities.npm;
 
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import okhttp3.mockwebserver.MockWebServer;
 import org.mockito.Mockito;
 
 import java.io.IOException;

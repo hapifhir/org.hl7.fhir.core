@@ -1,9 +1,6 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.*;
-
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
@@ -12,12 +9,13 @@ import org.hl7.fhir.model.core.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.terminology.CodingValidationRequest;
+import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.services.terminology.CodingValidationRequest;
-import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -28,6 +26,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
 
 @Slf4j
 public class ConceptMapValidator extends BaseValidator {
@@ -509,6 +509,9 @@ public class ConceptMapValidator extends BaseValidator {
     boolean ok = true;
     Element codeE = property.getNamedChild("code", false);
     Element valueE = property.getNamedChild("value", false);
+    if (codeE == null || valueE == null) {
+      return true; // both are required: a missing one is reported as such
+    }
     String code = codeE.getValue();
     if (rule(errors, "2023-03-05", IssueType.REQUIRED, codeE.line(), codeE.col(), stack.push(codeE, -1, null, null).getLiteralPath(), props.containsKey(code), I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID, code, props.keySet())) {
       PropertyDefinition defn = props.get(code);
@@ -535,8 +538,14 @@ public class ConceptMapValidator extends BaseValidator {
     boolean ok = true;
     Element codeE = attribute.getNamedChild("attribute", false);
     Element valueE = attribute.getNamedChild("value", false);
+    if (codeE == null) {
+      return true; // required: a missing one is reported as such
+    }
     String code = codeE.getValue();
     if (rule(errors, "2023-03-05", IssueType.REQUIRED, codeE.line(), codeE.col(), stack.push(codeE, -1, null, null).getLiteralPath(), attribs.containsKey(code), I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID, code, attribs.keySet())) {
+      if (valueE == null) {
+        return ok; // a valueSet in place of a value (cmd-6): there's no value to have the attribute's type
+      }
       NodeStack stackV = stack.push(valueE, -1, null, null);
       ok = rule(errors, "2023-03-05", IssueType.REQUIRED, codeE.line(), codeE.col(), stackV.getLiteralPath(), valueE.fhirType().equals(attribs.get(code)), I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_MISMATCH, valueE.fhirType(), attribs.get(code)) && ok;        
     } else {

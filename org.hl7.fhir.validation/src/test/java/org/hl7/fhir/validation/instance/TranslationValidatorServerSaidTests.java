@@ -1,12 +1,5 @@
 package org.hl7.fhir.validation.instance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
@@ -23,6 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * What the terminology server has already said about a CodeableConcept's codings isn't said again. The server's

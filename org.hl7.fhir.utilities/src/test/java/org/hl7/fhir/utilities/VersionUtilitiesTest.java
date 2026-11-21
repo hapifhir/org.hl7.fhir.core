@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1258,5 +1258,23 @@ public class VersionUtilitiesTest {
         assertEquals(Integer.signum(ab), -Integer.signum(ba));
       }
     }
+  }
+
+  /** a date criteria matches a whole part at a time ('-', 'T' and ':' separate the parts), not as a string prefix */
+  @org.junit.jupiter.params.ParameterizedTest
+  @org.junit.jupiter.params.provider.CsvSource({
+    "2026,          2026-12-01,          true",
+    "2026-12,       2026-12-01,          true",
+    "2026-12-01,    2026-12-01T10:00:00, true",
+    "2026-12-01T10, 2026-12-01T10:30,    true",
+    "2026-1,        2026-12,             false",
+    "2026-1,        2026-12-01,          false",
+    "2026-12-0,     2026-12-01,          false",
+    "2026-12-01T1,  2026-12-01T10:30,    false",
+    "2026-12-02,    2026-12-01,          false",
+    "2026-12-01,    2026-12,             false",
+  })
+  void versionMatchesGeneralMatchesDatesAPartAtATime(String criteria, String candidate, boolean matches) {
+    assertEquals(matches, VersionUtilities.versionMatchesGeneral(criteria, candidate));
   }
 }

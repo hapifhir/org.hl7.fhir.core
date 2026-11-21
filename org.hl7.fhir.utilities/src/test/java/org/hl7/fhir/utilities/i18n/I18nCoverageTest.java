@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities.i18n;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,10 +11,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import javax.annotation.Nonnull;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class I18nCoverageTest {
 

@@ -1,47 +1,33 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.utilities.formats.FhirFormat;
-import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.fhirpath.ExpressionNode;
-import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.services.fhirpath.TypeDetails;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.utilities.DefinitionNavigator;
-import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -54,6 +40,11 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * todo:

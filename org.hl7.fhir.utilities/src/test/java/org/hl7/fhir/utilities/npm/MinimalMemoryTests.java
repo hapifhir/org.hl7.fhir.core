@@ -1,13 +1,13 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class MinimalMemoryTests {
 
