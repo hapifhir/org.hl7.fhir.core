@@ -70,6 +70,22 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icd10-da",
+    "version" : [{
+      "code" : "2026-06-16",
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icpc2E-DK",
+    "version" : [{
+      "code" : "4.4.20260629",
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
     "uri" : "http://hl7.org/fhir/account-aggregate",
     "version" : [{
       "code" : "5.0.0",
@@ -3151,6 +3167,14 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.org/fhir/sid/icpc-2",
+    "version" : [{
+      "code" : "7.0",
+      "isDefault" : true
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://hl7.org/fhir/sid/mvx",
     "version" : [{
       "code" : "20201030",
@@ -3161,7 +3185,7 @@
   {
     "uri" : "http://hl7.org/fhir/sid/ndc",
     "version" : [{
-      "code" : "2021-11-01",
+      "code" : "20261117",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -3496,6 +3520,14 @@
       "isDefault" : true
     }],
     "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/test/CodeSystem/glp-base-da",
+    "version" : [{
+      "code" : "1.0.0",
+      "isDefault" : true
+    }],
+    "content" : "supplement"
   },
   {
     "uri" : "http://hl7.org/fhir/testscript-scope-conformance-codes",
@@ -3843,7 +3875,7 @@
   {
     "uri" : "http://nucc.org/provider-taxonomy",
     "version" : [{
-      "code" : "22.1",
+      "code" : "26.1",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -3869,16 +3901,16 @@
       "code" : "http://snomed.info/sct/11000146104/version/20260930"
     },
     {
-      "code" : "http://snomed.info/sct/83821000000107/version/20230412"
-    },
-    {
-      "code" : "http://snomed.info/sct/731000124108/version/20230301"
-    },
-    {
-      "code" : "http://snomed.info/sct/731000124108/version/20250901"
+      "code" : "http://snomed.info/sct/83821000000107/version/20261021"
     },
     {
       "code" : "http://snomed.info/sct/731000124108/version/20240301"
+    },
+    {
+      "code" : "http://snomed.info/sct/731000124108/version/20260901"
+    },
+    {
+      "code" : "http://snomed.info/sct/731000124108/version/20250901"
     },
     {
       "code" : "http://snomed.info/sct/11010000107/version/20261021"

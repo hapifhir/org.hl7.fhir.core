@@ -179,7 +179,6 @@ IG that defines it first, with `/loadIG`.
 | `resourceIdRule` | `optional`, `required`, `prohibited` | Applies to the outermost resource only. |
 | `questionnaire` | `none`, `check`, `required` | QuestionnaireResponse handling. |
 | `htmlInMarkdown` | `ignore`, `warning`, `error` | Level for HTML found in markdown. |
-| `r5BundleRelativeReferencePolicy` | `default`, `never`, `always` | R5 relative reference resolution rule. |
 | `assumeValidRestReferences` | boolean | Infer types from RESTful-looking references. |
 | `hintAboutNonMustSupport` | boolean | Hint on elements not marked mustSupport. |
 | `wantInvariantsInMessages` | boolean | Include invariant FHIRPath in messages. |
@@ -470,6 +469,3 @@ java -jar validator_cli.jar client -port 8080 -stop
   can affect each other through `/loadIG`.
 * No authentication or TLS in any mode.
 * `htmlOutput` and `outputStyle` are accepted on `/validateResource` but do nothing.
-* An unrecognised `r5BundleRelativeReferencePolicy` value raises an unhandled exception instead
-  of returning a `400` OperationOutcome, because the underlying `fromCode` throws
-  `FHIRException` rather than `IllegalArgumentException`.

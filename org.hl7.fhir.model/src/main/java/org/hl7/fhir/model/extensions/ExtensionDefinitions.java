@@ -858,6 +858,7 @@ public class ExtensionDefinitions {
   public static final String EXT_OBLIGATION_SOURCE_SHORT = "source";
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
   public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
+  public static final String EXT_MAPPING_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/mapping-reference"; // a web page about the target of StructureDefinition.mapping
   public static final String EXT_ADDITIONAL_BASE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-additionalBase";
   public static final String EXT_OBLIGATION_PROFILE_FLAG_NEW = "http://hl7.org/fhir/StructureDefinition/obligation-profile";
 

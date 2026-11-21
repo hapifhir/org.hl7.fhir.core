@@ -37,6 +37,8 @@ public class SnomedRules {
   private static final Set<String> KNOWN_ABSENT = Set.of("410516002", "410593006", "410594000", "1381510001");
   private static final String PLANNED = "397943006";
   private static final String PRODUCT = "373873005"; // Pharmaceutical / biologic product
+  // what a MedicationStatement may say instead of naming a medication: No known medications
+  private static final Set<String> NO_MEDICATIONS = Set.of("787481004");
 
   private static final Set<String> LOOKUP = Set.of("designation", "inactive", FINDING_CONTEXT, FINDING_SITE, PROCEDURE_SITE, PROCEDURE_SITE_DIRECT, PROCEDURE_SITE_INDIRECT, LATERALITY, PROCEDURE_CONTEXT);
 
@@ -169,7 +171,9 @@ public class SnomedRules {
 
   /** where a code is used, for judging the kind of concept it is */
   public enum Kind {
-    CONDITION, PROCEDURE, OBSERVATION, BODY_SITE, SPECIMEN, ALLERGY, MEDICATION
+    CONDITION, PROCEDURE, OBSERVATION, BODY_SITE, SPECIMEN, ALLERGY, MEDICATION,
+    /** a MedicationStatement's medication: it may also say there are no known medications */
+    MEDICATION_STATEMENT
   }
 
   public enum Level {
@@ -245,6 +249,17 @@ public class SnomedRules {
         return null;
       }
       return "substance".equals(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_MEDICATION_SUBSTANCE, desc) : new Judgement(Level.ERROR, I18nConstants.SCT_MEDICATION_WRONG, desc, tag);
+    case MEDICATION_STATEMENT:
+      // a statement may say the patient takes no medications - No known medications is fully
+      // legitimate; anything else that isn't a product is only a warning here
+      if (NO_MEDICATIONS.contains(concept.getCode())) {
+        return null;
+      }
+      Boolean stated = concept.isProduct();
+      if (stated == null || stated) {
+        return null;
+      }
+      return "substance".equals(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_MEDICATION_SUBSTANCE, desc) : new Judgement(Level.WARNING, I18nConstants.SCT_MEDICATION_STATEMENT_WRONG, desc, tag);
     default:
       return null;
     }

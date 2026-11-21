@@ -77,8 +77,10 @@ public class SnomedResourceValidator extends BaseValidator {
     case "MedicationKnowledge":
       ok = checkKind(errors, element, "code", stack, Kind.MEDICATION) && ok;
       break;
-    case "MedicationRequest":
     case "MedicationStatement":
+      ok = checkKind(errors, element, "medication", stack, Kind.MEDICATION_STATEMENT) && ok;
+      break;
+    case "MedicationRequest":
     case "MedicationAdministration":
     case "MedicationDispense":
       ok = checkKind(errors, element, "medication", stack, Kind.MEDICATION) && ok;

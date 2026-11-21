@@ -16,10 +16,11 @@ msgstr "Aktör: {0}"
 msgid "Capabilities:"
 msgstr "Förmågor:"
 
-# ACTOR_DEF_DER
-#: ACTOR_DEF_DER
-msgid "Derived from:"
-msgstr "Härledd från:"
+# ACTOR_DEF_CAT
+#: ACTOR_DEF_CAT
+msgctxt "ACTOR_DEF_CAT"
+msgid "Category:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
@@ -117,6 +118,16 @@ msgstr "Detta är den värdemängd som rekommenderas (dokumentationen bör förk
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "Obligatorisk"
+
+# ADD_BIND_TX_ALL
+#: ADD_BIND_TX_ALL
+msgid "Additional / all"
+msgstr ""
+
+# ADD_BIND_TX_ANY
+#: ADD_BIND_TX_ANY
+msgid "Additional / any"
+msgstr ""
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -1618,6 +1629,11 @@ msgstr "Omedelbar"
 msgid "Interval: {0}"
 msgstr "Intervall: {0}"
 
+# DATA_REND_ISO_COUNTRY
+#: DATA_REND_ISO_COUNTRY
+msgid "ISO Country Codes"
+msgstr ""
+
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 msgid "Limit"
@@ -1802,6 +1818,11 @@ msgstr "VARNING: Icke-renderbar modifierande extension!"
 #: DATA_REND_UNTIL
 msgid "Until {0}"
 msgstr "Till {0}"
+
+# DATA_REND_UN_REGIONS
+#: DATA_REND_UN_REGIONS
+msgid "UN Regions"
+msgstr ""
 
 # DATA_REND_UP
 #: DATA_REND_UP
@@ -2375,6 +2396,7 @@ msgstr "NCI Thesaurus"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
+msgctxt "GENERAL_NOTE"
 msgid "Note"
 msgstr "Notera"
 
@@ -2470,6 +2492,11 @@ msgstr "Resurs"
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
 msgstr "Säkerhetsetikett"
+
+# GENERAL_SHOW
+#: GENERAL_SHOW
+msgid "Show:"
+msgstr ""
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
@@ -4273,6 +4300,13 @@ msgstr "Frågeformulär"
 msgid "Questionnaire:"
 msgstr "Frågeformulär:"
 
+# QUEST_QUESTION_CODE
+#: QUEST_QUESTION_CODE
+msgid "Question Code:"
+msgid_plural "Question Codes:"
+msgstr[0] ""
+msgstr[1] ""
+
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
@@ -4829,10 +4863,10 @@ msgstr "Denna extension är föråldrad och bör inte längre användas"
 msgid "This extension may be used on the following element(s)"
 msgstr "Denna extension kan användas på följande element"
 
-# SDR_EXT_ELEM_ID
-#: SDR_EXT_ELEM_ID
-msgid "Element ID"
-msgstr "Element-ID"
+# SDR_EXT_ELEMENTS
+#: SDR_EXT_ELEMENTS
+msgid "elements"
+msgstr ""
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
@@ -4850,6 +4884,11 @@ msgstr "Denna extension är en modifierande extension."
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
 msgstr "Sökväg"
+
+# SDR_EXT_ROOT_ELEMENTS
+#: SDR_EXT_ROOT_ELEMENTS
+msgid "root elements"
+msgstr ""
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
@@ -4879,6 +4918,7 @@ msgstr "// från element: <a href=\"{0}\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
+msgctxt "SDR_GUIDANCE_HERE"
 msgid "documentation"
 msgstr "!!här"
 
@@ -5313,6 +5353,11 @@ msgstr "Fast: {0} {1}"
 msgid "Mandatory: {0} {1}"
 msgstr "Obligatorisk: {0} {1}"
 
+# SD_SUMMARY_MAPPINGS
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgstr ""
+
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -5486,6 +5531,11 @@ msgstr ""
 msgid "This element has or is affected by constraints ("
 msgstr "Detta element har eller påverkas av begränsningar ("
 
+# STRUC_DEF_AGGREGATION
+#: STRUC_DEF_AGGREGATION
+msgid "Aggregation"
+msgstr ""
+
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 msgid "Allowed Units"
@@ -5495,6 +5545,11 @@ msgstr "Tillåtna enheter"
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
 msgstr "Alla aktörer"
+
+# STRUC_DEF_ALL_MAP_KEY
+#: STRUC_DEF_ALL_MAP_KEY
+msgid "All Mappings are Empty"
+msgstr ""
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
@@ -5521,11 +5576,6 @@ msgstr "och"
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
 msgstr "Begrepp måste komma från denna värdemängd om lämpligt begrepp finns i denna värdemängd"
-
-# STRUC_DEF_AS_SHOWN
-#: STRUC_DEF_AS_SHOWN
-msgid "As shown"
-msgstr "Som visat"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
@@ -5632,11 +5682,6 @@ msgstr "Kommentarer:"
 msgid "Complex"
 msgstr "Komplex"
 
-# STRUC_DEF_COMPLEXBRACK
-#: STRUC_DEF_COMPLEXBRACK
-msgid "(Complex)"
-msgstr "(Komplex)"
-
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
@@ -5677,6 +5722,11 @@ msgstr "Kontroll"
 #: STRUC_DEF_CONT_PROFILE
 msgctxt "STRUC_DEF_CONT_PROFILE"
 msgid "profiled by"
+msgstr ""
+
+# STRUC_DEF_CONT_PROFILE_INVALID
+#: STRUC_DEF_CONT_PROFILE_INVALID
+msgid "invalid reference {0}"
 msgstr ""
 
 # STRUC_DEF_CONT_RULE
@@ -5881,11 +5931,6 @@ msgstr "Formell invariantidentifierare"
 msgid "Fixed Value"
 msgstr "Fast värde"
 
-# STRUC_DEF_FIXED_VALUE
-#: STRUC_DEF_FIXED_VALUE
-msgid "Fixed Value:"
-msgstr "Fast värde:"
-
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
@@ -6052,11 +6097,6 @@ msgstr "JSON-egenskapsnamn för typ"
 msgid "Label"
 msgstr "Etikett"
 
-# STRUC_DEF_LEAST_FOLLOW
-#: STRUC_DEF_LEAST_FOLLOW
-msgid "At least the following"
-msgstr "Minst följande"
-
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 msgctxt "STRUC_DEF_LOGICAL"
@@ -6077,6 +6117,16 @@ msgstr "LOINC-kod"
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
 msgstr "LOINC-kod"
+
+# STRUC_DEF_MAPPINGS
+#: STRUC_DEF_MAPPINGS
+msgid "Mappings"
+msgstr ""
+
+# STRUC_DEF_MAPPING_COMMENTS
+#: STRUC_DEF_MAPPING_COMMENTS
+msgid "Mapping Comments"
+msgstr ""
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
@@ -6169,6 +6219,11 @@ msgstr ", och definierar inga diskriminatorer för att särskilja skivorna"
 msgid "(no extensions allowed)"
 msgstr ""
 
+# STRUC_DEF_NO_EXT_ID
+#: STRUC_DEF_NO_EXT_ID
+msgid "No extension or id"
+msgstr ""
+
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
@@ -6233,6 +6288,27 @@ msgstr "Öppen i slutet"
 #: STRUC_DEF_ORDERED
 msgid "Ordered"
 msgstr "Ordnad"
+
+# STRUC_DEF_OTHER_CHANGES
+#: STRUC_DEF_OTHER_CHANGES
+msgid "Other Changes:"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+#: STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+msgctxt "STRUC_DEF_OTHER_CHANGES_DOCUMENTATION"
+msgid "documentation"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_HINT
+#: STRUC_DEF_OTHER_CHANGES_HINT
+msgid "This profile changes the {0} of this element, which is not shown in this table. See the full definition for details"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_MAPPINGS
+#: STRUC_DEF_OTHER_CHANGES_MAPPINGS
+msgid "mappings"
+msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
@@ -6351,11 +6427,6 @@ msgstr "Denna upprepande elements ordning: {0}"
 msgid "required"
 msgstr "obligatorisk"
 
-# STRUC_DEF_REQUIRED_PATT
-#: STRUC_DEF_REQUIRED_PATT
-msgid "Required Pattern:"
-msgstr "Obligatoriskt mönster:"
-
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 msgid "Requirements"
@@ -6405,6 +6476,11 @@ msgstr "Kort"
 #: STRUC_DEF_SHOULD_CODE
 msgid "The codes SHOULD be taken from"
 msgstr "Koderna BÖR tas från"
+
+# STRUC_DEF_SHOW_MAPPINGS
+#: STRUC_DEF_SHOW_MAPPINGS
+msgid "Show Mappings:"
+msgstr ""
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
@@ -6972,6 +7048,16 @@ msgstr "Referens till ett annat element"
 msgid "Slice Definition"
 msgstr "Skivdefinition"
 
+# TEXT_ICON_SLICE_EXTENSION
+#: TEXT_ICON_SLICE_EXTENSION
+msgid "Extension Slice Definition"
+msgstr ""
+
+# TEXT_ICON_SLICE_EXTENSION_MODIFIER
+#: TEXT_ICON_SLICE_EXTENSION_MODIFIER
+msgid "Modifier Extension Slice Definition"
+msgstr ""
+
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 msgid "Slice Item"
@@ -7193,6 +7279,27 @@ msgstr "Expansion från {0} baserad på"
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
 msgstr "Expansion baserad på kodsystemsfragment"
+
+# VALUE_SET_EXP_ISSUES
+#: VALUE_SET_EXP_ISSUES
+msgid "Notes about this expansion:"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_ERROR
+#: VALUE_SET_EXP_ISSUE_ERROR
+msgid "Error"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_INFO
+#: VALUE_SET_EXP_ISSUE_INFO
+msgctxt "VALUE_SET_EXP_ISSUE_INFO"
+msgid "Note"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_WARNING
+#: VALUE_SET_EXP_ISSUE_WARNING
+msgid "Warning"
+msgstr ""
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
@@ -7424,6 +7531,11 @@ msgstr "Storbritannien"
 #: VALUE_SET_UK_CLIN
 msgid "UK Clinical Edition"
 msgstr "UK klinisk utgåva"
+
+# VALUE_SET_UNCLOSED
+#: VALUE_SET_UNCLOSED
+msgid "This expansion is not closed: there are codes in the value set that are not included in the expansion"
+msgstr ""
 
 # VALUE_SET_US
 #: VALUE_SET_US

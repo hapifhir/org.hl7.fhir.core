@@ -153,16 +153,6 @@ public class InstanceValidatorOptions {
   public String outputStyle;
 
   // Enum fields
-  @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
-    description = """
-  Control R5 bundle resolution policy (always, never, default)
-      * always - always apply the rule irrespective of version
-      * never - never apply this rule irrespective of version
-      * default - the default behaviour: apply this rule in R5 and later
-  """)
-  @With
-  public String r5BundleRelativeReferencePolicy;
-
   @CommandLine.Option(names = {"-questionnaire"},
     description = """
     What to do when validating QuestionnaireResponse resources (none, check, required)
