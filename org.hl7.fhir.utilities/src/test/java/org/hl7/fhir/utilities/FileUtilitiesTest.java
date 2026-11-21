@@ -26,6 +26,10 @@ import org.junit.jupiter.api.*;
   **/
  class FileUtilitiesTest {
 
+   // what the tests make goes here, and is deleted after each test (JUnit doesn't follow links when it deletes)
+   @org.junit.jupiter.api.io.TempDir
+   java.nio.file.Path tempDir;
+
    private static final String SAMPLE_CONTENT = "Line 1\nLine 2\nLine 3";
    private static final List<String> SAMPLE_CONTENT_LINES = List.of("Line 1", "Line 2", "Line 3");
    private static final String BOM = "\uFEFF";
@@ -205,7 +209,7 @@ import org.junit.jupiter.api.*;
 
    @Test
    void testReplaceFileAtomicallyOverExistingFile() throws IOException {
-     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dir = Files.createDirectories(tempDir.resolve("replace-atomically")).toFile();
      final var dst = new File(dir, "target.txt");
      Files.writeString(dst.toPath(), "old");
      final var tmp = new File(dir, "target.txt.tmp");
@@ -219,7 +223,7 @@ import org.junit.jupiter.api.*;
 
    @Test
    void testReplaceFileAtomicallyWhenTargetDoesNotExist() throws IOException {
-     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dir = Files.createDirectories(tempDir.resolve("replace-atomically")).toFile();
      final var dst = new File(dir, "target.txt");
      final var tmp = new File(dir, "target.txt.tmp");
      Files.writeString(tmp.toPath(), "new");
@@ -240,7 +244,7 @@ import org.junit.jupiter.api.*;
     */
    @Test
    void testReplaceFileAtomicallyIsNeverSeenPartiallyWritten() throws Exception {
-     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dir = Files.createDirectories(tempDir.resolve("replace-atomically")).toFile();
      final var dst = new File(dir, "target.txt");
      Files.write(dst.toPath(), versionOfFile('A'));
 
@@ -324,7 +328,7 @@ import org.junit.jupiter.api.*;
    /** clearing with exemptions deletes a link in the folder, not what it links to */
    @Test
    void clearDirectoryWithExemptionsDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("clear-links");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-links"));
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      java.nio.file.Path cache = Files.createDirectories(dir.resolve("cache"));
@@ -339,7 +343,7 @@ import org.junit.jupiter.api.*;
    /** clearing never follows a link, however deep in the folder it is */
    @Test
    void clearDirectoryDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("clear-deep-links");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-deep-links"));
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      java.nio.file.Path target = Files.createDirectories(dir.resolve("target").resolve("sub").resolve("deeper"));
@@ -353,7 +357,7 @@ import org.junit.jupiter.api.*;
    /** a folder that is itself a link isn't cleared */
    @Test
    void clearDirectoryRefusesALink() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("clear-link-root");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-link-root"));
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("output"), precious);
@@ -375,19 +379,35 @@ import org.junit.jupiter.api.*;
          "..");
    }
 
-   /** these are refused before anything is looked at, so a test can safely try to empty them (all but a file "*" is kept anyway) */
+   /**
+   * Only asks whether these may be emptied: never tries to empty them, since if the check were ever broken, that would
+   * empty them. That clearDirectory refuses what this says no to is tested on a folder of the test's own
+   * (aGitRepositoryIsNeverEmptied)
+   */
    @org.junit.jupiter.params.ParameterizedTest
    @org.junit.jupiter.params.provider.MethodSource("foldersNeverEmptied")
-   void someFoldersAreNeverEmptied(String folder) throws IOException {
+   void someFoldersAreNeverEmptied(String folder) {
      if (new File(folder).exists()) {
        assertNotNull(FileUtilities.whyNotSafeToEmpty(folder), folder);
-       assertThrows(IOException.class, () -> FileUtilities.clearDirectory(folder, "*"), folder);
      }
+   }
+
+   /** system folders are never emptied; other folders at the top (common in containers and on build servers) can be */
+   @org.junit.jupiter.params.ParameterizedTest
+   @org.junit.jupiter.params.provider.CsvSource({
+     "'', true", "usr, true", "etc, true", "home, true", "Users, true", "var, true", "opt, true", "mnt, true", "Windows, true",
+     "usr/local, true", "etc/ssl, true", "home/someone, true", "Users/someone, true", "Volumes/disk, true", "private/tmp, true",
+     "var/lib, true", "var/log, true", "var/folders, true", "opt/homebrew, true", "mnt/c, true", "Program Files/x, true",
+     "work, false", "build, false", "output, false", "var/ci, false", "opt/build, false", "mnt/build, false", "srv/igs, false",
+     "usr/local/build, false", "home/someone/ig, false", "var/lib/x, false"})
+   void systemFolders(String path, boolean refused) {
+     java.nio.file.Path p = File.listRoots()[0].toPath().resolve(path);
+     assertEquals(refused, FileUtilities.whyNotSafeToEmptySystemFolder(p) != null, p.toString());
    }
 
    @Test
    void aGitRepositoryIsNeverEmptied() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("clear-git");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-git"));
      Files.createDirectories(dir.resolve(".git"));
      Files.write(dir.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      assertThrows(IOException.class, () -> FileUtilities.clearDirectory(dir.toString()));
@@ -398,16 +418,21 @@ import org.junit.jupiter.api.*;
    /** a link to the home folder can't be used to get it emptied */
    @Test
    void aLinkDoesNotHideWhereTheFolderIs() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("clear-home-link");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-home-link"));
      java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("home"), java.nio.file.Paths.get(System.getProperty("user.home")));
-     assertNotNull(FileUtilities.whyNotSafeToEmpty(link.toString()));
-     assertNull(FileUtilities.whyNotSafeToEmpty(dir.toString()));
+     try {
+       assertNotNull(FileUtilities.whyNotSafeToEmpty(link.toString()));
+       assertNull(FileUtilities.whyNotSafeToEmpty(dir.toString()));
+     } finally {
+       // not left for anything that cleans up the temp folder (and might follow links) to find
+       Files.delete(link);
+     }
    }
 
    /** deleting a folder that is a link deletes the link */
    @Test
    void atomicDeleteDirectoryOfALinkDeletesTheLink() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("delete-link");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("delete-link"));
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      java.nio.file.Path link = Files.createSymbolicLink(dir.resolve("pkg"), precious);
@@ -418,7 +443,7 @@ import org.junit.jupiter.api.*;
 
    @Test
    void deleteAllFilesDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("delete-all-links");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("delete-all-links"));
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
      java.nio.file.Path work = Files.createDirectories(dir.resolve("work").resolve("sub"));
@@ -435,7 +460,7 @@ import org.junit.jupiter.api.*;
 
    @Test
    void deleteEmptyFoldersDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createTempDirectory("delete-empty-links");
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("delete-empty-links"));
      java.nio.file.Path empty = Files.createDirectories(dir.resolve("elsewhere").resolve("empty"));
      java.nio.file.Path work = Files.createDirectories(dir.resolve("work").resolve("a").resolve("b"));
      Files.createSymbolicLink(dir.resolve("work").resolve("link"), dir.resolve("elsewhere"));

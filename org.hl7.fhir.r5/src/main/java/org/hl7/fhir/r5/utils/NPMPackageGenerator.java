@@ -648,6 +648,10 @@ public class NPMPackageGenerator {
     return shortName;
   }
 
+  /**
+   * Whether the package already has the file, or one that is the same file to some systems (a name that differs only
+   * in case): adding it would then be skipped, or fail (see PackageEntryNames)
+   */
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
     if (tooLongForTar(path)) {
@@ -655,7 +659,7 @@ public class NPMPackageGenerator {
       path = cat.getDirectory()+name;
     }
       
-    return created.contains(path);    
+    return created.contains(path) || entryNames.contains(path);
   }
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
@@ -784,7 +788,8 @@ public class NPMPackageGenerator {
         }
 
         try (Stream<Path> paths = Files.list(directory)) {
-            paths.filter(Files::isDirectory)
+            // a linked folder isn't followed (it could lead out of the folder, or round in a circle), as Files.walk doesn't below
+            paths.filter(p -> Files.isDirectory(p, java.nio.file.LinkOption.NOFOLLOW_LINKS))
                 .filter(p -> !p.getFileName().toString().startsWith("."))
                 .forEach(subDir -> {
                     try {
@@ -804,10 +809,16 @@ public class NPMPackageGenerator {
                     if (isNotIgnored(f, root, rootIgnoreNode, directoryIgnoreCache)) {
                         Path rel = root.relativize(f);
                         String path = rel.toString().replace(File.separatorChar, '/'); // a tar entry's separator is /, on Windows too
-                        if (!entryNames.add(path))
+                        if (Files.isSymbolicLink(f) && !isReallyInside(root, f)) {
+                            // what the link leads to isn't part of the folder being packaged, and could be anything
+                            log.warn("Package file "+path+" is a link to somewhere outside "+root+", so it isn't in the package");
+                        } else if (!entryNames.add(path))
                             log.warn("Duplicate package file "+path);
                         else {
-                            byte[] content = FileUtilities.fileToBytes(f.toFile());
+                            byte[] content;
+                            try (java.io.InputStream in = ManagedFileAccess.inStream(f.toFile())) {
+                                content = in.readAllBytes();
+                            }
                             created.add(path);
                             TarArchiveEntry entry = new TarArchiveEntry(path);
                             entry.setSize(content.length);
@@ -820,6 +831,15 @@ public class NPMPackageGenerator {
                     // ignore and continue
                 }
             });
+        }
+    }
+
+    /** whether the file, where it really is (following links), is in the folder (where that really is) */
+    private static boolean isReallyInside(Path root, Path file) {
+        try {
+            return file.toRealPath().startsWith(root.toRealPath());
+        } catch (IOException e) {
+            return false; // a link that leads nowhere
         }
     }
 

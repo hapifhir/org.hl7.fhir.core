@@ -1239,6 +1239,20 @@ class NPMPackageGeneratorTest {
     finish(generator);
   }
 
+  /**
+   * hasFile says yes to a name that differs only in case from one already added, so a caller that adds only what isn't
+   * there (the IG publisher copying core value sets and code systems) skips it, instead of the add failing the build
+   */
+  @Test
+  void hasFileIgnoresCase() throws IOException {
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    assertTrue(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json"));
+    assertTrue(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-ABC.json"));
+    assertFalse(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abd.json"));
+    finish(generator);
+  }
+
   /** Files loaded from a folder are named with /, whatever the platform's separator */
   @Test
   void filesLoadedFromAFolderAreNamedWithSlashes(@TempDir Path folder) throws IOException {
@@ -1248,6 +1262,32 @@ class NPMPackageGeneratorTest {
     generator.loadFiles(folder.toString(), null, folder.resolve("package").toFile());
     finish(generator);
     assertTrue(generator.getCreated().contains("package/other/x.json"), generator.getCreated().toString());
+  }
+
+  /**
+   * Loading a folder doesn't package what a link leads to outside the folder (a link to ~/.ssh/id_rsa, say), nor walk
+   * into a linked folder. A link to a file inside the folder is packaged
+   */
+  @Test
+  void linksOutOfTheFolderAreNotPackaged(@TempDir Path folder) throws IOException {
+    Path secret = Files.writeString(folder.resolve("secret.txt"), "secret");
+    Path outside = Files.createDirectories(folder.resolve("outside"));
+    Files.writeString(outside.resolve("y.json"), "{}");
+    Path root = Files.createDirectories(folder.resolve("ig"));
+    Path pkg = Files.createDirectories(root.resolve("package").resolve("other"));
+    Files.writeString(pkg.resolve("x.json"), "{}");
+    Files.createSymbolicLink(pkg.resolve("leak.json"), secret);
+    Files.createSymbolicLink(pkg.resolve("linked"), outside);
+    Files.createSymbolicLink(pkg.resolve("loop"), root);
+    Files.createSymbolicLink(pkg.resolve("inside.json"), pkg.resolve("x.json"));
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.loadFiles(root.toString(), ".npmignore", root.resolve("package").toFile());
+    finish(generator);
+    assertTrue(generator.getCreated().contains("package/other/x.json"), generator.getCreated().toString());
+    assertTrue(generator.getCreated().contains("package/other/inside.json"), generator.getCreated().toString());
+    for (String s : generator.getCreated()) {
+      assertFalse(s.contains("leak") || s.contains("linked") || s.contains("loop"), s);
+    }
   }
 
   @Test

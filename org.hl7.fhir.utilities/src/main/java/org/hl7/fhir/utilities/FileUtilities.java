@@ -564,7 +564,22 @@ public class FileUtilities {
     List<String> keep = Arrays.asList(exemptions);
     for (Path e : listEntries(dir)) {
       if (!keep.contains(e.getFileName().toString())) {
-        deleteNoFollow(e);
+        if (exemptions.length == 0) {
+          deleteNoFollow(e);
+        } else {
+          // as it always has, with exemptions an entry that can't be deleted (e.g. a file that's open, on Windows) is
+          // left, not an error: the IG publisher clears its temp folder this way. What's inside a sub-folder must go
+          if (!isLink(e) && Files.isDirectory(e, LinkOption.NOFOLLOW_LINKS)) {
+            for (Path c : listEntries(e)) {
+              deleteNoFollow(c);
+            }
+          }
+          try {
+            Files.deleteIfExists(e);
+          } catch (IOException ex) {
+            // left
+          }
+        }
       }
     }
   }
@@ -645,11 +660,20 @@ public class FileUtilities {
     }
   }
 
-  // folders at the top of a file system (/ or C:\) whose direct sub-folders aren't emptied either. compared in lower case
+  // system folders at the top of a file system (/ or C:\), which aren't emptied. Other top level folders (/work,
+  // C:\build - common in containers and on build servers) can be. Compared in lower case
   private static final List<String> SYSTEM_FOLDERS = Arrays.asList("applications", "bin", "boot", "cores", "dev", "etc", "home",
       "lib", "lib32", "lib64", "libx32", "library", "media", "mnt", "opt", "private", "proc", "root", "run", "sbin", "snap",
       "srv", "sys", "system", "users", "usr", "var", "volumes",
       "windows", "program files", "program files (x86)", "programdata", "$recycle.bin", "system volume information", "recovery");
+  // system folders whose sub-folders are all system folders, homes or drives, so none of them is emptied either
+  private static final List<String> SYSTEM_PARENT_FOLDERS = Arrays.asList("applications", "bin", "boot", "cores", "dev", "etc",
+      "home", "lib", "lib32", "lib64", "libx32", "library", "media", "private", "proc", "run", "sbin", "snap", "sys", "system",
+      "users", "usr", "volumes", "windows", "program files", "program files (x86)", "programdata");
+  // in the other system folders, just these sub-folders (/var/ci, /opt/build and /mnt/build are often where builds are)
+  private static final java.util.Map<String, List<String>> SYSTEM_SUB_FOLDERS = java.util.Map.of(
+      "var", Arrays.asList("backups", "cache", "db", "empty", "folders", "lib", "local", "lock", "log", "mail", "opt", "root", "run", "spool", "tmp", "vm"),
+      "opt", Arrays.asList("homebrew", "local"));
   // folders in a user's home folder that aren't emptied. compared in lower case
   private static final List<String> HOME_FOLDERS = Arrays.asList("desktop", "documents", "my documents", "downloads", "library",
       "pictures", "movies", "music", "videos", "public", "applications", "appdata", "dropbox", "google drive", "icloud drive",
@@ -669,14 +693,9 @@ public class FileUtilities {
     } catch (Exception e) {
       return null; // it doesn't exist, so there's nothing to empty
     }
-    if (real.getNameCount() == 0) {
-      return "it is the root of a file system";
-    }
-    if (real.getNameCount() == 1) {
-      return "it is a top level folder";
-    }
-    if (real.getNameCount() == 2 && SYSTEM_FOLDERS.contains(real.getName(0).toString().toLowerCase())) {
-      return "it is a system folder";
+    String reason = whyNotSafeToEmptySystemFolder(real);
+    if (reason != null) {
+      return reason;
     }
     Path home = realPathOf(System.getProperty("user.home"));
     if (home != null) {
@@ -701,6 +720,27 @@ public class FileUtilities {
     }
     if (Files.exists(real.resolve(".git"), LinkOption.NOFOLLOW_LINKS)) {
       return "it is the root of a git repository";
+    }
+    return null;
+  }
+
+  /** the rules about system folders, on a path that is where the folder really is */
+  static String whyNotSafeToEmptySystemFolder(Path real) {
+    if (real.getNameCount() == 0) {
+      return "it is the root of a file system";
+    }
+    String top = real.getName(0).toString().toLowerCase(java.util.Locale.ROOT);
+    if (real.getNameCount() == 1 && SYSTEM_FOLDERS.contains(top)) {
+      return "it is a system folder";
+    }
+    if (real.getNameCount() == 2) {
+      String sub = real.getName(1).toString().toLowerCase(java.util.Locale.ROOT);
+      if (SYSTEM_PARENT_FOLDERS.contains(top) || (SYSTEM_SUB_FOLDERS.containsKey(top) && SYSTEM_SUB_FOLDERS.get(top).contains(sub))) {
+        return "it is a system folder";
+      }
+      if (top.equals("mnt") && sub.length() == 1) {
+        return "it is a drive"; // WSL's /mnt/c
+      }
     }
     return null;
   }

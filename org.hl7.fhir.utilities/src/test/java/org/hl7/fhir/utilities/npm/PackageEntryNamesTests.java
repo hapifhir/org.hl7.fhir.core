@@ -21,4 +21,14 @@ class PackageEntryNamesTests {
     assertTrue(e.getMessage().contains("package/ValueSet-abc.json and package/ValueSet-ABC.json"), e.getMessage());
     assertThrows(FHIRException.class, () -> names.add("./package//ValueSet-abd.json"));
   }
+
+  @Test
+  void testContains() {
+    PackageEntryNames names = new PackageEntryNames();
+    names.add("package/ValueSet-abc.json");
+    assertTrue(names.contains("package/ValueSet-abc.json"));
+    assertTrue(names.contains("package/ValueSet-ABC.json"));
+    assertTrue(names.contains("./package//ValueSet-abc.json"));
+    assertFalse(names.contains("package/ValueSet-abd.json"));
+  }
 }
