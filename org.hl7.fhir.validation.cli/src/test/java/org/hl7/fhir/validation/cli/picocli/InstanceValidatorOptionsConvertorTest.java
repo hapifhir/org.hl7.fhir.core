@@ -333,6 +333,12 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
+        "checkDisplay (deprecated) is ignored",
+        new InstanceValidatorOptions().withCheckDisplay("CheckCase"),
+        new InstanceValidatorParameters()
+      ),
+
+      Arguments.arguments(
         "resourceIdRule REQUIRED",
         new InstanceValidatorOptions().withResourceIdRule("required"),
         new InstanceValidatorParameters().setResourceIdRule(IdStatus.REQUIRED)

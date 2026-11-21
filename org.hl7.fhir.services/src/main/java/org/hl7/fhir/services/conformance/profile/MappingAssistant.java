@@ -182,7 +182,10 @@ public class MappingAssistant {
     for (ElementDefinitionMappingComponent m : inherited) {
       ElementDefinitionMappingComponent r = m;
       for (ElementDefinitionMappingComponent s : suppressed) {
-        if (r != null && s.hasMap() && r.hasMap() && (java.util.Objects.equals(s.getIdentity(), r.getIdentity()) || java.util.Objects.equals(s.getIdentity(), renames.get(r.getIdentity())))) {
+        // s names a mapping the derived profile declares. r is the base's - compare it as the derived profile knows
+        // it: renamed (to the derived profile's identity for the same mapping, or away from an identity the derived
+        // profile uses for a different one), and only by its own identity if it isn't renamed
+        if (r != null && s.hasMap() && r.hasMap() && java.util.Objects.equals(s.getIdentity(), renames.getOrDefault(r.getIdentity(), r.getIdentity()))) {
           String sm = s.getMap().trim();
           if (sm.equals(r.getMap().trim())) {
             r = null;

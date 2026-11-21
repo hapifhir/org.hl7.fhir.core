@@ -113,7 +113,9 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   void testClearDeletesOnlyTheCachesOwnFiles() throws IOException {
     TerminologyCache cache = createEmptyTerminologyCache();
     Path dir = Path.of(cache.getFolder());
-    for (String fn : new String[] {"a.cache", "a.cache.nonce", "a.cache.1234.tmp", "servers.ini", "vs-externals.json", "vs-1234.json", "cs-1234.json", "notes.md", "other.json"}) {
+    for (String fn : new String[] {"a.cache", "a.cache.nonce", "a.cache.1234.tmp", "servers.ini", "vs-externals.json",
+        "vs-0f8d6a2e-3b1c-4d5e-8f90-a1b2c3d4e5f6.json", "cs-0f8d6a2e-3b1c-4d5e-8f90-a1b2c3d4e5f6.json",
+        "notes.md", "other.json", "vs-1234.json", "cs-my-codes.json", "vs-9A8B7C6D-5E4F-4A3B-9C2D-1E0F9A8B7C6D.json"}) {
       Files.writeString(dir.resolve(fn), "x");
     }
     Files.createDirectories(dir.resolve("sub"));
@@ -121,7 +123,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     cache.clear();
     String[] left = dir.toFile().list();
     Arrays.sort(left);
-    assertArrayEquals(new String[] {"notes.md", "other.json", "sub"}, left);
+    // vs- and cs- files are only the cache's if they're named as the cache names them, with a (lower case) uuid. The
+    // upper case one isn't the same uuid as the others: on a file system that ignores case (macOS, Windows) it would
+    // be the same file
+    assertArrayEquals(new String[] {"cs-my-codes.json", "notes.md", "other.json", "sub", "vs-1234.json", "vs-9A8B7C6D-5E4F-4A3B-9C2D-1E0F9A8B7C6D.json"}, left);
     assertTrue(Files.exists(dir.resolve("sub").resolve("b.cache")));
   }
 

@@ -379,6 +379,15 @@
               "type": "string"
             },
             "deprecated": true
+          },
+          {
+            "name": "checkDisplay",
+            "in": "query",
+            "description": "Ignored - this never had any effect. It is still accepted, so that existing clients don't get a `400`, but it will be removed.",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": true
           }
         ],
         "requestBody": {

@@ -240,6 +240,18 @@ public class InstanceValidatorOptions {
   @With
   public Long validationTimeout = 0L;
 
+  /**
+   * @deprecated -check-display never had any effect. It's still accepted (and hidden from the help) so that
+   * existing command lines don't fail, but it's ignored with a warning, and will be removed
+   */
+  @Deprecated
+  @CommandLine.Option(names = {"-check-display"},
+    description = "Deprecated, and ignored: this never had any effect",
+    hidden = true,
+    arity = "1")
+  @With
+  public String checkDisplay = null;
+
   // Created by claude-sonnet-4-6
   @CommandLine.Option(names = {"-resource-id-rule"},
     description = """

@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -18,6 +19,10 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,26 +35,29 @@ class ValidateCodeBatchLocalErrorTest {
 
   @Test
   void missingRequiredSupplementNoServer() throws Exception {
-    checkSame(true, needsSupplement());
+    checkSame(true, needsSupplement(), I18nConstants.VALUESET_SUPPLEMENT_MISSING);
   }
 
   @Test
   void filterWithNoValueNoServer() throws Exception {
-    checkSame(true, filterWithNoValue());
+    checkSame(true, filterWithNoValue(), I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE);
   }
 
   @Test
   void missingRequiredSupplementNoClient() throws Exception {
-    checkSame(false, needsSupplement()); // was a NullPointerException
+    checkSame(false, needsSupplement(), I18nConstants.VALUESET_SUPPLEMENT_MISSING); // was a NullPointerException
   }
 
   @Test
   void filterWithNoValueNoClient() throws Exception {
-    checkSame(false, filterWithNoValue()); // was a NullPointerException
+    checkSame(false, filterWithNoValue(), I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE); // was a NullPointerException
   }
 
-  /** each on its own context, so neither answer can come from the other's cache entry */
-  private void checkSame(boolean noTerminologyServer, ValueSet vs) throws Exception {
+  /**
+   * each on its own context, so neither answer can come from the other's cache entry. Both have to be the local error
+   * itself - fatal, with its message id - and not just the same as each other
+   */
+  private void checkSame(boolean noTerminologyServer, ValueSet vs, String messageId) throws Exception {
     Coding c = new Coding(CS_URL, "acc", null);
     ValidationResult single = context(noTerminologyServer).validateCode(new ValidationOptions(), c, vs);
 
@@ -61,6 +69,21 @@ class ValidateCodeBatchLocalErrorTest {
     assertEquals(single.getSeverity(), batch.getSeverity());
     assertEquals(single.getMessage(), batch.getMessage());
     assertFalse(batch.getMessage().contains("running without terminology services"), batch.getMessage());
+    for (ValidationResult res : List.of(single, batch)) {
+      assertEquals(IssueSeverity.FATAL, res.getSeverity(), res.getMessage());
+      assertTrue(hasMessageId(res, messageId), res.getMessage());
+    }
+  }
+
+  private boolean hasMessageId(ValidationResult res, String messageId) {
+    if (res.getIssues() != null) {
+      for (OperationOutcomeIssueComponent iss : res.getIssues()) {
+        if (messageId.equals(ExtensionUtilities.readStringExtension(iss, ExtensionDefinitions.EXT_ISSUE_MSG_ID))) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private SimpleWorkerContext context(boolean noTerminologyServer) throws Exception {

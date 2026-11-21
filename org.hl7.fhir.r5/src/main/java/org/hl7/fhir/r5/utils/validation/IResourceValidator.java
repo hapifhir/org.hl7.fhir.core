@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -63,6 +64,22 @@ public interface IResourceValidator {
    */
 	IdStatus getResourceIdRule();
 	void setResourceIdRule(IdStatus resourceIdRule);
+
+  /**
+   * @deprecated this has never had any effect, and is ignored. It will be removed
+   */
+  @Deprecated
+  default CheckDisplayOption getCheckDisplay() {
+    return CheckDisplayOption.Ignore;
+  }
+
+  /**
+   * @deprecated this has never had any effect, and is ignored. It will be removed
+   */
+  @Deprecated
+  default void setCheckDisplay(CheckDisplayOption checkDisplay) {
+    // ignored - see getCheckDisplay()
+  }
   
   /**
    * whether the validator should enforce best practice guidelines

@@ -1030,12 +1030,21 @@ public class LanguageUtils {
     // only a resource's own narrative gets regenerated. Anything else (e.g. Composition.section.text)
     // would just be lost, so keep the narrative we have, even though it's not in the right language
     if (!canRegenerate) {
+      if (errors != null) {
+        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", context.formatMessage(I18nConstants.NARRATIVE_NOT_TRANSLATED_KEPT_SECTION, lang), IssueSeverity.WARNING));
+      }
       return xhtml;
     }
 
-    // a resource narrative with nothing for the language is dropped, and gets regenerated
-    // (if the status is 'additional' that loses content, but there's no narrative to show for the language anyway)
-    return null;
+    // a resource narrative that was generated is dropped, and gets regenerated in the language. One that was
+    // written (additional, empty, or no status) would lose what was written, so it's kept, in its own language
+    if (Utilities.existsInList(status, "generated", "extensions")) {
+      return null;
+    }
+    if (errors != null) {
+      errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", context.formatMessage(I18nConstants.NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED, lang, status == null ? "" : status), IssueSeverity.WARNING));
+    }
+    return xhtml;
   }
 
   public boolean switchLanguage(Element e, String lang, boolean markLanguage, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {

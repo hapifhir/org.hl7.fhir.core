@@ -219,6 +219,7 @@ public class FHIRPathEngine {
     profileUtilities = utilities;
     analysis = (FHIRPathAnalysis) worker.retrieveAnalysis(this.getClass());
     if (analysis == null) {
+      long definitionsVersion = worker.getDefinitionsVersion();
       analysis = new FHIRPathAnalysis();
       for (StructureDefinition sd : worker.fetchSpecializations()) {
         if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
@@ -229,7 +230,7 @@ public class FHIRPathEngine {
         }
       }
       analysis.cu = new ContextUtilities(worker);
-      worker.storeAnalysis(this.getClass(), analysis);
+      worker.storeAnalysis(this.getClass(), analysis, definitionsVersion);
     }
     initFlags();
   }

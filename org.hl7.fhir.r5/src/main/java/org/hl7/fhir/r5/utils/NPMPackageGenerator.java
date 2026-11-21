@@ -801,6 +801,14 @@ public class NPMPackageGenerator {
         }
     }
 
+    /**
+     * The name of a package entry for a file, from its path relative to the folder being packaged. A tar entry's
+     * separator is /, on every platform, so the platform's separator (\ on Windows) is replaced
+     */
+    static String entryName(String relativePath, char separator) {
+      return relativePath.replace(separator, '/');
+    }
+
     private void scanAndFilterFiles(Path root, Path startDir, String ignoreFileName, IgnoreNode rootIgnoreNode) throws IOException {
         java.util.Map<String, Boolean> directoryIgnoreCache = new java.util.HashMap<>();
         try (Stream<Path> paths = Files.walk(startDir)) {
@@ -808,7 +816,7 @@ public class NPMPackageGenerator {
                 try {
                     if (isNotIgnored(f, root, rootIgnoreNode, directoryIgnoreCache)) {
                         Path rel = root.relativize(f);
-                        String path = rel.toString().replace(File.separatorChar, '/'); // a tar entry's separator is /, on Windows too
+                        String path = entryName(rel.toString(), File.separatorChar);
                         if (Files.isSymbolicLink(f) && !isReallyInside(root, f)) {
                             // what the link leads to isn't part of the folder being packaged, and could be anything
                             log.warn("Package file "+path+" is a link to somewhere outside "+root+", so it isn't in the package");
@@ -845,7 +853,7 @@ public class NPMPackageGenerator {
 
     private boolean isNotIgnored(Path file, Path root, IgnoreNode rootIgnoreNode, java.util.Map<String, Boolean> directoryIgnoreCache) throws IOException {
         Path relativePath = root.relativize(file);
-        String pathString = relativePath.toString().replace(File.separator, "/");
+        String pathString = entryName(relativePath.toString(), File.separatorChar);
 
         if (rootIgnoreNode.isIgnored(pathString, false) == IgnoreNode.MatchResult.IGNORED) {
             return false;
@@ -853,7 +861,7 @@ public class NPMPackageGenerator {
 
         Path parent = relativePath.getParent();
         while (parent != null) {
-            String parentPath = parent.toString().replace(File.separator, "/");
+            String parentPath = entryName(parent.toString(), File.separatorChar);
             Boolean cached = directoryIgnoreCache.get(parentPath);
             if (cached != null) {
                 if (cached) return false;

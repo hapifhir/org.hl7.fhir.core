@@ -658,6 +658,16 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  /**
+   * @deprecated checkDisplay never had any effect. It's accepted (and ignored) when parameters are read, so
+   * existing clients don't break, but it is never written, and will be removed
+   */
+  @Deprecated
+  @JsonProperty(value = "checkDisplay", access = JsonProperty.Access.WRITE_ONLY)
+  public InstanceValidatorParameters setCheckDisplay(org.hl7.fhir.services.validation.constants.CheckDisplayOption checkDisplay) {
+    return this;
+  }
+
   @JsonProperty("resourceIdRule")
   @SerializedName("resourceIdRule")
   private IdStatus resourceIdRule = null;

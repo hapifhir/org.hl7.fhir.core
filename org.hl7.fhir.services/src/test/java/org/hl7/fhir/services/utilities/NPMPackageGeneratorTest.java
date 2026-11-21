@@ -1253,6 +1253,17 @@ class NPMPackageGeneratorTest {
     finish(generator);
   }
 
+  /** the platform's separator is replaced by / - on Windows, \ (which the test above can't show, except on Windows) */
+  @ParameterizedTest
+  @CsvSource(delimiter = ';', value = {
+    "package\\other\\x.json; \\; package/other/x.json",
+    "package/other/x.json;     /;  package/other/x.json",
+    "x.json;                   \\; x.json",
+  })
+  void entryNamesUseSlashes(String relativePath, char separator, String expected) {
+    assertEquals(expected, NPMPackageGenerator.entryName(relativePath, separator));
+  }
+
   /** Files loaded from a folder are named with /, whatever the platform's separator */
   @Test
   void filesLoadedFromAFolderAreNamedWithSlashes(@TempDir Path folder) throws IOException {

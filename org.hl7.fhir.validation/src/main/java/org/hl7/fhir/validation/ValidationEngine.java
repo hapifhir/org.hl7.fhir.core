@@ -798,6 +798,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   /**
+   * @deprecated displayOption has never had any effect, and is ignored
+   */
+  @Deprecated(since="2026-11-21")
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, org.hl7.fhir.services.validation.constants.CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
+    return validate(location, source, cntType, profiles, resourceIdRule, anyExtensionsAllowed, bpWarnings);
+  }
+
+  /**
    * @deprecated
    */
   @Deprecated(since="2026-02-20")

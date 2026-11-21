@@ -752,12 +752,18 @@ public class TerminologyCache {
     }
   }
 
+  /**
+   * the external value sets and code systems the cache keeps: vs-{uuid}.json and cs-{uuid}.json, the uuid
+   * lower case (see UUIDUtilities.makeUuidLC). Nothing else that happens to start vs- or cs-
+   */
+  private static final java.util.regex.Pattern EXTERNAL_FILE = java.util.regex.Pattern.compile("(vs|cs)-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.json");
+
   /** whether a file in the folder is one the cache writes */
   static boolean isCacheFile(String fn) {
     return fn.endsWith(CACHE_FILE_EXTENSION) || fn.endsWith(NONCE_FILE_EXTENSION)
         || (fn.endsWith(TEMP_FILE_EXTENSION) && fn.contains(CACHE_FILE_EXTENSION+"."))
         || Utilities.existsInList(fn, "version.ctl", "servers.ini", "vs-externals.json", "cs-externals.json")
-        || ((fn.startsWith("vs-") || fn.startsWith("cs-")) && fn.endsWith(".json"));
+        || EXTERNAL_FILE.matcher(fn).matches();
   }
 
   public boolean hasCapabilityStatement(String address) {

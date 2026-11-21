@@ -271,6 +271,7 @@ public class CSVWriter extends TextStreamWriter  {
 
   private String itemList(List l) {
     StringBuilder s = new StringBuilder();
+    boolean first = true;
     for (int i =0; i< l.size(); i++) {
       Object o = l.get(i);
       String val = "";
@@ -287,7 +288,8 @@ public class CSVWriter extends TextStreamWriter  {
         if (t.isEmpty()) {
           continue; // e.g. a contentReference element - no type
         }
-        val = (t.getWorkingCode() == null ? "" : t.getWorkingCode()) + (t.hasProfile() ? " {" + t.getProfileList() + "}" : "") + (t.hasTargetProfile() ? " {" + t.getTargetProfileList() + "}" : "") + (t.hasAggregation() ? " (" + itemList(t.getAggregationList()) + ")" : "");
+        // the urls themselves (a list's toString() is [CanonicalType[...]])
+        val = (t.getWorkingCode() == null ? "" : t.getWorkingCode()) + (t.hasProfile() ? " {" + canonicalList(t.getProfileList()) + "}" : "") + (t.hasTargetProfile() ? " {" + canonicalList(t.getTargetProfileList()) + "}" : "") + (t.hasAggregation() ? " (" + aggregationList(t.getAggregationList()) + ")" : "");
       } else if (o instanceof Coding) {
         Coding t = (Coding)o;
         val = (t.getSystem()==null ? "" : t.getSystem()) + (t.getCode()==null ? "" : "#" + t.getCode()) + (t.getDisplay()==null ? "" : " (" + t.getDisplay() + ")");
@@ -303,11 +305,31 @@ public class CSVWriter extends TextStreamWriter  {
         val = val.substring(val.indexOf("[")+1);
         val = val.substring(0, val.indexOf("]"));
       }
-      s = s.append(val);
-      if (i == 0)
+      // one item a line (a newline went after the first item only, so the rest ran together)
+      if (!first) {
         s.append("\n");
+      }
+      first = false;
+      s.append(val);
     }
     return s.toString();
+  }
+
+  private String canonicalList(List<org.hl7.fhir.model.core.CanonicalType> list) {
+    org.hl7.fhir.utilities.CommaSeparatedStringBuilder b = new org.hl7.fhir.utilities.CommaSeparatedStringBuilder("|");
+    for (org.hl7.fhir.model.core.CanonicalType c : list) {
+      b.append(c.getValue());
+    }
+    return b.toString();
+  }
+
+  // (this class imports java.util.Enumeration)
+  private String aggregationList(List<? extends org.hl7.fhir.model.core.Enumeration<?>> list) {
+    org.hl7.fhir.utilities.CommaSeparatedStringBuilder b = new org.hl7.fhir.utilities.CommaSeparatedStringBuilder();
+    for (org.hl7.fhir.model.core.Enumeration<?> e : list) {
+      b.append(e.getCode());
+    }
+    return b.toString();
   }
   
   private String renderType(DataType value) throws Exception {

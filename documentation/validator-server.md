@@ -199,6 +199,7 @@ IG that defines it first, with `/loadIG`.
 | `codeSystemValidationSizeLimit` | integer | Max codes checked per include/group/supplement; `0` for no limit. Default 1000. |
 | `htmlOutput` | filename | Accepted, but **no effect** in server mode. |
 | `outputStyle` | style name | Accepted, but **no effect** in server mode - the response is always an OperationOutcome. |
+| `checkDisplay` | anything | **Deprecated**, and ignored - it never had any effect. Still accepted so that existing clients don't get a `400`, but it will be removed. |
 
 Booleans are `true`/`false`; anything that is not `true` (case insensitive) is false.
 
@@ -467,4 +468,4 @@ java -jar validator_cli.jar client -port 8080 -stop
 * One request at a time; the engine is shared and mutable, so concurrent or unrelated callers
   can affect each other through `/loadIG`.
 * No authentication or TLS in any mode.
-* `htmlOutput` and `outputStyle` are accepted on `/validateResource` but do nothing.
+* `htmlOutput`, `outputStyle` and (deprecated) `checkDisplay` are accepted on `/validateResource` but do nothing.

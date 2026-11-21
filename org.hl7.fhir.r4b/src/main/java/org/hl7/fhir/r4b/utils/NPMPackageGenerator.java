@@ -586,13 +586,21 @@ public class NPMPackageGenerator {
     loadFiles(rootDir, ManagedFileAccess.file(Utilities.path(rootDir, name)));
   }
 
+  /**
+   * The name of a package entry for a file, from its path relative to the folder being packaged. A tar entry's
+   * separator is /, on every platform, so the platform's separator (\ on Windows) is replaced
+   */
+  static String entryName(String relativePath, char separator) {
+    return relativePath.replace(separator, '/');
+  }
+
   public void loadFiles(String root, File dir, String... noload) throws IOException {
     for (File f : dir.listFiles()) {
       if (!Utilities.existsInList(f.getName(), noload)) {
         if (f.isDirectory()) {
           loadFiles(root, f);
         } else {
-          String path = f.getAbsolutePath().substring(root.length() + 1).replace(File.separatorChar, '/'); // a tar entry's separator is /, on Windows too
+          String path = entryName(f.getAbsolutePath().substring(root.length() + 1), File.separatorChar);
           byte[] content = FileUtilities.fileToBytes(f);
           if (!entryNames.add(path))
             log.warn("Duplicate package file " + path);

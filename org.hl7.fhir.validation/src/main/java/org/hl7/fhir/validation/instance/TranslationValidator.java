@@ -68,12 +68,6 @@ public class TranslationValidator extends BaseValidator {
   private static final String RULE_DATE = "2026-11-20";
 
   /**
-   * ConceptMap groups, indexed by the (unversioned) system of the group source. Built the first
-   * time it's needed - ConceptMaps loaded into the context after that are not seen
-   */
-  private volatile Map<String, List<GroupWithMap>> groupsBySourceSystem;
-
-  /**
    * Value sets used in maps are only expanded if they're no bigger than this - this is a check that
    * produces hints and warnings, and it's not worth expanding huge value sets for that
    */
@@ -148,44 +142,88 @@ public class TranslationValidator extends BaseValidator {
   }
 
   /**
-   * Has the server already said this, for this map? Its message is the same message, so it
-   * names the codings and the maps the same way
+   * Has the server already said this, for this map? Its message is the same message, so it names
+   * the codings (system#code) and the maps (url|version) the same way. Only those are looked for -
+   * not the words around them, which are in whatever language the server answered in - and each
+   * coding is looked for on its own, since the server may list the other codings in another order
    */
   private boolean serverAlreadySaid(List<ValidationMessage> serverSaid, Finding f, String url) {
     for (ValidationMessage vm : serverSaid) {
       String text = vm.getMessage();
-      if (vm.getMessageId().startsWith(f.kind.message) && text != null && text.contains(f.source) && text.contains(f.other) && containsUrl(text, url)) {
+      if (vm.getMessageId().startsWith(f.kind.message) && text != null && names(text, f.source) && names(text, url) && namesAll(text, f.others)) {
         return true;
       }
+    }
+    return false;
+  }
+
+  private boolean namesAll(String text, List<String> tokens) {
+    for (String token : tokens) {
+      if (!names(text, token)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * text names token (a coding or a map url), and not some longer one that it is part of
+   * (http://x/cm|1.0 in http://x/cm|1.0.1, or http://x/cs#12 in http://x/cs#123)
+   */
+  static boolean names(String text, String token) {
+    int i = text.indexOf(token);
+    while (i >= 0) {
+      int end = i + token.length();
+      if ((i == 0 || !continuesToken(text, i - 1)) && (end == text.length() || !continuesToken(text, end))) {
+        return true;
+      }
+      i = text.indexOf(token, i + 1);
     }
     return false;
   }
 
   /**
-   * text names url - and not some longer url that starts with it (http://x/cm|1.0 vs http://x/cm|1.0.1)
+   * Is the character at i part of a url or code? A '.' or ':' only is if more of one follows it -
+   * otherwise it's punctuation in the message
    */
-  private boolean containsUrl(String text, String url) {
-    int i = text.indexOf(url);
-    while (i >= 0) {
-      int end = i + url.length();
-      if (end == text.length() || text.charAt(end) == ',' || text.charAt(end) == ' ') {
-        return true;
-      }
-      i = text.indexOf(url, i + 1);
+  private static boolean continuesToken(String text, int i) {
+    char c = text.charAt(i);
+    if (isAsciiLetterOrDigit(c) || "-_|#/%".indexOf(c) >= 0) {
+      return true;
+    }
+    if (c == '.' || c == ':') {
+      return i + 1 < text.length() && (isAsciiLetterOrDigit(text.charAt(i + 1)) || text.charAt(i + 1) == '/');
     }
     return false;
   }
 
+  private static boolean isAsciiLetterOrDigit(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+  }
+
   private List<GroupWithMap> getGroups(String system) {
-    Map<String, List<GroupWithMap>> index = groupsBySourceSystem;
-    if (index == null) {
-      index = buildIndex();
-      groupsBySourceSystem = index;
-    }
-    List<GroupWithMap> groups = index.get(system);
+    List<GroupWithMap> groups = getIndex().get(system);
     return groups == null ? Collections.emptyList() : groups;
   }
 
+  /**
+   * ConceptMap groups, indexed by the (unversioned) system of the group source. Building it means looking at every
+   * ConceptMap in the context, so it's kept by the context (storeAnalysis), which drops it when what's loaded changes:
+   * it's shared by every validator using the context (one per request, in server mode), and maps loaded later are seen
+   */
+  @SuppressWarnings("unchecked")
+  private Map<String, List<GroupWithMap>> getIndex() {
+    Map<String, List<GroupWithMap>> index = (Map<String, List<GroupWithMap>>) context.retrieveAnalysis(TranslationValidator.class);
+    if (index == null) {
+      long version = context.getDefinitionsVersion();
+      index = buildIndex();
+      // if something was loaded while it was being built, it may already be out of date: it's used, but not kept
+      context.storeAnalysis(TranslationValidator.class, index, version);
+    }
+    return index;
+  }
+
+  /** shared between threads once stored, so it can't be changed */
   private Map<String, List<GroupWithMap>> buildIndex() {
     Map<String, List<GroupWithMap>> index = new HashMap<>();
     for (ConceptMap cm : context.fetchResourcesByType(ConceptMap.class)) {
@@ -196,7 +234,8 @@ public class TranslationValidator extends BaseValidator {
         }
       }
     }
-    return index;
+    index.replaceAll((k, v) -> Collections.unmodifiableList(v));
+    return Collections.unmodifiableMap(index);
   }
 
   private String unversioned(String canonical) {
@@ -274,30 +313,31 @@ public class TranslationValidator extends BaseValidator {
     String url = map.resource.getVUrl();
     for (Coding candidate : candidates) {
       if (denied.contains(candidate) && !confirmed.contains(candidate)) {
-        addFinding(findings, FindingKind.DENIED, describe(source), describe(candidate), "", url);
+        addFinding(findings, FindingKind.DENIED, describe(source), List.of(describe(candidate)), "", url);
       }
     }
     if (confirmed.isEmpty()) {
       if (noMap) {
-        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+        List<String> others = new ArrayList<>();
         for (Coding candidate : candidates) {
-          b.append(describe(candidate));
+          others.add(describe(candidate));
         }
-        addFinding(findings, FindingKind.NOMAP, describe(source), b.toString(), map.group.getTarget(), url);
+        addFinding(findings, FindingKind.NOMAP, describe(source), others, map.group.getTarget(), url);
       } else if (!mappedTo.isEmpty()) {
         String mappedCodes = CommaSeparatedStringBuilder.join(", ", Utilities.sorted(mappedTo));
         for (Coding candidate : candidates) {
           if (!denied.contains(candidate)) {
-            addFinding(findings, FindingKind.OTHER, describe(source), describe(candidate), mappedCodes, url);
+            addFinding(findings, FindingKind.OTHER, describe(source), List.of(describe(candidate)), mappedCodes, url);
           }
         }
       }
     }
   }
 
-  private void addFinding(Map<String, Finding> findings, FindingKind kind, String source, String other, String detail, String url) {
+  private void addFinding(Map<String, Finding> findings, FindingKind kind, String source, List<String> others, String detail, String url) {
+    String other = CommaSeparatedStringBuilder.join(", ", others);
     String key = kind + "|" + source + "|" + other + "|" + detail;
-    findings.computeIfAbsent(key, k -> new Finding(kind, source, other, detail)).maps.add(url);
+    findings.computeIfAbsent(key, k -> new Finding(kind, source, others, other, detail)).maps.add(url);
   }
 
   /**
@@ -388,13 +428,15 @@ public class TranslationValidator extends BaseValidator {
   private static class Finding {
     final FindingKind kind;
     final String source;
-    final String other;
+    final List<String> others; // the other codings, each as describe() gives it
+    final String other; // others, as the message lists them
     final String detail;
     final Set<String> maps = new TreeSet<>(); // sorted, so the output is stable whatever order the context lists the maps in
 
-    Finding(FindingKind kind, String source, String other, String detail) {
+    Finding(FindingKind kind, String source, List<String> others, String other, String detail) {
       this.kind = kind;
       this.source = source;
+      this.others = others;
       this.other = other;
       this.detail = detail;
     }

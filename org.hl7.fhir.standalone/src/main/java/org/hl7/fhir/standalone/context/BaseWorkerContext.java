@@ -118,8 +118,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
-  private long definitionsVersion = 0;
-  private Map<String, Object> analyses = new HashMap();
+  // changed only while holding lock, with the analyses (so a store that checks it can't miss a change); volatile, so
+  // that getDefinitionsVersion() sees the current value without taking the lock
+  private volatile long definitionsVersion = 0;
+  private Map<String, Object> analyses = new HashMap(); // only used while holding lock
 
   @Getter
   protected final IModelContext modelContext;
@@ -828,9 +830,51 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cs;
   }
 
+  /**
+   * A supplement can have the url of the code system it supplements. If that's what resolving the url found (it's
+   * the latest version, or it shares the version asked for), it isn't the code system: the code system is the one
+   * with that url that isn't a supplement - the version asked for, or the latest. If there's no such code system,
+   * the supplement is returned, and the caller reports that the code system (version) isn't known
+   */
+  private CodeSystem notASupplement(CodeSystem cs, String system, String version) {
+    if (cs == null || !cs.hasSupplements() || system == null || !system.equals(cs.getUrl())) {
+      return cs;
+    }
+    List<CodeSystem> candidates = new ArrayList<>();
+    for (CodeSystem c : fetchResourceVersions(CodeSystem.class, system)) {
+      if (!c.hasSupplements() && system.equals(c.getUrl()) && (version == null || versionIsFor(version, c.getVersion()))) {
+        candidates.add(c);
+      }
+    }
+    if (candidates.isEmpty()) {
+      return cs;
+    }
+    if (candidates.size() > 1) {
+      Collections.sort(candidates, new MetadataResourceVersionComparator<CodeSystem>(candidates));
+    }
+    return candidates.get(candidates.size() - 1);
+  }
+
+  private boolean versionIsFor(String version, String candidate) {
+    if (candidate == null) {
+      return false;
+    }
+    if (version.equals(candidate)) {
+      return true;
+    }
+    if (VersionUtilities.isSemVerWithWildcards(version) && VersionUtilities.isSemVer(candidate, true)) {
+      try {
+        return VersionUtilities.versionMatches(version, candidate);
+      } catch (Exception e) {
+        return false;
+      }
+    }
+    return false;
+  }
+
   @Override
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules) {
-    CodeSystem cs = fetchCodeSystem(system, rules);
+    CodeSystem cs = notASupplement(fetchCodeSystem(system, rules), system, null);
     if (cs != null) {
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
       if (supplements.size() > 0) {
@@ -842,7 +886,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
-    CodeSystem cs = fetchCodeSystem(system, rules, version, sourceOfReference);
+    CodeSystem cs = notASupplement(fetchCodeSystem(system, rules, version, sourceOfReference), system, version);
     if (cs != null) {
       List<CodeSystem> supplements = new ArrayList<>(codeSystems.getSupplements(cs));
       // getSupplements prefers supplements from the code system's own package, and only looks in other packages
@@ -1441,6 +1485,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
+  /**
+   * When the local check of a code in a batch fails, the code gets the answer validateCode() gives for it, so that
+   * the answer is the same whether the code is checked alone or in a batch (#2851). If that fails too, the code
+   * still gets an answer - an error - and the rest of the batch carries on
+   */
+  private ValidationResult batchFallback(ValidationOptions options, Coding coding, ValueSet vs, Exception localFailure) {
+    try {
+      return validateCode(options, "Coding", coding, vs, null);
+    } catch (Exception e) {
+      String msg = e.getMessage() != null ? e.getMessage() : localFailure.getMessage() != null ? localFailure.getMessage() : e.getClass().getName();
+      ValidationResult res = new ValidationResult(IssueSeverity.ERROR, msg, null).setErrorClass(TerminologyServiceErrorClass.UNKNOWN);
+      res.setDiagnostics("Local Error: " + localFailure.getMessage() + ". Then: " + e.getMessage());
+      return res;
+    }
+  }
+
   @Override
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean notUsed) {
     if (options == null) {
@@ -1474,12 +1534,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             // with a server to ask, the code is left for the server batch, as validateCode() does; without
             // one, the local error is the answer (#2851)
             if (!toServer) {
-              t.setResult(validateCode(options, "Coding", t.getCoding(), vs, null));
+              t.setResult(batchFallback(options, t.getCoding(), vs, e));
             }
           } catch (Exception e) {
             // anything else - a TerminologyServiceProtectionException (e.g. a required supplement that isn't
             // there), or a local failure - gets the same answer validateCode() gives for the code (#2851)
-            t.setResult(validateCode(options, "Coding", t.getCoding(), vs, null));
+            t.setResult(batchFallback(options, t.getCoding(), vs, e));
           }
         }
       }
@@ -4628,8 +4688,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void definitionsChanged() {
-    definitionsVersion++;
     synchronized (lock) {
+      definitionsVersion++;
       analyses.clear();
       cachedResourceNames = null;
       cachedResourceNameSet = null;
@@ -4637,8 +4697,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void storeAnalysis(Class className, Object analysis) {
-    if (definitionsVersion >= 0) {
-      synchronized (lock) {
+    synchronized (lock) {
+      analyses.put(className.getName(), analysis);
+    }
+  }
+
+  @Override
+  public void storeAnalysis(Class className, Object analysis, long startingDefinitionsVersion) {
+    synchronized (lock) {
+      // checked and stored together, holding the lock that a change takes: a change either happened before this (and the
+      // version differs), or comes after (and clears it)
+      if (definitionsVersion == startingDefinitionsVersion) {
         analyses.put(className.getName(), analysis);
       }
     }
