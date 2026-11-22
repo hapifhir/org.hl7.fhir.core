@@ -13,18 +13,48 @@ class ExecutionLimitsTest {
   @ValueSource(longs = {Long.MAX_VALUE, Long.MAX_VALUE - 1, 0, -1, Long.MIN_VALUE})
   void noTimeLimit(long maxMillis) {
     ExecutionLimits limits = new ExecutionLimits(maxMillis, 0, 0, 0);
-    assertFalse(limits.isOutOfTime());
-    assertFalse(limits.isOutOfTime());
+    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 3; i++) {
+      assertFalse(limits.isOutOfTime());
+    }
+    assertFalse(limits.isOutOfTimeNow());
   }
 
   @Test
   void runningOutOfTime() throws InterruptedException {
     ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
-    assertFalse(limits.isOutOfTime()); // starts the clock
+    assertFalse(limits.isOutOfTimeNow()); // starts the clock
     Thread.sleep(20);
-    assertTrue(limits.isOutOfTime());
+    assertTrue(limits.isOutOfTimeNow());
     assertEquals("0.001", limits.maxSeconds());
     assertEquals("60", new ExecutionLimits().maxSeconds());
+  }
+
+  /** isOutOfTime() reads the clock one call in CLOCK_EVERY: it says so within that many calls, and then stays out of time */
+  @Test
+  void runningOutOfTimeIsNoticedWithinAFewCalls() throws InterruptedException {
+    ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
+    assertFalse(limits.isOutOfTime()); // starts the clock
+    Thread.sleep(20);
+    int calls = 0;
+    while (!limits.isOutOfTime()) {
+      calls++;
+      assertTrue(calls < ExecutionLimits.CLOCK_EVERY, "not noticed after " + calls + " calls");
+    }
+    assertTrue(calls < ExecutionLimits.CLOCK_EVERY);
+    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 3; i++) {
+      assertTrue(limits.isOutOfTime());
+    }
+    assertTrue(limits.isOutOfTimeNow());
+  }
+
+  /** while there's time, it's never out of time, however often it's asked */
+  @Test
+  void notOutOfTimeWhileThereIsTime() {
+    ExecutionLimits limits = new ExecutionLimits(60000, 0, 0, 0);
+    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 10; i++) {
+      assertFalse(limits.isOutOfTime());
+    }
+    assertFalse(limits.isOutOfTimeNow());
   }
 
   @Test

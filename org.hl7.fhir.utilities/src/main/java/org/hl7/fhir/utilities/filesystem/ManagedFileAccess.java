@@ -152,28 +152,81 @@ public class ManagedFileAccess {
     return false;
   }
 
-  private static java.nio.file.Path realPath(String pathname) {
+  /**
+   * Where a path really is, as the file system would resolve it: symbolic links are followed as far as the path
+   * exists, and . and .. are resolved where they are, after the links before them (so /ig/link/../x is the folder above
+   * where link leads, not /ig/x - normalising the text first gets that wrong). Whatever doesn't exist yet is taken as
+   * plain folders that will be created. Null if the path isn't a path on this platform, or leads to a link to nowhere
+   */
+  public static java.nio.file.Path realPath(String pathname) {
     java.nio.file.Path p;
     try {
-      p = java.nio.file.Paths.get(pathname).toAbsolutePath().normalize();
+      p = java.nio.file.Paths.get(pathname).toAbsolutePath();
     } catch (java.nio.file.InvalidPathException e) {
       // not a path this platform has (e.g. a URL on Windows, where : * ? < > | can't be in a name): it isn't anywhere
       // that's allowed, and the caller gets the policy's IOException, not this unchecked one
       return null;
     }
+    // the longest part of the path that exists. Not normalised: the file system resolves the .. in /ig/link/.. after
+    // following link, and so do exists() and toRealPath()
     java.nio.file.Path existing = p;
     while (existing != null && !java.nio.file.Files.exists(existing, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
       existing = existing.getParent();
     }
     if (existing == null) {
-      return p;
+      return p.normalize();
     }
+    java.nio.file.Path real;
     try {
-      return existing.toRealPath().resolve(existing.relativize(p)).normalize();
+      real = existing.toRealPath();
     } catch (IOException e) {
       // a link to nowhere: it isn't anywhere that's allowed
       return null;
     }
+    if (existing.getNameCount() == p.getNameCount()) {
+      return real;
+    }
+    java.nio.file.Path rest = p.subpath(existing.getNameCount(), p.getNameCount());
+    boolean hasDotDot = false;
+    for (java.nio.file.Path seg : rest) {
+      hasDotDot = hasDotDot || "..".equals(seg.toString());
+    }
+    if (!hasDotDot) {
+      // none of the rest exists, so there are no links in it
+      return real.resolve(rest).normalize();
+    }
+    // with a .., the rest can lead back into what exists (new/../link/../x), so it's resolved a step at a time
+    java.nio.file.Path cur = real;
+    for (java.nio.file.Path seg : rest) {
+      String s = seg.toString();
+      if (".".equals(s)) {
+        continue;
+      }
+      if ("..".equals(s)) {
+        // cur is a real path (no links in it), so its parent is where .. really goes
+        cur = cur.getParent() == null ? cur : cur.getParent();
+      } else {
+        cur = cur.resolve(s);
+      }
+      if (java.nio.file.Files.exists(cur, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+        try {
+          cur = cur.toRealPath();
+        } catch (IOException e) {
+          return null;
+        }
+      }
+    }
+    return cur;
+  }
+
+  /**
+   * Whether path is inside root (or is root), where they really are (see {@link #realPath}). Compared by path segments,
+   * so /ig-other isn't inside /ig. False if either isn't a path, or leads to a link to nowhere
+   */
+  public static boolean isInside(String root, String path) {
+    java.nio.file.Path r = root == null ? null : realPath(root);
+    java.nio.file.Path p = path == null ? null : realPath(path);
+    return r != null && p != null && p.startsWith(r);
   }
 
   /** 

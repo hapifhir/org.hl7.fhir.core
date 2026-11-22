@@ -16,7 +16,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.hl7.fhir.support.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -15,7 +15,6 @@ import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -586,11 +585,8 @@ public class ConceptMapValidator extends BaseValidator {
       String key = CanonicalType.urlWithVersion(system.url, system.version);
       if (!checkServerURLs.containsKey(key)) {
         org.hl7.fhir.services.terminology.SystemSupportInformation txInfo = context.getTxSupportInfo(system.url, system.version);
-        supported = txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
+        supported = checkTxBatchSupport(errors, baseStack, txInfo, system.url + (system.version == null ? "" : "|" + system.version));
         checkServerURLs.put(key, supported);
-        if (!supported) {
-          warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack, false, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system.url + (system.version == null ? "" : "|" + system.version), txInfo.getServer());
-        }
       } else {
         supported = checkServerURLs.get(key);
       }

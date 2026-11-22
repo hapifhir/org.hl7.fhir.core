@@ -284,8 +284,8 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   /**
-   * removes &lt;...&gt; tags, as s.replaceAll("<[^>]*>", "") does, without the regex: it looks for a closing &gt; from
-   * every &lt;, so a string with many &lt;s and no &gt; took as long as the square of its length
+   * removes &lt;...&gt; tags, as replacing the regex &lt;[^&gt;]*&gt; with "" does, but without a regex: the regex looks
+   * for a closing &gt; from every &lt;, so a string with many &lt;s and no &gt; took as long as the square of its length
    */
   private static String stripHtml(String s) {
     StringBuilder b = new StringBuilder(s.length());

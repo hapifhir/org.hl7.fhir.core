@@ -322,7 +322,8 @@ public class GraphQLEngine implements IGraphQLEngine {
 
   private void checkTime() throws EGraphQLException {
     org.hl7.fhir.utilities.ExecutionLimits limits = run.getExecutionLimits();
-    if (limits.isOutOfTime()) {
+    // every time: what follows is a lookup or search, which the host does, and which can take a while
+    if (limits.isOutOfTimeNow()) {
       throw new EGraphQLException("The query didn't finish within " + limits.maxSeconds() + " seconds");
     }
   }

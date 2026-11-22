@@ -1632,7 +1632,13 @@ public class FHIRPathEngine {
    */
   private org.hl7.fhir.utilities.ExecutionLimits limitsFor(Object appInfo) {
     org.hl7.fhir.utilities.ExecutionLimits limits = org.hl7.fhir.utilities.LimitedExecutionContext.limitsOf(appInfo);
-    return limits != null ? limits : makeExecutionLimits();
+    if (limits == null) {
+      return makeExecutionLimits();
+    }
+    // an evaluation in a run that's under way: the clock is read now (once per evaluation), so one that starts after
+    // the run is out of time is refused at once, not some checks later (see ExecutionLimits.isOutOfTime)
+    limits.isOutOfTimeNow();
+    return limits;
   }
 
   /** a budget for a run, from this engine's settings (Liquid makes the budget for a template's run with this) */

@@ -16,7 +16,6 @@ import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
@@ -507,7 +506,7 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch, NodeStack baseStack, ValueSet vss) {
     if (batch.size() > 0) {
       SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
-      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+      if (checkTxBatchSupport(errors, baseStack, txInfo, system+(version == null ? "" : "|"+version))) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
         context.validateCodeBatch(txOptions(baseStack, vss), batch, null);

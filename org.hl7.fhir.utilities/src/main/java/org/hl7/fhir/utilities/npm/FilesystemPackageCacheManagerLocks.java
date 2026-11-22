@@ -10,9 +10,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -118,17 +116,26 @@ public class FilesystemPackageCacheManagerLocks {
       return result;
     }
 
+    /**
+     * Whether a lock file is left over: no process holds it. False if it has gone (whoever held it has finished, and
+     * moved it away): it isn't made again by looking at it - a lock file no process holds would make the package look
+     * like an incomplete install, and it would be deleted
+     */
     public boolean canLockFileBeHeldByThisProcess(File lockFile) throws IOException {
       return doWriteWithLock(() -> {
-      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+      try (FileChannel channel = openExistingLockFile(lockFile)) {
+        if (channel == null) {
+          return false;
+        }
+        Object opened = fileKey(lockFile);
         FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
         if (fileLock != null) {
           fileLock.release();
-          channel.close();
-          return true;
+          // the process that held it may have moved it away and released it while we waited: then it's not left over
+          return isStillTheLockFile(lockFile, opened);
         }
-      } catch (FileNotFoundException e) {
-        logSystemSpecificFileNotFoundException(e);
+      } catch (FileSystemException e) {
+        logSystemSpecificFileSystemException(e);
       }
       return false;});
     }
@@ -153,16 +160,26 @@ public class FilesystemPackageCacheManagerLocks {
       // Check if the file is locked by a process. If it is not, it is likely an incomplete package cache install, and
       // we should throw an exception.
       if (lockFile.isFile()) {
-        try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+        // not made if it isn't there: it can go between the check above and here, and making it again would leave a
+        // lock file no process holds, which every reader after this would refuse (until a write cleared it)
+        try (FileChannel channel = openExistingLockFile(lockFile)) {
+          if (channel == null) {
+            log.debug("checked for lockFile: gone");
+            return;
+          }
+          Object opened = fileKey(lockFile);
           FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
           if (fileLock != null) {
             fileLock.release();
-            channel.close();
-            throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
+            if (isStillTheLockFile(lockFile, opened)) {
+              throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
+            }
+            // the process that held it moved it away and released it while we looked: wait for whatever is there now
+          } else {
+            log.debug("File is locked ('" + lockFile.getAbsolutePath() + "').");
           }
-          log.debug("File is locked ('"+lockFile.getAbsolutePath()+"').");
-        } catch (FileNotFoundException e) {
-          logSystemSpecificFileNotFoundException(e);
+        } catch (FileSystemException e) {
+          logSystemSpecificFileSystemException(e);
         }
       }
       try {
@@ -345,7 +362,7 @@ public class FilesystemPackageCacheManagerLocks {
           FileLock fl = getFileLock(channel, lockParameters.withLockTimeoutTime(left).withLockTimeoutTimeUnit(TimeUnit.NANOSECONDS));
           if (fl == null) {
             log.debug("lockFile was moved away by the process that held it, but it hasn't released it yet, trying again: " + lockFile.getName());
-          } else if (SystemUtils.IS_OS_WINDOWS || (opened != null && opened.equals(fileKey(lockFile)))) {
+          } else if (isStillTheLockFile(lockFile, opened)) {
             fileLock[0] = fl;
             return channel;
           } else {
@@ -366,14 +383,6 @@ public class FilesystemPackageCacheManagerLocks {
       }
     }
 
-    /** identifies the file the name refers to (on Windows, there's no key, and the lock file isn't moved anyway) */
-    private Object fileKey(File file) {
-      try {
-        return Files.readAttributes(file.toPath(), java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS).fileKey();
-      } catch (IOException e) {
-        return null;
-      }
-    }
 
     private FileChannel getFileChannel(Set<OpenOption> openOptions) throws IOException, InterruptedException {
       final int retries = 5;
@@ -408,12 +417,45 @@ public class FilesystemPackageCacheManagerLocks {
     }
   }
 
-  private static void logSystemSpecificFileNotFoundException(FileNotFoundException e) {
-    if (SystemUtils.IS_OS_WINDOWS && e.getMessage().contains("The process cannot access the file because it is being used by another process")) {
-      log.debug("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
+  private static void logSystemSpecificFileSystemException(FileSystemException e) {
+    if (SystemUtils.IS_OS_WINDOWS && String.valueOf(e.getMessage()).contains("being used by another process")) {
+      log.debug("Windows reported that the lock file can't be opened because it is locked by another process: {}", String.valueOf(e));
     } else {
-      log.warn("Unexpected FileNotFoundException while evaluating is a lock file: ", e);
+      log.warn("Unexpected FileSystemException while evaluating is a lock file: ", e);
     }
+  }
+
+  /**
+   * Opens a lock file that is there, to see whether it's locked; null if it isn't there (any more). Never makes it
+   * (as RandomAccessFile(f, "rw") does): a lock file made by looking for one is a lock file no process holds
+   */
+  static FileChannel openExistingLockFile(File lockFile) throws IOException {
+    try {
+      return FileChannel.open(lockFile.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE);
+    } catch (NoSuchFileException e) {
+      return null;
+    }
+  }
+
+  /** identifies the file the name refers to (on Windows, there's no key, and the lock file isn't moved anyway) */
+  private static Object fileKey(File file) {
+    try {
+      return Files.readAttributes(file.toPath(), java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS).fileKey();
+    } catch (IOException e) {
+      return null;
+    }
+  }
+
+  /**
+   * Whether the lock file is still the file that was opened (opened: its fileKey then). A process that holds the lock
+   * moves the lock file away before it releases it, so a file locked once it's released can be the one moved away. On
+   * Windows the lock file isn't moved (and there are no keys): it's still the lock file if it's still there
+   */
+  private static boolean isStillTheLockFile(File lockFile, Object opened) {
+    if (SystemUtils.IS_OS_WINDOWS) {
+      return lockFile.exists();
+    }
+    return opened != null && opened.equals(fileKey(lockFile));
   }
 
   public synchronized PackageLock getPackageLock(String packageName) throws IOException {

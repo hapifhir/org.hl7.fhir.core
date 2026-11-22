@@ -226,7 +226,9 @@ public class TranslationValidator extends BaseValidator {
         }
       }
     }
-    index.replaceAll((k, v) -> Collections.unmodifiableList(v));
+    for (Map.Entry<String, List<GroupWithMap>> e : index.entrySet()) {
+      e.setValue(Collections.unmodifiableList(e.getValue()));
+    }
     return Collections.unmodifiableMap(index);
   }
 

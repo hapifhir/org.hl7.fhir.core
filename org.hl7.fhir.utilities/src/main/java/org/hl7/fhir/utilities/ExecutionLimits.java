@@ -27,7 +27,16 @@ public class ExecutionLimits {
   private final int maxStringLength;
   private final long maxSteps;
 
-  private long deadline; // 0: the clock hasn't started
+  /**
+   * isOutOfTime() reads the clock one call in this many. It's cheap (~25ns), but FHIRPath asks twice for every node it
+   * evaluates; a run goes over its time by no more than this many steps
+   */
+  static final int CLOCK_EVERY = 50;
+
+  private boolean started; // whether the clock has started
+  private long start; // System.nanoTime() when it did
+  private boolean outOfTime; // once out of time, always out of time
+  private int sinceClock; // calls to isOutOfTime() since the clock was last read
   private int depth;
   private long steps;
 
@@ -57,19 +66,56 @@ public class ExecutionLimits {
   }
 
   /**
-   * Whether the run is out of time. The clock starts the first time this is asked
+   * Whether the run is out of time. The clock starts the first time this is asked. To keep this cheap, the clock is only
+   * read one call in CLOCK_EVERY, so a run is found to be out of time up to that many calls late. Once out of time, the
+   * run stays out of time (so a caller can ask, after an engine has failed, whether that was why)
    */
   public boolean isOutOfTime() {
     if (maxMillis <= 0) {
       return false;
     }
-    long now = System.currentTimeMillis();
-    if (deadline == 0) {
-      // the sum can't overflow (a huge maxMillis is as good as no limit)
-      deadline = now > Long.MAX_VALUE - maxMillis ? Long.MAX_VALUE : now + maxMillis;
+    if (outOfTime) {
+      return true;
+    }
+    if (!started) {
+      return startClock();
+    }
+    if (++sinceClock < CLOCK_EVERY) {
       return false;
     }
-    return now > deadline;
+    return readClock();
+  }
+
+  /**
+   * As isOutOfTime(), but always reads the clock: for a check before a step that may itself take a while (a lookup or
+   * search that the host does), where being up to CLOCK_EVERY steps late would be too late
+   */
+  public boolean isOutOfTimeNow() {
+    if (maxMillis <= 0) {
+      return false;
+    }
+    if (outOfTime) {
+      return true;
+    }
+    if (!started) {
+      return startClock();
+    }
+    return readClock();
+  }
+
+  private boolean startClock() {
+    started = true;
+    start = System.nanoTime();
+    return false;
+  }
+
+  private boolean readClock() {
+    sinceClock = 0;
+    // nanoTime (not currentTimeMillis): it's not changed when the system clock is set. Elapsed time is compared, not a
+    // deadline, so a huge maxMillis can't overflow
+    long elapsedMillis = (System.nanoTime() - start) / 1_000_000;
+    outOfTime = elapsedMillis > maxMillis;
+    return outOfTime;
   }
 
   /**

@@ -752,18 +752,34 @@ public class TerminologyCache {
     }
   }
 
-  /**
-   * the external value sets and code systems the cache keeps: vs-{uuid}.json and cs-{uuid}.json, the uuid
-   * lower case (see UUIDUtilities.makeUuidLC). Nothing else that happens to start vs- or cs-
-   */
-  private static final java.util.regex.Pattern EXTERNAL_FILE = java.util.regex.Pattern.compile("(vs|cs)-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.json");
-
   /** whether a file in the folder is one the cache writes */
   static boolean isCacheFile(String fn) {
     return fn.endsWith(CACHE_FILE_EXTENSION) || fn.endsWith(NONCE_FILE_EXTENSION)
         || (fn.endsWith(TEMP_FILE_EXTENSION) && fn.contains(CACHE_FILE_EXTENSION+"."))
         || Utilities.existsInList(fn, "version.ctl", "servers.ini", "vs-externals.json", "cs-externals.json")
-        || EXTERNAL_FILE.matcher(fn).matches();
+        || isExternalFile(fn);
+  }
+
+  /**
+   * the external value sets and code systems the cache keeps: vs-{uuid}.json and cs-{uuid}.json, the uuid
+   * lower case (see UUIDUtilities.makeUuidLC). Nothing else that happens to start vs- or cs-. Checked by hand, not
+   * with a regex
+   */
+  static boolean isExternalFile(String fn) {
+    if (fn.length() != 3 + 36 + 5 || !(fn.startsWith("vs-") || fn.startsWith("cs-")) || !fn.endsWith(".json")) {
+      return false;
+    }
+    for (int i = 0; i < 36; i++) {
+      char c = fn.charAt(3 + i);
+      if (i == 8 || i == 13 || i == 18 || i == 23) {
+        if (c != '-') {
+          return false;
+        }
+      } else if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public boolean hasCapabilityStatement(String address) {

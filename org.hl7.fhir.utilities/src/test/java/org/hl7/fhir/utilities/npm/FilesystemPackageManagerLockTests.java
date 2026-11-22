@@ -125,6 +125,30 @@ public class FilesystemPackageManagerLockTests {
     Assertions.assertTrue(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
   }
 
+  /**
+   * A lock file that has gone (whoever held it finished) isn't left over, and looking for it doesn't make it again: a
+   * lock file no process holds makes the package look like an incomplete install (and it gets deleted), and makes
+   * every read of the package fail
+   */
+  @Test
+  void testWhenLockFileIsGone_canLockFileBeHeldByThisProcessIsFalseAndDoesNotMakeIt() throws IOException {
+    File lockFile = getPackageLockFile();
+    Assertions.assertFalse(lockFile.exists());
+    Assertions.assertFalse(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
+    Assertions.assertFalse(lockFile.exists());
+  }
+
+  @Test
+  void testOpeningALockFileThatIsGoneDoesNotMakeIt() throws IOException {
+    File lockFile = getPackageLockFile();
+    Assertions.assertNull(FilesystemPackageCacheManagerLocks.openExistingLockFile(lockFile));
+    Assertions.assertFalse(lockFile.exists());
+    lockFile.createNewFile();
+    try (java.nio.channels.FileChannel channel = FilesystemPackageCacheManagerLocks.openExistingLockFile(lockFile)) {
+      Assertions.assertNotNull(channel);
+    }
+  }
+
   @Test
   void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws InterruptedException, TimeoutException, IOException {
     File lockFile = getPackageLockFile();

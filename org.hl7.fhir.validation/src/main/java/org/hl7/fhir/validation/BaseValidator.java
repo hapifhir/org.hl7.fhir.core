@@ -639,6 +639,26 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return warning(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), id, thePass, msg, theMessageArguments);
   }
 
+  /**
+   * Whether codes from a code system can be validated as a batch, by the server that getTxSupportInfo found for it; if
+   * they can't, a warning says why, at stack. There may be no server at all: there's no terminology service (none was
+   * configured, or the validator stopped using it when it couldn't be reached), or no server is known to support the code
+   * system. Otherwise the server has to support batch validation
+   *
+   * @param system the code system, as the message names it (url, or url|version)
+   */
+  protected boolean checkTxBatchSupport(List<ValidationMessage> errors, NodeStack stack, org.hl7.fhir.services.terminology.SystemSupportInformation txInfo, String system) {
+    if (txInfo.getServer() == null) {
+      warning(errors, "2026-11-22", IssueType.NOTSUPPORTED, stack, false, context.isNoTerminologyServer()
+        ? I18nConstants.VALUESET_TXVER_BATCH_NO_SERVICE : I18nConstants.VALUESET_TXVER_BATCH_NO_SERVER, system);
+      return false;
+    }
+    boolean batchOk = txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(org.hl7.fhir.standalone.terminology.client.TerminologyClientContext.TX_BATCH_VERSION,
+      txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
+    return warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, stack, batchOk, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED,
+      txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion(), system, txInfo.getServer());
+  }
+
   protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, int num, String msg, Object... theMessageArguments) {
     return warningPlural(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, num, msg, theMessageArguments);
   }

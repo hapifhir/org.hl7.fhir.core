@@ -429,6 +429,26 @@ import org.junit.jupiter.api.*;
      }
    }
 
+   /**
+   * a .. after a link goes up from where the link leads, as emptying the folder would: work/link/.. is the git
+   * repository the link leads into, not work (not on Windows, where the file system takes the .. off first)
+   */
+   @Test
+   @org.junit.jupiter.api.condition.DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
+   void aLinkThenDotDotDoesNotHideWhereTheFolderIs() throws IOException {
+     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-link-dotdot"));
+     java.nio.file.Path repo = Files.createDirectories(dir.resolve("repo"));
+     Files.createDirectories(repo.resolve(".git"));
+     java.nio.file.Path sub = Files.createDirectories(repo.resolve("sub"));
+     java.nio.file.Path work = Files.createDirectories(dir.resolve("work"));
+     Files.createSymbolicLink(work.resolve("link"), sub);
+     Files.write(repo.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+     assertNotNull(FileUtilities.whyNotSafeToEmpty(work + File.separator + "link" + File.separator + ".."));
+     assertThrows(IOException.class, () -> FileUtilities.clearDirectory(work + File.separator + "link" + File.separator + ".."));
+     assertTrue(Files.exists(repo.resolve("a.txt")));
+     assertNull(FileUtilities.whyNotSafeToEmpty(work.toString()));
+   }
+
    /** deleting a folder that is a link deletes the link */
    @Test
    void atomicDeleteDirectoryOfALinkDeletesTheLink() throws IOException {

@@ -675,7 +675,8 @@ public class FileUtilities {
   public static String whyNotSafeToEmpty(String folder) {
     Path real;
     try {
-      real = Paths.get(folder).toAbsolutePath().normalize().toRealPath();
+      // not normalised first: toRealPath resolves a .. after a link from where the link leads, as emptying it would
+      real = Paths.get(folder).toAbsolutePath().toRealPath();
     } catch (Exception e) {
       return null; // it doesn't exist, so there's nothing to empty
     }
@@ -736,7 +737,7 @@ public class FileUtilities {
       return null;
     }
     try {
-      return Paths.get(path).toAbsolutePath().normalize().toRealPath();
+      return Paths.get(path).toAbsolutePath().toRealPath();
     } catch (Exception e) {
       return null;
     }
