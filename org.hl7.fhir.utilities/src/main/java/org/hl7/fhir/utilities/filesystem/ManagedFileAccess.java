@@ -51,7 +51,7 @@ import java.util.List;
 public class ManagedFileAccess {
   
   /**
-   * @deprecated only used by the MANAGED policy, which doesn't work (see FileAccessPolicy.MANAGED)
+   * @deprecated only used by the MANAGED policy, which doesn't currently work (see FileAccessPolicy.MANAGED)
    */
   @Deprecated
   public interface IFileAccessor {
