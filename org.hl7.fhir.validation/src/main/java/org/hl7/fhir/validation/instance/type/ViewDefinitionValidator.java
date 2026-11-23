@@ -2,10 +2,13 @@ package org.hl7.fhir.validation.instance.type;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.validation.ValidatorSession;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -19,6 +22,7 @@ import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.services.sql.Column;
 import org.hl7.fhir.services.sql.ColumnKind;
 import org.hl7.fhir.services.sql.Runner;
+import org.hl7.fhir.services.sql.Validator;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -68,7 +72,7 @@ public class ViewDefinitionValidator extends BaseValidator {
       for (Element v : vd.getChildren("fhirVersion")) {
         String ver = v.primitiveValue();
         if (ver.equals(context.getFHIRVersion())) {
-          makeDefaultContext(versions);
+          versions.add(defaultContext());
         } else {
           try {
             makeVersionSpecificContext(versions, ver);
@@ -78,42 +82,91 @@ public class ViewDefinitionValidator extends BaseValidator {
         }
       }
     } else {
-      makeDefaultContext(versions);
+      versions.add(defaultContext());
     }
 
-    boolean first = true;
+    int i = 0;
+    for (Element constant : vd.getChildren("constant")) {
+      ok = checkConstant(hostContext, errors, stack.push(constant, i, null, null), constant) && ok;
+      i++;
+    }
+
+    Element resource = vd.getNamedChild("resource");
+    String resourceName = resource == null ? null : resource.primitiveValue();
+    if (resourceName == null) {
+      return false;
+    }
+    NodeStack resourceStack = stack.push(resource, -1, null, null);
+    // A type in the FHIR namespace is identified by its name, and any other type by its canonical URL.
+    if (resourceName.startsWith(TypeDetails.FHIR_NS)) {
+      rule(errors, "2026-11-17", IssueType.BUSINESSRULE, resourceStack, false, I18nConstants.VIEWDEFINITION_RESOURCE_USE_NAME, resourceName, resourceName.substring(TypeDetails.FHIR_NS.length()));
+      return false;
+    }
+    boolean named = !Utilities.isAbsoluteUrl(resourceName);
+
+    // The contexts that define the type, each with the description of its version for messages.
+    // The paths in the view are checked against each of them.
+    Map<VersionEvaluationContext, String> passes = new LinkedHashMap<>();
+    boolean unresolved = false;
+    boolean wrongKind = false;
     for (VersionEvaluationContext vec : versions) {
       String vdesc = versions.size() == 1 ? "" : " for version "+VersionUtilities.getNameForVersion(vec.context.getFHIRVersion());
-
-      String resourceName = vd.getNamedChildValue("resource");
-      if (resourceName != null) {
-        if (rule(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, context.getResourceNamesAsSet().contains(resourceName), I18nConstants.VIEWDEFINITION_UNKNOWN_RESOURCE, resourceName)) {
-          int i = 0;
-          if (first) {
-            for (Element constant : vd.getChildren("constant")) {
-              ok = checkConstant(hostContext, errors, stack.push(constant, i, null, null), constant) && ok;
-              i++;
-            }
-          }
-          i = 0;
-          for (Element where : vd.getChildren("where")) {
-            ok = checkWhere(hostContext, errors, vd, stack.push(where, i, null, null), where, resourceName, vec, vdesc, first) && ok;
-            i++;
-          }
-
-          TypeDetails t = new TypeDetails(CollectionStatus.SINGLETON, resourceName);
-          i = 0;
-          for (Element select : vd.getChildren("select")) {
-            ok = checkSelect(hostContext, errors, vd, stack.push(select, i, null, null), select, resourceName, t, columns, vec, vdesc, first) && ok;
-            i++;
-          }
-        } 
-      } else {
+      StructureDefinition sd = Validator.fetchType(vec.context, resourceName);
+      boolean fromHost = false;
+      if (sd == null && vec.context != context) {
+        // Additional resources and logical models are defined by IGs, which are only loaded into
+        // the host context. A type from the host's core package is not borrowed: it belongs to
+        // the host's FHIR version, not to the declared one.
+        sd = Validator.fetchType(context, resourceName);
+        fromHost = sd != null && !isFromCorePackage(sd);
+        if (!fromHost) {
+          sd = null;
+        }
+      }
+      if (sd != null && Validator.isViewType(sd)) {
+        if (fromHost) {
+          // Checked once against the host context, whichever versions fell back to it. If the
+          // host version was itself declared, its pass keeps the description of that version.
+          passes.putIfAbsent(defaultContext(), "");
+        } else {
+          passes.putIfAbsent(vec, vdesc);
+        }
+      } else if (named) {
+        rule(errors, "2024-11-14", IssueType.BUSINESSRULE, resourceStack, false, I18nConstants.VIEWDEFINITION_UNKNOWN_RESOURCE, resourceName, vdesc);
         ok = false;
+      } else if (sd == null) {
+        unresolved = true;
+      } else {
+        wrongKind = true;
+      }
+    }
+    // The definition may belong to an IG that is not loaded, so the view cannot be called invalid.
+    warning(errors, "2026-11-17", IssueType.NOTFOUND, resourceStack, I18nConstants.VIEWDEFINITION_RESOURCE_NOT_RESOLVED, !unresolved, I18nConstants.VIEWDEFINITION_RESOURCE_NOT_RESOLVED, resourceName);
+    ok = rule(errors, "2026-11-17", IssueType.BUSINESSRULE, resourceStack, !wrongKind, I18nConstants.VIEWDEFINITION_RESOURCE_WRONG_KIND, resourceName) && ok;
+
+    boolean first = true;
+    for (Map.Entry<VersionEvaluationContext, String> pass : passes.entrySet()) {
+      VersionEvaluationContext vec = pass.getKey();
+      String vdesc = pass.getValue();
+      i = 0;
+      for (Element where : vd.getChildren("where")) {
+        ok = checkWhere(hostContext, errors, vd, stack.push(where, i, null, null), where, resourceName, vec, vdesc, first) && ok;
+        i++;
+      }
+
+      TypeDetails t = new TypeDetails(CollectionStatus.SINGLETON, resourceName);
+      i = 0;
+      for (Element select : vd.getChildren("select")) {
+        ok = checkSelect(hostContext, errors, vd, stack.push(select, i, null, null), select, resourceName, t, columns, vec, vdesc, first) && ok;
+        i++;
       }
       first = false;
     }
     return ok;
+  }
+
+  private boolean isFromCorePackage(StructureDefinition sd) {
+    return sd.getSourcePackage() != null && VersionUtilities.isCorePackage(sd.getSourcePackage().getId());
   }
 
   private void makeVersionSpecificContext(List<VersionEvaluationContext> versions, String ver) throws FHIRException, IOException {
@@ -129,14 +182,14 @@ public class ViewDefinitionValidator extends BaseValidator {
     }
   }
 
-  private void makeDefaultContext(List<VersionEvaluationContext> versions) {
-    if (session.getObjects().containsKey(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion())) {
-      versions.add((VersionEvaluationContext) session.getObjects().get(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion()));
-    } else {
-      var vec = new VersionEvaluationContext(context);
-      session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion(), vec);
-      versions.add(vec);
+  private VersionEvaluationContext defaultContext() {
+    String key = ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion();
+    VersionEvaluationContext vec = (VersionEvaluationContext) session.getObjects().get(key);
+    if (vec == null) {
+      vec = new VersionEvaluationContext(context);
+      session.getObjects().put(key, vec);
     }
+    return vec;
   }
 
   private boolean checkSelect(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, NodeStack stack, Element select,

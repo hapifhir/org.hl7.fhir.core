@@ -52,6 +52,7 @@ public class Validator {
   private TrueFalseOrUnknown supportsNeedsName;
 
   private String resourceName;
+  private String resourceType;
   private String name;
 
   public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, @Nonnull TrueFalseOrUnknown supportsArrays, @Nonnull TrueFalseOrUnknown supportsComplexTypes, @Nonnull TrueFalseOrUnknown supportsNeedsName) {
@@ -66,6 +67,42 @@ public class Validator {
 
   public String getResourceName() {
     return resourceName;
+  }
+
+  /**
+   * @return the type of the StructureDefinition that ViewDefinition.resource resolved to: a name
+   *     for a type in the FHIR namespace and a URL for any other, or null if it did not resolve
+   */
+  public String getResourceType() {
+    return resourceType;
+  }
+
+  /**
+   * Fetches the definition of the type that a ViewDefinition.resource value names. A name is
+   * relative to http://hl7.org/fhir/StructureDefinition/, and anything else is the canonical URL
+   * of the definition.
+   *
+   * @param context the context to look in
+   * @param resource the value of ViewDefinition.resource
+   * @return the definition, or null if the context has no definition with exactly that URL
+   */
+  public static StructureDefinition fetchType(IWorkerContext context, String resource) {
+    String url = TypeDetails.ProfiledType.ns(resource);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
+    // The context also resolves a URL that carries a version, which does not identify a type.
+    return sd != null && url.equals(sd.getUrl()) ? sd : null;
+  }
+
+  /**
+   * A view can be based upon a concrete resource type or logical model, but not upon an abstract
+   * type, a data type or a profile.
+   *
+   * @param sd the definition that ViewDefinition.resource resolved to
+   * @return true if a view can be based upon the type
+   */
+  public static boolean isViewType(StructureDefinition sd) {
+    return (sd.getKind() == StructureDefinition.StructureDefinitionKind.RESOURCE || sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
+        && sd.getDerivation() == StructureDefinition.TypeDerivationRule.SPECIALIZATION && !sd.getAbstract();
   }
 
 
@@ -101,9 +138,9 @@ public class Validator {
       error(path, viewDefinition, "resource must be a string", IssueType.INVALID);      
     } else {
       resourceName = resourceNameJ.asString();
-      if (!context.getResourceNamesAsSet().contains(resourceName)) {      
-        error(path+".resource", resourceNameJ, "The resource '"+resourceName+"' is not a valid resource type", IssueType.BUSINESSRULE);
-      } else {
+      StructureDefinition type = resolveType(path+".resource", resourceNameJ);
+      if (type != null) {
+        resourceType = type.getType();
         int i = 0;
         if (checkAllObjects(path, viewDefinition, "constant")) {
           for (JsonObject constant : viewDefinition.getJsonObjects("constant")) {
@@ -136,6 +173,31 @@ public class Validator {
         }
       }
     }
+  }
+
+  /**
+   * Resolves ViewDefinition.resource to the definition of the type that the view is based upon,
+   * and reports an error if it does not name one. A type in the FHIR namespace is identified by
+   * its name, and any other type by its canonical URL. The columns of a view cannot be typed
+   * without the definition, so a URL that does not resolve is an error.
+   */
+  private StructureDefinition resolveType(String path, JsonElement resourceNameJ) {
+    if (resourceName.startsWith(STRUCTURE_DEFINITION_NS)) {
+      error(path, resourceNameJ, "The type '"+resourceName+"' is in the FHIR namespace, so it must be identified by its name '"+resourceName.substring(STRUCTURE_DEFINITION_NS.length())+"'", IssueType.BUSINESSRULE);
+      return null;
+    }
+    StructureDefinition sd = fetchType(context, resourceName);
+    if (sd != null && isViewType(sd)) {
+      return sd;
+    }
+    if (!Utilities.isAbsoluteUrl(resourceName)) {
+      error(path, resourceNameJ, "The resource '"+resourceName+"' is not a valid resource type", IssueType.BUSINESSRULE);
+    } else if (sd == null) {
+      error(path, resourceNameJ, "The type '"+resourceName+"' could not be resolved to a StructureDefinition", IssueType.NOTFOUND);
+    } else {
+      error(path, resourceNameJ, "The type '"+resourceName+"' is not a resource type or a logical model", IssueType.BUSINESSRULE);
+    }
+    return null;
   }
 
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {

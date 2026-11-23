@@ -34,6 +34,9 @@ import org.hl7.fhir.r4.model.OidType;
 import org.hl7.fhir.r4.model.PositiveIntType;
 import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TimeType;
 import org.hl7.fhir.r4.model.UnsignedIntType;
 import org.hl7.fhir.r4.model.UriType;
@@ -81,6 +84,7 @@ public class Validator {
   private TrueFalseOrUnknown supportsNeedsName;
 
   private String resourceName;
+  private String resourceType;
   private String name;
 
   public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, @Nonnull TrueFalseOrUnknown supportsArrays, @Nonnull TrueFalseOrUnknown supportsComplexTypes, @Nonnull TrueFalseOrUnknown supportsNeedsName) {
@@ -95,6 +99,14 @@ public class Validator {
 
   public String getResourceName() {
     return resourceName;
+  }
+
+  /**
+   * @return the type of the StructureDefinition that ViewDefinition.resource resolved to: a name
+   *     for a type in the FHIR namespace and a URL for any other, or null if it did not resolve
+   */
+  public String getResourceType() {
+    return resourceType;
   }
 
 
@@ -130,9 +142,9 @@ public class Validator {
       error(path, viewDefinition, "resource must be a string", IssueType.INVALID);      
     } else {
       resourceName = resourceNameJ.asString();
-      if (!context.getResourceNamesAsSet().contains(resourceName)) {      
-        error(path+".resource", resourceNameJ, "The resource '"+resourceName+"' is not a valid resource type", IssueType.BUSINESSRULE);
-      } else {
+      StructureDefinition type = resolveType(path+".resource", resourceNameJ);
+      if (type != null) {
+        resourceType = type.getType();
         int i = 0;
         if (checkAllObjects(path, viewDefinition, "constant")) {
           for (JsonObject constant : viewDefinition.getJsonObjects("constant")) {
@@ -165,6 +177,38 @@ public class Validator {
         }
       }
     }
+  }
+
+  /**
+   * Resolves ViewDefinition.resource to the definition of the type that the view is based upon,
+   * and reports an error if it does not name one. A type in the FHIR namespace is identified by
+   * its name, and any other type by its canonical URL. A view can be based upon a concrete resource
+   * type or logical model, but not upon an abstract type, a data type or a profile. The columns of
+   * a view cannot be typed without the definition, so a URL that does not resolve is an error.
+   */
+  private StructureDefinition resolveType(String path, JsonElement resourceNameJ) {
+    if (resourceName.startsWith(TypeDetails.FHIR_NS)) {
+      error(path, resourceNameJ, "The type '"+resourceName+"' is in the FHIR namespace, so it must be identified by its name '"+resourceName.substring(TypeDetails.FHIR_NS.length())+"'", IssueType.BUSINESSRULE);
+      return null;
+    }
+    String url = TypeDetails.ProfiledType.ns(resourceName);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    // The context also resolves a URL that carries a version, which does not identify a type.
+    if (sd != null && !url.equals(sd.getUrl())) {
+      sd = null;
+    }
+    if (sd != null && (sd.getKind() == StructureDefinitionKind.RESOURCE || sd.getKind() == StructureDefinitionKind.LOGICAL)
+        && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
+      return sd;
+    }
+    if (!Utilities.isAbsoluteUrl(resourceName)) {
+      error(path, resourceNameJ, "The resource '"+resourceName+"' is not a valid resource type", IssueType.BUSINESSRULE);
+    } else if (sd == null) {
+      error(path, resourceNameJ, "The type '"+resourceName+"' could not be resolved to a StructureDefinition", IssueType.NOTFOUND);
+    } else {
+      error(path, resourceNameJ, "The type '"+resourceName+"' is not a resource type or a logical model", IssueType.BUSINESSRULE);
+    }
+    return null;
   }
 
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
