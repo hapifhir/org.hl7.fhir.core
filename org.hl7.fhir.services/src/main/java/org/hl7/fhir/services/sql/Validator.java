@@ -94,15 +94,15 @@ public class Validator {
   }
 
   /**
-   * A view can be based upon a resource type or a logical model, but not upon a data type or a
-   * profile.
+   * A view can be based upon a concrete resource type or logical model, but not upon an abstract
+   * type, a data type or a profile.
    *
    * @param sd the definition that ViewDefinition.resource resolved to
    * @return true if a view can be based upon the type
    */
   public static boolean isViewType(StructureDefinition sd) {
     return (sd.getKind() == StructureDefinition.StructureDefinitionKind.RESOURCE || sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
-        && sd.getDerivation() == StructureDefinition.TypeDerivationRule.SPECIALIZATION;
+        && sd.getDerivation() == StructureDefinition.TypeDerivationRule.SPECIALIZATION && !sd.getAbstract();
   }
 
 

@@ -164,6 +164,14 @@ class ViewResourceTypeTests {
     assertOneErrorAtResource(v, "'HumanName' is not a valid resource type");
   }
 
+  // An abstract type such as DomainResource has no instances of its own, so it is not a valid
+  // basis for a view.
+  @Test
+  void abstractTypeNameIsRejected() throws Exception {
+    Validator v = validate(view("DomainResource", "id"));
+    assertOneErrorAtResource(v, "'DomainResource' is not a valid resource type");
+  }
+
   // A version is not part of the name of a type.
   @Test
   void versionedNameIsRejected() throws Exception {

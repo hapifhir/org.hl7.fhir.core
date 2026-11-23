@@ -316,6 +316,16 @@ class ViewDefinitionValidatorTests {
     assertOneWithId(messages, I18nConstants.VIEWDEFINITION_UNKNOWN_RESOURCE);
   }
 
+  // An abstract type such as DomainResource has no instances of its own, so it is not a valid
+  // basis for a view.
+  @Test
+  void abstractTypeNameIsRejected() {
+    List<ValidationMessage> messages = validate(view("DomainResource",
+        "{ \"column\": [" + column("id", "id", "id") + "] }"));
+    ValidationMessage m = assertOneWithId(messages, I18nConstants.VIEWDEFINITION_UNKNOWN_RESOURCE);
+    assertEquals(IssueSeverity.ERROR, m.getLevel());
+  }
+
   // ---- ViewDefinition.resource: types named by canonical URL ----
 
   // A logical model is named by the canonical URL of its StructureDefinition. The where and select

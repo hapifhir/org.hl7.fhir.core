@@ -181,9 +181,9 @@ public class Validator {
   /**
    * Resolves ViewDefinition.resource to the definition of the type that the view is based upon,
    * and reports an error if it does not name one. A type in the FHIR namespace is identified by
-   * its name, and any other type by its canonical URL. A view can be based upon a resource type or
-   * a logical model, but not upon a data type or a profile. The columns of a view cannot be typed
-   * without the definition, so a URL that does not resolve is an error.
+   * its name, and any other type by its canonical URL. A view can be based upon a concrete resource
+   * type or logical model, but not upon an abstract type, a data type or a profile. The columns of
+   * a view cannot be typed without the definition, so a URL that does not resolve is an error.
    */
   private StructureDefinition resolveType(String path, JsonElement resourceNameJ) {
     if (resourceName.startsWith(TypeDetails.FHIR_NS)) {
@@ -197,7 +197,7 @@ public class Validator {
       sd = null;
     }
     if (sd != null && (sd.getKind() == StructureDefinitionKind.RESOURCE || sd.getKind() == StructureDefinitionKind.LOGICAL)
-        && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
       return sd;
     }
     if (!Utilities.isAbsoluteUrl(resourceName)) {
