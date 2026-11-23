@@ -1793,7 +1793,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
         vse = valueset.getExpansion();        
 
       } catch (Exception e1) {
-        return null;
+        // the include can't be expanded (e.g. it lists a code the code system doesn't have): still look
+        // the codes up one by one below, rather than losing the displays and definitions of all of them
+        vse = null;
       }
     }
     

@@ -676,7 +676,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private String lookupDisplay(Coding c) {
     CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion(), null, valueset);
     if (cs != null) {
-      ConceptDefinitionComponent cd = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
+      ConceptDefinitionComponent cd = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode());
       if (cd != null) {
         return getPreferredDisplay(cd, cs); 
       }
@@ -1061,13 +1061,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.setSeverity(IssueSeverity.ERROR);
         res.setMessage(CommaSeparatedStringBuilder.join("; ", msgs));
       } else {
+        boolean warning = false;
         for (OperationOutcomeIssueComponent issue : issues) {
           if (issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR && Utilities.existsInList(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID), "INACTIVE_CONCEPT_FOUND", I18nConstants.CODESYSTEM_VERSION_NEEDED)) {
             msgs.add(issue.getDetails().getText());
+            warning = warning || issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING;
           }
         }
         if (!msgs.isEmpty()) {
           res.setMessage(CommaSeparatedStringBuilder.join("; ", msgs));
+          // the message comes from these issues, so the result has their severity (#2872)
+          IssueSeverity sev = warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION;
+          if (res.getSeverity() == null || res.getSeverity().ordinal() > sev.ordinal()) {
+            res.setSeverity(sev);
+          }
         }
       }
     }

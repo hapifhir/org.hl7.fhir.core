@@ -437,10 +437,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       ch = compareDataTypesWithTracking("pattern", edl.getPattern(), edr.getPattern(), null, IssueSeverity.ERROR, null, edr) || ch;
       ch = compareDataTypesWithTracking("minValue", edl.getMinValue(), edr.getMinValue(), null, IssueSeverity.ERROR, null, edr) || ch;
       ch = compareDataTypesWithTracking("maxValue", edl.getMaxValue(), edr.getMaxValue(), null, IssueSeverity.ERROR, null, edr) || ch;
-      ch = comparePrimitivesWithTracking("maxLength", edl.getMaxLengthElement(), edr.getMaxLengthElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
-      ch = comparePrimitivesWithTracking("mustHaveValue", edl.getMustHaveValueElement(), edr.getMustHaveValueElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("maxLength", edl.getMaxLengthElement(), edr.getMaxLengthElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
+      ch = comparePrimitivesWithTracking("mustHaveValue", edl.getMustHaveValueElement(), edr.getMustHaveValueElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
       ch = comparePrimitivesWithTracking("valueAlternatives", edl.getValueAlternatives(), edr.getValueAlternatives(), null, IssueSeverity.INFORMATION, null, edr) || ch;
-      ch = comparePrimitivesWithTracking("isModifier", edl.getIsModifierElement(), edr.getIsModifierElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("isModifier", edl.getIsModifierElement(), edr.getIsModifierElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
       
       def = compareTypes(path, sliceName, edl, edr, res) || def;
       

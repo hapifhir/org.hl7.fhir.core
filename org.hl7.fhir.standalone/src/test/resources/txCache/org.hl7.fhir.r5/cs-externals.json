@@ -3,6 +3,7 @@
   "http://hl7.org/fhir/Library/library-quick-model-definition" : null,
   "http://loinc.org" : {
     "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-739c71ed-d8f5-440c-957e-6e70880f74d1.json"
-  }
+    "filename" : "cs-79438b81-6ce7-41ff-883e-cb7c4643c402.json"
+  },
+  "http://example.org/ActorDefinition/consumer" : null
 }

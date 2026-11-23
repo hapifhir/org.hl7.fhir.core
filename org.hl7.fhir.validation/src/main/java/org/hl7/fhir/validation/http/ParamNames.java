@@ -15,7 +15,6 @@ public final class ParamNames  {
   public static final String EXPANSION_PARAMETERS = "expansionParameters";
   public static final String HTML_OUTPUT = "htmlOutput";
   public static final String OUTPUT_STYLE = "outputStyle";
-  public static final String R5_BUNDLE_RELATIVE_REFERENCE_POLICY = "r5BundleRelativeReferencePolicy";
   public static final String QUESTIONNAIRE_MODE = "questionnaire";
   public static final String LEVEL = "level";
   public static final String BEST_PRACTICE_LEVEL = "bestPractice";

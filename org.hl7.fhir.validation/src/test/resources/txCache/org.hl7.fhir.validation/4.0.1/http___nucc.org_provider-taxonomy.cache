@@ -18,15 +18,35 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
-  "version" : "22.1",
+  "version" : "26.1",
   "severity" : "error",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
+  "error" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version; Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy|22.1\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: CodeSystem found: http://nucc.org/provider-taxonomy|26.1 for http://nucc.org/provider-taxonomy|26.1\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|26.1",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "CODESYSTEM_VERSION_NEEDED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-data"
+      }],
+      "text" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version"
+    },
+    "expression" : ["Coding.version"]
+  },
+  {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
       "valueString" : "Display_Name_for__should_be_one_of__instead_of"
@@ -69,15 +89,35 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
-  "version" : "22.1",
+  "version" : "26.1",
   "severity" : "error",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
+  "error" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version; Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy|22.1\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: CodeSystem found: http://nucc.org/provider-taxonomy|26.1 for http://nucc.org/provider-taxonomy|26.1\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|26.1",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "CODESYSTEM_VERSION_NEEDED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-data"
+      }],
+      "text" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version"
+    },
+    "expression" : ["Coding.version"]
+  },
+  {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
       "valueString" : "Display_Name_for__should_be_one_of__instead_of"
@@ -120,15 +160,35 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
-  "version" : "22.1",
+  "version" : "26.1",
   "severity" : "error",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
+  "error" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version; Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy|22.1\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: CodeSystem found: http://nucc.org/provider-taxonomy|26.1 for http://nucc.org/provider-taxonomy|26.1\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|26.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|26.1",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "CODESYSTEM_VERSION_NEEDED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-data"
+      }],
+      "text" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version"
+    },
+    "expression" : ["Coding.version"]
+  },
+  {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
       "valueString" : "Display_Name_for__should_be_one_of__instead_of"
@@ -170,11 +230,33 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
-  "version" : "22.1",
+  "version" : "26.1",
+  "severity" : "warning",
+  "error" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Analysing http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0 for validation purposes\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Prepare include[0]: \"(http://nucc.org/provider-taxonomy)\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: \"http://nucc.org/provider-taxonomy|22.1\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"undefined\")]\"\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: check code in (http://nucc.org/provider-taxonomy) at Coding\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Analysing http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0 for validation purposes\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Prepare include[0]: \"(http://nucc.org/provider-taxonomy)\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: \"http://nucc.org/provider-taxonomy|26.1\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"undefined\")]\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: http://nucc.org/provider-taxonomy|26.1 for http://nucc.org/provider-taxonomy\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: check code in (http://nucc.org/provider-taxonomy) at Coding\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|26.1",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "CODESYSTEM_VERSION_NEEDED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "warning",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-data"
+      }],
+      "text" : "The code system 'http://nucc.org/provider-taxonomy' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version"
+    },
+    "expression" : ["Coding.version"]
+  }]
 }
 
 }

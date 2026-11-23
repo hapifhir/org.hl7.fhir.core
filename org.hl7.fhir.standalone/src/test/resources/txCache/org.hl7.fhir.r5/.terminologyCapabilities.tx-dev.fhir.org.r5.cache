@@ -64,6 +64,20 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icd10-da",
+    "version" : [{
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
+    "uri" : "http://hl7.dk/fhir/core/CodeSystem/icpc2E-DK",
+    "version" : [{
+      "isDefault" : true
+    }],
+    "content" : "supplement"
+  },
+  {
     "uri" : "http://hl7.org/fhir/account-aggregate",
     "version" : [{
       "isDefault" : true
@@ -2761,6 +2775,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://hl7.org/fhir/sid/icpc-2",
+    "version" : [{
+      "isDefault" : true
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://hl7.org/fhir/sid/mvx",
     "version" : [{
       "isDefault" : true
@@ -3063,6 +3084,13 @@
       "isDefault" : true
     }],
     "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/test/CodeSystem/glp-base-da",
+    "version" : [{
+      "isDefault" : true
+    }],
+    "content" : "supplement"
   },
   {
     "uri" : "http://hl7.org/fhir/testscript-scope-conformance-codes",

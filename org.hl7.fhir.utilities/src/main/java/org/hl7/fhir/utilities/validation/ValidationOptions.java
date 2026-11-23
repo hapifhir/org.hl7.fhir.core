@@ -3,36 +3,11 @@ package org.hl7.fhir.utilities.validation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
 public class ValidationOptions {
-
-  public enum R5BundleRelativeReferencePolicy {
-    DEFAULT,
-    NEVER,
-    ALWAYS;
-
-    public String toCode() {
-      switch (this) {
-      case ALWAYS: return "always";
-      case DEFAULT: return "default";
-      case NEVER: return "never";
-      }
-      return null;
-    }
-
-    public static R5BundleRelativeReferencePolicy fromCode(String code) {
-      switch (code) {
-      case "always": return ALWAYS;
-      case "default": return DEFAULT;
-      case "never": return NEVER;
-      }
-      throw new FHIRException("bad code "+code);
-    }
-  }
 
   private AcceptLanguageHeader langs = null;
   private boolean useServer = true;
@@ -47,7 +22,6 @@ public class ValidationOptions {
   private boolean activeOnly = false;
   private boolean exampleOK = false;
   final private FhirPublication fhirVersion;
-  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
   private boolean noAbstract = false;
 
@@ -342,23 +316,6 @@ public class ValidationOptions {
   }
 
   
-  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
-    return r5BundleRelativeReferencePolicy;
-  }
-
-  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    if (r5BundleRelativeReferencePolicy == null) {
-      r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
-    } 
-    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
-  }
-
-  public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    ValidationOptions n = this.copy();
-    n.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
-    return n;
-  }
-
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(fhirVersion);
     n.langs = langs == null ? null : langs.copy();
@@ -376,7 +333,6 @@ public class ValidationOptions {
     n.exampleOK = exampleOK;
     n.englishOk = englishOk;
     n.externalSource = externalSource;
-    n.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
     return n;
   }
   
@@ -386,7 +342,6 @@ public class ValidationOptions {
       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"noAbstract\":\""+Boolean.toString(noAbstract)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
        "\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+
        "\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\""+
-       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "")+
        // everything below here also changes the answer, so it has to be part of the terminology cache key
        // (see TerminologyCache.generateValidationToken). Each is only emitted when it is not at its default
        // value, so that cache entries recorded before these were added still match where they never varied

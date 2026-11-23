@@ -44,10 +44,15 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_CANNOT";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
+  public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT_NO_FU = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT_NO_FU";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
+  public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE_NO_FU = "Bundle_BUNDLE_Entry_Orphan_MESSAGE_NO_FU";
   public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_MSG = "BUNDLE_BUNDLE_ENTRY_REVERSE_MSG";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_MSG_NO_FU = "BUNDLE_BUNDLE_ENTRY_REVERSE_MSG_NO_FU";
   public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R4 = "BUNDLE_BUNDLE_ENTRY_REVERSE_R4";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R4_NO_FU = "BUNDLE_BUNDLE_ENTRY_REVERSE_R4_NO_FU";
   public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R5 = "BUNDLE_BUNDLE_ENTRY_REVERSE_R5";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R5_NO_FU = "BUNDLE_BUNDLE_ENTRY_REVERSE_R5_NO_FU";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE = "Bundle_BUNDLE_Entry_Type";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE2 = "Bundle_BUNDLE_Entry_Type2";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE3 = "Bundle_BUNDLE_Entry_Type3";
@@ -57,6 +62,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_NOT_LOCAL = "Bundle_BUNDLE_Not_Local";
   public static final String BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU = "BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU";
   public static final String BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU = "BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU";
+  public static final String BUNDLE_BUNDLE_POSSIBLE_MATCH_NOT_RESTFUL = "BUNDLE_BUNDLE_POSSIBLE_MATCH_NOT_RESTFUL";
   public static final String BUNDLE_ENTRY_URL_ABSOLUTE = "BUNDLE_ENTRY_URL_ABSOLUTE";
   public static final String BUNDLE_ENTRY_URL_MATCHES_NO_ID = "BUNDLE_ENTRY_URL_MATCHES_NO_ID";
   public static final String BUNDLE_ENTRY_URL_MATCHES_TYPE_ID = "BUNDLE_ENTRY_URL_MATCHES_TYPE_ID";
@@ -866,7 +872,6 @@ public class I18nConstants {
   public static final String SM_TARGET_TRANSFORM_OP_INVALID_TYPE = "SM_TARGET_TRANSFORM_OP_INVALID_TYPE";
   public static final String SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE = "SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE";
   public static final String SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE = "SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE";
-  public static final String SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE = "SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE";
   public static final String SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE = "SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE";
   public static final String SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE = "SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE";
   public static final String SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND = "SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND";
@@ -1170,7 +1175,6 @@ public class I18nConstants {
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
-  public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
   public static final String UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE = "Unknown_resource_type_missing_rdfstype";
   public static final String UNKNOWN_TYPE__AT_ = "Unknown_type__at_";
   public static final String UNRECOGNISED_EXTENSION_CONTEXT_ = "Unrecognised_extension_context_";
@@ -1311,6 +1315,10 @@ public class I18nConstants {
   public static final String VALUESET_SUPPLEMENT_MISSING = "VALUESET_SUPPLEMENT_MISSING";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
   public static final String VALUESET_TOO_COSTLY_TIME = "VALUESET_TOO_COSTLY_TIME";
+  public static final String VALUESET_TOO_COSTLY_COUNT = "VALUESET_TOO_COSTLY_COUNT";
+  public static final String VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR = "VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR";
+  public static final String VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR = "VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR";
+  public static final String VALUESET_INVALID_FOR_VALIDATION = "VALUESET_INVALID_FOR_VALIDATION";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
   public static final String VALUESET_UNKNOWN_FILTER_PROPERTY = "VALUESET_UNKNOWN_FILTER_PROPERTY";
@@ -1639,6 +1647,7 @@ public class I18nConstants {
   public static final String SCT_ALLERGY_CODE_WRONG = "SCT_ALLERGY_CODE_WRONG";
   public static final String SCT_MEDICATION_SUBSTANCE = "SCT_MEDICATION_SUBSTANCE";
   public static final String SCT_MEDICATION_WRONG = "SCT_MEDICATION_WRONG";
+  public static final String SCT_MEDICATION_STATEMENT_WRONG = "SCT_MEDICATION_STATEMENT_WRONG";
   public static final String SCT_PROCEDURE_PLANNED_DONE = "SCT_PROCEDURE_PLANNED_DONE";
   public static final String SCT_LATERALITY_CONFLICT = "SCT_LATERALITY_CONFLICT";
   public static final String SCT_LATERALITY_NOT_LATERALIZABLE = "SCT_LATERALITY_NOT_LATERALIZABLE";

@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.renderers; 
 
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
 
 
+@Slf4j
 public class QuestionnaireRenderer extends TerminologyRenderer {
 
   public QuestionnaireRenderer(RenderingContext context) { 
@@ -459,6 +461,16 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         addExpression(p, e.child("value"), context.formatPhrase(RenderingI18nContext.QUEST_CAND), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-candidateExpression"); 
       }  
     } 
+
+    if (i.has("code")) {
+      if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
+      defn.getPieces().add(gen.new Piece(null, context.formatPhrasePlural(i.children("code").size(), RenderingI18nContext.QUEST_QUESTION_CODE)+" ", null));
+      boolean first = true;
+      for (ResourceWrapper c : i.children("code")) {
+        if (first) first = false; else defn.getPieces().add(gen.new Piece(null, ", ", null));
+        renderCoding(gen, defn.getPieces(), c);
+      }
+    }
 
     for (ResourceWrapper c : i.children("item")) { 
       renderTreeItem(status, gen, r.getSubRows(), q, c, hasFlags); 
@@ -937,7 +949,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
 
   private void listOptions(ResourceWrapper q, ResourceWrapper i, XhtmlNode select) { 
-    if (i.has("answerValueSet")) { 
+    // has() is true for an answerValueSet with no value (e.g. only extensions), which would hide the answerOptions (#2634)
+    if (i.has("answerValueSet") && !Utilities.noString(i.primitiveValue("answerValueSet"))) { 
       ValueSet vs = null; 
       if (!Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) { 
         ResourceWrapper contained = q.getContained(i.primitiveValue("answerValueSet").substring(1));
@@ -957,10 +970,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
             select.option(cc.getCode(), cc.hasDisplay() ? cc.getDisplay() : cc.getCode(), false);     
           } 
           return; 
-        } 
+        } else {
+          log.warn("No expansion for "+vs.getUrl()+": "+exp);
+        }
       } 
     } else if (i.has("answerOption")) { 
       renderItemOptions(select, i);  
+      return;
     }  
     select.option("a", "??", false);     
   } 
