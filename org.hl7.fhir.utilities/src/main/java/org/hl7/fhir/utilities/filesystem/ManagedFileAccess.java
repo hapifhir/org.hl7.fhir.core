@@ -152,7 +152,7 @@ public class ManagedFileAccess {
    * /ig-other isn't under /ig
    */
   private static boolean inAllowedPaths(String pathname) {
-    List<String> allowedPathsRef = allowedPaths; // the same list throughout, even if it's replaced meanwhile
+    List<String> allowedPathsRef = allowedPaths; // keep a reference to the original list throughout this method, even if the original is replaced by another thread.
     if (allowedPathsRef.isEmpty()) {
       return true;
     }
