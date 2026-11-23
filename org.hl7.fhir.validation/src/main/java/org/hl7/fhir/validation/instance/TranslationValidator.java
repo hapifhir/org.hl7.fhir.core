@@ -22,8 +22,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.jspecify.annotations.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -71,7 +71,7 @@ public class TranslationValidator extends BaseValidator {
    */
   private final Map<String, List<ValueSetExpansionContainsComponent>> expansions = new ConcurrentHashMap<>();
 
-  public TranslationValidator(IWorkerContext context, @NonNull ValidatorSettings settings, XVerExtensionManager xverManager, ValidatorSession session) {
+  public TranslationValidator(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, ValidatorSession session) {
     super(context, settings, xverManager, session);
   }
 

@@ -284,6 +284,51 @@ public class FilesystemPackageManagerTests {
     assertTrue(e.getMessage().contains("illegal"), e.getMessage());
   }
 
+  /**
+   * A branch's ci-build (current$branch) loads from start to finish when a released version of the same package is
+   * already in the cache: it's fetched from the branch on the ci-build server, cached as id#current$branch, and the next
+   * load finds it in the cache (and checks it's still the branch's latest build). current$branch has no dots, so the
+   * cache lookup used to treat it as a wildcard version, and fail matching it against the released version
+   */
+  @Test
+  void aBranchBuildLoadsWhenAReleasedVersionIsCached() throws IOException, InterruptedException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.loadFromFHIRSettings(org.hl7.fhir.utilities.settings.FhirSettingsPOJO.builder().ssrfProtectionEnabled(false).build());
+    okhttp3.mockwebserver.MockWebServer server = new okhttp3.mockwebserver.MockWebServer();
+    try {
+      String root = server.url("").toString();
+      CIBuildClient ci = new CIBuildClient(root.substring(0, root.length() - 1), 3600000, false);
+      File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch-build"));
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).withCIBuildClient(ci).build();
+      pcm.addPackageToCache("example.fhir.uv.myig", "1.0.0", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.0.0");
+
+      byte[] tgz;
+      try (java.io.InputStream in = this.getClass().getResourceAsStream("/npm/dummy-package.tgz")) {
+        tgz = in.readAllBytes();
+      }
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody("[{\"url\": \"http://somewhere.org/fhir/uv/myig\", \"package-id\": \"example.fhir.uv.myig\", "
+          + "\"date\": \"Sat, 30 Nov, 2024 00:31:05 +0000\", \"repo\": \"Org/myig/branches/main/qa.json\"}]").addHeader("Content-Type", "application/json"));
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody(new okio.Buffer().write(tgz)));
+
+      NpmPackage npm = pcm.loadPackage("example.fhir.uv.myig", "current$my-branch");
+      assertEquals("current$my-branch", npm.version());
+      assertTrue(ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#current$my-branch").exists());
+      server.takeRequest(); // qas.json
+      assertEquals("/ig/Org/myig/branches/my-branch/package.tgz", server.takeRequest().getRequestUrl().encodedPath());
+
+      // loaded again, it comes from the cache, once the branch's manifest says it's still the latest build
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody("{\"date\": \"" + npm.date() + "\"}").addHeader("Content-Type", "application/json"));
+      assertEquals("current$my-branch", pcm.loadPackage("example.fhir.uv.myig", "current$my-branch").version());
+      assertEquals("/ig/Org/myig/branches/my-branch/package.manifest.json", server.takeRequest().getRequestUrl().encodedPath());
+      assertEquals(3, server.getRequestCount());
+
+      // and the released version is still there
+      assertEquals("1.0.0", pcm.loadPackage("example.fhir.uv.myig", "1.0.0").version());
+    } finally {
+      server.shutdown();
+      org.hl7.fhir.utilities.http.ManagedWebAccess.loadFromFHIRSettings();
+    }
+  }
+
   @Test
   void testCreatesIniIfDoesntExistAndCacheStaysIntact() throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));

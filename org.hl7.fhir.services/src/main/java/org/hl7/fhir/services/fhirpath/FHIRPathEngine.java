@@ -1653,8 +1653,18 @@ public class FHIRPathEngine {
    * anything (distinct(), union(), subsetOf()...)
    */
   private void checkLimits(ExecutionContext context, ExpressionNode exp, List<Base> list) {
+    checkLimits(context, exp, list, 1);
+  }
+
+  /**
+   * As checkLimits(context, exp, list), for a step that does this much work: in a loop that compares each item with
+   * the items of another list (distinct(), ~, union()...), the size of that other list. The clock is read once per so
+   * many comparisons, rather than once per so many items of the outer loop, which, with big lists, could be hundreds
+   * of millions of comparisons apart
+   */
+  private void checkLimits(ExecutionContext context, ExpressionNode exp, List<Base> list, int work) {
     org.hl7.fhir.utilities.ExecutionLimits limits = context.getExecutionLimits();
-    if (limits.isOutOfTime()) {
+    if (limits.isOutOfTime(work)) {
       throw makeException(exp, I18nConstants.FHIRPATH_TIMEOUT, limits.maxSeconds());
     }
     if (list != null && limits.isTooManyItems(list.size())) {
@@ -2957,7 +2967,7 @@ public class FHIRPathEngine {
 
     boolean res = true;
     for (int i = 0; i < left.size(); i++) {
-      checkLimits(context, expr, null);
+      checkLimits(context, expr, null, right.size());
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
         if (doEquivalent(left.get(i), right.get(j))) {
@@ -2980,7 +2990,7 @@ public class FHIRPathEngine {
 
     boolean res = true;
     for (int i = 0; i < left.size(); i++) {
-      checkLimits(context, expr, null);
+      checkLimits(context, expr, null, right.size());
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
         if (doEquivalent(left.get(i), right.get(j))) {
@@ -3290,7 +3300,7 @@ public class FHIRPathEngine {
     }
     boolean ans = true;
     for (Base r : right) {
-      checkLimits(context, expr, null);
+      checkLimits(context, expr, null, left.size());
       boolean f = false;
       for (Base l : left) {
         Boolean eq = doEquals(l, r);
@@ -3531,13 +3541,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> opUnion(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : left) {
-      checkLimits(context, expr, result);
+      checkLimits(context, expr, result, result.size());
       if (!doContains(result, item)) {
         result.add(item);
       }
     }
     for (Base item : right) {
-      checkLimits(context, expr, result);
+      checkLimits(context, expr, result, result.size());
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -6111,13 +6121,13 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcUnion(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
-      checkLimits(context, exp, result);
+      checkLimits(context, exp, result, result.size());
       if (!doContains(result, item)) {
         result.add(item);
       }
     }
     for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
-      checkLimits(context, exp, result);
+      checkLimits(context, exp, result, result.size());
       if (!doContains(result, item)) {
         result.add(item);
       }
@@ -6141,7 +6151,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
-      checkLimits(context, exp, result);
+      checkLimits(context, exp, result, result.size() + other.size());
       if (!doContains(result, item) && doContains(other, item)) {
         result.add(item);
       }
@@ -6154,7 +6164,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
-      checkLimits(context, exp, result);
+      checkLimits(context, exp, result, other.size());
       if (!doContains(other, item)) {
         result.add(item);
       }
@@ -6360,11 +6370,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       more = false;
       current.clear();
       for (Base b : added) {
-        checkLimits(context, exp, result);
+        checkLimits(context, exp, result, result.size());
         boolean isnew = true;
         for (Base t : result) {
           if (b.equalsDeep(t)) {
             isnew = false;
+            break;
           }
         }
         if (isnew) {
@@ -6410,7 +6421,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
-      checkLimits(context, exp, null);
+      checkLimits(context, exp, null, focus.size() - i);
       for (int j = i+1; j < focus.size(); j++) {
         Boolean eq = doEquals(focus.get(j), focus.get(i));
         if (eq == null) {
@@ -6467,7 +6478,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
     boolean valid = true;
     for (Base item : target) {
-      checkLimits(context, exp, null);
+      checkLimits(context, exp, null, focus.size());
       boolean found = false;
       for (Base t : focus) {
         if (Base.compareDeep(item, t, false)) {
@@ -6491,7 +6502,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
     boolean valid = true;
     for (Base item : focus) {
-      checkLimits(context, exp, null);
+      checkLimits(context, exp, null, target.size());
       boolean found = false;
       for (Base t : target) {
         if (Base.compareDeep(item, t, false)) {
@@ -6802,7 +6813,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     for (int i = 0; i < focus.size(); i++) {
       boolean found = false;
-      checkLimits(context, exp, null);
+      checkLimits(context, exp, null, focus.size() - i);
       for (int j = i+1; j < focus.size(); j++) {
         Boolean eq = doEquals(focus.get(j), focus.get(i));
         if (eq == null)

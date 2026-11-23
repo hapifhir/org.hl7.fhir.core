@@ -1481,7 +1481,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, BooleanHolder bh) {
     boolean checkDisp = true;
-    boolean translationsChecked = false;
     BooleanHolder checked = new BooleanHolder(false);
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
@@ -1515,8 +1514,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               checkDisp = validateBindingCodeableConcept(errors, path, element, profile, null, stack, bh, checkDisp, checked, cc, ab.getValueSetElement(), valueset, strength, null, false, b.toString()) && checkDisp;
             }
           }
-          translationsChecked = true;
-          translationValidator.checkCodeableConcept(errors, stack, cc);
+          if (checked.ok()) {
+            translationValidator.checkCodeableConcept(errors, stack, cc);
+          }
         } catch (CheckCodeOnServerException e) {
           if (STACK_TRACE) e.getCause().printStackTrace();
           warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
@@ -1537,10 +1537,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           bh.see(calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, null, null));
           timeTracker.tx(t, "vc " + cc.toString());
         }
-        if (!translationsChecked) {
-          // after the server check: TranslationValidator doesn't repeat what the server has already said
-          translationValidator.checkCodeableConcept(errors, stack, cc);
-        }
+        // after the server check: TranslationValidator doesn't repeat what the server has already said
+        translationValidator.checkCodeableConcept(errors, stack, cc);
       } catch (CheckCodeOnServerException e) {
         if (STACK_TRACE) e.getCause().printStackTrace();
         warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());

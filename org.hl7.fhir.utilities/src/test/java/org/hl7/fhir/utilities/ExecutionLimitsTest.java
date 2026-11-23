@@ -47,6 +47,30 @@ class ExecutionLimitsTest {
     assertTrue(limits.isOutOfTimeNow());
   }
 
+  /**
+   * A call that says it's CLOCK_EVERY units of work reads the clock itself: a pair-wise loop whose each outer pass
+   * compares against a big list is noticed on the next pass, not CLOCK_EVERY passes later
+   */
+  @Test
+  void runningOutOfTimeIsNoticedByWork() throws InterruptedException {
+    ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
+    assertFalse(limits.isOutOfTime()); // starts the clock
+    Thread.sleep(20);
+    assertTrue(limits.isOutOfTime(ExecutionLimits.CLOCK_EVERY));
+    assertTrue(limits.isOutOfTime());
+  }
+
+  /** work adds up across calls: the clock is read once the calls together have done CLOCK_EVERY units of work */
+  @Test
+  void workAddsUp() throws InterruptedException {
+    ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
+    assertFalse(limits.isOutOfTime()); // starts the clock
+    Thread.sleep(20);
+    int half = ExecutionLimits.CLOCK_EVERY / 2;
+    assertFalse(limits.isOutOfTime(half - 1)); // clock not read yet
+    assertTrue(limits.isOutOfTime(ExecutionLimits.CLOCK_EVERY - half + 1));
+  }
+
   /** while there's time, it's never out of time, however often it's asked */
   @Test
   void notOutOfTimeWhileThereIsTime() {

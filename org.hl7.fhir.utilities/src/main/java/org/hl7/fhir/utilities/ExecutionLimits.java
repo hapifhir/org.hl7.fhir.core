@@ -28,15 +28,16 @@ public class ExecutionLimits {
   private final long maxSteps;
 
   /**
-   * isOutOfTime() reads the clock one call in this many. It's cheap (~25ns), but FHIRPath asks twice for every node it
-   * evaluates; a run goes over its time by no more than this many steps
+   * isOutOfTime() reads the clock once per this many units of work (a call is one unit, unless it says how many it is).
+   * It's cheap (~25ns), but FHIRPath asks twice for every node it evaluates; a run goes over its time by no more than
+   * this many units of work
    */
   static final int CLOCK_EVERY = 50;
 
   private boolean started; // whether the clock has started
   private long start; // System.nanoTime() when it did
   private boolean outOfTime; // once out of time, always out of time
-  private int sinceClock; // calls to isOutOfTime() since the clock was last read
+  private long sinceClock; // units of work since the clock was last read
   private int depth;
   private long steps;
 
@@ -67,10 +68,22 @@ public class ExecutionLimits {
 
   /**
    * Whether the run is out of time. The clock starts the first time this is asked. To keep this cheap, the clock is only
-   * read one call in CLOCK_EVERY, so a run is found to be out of time up to that many calls late. Once out of time, the
-   * run stays out of time (so a caller can ask, after an engine has failed, whether that was why)
+   * read once per CLOCK_EVERY units of work, so a run is found to be out of time up to that many units late. Once out of
+   * time, the run stays out of time (so a caller can ask, after an engine has failed, whether that was why)
+   * <p/>
+   * This call counts as one unit of work: see isOutOfTime(long) for a step that does more
    */
   public boolean isOutOfTime() {
+    return isOutOfTime(1);
+  }
+
+  /**
+   * As isOutOfTime(), for a step that does this many units of work - e.g. one pass of the outer loop of a pair-wise
+   * comparison (distinct(), ~, union()...), where the work is the number of items the inner loop compares against. Each
+   * call by itself is one step, so without this the clock could go unread for a very long time while each step does
+   * a lot of work
+   */
+  public boolean isOutOfTime(long work) {
     if (maxMillis <= 0) {
       return false;
     }
@@ -80,7 +93,8 @@ public class ExecutionLimits {
     if (!started) {
       return startClock();
     }
-    if (++sinceClock < CLOCK_EVERY) {
+    sinceClock += Math.max(work, 1);
+    if (sinceClock < CLOCK_EVERY) {
       return false;
     }
     return readClock();

@@ -1386,11 +1386,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * <ul>
    *   <li>no response (a timeout or a network error), a 408, 429, 502, 503 or 504, or a server that lost its cache
    *   twice running: SERVER_ERROR</li>
-   *   <li>a 401 or 403: NOSERVICE - we may not use the server, which says nothing about the value set</li>
+   *   <li>a 401, 403 or 407: NOSERVICE - we may not use the server (or the proxy to it), which says nothing about the
+   *   value set</li>
    *   <li>a 500 or any other 5xx: INTERNAL_ERROR - the server failed rather than answering</li>
    *   <li>no response status and no OperationOutcome: INTERNAL_ERROR - the request failed on this side</li>
    * </ul>
-   * Any other response is the server's answer: the class its OperationOutcome gives, otherwise UNKNOWN.
+   * Any other response is the server's answer: the class its OperationOutcome gives (SERVER_ERROR if the issue is
+   * transient, lock-error, timeout or throttled - see OperationOutcomeUtilities.getTerminologyErrorClass), otherwise
+   * UNKNOWN.
    */
   public static TerminologyServiceErrorClass classifyExpansionFailure(Throwable e) {
     if (TerminologyClientContext.isCacheGone(e) || isServerUnavailable(e)) {
@@ -1400,7 +1403,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (t instanceof EFhirClientException) {
         EFhirClientException fe = (EFhirClientException) t;
         int code = fe.getCode();
-        if (code == 401 || code == 403) {
+        if (code == 401 || code == 403 || code == 407) {
           return TerminologyServiceErrorClass.NOSERVICE;
         }
         if (code >= 500) {

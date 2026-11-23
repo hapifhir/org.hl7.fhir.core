@@ -130,6 +130,27 @@ class EvaluationLimitsTests {
     }
   }
 
+  /**
+   * In a loop that compares each item with every item of another list, the clock is read by the comparisons done, not
+   * the passes of the outer loop: here 20 passes each compare against 300,000 identifiers, which (as 20 calls) used to
+   * be too few to ever read the clock, so it ran to the end, however long that took
+   */
+  @Test
+  void aLongPairwiseComparisonIsStopped() throws java.io.IOException {
+    FHIRPathEngine fp = new FHIRPathEngine(SimpleWorkerContext.fromNothing());
+    Patient big = new Patient();
+    for (int i = 0; i < 300000; i++) {
+      big.addIdentifier().setSystem("http://example.org/ids").setValue("id" + i);
+    }
+    Patient small = new Patient();
+    for (int i = 0; i < 20; i++) {
+      // each is the last of big's, so each pass of subsetOf() compares it with all of them
+      small.addIdentifier().setSystem("http://example.org/ids").setValue("id299999");
+    }
+    FHIRException e = assertThrows(FHIRException.class, () -> fp.evaluate(run(20, 0, 0, 0), small, big, small, fp.parse("identifier.subsetOf(%rootResource.identifier)")));
+    assertTrue(e.getMessage().contains("didn't finish"), e.getMessage());
+  }
+
   /** a statement whose value is a collection: its strings are added up as it's made */
   @Test
   void liquidStatementsThatAreTooLongAreStopped() throws IOException {

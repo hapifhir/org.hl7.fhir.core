@@ -194,6 +194,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
+    /** for testing: a ci-build client that talks to a mock server */
+    Builder withCIBuildClient(CIBuildClient ciBuildClient) {
+      return new Builder(this.cacheFolder, this.packageServers, ciBuildClient, this.lockParameters, this.registryAnswerCache);
+    }
+
     public FilesystemPackageCacheManager build() throws IOException {
       final FilesystemPackageCacheManagerLocks locks;
       try {
@@ -611,7 +616,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         if (currentPackageFolder.equals(id + "#" + version) || (Utilities.noString(version) && currentPackageFolder.startsWith(id + "#"))) {
           return currentPackageFolder;
         }
-        if (version != null && !Utilities.existsInList(version, "current", "dev") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
+        // a version with fewer than two dots is a wildcard (1.0 is 1.0.x), except for the ci-builds: current$branch has
+        // no dots, and isn't a version that VersionUtilities can match
+        if (version != null && !Utilities.existsInList(version, "current", "dev") && !version.startsWith("current$") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //single literal character split
           String[] parts = currentPackageFolder.split("#");
