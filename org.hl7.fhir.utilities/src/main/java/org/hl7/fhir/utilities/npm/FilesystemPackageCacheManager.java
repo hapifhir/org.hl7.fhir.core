@@ -194,11 +194,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
-    /** for testing: a ci-build client that talks to a mock server */
-    Builder withCIBuildClient(CIBuildClient ciBuildClient) {
-      return new Builder(this.cacheFolder, this.packageServers, ciBuildClient, this.lockParameters, this.registryAnswerCache);
-    }
-
     public FilesystemPackageCacheManager build() throws IOException {
       final FilesystemPackageCacheManagerLocks locks;
       try {
