@@ -125,8 +125,9 @@ public class ViewDefinitionValidator extends BaseValidator {
       }
       if (sd != null && Validator.isViewType(sd)) {
         if (fromHost) {
-          // Checked once against the host context, whichever versions fell back to it.
-          passes.put(defaultContext(), "");
+          // Checked once against the host context, whichever versions fell back to it. If the
+          // host version was itself declared, its pass keeps the description of that version.
+          passes.putIfAbsent(defaultContext(), "");
         } else {
           passes.putIfAbsent(vec, vdesc);
         }

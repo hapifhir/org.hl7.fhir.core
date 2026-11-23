@@ -419,6 +419,17 @@ class ViewDefinitionValidatorTests {
     assertNoneWithId(messages, I18nConstants.VIEWDEFINITION_UNKNOWN_RESOURCE);
   }
 
+  // When the host version is declared first, the host context already has a pass that is described
+  // by its version. A later version that falls back to the host context must not replace that
+  // description, or the messages from the pass would lose the version.
+  @Test
+  void hostFallbackKeepsVersionOfEarlierPass() {
+    List<ValidationMessage> messages = validate(view(LOGICAL_MODEL_URL, "\"5.0.0\", \"4.0.1\"",
+        "{ \"column\": [" + column("code", "code", "string") + ", " + column("missing", "nonexistent", "string") + "] }"));
+    ValidationMessage m = assertOneWithId(messages, I18nConstants.VIEWDEFINITION_PATH_ERROR);
+    assertTrue(m.getMessage().contains("for version R5"), m.getMessage());
+  }
+
   // An additional resource is named by its type but, like a logical model, is defined by an IG.
   // ViewDefinition itself is one, so a view over ViewDefinition that declares R4 is valid.
   @Test
