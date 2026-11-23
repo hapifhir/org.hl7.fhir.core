@@ -298,7 +298,7 @@ public class FilesystemPackageManagerTests {
       String root = server.url("").toString();
       CIBuildClient ci = new CIBuildClient(root.substring(0, root.length() - 1), 3600000, false);
       File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch-build"));
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).withCIBuildClient(ci).build();
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).withCiBuildClient(ci).build();
       pcm.addPackageToCache("example.fhir.uv.myig", "1.0.0", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.0.0");
 
       byte[] tgz;
