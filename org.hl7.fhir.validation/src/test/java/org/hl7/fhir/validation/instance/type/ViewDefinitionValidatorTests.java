@@ -87,6 +87,8 @@ class ViewDefinitionValidatorTests {
   // binding to the resource types of the version it was built against. HL7/sql-on-fhir#433 makes
   // it a uri with an extensible binding, which is what lets a view name any other type. The
   // binding is dropped here rather than replaced, because the value set it names is not in R5.
+  // TODO: remove this once a hl7.fhir.uv.sql-on-fhir package that includes HL7/sql-on-fhir#433 is
+  // published, and load that package in setUpAll instead.
   private static void widenResourceElement(StructureDefinition sd) {
     List<ElementDefinition> elements = new ArrayList<>(sd.getSnapshot().getElementList());
     elements.addAll(sd.getDifferential().getElementList());
