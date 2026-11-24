@@ -112,6 +112,7 @@ import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.model.ValidatedFragments;
 import org.hl7.fhir.validation.service.model.ValidationTime;
 import org.hl7.fhir.validation.service.IPackageInstaller;
+import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.service.utils.ProfileLoader;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.SchemaValidator;
@@ -502,9 +503,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
-      if (userAgent != null) {
-        contextBuilder.withUserAgent(userAgent);
-      }
+      // the validator, whoever built the engine: a tool that gives none of its own is still the
+      // validator to a terminology server (see VersionUtil.toolingUserAgent)
+      contextBuilder.withUserAgent(userAgent != null ? userAgent : Common.getValidatorUserAgent());
 
       context = contextBuilder.fromPackage(npm, ValidatorUtils.loaderForVersion(ModelContext.fullCoreContext(), version), false);
     } else {
@@ -515,9 +516,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext());
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
-      if (userAgent != null) {
-        contextBuilder.withUserAgent(userAgent);
-      }
+      // the validator, whoever built the engine: a tool that gives none of its own is still the
+      // validator to a terminology server (see VersionUtil.toolingUserAgent)
+      contextBuilder.withUserAgent(userAgent != null ? userAgent : Common.getValidatorUserAgent());
       context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(ModelContext.fullCoreContext(), version), new PackageInformation(src, version, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
