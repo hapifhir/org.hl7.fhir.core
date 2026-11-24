@@ -591,8 +591,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     @Test
     void testHitsDoNoDependencyWork() throws IOException {
-      // what an answer depends on is worked out when it is stored, and checked only after the context loads
-      // something it depends on
+      // what an answer depends on is worked out on a miss, before the answer is, and checked only after the context
+      // loads something it depends on
       TerminologyCache cache = createTerminologyCache();
       cache.setDependencyResolver(resolver());
       states.put(CS, "a");
@@ -603,7 +603,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
         return Map.of(CS, "a");
       });
       assertNull(cache.getExpansion(token));
-      assertEquals(0, worked.get());
+      assertEquals(1, worked.get());
       cache.cacheExpansion(token, new ValueSetExpansionOutcome(valueSet()), true);
       assertEquals(1, worked.get());
 
@@ -690,6 +690,105 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       ValueSetExpansionOutcome res = cache.getExpansion(expandToken(cache, null));
       assertNotNull(res);
       assertEquals("old entry", res.getError());
+      deleteTempCacheDirectory(dir);
+    }
+
+    @Test
+    void testDependencyThatCantBeLoadedHasChanged() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      states.put(CS, TerminologyCache.FAILED);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testDependencyThatCantBeCheckedMisses() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(request -> {
+        throw new RuntimeException("proxy failed");
+      });
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testAbsentDependencyHasChangedOnceEverythingIsLoaded() throws IOException {
+      // deleted since the last run: there is no drop to say so
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+      cache.resourcesLoaded();
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testCodeSystemWithoutContentIsLikeAnAbsentOne() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      cache.resourcesLoaded();
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, TerminologyCache.ABSENT)), new ValueSetExpansionOutcome(valueSet()), true);
+      // a not-present stub is loaded: the answer still came from the server
+      states.put(CS, TerminologyCache.NO_CONTENT);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+
+      // a complete code system becomes a not-present one
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testDependenciesAreTakenBeforeTheAnswerIsWorkedOut() throws IOException {
+      // the code system is edited while the answer is worked out from the old one
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      states.put(CS, "a");
+      CacheToken token = cache.generateExpandToken(valueSet(), options());
+      token.setDependencies(() -> new HashMap<>(states));
+      assertNull(cache.getExpansion(token));
+      states.put(CS, "b");
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      cache.cacheExpansion(token, new ValueSetExpansionOutcome(valueSet()), true);
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testAnswerWhoseDependenciesCantBeWorkedOutIsNotStored() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      CacheToken token = cache.generateExpandToken(valueSet(), options());
+      token.setDependencies(() -> {
+        throw new RuntimeException("unable to load an import");
+      });
+      cache.cacheExpansion(token, new ValueSetExpansionOutcome(valueSet()), true);
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testEntriesFromAnotherProcessAreChecked() throws IOException {
+      Path dir = createTempCacheDirectory();
+      states.put(CS, "b");
+      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      cacheB.setDependencyResolver(resolver());
+      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      cacheA.cacheExpansion(expandToken(cacheA, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cacheA.cacheValidation(validationToken(cacheA, Map.of(CS, "b")), valid(), true);
+      cacheA.save();
+
+      // B saves, and takes in what A wrote
+      ValueSet other = valueSet();
+      other.setVersion("2.0.0");
+      cacheB.cacheExpansion(cacheB.generateExpandToken(other, options()), new ValueSetExpansionOutcome(other), true);
+      cacheB.cacheValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, new Coding("http://example.org/fhir/CodeSystem/local", "z", null), valueSet(), new Parameters(), "Coding"), valid(), true);
+      cacheB.save();
+      assertNotNull(cacheB.getValidation(validationToken(cacheB, null)));
+      assertNull(cacheB.getExpansion(expandToken(cacheB, null)));
       deleteTempCacheDirectory(dir);
     }
 

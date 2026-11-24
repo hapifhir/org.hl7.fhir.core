@@ -865,7 +865,7 @@ public class BaseWorkerContextTests {
 
   @Test
   void testExpansionDependencies() throws IOException {
-    // vs imports a, a imports b, and b imports a again; c can't be loaded. A not-present stub says nothing
+    // vs imports a, a imports b, and b imports a again; c can't be loaded. A not-present stub has no content
     TerminologyCache cache = new TerminologyCache(new Object(), null, context);
     context.initTxCache(cache);
     ValueSet vs = new ValueSet();
@@ -901,9 +901,9 @@ public class BaseWorkerContextTests {
     assertEquals(cache.contentDigest(cs), deps.get("CodeSystem http://example.org/cs"));
     assertEquals(cache.contentDigest(supp), deps.get("CodeSystem http://example.org/supp"));
     assertNotEquals(TerminologyCache.ABSENT, deps.get("supplements http://example.org/cs"));
-    assertEquals(TerminologyCache.ABSENT, deps.get("CodeSystem http://snomed.info/sct"));
+    assertEquals(TerminologyCache.NO_CONTENT, deps.get("CodeSystem http://snomed.info/sct"));
     assertEquals(TerminologyCache.ABSENT, deps.get("supplements http://snomed.info/sct"));
-    assertEquals(TerminologyCache.ABSENT, deps.get("ValueSet http://example.org/c"));
+    assertEquals(TerminologyCache.FAILED, deps.get("ValueSet http://example.org/c"));
   }
 
   @ParameterizedTest
@@ -956,6 +956,13 @@ public class BaseWorkerContextTests {
    * With a real cache: an answer is dropped when the context loads a different version of something it depended on,
    * and kept when what is loaded is the same
    */
+  /** a new token each time, as the context makes one for each request */
+  private void storeExpansion(TerminologyCache cache, ValueSet vs) {
+    CacheToken token = cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true));
+    token.setDependencies(() -> context.findExpansionDependencies(vs, null));
+    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+  }
+
   @Test
   void testLoadingAChangedCodeSystemOrSupplementInvalidates() throws IOException {
     TerminologyCache cache = new TerminologyCache(new Object(), null, context);
@@ -966,9 +973,7 @@ public class BaseWorkerContextTests {
     vs.setUrl(DUMMY_URL);
     vs.setVersion("1");
     vs.getCompose().addInclude().setSystem("http://example.org/cs");
-    CacheToken token = cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true));
-    token.setDependencies(() -> context.findExpansionDependencies(vs, null));
-    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+    storeExpansion(cache, vs);
     assertNotNull(lookUp(cache, vs));
 
     // loaded again, unchanged
@@ -981,20 +986,20 @@ public class BaseWorkerContextTests {
     context.cacheResource(supp);
     assertNull(lookUp(cache, vs));
 
-    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+    storeExpansion(cache, vs);
     assertNotNull(lookUp(cache, vs));
     // the supplement is edited
     context.dropResource(supp);
     context.cacheResource(supplement("http://example.org/supp", "http://example.org/cs", "A changed"));
     assertNull(lookUp(cache, vs));
 
-    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+    storeExpansion(cache, vs);
     // the code system is edited
     context.dropResource(cs);
     context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
     assertNull(lookUp(cache, vs));
 
-    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+    storeExpansion(cache, vs);
     // the code system is dropped
     context.dropResource(cs);
     assertNull(lookUp(cache, vs));
@@ -1011,9 +1016,7 @@ public class BaseWorkerContextTests {
     vs.setVersion("1");
     vs.getCompose().addInclude().setSystem("http://example.org/cs").addConcept().setCode("a");
     context.cacheResource(vs);
-    CacheToken token = cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true));
-    token.setDependencies(() -> context.findExpansionDependencies(vs, null));
-    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA)), true);
+    storeExpansion(cache, vs);
 
     ValueSet same = vs.copy(Base.COPY_DATA);
     same.setTitle("A new title");
