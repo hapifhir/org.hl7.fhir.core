@@ -350,7 +350,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    if (!(Utilities.existsInList(version, "current", "dev") || isCurrentBranch(version) || VersionUtilities.isSemVer(version, true))) {
+    if (!(
+      Utilities.existsInList(version, "current", "dev")
+        || isCurrentBranch(version)
+        || VersionUtilities.isSemVer(version, true)
+    )) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current', 'current$branch' or 'dev'");
     }
   }
@@ -613,7 +617,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         // a version with fewer than two dots is a wildcard (1.0 is 1.0.x), except for the ci-builds: current$branch has
         // no dots, and isn't a version that VersionUtilities can match
-        if (version != null && !Utilities.existsInList(version, "current", "dev") && !version.startsWith("current$") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
+        if (version != null
+          && !Utilities.existsInList(version, "current", "dev")
+          && !version.startsWith("current$")
+          && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2)
+          && currentPackageFolder.contains("#")) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //single literal character split
           String[] parts = currentPackageFolder.split("#");
@@ -664,7 +672,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         tempPackage.buildIndexes(packageRoot);
 
         // a ci-build (current, or a branch's current$branch) replaces the copy it is newer than
-        if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev") || isCurrentBranch(version)) {
+        if (!ManagedFileAccess.file(packageRoot).exists()
+          || Utilities.existsInList(version, "current", "dev")
+          || isCurrentBranch(version)) {
           FileUtilities.createDirectory(packageRoot);
           try {
             FileUtilities.clearDirectory(packageRoot);
@@ -749,7 +759,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     String actualVersion = checkOKToLoadPackage(statedId, version);
     // the branch of a current$branch is used in a folder name and a url: check it before either is made
-    if (actualVersion != null && actualVersion.startsWith("current$") && !isCurrentBranch(actualVersion)) {
+    if (actualVersion != null
+      && actualVersion.startsWith("current$")
+      && !isCurrentBranch(actualVersion)) {
       throw new FHIRException("Cannot load package " + statedId + " - the version '" + actualVersion + "' is illegal: the branch must be letters, digits, '.', '_' and '-' (not starting with one of those three)");
     }
 
