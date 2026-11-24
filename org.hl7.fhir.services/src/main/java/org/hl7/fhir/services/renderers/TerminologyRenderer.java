@@ -141,6 +141,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     case SOURCEISNARROWERTHANTARGET : return "<";
     case SOURCEISBROADERTHANTARGET : return ">";
     case NOTRELATEDTO : return "!=";
+    case RELATEDTO: return "";
     default: return "?";
     }
   }

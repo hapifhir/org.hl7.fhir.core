@@ -84,7 +84,7 @@ public class SnomedProfileValidator extends BaseValidator {
       break;
     default: // MedicationRequest, MedicationStatement, MedicationAdministration, MedicationDispense
       for (String id : new String[] { t + ".medication[x]", t + ".medication[x]:medicationCodeableConcept", t + ".medication" }) {
-        ok = kind(errors, path, id, Kind.MEDICATION) && ok;
+        ok = kind(errors, path, id, "MedicationStatement".equals(t) ? Kind.MEDICATION_STATEMENT : Kind.MEDICATION) && ok;
       }
       break;
     }

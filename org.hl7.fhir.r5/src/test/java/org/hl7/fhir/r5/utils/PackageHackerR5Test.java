@@ -83,4 +83,37 @@ class PackageHackerR5Test {
       }
     }
   }
+
+  @ParameterizedTest
+  @MethodSource("rootMaxCases")
+  void fixesRootMax(boolean inDiff) {
+    // textLink as published (FHIR-59812): root max = 1
+    StructureDefinition sd = new StructureDefinition();
+    sd.setUrl("http://hl7.org/fhir/StructureDefinition/textLink");
+    sd.setType("Extension");
+    if (inDiff) {
+      addElement(sd.getDifferential().getElement(), "Extension", "Extension");
+      sd.getDifferential().getElement().get(0).setMax("1");
+    }
+    addElement(sd.getDifferential().getElement(), "Extension.extension:htmlid", "Extension.extension");
+    sd.getDifferential().getElement().get(sd.getDifferential().getElement().size()-1).setMax("*");
+    addElement(sd.getSnapshot().getElement(), "Extension", "Extension");
+    sd.getSnapshot().getElement().get(0).setMax("1");
+    addElement(sd.getSnapshot().getElement(), "Extension.extension:data", "Extension.extension");
+    sd.getSnapshot().getElement().get(1).setMax("1");
+
+    PackageHackerR5.fixRootMax(sd, "*");
+
+    assertEquals("*", sd.getSnapshot().getElement().get(0).getMax());
+    assertEquals("1", sd.getSnapshot().getElement().get(1).getMax());
+    if (inDiff) {
+      assertEquals("*", sd.getDifferential().getElement().get(0).getMax());
+    } else {
+      assertEquals(1, sd.getDifferential().getElement().size()); // doesn't add a root element to the differential
+    }
+  }
+
+  private static Stream<Arguments> rootMaxCases() {
+    return Stream.of(Arguments.of(true), Arguments.of(false));
+  }
 }

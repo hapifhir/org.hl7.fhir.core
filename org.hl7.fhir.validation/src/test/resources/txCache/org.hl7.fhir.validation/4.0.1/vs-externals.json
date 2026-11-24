@@ -16,7 +16,7 @@
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
   "http://phinvads.cdc.gov/fhir/ValueSet/2.16.840.1.113883.3.88.12.3221.6.2" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-a54c2596-f12b-48ce-b454-fd11b61887fd.json"
+    "filename" : "vs-4a1c244c-9faa-4ef2-a4c5-5a9b6811c42a.json"
   },
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/03/00/1365" : null,
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/02/00/1322" : null,
@@ -24,7 +24,7 @@
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.hl7.org.au/fhir",
-    "filename" : "vs-29875f11-a5be-44f0-97b9-e29b7736d5da.json"
+    "filename" : "vs-cb15f41a-d6b9-47e0-b4d0-d888d4fc6c9b.json"
   },
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null
 }

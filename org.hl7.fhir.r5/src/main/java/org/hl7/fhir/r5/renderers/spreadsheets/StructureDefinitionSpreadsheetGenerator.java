@@ -207,7 +207,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
       for (StructureDefinitionMappingComponent mapKey : sd.getMapping()) {
         String mapString = "";
         for (ElementDefinitionMappingComponent map : ed.getMapping()) {
-          if (map.getIdentity().equals(mapKey.getIdentity()))
+          if (java.util.Objects.equals(map.getIdentity(), mapKey.getIdentity()))
             mapString = map.getMap();        
         }
         addCell(row, i++, mapString);
