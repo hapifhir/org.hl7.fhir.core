@@ -61,6 +61,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import java.util.concurrent.atomic.AtomicReference;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
@@ -414,6 +415,8 @@ public class TerminologyCache {
     private PropertiesResult p;
     /** what the answer depended on when it was stored; null for an entry written before these were kept, which is used as before */
     private Dependency[] dependencies;
+    /** the dependency generation at which the dependencies were last known to hold */
+    private long checkedAt;
   }
 
   /**
@@ -434,8 +437,12 @@ public class TerminologyCache {
 
   private static final Dependency[] NO_DEPENDENCIES = new Dependency[0];
 
-  /** the state of a request that names nothing usable */
+  /** the state of a request that names nothing that is loaded */
   public static final String ABSENT = "-";
+  /** the state of a request that names something loaded that says nothing about the answer, such as a not-present code system */
+  public static final String NO_CONTENT = "~";
+  /** the state of a request whose resource could not be loaded; never the same as what an entry was stored with */
+  public static final String FAILED = "!";
 
   /**
    * Gives the current state of something a cached answer depended on (a ValueSet it imports, a CodeSystem or
@@ -445,7 +452,8 @@ public class TerminologyCache {
    *
    * The cache asks only when the context has loaded, changed or dropped a resource with that url (see
    * {@link TerminologyCache#invalidate}), and drops the answers whose dependencies have a different state now.
-   * A dependency that is absent now is left undecided, since the context may not have loaded it yet.
+   * A dependency that is absent now is left undecided, since the context may not have loaded it yet, unless it was
+   * dropped or the context has said it has loaded everything (see {@link TerminologyCache#resourcesLoaded}).
    */
   public interface DependencyResolver {
     String stateOf(String request);
@@ -499,12 +507,22 @@ public class TerminologyCache {
   private final TerminologyCapabilitiesCache<TerminologyCapabilities> terminologyCapabilitiesCache;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private DependencyResolver dependencyResolver;
-  /** urls whose resources were loaded, changed or dropped since the entries were last checked */
-  private final Set<String> changedDependencies = new HashSet<>();
-  /** the ones of those that were dropped, so that a dependency that is absent now has changed */
+  /**
+   * Counts the loads, changes and drops that can leave an entry's dependencies out of date. An entry keeps the count at
+   * which they last held, so a hit costs one comparison until something it may depend on changes. Changed under the lock
+   */
+  private volatile long dependencyGeneration;
+  /** the generation at which a resource with this url was last loaded, changed or dropped */
+  private final Map<String, Long> dependencyChangedAt = new HashMap<>();
+  /** urls that something was dropped from in this run, so that a dependency that is absent now has changed */
   private final Set<String> removedDependencies = new HashSet<>();
-  private boolean allDependenciesChanged;
-  private volatile boolean dependenciesToCheck;
+  /** the generation from which every entry is checked again: the resolver was set, or the context finished loading */
+  private long allDependenciesChangedAt;
+  /** see resourcesLoaded */
+  private boolean resourcesLoaded;
+  /** the generation whose first dropped entry was logged, so that each change is reported once */
+  private long dropLoggedAt = -1;
+  private int droppedEntries;
   /** the request and state strings of the entries' dependencies, each kept once */
   private final Map<String, String> dependencyStrings = new ConcurrentHashMap<>();
   /** see contentDigest; weak, so a resource that is dropped from the context isn't kept */
@@ -754,6 +772,11 @@ public class TerminologyCache {
   }
 
   public void unload() {
+    synchronized (lock) {
+      if (droppedEntries > 0) {
+        log.info("Terminology cache: " + droppedEntries + " cached answers were dropped because what they depend on changed");
+      }
+    }
     // not useable after this is called. All of it happens under the lock: a deferred flush that
     // has already started can't be cancelled, only kept waiting for the lock, and it must not
     // get in between the save below and unloaded being set - by the time it gets the lock, it
@@ -1048,28 +1071,19 @@ public class TerminologyCache {
   }
 
   public ValueSetExpansionOutcome getExpansion(CacheToken cacheToken) {
-    checkDependencies();
-    synchronized (lock) {
-      NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = nc.map.get(cacheToken.getKey());
-      if (e == null)
-        return null;
-      else
-        return e.e;
-    }
+    CacheEntry e = findEntry(cacheToken);
+    return e == null ? null : e.e;
   }
 
   public void cacheExpansion(CacheToken cacheToken, ValueSetExpansionOutcome res, boolean persistent) {
-    Dependency[] dependencies = recordDependencies(cacheToken);
-    synchronized (lock) {      
-      NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = new CacheEntry();
-      e.request = cacheToken.getRequest();
-      e.persistent = persistent;
-      e.e = res;
-      e.dependencies = dependencies;
-      store(cacheToken, persistent, nc, e);
-    }    
+    CacheEntry e = newEntry(cacheToken, persistent);
+    if (e == null) {
+      return;
+    }
+    e.e = res;
+    synchronized (lock) {
+      store(cacheToken, persistent, getNamedCache(cacheToken), e);
+    }
   }
 
   public void store(CacheToken cacheToken, boolean persistent, NamedCache nc, CacheEntry e) {
@@ -1168,11 +1182,9 @@ public class TerminologyCache {
     if (cacheToken.getKey() == null) {
       return null;
     }
-    checkDependencies();
+    CacheEntry e = findEntry(cacheToken);
     synchronized (lock) {
       requestCount++;
-      NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = nc.map.get(cacheToken.getKey());
       if (e == null) {
         networkCount++;
         return null;
@@ -1185,32 +1197,40 @@ public class TerminologyCache {
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
     if (cacheToken.getKey() != null) {
-      Dependency[] dependencies = recordDependencies(cacheToken);
-      synchronized (lock) {      
-        NamedCache nc = getNamedCache(cacheToken);
-        CacheEntry e = new CacheEntry();
-        e.request = cacheToken.getRequest();
-        e.persistent = persistent;
-        e.v = new ValidationResult(res);
-        e.dependencies = dependencies;
-        store(cacheToken, persistent, nc, e);
-      }    
+      CacheEntry e = newEntry(cacheToken, persistent);
+      if (e == null) {
+        return;
+      }
+      e.v = new ValidationResult(res);
+      synchronized (lock) {
+        store(cacheToken, persistent, getNamedCache(cacheToken), e);
+      }
     }
   }
 
-  /** see {@link DependencyResolver}; also checks every entry against it at the next look up */
+  /** see {@link DependencyResolver}; every entry is checked against it at its next hit */
   public void setDependencyResolver(DependencyResolver resolver) {
     synchronized (lock) {
       dependencyResolver = resolver;
-      allDependenciesChanged = true;
-      dependenciesToCheck = true;
+      allDependenciesChangedAt = ++dependencyGeneration;
+    }
+  }
+
+  /**
+   * The context has loaded everything it is going to: from now on a dependency that is absent was deleted since the
+   * entry was stored, so the entry is dropped. Every entry is checked again at its next hit
+   */
+  public void resourcesLoaded() {
+    synchronized (lock) {
+      resourcesLoaded = true;
+      allDependenciesChangedAt = ++dependencyGeneration;
     }
   }
 
   /**
    * A ValueSet or CodeSystem with this url (or url|version) was loaded or changed: the entries that depend on it are
-   * dropped at the next look up if it is not what they were stored with. For a supplement, the context also gives the
-   * url of the code system it supplements. Nothing is worked out until then, and only for the entries that depend on it
+   * checked at their next hit, and dropped if it is not what they were stored with. For a supplement, the context
+   * also gives the url of the code system it supplements
    */
   public void invalidate(String url) {
     invalidate(url, false);
@@ -1225,26 +1245,67 @@ public class TerminologyCache {
     if (url != null) {
       url = dependencyUrl(url);
       synchronized (lock) {
-        changedDependencies.add(url);
+        dependencyChangedAt.put(url, ++dependencyGeneration);
         if (removed) {
           removedDependencies.add(url);
         }
-        dependenciesToCheck = true;
       }
     }
   }
 
-  private Dependency[] recordDependencies(CacheToken cacheToken) {
-    if (cacheToken.getDependencies() == null) {
-      return NO_DEPENDENCIES;
+  /** what an answer depends on, taken before it is worked out, so that a change made meanwhile isn't recorded as what it used */
+  private static final class CapturedDependencies implements Supplier<Map<String, String>> {
+    /** null if they couldn't be worked out, and then the answer isn't stored */
+    private final Map<String, String> states;
+    private final long generation;
+
+    private CapturedDependencies(Map<String, String> states, long generation) {
+      this.states = states;
+      this.generation = generation;
     }
-    Map<String, String> map = cacheToken.getDependencies().get();
-    Dependency[] res = new Dependency[map.size()];
-    int i = 0;
-    for (Map.Entry<String, String> d : map.entrySet()) {
-      res[i++] = new Dependency(keep(d.getKey()), keep(d.getValue()));
+
+    @Override
+    public Map<String, String> get() {
+      return states;
     }
-    return res;
+  }
+
+  private void captureDependencies(CacheToken cacheToken) {
+    Supplier<Map<String, String>> dependencies = cacheToken.getDependencies();
+    if (dependencies == null || dependencies instanceof CapturedDependencies) {
+      return;
+    }
+    long generation = dependencyGeneration;
+    Map<String, String> states;
+    try {
+      states = dependencies.get();
+    } catch (RuntimeException e) {
+      log.warn("Unable to work out what a terminology answer depends on, so it is not cached: " + e.getMessage());
+      states = null;
+    }
+    cacheToken.setDependencies(new CapturedDependencies(states, generation));
+  }
+
+  /** null if what the answer depends on couldn't be worked out */
+  private CacheEntry newEntry(CacheToken cacheToken, boolean persistent) {
+    captureDependencies(cacheToken);
+    CacheEntry e = new CacheEntry();
+    e.request = cacheToken.getRequest();
+    e.persistent = persistent;
+    e.dependencies = NO_DEPENDENCIES;
+    if (cacheToken.getDependencies() instanceof CapturedDependencies) {
+      CapturedDependencies captured = (CapturedDependencies) cacheToken.getDependencies();
+      if (captured.states == null) {
+        return null;
+      }
+      e.dependencies = new Dependency[captured.states.size()];
+      int i = 0;
+      for (Map.Entry<String, String> d : captured.states.entrySet()) {
+        e.dependencies[i++] = new Dependency(keep(d.getKey()), keep(d.getValue()));
+      }
+      e.checkedAt = captured.generation;
+    }
+    return e;
   }
 
   private String keep(String s) {
@@ -1252,74 +1313,106 @@ public class TerminologyCache {
   }
 
   /**
-   * Drops the entries that depend on something that has changed since they were stored. The resolver is asked once
-   * for each request, outside the lock, since it reads the context
+   * The entry, if what it depends on still holds. On a miss, what the answer will depend on is taken now, before the
+   * caller works it out
    */
-  private void checkDependencies() {
-    if (!dependenciesToCheck) {
-      return;
+  private CacheEntry findEntry(CacheToken cacheToken) {
+    NamedCache nc;
+    CacheEntry e;
+    synchronized (lock) {
+      nc = getNamedCache(cacheToken);
+      e = nc.map.get(cacheToken.getKey());
+      if (e != null && (e.dependencies == null || e.dependencies.length == 0 || e.checkedAt >= dependencyGeneration)) {
+        return e;
+      }
     }
+    if (e != null && !dependenciesHold(nc, cacheToken.getKey(), e)) {
+      e = null;
+    }
+    if (e == null) {
+      captureDependencies(cacheToken);
+    }
+    return e;
+  }
+
+  /**
+   * Checks the dependencies that have changed since the entry was last checked, asking the resolver outside the lock,
+   * since it reads the context; drops the entry if one has changed or can't be checked
+   */
+  private boolean dependenciesHold(NamedCache nc, String key, CacheEntry e) {
     DependencyResolver resolver;
-    Set<String> requests = new HashSet<>();
-    Set<String> removed;
+    long generation;
+    boolean loaded;
+    List<Dependency> changed = new ArrayList<>();
+    Set<String> removed = new HashSet<>();
     synchronized (lock) {
       resolver = dependencyResolver;
-      boolean all = allDependenciesChanged;
-      Set<String> changed = new HashSet<>(changedDependencies);
-      removed = new HashSet<>(removedDependencies);
-      changedDependencies.clear();
-      removedDependencies.clear();
-      allDependenciesChanged = false;
-      dependenciesToCheck = false;
-      if (resolver == null) {
-        return;
-      }
-      for (NamedCache nc : caches.values()) {
-        for (CacheEntry e : nc.map.values()) {
-          if (e.dependencies != null) {
-            for (Dependency d : e.dependencies) {
-              if (all || changed.contains(d.url)) {
-                requests.add(d.request);
-              }
-            }
+      generation = dependencyGeneration;
+      loaded = resourcesLoaded;
+      for (Dependency d : e.dependencies) {
+        Long at = dependencyChangedAt.get(d.url);
+        if (allDependenciesChangedAt > e.checkedAt || (at != null && at > e.checkedAt)) {
+          changed.add(d);
+          if (removedDependencies.contains(d.url)) {
+            removed.add(d.url);
           }
         }
       }
     }
-    if (requests.isEmpty()) {
-      return;
-    }
-    Map<String, String> states = new HashMap<>();
-    for (String request : requests) {
-      states.put(request, resolver.stateOf(request));
+    String reason = null;
+    if (resolver != null) {
+      for (Dependency d : changed) {
+        try {
+          if (hasChanged(d, resolver.stateOf(d.request), removed.contains(d.url), loaded)) {
+            reason = d.request + " changed";
+          }
+        } catch (RuntimeException ex) {
+          reason = "of an error checking " + d.request + ": " + ex.getMessage();
+        }
+        if (reason != null) {
+          break;
+        }
+      }
     }
     synchronized (lock) {
-      for (NamedCache nc : caches.values()) {
-        Iterator<CacheEntry> it = nc.map.values().iterator();
-        while (it.hasNext()) {
-          CacheEntry e = it.next();
-          if (hasChanged(e, states, removed)) {
-            it.remove();
-            if (nc.list.remove(e)) {
-              nc.dirty = true;
-            }
-          }
+      if (reason == null) {
+        e.checkedAt = Math.max(e.checkedAt, generation);
+        return true;
+      }
+      if (nc.map.remove(key, e)) {
+        droppedEntries++;
+        if (nc.list.remove(e)) {
+          nc.dirty = true;
+        }
+        if (dropLoggedAt < generation) {
+          dropLoggedAt = generation;
+          log.info("Terminology cache: answers are worked out again because " + reason);
         }
       }
+      return false;
     }
   }
 
-  /** a dependency that is absent now is undecided (the context may not have loaded it yet) unless it was dropped */
-  private boolean hasChanged(CacheEntry e, Map<String, String> states, Set<String> removed) {
-    if (e.dependencies != null) {
-      for (Dependency d : e.dependencies) {
-        String now = states.get(d.request);
-        if (now != null && !now.equals(d.state) && (!ABSENT.equals(now) || removed.contains(d.url))) {
-          return true;
-        }
-      }
+  /**
+   * A dependency that is absent now is undecided (the context may not have loaded it yet) unless it was dropped or the
+   * context has loaded everything; one that couldn't be loaded has changed. Absent and not-present are the same: in
+   * neither case was there local content
+   */
+  private static boolean hasChanged(Dependency d, String now, boolean removed, boolean loaded) {
+    if (now == null || now.equals(d.state)) {
+      return false;
     }
-    return false;
+    if (FAILED.equals(now)) {
+      return true;
+    }
+    boolean hadNoContent = ABSENT.equals(d.state) || NO_CONTENT.equals(d.state);
+    if (ABSENT.equals(now)) {
+      return !hadNoContent && (removed || loaded);
+    }
+    if (NO_CONTENT.equals(now)) {
+      return !hadNoContent;
+    }
+    return true;
   }
 
   /**

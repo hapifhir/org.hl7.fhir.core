@@ -1319,7 +1319,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       String url = c.getValue();
       String pinned = pinnedImport(url, p);
       for (String u : url == null ? new String[0] : url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
-        if (addTxDependency(res, "ValueSet " + u)) {
+        // one that can't be loaded is recorded as failed, and there is nothing to follow
+        if (addTxDependency(res, "ValueSet " + u) && !TerminologyCache.FAILED.equals(res.get("ValueSet " + u))) {
           ValueSet imp = (ValueSet) resolveTxDependency("ValueSet " + u);
           if (imp != null) {
             findExpansionDependencies(imp, p, res);
@@ -1414,10 +1415,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   /**
    * The state of a request that a cached answer depends on (see {@link TerminologyCache.DependencyResolver}): a
    * digest of the ValueSet or CodeSystem it names, or of the supplements of the code system it names.
-   * {@link TerminologyCache#ABSENT} when there is none, and for a code system that isn't here (a not-present stub,
-   * such as THO's for SNOMED CT and LOINC, says nothing about the answer)
+   * {@link TerminologyCache#ABSENT} when there is none, {@link TerminologyCache#NO_CONTENT} for a code system whose
+   * content isn't here (a not-present stub, such as THO's for SNOMED CT and LOINC, says nothing about the answer), and
+   * {@link TerminologyCache#FAILED} when it can't be loaded
    */
   public String txDependencyState(String request) {
+    try {
+      return dependencyState(request);
+    } catch (RuntimeException e) {
+      if (keyFetchFailures.add(request)) {
+        log.warn("Unable to load " + request + " for the tx cache: " + e.getMessage());
+      }
+      return TerminologyCache.FAILED;
+    }
+  }
+
+  private String dependencyState(String request) {
     if (request.startsWith("supplements ")) {
       String ref = request.substring("supplements ".length());
       String url = ref.contains("|") ? ref.substring(0, ref.indexOf('|')) : ref;
@@ -1437,8 +1450,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return txCache.hashJson(String.join(",", digests));
     }
     CanonicalResource cr = resolveTxDependency(request);
-    if (cr == null || (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent()))) {
+    if (cr == null) {
       return TerminologyCache.ABSENT;
+    }
+    if (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent())) {
+      return TerminologyCache.NO_CONTENT;
     }
     return txCache.contentDigest(cr);
   }
@@ -1474,22 +1490,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  /** urls fetchForKey failed to load, so each is only reported once */
+  /** dependencies that couldn't be loaded, so each is only reported once */
+  private volatile boolean txResourcesLoaded;
   private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
 
-  /** one that isn't there is null; one that can't be loaded is left to the expansion or validation to report, and for the cache it is not there */
   private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
-    if (url == null) {
-      return null;
-    }
-    try {
-      return fetchResourceWithException(type, url, rules, version, src);
-    } catch (FHIRException e) {
-      if (keyFetchFailures.add(url + "|" + version)) {
-        log.warn("Unable to load " + url + (version == null ? "" : "|" + version) + " for the tx cache: " + e.getMessage());
-      }
-      return null;
-    }
+    return url == null ? null : fetchResourceWithException(type, url, rules, version, src);
   }
 
   /**
@@ -2784,7 +2790,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
     txCache.setDependencyResolver(this::txDependencyState);
+    if (txResourcesLoaded) {
+      txCache.resourcesLoaded();
+    }
     terminologyClientManager.setCache(txCache);
+  }
+
+  /**
+   * Everything the terminology operations can depend on is loaded: from now on, a cached answer that depends on a
+   * ValueSet, CodeSystem or supplement that isn't there (it was deleted since the answer was stored) is dropped
+   */
+  public void txResourcesLoaded() {
+    txResourcesLoaded = true;
+    if (txCache != null) {
+      txCache.resourcesLoaded();
+    }
   }
 
   public void clearTSCache(String url) throws Exception {
