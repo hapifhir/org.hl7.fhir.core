@@ -594,7 +594,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     String vstatus = determineStatus(cs, def);
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
-        ValueSetExpansionContainsComponent t = addCode(wc, system, version, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams,
+        ValueSetExpansionContainsComponent t = addCode(wc, system, version, code, def.getDisplay(), cs.getLanguage(), parent, withLanguage(cs, def.getDesignation()), expParams,
           abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs,
           null, def.getExtension(), null, exp, vstatus) ;
         if (np == null) {
@@ -1797,7 +1797,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         dwc.setCanBeHierarchy(false);
         for (ConceptReferenceComponent c : inc.getConcept()) {
           c.checkNoModifiers("Code in Value Set", "expanding");
-          ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
+          ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode());
           if (def == null) {
             // a code in a code space the code system reserves for users to define their own codes: listed, it
             // is in the expansion (with an extension-codes supplement's display, or the code space's default)
@@ -1821,7 +1821,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
             isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
             String vstatus = determineStatus(cs, def);
             addCode(dwc, inc.getSystem(), cs.getVersion(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(),
-              null, mergeDesignations(def, convertDesignations(c.getDesignation())), expParams, isAbstract, inactive, imports, noInactive, false,
+              null, mergeDesignations(cs, def, convertDesignations(c.getDesignation())), expParams, isAbstract, inactive, imports, noInactive, false,
               exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp, vstatus);
           }
         }
@@ -1936,7 +1936,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
               excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
             } else {
               String vstatus = determineStatus(cs, def);
-              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+              addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, withLanguage(cs, def.getDesignation()), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
                 imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, vstatus);
             }
           }
@@ -1966,7 +1966,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                 excludeCode(wc, inc.getSystem(), inc.getVersion(), code);
               } else {
                 String vstatus = determineStatus(cs, def);
-                addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+                addCode(wc, inc.getSystem(), inc.getVersion(), code, def.getDisplay(), cs.getLanguage(), null, withLanguage(cs, def.getDesignation()), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
                   imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, vstatus);
               }
             }
@@ -2010,11 +2010,36 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return Utilities.existsInList(property, "notSelectable");
   }
 
-  private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
+  /**
+   * A designation with no language of its own is in its code system's language (CodeSystem.language), so it
+   * goes into the expansion with that language. Returns the list unchanged if there is nothing to fill in,
+   * else a new list with copies that have the language. A designation merged in from a supplement that has
+   * no language (see CodeSystemUtilities.mergeSupplements) is left alone: its language is unknown
+   */
+  private List<ConceptDefinitionDesignationComponent> withLanguage(CodeSystem cs, List<ConceptDefinitionDesignationComponent> designations) {
+    if (cs == null || !cs.hasLanguage() || designations == null) {
+      return designations;
+    }
+    List<ConceptDefinitionDesignationComponent> res = null;
+    for (int i = 0; i < designations.size(); i++) {
+      ConceptDefinitionDesignationComponent d = designations.get(i);
+      if (!d.hasLanguage() && !d.hasUserData(UserDataNames.tx_designation_no_language)) {
+        if (res == null) {
+          res = new ArrayList<>(designations);
+        }
+        ConceptDefinitionDesignationComponent c = d.copy();
+        c.setLanguage(cs.getLanguage());
+        res.set(i, c);
+      }
+    }
+    return res == null ? designations : res;
+  }
+
+  private List<ConceptDefinitionDesignationComponent> mergeDesignations(CodeSystem cs, ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
     if (def != null) {
-      res.addAll(def.getDesignation());
+      res.addAll(withLanguage(cs, def.getDesignation()));
     }
     res.addAll(list);
     return res;

@@ -44,13 +44,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
@@ -310,6 +314,15 @@ public class TerminologyCache {
     private String key;
     @Getter
     private String request;
+    private Supplier<Map<String, String>> dependencies;
+
+    /**
+     * What the answer depends on (see {@link DependencyResolver}), worked out only when the answer is stored, so that a
+     * look up costs no more than it did
+     */
+    public void setDependencies(Supplier<Map<String, String>> dependencies) {
+      this.dependencies = dependencies;
+    }
 
     public void setName(String n) {
       String systemName = getSystemNameKeyGenerator().getNameForSystem(n);
@@ -412,6 +425,50 @@ public class TerminologyCache {
     private ValidationResult v;
     private ValueSetExpansionOutcome e;
     private SubsumesResult s;
+    /** what the answer depended on when it was stored; null for an entry written before these were kept, which is used as before */
+    private Dependency[] dependencies;
+  }
+
+  /**
+   * Something an answer depended on: a request as the {@link DependencyResolver} reads it, the url it is about, and
+   * the state it had when the answer was stored
+   */
+  private static final class Dependency {
+    private final String request;
+    private final String url;
+    private final String state;
+
+    private Dependency(String request, String state) {
+      this.request = request;
+      this.url = dependencyUrl(request);
+      this.state = state;
+    }
+  }
+
+  private static final Dependency[] NO_DEPENDENCIES = new Dependency[0];
+
+  /** the state of a request that names nothing usable */
+  public static final String ABSENT = "-";
+
+  /**
+   * Gives the current state of something a cached answer depended on (a ValueSet it imports, a CodeSystem or
+   * supplement it draws on), so that the cache can tell whether the answer still holds. A request is
+   * "{kind} {url}" or "{kind} {url}|{version}", and the state is what this returned when the answer was stored, or
+   * {@link #ABSENT}.
+   *
+   * The cache asks only when the context has loaded, changed or dropped a resource with that url (see
+   * {@link TerminologyCache#invalidate}), and drops the answers whose dependencies have a different state now.
+   * A dependency that is absent now is left undecided, since the context may not have loaded it yet.
+   */
+  public interface DependencyResolver {
+    String stateOf(String request);
+  }
+
+  private static String dependencyUrl(String request) {
+    int i = request.indexOf(' ');
+    String ref = i < 0 ? request : request.substring(i + 1);
+    int v = ref.indexOf('|');
+    return v < 0 ? ref : ref.substring(0, v);
   }
 
   private class NamedCache {
@@ -453,6 +510,17 @@ public class TerminologyCache {
   private final TerminologyCapabilitiesCache<CapabilityStatement> capabilityStatementCache;
   private final TerminologyCapabilitiesCache<TerminologyCapabilities> terminologyCapabilitiesCache;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+  private DependencyResolver dependencyResolver;
+  /** urls whose resources were loaded, changed or dropped since the entries were last checked */
+  private final Set<String> changedDependencies = new HashSet<>();
+  /** the ones of those that were dropped, so that a dependency that is absent now has changed */
+  private final Set<String> removedDependencies = new HashSet<>();
+  private boolean allDependenciesChanged;
+  private volatile boolean dependenciesToCheck;
+  /** the request and state strings of the entries' dependencies, each kept once */
+  private final Map<String, String> dependencyStrings = new ConcurrentHashMap<>();
+  /** see contentDigest; weak, so a resource that is dropped from the context isn't kept */
+  private final Map<Resource, String> contentDigests = Collections.synchronizedMap(new WeakHashMap<>());
 
   // Memoised pretty-JSON of the expansion Parameters used in every validation /
   // subsumes cache key. The Parameters are effectively constant for a whole run
@@ -982,6 +1050,7 @@ public class TerminologyCache {
   }
 
   public ValueSetExpansionOutcome getExpansion(CacheToken cacheToken) {
+    checkDependencies();
     synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = nc.map.get(cacheToken.key);
@@ -993,12 +1062,14 @@ public class TerminologyCache {
   }
 
   public void cacheExpansion(CacheToken cacheToken, ValueSetExpansionOutcome res, boolean persistent) {
+    Dependency[] dependencies = recordDependencies(cacheToken);
     synchronized (lock) {      
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = new CacheEntry();
       e.request = cacheToken.request;
       e.persistent = persistent;
       e.e = res;
+      e.dependencies = dependencies;
       store(cacheToken, persistent, nc, e);
     }    
   }
@@ -1099,6 +1170,7 @@ public class TerminologyCache {
     if (cacheToken.key == null) {
       return null;
     }
+    checkDependencies();
     synchronized (lock) {
       requestCount++;
       NamedCache nc = getNamedCache(cacheToken);
@@ -1115,17 +1187,212 @@ public class TerminologyCache {
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
     if (cacheToken.key != null) {
+      Dependency[] dependencies = recordDependencies(cacheToken);
       synchronized (lock) {      
         NamedCache nc = getNamedCache(cacheToken);
         CacheEntry e = new CacheEntry();
         e.request = cacheToken.request;
         e.persistent = persistent;
         e.v = new ValidationResult(res);
+        e.dependencies = dependencies;
         store(cacheToken, persistent, nc, e);
       }    
     }
   }
 
+  /** see {@link DependencyResolver}; also checks every entry against it at the next look up */
+  public void setDependencyResolver(DependencyResolver resolver) {
+    synchronized (lock) {
+      dependencyResolver = resolver;
+      allDependenciesChanged = true;
+      dependenciesToCheck = true;
+    }
+  }
+
+  /**
+   * A ValueSet or CodeSystem with this url (or url|version) was loaded or changed: the entries that depend on it are
+   * dropped at the next look up if it is not what they were stored with. For a supplement, the context also gives the
+   * url of the code system it supplements. Nothing is worked out until then, and only for the entries that depend on it
+   */
+  public void invalidate(String url) {
+    invalidate(url, false);
+  }
+
+  /** as {@link #invalidate(String)}, for a resource that was dropped: an entry that depended on it is dropped unless it is back */
+  public void invalidateRemoved(String url) {
+    invalidate(url, true);
+  }
+
+  private void invalidate(String url, boolean removed) {
+    if (url != null) {
+      url = dependencyUrl(url);
+      synchronized (lock) {
+        changedDependencies.add(url);
+        if (removed) {
+          removedDependencies.add(url);
+        }
+        dependenciesToCheck = true;
+      }
+    }
+  }
+
+  private Dependency[] recordDependencies(CacheToken cacheToken) {
+    if (cacheToken.dependencies == null) {
+      return NO_DEPENDENCIES;
+    }
+    Map<String, String> map = cacheToken.dependencies.get();
+    Dependency[] res = new Dependency[map.size()];
+    int i = 0;
+    for (Map.Entry<String, String> d : map.entrySet()) {
+      res[i++] = new Dependency(keep(d.getKey()), keep(d.getValue()));
+    }
+    return res;
+  }
+
+  private String keep(String s) {
+    return s == null ? null : dependencyStrings.computeIfAbsent(s, k -> k);
+  }
+
+  /**
+   * Drops the entries that depend on something that has changed since they were stored. The resolver is asked once
+   * for each request, outside the lock, since it reads the context
+   */
+  private void checkDependencies() {
+    if (!dependenciesToCheck) {
+      return;
+    }
+    DependencyResolver resolver;
+    Set<String> requests = new HashSet<>();
+    Set<String> removed;
+    synchronized (lock) {
+      resolver = dependencyResolver;
+      boolean all = allDependenciesChanged;
+      Set<String> changed = new HashSet<>(changedDependencies);
+      removed = new HashSet<>(removedDependencies);
+      changedDependencies.clear();
+      removedDependencies.clear();
+      allDependenciesChanged = false;
+      dependenciesToCheck = false;
+      if (resolver == null) {
+        return;
+      }
+      for (NamedCache nc : caches.values()) {
+        for (CacheEntry e : nc.map.values()) {
+          if (e.dependencies != null) {
+            for (Dependency d : e.dependencies) {
+              if (all || changed.contains(d.url)) {
+                requests.add(d.request);
+              }
+            }
+          }
+        }
+      }
+    }
+    if (requests.isEmpty()) {
+      return;
+    }
+    Map<String, String> states = new HashMap<>();
+    for (String request : requests) {
+      states.put(request, resolver.stateOf(request));
+    }
+    synchronized (lock) {
+      for (NamedCache nc : caches.values()) {
+        Iterator<CacheEntry> it = nc.map.values().iterator();
+        while (it.hasNext()) {
+          CacheEntry e = it.next();
+          if (hasChanged(e, states, removed)) {
+            it.remove();
+            if (nc.list.remove(e)) {
+              nc.dirty = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /** a dependency that is absent now is undecided (the context may not have loaded it yet) unless it was dropped */
+  private boolean hasChanged(CacheEntry e, Map<String, String> states, Set<String> removed) {
+    if (e.dependencies != null) {
+      for (Dependency d : e.dependencies) {
+        String now = states.get(d.request);
+        if (now != null && !now.equals(d.state) && (!ABSENT.equals(now) || removed.contains(d.url))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The state of a dependency that is a resource (see {@link DependencyResolver}): a digest of what decides an
+   * expansion or validation, so narrative and metadata are left out. Kept by identity: a resource is not edited once
+   * it is in a context, and one loaded afresh is a new object
+   */
+  public String contentDigest(CanonicalResource cr) {
+    String res = contentDigests.get(cr);
+    if (res == null) {
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.NORMAL);
+      Resource essence = cr instanceof ValueSet ? getVSDefinition((ValueSet) cr) : cr instanceof CodeSystem ? getCSEssence((CodeSystem) cr) : cr;
+      StringBuilder b = new StringBuilder(cr.fhirType());
+      if (cr.hasUrl() && !cr.getUrl().startsWith("urn:uuid:")) {
+        b.append("/").append(cr.getVersionedUrl());
+      }
+      b.append("\n").append(statusOf(cr));
+      try {
+        b.append("\n").append(json.composeString(essence));
+      } catch (IOException e) {
+        throw new FHIRException(e);
+      }
+      if (cr instanceof ValueSet) {
+        for (Extension ext : cr.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+          // a supplement that isn't global is only used when it is named
+          b.append("\n").append(ext.hasValue() ? ext.getValue().primitiveValue() : null);
+        }
+      }
+      res = hashJson(b.toString());
+      contentDigests.put(cr, res);
+    }
+    return res;
+  }
+
+  /** an expansion warns about draft, experimental, retired, deprecated and withdrawn content; the raw standards status, so a bad value can't throw */
+  private String statusOf(CanonicalResource cr) {
+    return cr.getStatus() + "|" + cr.getExperimental() + "|" + ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_STANDARDS_STATUS);
+  }
+
+  /** what of a ValueSet decides an expansion: its compose, or the expansion it is defined by, but not one added to it */
+  private ValueSet getVSDefinition(ValueSet vs) {
+    ValueSet vsc = new ValueSet();
+    vsc.setLanguage(vs.getLanguage());
+    if (vs.hasCompose()) {
+      vsc.setCompose(vs.getCompose());
+    } else if (vs.hasExpansion()) {
+      vsc.getExpansion().getParameter().addAll(vs.getExpansion().getParameter());
+      vsc.getExpansion().getContains().addAll(vs.getExpansion().getContains());
+    }
+    return vsc;
+  }
+
+  /** what of a CodeSystem decides an expansion or validation: its content, not its narrative or metadata */
+  private CodeSystem getCSEssence(CodeSystem cs) {
+    CodeSystem csc = new CodeSystem();
+    if (cs.hasUrl() && !cs.getUrl().startsWith("urn:uuid:")) {
+      csc.setUrl(cs.getUrl()); // a contained code system without a url is given a new urn:uuid: every run
+    }
+    csc.setVersion(cs.getVersion());
+    csc.setLanguage(cs.getLanguage());
+    csc.setContent(cs.getContent());
+    csc.setSupplements(cs.getSupplements());
+    csc.setCaseSensitive(cs.getCaseSensitive());
+    csc.setHierarchyMeaning(cs.getHierarchyMeaning());
+    csc.getProperty().addAll(cs.getProperty());
+    csc.getFilter().addAll(cs.getFilter());
+    csc.getConcept().addAll(cs.getConcept());
+    csc.getExtension().addAll(cs.getExtension()); // e.g. codesystem-supplement-global decides whether a supplement is used
+    return csc;
+  }
 
   // persistence
 
@@ -1479,6 +1746,9 @@ public class TerminologyCache {
         }
         writer.write("  \"valueSet\" : "+ json.composeString(cacheEntry.e.getValueset()).trim()+",\r\n");
       }
+      if (cacheEntry.dependencies != null) {
+        writer.write("  \"depends-on\" : "+dependenciesJson(cacheEntry.dependencies)+",\r\n");
+      }
       writer.write("  \"error\" : \""+Utilities.escapeJson(cacheEntry.e.getError()).trim()+"\"\r\n}\r\n");
     } else if (cacheEntry.s != null) {
       writer.write("s: {\r\n");
@@ -1548,6 +1818,10 @@ public class TerminologyCache {
         oo.setIssue(cacheEntry.v.getIssues());
         writer.write("  \"issues\" : "+ json.composeString(oo).trim()+"\r\n");
       }
+      if (cacheEntry.dependencies != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"depends-on\" : "+dependenciesJson(cacheEntry.dependencies));
+      }
       writer.write("\r\n}\r\n");
     }
     writer.write(ENTRY_MARKER+"\r\n");
@@ -1595,6 +1869,27 @@ public class TerminologyCache {
     return null;
   }
 
+  private static String dependenciesJson(Dependency[] dependencies) {
+    StringBuilder b = new StringBuilder("{");
+    for (int i = 0; i < dependencies.length; i++) {
+      b.append(i == 0 ? "" : ",").append("\r\n    \"").append(Utilities.escapeJson(dependencies[i].request)).append("\" : \"").append(Utilities.escapeJson(dependencies[i].state)).append("\"");
+    }
+    return b.append(dependencies.length == 0 ? "}" : "\r\n  }").toString();
+  }
+
+  private Dependency[] readDependencies(JsonObject o) {
+    if (!o.has("depends-on")) {
+      return null;
+    }
+    JsonObject d = o.getAsJsonObject("depends-on");
+    Dependency[] res = new Dependency[d.size()];
+    int i = 0;
+    for (Map.Entry<String, JsonElement> e : d.entrySet()) {
+      res[i++] = new Dependency(keep(e.getKey()), keep(e.getValue().getAsString()));
+    }
+    return res;
+  }
+
   private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
     CacheEntry ce = new CacheEntry();
     ce.persistent = true;
@@ -1603,6 +1898,7 @@ public class TerminologyCache {
     resultString = resultString.substring(3);
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
+    ce.dependencies = readDependencies(o);
     if (e == 'e') {
       TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {

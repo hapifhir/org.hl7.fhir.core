@@ -78,7 +78,6 @@ public class ValidationContextUtilities {
     validationContext.setHintAboutNonMustSupport(instanceValidatorParameters.isHintAboutNonMustSupport());
     validationContext.setHtmlOutput(instanceValidatorParameters.getHtmlOutput());
     validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
-    validationContext.setR5BundleRelativeReferencePolicy(instanceValidatorParameters.getR5BundleRelativeReferencePolicy());
     validationContext.setExtensions(instanceValidatorParameters.getExtensions());
     validationContext.setUsages(instanceValidatorParameters.getUsages());
     validationContext.setLaunchContexts(instanceValidatorParameters.getLaunchContexts());
@@ -212,7 +211,6 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setHintAboutNonMustSupport(validationContext.isHintAboutNonMustSupport());
     instanceValidatorParameters.setHtmlOutput(validationContext.getHtmlOutput());
     instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());
-    instanceValidatorParameters.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy());
     instanceValidatorParameters.setExtensions(validationContext.getExtensions());
     instanceValidatorParameters.setUsages(validationContext.getUsages());
     instanceValidatorParameters.setLaunchContexts(validationContext.getLaunchContexts());

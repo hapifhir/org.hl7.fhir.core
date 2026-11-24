@@ -12,7 +12,8 @@
     "http://tx.hl7europe.eu/r4",
     "https://tx.fhir.ch/r4",
     "https://tx.fhir.de/fhir",
-    "https://tx.hl7.cz/r4"]
+    "https://tx.hl7.cz/r4",
+    "https://nzhts.digital.health.nz/fhir"]
   },
   {
     "system" : "http://unitsofmeasure.org in en-AU",
@@ -24,8 +25,10 @@
     "https://tx.ontoserver.csiro.au/fhir",
     "https://terminologystandardsservice.ca/tx/fhir",
     "http://tx.hl7europe.eu/r4",
+    "https://tx.fhir.ch/r4",
     "https://tx-nordics.fhir.org/fhir/r4",
     "https://tx.fhir.de/fhir",
-    "https://tx.hl7.cz/r4"]
+    "https://tx.hl7.cz/r4",
+    "https://nzhts.digital.health.nz/fhir"]
   }]
 }

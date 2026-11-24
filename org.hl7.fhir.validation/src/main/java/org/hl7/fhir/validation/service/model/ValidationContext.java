@@ -17,7 +17,6 @@ import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
@@ -383,10 +382,6 @@ public class ValidationContext {
   private
   FhirFormat format;
 
-  @JsonProperty("r5BundleRelativeReferencePolicy")
-  @SerializedName("r5BundleRelativeReferencePolicy")
-  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
-  
   private List<String> langRegenParam = new ArrayList<>();
 
   /**
@@ -480,7 +475,6 @@ public class ValidationContext {
     this.advisorFile = other.advisorFile;
     this.expansionParameters = other.expansionParameters;
     this.format = other.format;
-    this.r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
     this.langRegenParam = new ArrayList<>(other.langRegenParam);
     this.inferFhirVersion = other.inferFhirVersion;
   }
@@ -1324,15 +1318,6 @@ public class ValidationContext {
     return this;
   }
   
-  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
-    return r5BundleRelativeReferencePolicy;
-  }
-
-  public ValidationContext setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
-    return this;
-  }
-
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
   }
@@ -1497,7 +1482,6 @@ public class ValidationContext {
       Objects.equals(advisorFile, that.advisorFile) &&
       Objects.equals(expansionParameters, that.expansionParameters) &&
       Objects.equals(format, that.format) &&
-      Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy) &&
       Objects.equals(watchSettleTime, that.watchSettleTime) &&
       Objects.equals(langRegenParam, that.langRegenParam) &&
       Objects.equals(inferFhirVersion, that.inferFhirVersion);

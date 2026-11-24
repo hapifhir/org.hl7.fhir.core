@@ -75,6 +75,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /*
@@ -338,6 +339,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
     txCache = new TerminologyCache(this, null, this); // memory only until initTxCache() is called - see TerminologyCache
+    txCache.setDependencyResolver(this::txDependencyState);
   }
 
   protected BaseWorkerContext(IModelContext modelContext, Locale locale) throws FileNotFoundException, IOException, FHIRException {
@@ -348,6 +350,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
     txCache = new TerminologyCache(this, null, this); // memory only until initTxCache() is called - see TerminologyCache
+    txCache.setDependencyResolver(this::txDependencyState);
   }
 
   protected BaseWorkerContext(IModelContext modelContext, CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
@@ -471,6 +474,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       boolean added = registerResource(r, packageInfo);
       if (added) {
         registerInAllResourceIndex(r, packageInfo);
+        if (Utilities.existsInList(r.getType(), "ValueSet", "CodeSystem")) {
+          txDependencyChanged(url, r.getSupplements(), false);
+        }
       }
     }
   }
@@ -642,9 +648,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           typeManager.see(sd);
         } else if (r instanceof ValueSet) {
           valueSets.see((ValueSet) m, packageInfo);
+          txDependencyChanged(url, null, false);
         } else if (r instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) r);
           codeSystems.see((CodeSystem) m, packageInfo);
+          txDependencyChanged(url, ((CodeSystem) m).getSupplements(), false);
         } else if (r instanceof ImplementationGuide) {
           guides.see((ImplementationGuide) m, packageInfo);
         } else if (r instanceof CapabilityStatement) {
@@ -972,6 +980,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getIncludeList().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
+    cacheToken.setDependencies(() -> findExpansionDependencies(vs, getExpansionParameters()));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1178,6 +1187,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     CacheToken cacheToken = txCache.generateExpandToken(vs, options);
+    Parameters sent = p;
+    cacheToken.setDependencies(() -> findExpansionDependencies(vs, sent));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
@@ -1295,6 +1306,214 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * What an expansion of vs depends on, for the tx cache (see {@link TerminologyCache.DependencyResolver}): vs
+   * itself, the ValueSets it imports, all the way down, and the CodeSystems it draws on and their supplements. These
+   * are what addDependentResources sends the server as tx-resource, and what the local expander uses, and an IG can
+   * edit any of them without changing a version. Worked out only when an answer is stored
+   */
+  public Map<String, String> findExpansionDependencies(ValueSet vs, Parameters p) {
+    Map<String, String> res = new LinkedHashMap<>();
+    if (vs.hasUrl() && !vs.getUrl().startsWith("urn:uuid:")) {
+      addTxDependency(res, "ValueSet " + vs.getVersionedUrl());
+    }
+    findExpansionDependencies(vs, p, res);
+    return res;
+  }
+
+  private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, String> res) {
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        addTxDependency(res, "CodeSystem " + ext.getValueCanonicalType().asStringValue());
+      }
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+      findExpansionDependencies(inc, p, res);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
+      findExpansionDependencies(inc, p, res);
+    }
+  }
+
+  private void findExpansionDependencies(ConceptSetComponent inc, Parameters p, Map<String, String> res) {
+    for (CanonicalType c : inc.getValueSetList()) {
+      // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
+      String url = c.getValue();
+      String pinned = pinnedImport(url, p);
+      for (String u : url == null ? new String[0] : url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
+        if (addTxDependency(res, "ValueSet " + u)) {
+          ValueSet imp = (ValueSet) resolveTxDependency("ValueSet " + u);
+          if (imp != null) {
+            findExpansionDependencies(imp, p, res);
+          }
+        }
+      }
+    }
+    String sys = inc.getSystem();
+    if (sys != null) {
+      // the server is sent the code system as resolved without the include's version, the local expander uses that
+      // version, or the one the parameters pin it to
+      addCodeSystemDependencies(res, sys, inc.getVersion(), pinnedVersions(sys, p));
+      if (!sys.contains("!") && p != null) {
+        String fixed = getFixedVersion(sys, p);
+        if (fixed != null) {
+          addTxDependency(res, "supplements " + fixed);
+        }
+      }
+    }
+  }
+
+  private void addCodeSystemDependencies(Map<String, String> res, String sys, String version, List<String> pinned) {
+    addTxDependency(res, "CodeSystem " + sys);
+    addTxDependency(res, "supplements " + sys);
+    List<String> versions = new ArrayList<>(pinned);
+    if (version != null) {
+      versions.add(0, version);
+    }
+    for (String v : versions) {
+      addTxDependency(res, "CodeSystem " + sys + "|" + v);
+      addTxDependency(res, "supplements " + sys + "|" + v);
+    }
+  }
+
+  /** url as default-valueset-version pins it, as ContextUtilities.pinValueSet does for the local expander, but a malformed parameter is left to the expansion to report */
+  private String pinnedImport(String url, Parameters p) {
+    if (url != null && p != null && !url.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        String v = "default-valueset-version".equals(pp.getName()) && pp.hasValue() ? pp.getValue().primitiveValue() : null;
+        if (v != null && v.startsWith(url + "|")) {
+          return v;
+        }
+      }
+    }
+    return url;
+  }
+
+  /** the versions of sys that force-system-version, system-version and check-system-version pin it to, as the local expander reads them */
+  private List<String> pinnedVersions(String sys, Parameters p) {
+    List<String> res = new ArrayList<>();
+    if (sys != null && p != null && !sys.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        if (pp.getName() != null && Utilities.existsInList(pp.getName().toLowerCase(), "force-system-version", "system-version", "check-system-version")) {
+          String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
+          if (v != null && v.startsWith(sys + "|")) {
+            res.add(v.substring(sys.length() + 1));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * What a validate-code depends on: what an expansion of the ValueSet depends on, and the code system of each coding
+   * with its supplements, which the code and display are checked against whether or not the ValueSet names it
+   */
+  public Map<String, String> findValidationDependencies(ValueSet vs, List<Coding> codings) {
+    return validationDependencies(vs == null ? Collections.emptyMap() : findExpansionDependencies(vs, getExpansionParametersForCacheToken()), codings);
+  }
+
+  private Map<String, String> validationDependencies(Map<String, String> valueSetDependencies, List<Coding> codings) {
+    Map<String, String> res = new LinkedHashMap<>(valueSetDependencies);
+    Parameters p = getExpansionParametersForCacheToken();
+    for (Coding c : codings) {
+      if (c.getSystem() != null) {
+        addCodeSystemDependencies(res, c.getSystem(), c.getVersion(), c.hasVersion() ? Collections.emptyList() : pinnedVersions(c.getSystem(), p));
+      }
+    }
+    return res;
+  }
+
+  /** false if the request is already there, so the caller doesn't follow it again (imports can be circular) */
+  private boolean addTxDependency(Map<String, String> res, String request) {
+    if (res.containsKey(request)) {
+      return false;
+    }
+    res.put(request, txDependencyState(request));
+    return true;
+  }
+
+  /**
+   * The state of a request that a cached answer depends on (see {@link TerminologyCache.DependencyResolver}): a
+   * digest of the ValueSet or CodeSystem it names, or of the supplements of the code system it names.
+   * {@link TerminologyCache#ABSENT} when there is none, and for a code system that isn't here (a not-present stub,
+   * such as THO's for SNOMED CT and LOINC, says nothing about the answer)
+   */
+  public String txDependencyState(String request) {
+    if (request.startsWith("supplements ")) {
+      String ref = request.substring("supplements ".length());
+      String url = ref.contains("|") ? ref.substring(0, ref.indexOf('|')) : ref;
+      String version = ref.contains("|") ? ref.substring(ref.indexOf('|') + 1) : null;
+      if (version == null) {
+        CodeSystem cs = fetchForKey(CodeSystem.class, url, null, null, null);
+        version = cs == null ? null : cs.getVersion();
+      }
+      List<String> digests = new ArrayList<>();
+      for (CodeSystem supp : codeSystems.getSupplements(url, version)) {
+        digests.add(txCache.contentDigest(supp));
+      }
+      if (digests.isEmpty()) {
+        return TerminologyCache.ABSENT;
+      }
+      Collections.sort(digests);
+      return txCache.hashJson(String.join(",", digests));
+    }
+    CanonicalResource cr = resolveTxDependency(request);
+    if (cr == null || (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent()))) {
+      return TerminologyCache.ABSENT;
+    }
+    return txCache.contentDigest(cr);
+  }
+
+  private static boolean isUsedContent(CodeSystemContentMode content) {
+    return content == CodeSystemContentMode.COMPLETE || content == CodeSystemContentMode.FRAGMENT || content == CodeSystemContentMode.SUPPLEMENT;
+  }
+
+  /** "ValueSet {url}[|{version}]" or "CodeSystem {url}[|{version}]" */
+  private CanonicalResource resolveTxDependency(String request) {
+    int i = request.indexOf(' ');
+    String ref = request.substring(i + 1);
+    int v = ref.indexOf('|');
+    String url = v < 0 ? ref : ref.substring(0, v);
+    String version = v < 0 ? null : ref.substring(v + 1);
+    if (request.startsWith("ValueSet ")) {
+      return fetchForKey(ValueSet.class, url, null, version, null);
+    } else {
+      return fetchForKey(CodeSystem.class, url, null, version, null);
+    }
+  }
+
+  /** a ValueSet or CodeSystem (or a supplement of the code system supplements) with this url was loaded, or dropped */
+  private void txDependencyChanged(String url, String supplements, boolean removed) {
+    if (txCache != null) {
+      if (removed) {
+        txCache.invalidateRemoved(url);
+        txCache.invalidateRemoved(supplements);
+      } else {
+        txCache.invalidate(url);
+        txCache.invalidate(supplements);
+      }
+    }
+  }
+
+  /** urls fetchForKey failed to load, so each is only reported once */
+  private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
+
+  /** one that isn't there is null; one that can't be loaded is left to the expansion or validation to report, and for the cache it is not there */
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
+    if (url == null) {
+      return null;
+    }
+    try {
+      return fetchResourceWithException(type, url, rules, version, src);
+    } catch (FHIRException e) {
+      if (keyFetchFailures.add(url + "|" + version)) {
+        log.warn("Unable to load " + url + (version == null ? "" : "|" + version) + " for the tx cache: " + e.getMessage());
+      }
+      return null;
+    }
   }
 
   /**
@@ -1417,8 +1636,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 1st pass: what is in the cache? 
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
+    Map<String, String>[] vsDependencies = new Map[1]; // worked out once for the batch, if anything is stored
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
+      if (t.getCacheToken() != null) {
+        Coding coding = t.getCoding();
+        t.getCacheToken().setDependencies(() -> {
+          if (vsDependencies[0] == null) {
+            vsDependencies[0] = findValidationDependencies(vs, Collections.emptyList());
+          }
+          return validationDependencies(vsDependencies[0], List.of(coding));
+        });
+      }
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1695,6 +1924,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
+    if (cacheToken != null) {
+      cacheToken.setDependencies(() -> findValidationDependencies(vs, List.of(code)));
+    }
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -2170,6 +2402,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken());
+    cacheToken.setDependencies(() -> findValidationDependencies(vs, code.getCodingList()));
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
@@ -2778,6 +3011,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
+    txCache.setDependencyResolver(this::txDependencyState);
     terminologyClientManager.setCache(txCache);
   }
 
@@ -2880,12 +3114,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return getResourceNamesAsSet();
   }
 
+  /**
+   * Thread safe: built and read under the lock, and the set handed out is never changed (it's
+   * unmodifiable, and replaced, not changed, when the definitions change)
+   */
   @Override
   public Set<String> getResourceNamesAsSet() {
     synchronized (lock) {
       if (cachedResourceNameSet == null) {
-        cachedResourceNameSet = new HashSet<String>();
-        cachedResourceNameSet.addAll(getResourceNames());
+        cachedResourceNameSet = Collections.unmodifiableSet(new HashSet<String>(getResourceNames()));
       }
       return cachedResourceNameSet;
     }
@@ -3545,6 +3782,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * Thread safe: the lookup (fetchResourceWithExceptionByVersion) runs under the lock, including any lazy
+   * loading of the resource. (A '#id' reference is resolved against the contained resources of the source
+   * without the lock, but that only reads the resource and writes user data, which is thread safe)
+   */
   @Override
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri) {
     try {
@@ -3740,6 +3982,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (r.getUrl() != null) {
             unindexUrl(r.getUrl(), fhirType, id);
           }
+          if (Utilities.existsInList(fhirType, "ValueSet", "CodeSystem")) {
+            txDependencyChanged(r.getUrl(), r.getProxy() != null ? r.getProxy().getSupplements() : r.getResource() instanceof CodeSystem ? ((CodeSystem) r.getResource()).getSupplements() : null, true);
+          }
         }
       }
 
@@ -3825,7 +4070,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     }
-    StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
+    // thread safety: the type manager is only changed under the lock, so it's read under the lock too. The
+    // snapshot is not generated under the lock: snapshots have to be generated before multi-threaded use
+    // starts (see Thread Safety in the README), so this is normally a no-op
+    StructureDefinition structureDefinition;
+    synchronized (lock) {
+      structureDefinition = typeManager.fetchTypeDefinition(typeName);
+    }
     generateSnapshot(structureDefinition, "5");
     return structureDefinition;
   }
@@ -3855,15 +4106,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
-    return typeManager.getDefinitions(typeName);
+    synchronized (lock) {
+      return typeManager.getDefinitions(typeName);
+    }
   }
 
   public boolean isPrimitiveType(String type) {
-    return typeManager.isPrimitive(type);
+    synchronized (lock) {
+      return typeManager.isPrimitive(type);
+    }
   }
 
   public boolean isDataType(String type) {
-    return typeManager.isDataType(type);
+    synchronized (lock) {
+      return typeManager.isDataType(type);
+    }
   }
 
   public boolean isTlogging() {

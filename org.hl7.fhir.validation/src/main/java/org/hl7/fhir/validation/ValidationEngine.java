@@ -98,12 +98,12 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
+import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
@@ -220,6 +220,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String version;
   @Getter @Setter private String language;
   @Setter private FilesystemPackageCacheManager pcm;
+  /**
+   * shared by the validators this engine makes, see {@link ValidatorSettings#getRegistryAnswerCache()}
+   */
+  @Getter @Setter private RegistryAnswerCache registryAnswerCache = new RegistryAnswerCache();
   @Getter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
@@ -279,6 +283,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     displayWarnings = other.displayWarnings;
+    registryAnswerCache = other.registryAnswerCache;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
   }
 
@@ -1194,6 +1199,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     validator.setValidationLanguage(language);
     validator.getSettings().setDisplayWarningMode(isDisplayWarnings());
+    validator.getSettings().setRegistryAnswerCache(registryAnswerCache);
     if (language != null) {
       if (locale == null) {
         locale = Locale.forLanguageTag(language);
@@ -2130,29 +2136,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Deprecated(since = "2025-10-24")
   public ValidationEngine setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     defaultInstanceValidatorParameters.setQuestionnaireMode(questionnaireMode);
-    return this;
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
-    return defaultInstanceValidatorParameters.getR5BundleRelativeReferencePolicy();
-  }
-
-  /**
-   * @deprecated This field is now managed by InstanceValidatorParameters. An instance of that parameters object should
-   * be used for all getting and setting purposes, and that instance should be passed to ValidationEngine instead of
-   * using this method.
-   * @since 2025-10-24
-   */
-  @Deprecated(since = "2025-10-24")
-  public ValidationEngine setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    defaultInstanceValidatorParameters.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
     return this;
   }
 

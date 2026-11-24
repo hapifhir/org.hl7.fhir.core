@@ -235,7 +235,9 @@ public interface IWorkerContext {
   public List<String> getResourceNames();
 
   /**
-   * @return a set of the resource names defined for this version
+   * Thread safe: implementations must allow this to be called from any thread
+   * 
+   * @return a set of the resource names defined for this version (don't change it)
    */
   public Set<String> getResourceNamesAsSet();
 
@@ -305,6 +307,8 @@ public interface IWorkerContext {
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
    * @return if the resource is known
+   *
+   * Thread safe: implementations must allow this to be called from any thread
    */
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri);
 

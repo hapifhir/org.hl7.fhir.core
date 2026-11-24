@@ -11,11 +11,11 @@ msgstr "الفاعل: {0}"
 msgid "Capabilities:"
 msgstr "الإمكانيات:"
 
-# ACTOR_DEF_DER
-#: ACTOR_DEF_DER
-#, fuzzy
-msgid "Derived from:"
-msgstr "مشتق من:"
+# ACTOR_DEF_CAT
+#: ACTOR_DEF_CAT
+msgctxt "ACTOR_DEF_CAT"
+msgid "Category:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
@@ -131,6 +131,16 @@ msgstr "هذه هي مجموعة القيم الموصى بها (يجب أن ت�
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "مطلوب"
+
+# ADD_BIND_TX_ALL
+#: ADD_BIND_TX_ALL
+msgid "Additional / all"
+msgstr ""
+
+# ADD_BIND_TX_ANY
+#: ADD_BIND_TX_ANY
+msgid "Additional / any"
+msgstr ""
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -1843,6 +1853,11 @@ msgstr "فوري"
 msgid "Interval: {0}"
 msgstr "الفترة الزمنية: {0}"
 
+# DATA_REND_ISO_COUNTRY
+#: DATA_REND_ISO_COUNTRY
+msgid "ISO Country Codes"
+msgstr ""
+
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 #, fuzzy
@@ -2057,6 +2072,11 @@ msgstr "تحذير: امتداد المعدل غير قابل للتعديل!"
 #, fuzzy
 msgid "Until {0}"
 msgstr "حتى {0}"
+
+# DATA_REND_UN_REGIONS
+#: DATA_REND_UN_REGIONS
+msgid "UN Regions"
+msgstr ""
 
 # DATA_REND_UP
 #: DATA_REND_UP
@@ -2716,6 +2736,7 @@ msgstr "معجم NCI Thesaurus"
 # GENERAL_NOTE
 #: GENERAL_NOTE
 #, fuzzy
+msgctxt "GENERAL_NOTE"
 msgid "Note"
 msgstr "ملاحظة"
 
@@ -2828,6 +2849,11 @@ msgstr "الموارد"
 #, fuzzy
 msgid "Security Label"
 msgstr "ملصق الأمان"
+
+# GENERAL_SHOW
+#: GENERAL_SHOW
+msgid "Show:"
+msgstr ""
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
@@ -4834,6 +4860,17 @@ msgstr "استبيان"
 msgid "Questionnaire:"
 msgstr "استبيان:"
 
+# QUEST_QUESTION_CODE
+#: QUEST_QUESTION_CODE
+msgid "Question Code:"
+msgid_plural "Question Codes:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
 # QUEST_READONLY
 #: QUEST_READONLY
 #, fuzzy
@@ -5484,11 +5521,10 @@ msgstr "تم إهمال هذا الامتداد ولا ينبغي استخدام
 msgid "This extension may be used on the following element(s)"
 msgstr "يمكن استخدام هذا الامتداد على العنصر (العناصر) التالية"
 
-# SDR_EXT_ELEM_ID
-#: SDR_EXT_ELEM_ID
-#, fuzzy
-msgid "Element ID"
-msgstr "معرّف العنصر"
+# SDR_EXT_ELEMENTS
+#: SDR_EXT_ELEMENTS
+msgid "elements"
+msgstr ""
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
@@ -5508,6 +5544,11 @@ msgstr ""
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
 msgstr "المسار"
+
+# SDR_EXT_ROOT_ELEMENTS
+#: SDR_EXT_ROOT_ELEMENTS
+msgid "root elements"
+msgstr ""
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
@@ -5543,6 +5584,7 @@ msgstr "// من العنصر: <a href=\"{0}\">الإضافة</a/a>"
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
 #, fuzzy
+msgctxt "SDR_GUIDANCE_HERE"
 msgid "documentation"
 msgstr "!!هنا"
 
@@ -6060,6 +6102,11 @@ msgstr "ثابت: {0} {1}"
 msgid "Mandatory: {0} {1}"
 msgstr "إلزامي: {0} {1}"
 
+# SD_SUMMARY_MAPPINGS
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgstr ""
+
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 #, fuzzy
@@ -6266,6 +6313,11 @@ msgstr ""
 msgid "This element has or is affected by constraints ("
 msgstr "هذا العنصر لديه أو يتأثر بالقيود ("
 
+# STRUC_DEF_AGGREGATION
+#: STRUC_DEF_AGGREGATION
+msgid "Aggregation"
+msgstr ""
+
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 #, fuzzy
@@ -6277,6 +6329,11 @@ msgstr "الوحدات المسموح بها"
 #, fuzzy
 msgid "All Actors"
 msgstr "جميع الممثلين"
+
+# STRUC_DEF_ALL_MAP_KEY
+#: STRUC_DEF_ALL_MAP_KEY
+msgid "All Mappings are Empty"
+msgstr ""
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
@@ -6308,12 +6365,6 @@ msgstr "و"
 #, fuzzy
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
 msgstr "يجب أن تأتي المفاهيم من مجموعة القيم هذه إذا كان المفهوم المناسب في مجموعة القيم هذه"
-
-# STRUC_DEF_AS_SHOWN
-#: STRUC_DEF_AS_SHOWN
-#, fuzzy
-msgid "As shown"
-msgstr "كما هو موضح"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
@@ -6441,12 +6492,6 @@ msgstr "التعليقات:"
 msgid "Complex"
 msgstr "مجمع"
 
-# STRUC_DEF_COMPLEXBRACK
-#: STRUC_DEF_COMPLEXBRACK
-#, fuzzy
-msgid "(Complex)"
-msgstr "!!(معقد)"
-
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 #, fuzzy
@@ -6494,6 +6539,11 @@ msgstr "التحكم"
 #: STRUC_DEF_CONT_PROFILE
 msgctxt "STRUC_DEF_CONT_PROFILE"
 msgid "profiled by"
+msgstr ""
+
+# STRUC_DEF_CONT_PROFILE_INVALID
+#: STRUC_DEF_CONT_PROFILE_INVALID
+msgid "invalid reference {0}"
 msgstr ""
 
 # STRUC_DEF_CONT_RULE
@@ -6735,12 +6785,6 @@ msgstr "المعرّف الثابت الرسمي"
 msgid "Fixed Value"
 msgstr "القيمة الثابتة"
 
-# STRUC_DEF_FIXED_VALUE
-#: STRUC_DEF_FIXED_VALUE
-#, fuzzy
-msgid "Fixed Value:"
-msgstr "القيمة الثابتة:"
-
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 #, fuzzy
@@ -6938,12 +6982,6 @@ msgstr "اسم خاصية JSON للنوع"
 msgid "Label"
 msgstr "التسمية"
 
-# STRUC_DEF_LEAST_FOLLOW
-#: STRUC_DEF_LEAST_FOLLOW
-#, fuzzy
-msgid "At least the following"
-msgstr "على الأقل ما يلي"
-
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 #, fuzzy
@@ -6968,6 +7006,16 @@ msgstr "رمز لوينك (LOINC)"
 #, fuzzy
 msgid "LOINC code"
 msgstr "رمز لوينك (LOINC)"
+
+# STRUC_DEF_MAPPINGS
+#: STRUC_DEF_MAPPINGS
+msgid "Mappings"
+msgstr ""
+
+# STRUC_DEF_MAPPING_COMMENTS
+#: STRUC_DEF_MAPPING_COMMENTS
+msgid "Mapping Comments"
+msgstr ""
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
@@ -7076,6 +7124,11 @@ msgstr "ولا يحدد أي فواصل للتمييز بين الشرائح"
 msgid "(no extensions allowed)"
 msgstr ""
 
+# STRUC_DEF_NO_EXT_ID
+#: STRUC_DEF_NO_EXT_ID
+msgid "No extension or id"
+msgstr ""
+
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 #, fuzzy
@@ -7153,6 +7206,27 @@ msgstr "فتح في النهاية"
 #, fuzzy
 msgid "Ordered"
 msgstr "طلب"
+
+# STRUC_DEF_OTHER_CHANGES
+#: STRUC_DEF_OTHER_CHANGES
+msgid "Other Changes:"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+#: STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+msgctxt "STRUC_DEF_OTHER_CHANGES_DOCUMENTATION"
+msgid "documentation"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_HINT
+#: STRUC_DEF_OTHER_CHANGES_HINT
+msgid "This profile changes the {0} of this element, which is not shown in this table. See the full definition for details"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_MAPPINGS
+#: STRUC_DEF_OTHER_CHANGES_MAPPINGS
+msgid "mappings"
+msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
@@ -7294,12 +7368,6 @@ msgstr "ترتيب العنصر المتكرر هذا: {0}"
 msgid "required"
 msgstr "مطلوب"
 
-# STRUC_DEF_REQUIRED_PATT
-#: STRUC_DEF_REQUIRED_PATT
-#, fuzzy
-msgid "Required Pattern:"
-msgstr "النمط المطلوب:"
-
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 #, fuzzy
@@ -7359,6 +7427,11 @@ msgstr "قصير"
 #, fuzzy
 msgid "The codes SHOULD be taken from"
 msgstr "يجب أن تكون الرموز مأخوذة من"
+
+# STRUC_DEF_SHOW_MAPPINGS
+#: STRUC_DEF_SHOW_MAPPINGS
+msgid "Show Mappings:"
+msgstr ""
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
@@ -8016,6 +8089,16 @@ msgstr "الإحالة إلى عنصر آخر"
 msgid "Slice Definition"
 msgstr "تعريف الشريحة"
 
+# TEXT_ICON_SLICE_EXTENSION
+#: TEXT_ICON_SLICE_EXTENSION
+msgid "Extension Slice Definition"
+msgstr ""
+
+# TEXT_ICON_SLICE_EXTENSION_MODIFIER
+#: TEXT_ICON_SLICE_EXTENSION_MODIFIER
+msgid "Modifier Extension Slice Definition"
+msgstr ""
+
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 #, fuzzy
@@ -8281,6 +8364,27 @@ msgstr "التوسيع من {0} بناءً على"
 #, fuzzy
 msgid "Expansion based on code system fragment"
 msgstr "التوسيع على أساس جزء نظام التعليمات البرمجية"
+
+# VALUE_SET_EXP_ISSUES
+#: VALUE_SET_EXP_ISSUES
+msgid "Notes about this expansion:"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_ERROR
+#: VALUE_SET_EXP_ISSUE_ERROR
+msgid "Error"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_INFO
+#: VALUE_SET_EXP_ISSUE_INFO
+msgctxt "VALUE_SET_EXP_ISSUE_INFO"
+msgid "Note"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_WARNING
+#: VALUE_SET_EXP_ISSUE_WARNING
+msgid "Warning"
+msgstr ""
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
@@ -8565,6 +8669,11 @@ msgstr "المملكة المتحدة"
 #, fuzzy
 msgid "UK Clinical Edition"
 msgstr "الإصدار السريري في المملكة المتحدة"
+
+# VALUE_SET_UNCLOSED
+#: VALUE_SET_UNCLOSED
+msgid "This expansion is not closed: there are codes in the value set that are not included in the expansion"
+msgstr ""
 
 # VALUE_SET_US
 #: VALUE_SET_US
