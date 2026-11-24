@@ -10,9 +10,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,15 +23,18 @@ import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.CacheTestUtils;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Narrative;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -507,97 +513,191 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   }
 
   /**
-   * An IG edits its ValueSets without changing the version; the expansion key must change with the definition
+   * An IG edits its ValueSets and CodeSystems without changing the version. The keys stay as they are; an answer
+   * records what it depended on, and is dropped when the context loads something different for one of those
    */
   @Nested
-  class ExpandTokenDefinitionTests {
+  class DependencyTests {
 
-    private ValueSet versionedValueSet(String... codes) {
+    private static final String VS = "ValueSet http://example.org/fhir/ValueSet/test|1.0.0";
+    private static final String CS = "CodeSystem http://example.org/fhir/CodeSystem/local";
+
+    /** what the context would say: the state of each request, and how often it was asked */
+    private final Map<String, String> states = new HashMap<>();
+    private final AtomicInteger asked = new AtomicInteger();
+
+    private TerminologyCache.DependencyResolver resolver() {
+      return request -> {
+        asked.incrementAndGet();
+        return states.getOrDefault(request, TerminologyCache.ABSENT);
+      };
+    }
+
+    private ValueSet valueSet() {
       ValueSet vs = new ValueSet();
       vs.setUrl("http://example.org/fhir/ValueSet/test");
       vs.setVersion("1.0.0");
-      ValueSet.ConceptSetComponent inc = vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
-      for (String code : codes) {
-        inc.addConcept().setCode(code);
-      }
+      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
       return vs;
     }
 
     private ExpansionOptions options() {
-      return new ExpansionOptions().withHierarchical(true).withLanguage("en");
+      return new ExpansionOptions().withHierarchical(true);
     }
 
-    private Parameters parameters(String snomedVersion) {
-      Parameters p = new Parameters();
-      p.addParameter("excludeNested", false);
-      p.addParameter("system-version", new org.hl7.fhir.r5.model.CanonicalType("http://snomed.info/sct|" + snomedVersion));
-      return p;
+    private TerminologyCache.CacheToken expandToken(TerminologyCache cache, Map<String, String> dependencies) {
+      TerminologyCache.CacheToken token = cache.generateExpandToken(valueSet(), options());
+      if (dependencies != null) {
+        token.setDependencies(() -> new HashMap<>(dependencies));
+      }
+      return token;
+    }
+
+    private TerminologyCache.CacheToken validationToken(TerminologyCache cache, Map<String, String> dependencies) {
+      TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions, new Coding("http://example.org/fhir/CodeSystem/local", "a", null), valueSet(), new Parameters(), "Coding");
+      if (dependencies != null) {
+        token.setDependencies(() -> new HashMap<>(dependencies));
+      }
+      return token;
+    }
+
+    private ValidationResult valid() {
+      return new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "valid", null);
     }
 
     @Test
-    void testEditedDefinitionSameVersionMisses() throws IOException {
-      TerminologyCache cache = createEmptyTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
-      cache.cacheExpansion(cache.generateExpandToken(vs, options(), parameters("1"), null), new ValueSetExpansionOutcome(vs.copy()), true);
-
-      ValueSet edited = versionedValueSet("1234", "5678");
-      assertNull(cache.getExpansion(cache.generateExpandToken(edited, options(), parameters("1"), null)));
-      assertNotNull(cache.getExpansion(cache.generateExpandToken(versionedValueSet("1234"), options(), parameters("1"), null)));
+    void testKeysDoNotDependOnTheDefinitions() throws IOException {
+      // a hit costs what it did: the key is the ValueSet's url and version, and the options, as before
+      TerminologyCache cache = createTerminologyCache();
+      ValueSet edited = valueSet();
+      edited.getCompose().getIncludeFirstRep().addConcept().setCode("b");
+      assertEquals(cache.generateExpandToken(valueSet(), options()).getRequest(), cache.generateExpandToken(edited, options()).getRequest());
+      assertEquals("{\"hierarchical\" : true, \"url\": \"http://example.org/fhir/ValueSet/test\", \"version\": \"1.0.0\"}\r\n", cache.generateExpandToken(valueSet(), options()).getRequest());
     }
 
     @Test
-    void testUnchangedDefinitionHitsAfterReload() throws IOException {
+    void testChangedDependencyMisses() throws IOException {
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      states.put(VS, "1");
+      states.put(CS, "a");
+      cache.cacheExpansion(expandToken(cache, states), new ValueSetExpansionOutcome(valueSet()), true);
+      cache.cacheValidation(validationToken(cache, states), valid(), true);
+
+      // loaded again, the same
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+      assertNotNull(cache.getValidation(validationToken(cache, null)));
+
+      // loaded again, edited
+      states.put(CS, "b");
+      cache.invalidate("http://example.org/fhir/CodeSystem/local|2.0");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+      assertNull(cache.getValidation(validationToken(cache, null)));
+    }
+
+    @Test
+    void testHitsDoNoDependencyWork() throws IOException {
+      // what an answer depends on is worked out when it is stored, and checked only after the context loads
+      // something it depends on
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      states.put(CS, "a");
+      AtomicInteger worked = new AtomicInteger();
+      TerminologyCache.CacheToken token = cache.generateExpandToken(valueSet(), options());
+      token.setDependencies(() -> {
+        worked.incrementAndGet();
+        return Map.of(CS, "a");
+      });
+      assertNull(cache.getExpansion(token));
+      assertEquals(0, worked.get());
+      cache.cacheExpansion(token, new ValueSetExpansionOutcome(valueSet()), true);
+      assertEquals(1, worked.get());
+
+      asked.set(0);
+      for (int i = 0; i < 10; i++) {
+        assertNotNull(cache.getExpansion(token));
+      }
+      assertEquals(1, worked.get());
+      assertEquals(0, asked.get());
+
+      // something nothing depends on
+      cache.invalidate("http://example.org/fhir/CodeSystem/other");
+      assertNotNull(cache.getExpansion(token));
+      assertEquals(0, asked.get());
+
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(token));
+      assertEquals(1, asked.get());
+      assertNotNull(cache.getExpansion(token));
+      assertEquals(1, asked.get());
+    }
+
+    @Test
+    void testAbsentDependencyIsUndecidedUnlessDropped() throws IOException {
+      // a lookup can come before the context has loaded everything; a dependency it has dropped has changed
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+
+      // dropped, and loaded again before the next lookup
+      states.put(CS, "a");
+      cache.invalidateRemoved("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+
+      states.remove(CS);
+      cache.invalidateRemoved("http://example.org/fhir/CodeSystem/local");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testDependenciesAreCheckedInTheNextRun() throws IOException {
       Path dir = createTempCacheDirectory();
       TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString());
-      ValueSet vs = versionedValueSet("1234");
-      cacheA.cacheExpansion(cacheA.generateExpandToken(vs, options(), parameters("1"), null), new ValueSetExpansionOutcome(vs.copy()), true);
+      cacheA.cacheExpansion(expandToken(cacheA, Map.of(VS, "1", CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cacheA.cacheValidation(validationToken(cacheA, Map.of(VS, "1", CS, "a")), valid(), true);
       cacheA.save();
+      assertTrue(Files.readString(dir.resolve(expandToken(cacheA, null).getName() + ".cache")).contains("\"depends-on\""));
 
-      // a new run: a new cache over the same folder, and a ValueSet object loaded afresh
+      // the next run, the same definitions
+      states.put(VS, "1");
+      states.put(CS, "a");
       TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString());
-      assertNotNull(cacheB.getExpansion(cacheB.generateExpandToken(versionedValueSet("1234"), options(), parameters("1"), null)));
-      assertNull(cacheB.getExpansion(cacheB.generateExpandToken(versionedValueSet("9999"), options(), parameters("1"), null)));
+      cacheB.setDependencyResolver(resolver());
+      assertNotNull(cacheB.getExpansion(expandToken(cacheB, null)));
+      assertNotNull(cacheB.getValidation(validationToken(cacheB, null)));
+
+      // the next run, an edited code system
+      states.put(CS, "b");
+      TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString());
+      cacheC.setDependencyResolver(resolver());
+      assertNull(cacheC.getExpansion(expandToken(cacheC, null)));
+      assertNull(cacheC.getValidation(validationToken(cacheC, null)));
       deleteTempCacheDirectory(dir);
     }
 
     @Test
-    void testNarrativeAndMetadataDoNotChangeTheKey() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
-      ValueSet other = versionedValueSet("1234");
-      other.setTitle("A new title");
-      other.setDate(new Date());
-      other.getText().setStatus(org.hl7.fhir.r5.model.Narrative.NarrativeStatus.GENERATED);
-      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
-        cache.generateExpandToken(other, options(), parameters("1"), null).getRequest());
-    }
+    void testEntryWithoutDependenciesIsUsedAsBefore() throws IOException {
+      Path dir = createTempCacheDirectory();
+      String name = expandToken(new TerminologyCache(new Object(), null), null).getName();
+      // an entry written before dependencies were kept
+      String marker = "-------------------------------------------------------------------------------------";
+      Files.writeString(dir.resolve(name + ".cache"), marker + "\r\n"
+        + "{\"hierarchical\" : true, \"url\": \"http://example.org/fhir/ValueSet/test\", \"version\": \"1.0.0\"}\r\n####\r\n"
+        + "e: {\r\n  \"error\" : \"old entry\",\r\n  \"class\" : \"UNKNOWN\"\r\n}\r\n"
+        + marker + "\r\n", StandardCharsets.UTF_8);
 
-    @Test
-    void testChangedParametersMiss() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
-      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
-        cache.generateExpandToken(vs, options(), parameters("2"), null).getRequest());
-      assertEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
-        cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest());
-    }
-
-    @Test
-    void testEditedImportMisses() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = new ValueSet();
-      vs.setUrl("http://example.org/fhir/ValueSet/outer");
-      vs.setVersion("1.0.0");
-      vs.getCompose().addInclude().addValueSet("http://example.org/fhir/ValueSet/test");
-
-      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getRequest();
-      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234", "5678"))).getRequest());
-      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(versionedValueSet("1234"))).getRequest());
-
-      // the same goes for a ValueSet without a version, whose definition is otherwise in the key as it is
-      vs.setVersion(null);
-      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234"))).getRequest(),
-        cache.generateExpandToken(vs, options(), null, List.of(versionedValueSet("1234", "5678"))).getRequest());
+      states.put(CS, "b");
+      TerminologyCache cache = new TerminologyCache(new Object(), dir.toString());
+      cache.setDependencyResolver(resolver());
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      ValueSetExpansionOutcome res = cache.getExpansion(expandToken(cache, null));
+      assertNotNull(res);
+      assertEquals("old entry", res.getError());
+      deleteTempCacheDirectory(dir);
     }
 
     private CodeSystem codeSystem(String display) {
@@ -610,323 +710,57 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
-    void testEditedCodeSystemMisses() throws IOException {
-      // a local code system (or a supplement) edited without a version change changes the expansion too
+    void testContentDigestIsTheContent() throws IOException {
       TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = new ValueSet();
-      vs.setUrl("http://example.org/fhir/ValueSet/local");
-      vs.setVersion("1.0.0");
-      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
+      String digest = cache.contentDigest(codeSystem("A"));
+      assertEquals(digest, cache.contentDigest(codeSystem("A")));
+      assertNotEquals(digest, cache.contentDigest(codeSystem("A changed")));
 
-      String before = cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A"))).getRequest();
-      assertNotEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(codeSystem("A changed"))).getRequest());
+      // narrative and metadata don't change an answer
       CodeSystem renarrated = codeSystem("A");
       renarrated.setTitle("A new title");
+      renarrated.setDate(new Date());
       renarrated.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
-      assertEquals(before, cache.generateExpandToken(vs, options(), parameters("1"), List.of(renarrated)).getRequest());
-    }
+      assertEquals(digest, cache.contentDigest(renarrated));
 
-    @Test
-    void testNamedSupplementChangeMisses() throws IOException {
-      // a supplement that isn't global is only used when the ValueSet names it, and one it names but that can't be found is an error
-      TerminologyCache cache = createTerminologyCache();
-      CodeSystem supp = codeSystem("A");
-      for (boolean versioned : new boolean[] {true, false}) {
-        ValueSet vs = new ValueSet();
-        if (versioned) {
-          vs.setUrl("http://example.org/fhir/ValueSet/local");
-          vs.setVersion("1.0.0");
-        }
-        vs.getCompose().addInclude().setSystem("http://loinc.org");
-        ValueSet named = vs.copy();
-        named.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new org.hl7.fhir.r5.model.CanonicalType("http://example.org/fhir/CodeSystem/local"));
-        ValueSet missing = vs.copy();
-        missing.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new org.hl7.fhir.r5.model.CanonicalType("http://example.org/fhir/CodeSystem/missing"));
-
-        assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), List.of(supp)).getRequest(),
-          cache.generateExpandToken(named, options(), parameters("1"), List.of(supp)).getRequest());
-        assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), null).getRequest(),
-          cache.generateExpandToken(missing, options(), parameters("1"), null).getRequest());
-      }
-    }
-
-    @Test
-    void testSupplementGlobalFlagChangeMisses() throws IOException {
-      // whether a supplement is used without being referenced is decided by extensions on the code system itself
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = new ValueSet();
-      vs.setUrl("http://example.org/fhir/ValueSet/local");
-      vs.setVersion("1.0.0");
-      vs.getCompose().addInclude().setSystem("http://example.org/fhir/CodeSystem/local");
-      CodeSystem global = codeSystem("A");
-      global.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_SUPPL_GLOBAL, new org.hl7.fhir.r5.model.BooleanType(true));
-      CodeSystem notGlobal = codeSystem("A");
-      notGlobal.addExtension(org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_SUPPL_GLOBAL, new org.hl7.fhir.r5.model.BooleanType(false));
-
-      assertNotEquals(cache.generateExpandToken(vs, options(), parameters("1"), List.of(global)).getRequest(),
-        cache.generateExpandToken(vs, options(), parameters("1"), List.of(notGlobal)).getRequest());
-    }
-
-    @Test
-    void testDependencyStatusChangeMisses() throws IOException {
-      // the expansion warns about a draft code system, so making it active changes the expansion
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
+      // an expansion warns about draft content
       CodeSystem draft = codeSystem("A");
       draft.setStatus(Enumerations.PublicationStatus.DRAFT);
-      CodeSystem active = codeSystem("A");
-      active.setStatus(Enumerations.PublicationStatus.ACTIVE);
-      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(draft)).getRequest(),
-        cache.generateExpandToken(vs, options(), null, List.of(active)).getRequest());
-      ValueSet draftVs = versionedValueSet("1234");
-      draftVs.setStatus(Enumerations.PublicationStatus.DRAFT);
-      assertNotEquals(cache.generateExpandToken(vs, options(), null, null).getRequest(),
-        cache.generateExpandToken(draftVs, options(), null, null).getRequest());
-    }
+      assertNotEquals(digest, cache.contentDigest(draft));
+      CodeSystem trialUse = codeSystem("A");
+      trialUse.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("trial use "));
+      assertNotEquals(digest, cache.contentDigest(trialUse));
 
-    @Test
-    void testContainedDependencyIsKeyedByContentNotItsUuid() throws IOException {
-      // a contained ValueSet without a url is given a new urn:uuid: every run
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
-      ValueSet a = versionedValueSet("1234");
-      a.setVersion(null);
-      a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
-      ValueSet b = versionedValueSet("1234");
-      b.setVersion(null);
-      b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
-      assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getRequest(),
-        cache.generateExpandToken(vs, options(), null, List.of(b)).getRequest());
-    }
+      // whether a supplement is used without being named is decided by the code system itself
+      CodeSystem global = codeSystem("A");
+      global.addExtension(ExtensionDefinitions.EXT_SUPPL_GLOBAL, new BooleanType(true));
+      assertNotEquals(digest, cache.contentDigest(global));
 
-    @Test
-    void testUnversionedStatusChangeMisses() throws IOException {
-      // a small definition without a version is in the key as it is; its status has to be there too
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet draft = versionedValueSet("1234");
-      draft.setVersion(null);
-      draft.setStatus(Enumerations.PublicationStatus.DRAFT);
-      ValueSet active = versionedValueSet("1234");
-      active.setVersion(null);
-      active.setStatus(Enumerations.PublicationStatus.ACTIVE);
-      assertNotEquals(cache.generateExpandToken(draft, options(), null, null).getRequest(),
-        cache.generateExpandToken(active, options(), null, null).getRequest());
-    }
-
-    @Test
-    void testUnknownStandardsStatusDoesNotThrow() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
-      vs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("stu"));
-      CodeSystem cs = codeSystem("A");
-      cs.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("trial use "));
-      ValueSet other = versionedValueSet("1234");
-      other.addExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status", new CodeType("draft"));
-      assertNotEquals(cache.generateExpandToken(vs, options(), null, List.of(cs)).getRequest(),
-        cache.generateExpandToken(other, options(), null, List.of(cs)).getRequest());
-    }
-
-    @Test
-    void testContainedCodeSystemIsKeyedByContentNotItsUuid() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet("1234");
+      // a contained code system is given a new urn:uuid: every run
       CodeSystem a = codeSystem("A");
       a.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
       CodeSystem b = codeSystem("A");
       b.setUrl("urn:uuid:" + java.util.UUID.randomUUID());
-      assertEquals(cache.generateExpandToken(vs, options(), null, List.of(a)).getRequest(),
-        cache.generateExpandToken(vs, options(), null, List.of(b)).getRequest());
+      assertEquals(cache.contentDigest(a), cache.contentDigest(b));
     }
 
     @Test
-    void testLargeUnversionedDefinitionMisses() throws IOException {
-      // a definition this large is left out of the key, which used to leave nothing of it there at all
+    void testValueSetDigestIsTheDefinition() throws IOException {
       TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = versionedValueSet(IntStream.range(0, 1001).mapToObj(String::valueOf).toArray(String[]::new));
-      vs.setVersion(null);
-      ValueSet edited = vs.copy();
-      edited.getCompose().getIncludeFirstRep().addConcept().setCode("extra");
-      assertNotEquals(cache.generateExpandToken(vs, options()).getRequest(), cache.generateExpandToken(edited, options()).getRequest());
-    }
+      String digest = cache.contentDigest(valueSet());
+      ValueSet edited = valueSet();
+      edited.getCompose().getIncludeFirstRep().addConcept().setCode("b");
+      assertNotEquals(digest, cache.contentDigest(edited));
 
-    @Test
-    void testOldFormatEntryStaysReadableButIsNotUsed() throws IOException {
-      Path dir = createTempCacheDirectory();
-      ValueSet vs = versionedValueSet("1234");
-      String name = new TerminologyCache(new Object(), null).generateExpandToken(vs, options(), parameters("1"), null).getName();
-      // an entry written with the key as it was before the definition was part of it
-      String marker = "-------------------------------------------------------------------------------------";
-      Files.writeString(dir.resolve(name + ".cache"), marker + "\r\n"
-        + "{\"hierarchical\" : true, \"language\": \"en\", \"url\": \"http://example.org/fhir/ValueSet/test\", \"version\": \"1.0.0\"}####\r\n"
-        + "e: {\r\n  \"error\" : \"old entry\",\r\n  \"class\" : \"UNKNOWN\"\r\n}\r\n"
-        + marker + "\r\n", StandardCharsets.UTF_8);
+      // an expansion added to it, by the publisher say, is not part of the definition
+      ValueSet expanded = valueSet();
+      expanded.getExpansion().addContains().setCode("a");
+      assertEquals(digest, cache.contentDigest(expanded));
 
-      TerminologyCache cache = new TerminologyCache(new Object(), dir.toString());
-      assertNull(cache.getExpansion(cache.generateExpandToken(vs, options(), parameters("1"), null)));
-      // the file still loads: a new answer is added to it and both are kept
-      cache.cacheExpansion(cache.generateExpandToken(vs, options(), parameters("1"), null), new ValueSetExpansionOutcome(vs.copy()), true);
-      cache.save();
-      String content = Files.readString(dir.resolve(name + ".cache"), StandardCharsets.UTF_8);
-      assertTrue(content.contains("old entry"));
-      assertTrue(content.contains("\"definition\""));
-      deleteTempCacheDirectory(dir);
-    }
-  }
-
-  /**
-   * The same for validate-code: an IG edits a ValueSet, or a code system it uses, without changing the version,
-   * and the answers cached against the old definition must not be used
-   */
-  @Nested
-  class ValidationTokenDefinitionTests {
-
-    private static final String CS_URL = "http://example.org/fhir/CodeSystem/blood-group";
-
-    private ValueSet bloodGroupValueSet(String... codes) {
-      ValueSet vs = new ValueSet();
-      vs.setUrl("http://example.org/fhir/ValueSet/blood-group");
-      vs.setVersion("1.0.0");
-      ValueSet.ConceptSetComponent inc = vs.getCompose().addInclude().setSystem(CS_URL);
-      for (String code : codes) {
-        inc.addConcept().setCode(code);
-      }
-      return vs;
-    }
-
-    private CodeSystem bloodGroupCodeSystem(String displayOfB) {
-      CodeSystem cs = new CodeSystem();
-      cs.setUrl(CS_URL);
-      cs.setVersion("1.0.0");
-      cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
-      cs.addConcept().setCode("a").setDisplay("A");
-      cs.addConcept().setCode("b").setDisplay(displayOfB);
-      return cs;
-    }
-
-    private CodeSystem supplement(String displayOfB) {
-      CodeSystem cs = new CodeSystem();
-      cs.setUrl("http://example.org/fhir/CodeSystem/blood-group-supplement");
-      cs.setVersion("1.0.0");
-      cs.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
-      cs.setSupplements(CS_URL);
-      cs.addConcept().setCode("b").setDisplay(displayOfB);
-      return cs;
-    }
-
-    private String codingRequest(TerminologyCache cache, ValueSet vs, List<? extends CanonicalResource> dependencies) {
-      return cache.generateValidationToken(CacheTestUtils.validationOptions, new Coding(CS_URL, "b", null), vs, new Parameters(), "Coding", dependencies).getRequest();
-    }
-
-    private String conceptRequest(TerminologyCache cache, ValueSet vs, List<? extends CanonicalResource> dependencies) {
-      return cache.generateValidationToken(CacheTestUtils.validationOptions, new CodeableConcept(new Coding(CS_URL, "b", null)), vs, new Parameters(), dependencies).getRequest();
-    }
-
-    @Test
-    void testEditedValueSetSameVersionMissesAfterReload() throws IOException {
-      // code b was in the value set when the answer was cached; the IG then took it out without changing the version
-      Path dir = createTempCacheDirectory();
-      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString());
-      Coding coding = new Coding(CS_URL, "b", null);
-      CodeableConcept concept = new CodeableConcept(coding);
-      ValueSet vs = bloodGroupValueSet("a", "b");
-      List<CodeSystem> deps = List.of(bloodGroupCodeSystem("B"));
-      ValidationResult valid = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "valid", null);
-      cacheA.cacheValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, vs, new Parameters(), "Coding", deps), valid, true);
-      cacheA.cacheValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, vs, new Parameters(), deps), valid, true);
-      cacheA.save();
-
-      // a new run: a new cache over the same folder, and the resources loaded afresh
-      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString());
-      ValueSet edited = bloodGroupValueSet("a");
-      List<CodeSystem> depsB = List.of(bloodGroupCodeSystem("B"));
-      assertNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, coding, edited, new Parameters(), "Coding", depsB)));
-      assertNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, concept, edited, new Parameters(), depsB)));
-      ValueSet unchanged = bloodGroupValueSet("a", "b");
-      assertNotNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, coding, unchanged, new Parameters(), "Coding", depsB)));
-      assertNotNull(cacheB.getValidation(cacheB.generateValidationToken(CacheTestUtils.validationOptions, concept, unchanged, new Parameters(), depsB)));
-      deleteTempCacheDirectory(dir);
-    }
-
-    @Test
-    void testEditedCodeSystemMisses() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = new ValueSet();
-      vs.setUrl("http://example.org/fhir/ValueSet/blood-group");
-      vs.setVersion("1.0.0");
-      vs.getCompose().addInclude().setSystem(CS_URL);
-
-      String coding = codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B")));
-      String concept = conceptRequest(cache, vs, List.of(bloodGroupCodeSystem("B")));
-      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
-      assertNotEquals(concept, conceptRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
-
-      CodeSystem renarrated = bloodGroupCodeSystem("B");
-      renarrated.setTitle("A new title");
-      renarrated.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
-      assertEquals(coding, codingRequest(cache, vs, List.of(renarrated)));
-      assertEquals(concept, conceptRequest(cache, vs, List.of(renarrated)));
-    }
-
-    @Test
-    void testEditedSupplementMisses() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = bloodGroupValueSet("a", "b");
-      String coding = codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B")));
-      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B changed"))));
-      assertNotEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"))));
-      assertEquals(coding, codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"), supplement("B"))));
-    }
-
-    @Test
-    void testNarrativeAndMetadataDoNotChangeTheKey() throws IOException {
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = bloodGroupValueSet("a", "b");
-      ValueSet other = bloodGroupValueSet("a", "b");
-      other.setTitle("A new title");
-      other.setDate(new Date());
-      other.getText().setStatus(Narrative.NarrativeStatus.GENERATED);
-      assertEquals(codingRequest(cache, vs, null), codingRequest(cache, other, null));
-      assertEquals(conceptRequest(cache, vs, null), conceptRequest(cache, other, null));
-      assertNotEquals(codingRequest(cache, vs, null), codingRequest(cache, bloodGroupValueSet("a"), null));
-    }
-
-    @Test
-    void testUnversionedValueSetEditMisses() throws IOException {
-      // a ValueSet with a url but no version was keyed by its url alone
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = bloodGroupValueSet("a", "b");
-      vs.setVersion(null);
-      ValueSet edited = bloodGroupValueSet("a");
-      edited.setVersion(null);
-      assertNotEquals(codingRequest(cache, vs, null), codingRequest(cache, edited, null));
-      assertNotEquals(conceptRequest(cache, vs, null), conceptRequest(cache, edited, null));
-    }
-
-    @Test
-    void testEditedCodeSystemWithoutAValueSetMisses() throws IOException {
-      // a code validated against its code system alone
-      TerminologyCache cache = createTerminologyCache();
-      assertFalse(codingRequest(cache, null, null).contains("\"definition\""));
-      assertFalse(codingRequest(cache, null, List.of()).contains("\"definition\""));
-      String coding = codingRequest(cache, null, List.of(bloodGroupCodeSystem("B")));
-      String concept = conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B")));
-      assertNotEquals(coding, codingRequest(cache, null, List.of(bloodGroupCodeSystem("B changed"))));
-      assertNotEquals(concept, conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B changed"))));
-      assertEquals(coding, codingRequest(cache, null, List.of(bloodGroupCodeSystem("B"))));
-      assertEquals(concept, conceptRequest(cache, null, List.of(bloodGroupCodeSystem("B"))));
-    }
-
-    @Test
-    void testEmbeddedValueSetKeepsItsKey() throws IOException {
-      // a ValueSet without a url is in the key as it is; only what it depends on is added
-      TerminologyCache cache = createTerminologyCache();
-      ValueSet vs = bloodGroupValueSet("a", "b");
-      vs.setUrl(null);
-      vs.setVersion(null);
-      assertFalse(codingRequest(cache, vs, null).contains("\"definition\""));
-      assertFalse(conceptRequest(cache, vs, List.of()).contains("\"definition\""));
-      assertEquals(codingRequest(cache, vs, null), cache.generateValidationToken(CacheTestUtils.validationOptions, new Coding(CS_URL, "b", null), vs, new Parameters(), "Coding").getRequest());
-      assertNotEquals(codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B"))), codingRequest(cache, vs, List.of(bloodGroupCodeSystem("B changed"))));
+      // a supplement that isn't global is only used when the ValueSet names it
+      ValueSet named = valueSet();
+      named.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/fhir/CodeSystem/supplement"));
+      assertNotEquals(digest, cache.contentDigest(named));
     }
   }
 
