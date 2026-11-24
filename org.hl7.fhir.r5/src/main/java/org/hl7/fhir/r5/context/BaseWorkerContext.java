@@ -45,6 +45,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -2526,7 +2527,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       checkAddToParams(tc, pin, cs);
     }
-    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+    for (CodeSystem supp : dependentSupplements(cs, sys, pin)) {
       if (opCtxt != null) {
         opCtxt.seeSupplement(supp);
       }
@@ -2534,31 +2535,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         checkAddToParams(tc, pin, supp);
       }
     }
-    if (sys != null) {
-      // we also have to look at this by version because the resource might not be versioned or we might not have a copy
-      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+  }
 
-        if (opCtxt != null) {
-          opCtxt.seeSupplement(supp);
-        }
-        if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-          checkAddToParams(tc, pin, supp);
-        }
-      }
+  /**
+   * The supplements sent with the code system sys, resolved as cs: those of cs, those by url (the resource might not
+   * be versioned, or we might not have a copy), and those of the version the parameters fix
+   */
+  private Set<CodeSystem> dependentSupplements(CodeSystem cs, String sys, Parameters pin) {
+    Set<CodeSystem> res = new LinkedHashSet<>(codeSystems.getSupplements(cs));
+    if (sys != null) {
+      res.addAll(codeSystems.getSupplements(sys));
       if (!sys.contains("!")) {
-        sys = getFixedVersion(sys, pin);
-        if (sys != null) {
-          for (CodeSystem supp : codeSystems.getSupplements(sys)) {
-            if (opCtxt != null) {
-              opCtxt.seeSupplement(supp);
-            }
-            if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-              checkAddToParams(tc, pin, supp);
-            }
-          }
+        String fixed = getFixedVersion(sys, pin);
+        if (fixed != null) {
+          res.addAll(codeSystems.getSupplements(fixed));
         }
       }
     }
+    return res;
+  }
+
+  /** the supplements sent with an include that is expanded on a server, so that an answer from the tx cache sees the same ones */
+  public Set<CodeSystem> getSupplementsSentWith(ConceptSetComponent inc) {
+    CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), null, null);
+    Parameters p = getExpansionParametersForCacheToken();
+    return dependentSupplements(cs, inc.getSystem(), p == null ? new Parameters() : p);
   }
 
   private String getFixedVersion(String sys, Parameters pin) {

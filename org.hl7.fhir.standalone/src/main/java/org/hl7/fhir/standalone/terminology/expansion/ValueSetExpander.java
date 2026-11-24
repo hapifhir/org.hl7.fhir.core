@@ -1541,7 +1541,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       } else if (ValueSetUtilities.isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
-        doServerIncludeCodes(inc, cs, version, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getPropertyList());
+        doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getPropertyList());
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -1571,13 +1571,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  // the required supplements went to the server with the request, so the ones for this system are used either way
-  private void seeServerSupplements(ConceptSetComponent inc, CodeSystem cs, String version) {
-    for (String s : new ArrayList<>(requiredSupplements)) {
-      CodeSystem scs = context.fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
-      if (scs != null && scs.hasSupplements() && (scs.getSupplements().equals(inc.getSystem()) || scs.getSupplements().equals(inc.getSystem() + "|" + version)
-          || (cs != null && CodeSystemUtilities.supplementApplies(scs, cs)))) {
-        seeSupplement(s);
+  // the server is sent these with the request (addDependentResources), so an answer from the tx cache sees the same ones
+  private void seeServerSupplements(ConceptSetComponent inc) {
+    if (!requiredSupplements.isEmpty()) {
+      TerminologyOperationDetails seen = new TerminologyOperationDetails(requiredSupplements);
+      for (CodeSystem supp : context.getSupplementsSentWith(inc)) {
+        seen.seeSupplement(supp);
       }
     }
   }
@@ -1678,7 +1677,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, CodeSystem cs, String version, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, OperationIsTooCostly {
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, OperationIsTooCostly {
     opContext.deadCheck("doServerIncludeCodes");
     CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
     if (csp != null) {
@@ -1690,7 +1689,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       throw createTerminologyServiceException("Unable to expand imported value set: " + vso.getError(), vso);
     }
-    seeServerSupplements(inc, cs, version);
+    seeServerSupplements(inc);
     ValueSet vs = vso.getValueset();
     if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
       sources.add(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE));

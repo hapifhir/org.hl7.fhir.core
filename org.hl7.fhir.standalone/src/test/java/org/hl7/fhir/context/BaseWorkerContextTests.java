@@ -1361,7 +1361,26 @@ public class BaseWorkerContextTests {
     assertCachedIncludeSeesSupplement(edition, params);
   }
 
+  /**
+   * The supplement is to a version of SNOMED CT that the include names, but the server is only sent the supplements of
+   * the code system as resolved without a version, by url, or by the version the parameters fix. So it isn't seen with
+   * a cached answer either, and is reported as missing
+   */
+  @Test
+  void cachedIncludeDoesNotSeeSupplementThatIsNotSent() throws Exception {
+    String version = "http://snomed.info/sct/900000000000207008/version/20250101";
+    ValueSetExpansionOutcome res = expandWithCachedInclude("http://snomed.info/sct|" + version, new Parameters(), version);
+    assertNotNull(res.getError());
+    assertTrue(res.getError().contains("http://example.org/fhir/CodeSystem/sct-supplement"), res.getError());
+  }
+
   private void assertCachedIncludeSeesSupplement(String supplementTarget, Parameters expansionParameters) throws Exception {
+    ValueSetExpansionOutcome res = expandWithCachedInclude(supplementTarget, expansionParameters, null);
+    assertNull(res.getError());
+    assertEquals("22298006", res.getValueset().getExpansion().getContainsFirstRep().getCode());
+  }
+
+  private ValueSetExpansionOutcome expandWithCachedInclude(String supplementTarget, Parameters expansionParameters, String includeVersion) throws Exception {
     String sct = "http://snomed.info/sct";
     String supplementUrl = "http://example.org/fhir/CodeSystem/sct-supplement";
     SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing();
@@ -1376,7 +1395,7 @@ public class BaseWorkerContextTests {
     ValueSet vs = new ValueSet();
     vs.setUrl("http://example.org/fhir/ValueSet/uses-supplement").setStatus(Enumerations.PublicationStatus.ACTIVE);
     vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(supplementUrl));
-    vs.getCompose().setInactive(true).addInclude().setSystem(sct).addConcept().setCode("22298006");
+    vs.getCompose().setInactive(true).addInclude().setSystem(sct).setVersion(includeVersion).addConcept().setCode("22298006");
 
     // the include's server answer, as an earlier build left it in the tx cache
     ValueSet include = new ValueSet();
@@ -1387,11 +1406,9 @@ public class BaseWorkerContextTests {
     cache.cacheExpansion(cache.generateExpandToken(include, new ExpansionOptions().withHierarchical(false)), new ValueSetExpansionOutcome(answer), false);
 
     ValueSetExpansionOutcome res = ctxt.expandVS(new ExpansionOptions().withCacheOk(false), vs);
-
-    assertNull(res.getError());
-    assertEquals("22298006", res.getValueset().getExpansion().getContainsFirstRep().getCode());
     // the supplements are collected in a copy, not in the context's expansion parameters
     assertFalse(ctxt.getExpansionParameters().hasParameter("tx-resource"));
+    return res;
   }
 
   /** an edited supplement drops the cached includes of the system it supplements, and only those */
