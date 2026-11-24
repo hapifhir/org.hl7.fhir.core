@@ -1039,25 +1039,28 @@ public class BaseWorkerContextTests {
   }
 
   @Test
-  void testCacheIsCheckedAgainstWhatIsLoadedBeforeItIsGiven(@TempDir java.nio.file.Path folder) throws IOException {
-    // core is loaded before the context is given its cache folder
-    CodeSystem cs = codeSystem("http://example.org/cs", "A");
-    context.cacheResource(cs);
+  void testWhatIsLoadedBeforeTheCacheIsGivenIsNotCompared(@TempDir java.nio.file.Path folder) throws IOException {
+    // core has its own copy of a THO code system, and is loaded before the context is given its cache folder; the
+    // answers are checked when THO's copy is loaded
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
     vs.setVersion("1");
     vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    context.setAllowLoadingDuplicates(true);
+    context.cacheResource(codeSystem("http://example.org/cs", "THO"));
     TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), context);
     context.initTxCache(cache);
     storeExpansion(cache, vs);
     cache.unload();
 
     // the next run
-    context.dropResource(cs);
-    context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
+    context.cacheResource(codeSystem("http://example.org/cs", "core"));
     TerminologyCache next = new TerminologyCache(new Object(), folder.toString(), context);
-    assertNotNull(lookUp(next, vs));
     context.initTxCache(next);
+    assertNotNull(lookUp(next, vs));
+    context.cacheResource(codeSystem("http://example.org/cs", "THO"));
+    assertNotNull(lookUp(next, vs));
+    context.cacheResource(codeSystem("http://example.org/cs", "THO, edited"));
     assertNull(lookUp(next, vs));
   }
 
