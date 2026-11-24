@@ -355,7 +355,7 @@ public class PEBuilder {
               String name = uniquefy(names, defn.getName());
               PEDefinitionElement pe = new PEDefinitionElement(this, name, profile, defn, parent.path());
               pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
-              if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+              if (definition.hasType() && context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
                 pe.setMustHaveValue(definition.getMustHaveValue());
               }
               pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
@@ -414,7 +414,7 @@ public class PEBuilder {
 
   protected PEDefinition makeChild(PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition) {
     PEDefinitionElement pe = new PEDefinitionElement(this, profileStructure, definition, parent.path());
-    if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+    if (definition.hasType() && context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
       pe.setMustHaveValue(definition.getMustHaveValue());
     }
     pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
@@ -482,7 +482,7 @@ public class PEBuilder {
 
 
   private StructureDefinition getExtensionDefinition(ElementDefinition ed) {
-    if ("Extension".equals(ed.getTypeFirstRep().getWorkingCode()) && ed.getTypeFirstRep().getProfileList().size() == 1) {
+    if (ed.hasType() && "Extension".equals(ed.getTypeFirstRep().getWorkingCode()) && ed.getTypeFirstRep().getProfileList().size() == 1) {
       return context.fetchResource(StructureDefinition.class, ed.getTypeFirstRep().getProfileList().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(ed.getTypeFirstRep().getProfileList().get(0)));
     } else {
       return null;
@@ -647,9 +647,11 @@ public class PEBuilder {
     do {
       List<ElementDefinition> elements = pu.getChildList(profile, focus);
       if (elements.size() == 0) {
-        profile = focus.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, focus.getTypeFirstRep().getProfileList().get(0).asStringValue(),
-          ExtensionUtilities.getVersionResolutionRules(focus.getTypeFirstRep().getProfileList().get(0))) :
-          context.fetchTypeDefinition(focus.getTypeFirstRep().getWorkingCode());
+        // getTypeFirstRep() adds an empty type when there isn't one, and this is reading, not changing, the definition
+        TypeRefComponent focusType = focus.hasType() ? focus.getTypeFirstRep() : new TypeRefComponent();
+        profile = focusType.hasProfile() ? context.fetchResource(StructureDefinition.class, focusType.getProfileList().get(0).asStringValue(),
+          ExtensionUtilities.getVersionResolutionRules(focusType.getProfileList().get(0))) :
+          context.fetchTypeDefinition(focusType.getWorkingCode());
         elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
       focus = getByName(elements, head);

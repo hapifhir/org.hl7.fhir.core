@@ -1277,11 +1277,24 @@ public class Utilities {
     BigDecimal dl = new BigDecimal(l);
     BigDecimal dr = new BigDecimal(r);
     if (dl.scale() < dr.scale()) {
-      dr = dr.setScale(dl.scale(), RoundingMode.HALF_UP);
+      dr = roundToScale(dr, dl.scale());
     } else if (dl.scale() > dr.scale()) {
-      dl = dl.setScale(dr.scale(), RoundingMode.HALF_UP);
+      dl = roundToScale(dl, dr.scale());
     }
     return dl.equals(dr);
+  }
+
+  /**
+   * rounds value (HALF_UP) to a smaller scale. A value whose leading digit is more than one place below the
+   * rounding position rounds to zero. That is worked out here, because setScale would compute 10^(value.scale() - scale)
+   * to find it out, and that is a billion digits when the value is 1e-999999999 or the scale comes from 1e999999999
+   */
+  private static BigDecimal roundToScale(BigDecimal value, int scale) {
+    long leadingDigit = (long) value.precision() - value.scale() - 1; // the power of 10 of the leading digit
+    if (leadingDigit < -(long) scale - 1) {
+      return BigDecimal.valueOf(0, scale);
+    }
+    return value.setScale(scale, RoundingMode.HALF_UP);
   }
 
   public static String getFileExtension(String fn) {
@@ -2191,6 +2204,14 @@ public class Utilities {
   public static String[] simpleSplit(String cnt, String div) {
     if (cnt == null) {
       return new String[] {};
+    }
+    if (div != null && div.isEmpty() && !cnt.isEmpty()) {
+      // each character on its own (as Java's and JavaScript's split do): an empty divider matches everywhere, and never moves on
+      String[] res = new String[cnt.length()];
+      for (int i = 0; i < cnt.length(); i++) {
+        res[i] = cnt.substring(i, i + 1);
+      }
+      return res;
     }
     List<String> parts = new ArrayList<>();
     int cursor = 0;

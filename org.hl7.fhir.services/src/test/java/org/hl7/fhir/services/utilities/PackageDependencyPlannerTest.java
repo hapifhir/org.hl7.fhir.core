@@ -199,7 +199,7 @@ class PackageDependencyPlannerTest {
     assertEntries(result, entry("hl7.fhir.r3.core", "3.0.2"), entry("example.first", "1.2.3"),
         entry(packageId, authorVersion));
     assertTrue(result.getWarnings().isEmpty());
-    assertFalse(declared.storedPackageId().hasUserData(UserDataNames.IG_DEP_ALIASED));
+    assertTrue(declared.storedPackageId().hasUserData(UserDataNames.IG_DEP_ALIASED)); // present, but null: not an alias
     assertTrue(declared.storedPackageId().getUserDataNames().contains(UserDataNames.IG_DEP_ALIASED));
     assertNull(declared.storedPackageId().getUserData(UserDataNames.IG_DEP_ALIASED));
   }

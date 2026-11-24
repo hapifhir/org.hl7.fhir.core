@@ -1,10 +1,15 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.NpmPackageSigner.PackageSignatureException;
+import org.hl7.fhir.utilities.npm.NpmPackageSigner.SigningKey;
+import org.hl7.fhir.utilities.npm.NpmPackageSigner.VerifiedSignature;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,16 +25,7 @@ import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 import java.util.List;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.NpmPackageSigner.PackageSignatureException;
-import org.hl7.fhir.utilities.npm.NpmPackageSigner.SigningKey;
-import org.hl7.fhir.utilities.npm.NpmPackageSigner.VerifiedSignature;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NpmPackageSignerTest {
 

@@ -1,14 +1,15 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * What a SNOMED CT concept says about where it's used - its semantic tag (from the fully
@@ -169,6 +170,53 @@ public class SnomedRules {
     }
   }
 
+  /**
+   * what an observation (or component) has as its value, which decides whether its code can be a
+   * finding. The Observation page allows a finding as the code when there's no value, or when the
+   * value is a boolean or a yes/no (qualifier) code that says whether the finding is present;
+   * but not when the value is a result
+   */
+  public enum ValueKind {
+    /** no value[x] (or the profile prohibits it) */
+    NONE,
+    /** a boolean, or a code that says yes/no, or qualifies the finding */
+    YES_NO,
+    /** a result - a quantity, a string, or a code that isn't a yes/no or qualifier */
+    RESULT,
+    /** can't be told (codes that aren't known, or a profile that allows any kind of value) */
+    UNKNOWN
+  }
+
+  private static final String QUALIFIER_TAG = "qualifier value";
+  private static final String V2_YES_NO = "http://terminology.hl7.org/CodeSystem/v2-0136";
+  private static final String DATA_ABSENT = "http://terminology.hl7.org/CodeSystem/data-absent-reason";
+
+  /**
+   * what kind of value a CodeableConcept value is, from its codings (system, code, version):
+   * a result if it has a SNOMED CT code that isn't a qualifier value; yes/no if it has a SNOMED CT
+   * qualifier value, or a yes/no/don't know code; otherwise it can't be told
+   */
+  public ValueKind classifyCodes(List<Coding> codings) {
+    boolean yesNo = false;
+    for (Coding c : codings) {
+      if (c.getCode() == null) {
+        continue;
+      }
+      if (SCT.equals(c.getSystem())) {
+        Concept concept = c.getCode().contains(":") || c.getCode().contains("|") ? null : lookup(c.getCode().trim(), c.getVersion(), null);
+        String tag = concept == null ? null : concept.getSemanticTag();
+        if (QUALIFIER_TAG.equals(tag)) {
+          yesNo = true;
+        } else if (tag != null) {
+          return ValueKind.RESULT;
+        }
+      } else if (V2_YES_NO.equals(c.getSystem()) || DATA_ABSENT.equals(c.getSystem())) {
+        yesNo = true;
+      }
+    }
+    return yesNo ? ValueKind.YES_NO : ValueKind.UNKNOWN;
+  }
+
   /** where a code is used, for judging the kind of concept it is */
   public enum Kind {
     CONDITION, PROCEDURE, OBSERVATION, BODY_SITE, SPECIMEN, ALLERGY, MEDICATION,
@@ -218,6 +266,15 @@ public class SnomedRules {
    * condition, are common practice (coding by proxy): those are hints
    */
   public Judgement judge(Kind kind, Concept concept) {
+    return judge(kind, concept, null);
+  }
+
+  /**
+   * as judge(kind, concept); value is what the observation (or component) has as its value, for
+   * Kind.OBSERVATION: a finding is only wrong as the code when the value is a result. It's only
+   * asked for when the code is a finding (telling a coded value can take a $lookup)
+   */
+  public Judgement judge(Kind kind, Concept concept, Supplier<ValueKind> value) {
     String tag = concept == null ? null : concept.getSemanticTag();
     if (tag == null) {
       return null; // nothing known about it, or no fully specified name to tell what it is
@@ -235,7 +292,7 @@ public class SnomedRules {
       }
       return FINDING_TAGS.contains(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_PROCEDURE_CODE_PROXY, desc, tag) : new Judgement(Level.WARNING, I18nConstants.SCT_PROCEDURE_CODE_WRONG, desc, tag);
     case OBSERVATION:
-      return FINDING_TAGS.contains(tag) ? new Judgement(Level.WARNING, I18nConstants.SCT_OBSERVATION_CODE_FINDING, desc, tag) : null;
+      return FINDING_TAGS.contains(tag) && value != null && value.get() == ValueKind.RESULT ? new Judgement(Level.WARNING, I18nConstants.SCT_OBSERVATION_CODE_FINDING, desc, tag) : null;
     case BODY_SITE:
       return BODY_STRUCTURE_TAGS.contains(tag) ? null : new Judgement(Level.WARNING, I18nConstants.SCT_BODYSITE_WRONG, desc, tag);
     case SPECIMEN:

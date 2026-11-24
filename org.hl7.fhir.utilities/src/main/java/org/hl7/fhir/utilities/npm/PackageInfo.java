@@ -1,10 +1,10 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.time.Instant;
-import java.util.Comparator;
-
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+
+import java.time.Instant;
+import java.util.Comparator;
 
 public class PackageInfo {
   private final String id;

@@ -138,6 +138,29 @@ public final class RegexTimeout {
   }
 
   /**
+   * As {@link #replaceAll(CharSequence, String, String)}, but gives up, returning null, as soon as the result is
+   * longer than maxLength characters: a replacement can make a string many times longer (a pattern that matches
+   * the empty string matches between every character), and this finds out before it's all been made
+   * @param maxLength the most characters the result can have (0 or less: no limit)
+   * @return the resulting string, or null if it would be longer than maxLength
+   * @throws TimeoutException if processing runs longer than the default timeout in milliseconds
+   */
+  public static String replaceAllWithLimit(CharSequence charSequence, String regex, String replacement, int maxLength) throws TimeoutException {
+    return runWithDeadline(seq -> {
+      java.util.regex.Matcher m = patternFor(regex).matcher(seq);
+      StringBuffer b = new StringBuffer();
+      while (m.find()) {
+        m.appendReplacement(b, replacement);
+        if (maxLength > 0 && b.length() > maxLength) {
+          return null;
+        }
+      }
+      m.appendTail(b);
+      return maxLength > 0 && b.length() > maxLength ? null : b.toString();
+    }, charSequence, DEFAULT_TIMEOUT);
+  }
+
+  /**
    * Wrapper around {@link String#replaceFirst(String, String)} which will throw an exception if processing runs longer than expected.
    * @param charSequence the charSequence
    * @param regex the regular expression to which the charSequence is to be matched

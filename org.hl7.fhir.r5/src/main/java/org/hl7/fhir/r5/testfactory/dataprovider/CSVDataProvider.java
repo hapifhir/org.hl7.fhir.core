@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 
 
@@ -62,7 +63,7 @@ public class CSVDataProvider extends TableDataProvider {
   @Override
   public void reset() throws FHIRException {
     try {
-      this.csv = new CSVReader(new FileInputStream(filename));
+      this.csv = new CSVReader(ManagedFileAccess.inStream(filename));
 
       cols.add("counter");
       for (String s : csv.readHeaders()) {

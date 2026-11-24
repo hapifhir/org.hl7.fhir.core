@@ -1,17 +1,16 @@
 package org.hl7.fhir.validation.instance.advisor;
 
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonException;
+
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Set;
-
-import javax.annotation.Nonnull;
-
-import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonException;
 
 public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
 

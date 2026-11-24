@@ -133,8 +133,7 @@ public class BaseNAdaptorR5 extends Base {
 
   @Override
   public boolean hasUserData(String name) {
-    // R5's hasUserData is true for an entry with a null value; here, as in R6, it isn't
-    return wrapped.getUserData(name) != null;
+    return wrapped.hasUserData(name);
   }
 
   @Override
@@ -144,8 +143,7 @@ public class BaseNAdaptorR5 extends Base {
 
   @Override
   public int getUserInt(String name) {
-    // not delegated: R5's version fails on an entry with a null value, where R6 returns 0
-    return super.getUserInt(name);
+    return wrapped.getUserInt(name);
   }
 
   @Override

@@ -1,20 +1,16 @@
 package org.hl7.fhir.validation.special;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.hl7.fhir.model.core.BooleanType;
-import org.hl7.fhir.model.core.CanonicalType;
-import org.hl7.fhir.model.core.CapabilityStatement;
-import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent;
-import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent;
-import org.hl7.fhir.model.core.CodeType;
-import org.hl7.fhir.model.core.Extension;
-import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The features a server declares in its CapabilityStatement, which decide which suites and tests

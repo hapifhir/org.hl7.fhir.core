@@ -1,16 +1,16 @@
 package org.hl7.fhir.utilities.xhtml;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.stream.Stream;
-
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 /**
  * What the parser makes of input that exercises its look-ahead and error recovery (mis-matched end tags,

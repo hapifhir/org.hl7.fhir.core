@@ -1,31 +1,26 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent;
+import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemComponent;
+import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseStatus;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.core.formats.JsonParser;
-import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
-import org.hl7.fhir.model.core.IntegerType;
-import org.hl7.fhir.model.core.OperationOutcome;
-import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.model.core.Questionnaire;
-import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent;
-import org.hl7.fhir.model.core.QuestionnaireResponse;
-import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemComponent;
-import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseStatus;
-import org.hl7.fhir.model.core.StringType;
-import org.hl7.fhir.model.utilities.formats.FhirFormat;
-
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The questionnaire-minOccurs / questionnaire-maxOccurs extensions are inclusive bounds: an item

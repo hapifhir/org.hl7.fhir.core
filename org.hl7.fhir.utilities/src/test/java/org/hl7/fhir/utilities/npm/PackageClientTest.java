@@ -1,15 +1,15 @@
 package org.hl7.fhir.utilities.npm;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.net.URISyntaxException;
-
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.net.URISyntaxException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PackageClientTest implements ResourceLoaderTests {
 

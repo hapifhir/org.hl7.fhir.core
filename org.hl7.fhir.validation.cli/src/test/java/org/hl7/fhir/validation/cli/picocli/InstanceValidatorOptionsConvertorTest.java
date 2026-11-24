@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.picocli;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;
@@ -334,9 +333,9 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
-        "checkDisplay CheckCase",
+        "checkDisplay (deprecated) is ignored",
         new InstanceValidatorOptions().withCheckDisplay("CheckCase"),
-        new InstanceValidatorParameters().setCheckDisplay(CheckDisplayOption.CheckCase)
+        new InstanceValidatorParameters()
       ),
 
       Arguments.arguments(

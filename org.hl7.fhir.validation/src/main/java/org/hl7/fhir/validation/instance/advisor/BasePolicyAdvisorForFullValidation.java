@@ -1,16 +1,13 @@
 package org.hl7.fhir.validation.instance.advisor;
 
-import java.util.*;
-
 import lombok.Getter;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.model.core.ElementDefinition;
-import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.services.validation.IMessagingServices;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
@@ -22,6 +19,8 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+
+import java.util.*;
 
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
   

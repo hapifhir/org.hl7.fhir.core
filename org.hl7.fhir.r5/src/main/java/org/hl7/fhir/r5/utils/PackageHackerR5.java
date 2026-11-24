@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.hl7.fhir.r5.context.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -18,6 +19,7 @@ import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UrlType;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -28,15 +30,16 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  * - fixRegisteredResource(proxy, packageInfo): when a resource is registered from a package (before it is loaded)
  * - fixLoadedResource(resource): when a resource is actually loaded from a package
+ * - fixPackageResource(resource, packageInfo): both of the above, for a resource from a package that is loaded
+ *   directly rather than lazily (SimpleWorkerContext.loadDefinitionItem)
  * - fixBindingDescriptions(context, md): when a binding description is rendered
  *
  * The R6 equivalent is org.hl7.fhir.services.utilities.PackageHackerRN
  *
- * Known limitation (a bug, not yet fixed): these fixes are only applied to resources that are
- * registered and loaded through the package path (registerResourceFromPackage / PackageResourceLoader).
- * Resources loaded through SimpleWorkerContext.loadDefinitionItem - package entries without an id in
- * the index, loose files and zips, and the definitions loaded by loadFromPackage for the core spec
- * source - bypass them, and so do not get fixed.
+ * These fixes are applied to everything loaded from a package, lazily (registerResourceFromPackage /
+ * PackageResourceLoader) or not (SimpleWorkerContext.loadDefinitionItem with package information). Loose
+ * files and zips loaded without package information don't get them. Code that loads definitions some
+ * other way (e.g. HAPI) should call these methods itself.
  */
 public class PackageHackerR5 {
 
@@ -234,6 +237,28 @@ public class PackageHackerR5 {
   }
 
   /**
+   * Applies all the package hacks - fixRegisteredResource, then fixLoadedResource - to a resource from a package
+   * that has been loaded directly, rather than registered with a proxy and loaded on demand. That happens when
+   * the package can't be lazy loaded, when lazy loading is turned off, or when the package index entry has no id
+   */
+  public static CanonicalResource fixPackageResource(CanonicalResource cr, PackageInformation packageInfo) {
+    if (packageInfo != null) {
+      CanonicalResourceProxy proxy = new CanonicalResourceProxy(cr.fhirType(), cr.getId(), cr.getUrl(), cr.getVersion(), null, null, null) {
+        @Override
+        public CanonicalResource loadResource() {
+          return cr;
+        }
+      };
+      proxy.setResource(cr);
+      fixRegisteredResource(proxy, packageInfo);
+      if (!Objects.equals(proxy.getUrl(), cr.getUrl()) || !Objects.equals(proxy.getVersion(), cr.getVersion())) {
+        cr.setUrl(proxy.getUrl()).setVersion(proxy.getVersion());
+      }
+    }
+    return fixLoadedResource(cr);
+  }
+
+  /**
    * Fixes content of a resource when it is loaded from a package (formerly R5Hacker)
    */
   public static CanonicalResource fixLoadedResource(CanonicalResource cr) {
@@ -297,6 +322,35 @@ public class PackageHackerR5 {
     if (ed.hasBinding() && ed.getBinding().hasExtension(ExtensionDefinitions.EXT_BINDING_DEFINITION)) {
       Extension ext = ed.getBinding().getExtensionByUrl(ExtensionDefinitions.EXT_BINDING_DEFINITION);
       ext.setValue(new MarkdownType(ext.getValue().primitiveValue()));
+    }
+    fixResourceIdType(ed);
+  }
+
+  /**
+   * Resource.id is an id, but R4 (hl7.fhir.r4.core 4.0.1) says its fhir-type is 'string', and every R4 IG
+   * snapshot built from the core definitions inherited that. R4B and R5 say 'id'. (In R6 the published
+   * definitions are inconsistent too - see PackageHackerRN.)
+   * <p>
+   * This used to be fixed in ProfileUtilities.generateSnapshot, which rewrote the base definition every time
+   * a snapshot was generated - modifying a shared definition, and racing when snapshots were generated
+   * concurrently (core #2470). So fix it once, here, at load, for every element based on Resource.id,
+   * and only write when the definition is actually wrong
+   * <p>
+   * Only where the type is FHIRPath's System.String, which is how R4 and later publish it (and where the
+   * fhir-type extension says what the FHIR type is). DSTU2 and STU3 give the type as 'id' itself, and are left
+   * alone: that is the R4-and-later check the snapshot generator had, decided by the definition rather than by
+   * the version of the package it came from
+   */
+  private static final String FHIRPATH_STRING = "http://hl7.org/fhirpath/System.String";
+
+  private static void fixResourceIdType(ElementDefinition ed) {
+    if (ed.hasBase() && "Resource.id".equals(ed.getBase().getPath()) && ed.getType().size() == 1
+        && FHIRPATH_STRING.equals(ed.getTypeFirstRep().getCode())) {
+      TypeRefComponent t = ed.getTypeFirstRep();
+      if (!"id".equals(t.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE))) {
+        t.removeExtension(ExtensionDefinitions.EXT_FHIR_TYPE);
+        t.addExtension(ExtensionDefinitions.EXT_FHIR_TYPE, new UrlType("id"));
+      }
     }
   }
 

@@ -466,6 +466,17 @@ public class TerminologyClientContext {
       return false;
     }
     String content = tccs.hasContent() ? tccs.getContent().toCode() : tccs.getExtensionString(ExtensionDefinitions.EXT_TX_CAPS_CONTENT);
+
+    /*
+    There's a couple of problems with this code here:
+
+    * some servers do not return a value for content. if we assume that no content means no service, then we
+      ignore what servers have  - this proved to be a problem when I tried it (Nov 2026).
+    * fragment. The whole question of what to do when the server has a fragment (what fragment?) is
+      basically broken; there's ongoing discussion amongst the terminology community about what to do in
+      that case (and what to do about their versions). For now, if the server has a fragment, we don't send ours.
+      We will re-evaluate this when the community has some resolution to these issues.
+     */
     return content == null || Utilities.existsInList(content, "complete", "fragment");
   }
 

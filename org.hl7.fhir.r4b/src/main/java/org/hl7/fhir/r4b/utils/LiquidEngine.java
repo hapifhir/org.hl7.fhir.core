@@ -74,26 +74,26 @@ public class LiquidEngine implements IHostApplicationServices {
   private ILiquidEngineIncludeResolver includeResolver;
   private ILiquidRenderingSupport renderingSupport;
 
-  private class LiquidEngineContext {
+  private class LiquidEngineContext extends org.hl7.fhir.utilities.LimitedExecutionContext {
     private Object externalContext;
     private Map<String, Base> loopVars = new HashMap<>();
     private Map<String, Base> globalVars = new HashMap<>();
 
     public LiquidEngineContext(Object externalContext) {
-      super();
+      super(LiquidEngine.this.limitsFor(externalContext));
       this.externalContext = externalContext;
       globalVars = new HashMap<>();
     }
 
     public LiquidEngineContext(Object externalContext, LiquidEngineContext existing) {
-      super();
+      super(existing.getExecutionLimits());
       this.externalContext = externalContext;
       loopVars.putAll(existing.loopVars);
       globalVars = existing.globalVars;
     }
 
     public LiquidEngineContext(LiquidEngineContext existing) {
-      super();
+      super(existing.getExecutionLimits());
       externalContext = existing.externalContext;
       loopVars.putAll(existing.loopVars);
       globalVars = existing.globalVars;
@@ -107,6 +107,50 @@ public class LiquidEngine implements IHostApplicationServices {
     engine.setHostServices(this);
     engine.setLiquidMode(true);
   }
+
+  /**
+   * How deep a template can go - for, if and include inside each other, counting the includes too. A template comes
+   * from content, and one that includes itself would otherwise go until the stack ran out
+   */
+  public static final int MAX_DEPTH = 100;
+
+  /**
+   * The limits of a run of a template: the app context's, if it's the context of a run of another engine; otherwise
+   * new ones. Every FHIRPath expression the template runs spends the same budget (the FHIRPath engine finds it in the
+   * context Liquid passes it)
+   */
+  private org.hl7.fhir.utilities.ExecutionLimits limitsFor(Object externalContext) {
+    org.hl7.fhir.utilities.ExecutionLimits limits = org.hl7.fhir.utilities.LimitedExecutionContext.limitsOf(externalContext);
+    return limits != null ? limits : new org.hl7.fhir.utilities.ExecutionLimits(engine.getMaxExecutionMillis(), MAX_DEPTH,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH);
+  }
+
+  /** going into a for, if, capture or include: the run mustn't be out of time, or nested too deeply */
+  private void enter(LiquidEngineContext ctxt) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TIMEOUT, limits.maxSeconds()));
+    }
+    if (!limits.enter()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TOO_DEEP, Integer.toString(limits.getMaxDepth())));
+    }
+  }
+
+  private void leave(LiquidEngineContext ctxt) {
+    ctxt.getExecutionLimits().exit();
+  }
+
+  /** as output is made (each time round a loop, and as nodes' output is added up): the run mustn't be out of time, or have made too much */
+  private void checkOutput(LiquidEngineContext ctxt, StringBuilder b) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TIMEOUT, limits.maxSeconds()));
+    }
+    if (limits.isTooLong(b.length())) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_OUTPUT_TOO_LONG, Integer.toString(limits.getMaxStringLength())));
+    }
+  }
+
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
     return includeResolver;
@@ -133,6 +177,7 @@ public class LiquidEngine implements IHostApplicationServices {
     LiquidEngineContext ctxt = new LiquidEngineContext(appContext);
     for (LiquidNode n : document.body) {
       n.evaluate(b, resource, ctxt);
+      checkOutput(ctxt, b);
     }
     return b.toString();
   }
@@ -239,6 +284,7 @@ public class LiquidEngine implements IHostApplicationServices {
         if (first) first = false; else b.append(", ");
         String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
         b.append(s != null ? s : engine.convertToString(i));
+        checkOutput(ctxt, b); // a collection of strings can add up to far more than any one of them
       }
       return b.toString();
     }
@@ -266,6 +312,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        evaluateInner(b, resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private void evaluateInner(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
       boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled);
@@ -360,6 +415,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        evaluateInner(b, resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private void evaluateInner(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null) {
         ExpressionNodeWithOffset po = engine.parsePartial(condition, 0);
         compiled = po.getNode();
@@ -379,6 +443,7 @@ public class LiquidEngine implements IHostApplicationServices {
         }
         int i = 0;
         for (Base o : list) {
+          checkOutput(lctxt, b);
           if (offset >= 0 && i < offset) {
             i++;
             continue;
@@ -458,6 +523,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        evaluateInner(b, resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private void evaluateInner(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
       String src = includeResolver.fetchInclude(LiquidEngine.this, page);
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);

@@ -257,7 +257,9 @@ public class BundleRenderer extends ResourceRenderer {
       if (section.has("text")) {
         ResourceWrapper narrative = section.child("text");
         ResourceWrapper xh = narrative.child("div");
-        x.addChildren(xh.getXhtml());
+        if (xh != null && xh.getXhtml() != null) {
+          x.addChildren(xh.getXhtml());
+        }
       }      
       if (section.has("section")) {
         List<ResourceWrapper> sections = section.children("section");

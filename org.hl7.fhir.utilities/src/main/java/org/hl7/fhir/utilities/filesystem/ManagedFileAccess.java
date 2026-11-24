@@ -29,32 +29,32 @@ package org.hl7.fhir.utilities.filesystem;
   
  */
 
-
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.Utilities;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * see security.md - manages access to the local file system by the FHIR HAPI Core library
  * 
- * By using accessPolicy, allowedPaths and accessor, a host java application can control 
+ * By using accessPolicy and allowedPaths, a host java application can control
  * whether this library has direct access to the file system (and which paths it is allowed to access),
- * or whether the host application provides controlled access, or whether no access is allowed at all
- * (in which case other information providers need to be provided)
+ * or whether no access is allowed at all (in which case other information providers need to be provided)
  *  
  * @author Grahame
  *
  */
 public class ManagedFileAccess {
-  
+
+  public static final String FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED = "FileAccessPolicy.MANAGED is not supported";
+
+  /**
+   * @deprecated not used: the MANAGED policy it was meant for is not supported (see FileAccessPolicy.MANAGED)
+   */
+  @Deprecated
   public interface IFileAccessor {
     File file(String pathname) throws IOException;
     FileInputStream inStream(String pathname);
@@ -65,33 +65,201 @@ public class ManagedFileAccess {
 
   public enum FileAccessPolicy {
     DIRECT, // open access to the local file system, though access can be restricted only to files under the paths in AllowedPaths
-    MANAGED, // no access except by the FileSystemProxyProvider
+    /**
+     * Not supported. {@link ManagedFileAccess#setAccessPolicy(FileAccessPolicy)} refuses it with an
+     * {@link UnsupportedOperationException}, and so does every file operation if the policy is somehow MANAGED.
+     *
+     * @deprecated This never worked: there was no way to set an {@link IFileAccessor}, and some operations (temporary
+     * files, links, walking folders) can't be done through one at all. Nothing in core, the IG publisher or kindling
+     * uses it. Use DIRECT, limited to some folders with {@link ManagedFileAccess#setAllowedPaths(List)}, or PROHIBITED.
+     */
+    @Deprecated
+    MANAGED,
     PROHIBITED, // no access at all to File() services
   }
 
-  private static FileAccessPolicy accessPolicy = FileAccessPolicy.DIRECT; // for legacy reasons
-  private static List<String> allowedPaths = new ArrayList<>();
-  private static IFileAccessor accessor;
-  
-  
+  private static FileAccessPolicy accessPolicy = defaultFileAccessPolicy(); // for legacy reasons
+
+  @Nonnull
+  protected static FileAccessPolicy defaultFileAccessPolicy() {
+    return FileAccessPolicy.DIRECT;
+  }
+
+  // set by one thread (e.g. as the IG publisher starts), read by others: replaced whole, never changed in place
+  private static volatile List<String> allowedPaths = defaultAllowedPaths();
+
+  @Nonnull
+  protected static List<String> defaultAllowedPaths() {
+    return java.util.Collections.emptyList();
+  }
+
+
   public static FileAccessPolicy getAccessPolicy() {
     return accessPolicy;
   }
 
   public static void setAccessPolicy(FileAccessPolicy accessPolicy) {
+    if (accessPolicy == FileAccessPolicy.MANAGED) {
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
+    }
     ManagedFileAccess.accessPolicy = accessPolicy;
   }
 
+  /**
+   * Limits file access (in the DIRECT policy) to the files and folders under these folders. An empty list (the default)
+   * means no limit. The IG publisher uses this to keep a build to the IG's own folder, the temp folder and ~/.fhir
+   *
+   * @param paths the folders, absolute or relative to the current folder
+   */
+  public static void setAllowedPaths(List<String> paths) {
+    final List<String> realPaths = new ArrayList<>();
+    if (paths != null) {
+      for (String path : paths) {
+        if (path != null) {
+          java.nio.file.Path realPath = realPath(path);
+          realPaths.add(realPath != null ? realPath.toString() : java.nio.file.Paths.get(path).toAbsolutePath().normalize().toString());
+        }
+      }
+    }
+    final List<String> uniquePaths = getUniquePaths(realPaths);
+    allowedPaths = java.util.Collections.unmodifiableList(uniquePaths);
+  }
+
+  protected static @Nonnull List<String> getUniquePaths(List<String> realPaths) {
+    // a path inside another one adds nothing (e.g. ~/.fhir/packages when ~/.fhir is there), and nor does the same one twice
+    final List<String> uniquePaths = new ArrayList<>();
+    for (String pathToAdd : realPaths) {
+      boolean covered = false;
+      for (String existingPath : realPaths) {
+        if (!pathToAdd.equals(existingPath) && java.nio.file.Paths.get(pathToAdd).startsWith(java.nio.file.Paths.get(existingPath))) {
+          covered = true;
+        }
+      }
+      if (!covered && !uniquePaths.contains(pathToAdd)) {
+        uniquePaths.add(pathToAdd);
+      }
+    }
+    return uniquePaths;
+  }
+
+  public static List<String> getAllowedPaths() {
+    return new ArrayList<>(allowedPaths);
+  }
+
+  /**
+   * Whether the path is under one of the allowed folders, where it really is: . and .. are resolved, and so are
+   * symbolic links, as far as the path exists (the rest of it is yet to be created). Compared by path segments, so
+   * /ig-other isn't under /ig
+   */
   private static boolean inAllowedPaths(String pathname) {
-    if (allowedPaths.isEmpty()) {
+    List<String> allowedPathsRef = allowedPaths; // keep a reference to the original list throughout this method, even if the original is replaced by another thread.
+    if (allowedPathsRef.isEmpty()) {
       return true;
     }
-    for (String s : allowedPaths) {
-      if (pathname.startsWith(s)) {
+    if (pathname == null) {
+      return false;
+    }
+    java.nio.file.Path realPath = realPath(pathname);
+    if (realPath == null) {
+      return false;
+    }
+    for (String allowedPath : allowedPathsRef) {
+      if (realPath.startsWith(java.nio.file.Paths.get(allowedPath))) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Where a path really is, as the file system would resolve it: symbolic links are followed as far as the path
+   * exists, and . and .. are resolved where they are, after the links before them (so /ig/link/../x is the folder above
+   * where link leads, not /ig/x - normalising the text first gets that wrong). Whatever doesn't exist yet is taken as
+   * plain folders that will be created. Null if the path isn't a path on this platform, or leads to a link to nowhere
+   */
+  public static java.nio.file.Path realPath(String pathname) {
+    java.nio.file.Path absolutePath;
+    try {
+      absolutePath = java.nio.file.Paths.get(pathname).toAbsolutePath();
+    } catch (java.nio.file.InvalidPathException e) {
+      // not a path this platform has (e.g. a URL on Windows, where : * ? < > | can't be in a name): it isn't anywhere
+      // that's allowed, and the caller gets the policy's IOException, not this unchecked one
+      return null;
+    }
+    Path longestExistingPath = longestExistingPath(absolutePath);
+    if (longestExistingPath == null) {
+      return absolutePath.normalize();
+    }
+    java.nio.file.Path realPath;
+    try {
+      realPath = longestExistingPath.toRealPath();
+    } catch (IOException e) {
+      // a link to nowhere: it isn't anywhere that's allowed
+      return null;
+    }
+    if (longestExistingPath.getNameCount() == absolutePath.getNameCount()) {
+      return realPath;
+    }
+    java.nio.file.Path nonExistingSubPath = absolutePath.subpath(longestExistingPath.getNameCount(), absolutePath.getNameCount());
+    final boolean hasDotDot = hasDotDot(nonExistingSubPath);
+    if (!hasDotDot) {
+      // none of the rest exists, so there are no links in it
+      return realPath.resolve(nonExistingSubPath).normalize();
+    }
+    return resolveDotEntriesAgainstRealPath(realPath, nonExistingSubPath);
+  }
+
+  protected static @Nullable Path resolveDotEntriesAgainstRealPath(Path realPath, Path nonExistingSubPath) {
+    // with a .., the rest can lead back into what exists (new/../link/../x), so it's resolved a step at a time
+    Path currentPath = realPath;
+    for (Path nonExistingSegment : nonExistingSubPath) {
+      String segmentString = nonExistingSegment.toString();
+      if (".".equals(segmentString)) {
+        continue;
+      }
+      if ("..".equals(segmentString)) {
+        // currentPath is a real path (no links in it), so its parent is where .. really goes
+        currentPath = currentPath.getParent() == null ? currentPath : currentPath.getParent();
+      } else {
+        currentPath = currentPath.resolve(segmentString);
+      }
+      if (java.nio.file.Files.exists(currentPath, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+        try {
+          currentPath = currentPath.toRealPath();
+        } catch (IOException e) {
+          return null;
+        }
+      }
+    }
+    return currentPath;
+  }
+
+  protected static boolean hasDotDot(Path nonExistingSubPath) {
+    boolean hasDotDot = false;
+    for (Path nonExistingSegment : nonExistingSubPath) {
+      hasDotDot = hasDotDot || "..".equals(nonExistingSegment.toString());
+    }
+    return hasDotDot;
+  }
+
+  protected static @Nullable Path longestExistingPath(Path absolutePath) {
+    // the longest part of the path that exists. Not normalised: the file system resolves the .. in /ig/link/.. after
+    // following link, and so do exists() and toRealPath()
+    Path existing = absolutePath;
+    while (existing != null && !java.nio.file.Files.exists(existing, java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
+      existing = existing.getParent();
+    }
+    return existing;
+  }
+
+  /**
+   * Whether path is inside root (or is root), where they really are (see {@link #realPath}). Compared by path segments,
+   * so /ig-other isn't inside /ig. False if either isn't a path, or leads to a link to nowhere
+   */
+  public static boolean isInside(String root, String path) {
+    java.nio.file.Path r = root == null ? null : realPath(root);
+    java.nio.file.Path p = path == null ? null : realPath(path);
+    return r != null && p != null && p.startsWith(r);
   }
 
   /** 
@@ -105,7 +273,7 @@ public class ManagedFileAccess {
       }
       return new File(pathname);
     case MANAGED:
-      return accessor.file(pathname);
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -113,15 +281,22 @@ public class ManagedFileAccess {
     }
   }
 
+  /**
+   * A file in a folder. The name can have folders in it, but must stay in the folder: names come from zip entries,
+   * references and the like, so ../../etc/passwd is refused (as Utilities.path does). And the file itself (not just the
+   * folder) has to be somewhere the policy allows: a link in the folder can lead elsewhere
+   */
   public static File file(String path, String filepath) throws IOException {
     switch (accessPolicy) {
     case DIRECT:
-      if (!inAllowedPaths(path)) {
-        throw new IOException("The path '"+path+"' cannot be accessed by policy");
+      File f = new File(path, filepath);
+      checkChild(path, filepath, f);
+      if (!inAllowedPaths(f.getAbsolutePath())) {
+        throw new IOException("The path '"+f.getAbsolutePath()+"' cannot be accessed by policy");
       }
-      return new File(path, filepath);
+      return f;
     case MANAGED:
-      return accessor.file(Utilities.path(path, filepath));
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -136,12 +311,15 @@ public class ManagedFileAccess {
   public static File csfile(String path, String filepath) throws IOException {
     switch (accessPolicy) {
       case DIRECT:
-        if (!inAllowedPaths(path)) {
-          throw new IOException("The path '"+path+"' cannot be accessed by policy");
+        // checked before the CSFile is made, because that looks at the file
+        File f = new File(path, filepath);
+        checkChild(path, filepath, f);
+        if (!inAllowedPaths(f.getAbsolutePath())) {
+          throw new IOException("The path '"+f.getAbsolutePath()+"' cannot be accessed by policy");
         }
         return new CSFile(path, filepath);
       case MANAGED:
-        return accessor.csfile(Utilities.path(path, filepath));
+        throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
       case PROHIBITED:
         throw new IOException("Access to files is not allowed by local security policy");
       default:
@@ -151,6 +329,22 @@ public class ManagedFileAccess {
 
   public static File csfile(File root, String filepath) throws IOException {
     return csfile(root.getAbsolutePath(), filepath);
+  }
+
+  /** the file must be in the folder, as written (a link is checked by the policy, which looks at where the file really is) */
+  private static void checkChild(String path, String filepath, File f) throws IOException {
+    java.nio.file.Path parent;
+    java.nio.file.Path child;
+    try {
+      parent = java.nio.file.Paths.get(path).toAbsolutePath().normalize();
+      child = f.toPath().toAbsolutePath().normalize();
+    } catch (java.nio.file.InvalidPathException e) {
+      // not a name this platform can have (e.g. a URL on Windows)
+      throw new IOException("The name '"+filepath+"' isn't a file in the folder '"+path+"'", e);
+    }
+    if (filepath == null || filepath.isEmpty() || !child.startsWith(parent) || child.equals(parent)) {
+      throw new IOException("The name '"+filepath+"' isn't a file in the folder '"+path+"'");
+    }
   }
 
   /**
@@ -164,7 +358,7 @@ public class ManagedFileAccess {
       }
       return new FileInputStream(pathname);
     case MANAGED:
-      return accessor.inStream(pathname);
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -173,13 +367,23 @@ public class ManagedFileAccess {
   }
 
   /**
-   * This doesn't do anything, but it's useful for it to exist, to make code inspection easier
-   * @param file
-   * @return
-   * @throws FileNotFoundException
+   * Open a FileInputStream, conforming to local security policy, as inStream(String) does. Throws FileNotFoundException (not
+   * IOException) when the policy refuses, as new FileInputStream(file) would when it can't open the file
    */
   public static FileInputStream inStream(File file) throws FileNotFoundException {
-    return new FileInputStream(file);
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(file.getAbsolutePath())) {
+        throw new FileNotFoundException("The pathname '"+file.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return new FileInputStream(file);
+    case MANAGED:
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
+    case PROHIBITED:
+      throw new FileNotFoundException("Access to files is not allowed by local security policy");
+    default:
+      throw new FileNotFoundException("Internal Error");
+    }
   }
 
   /** 
@@ -194,7 +398,7 @@ public class ManagedFileAccess {
       }
       return new FileOutputStream(pathname);
     case MANAGED:
-      return accessor.outStream(pathname);
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -203,13 +407,23 @@ public class ManagedFileAccess {
   }
 
   /**
-   * This doesn't do anything, but it's useful for it to exist, to make code inspection easier
-   * @param file
-   * @return
-   * @throws FileNotFoundException
+   * Open a FileOutputStream, conforming to local security policy, as outStream(String) does. Throws FileNotFoundException (not
+   * IOException) when the policy refuses, as new FileOutputStream(file) would when it can't open the file
    */
   public static FileOutputStream outStream(File file) throws FileNotFoundException {
-    return new FileOutputStream(file);
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(file.getAbsolutePath())) {
+        throw new FileNotFoundException("The pathname '"+file.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return new FileOutputStream(file);
+    case MANAGED:
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
+    case PROHIBITED:
+      throw new FileNotFoundException("Access to files is not allowed by local security policy");
+    default:
+      throw new FileNotFoundException("Internal Error");
+    }
   }
   
   /** 
@@ -223,7 +437,7 @@ public class ManagedFileAccess {
       }
       return new CSFile(pathname);
     case MANAGED:
-      return accessor.csfile(pathname);
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -239,7 +453,7 @@ public class ManagedFileAccess {
       }
       return path.toFile();
     case MANAGED:
-      return accessor.file(path.toString());
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
@@ -255,7 +469,49 @@ public class ManagedFileAccess {
       }
       return f.listFiles();
     case MANAGED:
-      return accessor.listFiles(f);
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
+    case PROHIBITED:
+      throw new IOException("Access to files is not allowed by local security policy");
+    default:
+      throw new IOException("Internal Error");
+    }
+  }
+
+  /**
+   * Creates a new empty file in the system temp folder (java.io.tmpdir), as File.createTempFile does, conforming to
+   * local security policy: the temp folder has to be one that may be accessed
+   */
+  public static File createTempFile(String prefix, String suffix) throws IOException {
+    return createTempFile(null, prefix, suffix);
+  }
+
+  /**
+   * As createTempFile(prefix, suffix), in the folder dir (null for the system temp folder), which has to be one that
+   * may be accessed
+   */
+  public static File createTempFile(File dir, String prefix, String suffix) throws IOException {
+    return File.createTempFile(prefix, suffix, tempFolder(dir));
+  }
+
+  /**
+   * Creates a new empty folder in the system temp folder (java.io.tmpdir), as Files.createTempDirectory does,
+   * conforming to local security policy: the temp folder has to be one that may be accessed
+   */
+  public static File createTempDirectory(String prefix) throws IOException {
+    return java.nio.file.Files.createTempDirectory(tempFolder(null).toPath(), prefix).toFile();
+  }
+
+  /** the folder to make a temporary file or folder in (null for the system temp folder), once policy allows it */
+  private static File tempFolder(File dir) throws IOException {
+    File folder = dir != null ? dir : new File(System.getProperty("java.io.tmpdir"));
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(folder.getAbsolutePath())) {
+        throw new IOException("The pathname '"+folder.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return folder;
+    case MANAGED:
+      throw new UnsupportedOperationException(FILE_ACCESS_POLICY_MANAGED_IS_NOT_SUPPORTED);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:

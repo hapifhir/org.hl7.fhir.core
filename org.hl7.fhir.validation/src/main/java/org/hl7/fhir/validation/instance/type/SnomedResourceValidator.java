@@ -1,8 +1,6 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -13,6 +11,11 @@ import org.hl7.fhir.validation.instance.utils.SnomedRules;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Concept;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Kind;
 import org.hl7.fhir.validation.instance.utils.SnomedRules.Side;
+import org.hl7.fhir.validation.instance.utils.SnomedRules.ValueKind;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Checks SNOMED CT codes against what SNOMED CT says about them, wherever they are used in the
@@ -21,7 +24,8 @@ import org.hl7.fhir.validation.instance.utils.SnomedRules.Side;
  * - the kind of concept (semantic tag) against the element: a condition is a finding, disorder
  *   or situation; a procedure is a procedure; a body site is a body structure; a specimen type
  *   is a specimen; an allergy is to a substance or product; a medication is a product; and an
- *   observation's code is not a finding. Conditions coded by their procedure, and procedures
+ *   observation's code is not a finding when its value is a result (a finding with no value, or
+ *   with a boolean or yes/no value, is fine - see the Observation page). Conditions coded by their procedure, and procedures
  *   coded by their condition, are common practice (coding by proxy): those are hints
  * - a planned procedure (procedure context = Planned) recorded as completed
  * - laterality: the sides given by the code's site, the body site, a laterality refinement and
@@ -55,10 +59,11 @@ public class SnomedResourceValidator extends BaseValidator {
       checkLaterality(errors, element, stack, true);
       break;
     case "Observation":
-      ok = checkKind(errors, element, "code", stack, Kind.OBSERVATION) && ok;
+      ok = checkKind(errors, element, "code", stack, Kind.OBSERVATION, () -> valueKind(element)) && ok;
       List<Element> components = element.getChildren("component");
       for (int i = 0; i < components.size(); i++) {
-        ok = checkKind(errors, components.get(i), "code", stack.push(components.get(i), i, null, null), Kind.OBSERVATION) && ok;
+        Element component = components.get(i);
+        ok = checkKind(errors, component, "code", stack.push(component, i, null, null), Kind.OBSERVATION, () -> valueKind(component)) && ok;
       }
       ok = checkKind(errors, element, "bodySite", stack, Kind.BODY_SITE) && ok;
       checkLaterality(errors, element, stack, false);
@@ -159,16 +164,44 @@ public class SnomedResourceValidator extends BaseValidator {
   }
 
   private boolean checkKind(List<ValidationMessage> errors, Element owner, String name, NodeStack stack, Kind kind) {
+    return checkKind(errors, owner, name, stack, kind, null);
+  }
+
+  private boolean checkKind(List<ValidationMessage> errors, Element owner, String name, NodeStack stack, Kind kind, Supplier<ValueKind> value) {
     boolean ok = true;
     for (SctCoding c : sctCodings(owner, name, stack)) {
-      ok = checkKind(errors, c, kind) && ok;
+      ok = checkKind(errors, c, kind, value) && ok;
     }
     return ok;
   }
 
-  /** whether the kind of concept fits where it's used */
+  /** what an observation (or component) has as its value */
+  private ValueKind valueKind(Element owner) {
+    Element v = owner.getNamedChild("value", false);
+    if (v == null) {
+      return ValueKind.NONE;
+    }
+    switch (v.fhirType()) {
+    case "boolean":
+      return ValueKind.YES_NO;
+    case "CodeableConcept":
+      List<Coding> codings = new ArrayList<>();
+      for (Element coding : v.getChildren("coding")) {
+        codings.add(new Coding(coding.getNamedChildValue("system", false), coding.getNamedChildValue("code", false), null).setVersion(coding.getNamedChildValue("version", false)));
+      }
+      return rules.classifyCodes(codings);
+    default:
+      return ValueKind.RESULT;
+    }
+  }
+
   private boolean checkKind(List<ValidationMessage> errors, SctCoding c, Kind kind) {
-    SnomedRules.Judgement j = rules.judge(kind, lookup(c));
+    return checkKind(errors, c, kind, null);
+  }
+
+  /** whether the kind of concept fits where it's used */
+  private boolean checkKind(List<ValidationMessage> errors, SctCoding c, Kind kind, Supplier<ValueKind> value) {
+    SnomedRules.Judgement j = rules.judge(kind, lookup(c), value);
     if (j == null) {
       return true;
     }

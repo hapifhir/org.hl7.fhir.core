@@ -1,9 +1,12 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hl7.fhir.exceptions.FHIRException;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The files written to a package so far, for the package generators (NPMPackageGenerator).
@@ -16,7 +19,21 @@ import org.hl7.fhir.exceptions.FHIRException;
  */
 public class PackageEntryNames {
 
-  private final Map<String, String> names = new HashMap<>();
+  // entryNameKey -> the name as it was added. Linked, so the names come back in the order they were added
+  private final Map<String, String> names = new LinkedHashMap<>();
+
+  /**
+   * Whether the name, or a name that is the same file to some systems, has been added: adding it would then skip it,
+   * or fail
+   */
+  public boolean contains(String path) {
+    return names.containsKey(NpmPackage.entryNameKey(path));
+  }
+
+  /** The names that have been added, as they were added (a name added again, and skipped, is there once) */
+  public Set<String> getNames() {
+    return Collections.unmodifiableSet(new LinkedHashSet<>(names.values()));
+  }
 
   /**
    * @return true if the name is new, and the file should be written; false if exactly this name

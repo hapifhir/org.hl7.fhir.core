@@ -1103,6 +1103,11 @@ msgstr ""
 msgid "The code ''{0}'' is in a code space that the CodeSystem {1} reserves for users to define their own codes. No hierarchy (subsumption) is defined in reserved code spaces, so it should not be nested in another concept, or have concepts nested in it"
 msgstr ""
 
+# CODESYSTEM_CS_SUPP_SAME_URL
+#: CODESYSTEM_CS_SUPP_SAME_URL
+msgid "The supplement ''{0}'' has the url of the code system it supplements, so it claims to be a version of that code system. A supplement needs a canonical url of its own"
+msgstr ""
+
 # CODESYSTEM_CS_SUPP_TOO_MANY_CODES
 #: CODESYSTEM_CS_SUPP_TOO_MANY_CODES
 msgid "The supplement has too many concepts to validate ({0}, more than the limit of {1}), so they have not been checked against the base CodeSystem"
@@ -1735,6 +1740,11 @@ msgstr ""
 # Duplicate_Resource_
 #: Duplicate_Resource_
 msgid "Duplicate Resource {0} of type {3} (existing version {2}, new version {1})"
+msgstr ""
+
+# ECOSYSTEM_SERVER_UNAVAILABLE
+#: ECOSYSTEM_SERVER_UNAVAILABLE
+msgid "''{0}'' could not be looked for on the server in the terminology ecosystem that provides it: {1}"
 msgstr ""
 
 # ED_CONTEXT_INVARIANT_EXPRESSION_ERROR
@@ -2412,6 +2422,11 @@ msgstr ""
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on ordered string, uri, canonical or Reference but found {1}"
 msgstr ""
 
+# FHIRPATH_REPEAT_TOO_MANY_ROUNDS
+#: FHIRPATH_REPEAT_TOO_MANY_ROUNDS
+msgid "Error evaluating FHIRPath expression: repeat() was still finding new items after {0} rounds"
+msgstr ""
+
 # FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND
 msgid "Problem with use of resolve() - profile {0} on {1} could not be resolved"
@@ -2444,6 +2459,21 @@ msgstr ""
 # FHIRPATH_STRING_SING_ONLY
 #: FHIRPATH_STRING_SING_ONLY
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, url, code, id but found {1}"
+msgstr ""
+
+# FHIRPATH_STRING_TOO_LONG
+#: FHIRPATH_STRING_TOO_LONG
+msgid "Error evaluating FHIRPath expression: it made a string of more than {0} characters"
+msgstr ""
+
+# FHIRPATH_TIMEOUT
+#: FHIRPATH_TIMEOUT
+msgid "Error evaluating FHIRPath expression: it didn''t finish within {0} seconds"
+msgstr ""
+
+# FHIRPATH_TOO_MANY_ITEMS
+#: FHIRPATH_TOO_MANY_ITEMS
+msgid "Error evaluating FHIRPath expression: it made a collection of more than {0} items"
 msgstr ""
 
 # FHIRPATH_UNABLE_BOOLEAN
@@ -2579,6 +2609,11 @@ msgstr ""
 # ICD11_PC_NO_AXES
 #: ICD11_PC_NO_AXES
 msgid "''{0}'' cannot be postcoordinated onto ''{1}'': that concept declares no postcoordination axes"
+msgstr ""
+
+# ICD11_PC_REQUIRED_AXIS_EMPTY
+#: ICD11_PC_REQUIRED_AXIS_EMPTY
+msgid "''{0}'' has no value on its required {1} axis"
 msgstr ""
 
 # ICD11_PC_VALUE_NOT_ON_AXIS
@@ -2847,6 +2882,11 @@ msgstr ""
 msgid "No source provided to the Liquid parser"
 msgstr ""
 
+# LIQUID_OUTPUT_TOO_LONG
+#: LIQUID_OUTPUT_TOO_LONG
+msgid "Liquid Exception: the template made more than {0} characters"
+msgstr ""
+
 # LIQUID_STATEMENT_ERROR
 #: LIQUID_STATEMENT_ERROR
 msgid "Error processing statement ''{0}'' - {1}"
@@ -2890,6 +2930,21 @@ msgstr ""
 # LIQUID_SYNTAX_UNTERMINATED
 #: LIQUID_SYNTAX_UNTERMINATED
 msgid "Script {0}: Found unterminated string parsing cycle"
+msgstr ""
+
+# LIQUID_TIMEOUT
+#: LIQUID_TIMEOUT
+msgid "Liquid Exception: the template didn''t finish within {0} seconds"
+msgstr ""
+
+# LIQUID_TOO_DEEP
+#: LIQUID_TOO_DEEP
+msgid "Liquid Exception: the template is nested too deeply (for, if, capture and include inside each other, more than {0} levels)"
+msgstr ""
+
+# LIQUID_TOO_MANY_ITEMS
+#: LIQUID_TOO_MANY_ITEMS
+msgid "Liquid Exception: the template made a list of more than {0} items"
 msgstr ""
 
 # LIQUID_UNABLE_TO_PARSE_DATETIME
@@ -3407,6 +3462,16 @@ msgstr ""
 # NARRATIVE_NOT_TRANSLATED
 #: NARRATIVE_NOT_TRANSLATED
 msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
+msgstr ""
+
+# NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED
+#: NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED
+msgid "The narrative has no content for the {0} language, and it wasn''t generated (its status is ''{1}''), so regenerating it would lose what was written - it has been kept as it is, in another language"
+msgstr ""
+
+# NARRATIVE_NOT_TRANSLATED_KEPT_SECTION
+#: NARRATIVE_NOT_TRANSLATED_KEPT_SECTION
+msgid "The narrative has no content for the {0} language, and only a resource''s own narrative can be regenerated, so it has been kept as it is, in another language"
 msgstr ""
 
 # NDJSON_EMPTY_LINE_WARNING
@@ -4167,6 +4232,21 @@ msgstr ""
 msgid "The value ''{0}'' is not in the list of allowed values (value set ''{1}'')"
 msgstr ""
 
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED
+msgid "The questionnaire''s constraint {0} is not met: {1}"
+msgstr ""
+
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE
+msgid "The questionnaire''s constraint {0} is in the language ''{1}'', so it has not been checked"
+msgstr ""
+
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE
+msgid "The questionnaire''s constraint {0} could not be evaluated ({1}), so it has not been checked"
+msgstr ""
+
 # QUESTIONNAIRE_Q_DERIVATION_TYPE_IGNORED
 #: QUESTIONNAIRE_Q_DERIVATION_TYPE_IGNORED
 msgid "The derivation type ''{0}'' means that no derivation checking has been performed against this questionnaire"
@@ -4710,6 +4790,11 @@ msgstr ""
 msgid "A side ({0}) is given for {1}, which doesn''t have one"
 msgstr ""
 
+# SCT_MEDICATION_STATEMENT_WRONG
+#: SCT_MEDICATION_STATEMENT_WRONG
+msgid "The SNOMED CT code {0} is not a medicinal product (its semantic tag is ''{1}''). A MedicationStatement may say there are no known medications (787481004), but otherwise its medication should be a medicinal product"
+msgstr ""
+
 # SCT_MEDICATION_SUBSTANCE
 #: SCT_MEDICATION_SUBSTANCE
 msgid "The SNOMED CT code {0} is a substance, not a medicinal product"
@@ -4722,7 +4807,7 @@ msgstr ""
 
 # SCT_OBSERVATION_CODE_FINDING
 #: SCT_OBSERVATION_CODE_FINDING
-msgid "The SNOMED CT code {0} is a {1}: the code of an observation says what was observed (an observable entity, or an evaluation procedure), and a finding goes in the value, or in a Condition"
+msgid "The SNOMED CT code {0} is a {1}, but the observation has a result as its value: the code of an observation with a result says what was observed (an observable entity, or an evaluation procedure), and a finding goes in the value, or in a Condition. A finding can be the code when there is no value, or the value says whether it is present (a boolean, or a yes/no code)"
 msgstr ""
 
 # SCT_PROCEDURE_CODE_PROXY
@@ -5946,6 +6031,11 @@ msgstr ""
 msgid "The textLink selector ''{0}'' is invalid: {1}"
 msgstr ""
 
+# TEXT_SEARCH_NOT_SUPPORTED
+#: TEXT_SEARCH_NOT_SUPPORTED
+msgid "Text search is not supported for the code system ''{0}''"
+msgstr ""
+
 # TRANSLATE_SCT_EDITION_TOP_LEVEL_MANY
 #: TRANSLATE_SCT_EDITION_TOP_LEVEL_MANY
 msgid "No translation: the only {0} ancestors of {1} are the top-level hierarchy concepts {2}"
@@ -5961,9 +6051,47 @@ msgstr ""
 msgid "The code system {0} is not known, and the code ''{1}'' has not been validated"
 msgstr ""
 
+# TRANSLATION_WARNING_DENIED
+#: TRANSLATION_WARNING_DENIED
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} says that {1} is not related to {2}"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} say that {1} is not related to {2}"
+msgstr[0] ""
+
+# TRANSLATION_WARNING_NOMAP
+#: TRANSLATION_WARNING_NOMAP
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} says that {1} has no mapping to {4}"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} say that {1} has no mapping to {4}"
+msgstr[0] ""
+
+# TRANSLATION_WARNING_OTHER
+#: TRANSLATION_WARNING_OTHER
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} maps {1} to {4}. Check that these codes belong together"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} map {1} to {4}. Check that these codes belong together"
+msgstr[0] ""
+
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
 msgid "No valid coding was found for the value set ''{0}''"
+msgstr ""
+
+# TX_PARAM_NOT_SUPPORTED
+#: TX_PARAM_NOT_SUPPORTED
+msgid "The parameter ''{0}'' is not supported by this system"
+msgstr ""
+
+# TX_PARAM_PROFILE_RESOURCE
+#: TX_PARAM_PROFILE_RESOURCE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not a resource of type {0}"
+msgstr ""
+
+# TX_PARAM_PROFILE_TYPE
+#: TX_PARAM_PROFILE_TYPE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not a value of type {0}"
+msgstr ""
+
+# TX_PARAM_PROFILE_VALUE
+#: TX_PARAM_PROFILE_VALUE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not the value ''{0}''"
 msgstr ""
 
 # TX_SERVER_BATCH_RESPONSE_MISMATCH
@@ -7572,11 +7700,6 @@ msgstr ""
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
 msgstr ""
 
-# VALUESET_BAD_FILTER_VALUE_CANT_CHECK
-#: VALUESET_BAD_FILTER_VALUE_CANT_CHECK
-msgid "The value ''{1}'' for the filter {0} can''t be checked: {2}"
-msgstr ""
-
 # VALUESET_BAD_FILTER_VALUE_CODE
 #: VALUESET_BAD_FILTER_VALUE_CODE
 msgid "The value for a filter based on property ''{0}'' must be a valid code, not ''{1}''"
@@ -7615,11 +7738,6 @@ msgstr ""
 # VALUESET_BAD_FILTER_VALUE_INTEGER
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
 msgid "The value for a filter based on property ''{0}'' must be integer value, not ''{1}''"
-msgstr ""
-
-# VALUESET_BAD_FILTER_VALUE_INVALID
-#: VALUESET_BAD_FILTER_VALUE_INVALID
-msgid "The value ''{1}'' for the filter {0} is invalid: {2}"
 msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_VALID_CODE
@@ -7976,7 +8094,7 @@ msgstr ""
 
 # VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY_COUNT
-msgid "The value set ''{0}'' expansion has {2} codes, which is too many to produce ({1})"
+msgid "The value set ''{0}'' expansion has {2} codes, which is too many to display ({1})"
 msgstr ""
 
 # VALUESET_TOO_COSTLY_PAGE

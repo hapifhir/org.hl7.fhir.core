@@ -744,7 +744,6 @@ public class ProfileUtilities {
       checkNotGenerating(sdb, "an extension base");
       generateSnapshot(sdb, base, base.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : webUrl, base.getName());
     }
-    fixTypeOfResourceId(base);
     if (base.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       checkTypeParameters(base, derived);
     }
@@ -793,8 +792,11 @@ public class ProfileUtilities {
         // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
 
-        for (ElementDefinition e : derived.getDifferential().getElementList()) 
+        // left from an earlier generation of this snapshot, these would stand in for errors that have to be found again
+        for (ElementDefinition e : derived.getDifferential().getElementList()) {
           e.clearUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
+          e.clearUserData(UserDataNames.SNAPSHOT_DIFF_ERROR_REPORTED);
+        }
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
@@ -906,7 +908,7 @@ public class ProfileUtilities {
           if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT)) {
             b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
             ce++;
-            if (e.hasId()) {
+            if (e.hasId() && !e.hasUserData(UserDataNames.SNAPSHOT_DIFF_ERROR_REPORTED)) {
               String msg = "No match found for "+e.getId()+" in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
               addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE, "StructureDefinition.differential.element["+i+"]", msg, IssueSeverity.ERROR));
             }
@@ -958,6 +960,7 @@ public class ProfileUtilities {
             }
           }
         }
+        prohibitExcludedTypeSlices(derived);
         // check slicing is ok while we're at it. and while we're doing this. update the minimum count if we need to
         checkSliceCardinalitySums(derived);
         
@@ -1081,17 +1084,51 @@ public class ProfileUtilities {
     return ed.getTypeList().size() == 1 && typeCode.equals(ed.getTypeFirstRep().getWorkingCode());
   }
 
+  /**
+   * When a profile restricts the types of an element that is type sliced (here or in the base), an inherited type slice
+   * for a type that is no longer allowed can't be used any more. It stays in the snapshot, but is prohibited (max = 0) -
+   * which is what profiles had to do by hand. A required slice (min &gt; 0) is left alone: a required type slice means
+   * the base already fixed the type, so excluding it has already been reported as an invalid type constraint (#1191)
+   */
+  private void prohibitExcludedTypeSlices(StructureDefinition derived) {
+    Map<String, ElementDefinition> typeSlicers = new HashMap<>();
+    for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
+      if (!ed.hasSliceName()) {
+        if (isTypeSlicing(ed)) {
+          typeSlicers.put(ed.getPath(), ed);
+        } else {
+          typeSlicers.remove(ed.getPath());
+        }
+      } else if (typeSlicers.containsKey(ed.getPath()) && ed.getTypeList().size() == 1 && !"0".equals(ed.getMax())) {
+        ElementDefinition slicer = typeSlicers.get(ed.getPath());
+        String tc = ed.getTypeList().get(0).getWorkingCode();
+        boolean allowed = !slicer.hasType();
+        for (TypeRefComponent t : slicer.getTypeList()) {
+          if (t.getWorkingCode() != null && t.getWorkingCode().equals(tc)) {
+            allowed = true;
+          }
+        }
+        if (!allowed && ed.getMin() == 0) {
+          ed.setMax("0");
+        }
+      }
+    }
+  }
+
   protected void checkSliceCardinalitySums(StructureDefinition derived) {
     String tn = derived.getType();
     if (tn.contains("/")) {
       tn = tn.substring(tn.lastIndexOf("/")+1);
     }
     Map<String, ElementDefinitionCounter> slices = new HashMap<>();
+    // reslices are counted against the slice they reslice, not the slicer: key is path:sliceName of the resliced slice (#846)
+    Map<String, ElementDefinitionCounter> reslices = new HashMap<>();
+    Map<String, ElementDefinitionCounter> slicesByName = new HashMap<>();
     int i = 0;
     for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
-      if (ed.hasSlicing()) {
+      if (ed.hasSlicing() && !ed.hasSliceName()) {
         slices.put(ed.getPath(), new ElementDefinitionCounter(ed, i));            
-      } else {
+      } else if (!ed.hasSlicing()) {
         Set<String> toRemove = new HashSet<>();
         for (String s : slices.keySet()) {
           if (Utilities.charCount(s, '.') >= Utilities.charCount(ed.getPath(), '.') && !s.equals(ed.getPath())) {
@@ -1100,6 +1137,7 @@ public class ProfileUtilities {
         }
         for (String s : toRemove) {
           ElementDefinitionCounter slice = slices.get(s);
+          checkResliceCounts(s, slice, reslices);
           checkSliceCounts(slice);
           slices.remove(s);
         }            
@@ -1112,7 +1150,20 @@ public class ProfileUtilities {
         addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
             "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
       }
-      if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
+      if (ed.hasSliceName() && slices.containsKey(ed.getPath()) && ed.getSliceName().contains("/") && slicesByName.containsKey(ed.getPath()+":"+ed.getSliceName().substring(0, ed.getSliceName().lastIndexOf("/")))) {
+        String key = ed.getPath()+":"+ed.getSliceName().substring(0, ed.getSliceName().lastIndexOf("/"));
+        ElementDefinitionCounter resliced = slicesByName.get(key);
+        if (!reslices.containsKey(key)) {
+          reslices.put(key, new ElementDefinitionCounter(resliced.getFocus(), resliced.getIndex()));
+        }
+        slicesByName.put(ed.getPath()+":"+ed.getSliceName(), new ElementDefinitionCounter(ed, i));
+        if (!reslices.get(key).count(ed, ed.getSliceName())) {
+          String msg = context.formatMessage(I18nConstants.SNAPSHOT_DUPLICATE_SLICE_NAME, ed.getSliceName(), ed.getId(), Integer.toString(i));
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+              "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
+        }
+      } else if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
+        slicesByName.put(ed.getPath()+":"+ed.getSliceName(), new ElementDefinitionCounter(ed, i));
         if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
           String msg = context.formatMessage(I18nConstants.SNAPSHOT_DUPLICATE_SLICE_NAME, ed.getSliceName(), ed.getId(), Integer.toString(i));
           addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
@@ -1124,8 +1175,39 @@ public class ProfileUtilities {
 
     // counters still open when the elements run out belong to slice groups that reach the
     // end of the snapshot; without this they were never checked or adjusted at all
-    for (ElementDefinitionCounter slice : slices.values()) {
+    for (String s : slices.keySet()) {
+      ElementDefinitionCounter slice = slices.get(s);
+      checkResliceCounts(s, slice, reslices);
       checkSliceCounts(slice);
+    }
+  }
+
+  /**
+   * The reslices of a slice are checked against that slice, the same way the slices are checked against the slicer.
+   * A resliced slice is never one the snapshot generator added, so a minimum that its reslices add up to more than is
+   * reported (SD_SLICE_MIN_EXCEEDS_SLICER), not fixed. For what it is a slice of, a resliced slice counts for whichever
+   * is more: its own minimum, or what its reslices add up to (#846). What it is a slice of is the slicer, or, for a reslice
+   * that is resliced again (a/b, with a/b/c), the slice it reslices (a): so the deepest are checked first
+   */
+  private void checkResliceCounts(String path, ElementDefinitionCounter slicer, Map<String, ElementDefinitionCounter> reslices) {
+    List<String> keys = new ArrayList<>();
+    for (String key : reslices.keySet()) {
+      if (key.startsWith(path+":")) {
+        keys.add(key);
+      }
+    }
+    keys.sort((k1, k2) -> Integer.compare(Utilities.charCount(k2, '/'), Utilities.charCount(k1, '/')));
+    for (String key : keys) {
+      ElementDefinitionCounter resliced = reslices.remove(key);
+      checkSliceCounts(resliced);
+      if (resliced.countMin > resliced.getFocus().getMin()) {
+        String sliceName = key.substring(path.length()+1);
+        ElementDefinitionCounter parent = sliceName.contains("/") ? reslices.get(path+":"+sliceName.substring(0, sliceName.lastIndexOf('/'))) : null;
+        if (parent == null) {
+          parent = slicer;
+        }
+        parent.countMin = parent.countMin + resliced.countMin - resliced.getFocus().getMin();
+      }
     }
   }
 
@@ -1292,25 +1374,6 @@ public class ProfileUtilities {
   private boolean walksInto(List<ElementDefinition> list, ElementDefinition ed) {
     int i = list.indexOf(ed);
     return (i < list.size() - 1) && list.get(i + 1).getPath().startsWith(ed.getPath()+".");
-  }
-
-  private void fixTypeOfResourceId(StructureDefinition base) {
-    if (base.getKind() == StructureDefinitionKind.RESOURCE && (base.getFhirVersion() == null || VersionUtilities.isR4Plus(base.getFhirVersion().toCode()))) {
-      fixTypeOfResourceId(base.getSnapshot().getElementList());
-      fixTypeOfResourceId(base.getDifferential().getElementList());      
-    }
-  }
-
-  private void fixTypeOfResourceId(List<ElementDefinition> list) {
-    for (ElementDefinition ed : list) {
-      if (ed.hasBase() && ed.getBase().getPath().equals("Resource.id")) {
-        for (TypeRefComponent tr : ed.getTypeList()) {
-          tr.setCode("http://hl7.org/fhirpath/System.String");
-          tr.removeExtension(ExtensionDefinitions.EXT_FHIR_TYPE);
-          ExtensionUtilities.addUrlExtension(tr, ExtensionDefinitions.EXT_FHIR_TYPE, "id");
-        }
-      }
-    }    
   }
 
   /**
@@ -3455,10 +3518,14 @@ public class ProfileUtilities {
               checkTypeDerivation(purl, srcSD, base, derived, ts, path, derivedSrc.getDerivation() == TypeDerivationRule.SPECIALIZATION);
             }
           }
+          List<TypeRefComponent> inheritedTypes = new ArrayList<>(base.getTypeList());
           base.getTypeList().clear();
           for (TypeRefComponent t : derived.getTypeList()) {
             TypeRefComponent tt = t.copy(Base.COPY_DATA);
             //            tt.setUserData(DERIVATION_EQUALS, true);
+            if (derivedSrc.getDerivation() != TypeDerivationRule.SPECIALIZATION) {
+              inheritTypeRules(tt, inheritedTypes);
+            }
             base.getTypeList().add(tt);
             for (Extension ex : tt.getExtensionList()) {
               markExtensionSource(ex, false, srcSD);
@@ -3590,7 +3657,7 @@ public class ProfileUtilities {
   }
 
   private static Extension markExtensionSource(Extension extension, boolean overrideSource, StructureDefinition srcSD) {
-    if (overrideSource || !extension.hasUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)) {
+    if (overrideSource || extension.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE) == null) { // the value, not hasUserData: srcSD may be null
       extension.setUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE, srcSD);
     }
     if (Utilities.existsInList(extension.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
@@ -3663,6 +3730,27 @@ public class ProfileUtilities {
 
   private void mergeExtensions(Element tgt, Element src) {
      tgt.getExtensionList().addAll(src.getExtensionList());
+  }
+
+  /**
+   * Aggregation and versioning on a type in the base still apply when the differential restates the type without them -
+   * e.g. to narrow its target profiles, which is what a slice on a Reference usually does. Leaving them out doesn't
+   * remove them (#733)
+   */
+  private void inheritTypeRules(TypeRefComponent tt, List<TypeRefComponent> inheritedTypes) {
+    for (TypeRefComponent bt : inheritedTypes) {
+      if (bt.hasCode() && tt.hasCode() && bt.getWorkingCode().equals(tt.getWorkingCode())) {
+        if (!tt.hasAggregation() && bt.hasAggregation()) {
+          for (var a : bt.getAggregationList()) {
+            tt.getAggregationList().add(a.copy(Base.COPY_DATA));
+          }
+        }
+        if (!tt.hasVersioning() && bt.hasVersioning()) {
+          tt.setVersioningElement(bt.getVersioningElement().copy(Base.COPY_DATA));
+        }
+        return;
+      }
+    }
   }
 
   private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path, boolean specialising) {

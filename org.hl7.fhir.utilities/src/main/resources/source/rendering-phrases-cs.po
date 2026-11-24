@@ -9,10 +9,11 @@ msgstr "Aktér: {0}"
 msgid "Capabilities:"
 msgstr "Schopnosti:"
 
-# ACTOR_DEF_DER
-#: ACTOR_DEF_DER
-msgid "Derived from:"
-msgstr "Odvozeno od:"
+# ACTOR_DEF_CAT
+#: ACTOR_DEF_CAT
+msgctxt "ACTOR_DEF_CAT"
+msgid "Category:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
@@ -111,6 +112,16 @@ msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "Povinná"
 
+# ADD_BIND_TX_ALL
+#: ADD_BIND_TX_ALL
+msgid "Additional / all"
+msgstr ""
+
+# ADD_BIND_TX_ANY
+#: ADD_BIND_TX_ANY
+msgid "Additional / any"
+msgstr ""
+
 # ADD_BIND_UI
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
@@ -141,6 +152,83 @@ msgstr "Validátory budou tuto vazbu kontrolovat (síla = required)"
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
 msgstr "Tato sada hodnot je komponentou základní sady hodnot"
+
+# ADM_ALIAS
+#: ADM_ALIAS
+msgid "Alias:"
+msgstr ""
+
+# ADM_ALIAS_HINT
+#: ADM_ALIAS_HINT
+msgid "Other names this is known by"
+msgstr ""
+
+# ADM_AVAIL
+#: ADM_AVAIL
+msgctxt "ADM_AVAIL"
+msgid "Availability:"
+msgstr ""
+
+# ADM_CONTACT_HINT
+#: ADM_CONTACT_HINT
+msgid "Ways to make contact"
+msgstr ""
+
+# ADM_DESC
+#: ADM_DESC
+msgctxt "ADM_DESC"
+msgid "Description:"
+msgstr ""
+
+# ADM_ENDPOINT
+#: ADM_ENDPOINT
+msgctxt "ADM_ENDPOINT"
+msgid "Endpoint:"
+msgstr ""
+
+# ADM_ENDPOINT_HINT
+#: ADM_ENDPOINT_HINT
+msgid "Technical endpoints providing access to services"
+msgstr ""
+
+# ADM_LOCATION
+#: ADM_LOCATION
+msgctxt "ADM_LOCATION"
+msgid "Location:"
+msgstr ""
+
+# ADM_LOCATION_HINT
+#: ADM_LOCATION_HINT
+msgid "The locations where the services are provided"
+msgstr ""
+
+# ADM_SERVICE
+#: ADM_SERVICE
+msgctxt "ADM_SERVICE"
+msgid "Healthcare Service:"
+msgstr ""
+
+# ADM_SERVICE_HINT
+#: ADM_SERVICE_HINT
+msgid "The healthcare services that are provided"
+msgstr ""
+
+# ADM_SPECIALTY
+#: ADM_SPECIALTY
+msgctxt "ADM_SPECIALTY"
+msgid "Specialty:"
+msgstr ""
+
+# ADM_SPECIALTY_HINT
+#: ADM_SPECIALTY_HINT
+msgid "The specialties of the services that are provided"
+msgstr ""
+
+# ADM_TYPE
+#: ADM_TYPE
+msgctxt "ADM_TYPE"
+msgid "Type:"
+msgstr ""
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
@@ -414,6 +502,7 @@ msgstr "Operace"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "Operace"
 
@@ -499,6 +588,7 @@ msgstr "Schopnosti podle zdroje/profilu"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
+msgctxt "CAPABILITY_RES_TYP"
 msgid "Resource Type"
 msgstr "Typ zdroje"
 
@@ -556,6 +646,11 @@ msgstr "Souhrn celosystémových vyhledávacích parametrů"
 #: CAPABILITY_SUPP
 msgid "support"
 msgstr "podporuje"
+
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
@@ -654,8 +749,15 @@ msgstr "Tento doplněk systému kódů <param name=\"cs\"/> definuje {0} pro ná
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
+msgctxt "CODESYSTEM_DEPRECATED"
 msgid "Deprecated"
 msgstr "Zastaralé"
+
+# CODESYSTEM_DEPRECATED_TRUE
+#: CODESYSTEM_DEPRECATED_TRUE
+msgctxt "CODESYSTEM_DEPRECATED_TRUE"
+msgid "Deprecated"
+msgstr ""
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
@@ -667,10 +769,21 @@ msgstr "Filtry"
 msgid "Op"
 msgstr "Operátor"
 
+# CODESYSTEM_LVL
+#: CODESYSTEM_LVL
+msgctxt "CODESYSTEM_LVL"
+msgid "Level"
+msgstr ""
+
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
 msgstr "Tento systém kódů definuje následující vlastnosti pro své koncepty"
+
+# CODESYSTEM_REPLACED_BY
+#: CODESYSTEM_REPLACED_BY
+msgid "Replaced by"
+msgstr ""
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
@@ -792,6 +905,11 @@ msgstr "Skupina {0}"
 msgid "(not specified)"
 msgstr "(nespecifikováno)"
 
+# CONC_MAP_NO_SPEC
+#: CONC_MAP_NO_SPEC
+msgid "This mapping does not specify any particular context of use."
+msgstr ""
+
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -907,22 +1025,179 @@ msgctxt "CONF_SHOULD_PLURAL"
 msgid "SHOULD"
 msgstr "SHOULD"
 
+# CONSENT_BASIS_POLICY_PREFIX
+#: CONSENT_BASIS_POLICY_PREFIX
+msgid "the policy"
+msgid_plural "the policies"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CONSENT_BASIS_POLICY_SUFFIX
+#: CONSENT_BASIS_POLICY_SUFFIX
+msgctxt "CONSENT_BASIS_POLICY_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_NONE
+#: CONSENT_BASIS_REGULATION_NONE
+msgid "This consent is made under"
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_PREFIX
+#: CONSENT_BASIS_REGULATION_PREFIX
+msgid "This consent is made under the regulation"
+msgid_plural "This consent is made under the regulations"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX
+#: CONSENT_BASIS_REGULATION_SUFFIX
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX_MORE
+#: CONSENT_BASIS_REGULATION_SUFFIX_MORE
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX_MORE"
+msgid "and"
+msgstr ""
+
 # CONSENT_CATEGORY
 #: CONSENT_CATEGORY
 msgid "Category"
 msgid_plural "Categories"
 msgstr[0] "Kategorie"
 msgstr[1] "Kategorie"
+msgstr[2] ""
 
 # CONSENT_DATE
 #: CONSENT_DATE
 msgid "Agreement Date"
 msgstr "Datum dohody"
 
+# CONSENT_DENY
+#: CONSENT_DENY
+msgid "deny"
+msgstr ""
+
+# CONSENT_DENY_DESC
+#: CONSENT_DENY_DESC
+msgid "The subject has NOT given their consent."
+msgstr ""
+
+# CONSENT_HTABLE_RULE
+#: CONSENT_HTABLE_RULE
+msgctxt "CONSENT_HTABLE_RULE"
+msgid "Rule"
+msgstr ""
+
+# CONSENT_HTABLE_RULES
+#: CONSENT_HTABLE_RULES
+msgid "Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULES_DESC
+#: CONSENT_HTABLE_RULES_DESC
+msgid "Other Applicable Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULE_DESC
+#: CONSENT_HTABLE_RULE_DESC
+msgid "Applicable Rule"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT
+#: CONSENT_HTABLE_WHAT
+msgctxt "CONSENT_HTABLE_WHAT"
+msgid "What"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT_DESC
+#: CONSENT_HTABLE_WHAT_DESC
+msgid "Applicable Data"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN
+#: CONSENT_HTABLE_WHEN
+msgid "Time Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN_DESC
+#: CONSENT_HTABLE_WHEN_DESC
+msgctxt "CONSENT_HTABLE_WHEN_DESC"
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHO
+#: CONSENT_HTABLE_WHO
+msgid "Who"
+msgstr ""
+
+# CONSENT_HTABLE_WHO_DESC
+#: CONSENT_HTABLE_WHO_DESC
+msgid "Applicable Parties"
+msgstr ""
+
+# CONSENT_HT_ACTION
+#: CONSENT_HT_ACTION
+msgid "For action"
+msgstr ""
+
+# CONSENT_HT_CLASS
+#: CONSENT_HT_CLASS
+msgid "Class"
+msgstr ""
+
+# CONSENT_HT_CODE
+#: CONSENT_HT_CODE
+msgctxt "CONSENT_HT_CODE"
+msgid "Code"
+msgstr ""
+
+# CONSENT_HT_DATA_PERIOD
+#: CONSENT_HT_DATA_PERIOD
+msgid "Data from Period"
+msgstr ""
+
+# CONSENT_HT_DOC_TYPE
+#: CONSENT_HT_DOC_TYPE
+msgid "Document Type"
+msgstr ""
+
+# CONSENT_HT_PERIOD
+#: CONSENT_HT_PERIOD
+msgctxt "CONSENT_HT_PERIOD"
+msgid "Period"
+msgstr ""
+
+# CONSENT_HT_PURPOSE
+#: CONSENT_HT_PURPOSE
+msgctxt "CONSENT_HT_PURPOSE"
+msgid "Purpose"
+msgstr ""
+
+# CONSENT_HT_RESOURCE_TYPE
+#: CONSENT_HT_RESOURCE_TYPE
+msgctxt "CONSENT_HT_RESOURCE_TYPE"
+msgid "Resource Type"
+msgstr ""
+
+# CONSENT_HT_SEC_LABEL
+#: CONSENT_HT_SEC_LABEL
+msgid "Labled as"
+msgstr ""
+
 # CONSENT_PART_TBL_CONTROLLER
 #: CONSENT_PART_TBL_CONTROLLER
 msgid "Controller"
 msgstr "Správce"
+
+# CONSENT_PART_TBL_CONTROLLER_DESC
+#: CONSENT_PART_TBL_CONTROLLER_DESC
+msgid "Who controls/enforces the access according to the consent."
+msgstr ""
 
 # CONSENT_PART_TBL_DETAILS
 #: CONSENT_PART_TBL_DETAILS
@@ -935,25 +1210,52 @@ msgstr "Podrobnosti"
 msgid "Grantee"
 msgstr "Příjemce oprávnění"
 
+# CONSENT_PART_TBL_GRANTEE_DESC
+#: CONSENT_PART_TBL_GRANTEE_DESC
+msgctxt "CONSENT_PART_TBL_GRANTEE_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_GRANTOR
 #: CONSENT_PART_TBL_GRANTOR
 msgid "Grantor"
 msgstr "Poskytovatel oprávnění"
+
+# CONSENT_PART_TBL_GRANTOR_DESC
+#: CONSENT_PART_TBL_GRANTOR_DESC
+msgid "Who is granting rights according to the policy and rules"
+msgstr ""
 
 # CONSENT_PART_TBL_MANAGER
 #: CONSENT_PART_TBL_MANAGER
 msgid "Manager"
 msgstr "Správce"
 
+# CONSENT_PART_TBL_MANAGER_DESC
+#: CONSENT_PART_TBL_MANAGER_DESC
+msgid "Who manages the consent through its lifecycle."
+msgstr ""
+
 # CONSENT_PART_TBL_PARTY
 #: CONSENT_PART_TBL_PARTY
 msgid "Party"
 msgstr "Strana"
 
+# CONSENT_PART_TBL_PARTY_DESC
+#: CONSENT_PART_TBL_PARTY_DESC
+msgctxt "CONSENT_PART_TBL_PARTY_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_PATIENT
 #: CONSENT_PART_TBL_PATIENT
 msgid "Patient"
 msgstr "Pacient"
+
+# CONSENT_PART_TBL_PATIENT_DESC
+#: CONSENT_PART_TBL_PATIENT_DESC
+msgid "Who the consent applies to"
+msgstr ""
 
 # CONSENT_PART_TBL_ROLE
 #: CONSENT_PART_TBL_ROLE
@@ -963,8 +1265,24 @@ msgstr "Role"
 
 # CONSENT_PERIOD
 #: CONSENT_PERIOD
+msgctxt "CONSENT_PERIOD"
 msgid "Applicable Period"
 msgstr "Použitelné období"
+
+# CONSENT_PERMIT
+#: CONSENT_PERMIT
+msgid "permit"
+msgstr ""
+
+# CONSENT_PERMIT_DESC
+#: CONSENT_PERMIT_DESC
+msgid "The subject has given their consent."
+msgstr ""
+
+# CONSENT_PROVISION
+#: CONSENT_PROVISION
+msgid "Consent Provision"
+msgstr ""
 
 # CONSENT_SCOPE
 #: CONSENT_SCOPE
@@ -973,6 +1291,7 @@ msgid "Scope"
 msgid_plural "Scopes"
 msgstr[0] "Rozsah"
 msgstr[1] "Rozsahy"
+msgstr[2] ""
 
 # CSREQ_DESC
 #: CSREQ_DESC
@@ -1011,6 +1330,7 @@ msgid "Actor{1}"
 msgid_plural "Actors{1}"
 msgstr[0] "Aktér{1}"
 msgstr[1] "Aktéři{1}"
+msgstr[2] ""
 
 # CSTABLE_HEAD_CAT
 #: CSTABLE_HEAD_CAT
@@ -1018,6 +1338,7 @@ msgid "Category{1}"
 msgid_plural "Categories{1}"
 msgstr[0] "Kategorie{1}"
 msgstr[1] "Kategorie{1}"
+msgstr[2] ""
 
 # CSTABLE_HEAD_COND
 #: CSTABLE_HEAD_COND
@@ -1037,6 +1358,7 @@ msgstr "Id"
 
 # CSTABLE_HEAD_RULE
 #: CSTABLE_HEAD_RULE
+msgctxt "CSTABLE_HEAD_RULE"
 msgid "Rule"
 msgstr "Pravidlo"
 
@@ -1079,6 +1401,11 @@ msgstr "Filtrovat pouze prohlášení obsahující určený text"
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
 msgstr "Neuvedeno (použít nejnovější z terminologického serveru)"
+
+# DATA_REND_ABSENT_BECAUSE
+#: DATA_REND_ABSENT_BECAUSE
+msgid "Absent because:"
+msgstr ""
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -1146,11 +1473,6 @@ msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
 
-# DATA_REND_ATT_URL
-#: DATA_REND_ATT_URL
-msgid "{0} @ {1}"
-msgstr "{0} @ {1}"
-
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
@@ -1185,6 +1507,11 @@ msgstr "před spaním"
 #: DATA_REND_BY
 msgid "By"
 msgstr "Podle"
+
+# DATA_REND_CALC_BY
+#: DATA_REND_CALC_BY
+msgid "Value calculated by:"
+msgstr ""
 
 # DATA_REND_CODES
 #: DATA_REND_CODES
@@ -1271,6 +1598,11 @@ msgstr "Události: {0}"
 msgid "Exception"
 msgstr "Výjimka"
 
+# DATA_REND_EXT_TEXT
+#: DATA_REND_EXT_TEXT
+msgid "Text:"
+msgstr ""
+
 # DATA_REND_FACT
 #: DATA_REND_FACT
 msgid "Factor: {0}"
@@ -1300,6 +1632,11 @@ msgstr "Okamžitě"
 #: DATA_REND_INT
 msgid "Interval: {0}"
 msgstr "Interval: {0}"
+
+# DATA_REND_ISO_COUNTRY
+#: DATA_REND_ISO_COUNTRY
+msgid "ISO Country Codes"
+msgstr ""
 
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
@@ -1361,6 +1698,16 @@ msgstr "[neuvedeno]"
 msgid "No display for {0}"
 msgstr "Žádné zobrazení pro {0}"
 
+# DATA_REND_NO_VALUE
+#: DATA_REND_NO_VALUE
+msgid "(no value)"
+msgstr ""
+
+# DATA_REND_NULL_BECAUSE
+#: DATA_REND_NULL_BECAUSE
+msgid "Null because:"
+msgstr ""
+
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
 msgid "Once"
@@ -1390,6 +1737,31 @@ msgstr "období:"
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
 msgstr "Telefon: {0}"
+
+# DATA_REND_REL_AFTER
+#: DATA_REND_REL_AFTER
+msgid "after"
+msgstr ""
+
+# DATA_REND_REL_AT
+#: DATA_REND_REL_AT
+msgid "at"
+msgstr ""
+
+# DATA_REND_REL_BEFORE
+#: DATA_REND_REL_BEFORE
+msgid "before"
+msgstr ""
+
+# DATA_REND_REL_EVENT
+#: DATA_REND_REL_EVENT
+msgid "the event"
+msgstr ""
+
+# DATA_REND_REL_RELATIVE
+#: DATA_REND_REL_RELATIVE
+msgid "relative to"
+msgstr ""
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
@@ -1451,6 +1823,11 @@ msgstr "VAROVÁNÍ: Nevyrenderovatelné modifikující rozšíření!"
 msgid "Until {0}"
 msgstr "Do {0}"
 
+# DATA_REND_UN_REGIONS
+#: DATA_REND_UN_REGIONS
+msgid "UN Regions"
+msgstr ""
+
 # DATA_REND_UP
 #: DATA_REND_UP
 msgid "Upper: {0}"
@@ -1490,6 +1867,11 @@ msgstr "Chyba:"
 #: DIAG_REP_REND_FOR
 msgid "for"
 msgstr "pro"
+
+# DIAG_REP_REND_FORM
+#: DIAG_REP_REND_FORM
+msgid "Presented Form"
+msgstr ""
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
@@ -1534,8 +1916,8 @@ msgstr "Nelze získat podrobnosti o pacientovi"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
-msgid "When For"
-msgstr "Kdy pro"
+msgid "Relevant Time"
+msgstr "!!Kdy pro"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
@@ -1558,10 +1940,138 @@ msgstr "Nespecifikovaný subjekt"
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
 msgstr "<param name=\"status\"/> dokument v <param name=\"date\"/> od <param name=\"author\"/> pro <param name=\"subject\"/> <if test=\"has-encounter = true\"> v kontaktu <param name=\"encounter\"/></if>"
 
+# EP_ADDRESS
+#: EP_ADDRESS
+msgctxt "EP_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# EP_ADDRESS_HINT
+#: EP_ADDRESS_HINT
+msgid "The technical base address for connecting to this endpoint"
+msgstr ""
+
+# EP_AVAIL_HINT
+#: EP_AVAIL_HINT
+msgid "When the endpoint is (and is not) expected to be available"
+msgstr ""
+
+# EP_CONN_TYPE
+#: EP_CONN_TYPE
+msgid "Connection Type:"
+msgstr ""
+
+# EP_CONN_TYPE_HINT
+#: EP_CONN_TYPE_HINT
+msgid "The protocol, profile or standard used to connect to the endpoint"
+msgstr ""
+
+# EP_CONTACT_HINT
+#: EP_CONTACT_HINT
+msgid "Contact details for a human to contact about the endpoint"
+msgstr ""
+
+# EP_DESC_HINT
+#: EP_DESC_HINT
+msgid "Additional details about the endpoint"
+msgstr ""
+
+# EP_ENV
+#: EP_ENV
+msgid "Environment:"
+msgstr ""
+
+# EP_ENV_HINT
+#: EP_ENV_HINT
+msgid "The type of environment(s) exposed at this endpoint (e.g. production, test)"
+msgstr ""
+
+# EP_HEADER
+#: EP_HEADER
+msgid "Header:"
+msgstr ""
+
+# EP_HEADER_HINT
+#: EP_HEADER_HINT
+msgid "Headers to use when connecting to the endpoint"
+msgstr ""
+
+# EP_MANAGER
+#: EP_MANAGER
+msgctxt "EP_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# EP_MANAGER_HINT
+#: EP_MANAGER_HINT
+msgid "The organization that manages this endpoint"
+msgstr ""
+
+# EP_MIME_TYPE
+#: EP_MIME_TYPE
+msgid "Mime Type:"
+msgstr ""
+
+# EP_MIME_TYPE_HINT
+#: EP_MIME_TYPE_HINT
+msgid "The mime types that can be sent to and/or received from the endpoint"
+msgstr ""
+
+# EP_NO_NAME
+#: EP_NO_NAME
+msgid "Unnamed Endpoint"
+msgstr ""
+
+# EP_PAYLOAD
+#: EP_PAYLOAD
+msgid "Payload:"
+msgstr ""
+
+# EP_PAYLOAD_HINT
+#: EP_PAYLOAD_HINT
+msgid "The set of payloads that are provided/available at this endpoint"
+msgstr ""
+
+# EP_PAYLOAD_TYPE
+#: EP_PAYLOAD_TYPE
+msgid "Payload Type:"
+msgstr ""
+
+# EP_PAYLOAD_TYPE_HINT
+#: EP_PAYLOAD_TYPE_HINT
+msgid "The type of content that may be used at this endpoint"
+msgstr ""
+
+# EP_PERIOD_HINT
+#: EP_PERIOD_HINT
+msgid "The interval during which the endpoint is expected to be operational"
+msgstr ""
+
+# EP_PROFILE
+#: EP_PROFILE
+msgid "Profile:"
+msgstr ""
+
+# EP_STATUS
+#: EP_STATUS
+msgctxt "EP_STATUS"
+msgid "Status:"
+msgstr ""
+
+# EP_STATUS_HINT
+#: EP_STATUS_HINT
+msgid "The status of the endpoint"
+msgstr ""
+
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
 msgstr "Krok {0} - viz scénář {1}"
+
+# EXT_STANDARDS_STATUS
+#: EXT_STANDARDS_STATUS
+msgid "Standards Status"
+msgstr ""
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
@@ -1648,6 +2158,11 @@ msgstr "Neznámý režim rendereru ExampleScenario {0}"
 msgid "Unable to find referenced actor {0}"
 msgstr "Nelze najít odkazovaného aktéra {0}"
 
+# FEATURE
+#: FEATURE
+msgid "Feature"
+msgstr ""
+
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
@@ -1706,6 +2221,7 @@ msgstr "Kardinalita"
 
 # GENERAL_CODE
 #: GENERAL_CODE
+msgctxt "GENERAL_CODE"
 msgid "Code"
 msgstr "Kód"
 
@@ -1755,6 +2271,11 @@ msgstr "Kontakt:"
 msgid "Content"
 msgstr "Obsah"
 
+# GENERAL_COPY
+#: GENERAL_COPY
+msgid "Click to Copy"
+msgstr ""
+
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
@@ -1789,6 +2310,7 @@ msgstr "Definice:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "Popis"
 
@@ -1825,7 +2347,6 @@ msgstr "Filtr"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
-msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr "Pevná hodnota: {0}"
 
@@ -1841,6 +2362,7 @@ msgid "Identifier"
 msgid_plural "Identifiers"
 msgstr[0] "Identifikátor"
 msgstr[1] "Identifikátory"
+msgstr[2] ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
@@ -1879,6 +2401,7 @@ msgstr "Tezaurus NCI"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
+msgctxt "GENERAL_NOTE"
 msgid "Note"
 msgstr "Poznámka"
 
@@ -1906,12 +2429,12 @@ msgstr "Parametr"
 
 # GENERAL_PARS
 #: GENERAL_PARS
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "Parametry"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
-msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr "Hodnota vzoru: {0}"
 
@@ -1934,6 +2457,7 @@ msgstr "Vlastnosti"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
+msgctxt "GENERAL_PURPOSE"
 msgid "Purpose"
 msgstr "Účel"
 
@@ -1973,6 +2497,11 @@ msgstr "Zdroj"
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
 msgstr "Bezpečnostní štítek"
+
+# GENERAL_SHOW
+#: GENERAL_SHOW
+msgid "Show:"
+msgstr ""
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
@@ -2054,6 +2583,7 @@ msgstr "Použití"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
+msgctxt "GENERAL_VALUE"
 msgid "Value"
 msgstr "Hodnota"
 
@@ -2079,6 +2609,7 @@ msgstr "Hodnota musí být větší nebo rovna {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
+msgctxt "GENERAL_VER"
 msgid "Version"
 msgstr "Verze"
 
@@ -2092,10 +2623,413 @@ msgstr "verze"
 msgid "XML"
 msgstr "XML"
 
+# GROUP_CHAR
+#: GROUP_CHAR
+msgid "Characteristic"
+msgstr ""
+
+# GROUP_CHARS
+#: GROUP_CHARS
+msgid "Characteristics"
+msgstr ""
+
+# GROUP_CODE
+#: GROUP_CODE
+msgid "Kind:"
+msgstr ""
+
+# GROUP_CODE_HINT
+#: GROUP_CODE_HINT
+msgid "The kind of members of the group, beyond the basic type"
+msgstr ""
+
+# GROUP_COMB_METHOD
+#: GROUP_COMB_METHOD
+msgid "Combination:"
+msgstr ""
+
+# GROUP_COMB_METHOD_HINT
+#: GROUP_COMB_METHOD_HINT
+msgid "How the characteristics are combined to decide whether something is a member"
+msgstr ""
+
+# GROUP_COMB_THRESHOLD
+#: GROUP_COMB_THRESHOLD
+msgid "Threshold:"
+msgstr ""
+
+# GROUP_COMB_THRESHOLD_HINT
+#: GROUP_COMB_THRESHOLD_HINT
+msgid "The number of characteristics that must be met, for the at-least and at-most combination methods"
+msgstr ""
+
+# GROUP_DEFINITIONAL
+#: GROUP_DEFINITIONAL
+msgid "definitional"
+msgstr ""
+
+# GROUP_DESC
+#: GROUP_DESC
+msgctxt "GROUP_DESC"
+msgid "Description:"
+msgstr ""
+
+# GROUP_DESC_HINT
+#: GROUP_DESC_HINT
+msgid "Explanation of what the group is"
+msgstr ""
+
+# GROUP_DETAILS
+#: GROUP_DETAILS
+msgctxt "GROUP_DETAILS"
+msgid "Details"
+msgstr ""
+
+# GROUP_DETERMINER
+#: GROUP_DETERMINER
+msgid "Determined By:"
+msgstr ""
+
+# GROUP_DURATION
+#: GROUP_DURATION
+msgid "Duration:"
+msgstr ""
+
+# GROUP_ENUMERATED
+#: GROUP_ENUMERATED
+msgid "enumerated"
+msgstr ""
+
+# GROUP_EXCLUDE
+#: GROUP_EXCLUDE
+msgctxt "GROUP_EXCLUDE"
+msgid "Exclude"
+msgstr ""
+
+# GROUP_EXCLUDED
+#: GROUP_EXCLUDED
+msgid "excluded"
+msgstr ""
+
+# GROUP_FORMULA
+#: GROUP_FORMULA
+msgid "Formula:"
+msgstr ""
+
+# GROUP_INACTIVE
+#: GROUP_INACTIVE
+msgctxt "GROUP_INACTIVE"
+msgid "Inactive"
+msgstr ""
+
+# GROUP_INSTANCES
+#: GROUP_INSTANCES
+msgid "Instances:"
+msgstr ""
+
+# GROUP_INVOLVEMENT
+#: GROUP_INVOLVEMENT
+msgid "Involvement"
+msgstr ""
+
+# GROUP_MANAGER
+#: GROUP_MANAGER
+msgctxt "GROUP_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# GROUP_MANAGER_HINT
+#: GROUP_MANAGER_HINT
+msgid "The entity responsible for the group"
+msgstr ""
+
+# GROUP_MEMBER
+#: GROUP_MEMBER
+msgid "Member"
+msgstr ""
+
+# GROUP_MEMBERS
+#: GROUP_MEMBERS
+msgid "Members"
+msgstr ""
+
+# GROUP_MEMBERSHIP
+#: GROUP_MEMBERSHIP
+msgid "Membership:"
+msgstr ""
+
+# GROUP_MEMBERSHIP_HINT
+#: GROUP_MEMBERSHIP_HINT
+msgid "Whether the members are listed (enumerated), or the group is a definition of what could be a member (definitional)"
+msgstr ""
+
+# GROUP_MEMBERS_MORE
+#: GROUP_MEMBERS_MORE
+msgid "Showing the first {0} of {1} members"
+msgstr ""
+
+# GROUP_MEMBER_COUNT
+#: GROUP_MEMBER_COUNT
+msgid "{0} member"
+msgid_plural "{0} members"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# GROUP_METHOD
+#: GROUP_METHOD
+msgid "Method:"
+msgstr ""
+
+# GROUP_NO_NAME
+#: GROUP_NO_NAME
+msgid "Unnamed Group"
+msgstr ""
+
+# GROUP_OFFSET
+#: GROUP_OFFSET
+msgid "Offset:"
+msgstr ""
+
+# GROUP_PERIOD
+#: GROUP_PERIOD
+msgctxt "GROUP_PERIOD"
+msgid "Period"
+msgstr ""
+
+# GROUP_PURPOSE
+#: GROUP_PURPOSE
+msgid "Purpose:"
+msgstr ""
+
+# GROUP_PURPOSE_HINT
+#: GROUP_PURPOSE_HINT
+msgid "Why the group exists"
+msgstr ""
+
+# GROUP_QUANTITY
+#: GROUP_QUANTITY
+msgid "Quantity:"
+msgstr ""
+
+# GROUP_QUANTITY_HINT
+#: GROUP_QUANTITY_HINT
+msgid "The number of members in the group"
+msgstr ""
+
+# GROUP_TIMING
+#: GROUP_TIMING
+msgid "Timing:"
+msgstr ""
+
+# GROUP_TYPE
+#: GROUP_TYPE
+msgctxt "GROUP_TYPE"
+msgid "Type:"
+msgstr ""
+
+# GROUP_TYPE_HINT
+#: GROUP_TYPE_HINT
+msgid "The kind of things that are members of the group"
+msgstr ""
+
+# GROUP_VALUE
+#: GROUP_VALUE
+msgctxt "GROUP_VALUE"
+msgid "Value"
+msgstr ""
+
+# HS_APPT
+#: HS_APPT
+msgid "Appointment Required:"
+msgstr ""
+
+# HS_APPT_HINT
+#: HS_APPT_HINT
+msgid "Whether an appointment is required to access this service"
+msgstr ""
+
+# HS_AVAIL_HINT
+#: HS_AVAIL_HINT
+msgid "When the service is (and is not) available"
+msgstr ""
+
+# HS_BY
+#: HS_BY
+msgid "by {0}"
+msgstr ""
+
+# HS_CATEGORY
+#: HS_CATEGORY
+msgctxt "HS_CATEGORY"
+msgid "Category:"
+msgstr ""
+
+# HS_CATEGORY_HINT
+#: HS_CATEGORY_HINT
+msgid "Broad category of service being performed or delivered"
+msgstr ""
+
+# HS_CHAR
+#: HS_CHAR
+msgctxt "HS_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# HS_CHAR_HINT
+#: HS_CHAR_HINT
+msgid "Collection of characteristics (attributes) of the service"
+msgstr ""
+
+# HS_COMMENT
+#: HS_COMMENT
+msgid "Comment:"
+msgstr ""
+
+# HS_COMMENT_HINT
+#: HS_COMMENT_HINT
+msgid "Additional description and/or any specific issues not covered elsewhere"
+msgstr ""
+
+# HS_COVERAGE
+#: HS_COVERAGE
+msgid "Coverage Area:"
+msgstr ""
+
+# HS_COVERAGE_HINT
+#: HS_COVERAGE_HINT
+msgid "The locations that the service is available to"
+msgstr ""
+
+# HS_ELIGIBILITY
+#: HS_ELIGIBILITY
+msgid "Eligibility:"
+msgstr ""
+
+# HS_ELIGIBILITY_HINT
+#: HS_ELIGIBILITY_HINT
+msgid "Specific eligibility requirements required to use the service"
+msgstr ""
+
+# HS_EXTRA
+#: HS_EXTRA
+msgid "Extra Details:"
+msgstr ""
+
+# HS_EXTRA_HINT
+#: HS_EXTRA_HINT
+msgid "Extra details about the service that can''t be placed in the other fields"
+msgstr ""
+
+# HS_NO_NAME
+#: HS_NO_NAME
+msgid "Unnamed Healthcare Service"
+msgstr ""
+
+# HS_OFFERED_IN
+#: HS_OFFERED_IN
+msgid "Offered In:"
+msgstr ""
+
+# HS_OFFERED_IN_HINT
+#: HS_OFFERED_IN_HINT
+msgid "The service within which this service is offered"
+msgstr ""
+
+# HS_PROGRAM
+#: HS_PROGRAM
+msgid "Program:"
+msgstr ""
+
+# HS_PROGRAM_HINT
+#: HS_PROGRAM_HINT
+msgid "Programs that this service is applicable to"
+msgstr ""
+
+# HS_PROVIDED_BY
+#: HS_PROVIDED_BY
+msgid "Provided By:"
+msgstr ""
+
+# HS_PROVIDED_BY_HINT
+#: HS_PROVIDED_BY_HINT
+msgid "The organization that provides this service"
+msgstr ""
+
+# HS_PROVISION
+#: HS_PROVISION
+msgid "Provision Conditions:"
+msgstr ""
+
+# HS_PROVISION_HINT
+#: HS_PROVISION_HINT
+msgid "The conditions under which the service is available/offered (e.g. free, discounts)"
+msgstr ""
+
+# HS_REFERRAL
+#: HS_REFERRAL
+msgid "Referral Required:"
+msgstr ""
+
+# HS_REFERRAL_HINT
+#: HS_REFERRAL_HINT
+msgid "Whether a referral is required to access this service"
+msgstr ""
+
+# HS_REFERRAL_METHOD
+#: HS_REFERRAL_METHOD
+msgid "Referral Method:"
+msgstr ""
+
+# HS_REFERRAL_METHOD_HINT
+#: HS_REFERRAL_METHOD_HINT
+msgid "Ways that the service accepts referrals"
+msgstr ""
+
+# HS_TYPE_HINT
+#: HS_TYPE_HINT
+msgid "The type of service that may be delivered or performed"
+msgstr ""
+
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
 msgstr "Oficiální URL této implementační příručky je:"
+
+# IND_DOB
+#: IND_DOB
+msgid "Date of Birth:"
+msgstr ""
+
+# IND_DOB_HINT
+#: IND_DOB_HINT
+msgid "Date of birth"
+msgstr ""
+
+# IND_GENDER
+#: IND_GENDER
+msgid "Gender:"
+msgstr ""
+
+# IND_GENDER_HINT
+#: IND_GENDER_HINT
+msgid "Administrative gender"
+msgstr ""
+
+# IND_PERIOD_HINT
+#: IND_PERIOD_HINT
+msgid "The period during which this record applies"
+msgstr ""
+
+# IND_PHOTO
+#: IND_PHOTO
+msgid "Photo"
+msgstr ""
+
+# IND_PHOTO_TOO_BIG
+#: IND_PHOTO_TOO_BIG
+msgid "Photo not shown: the {0} image ({1} bytes) is too big to include in the page"
+msgstr ""
 
 # IP_INTRO
 #: IP_INTRO
@@ -2151,6 +3085,11 @@ msgstr "Editor"
 #: LIB_REND_END
 msgid "Endorser"
 msgstr "Schvalovatel"
+
+# LIB_REND_IMG_TOO_BIG
+#: LIB_REND_IMG_TOO_BIG
+msgid "Image not shown: the {0} image ({1} bytes) is too big to include in the page"
+msgstr ""
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
@@ -2219,6 +3158,7 @@ msgstr "Položky"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "Režim: {0}"
 
@@ -2253,6 +3193,182 @@ msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Nespecifikovaný subjekt"
 
+# LOC_ADDRESS
+#: LOC_ADDRESS
+msgctxt "LOC_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# LOC_ADDRESS_HINT
+#: LOC_ADDRESS_HINT
+msgid "Physical location"
+msgstr ""
+
+# LOC_ALTITUDE
+#: LOC_ALTITUDE
+msgid "(altitude {0})"
+msgstr ""
+
+# LOC_CHAR
+#: LOC_CHAR
+msgctxt "LOC_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# LOC_CHAR_HINT
+#: LOC_CHAR_HINT
+msgid "Collection of characteristics (attributes) of the location"
+msgstr ""
+
+# LOC_CODE
+#: LOC_CODE
+msgid "Code:"
+msgstr ""
+
+# LOC_CODE_HINT
+#: LOC_CODE_HINT
+msgid "Codes that identify the location"
+msgstr ""
+
+# LOC_CONTACT_HINT
+#: LOC_CONTACT_HINT
+msgid "Ways to make contact with the location"
+msgstr ""
+
+# LOC_DESC_HINT
+#: LOC_DESC_HINT
+msgid "Additional details about the location that could be displayed as further information to identify it"
+msgstr ""
+
+# LOC_FORM
+#: LOC_FORM
+msgid "Form:"
+msgstr ""
+
+# LOC_FORM_HINT
+#: LOC_FORM_HINT
+msgid "The physical form of the location (e.g. building, room, vehicle, road)"
+msgstr ""
+
+# LOC_HOURS
+#: LOC_HOURS
+msgid "Hours:"
+msgstr ""
+
+# LOC_HOURS_HINT
+#: LOC_HOURS_HINT
+msgid "When the location is (and is not) open"
+msgstr ""
+
+# LOC_LAT_LONG
+#: LOC_LAT_LONG
+msgid "{0}, {1}"
+msgstr ""
+
+# LOC_MANAGER
+#: LOC_MANAGER
+msgctxt "LOC_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# LOC_MANAGER_HINT
+#: LOC_MANAGER_HINT
+msgid "The organization responsible for the provisioning and upkeep of the location"
+msgstr ""
+
+# LOC_MODE
+#: LOC_MODE
+msgid "Mode:"
+msgstr ""
+
+# LOC_MODE_HINT
+#: LOC_MODE_HINT
+msgid "Whether this describes a specific location, or a class of locations"
+msgstr ""
+
+# LOC_NO_NAME
+#: LOC_NO_NAME
+msgid "Unnamed Location"
+msgstr ""
+
+# LOC_OP_STATUS
+#: LOC_OP_STATUS
+msgid "Operational Status:"
+msgstr ""
+
+# LOC_OP_STATUS_HINT
+#: LOC_OP_STATUS_HINT
+msgid "The operational status of the location (typically only for a bed/room)"
+msgstr ""
+
+# LOC_PART_OF
+#: LOC_PART_OF
+msgctxt "LOC_PART_OF"
+msgid "Part Of:"
+msgstr ""
+
+# LOC_PART_OF_HINT
+#: LOC_PART_OF_HINT
+msgid "Another location this one is physically a part of"
+msgstr ""
+
+# LOC_POSITION
+#: LOC_POSITION
+msgid "Position:"
+msgstr ""
+
+# LOC_POSITION_HINT
+#: LOC_POSITION_HINT
+msgid "The latitude and longitude of the location (WGS84)"
+msgstr ""
+
+# LOC_STATUS
+#: LOC_STATUS
+msgctxt "LOC_STATUS"
+msgid "Status:"
+msgstr ""
+
+# LOC_STATUS_HINT
+#: LOC_STATUS_HINT
+msgid "The status of the location"
+msgstr ""
+
+# LOC_TYPE_HINT
+#: LOC_TYPE_HINT
+msgid "The type of function performed at the location"
+msgstr ""
+
+# LOC_VIRTUAL
+#: LOC_VIRTUAL
+msgid "Virtual Service:"
+msgstr ""
+
+# LOC_VIRTUAL_HINT
+#: LOC_VIRTUAL_HINT
+msgid "Connection details of a virtual service (e.g. conference call)"
+msgstr ""
+
+# LOC_VS_ADDRESS
+#: LOC_VS_ADDRESS
+msgctxt "LOC_VS_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# LOC_VS_INFO
+#: LOC_VS_INFO
+msgid "More Information:"
+msgstr ""
+
+# LOC_VS_KEY
+#: LOC_VS_KEY
+msgid "Session Key:"
+msgstr ""
+
+# LOC_VS_MAX
+#: LOC_VS_MAX
+msgid "Maximum Participants:"
+msgstr ""
+
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
@@ -2286,8 +3402,61 @@ msgstr "Identifikátory"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
+msgctxt "NAME_SYS_PER"
 msgid "Period"
 msgstr "Období"
+
+# OA_CODE
+#: OA_CODE
+msgctxt "OA_CODE"
+msgid "Role:"
+msgstr ""
+
+# OA_CODE_HINT
+#: OA_CODE_HINT
+msgid "The role(s) the participating organization provides in this affiliation"
+msgstr ""
+
+# OA_FOR
+#: OA_FOR
+msgid "for {0}"
+msgstr ""
+
+# OA_NETWORK
+#: OA_NETWORK
+msgid "Network:"
+msgstr ""
+
+# OA_NETWORK_HINT
+#: OA_NETWORK_HINT
+msgid "The health insurance provider network(s) in which the participating organization provides these services"
+msgstr ""
+
+# OA_NO_ORG
+#: OA_NO_ORG
+msgid "(no organization)"
+msgstr ""
+
+# OA_ORG
+#: OA_ORG
+msgctxt "OA_ORG"
+msgid "Organization:"
+msgstr ""
+
+# OA_ORG_HINT
+#: OA_ORG_HINT
+msgid "The organization where the participating organization provides the services"
+msgstr ""
+
+# OA_PARTICIPANT
+#: OA_PARTICIPANT
+msgid "Participating Organization:"
+msgstr ""
+
+# OA_PARTICIPANT_HINT
+#: OA_PARTICIPANT_HINT
+msgid "The organization that provides/performs the role(s)"
+msgstr ""
 
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
@@ -2371,6 +3540,37 @@ msgstr "OperationOutcome (VŠE OK)"
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
 msgstr "OperationOutcome ({0} chyb, {1} varování)"
 
+# ORG_CONTACT_HINT
+#: ORG_CONTACT_HINT
+msgid "Ways to contact the organization"
+msgstr ""
+
+# ORG_DESC_HINT
+#: ORG_DESC_HINT
+msgid "Additional details about the organization"
+msgstr ""
+
+# ORG_NO_NAME
+#: ORG_NO_NAME
+msgid "Unnamed Organization"
+msgstr ""
+
+# ORG_PART_OF
+#: ORG_PART_OF
+msgctxt "ORG_PART_OF"
+msgid "Part Of:"
+msgstr ""
+
+# ORG_PART_OF_HINT
+#: ORG_PART_OF_HINT
+msgid "The organization of which this organization forms a part"
+msgstr ""
+
+# ORG_TYPE_HINT
+#: ORG_TYPE_HINT
+msgid "The kind(s) of organization that this is"
+msgstr ""
+
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
@@ -2417,6 +3617,7 @@ msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] "Obsažený zdroj"
 msgstr[1] "Obsažené zdroje"
+msgstr[2] ""
 
 # PAT_DECEASED
 #: PAT_DECEASED
@@ -2449,6 +3650,7 @@ msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] "Jazyk:"
 msgstr[1] "Jazyky:"
+msgstr[2] ""
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
@@ -2456,6 +3658,7 @@ msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] "Používaný jazyk"
 msgstr[1] "Používané jazyky"
+msgstr[2] ""
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
@@ -2545,6 +3748,7 @@ msgstr "Anonymní pacient"
 
 # PAT_ORG
 #: PAT_ORG
+msgctxt "PAT_ORG"
 msgid "Organization:"
 msgstr "Organizace:"
 
@@ -2554,6 +3758,7 @@ msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] "Jiné Id:"
 msgstr[1] "Jiná Id:"
+msgstr[2] ""
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
@@ -2561,6 +3766,7 @@ msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] "Jiné Id (viz výše uvedené)"
 msgstr[1] "Jiná Id (viz výše uvedené)"
+msgstr[2] ""
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2576,6 +3782,47 @@ msgstr "Fotografie pacienta"
 #: PAT_RELN
 msgid "Relationships:"
 msgstr "Vztahy:"
+
+# PRAC_CONTACT_HINT
+#: PRAC_CONTACT_HINT
+msgid "Ways to contact the Practitioner"
+msgstr ""
+
+# PRAC_DECEASED_HINT
+#: PRAC_DECEASED_HINT
+msgid "Known status of the Practitioner"
+msgstr ""
+
+# PRAC_NO_NAME
+#: PRAC_NO_NAME
+msgid "Anonymous Practitioner"
+msgstr ""
+
+# PRAC_QUAL
+#: PRAC_QUAL
+msgid "Qualification:"
+msgstr ""
+
+# PRAC_QUAL_HINT
+#: PRAC_QUAL_HINT
+msgid "Certification, licensure, or training pertaining to the provision of care"
+msgstr ""
+
+# PRAC_QUAL_ID
+#: PRAC_QUAL_ID
+msgid "Identifier:"
+msgstr ""
+
+# PRAC_QUAL_ISSUER
+#: PRAC_QUAL_ISSUER
+msgid "Issued By:"
+msgstr ""
+
+# PRAC_QUAL_STATUS
+#: PRAC_QUAL_STATUS
+msgctxt "PRAC_QUAL_STATUS"
+msgid "Status:"
+msgstr ""
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
@@ -2623,10 +3870,35 @@ msgstr "Aktivita"
 msgid "Agents"
 msgstr "Agenti"
 
+# PROV_AUTHORIZATION
+#: PROV_AUTHORIZATION
+msgid "Authorization"
+msgstr ""
+
+# PROV_BASED_ON
+#: PROV_BASED_ON
+msgid "Based On"
+msgstr ""
+
 # PROV_BEHALF
 #: PROV_BEHALF
 msgid "On Behalf Of"
 msgstr "Jménem"
+
+# PROV_ENCOUNTER
+#: PROV_ENCOUNTER
+msgid "Encounter"
+msgstr ""
+
+# PROV_ENT
+#: PROV_ENT
+msgid "Entities"
+msgstr ""
+
+# PROV_ENT_MORE
+#: PROV_ENT_MORE
+msgid "Showing the first {0} of {1} entities"
+msgstr ""
 
 # PROV_FOR
 #: PROV_FOR
@@ -2653,6 +3925,11 @@ msgstr "Provenience pro"
 msgid "Provenance for:"
 msgstr "Provenience pro:"
 
+# PROV_REASON
+#: PROV_REASON
+msgid "Reason"
+msgstr ""
+
 # PROV_REC
 #: PROV_REC
 msgid "Recorded"
@@ -2669,10 +3946,149 @@ msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr "Role"
 
+# PROV_WHAT
+#: PROV_WHAT
+msgctxt "PROV_WHAT"
+msgid "What"
+msgstr ""
+
 # PROV_WHO
 #: PROV_WHO
 msgid "who"
 msgstr "kdo"
+
+# PROV_WHY
+#: PROV_WHY
+msgid "Why"
+msgstr ""
+
+# PRR_ALL_DAY
+#: PRR_ALL_DAY
+msgid "all day"
+msgstr ""
+
+# PRR_AT
+#: PRR_AT
+msgid "at {0}"
+msgstr ""
+
+# PRR_AVAIL
+#: PRR_AVAIL
+msgctxt "PRR_AVAIL"
+msgid "Availability:"
+msgstr ""
+
+# PRR_AVAIL_EXC
+#: PRR_AVAIL_EXC
+msgid "Exceptions:"
+msgstr ""
+
+# PRR_AVAIL_HINT
+#: PRR_AVAIL_HINT
+msgid "When the practitioner is (and is not) available in this role"
+msgstr ""
+
+# PRR_CHAR
+#: PRR_CHAR
+msgctxt "PRR_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# PRR_CHAR_HINT
+#: PRR_CHAR_HINT
+msgid "Characteristics (attributes) of the role"
+msgstr ""
+
+# PRR_CODE
+#: PRR_CODE
+msgctxt "PRR_CODE"
+msgid "Role:"
+msgstr ""
+
+# PRR_CODE_HINT
+#: PRR_CODE_HINT
+msgid "Roles which this practitioner is authorized to perform for the organization"
+msgstr ""
+
+# PRR_CONTACT_HINT
+#: PRR_CONTACT_HINT
+msgid "Ways to contact the practitioner in this role"
+msgstr ""
+
+# PRR_ENDPOINT
+#: PRR_ENDPOINT
+msgctxt "PRR_ENDPOINT"
+msgid "Endpoint:"
+msgstr ""
+
+# PRR_ENDPOINT_HINT
+#: PRR_ENDPOINT_HINT
+msgid "Technical endpoints providing access to services operated for the practitioner in this role"
+msgstr ""
+
+# PRR_LOCATION
+#: PRR_LOCATION
+msgctxt "PRR_LOCATION"
+msgid "Location:"
+msgstr ""
+
+# PRR_LOCATION_HINT
+#: PRR_LOCATION_HINT
+msgid "The locations at which the practitioner provides care"
+msgstr ""
+
+# PRR_NOT_AVAIL
+#: PRR_NOT_AVAIL
+msgid "Not available:"
+msgstr ""
+
+# PRR_NO_PRACT
+#: PRR_NO_PRACT
+msgid "(no practitioner)"
+msgstr ""
+
+# PRR_ORG
+#: PRR_ORG
+msgctxt "PRR_ORG"
+msgid "Organization:"
+msgstr ""
+
+# PRR_ORG_HINT
+#: PRR_ORG_HINT
+msgid "The organization where the practitioner performs the roles"
+msgstr ""
+
+# PRR_PRACT
+#: PRR_PRACT
+msgid "Practitioner:"
+msgstr ""
+
+# PRR_PRACT_HINT
+#: PRR_PRACT_HINT
+msgid "The practitioner who is able to provide the services in this role"
+msgstr ""
+
+# PRR_SERVICE
+#: PRR_SERVICE
+msgctxt "PRR_SERVICE"
+msgid "Healthcare Service:"
+msgstr ""
+
+# PRR_SERVICE_HINT
+#: PRR_SERVICE_HINT
+msgid "The healthcare services provided in this role"
+msgstr ""
+
+# PRR_SPECIALTY
+#: PRR_SPECIALTY
+msgctxt "PRR_SPECIALTY"
+msgid "Specialty:"
+msgstr ""
+
+# PRR_SPECIALTY_HINT
+#: PRR_SPECIALTY_HINT
+msgid "The specialties of the practitioner in this role"
+msgstr ""
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
@@ -2895,6 +4311,14 @@ msgstr "Dotazník"
 msgid "Questionnaire:"
 msgstr "Dotazník:"
 
+# QUEST_QUESTION_CODE
+#: QUEST_QUESTION_CODE
+msgid "Question Code:"
+msgid_plural "Question Codes:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
@@ -3058,18 +4482,23 @@ msgstr "Při analýze napříč verzemi došlo k chybě, protože"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Přidáno:"
+msgid "Added"
+msgstr "!!Přidáno:"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Změněno:"
+msgid "Changed"
+msgstr "!!Změněno:"
+
+# REND_CHANGE_KINDS
+#: REND_CHANGE_KINDS
+msgid "Kinds of change: M = metadata, D = definitions, C = content, I = interpretation"
+msgstr ""
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Odstraněno:"
+msgid "Removed"
+msgstr "!!Odstraněno:"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
@@ -3105,6 +4534,16 @@ msgstr "Stav standardu = {0}"
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
 msgstr "Tyto požadavky se vztahují na aktéra"
+
+# REQ_CONDITIONAL
+#: REQ_CONDITIONAL
+msgid "conditional"
+msgstr ""
+
+# REQ_CONDITIONAL_HINT
+#: REQ_CONDITIONAL_HINT
+msgid "This requirement only applies in some situations (the requirement text says when)"
+msgstr ""
 
 # REQ_DERIVE
 #: REQ_DERIVE
@@ -3172,6 +4611,11 @@ msgstr "Chyba při vykreslování: {0}"
 msgid "Information Source: <param name=\"source\"/>"
 msgstr "Zdroj informací: <param name=\"source\"/>"
 
+# RES_REND_INFO_SOURCE_NAME
+#: RES_REND_INFO_SOURCE_NAME
+msgid "Information Source"
+msgstr ""
+
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
@@ -3212,10 +4656,62 @@ msgstr "Neznámé"
 msgid "Last updated: {0}"
 msgstr "Naposledy aktualizováno: {0}"
 
+# RES_REND_UPDATED_NAME
+#: RES_REND_UPDATED_NAME
+msgid "Last updated"
+msgstr ""
+
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
 msgstr "verze: {0}"
+
+# RES_REND_VER_NAME
+#: RES_REND_VER_NAME
+msgctxt "RES_REND_VER_NAME"
+msgid "Version"
+msgstr ""
+
+# RP_CONTACT_HINT
+#: RP_CONTACT_HINT
+msgid "Ways to contact the Related Person"
+msgstr ""
+
+# RP_NO_NAME
+#: RP_NO_NAME
+msgid "Anonymous Related Person"
+msgstr ""
+
+# RP_PATIENT
+#: RP_PATIENT
+msgid "Patient:"
+msgstr ""
+
+# RP_PATIENT_HINT
+#: RP_PATIENT_HINT
+msgid "The patient this person is related to"
+msgstr ""
+
+# RP_RELN
+#: RP_RELN
+msgid "Relationship:"
+msgstr ""
+
+# RP_RELN_HINT
+#: RP_RELN_HINT
+msgid "The nature of the relationship between the patient and the related person"
+msgstr ""
+
+# RP_ROLE
+#: RP_ROLE
+msgctxt "RP_ROLE"
+msgid "Role:"
+msgstr ""
+
+# RP_ROLE_HINT
+#: RP_ROLE_HINT
+msgid "The functional role this person plays for the patient"
+msgstr ""
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
@@ -3336,8 +4832,8 @@ msgstr "Příklady pro tento {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
-msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr "Toto je experimentální definice rozšíření; definice je určena pro testovací, vzdělávací nebo hodnoticí účely a neočekává se, že dozraje do stavu určeného pro skutečné použití."
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for production use."
+msgstr "!!Toto je experimentální definice rozšíření; definice je určena pro testovací, vzdělávací nebo hodnoticí účely a neočekává se, že dozraje do stavu určeného pro skutečné použití."
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
@@ -3379,10 +4875,10 @@ msgstr "Toto rozšíření je zastaralé a již by se nemělo používat"
 msgid "This extension may be used on the following element(s)"
 msgstr "Toto rozšíření lze použít u následujících elementů"
 
-# SDR_EXT_ELEM_ID
-#: SDR_EXT_ELEM_ID
-msgid "Element ID"
-msgstr "ID elementu"
+# SDR_EXT_ELEMENTS
+#: SDR_EXT_ELEMENTS
+msgid "elements"
+msgstr ""
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
@@ -3401,6 +4897,11 @@ msgctxt "SDR_EXT_PATH"
 msgid "Path"
 msgstr "Cesta"
 
+# SDR_EXT_ROOT_ELEMENTS
+#: SDR_EXT_ROOT_ELEMENTS
+msgid "root elements"
+msgstr ""
+
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
@@ -3413,14 +4914,9 @@ msgstr "Toto rozšíření je povoleno pro použití s"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
+msgctxt "SDR_EXT_VER_SFX"
 msgid "."
 msgstr "."
-
-# SDR_FIXED_VALUE
-#: SDR_FIXED_VALUE
-msgctxt "SDR_FIXED_VALUE"
-msgid "Fixed Value: {0}"
-msgstr "Pevná hodnota: {0}"
 
 # SDR_FROM
 #: SDR_FROM
@@ -3434,18 +4930,18 @@ msgstr "// z elementu: <a href=\"{0}\">rozšíření</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
-msgid "here"
-msgstr "zde"
+msgctxt "SDR_GUIDANCE_HERE"
+msgid "documentation"
+msgstr "!!zde"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
-msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr "Pokyny k interpretaci obsahu této tabulky najdete"
+msgid "See the"
+msgstr "!!Pokyny k interpretaci obsahu této tabulky najdete"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
-msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #1 --"
+msgid "on how to interpret the contents of this table"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3477,6 +4973,11 @@ msgstr "Metadata zdroje se změnila ({0})"
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
 msgstr "Nelze vyhodnotit změny metadat"
+
+# SDR_META_CH_ONLY
+#: SDR_META_CH_ONLY
+msgid "Only the resource metadata has changed ({0})"
+msgstr ""
 
 # SDR_MOD
 #: SDR_MOD
@@ -3510,8 +5011,8 @@ msgstr "Zatím nezpracováno: komplexní rozšíření ''{0}''"
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
-msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Tento {0} nepoužívá žádný profil v této implementační příručce"
+msgid "This {0} is not used by any profiles in this Specification"
+msgstr "!!Tento {0} nepoužívá žádný profil v této implementační příručce"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
@@ -3527,12 +5028,6 @@ msgstr "Jeden z těchto {0}"
 #: SDR_ONLY_ONE
 msgid "Only One!"
 msgstr "Pouze jeden!"
-
-# SDR_PATTERN_VALUE
-#: SDR_PATTERN_VALUE
-msgctxt "SDR_PATTERN_VALUE"
-msgid "Pattern Value: {0}"
-msgstr "Hodnota vzoru: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
@@ -3635,7 +5130,7 @@ msgstr "Verze FHIR"
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #2 --"
+msgid "-- no content: do not translate #193 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3646,7 +5141,7 @@ msgstr "Verze FHIR do"
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #3 --"
+msgid "-- no content: do not translate #194 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -3870,6 +5365,11 @@ msgstr "Pevné: {0} {1}"
 msgid "Mandatory: {0} {1}"
 msgstr "Povinné: {0} {1}"
 
+# SD_SUMMARY_MAPPINGS
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgstr ""
+
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
@@ -3906,6 +5406,7 @@ msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] "Element {0} je rozdělen na řezy podle hodnoty {1}"
 msgstr[1] "Element {0} je rozdělen na řezy podle hodnot {1}"
+msgstr[2] ""
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
@@ -3919,8 +5420,8 @@ msgstr "Na {0} je řez bez diskriminátoru"
 
 # SD_XIG_LINK
 #: SD_XIG_LINK
-msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
-msgstr "<p>Můžete také zkontrolovat <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">použití ve statistikách FHIR IG</a></p>"
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">usages in the FHIR IG Statistics</a></p>"
+msgstr "!!<p>Můžete také zkontrolovat <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">použití ve statistikách FHIR IG</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
@@ -4008,6 +5509,11 @@ msgstr "{0} - lokální vývojové sestavení (v{1}) vytvořené nástroji FHIR 
 msgid "Publication Build: This will be filled in by the publication tooling"
 msgstr "Publikační sestavení: toto bude doplněno publikačními nástroji"
 
+# STRUCTURAL_REQUIREMENTS
+#: STRUCTURAL_REQUIREMENTS
+msgid "Structural Requirements"
+msgstr ""
+
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
 msgid "This is an abstract"
@@ -4018,10 +5524,30 @@ msgstr "Toto je abstraktní definice"
 msgid "Obligations that apply to the actor {0}"
 msgstr "Povinnosti vztahující se na aktéra {0}"
 
+# STRUC_DEF_ADDITIONAL_RESOURCE
+#: STRUC_DEF_ADDITIONAL_RESOURCE
+msgid "Additional Resource"
+msgstr ""
+
+# STRUC_DEF_ADDITIONAL_RESOURCE_LINK
+#: STRUC_DEF_ADDITIONAL_RESOURCE_LINK
+msgid "additional resource"
+msgstr ""
+
+# STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX
+#: STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX
+msgid "This resource is an"
+msgstr ""
+
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid "This element has or is affected by constraints ("
 msgstr "Tento element má nebo je ovlivněn omezeními ("
+
+# STRUC_DEF_AGGREGATION
+#: STRUC_DEF_AGGREGATION
+msgid "Aggregation"
+msgstr ""
 
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
@@ -4032,6 +5558,11 @@ msgstr "Povolené jednotky"
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
 msgstr "Všichni aktéři"
+
+# STRUC_DEF_ALL_MAP_KEY
+#: STRUC_DEF_ALL_MAP_KEY
+msgid "All Mappings are Empty"
+msgstr ""
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
@@ -4058,11 +5589,6 @@ msgstr "a"
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
 msgstr "Koncepty musí pocházet z této sady hodnot, pokud se v ní vhodný koncept nachází"
-
-# STRUC_DEF_AS_SHOWN
-#: STRUC_DEF_AS_SHOWN
-msgid "As shown"
-msgstr "Jak je zobrazeno"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
@@ -4106,8 +5632,8 @@ msgstr "Tato sada hodnot je kandidátem na náhradu celkové sady hodnot shody v
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
-msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "Instance tohoto logického modelu nemohou být cílem Reference"
+msgid "Instances of this type cannot be the target of a Reference"
+msgstr "!!Instance tohoto logického modelu nemohou být cílem Reference"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
@@ -4116,8 +5642,8 @@ msgstr "getElementByName: nelze najít {0} v {1} z {2}"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
-msgid "Instances of this logical model can be the target of a Reference"
-msgstr "Instance tohoto logického modelu mohou být cílem Reference"
+msgid "Instances of this type can be the target of a Reference"
+msgstr "!!Instance tohoto logického modelu mohou být cílem Reference"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
@@ -4169,11 +5695,6 @@ msgstr "Komentáře:"
 msgid "Complex"
 msgstr "Komplexní"
 
-# STRUC_DEF_COMPLEXBRACK
-#: STRUC_DEF_COMPLEXBRACK
-msgid "(Complex)"
-msgstr "(Komplexní)"
-
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
@@ -4209,6 +5730,17 @@ msgstr "Omezení"
 #: STRUC_DEF_CONTROL
 msgid "Control"
 msgstr "Řízení"
+
+# STRUC_DEF_CONT_PROFILE
+#: STRUC_DEF_CONT_PROFILE
+msgctxt "STRUC_DEF_CONT_PROFILE"
+msgid "profiled by"
+msgstr ""
+
+# STRUC_DEF_CONT_PROFILE_INVALID
+#: STRUC_DEF_CONT_PROFILE_INVALID
+msgid "invalid reference {0}"
+msgstr ""
 
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
@@ -4321,6 +5853,11 @@ msgstr "Tento element musí být podporován"
 msgid "When this element is read"
 msgstr "Když je tento element čten"
 
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
+
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
@@ -4351,6 +5888,11 @@ msgstr "rozšiřitelné"
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
 msgstr "Rozšíření"
+
+# STRUC_DEF_EXT_ALLOWED
+#: STRUC_DEF_EXT_ALLOWED
+msgid "(extensions allowed)"
+msgstr ""
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
@@ -4402,11 +5944,6 @@ msgstr "Formální identifikátor invariantu"
 msgid "Fixed Value"
 msgstr "Pevná hodnota"
 
-# STRUC_DEF_FIXED_VALUE
-#: STRUC_DEF_FIXED_VALUE
-msgid "Fixed Value:"
-msgstr "Pevná hodnota:"
-
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
@@ -4457,6 +5994,11 @@ msgstr "Pokud"
 #: STRUC_DEF_IMPLEMENTS
 msgid "Interfaces Implemented"
 msgstr "Implementovaná rozhraní"
+
+# STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN
+#: STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN
+msgid "Other type slices that contain no new information are not shown in this view"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -4568,11 +6110,6 @@ msgstr "Název vlastnosti JSON pro typ"
 msgid "Label"
 msgstr "Popisek"
 
-# STRUC_DEF_LEAST_FOLLOW
-#: STRUC_DEF_LEAST_FOLLOW
-msgid "At least the following"
-msgstr "Alespoň následující"
-
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 msgctxt "STRUC_DEF_LOGICAL"
@@ -4593,6 +6130,16 @@ msgstr "Kód LOINC"
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
 msgstr "kód LOINC"
+
+# STRUC_DEF_MAPPINGS
+#: STRUC_DEF_MAPPINGS
+msgid "Mappings"
+msgstr ""
+
+# STRUC_DEF_MAPPING_COMMENTS
+#: STRUC_DEF_MAPPING_COMMENTS
+msgid "Mapping Comments"
+msgstr ""
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
@@ -4680,6 +6227,16 @@ msgstr "Instance tohoto logického modelu nejsou označeny jako cíl Reference"
 msgid ", and defines no disciminators to differentiate the slices"
 msgstr ", a nedefinuje žádné diskriminátory pro rozlišení řezů"
 
+# STRUC_DEF_NO_EXT_ALLOWED
+#: STRUC_DEF_NO_EXT_ALLOWED
+msgid "(no extensions allowed)"
+msgstr ""
+
+# STRUC_DEF_NO_EXT_ID
+#: STRUC_DEF_NO_EXT_ID
+msgid "No extension or id"
+msgstr ""
+
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
@@ -4745,6 +6302,27 @@ msgstr "Otevřené na konci"
 msgid "Ordered"
 msgstr "Uspořádané"
 
+# STRUC_DEF_OTHER_CHANGES
+#: STRUC_DEF_OTHER_CHANGES
+msgid "Other Changes:"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+#: STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+msgctxt "STRUC_DEF_OTHER_CHANGES_DOCUMENTATION"
+msgid "documentation"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_HINT
+#: STRUC_DEF_OTHER_CHANGES_HINT
+msgid "This profile changes the {0} of this element, which is not shown in this table. See the full definition for details"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_MAPPINGS
+#: STRUC_DEF_OTHER_CHANGES_MAPPINGS
+msgid "mappings"
+msgstr ""
+
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
 msgctxt "STRUC_DEF_PATH"
@@ -4798,6 +6376,7 @@ msgstr "Tento primitivní typ musí mít hodnotu (hodnota musí být přítomna 
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
+msgctxt "STRUC_DEF_PROFILED"
 msgid "profiled by"
 msgstr "profilováno pomocí"
 
@@ -4861,11 +6440,6 @@ msgstr "Pořadí tohoto opakujícího se elementu: {0}"
 msgid "required"
 msgstr "povinné"
 
-# STRUC_DEF_REQUIRED_PATT
-#: STRUC_DEF_REQUIRED_PATT
-msgid "Required Pattern:"
-msgstr "Povinný vzor:"
-
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 msgid "Requirements"
@@ -4916,6 +6490,11 @@ msgstr "Krátký popis"
 msgid "The codes SHOULD be taken from"
 msgstr "Kódy BY MĚLY být převzaty z"
 
+# STRUC_DEF_SHOW_MAPPINGS
+#: STRUC_DEF_SHOW_MAPPINGS
+msgid "Show Mappings:"
+msgstr ""
+
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
@@ -4930,6 +6509,11 @@ msgstr "Řezy"
 #: STRUC_DEF_SLICE
 msgid "Slice"
 msgstr "Řez"
+
+# STRUC_DEF_SLICER_RULES_APPLY
+#: STRUC_DEF_SLICER_RULES_APPLY
+msgid "The rules on this element (including its children) apply to all the slices, but are not repeated in them"
+msgstr ""
 
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
@@ -4950,6 +6534,11 @@ msgstr "Název řezu"
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
 msgstr "Řez {0}"
+
+# STRUC_DEF_SLICING_NOTE
+#: STRUC_DEF_SLICING_NOTE
+msgid "Slicing Note"
+msgstr ""
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
@@ -5016,10 +6605,35 @@ msgstr "pak je typ"
 msgid "This structure refers to these other structures"
 msgstr "Tato struktura odkazuje na tyto další struktury"
 
+# STRUC_DEF_TP_NONE
+#: STRUC_DEF_TP_NONE
+msgid "The constraints on the root of this type profile have not been applied to this element in the snapshot. Check the type profile directly as well"
+msgstr ""
+
+# STRUC_DEF_TP_PARTIAL
+#: STRUC_DEF_TP_PARTIAL
+msgid "Only some of the constraints on the root of this type profile have been applied to this element in the snapshot. Check the type profile directly as well"
+msgstr ""
+
+# STRUC_DEF_TP_UNMARKED
+#: STRUC_DEF_TP_UNMARKED
+msgid "The snapshot does not say whether the constraints on the root of this type profile have been applied to this element, so assume they have not. Check the type profile directly as well"
+msgstr ""
+
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
 msgstr "Tento typ lze navázat na sadu hodnot pomocí {0}"
+
+# STRUC_DEF_TYPE_CHARACTERISTICS
+#: STRUC_DEF_TYPE_CHARACTERISTICS
+msgid "Type Characteristics"
+msgstr ""
 
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
@@ -5249,6 +6863,7 @@ msgstr "Testovací případ - sekvence {0}"
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
+msgctxt "TEST_PLAN_CATEGORY"
 msgid "Category:"
 msgstr "Kategorie:"
 
@@ -5271,6 +6886,85 @@ msgstr "Závislosti testovacího plánu:"
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
 msgstr "Závislost - bez popisu"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
@@ -5366,6 +7060,16 @@ msgstr "Reference na jiný element"
 #: TEXT_ICON_SLICE
 msgid "Slice Definition"
 msgstr "Definice řezu"
+
+# TEXT_ICON_SLICE_EXTENSION
+#: TEXT_ICON_SLICE_EXTENSION
+msgid "Extension Slice Definition"
+msgstr ""
+
+# TEXT_ICON_SLICE_EXTENSION_MODIFIER
+#: TEXT_ICON_SLICE_EXTENSION_MODIFIER
+msgid "Modifier Extension Slice Definition"
+msgstr ""
 
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
@@ -5535,6 +7239,7 @@ msgstr "Chyba při expanzi ValueSet: {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
+msgctxt "VALUE_SET_EXCL"
 msgid "Exclude"
 msgstr "Vyloučit"
 
@@ -5588,6 +7293,27 @@ msgstr "Expanze z {0} založená na"
 msgid "Expansion based on code system fragment"
 msgstr "Expanze založená na fragmentu systému kódů"
 
+# VALUE_SET_EXP_ISSUES
+#: VALUE_SET_EXP_ISSUES
+msgid "Notes about this expansion:"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_ERROR
+#: VALUE_SET_EXP_ISSUE_ERROR
+msgid "Error"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_INFO
+#: VALUE_SET_EXP_ISSUE_INFO
+msgctxt "VALUE_SET_EXP_ISSUE_INFO"
+msgid "Note"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_WARNING
+#: VALUE_SET_EXP_ISSUE_WARNING
+msgid "Warning"
+msgstr ""
+
 # VALUE_SET_FI
 #: VALUE_SET_FI
 msgid "Finnish Edition"
@@ -5619,6 +7345,7 @@ msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] "Importovat všechny kódy obsažené v"
 msgstr[1] "Importovat všechny kódy obsažené v průniku"
+msgstr[2] ""
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
@@ -5632,6 +7359,7 @@ msgstr "neaktivní"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
+msgctxt "VALUE_SET_INACTIVE"
 msgid "Inactive"
 msgstr "Neaktivní"
 
@@ -5667,6 +7395,7 @@ msgstr "Edice Korejské republiky (Jižní Korea)"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
+msgctxt "VALUE_SET_LEVEL"
 msgid "Level"
 msgstr "Úroveň"
 
@@ -5681,6 +7410,7 @@ msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
 msgstr[0] "Tento ValueSet vyžaduje doplněk systému kódů"
 msgstr[1] "Tento ValueSet vyžaduje doplňky systému kódů"
+msgstr[2] ""
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
@@ -5817,6 +7547,11 @@ msgstr "Spojené království"
 msgid "UK Clinical Edition"
 msgstr "Britská klinická edice"
 
+# VALUE_SET_UNCLOSED
+#: VALUE_SET_UNCLOSED
+msgid "This expansion is not closed: there are codes in the value set that are not included in the expansion"
+msgstr ""
+
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
@@ -5857,6 +7592,11 @@ msgstr "Logická definice (CLD)"
 msgid "No formal definition provided for this value set"
 msgstr "Pro tuto sadu hodnot není poskytnuta žádná formální definice"
 
+# VSR_RULES_TEXT
+#: VSR_RULES_TEXT
+msgid "This ValueSet does not have a formal definition; instead, the value set must be prepared by hand using these instructions."
+msgstr ""
+
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
@@ -5876,6 +7616,11 @@ msgstr "Verze není výslovně uvedena, což znamená, že je pevně nastavena n
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr "Verze není výslovně uvedena. Při sestavení této specifikace byla použita nejnovější verze {0}"
+
+# VS_VERSION_LATEST
+#: VS_VERSION_LATEST
+msgid "Version is always the latest available, which is {0} at this time"
+msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
@@ -5912,7 +7657,13 @@ msgstr "Verze je uvedena jako {0}. Při sestavení této specifikace byla použi
 msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
 msgstr "Verze je uvedena jako {0}, což znamená, že je pevně nastavena na {1}, verzi nalezenou přes reference balíčků"
 
+# WEB_SOURCE
+#: WEB_SOURCE
+msgid "Web Source"
+msgstr ""
+
 # _NA
 #: _NA
 msgid "n/a"
 msgstr "není k dispozici"
+

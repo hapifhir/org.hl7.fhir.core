@@ -655,6 +655,11 @@ msgstr "Краткая информация об общесистемных па
 msgid "support"
 msgstr "поддержка"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"

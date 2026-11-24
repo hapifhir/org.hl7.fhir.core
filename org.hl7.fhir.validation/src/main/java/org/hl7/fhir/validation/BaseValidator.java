@@ -1,20 +1,57 @@
 package org.hl7.fhir.validation;
 
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.utilities.ImplicitValueSets;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.JsonParser;
+import org.hl7.fhir.services.terminology.ValidationContextCarrier.IValidationContextResourceLoader;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+import org.hl7.fhir.services.xver.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.instance.utils.BundleIndex;
+import org.hl7.fhir.validation.instance.utils.IndexedElement;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -44,58 +81,6 @@ import javax.annotation.Nonnull;
   POSSIBILITY OF SUCH DAMAGE.
 
  */
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.ContextUtilities;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.JsonParser;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.core.CanonicalResource;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.Constants;
-import org.hl7.fhir.model.core.DomainResource;
-import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.model.core.Extension;
-import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.core.UsageContext;
-import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
-import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.model.utilities.ImplicitValueSets;
-import org.hl7.fhir.model.utilities.JurisdictionUtilities;
-import org.hl7.fhir.services.validation.IMessagingServices;
-import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.services.validation.ValidatorSession;
-import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.services.xver.XVerExtensionManager;
-import org.hl7.fhir.services.xver.XVerExtensionManager.XVerExtensionStatus;
-import org.hl7.fhir.services.terminology.ValidationContextCarrier.IValidationContextResourceLoader;
-import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
-import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.validation.service.utils.ValidationLevel;
-import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
-import org.hl7.fhir.validation.instance.utils.BundleIndex;
-import org.hl7.fhir.validation.instance.utils.IndexedElement;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
   public final static String URI_REGEX_XVER = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-_]*\\/)*?)?($$)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
@@ -652,6 +637,26 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, String id, boolean thePass, String msg, Object... theMessageArguments) {
     return warning(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), id, thePass, msg, theMessageArguments);
+  }
+
+  /**
+   * Whether codes from a code system can be validated as a batch, by the server that getTxSupportInfo found for it; if
+   * they can't, a warning says why, at stack. There may be no server at all: there's no terminology service (none was
+   * configured, or the validator stopped using it when it couldn't be reached), or no server is known to support the code
+   * system. Otherwise the server has to support batch validation
+   *
+   * @param system the code system, as the message names it (url, or url|version)
+   */
+  protected boolean checkTxBatchSupport(List<ValidationMessage> errors, NodeStack stack, org.hl7.fhir.services.terminology.SystemSupportInformation txInfo, String system) {
+    if (txInfo.getServer() == null) {
+      warning(errors, "2026-11-22", IssueType.NOTSUPPORTED, stack, false, context.isNoTerminologyServer()
+        ? I18nConstants.VALUESET_TXVER_BATCH_NO_SERVICE : I18nConstants.VALUESET_TXVER_BATCH_NO_SERVER, system);
+      return false;
+    }
+    boolean batchOk = txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(org.hl7.fhir.standalone.terminology.client.TerminologyClientContext.TX_BATCH_VERSION,
+      txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
+    return warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, stack, batchOk, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED,
+      txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion(), system, txInfo.getServer());
   }
 
   protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, int num, String msg, Object... theMessageArguments) {

@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.tests;
 
-import java.text.NumberFormat;
-
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.junit.jupiter.api.Test;
+
+import java.text.NumberFormat;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 

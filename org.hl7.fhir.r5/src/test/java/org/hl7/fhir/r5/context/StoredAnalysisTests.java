@@ -1,0 +1,45 @@
+package org.hl7.fhir.r5.context;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+import org.hl7.fhir.r5.model.NamingSystem;
+import org.junit.jupiter.api.Test;
+
+/**
+ * An analysis worked out from the definitions is kept by the context until they change; one worked out while they were
+ * changing isn't kept at all
+ */
+class StoredAnalysisTests {
+
+  private static NamingSystem ns(String id) {
+    NamingSystem ns = new NamingSystem();
+    ns.setId(id);
+    ns.setUrl("http://example.org/NamingSystem/" + id);
+    return ns;
+  }
+
+  @Test
+  void anAnalysisIsKeptUntilTheDefinitionsChange() throws Exception {
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing();
+    Object analysis = new Object();
+    ctxt.storeAnalysis(StoredAnalysisTests.class, analysis, ctxt.getDefinitionsVersion());
+    assertSame(analysis, ctxt.retrieveAnalysis(StoredAnalysisTests.class));
+    ctxt.cacheResource(ns("a"));
+    assertNull(ctxt.retrieveAnalysis(StoredAnalysisTests.class));
+  }
+
+  @Test
+  void anAnalysisWorkedOutWhileTheDefinitionsChangedIsNotKept() throws Exception {
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing();
+    long version = ctxt.getDefinitionsVersion();
+    Object analysis = new Object();
+    // loaded while the analysis was being worked out
+    ctxt.cacheResource(ns("b"));
+    ctxt.storeAnalysis(StoredAnalysisTests.class, analysis, version);
+    assertNull(ctxt.retrieveAnalysis(StoredAnalysisTests.class));
+    // without the version, it's kept, as before
+    ctxt.storeAnalysis(StoredAnalysisTests.class, analysis);
+    assertSame(analysis, ctxt.retrieveAnalysis(StoredAnalysisTests.class));
+  }
+}

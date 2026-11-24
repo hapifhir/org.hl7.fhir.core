@@ -1,27 +1,15 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.PackageClient;
-import org.hl7.fhir.utilities.npm.PackageInfo;
-import org.hl7.fhir.utilities.npm.PackageServer;
-import org.hl7.fhir.utilities.npm.RegistryAnswerCache;
+import org.hl7.fhir.utilities.npm.*;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
@@ -29,6 +17,11 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ImplementationGuideValidator extends BaseValidator {
 

@@ -1,14 +1,14 @@
 package org.hl7.fhir.validation.special;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-import java.util.UUID;
-
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.StringType;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Every closure test names the same closure table, so each run replaces the name with its own

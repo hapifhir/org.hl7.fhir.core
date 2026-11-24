@@ -1,19 +1,15 @@
 package org.hl7.fhir.terminology.tests;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
+import com.google.common.base.Charsets;
 import org.apache.commons.io.IOUtils;
-
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.OperationOutcome.*;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.IssueType;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
@@ -30,24 +26,20 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.special.TxServiceTestHelper;
-import org.hl7.fhir.validation.special.TxTestResponses;
-import org.hl7.fhir.validation.special.TxTestSetup;
-import org.hl7.fhir.validation.special.TxTestData;
-import org.hl7.fhir.validation.special.TxTesterScrubbers;
-import org.hl7.fhir.validation.special.TxTesterSorters;
+import org.hl7.fhir.validation.special.*;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.*;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.base.Charsets;
-
 import javax.annotation.Nonnull;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 import static org.junit.Assert.assertNull;
 
@@ -451,7 +443,7 @@ private static TxTestData testData;
         e.setCode(IssueType.NOTFOUND);
         e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
         break;
-      case VALUESET_UNSUPPORTED:
+      case RESOURCE_UNSUPPORTED:
         e.setCode(IssueType.NOTSUPPORTED);
         break;
       }

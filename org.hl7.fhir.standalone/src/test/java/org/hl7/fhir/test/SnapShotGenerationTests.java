@@ -106,6 +106,7 @@ public class SnapShotGenerationTests {
     private boolean fail;
     private boolean newSliceProcessing;
     private boolean debug;
+    private boolean forPublication;
 
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
@@ -123,6 +124,7 @@ public class SnapShotGenerationTests {
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
       debug = "true".equals(test.getAttribute("debug"));
+      forPublication = "true".equals(test.getAttribute("for-publication"));
 
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -228,6 +230,10 @@ public class SnapShotGenerationTests {
 
     public boolean isNewSliceProcessing() {
       return newSliceProcessing;
+    }
+
+    public boolean isForPublication() {
+      return forPublication;
     }
 
     public boolean isDebug() {
@@ -592,6 +598,7 @@ public class SnapShotGenerationTests {
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
+    pu.setForPublication(test.isForPublication());
     pu.setIds(test.getSource(), false);
     pu.setAllowUnknownProfile(test.allow);
     if (!testContext.hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {

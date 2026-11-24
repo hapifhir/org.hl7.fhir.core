@@ -1,10 +1,10 @@
 package org.hl7.fhir.utilities;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 public class UnicodeUtilitiesTests {
   @Test

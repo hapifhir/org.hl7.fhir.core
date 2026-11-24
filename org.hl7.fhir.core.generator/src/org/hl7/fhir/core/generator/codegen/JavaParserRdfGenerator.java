@@ -97,7 +97,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     String pfx = (ti.getDefn().isInlineType()) && !tn.startsWith(analysis.getClassName()) ? analysis.getClassName() : "";
     
     composer.append("  protected void compose"+pfx+tn+"(Complex parent, String parentType, String name, "+stn+" element, int index) {\r\n");
-    composer.append("    if (element == null) \r\n");
+    composer.append("    if (element == null || element.isEmpty()) \r\n");
     composer.append("      return;\r\n");
     composer.append("    Complex t;\r\n");
     composer.append("    if (Utilities.noString(parentType))\r\n");

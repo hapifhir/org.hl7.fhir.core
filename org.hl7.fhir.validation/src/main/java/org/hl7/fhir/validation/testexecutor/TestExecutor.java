@@ -1,9 +1,15 @@
 package org.hl7.fhir.validation.testexecutor;
 
-import static org.hl7.fhir.validation.testexecutor.TestModules.JUNIT4_CLASSNAMES;
-import static org.hl7.fhir.validation.testexecutor.TestModules.JUNIT5_MODULE_NAMES;
-import static org.hl7.fhir.validation.testexecutor.TestModules.VALIDATION_MODULE;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.tests.TestConfig;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
+import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
+import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
+import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,17 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Nonnull;
-
-import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.tests.TestConfig;
-import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
-import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
-import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
-import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
-
-import lombok.Getter;
+import static org.hl7.fhir.validation.testexecutor.TestModules.*;
 
 @Slf4j
 public class TestExecutor {

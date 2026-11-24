@@ -1223,6 +1223,84 @@ class NPMPackageGeneratorTest {
     finish(second);
   }
 
+  /** Two files whose names differ only in case (resource ids that do) can't both be in a package: every reader refuses one with both */
+  @Test
+  void namesThatDifferOnlyInCaseFailTheBuild() throws IOException {
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    // exactly the same name again is a duplicate add: reported, and skipped
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    org.hl7.fhir.exceptions.FHIRException e = org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class,
+        () -> generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-ABC.json", "{}".getBytes(StandardCharsets.UTF_8)));
+    assertTrue(e.getMessage().contains("package/ValueSet-abc.json and package/ValueSet-ABC.json"), e.getMessage());
+    // the same through the other addFile
+    org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class,
+        () -> generator.addFile("package", "valueset-ABC.json", "{}".getBytes(StandardCharsets.UTF_8)));
+    finish(generator);
+  }
+
+  /**
+   * hasFile says yes to a name that differs only in case from one already added, so a caller that adds only what isn't
+   * there (the IG publisher copying core value sets and code systems) skips it, instead of the add failing the build
+   */
+  @Test
+  void hasFileIgnoresCase() throws IOException {
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.addFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json", "{}".getBytes(StandardCharsets.UTF_8));
+    assertTrue(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abc.json"));
+    assertTrue(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-ABC.json"));
+    assertFalse(generator.hasFile(NPMPackageGenerator.Category.RESOURCE, "ValueSet-abd.json"));
+    finish(generator);
+  }
+
+  /** the platform's separator is replaced by / - on Windows, \ (which the test above can't show, except on Windows) */
+  @ParameterizedTest
+  @CsvSource(delimiter = ';', value = {
+    "package\\other\\x.json; \\; package/other/x.json",
+    "package/other/x.json;     /;  package/other/x.json",
+    "x.json;                   \\; x.json",
+  })
+  void entryNamesUseSlashes(String relativePath, char separator, String expected) {
+    assertEquals(expected, NPMPackageGenerator.entryName(relativePath, separator));
+  }
+
+  /** Files loaded from a folder are named with /, whatever the platform's separator */
+  @Test
+  void filesLoadedFromAFolderAreNamedWithSlashes(@TempDir Path folder) throws IOException {
+    Files.createDirectories(folder.resolve("package").resolve("other"));
+    Files.writeString(folder.resolve("package").resolve("other").resolve("x.json"), "{}");
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.loadFiles(folder.toString(), null, folder.resolve("package").toFile());
+    finish(generator);
+    assertTrue(generator.getCreated().contains("package/other/x.json"), generator.getCreated().toString());
+  }
+
+  /**
+   * Loading a folder doesn't package what a link leads to outside the folder (a link to ~/.ssh/id_rsa, say), nor walk
+   * into a linked folder. A link to a file inside the folder is packaged
+   */
+  @Test
+  void linksOutOfTheFolderAreNotPackaged(@TempDir Path folder) throws IOException {
+    Path secret = Files.writeString(folder.resolve("secret.txt"), "secret");
+    Path outside = Files.createDirectories(folder.resolve("outside"));
+    Files.writeString(outside.resolve("y.json"), "{}");
+    Path root = Files.createDirectories(folder.resolve("ig"));
+    Path pkg = Files.createDirectories(root.resolve("package").resolve("other"));
+    Files.writeString(pkg.resolve("x.json"), "{}");
+    Files.createSymbolicLink(pkg.resolve("leak.json"), secret);
+    Files.createSymbolicLink(pkg.resolve("linked"), outside);
+    Files.createSymbolicLink(pkg.resolve("loop"), root);
+    Files.createSymbolicLink(pkg.resolve("inside.json"), pkg.resolve("x.json"));
+    NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());
+    generator.loadFiles(root.toString(), ".npmignore", root.resolve("package").toFile());
+    finish(generator);
+    assertTrue(generator.getCreated().contains("package/other/x.json"), generator.getCreated().toString());
+    assertTrue(generator.getCreated().contains("package/other/inside.json"), generator.getCreated().toString());
+    for (String s : generator.getCreated()) {
+      assertFalse(s.contains("leak") || s.contains("linked") || s.contains("loop"), s);
+    }
+  }
+
   @Test
   void renamedFilesAreReported() throws IOException {
     NPMPackageGenerator generator = new NPMPackageGenerator(destination(), rawPackage());

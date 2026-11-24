@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,7 +8,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 class HTTPAuthenticationProviderChainTest {
 

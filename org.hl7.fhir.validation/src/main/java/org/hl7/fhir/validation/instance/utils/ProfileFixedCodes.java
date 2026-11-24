@@ -1,17 +1,8 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import org.hl7.fhir.model.core.*;
 
-import org.hl7.fhir.model.core.CodeableConcept;
-import org.hl7.fhir.model.core.CodeableReference;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.ElementDefinition;
-import org.hl7.fhir.model.core.StructureDefinition;
+import java.util.*;
 
 /**
  * The codes a profile fixes for an element (from its snapshot): a fixed or pattern

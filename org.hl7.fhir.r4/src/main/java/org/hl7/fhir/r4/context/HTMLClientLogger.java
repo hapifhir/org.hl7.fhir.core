@@ -68,9 +68,12 @@ public class HTMLClientLogger implements ToolingClientLogger {
     lastId = Integer.toString(id);
     file.println("<hr/><a name=\"l" + lastId + "\"> </a>");
     file.println("<pre>");
-    file.println(method + " " + url + " HTTP/1.1");
-    for (String s : headers)
-      file.println(Utilities.escapeXml(s));
+    file.println(Utilities.escapeXml(method + " " + url + " HTTP/1.1"));
+    if (headers != null) {
+      for (String s : headers) {
+        file.println(Utilities.escapeXml(ToolingClientLogger.presentHeader(s)));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
@@ -86,9 +89,12 @@ public class HTMLClientLogger implements ToolingClientLogger {
     if (file == null)
       return;
     file.println("<pre>");
-    file.println(outcome);
-    for (String s : headers)
-      file.println(Utilities.escapeXml(s));
+    file.println(Utilities.escapeXml(outcome));
+    if (headers != null) {
+      for (String s : headers) {
+        file.println(Utilities.escapeXml(ToolingClientLogger.presentHeader(s)));
+      }
+    }
     if (body != null) {
       file.println("");
       try {

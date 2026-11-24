@@ -647,6 +647,11 @@ msgstr "Visos sistemos ieškos parametrų suvestinė"
 msgid "support"
 msgstr "parama"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"

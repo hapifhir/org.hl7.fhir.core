@@ -1,10 +1,13 @@
 package org.hl7.fhir.validation.http;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.validation.ValidationEngine;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,14 +17,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.validation.ValidationEngine;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * The requests the /txTest endpoints refuse before loading any tests or connecting to any server.
@@ -62,6 +60,7 @@ class TxTestHTTPHandlerTests {
     "POST|/txTest/setup|{\"test-version\":\"1.9.6\"}|400|'server'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"mode\":\"general\"}|400|Unknown setup parameter 'mode'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"test-version\":\"../../etc\"}|400|not a path",
+    "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"test-version\":\"current$a/b\"}|400|not a path",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"externals\":3}|400|'externals'",
     "POST|/txTest/setup|{\"server\":\"http://localhost:1/fhir\",\"folder\":\"a/b\"}|400|'folder'",
     "GET|/txTest?suite=a&test=b||400|'session'",
@@ -127,6 +126,18 @@ class TxTestHTTPHandlerTests {
     } finally {
       disabled.stop();
     }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1.9.6, true", "current, true", "dev, true",
+    // the ci-build of a branch of the tests
+    "current$my-branch, true", "current$2026-11-gg-supplement-unversioned, true", "current$v1.2_x, true",
+    "current$, false", "current$a/b, false", "current$../x, false", "current$-x, false",
+    "$current, false", "1.9.6$x, false", "current$$x, false", "../../etc, false", "'', false"
+  })
+  void testVersions(String version, boolean valid) {
+    assertEquals(valid, TxTestHTTPHandler.isValidTestVersion(version), version);
   }
 
   @Test

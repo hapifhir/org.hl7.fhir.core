@@ -166,6 +166,13 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   // Only ever added to, so a concurrent lookup of the same canonical can't clear a failure
   private Set<String> failedLookups = ConcurrentHashMap.newKeySet();
 
+  // hosts (with the usage, if there is one: see unknownHostKey) that the registry said, when it
+  // found no server for a code system on them, no server hosts any code system on at all
+  // (unknown-host: see 'Unknown Hosts' in the tx ecosystem IG). The registry isn't asked about
+  // any other code system on them in this run. Not persisted: like any other resolution that
+  // found nothing, it's asked again next run
+  private Set<String> unknownHosts = ConcurrentHashMap.newKeySet();
+
   // Set once by shutdown(). A manager must release its hold on each server context
   // exactly once, or the holder count those contexts keep goes wrong and a shared
   // cache is closed while another manager is still using it - so repeat shutdowns
@@ -193,6 +200,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
+    unknownHosts.addAll(other.unknownHosts);
     useEcosystem = other.useEcosystem;
     ecosystemfailCount = other.ecosystemfailCount;
     monitorServiceURL = other.monitorServiceURL;
@@ -583,6 +591,73 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     return language;
   }
 
+  /**
+   * The host of an http: or https: code system url (any version after '|' ignored), as the
+   * registry gives it in unknown-host: lower case, with the port if it isn't the scheme's
+   * default. null for anything else (urn:oid:, urn:uuid: ...)
+   */
+  public static String hostOf(String url) {
+    if (url == null) {
+      return null;
+    }
+    String base = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
+    String lower = base.toLowerCase(Locale.ROOT);
+    boolean https = lower.startsWith("https://");
+    if (!https && !lower.startsWith("http://")) {
+      return null;
+    }
+    try {
+      URI uri = new URI(base);
+      String host = uri.getHost();
+      if (host == null || host.isEmpty()) {
+        return null;
+      }
+      host = host.toLowerCase(Locale.ROOT);
+      int port = uri.getPort();
+      if (port > 0 && port != (https ? 443 : 80)) {
+        host = host + ":" + port;
+      }
+      return host;
+    } catch (URISyntaxException e) {
+      return null;
+    }
+  }
+
+  /**
+   * What an unknown host is remembered under: the registry's answer depends on the usage
+   * as well as the host (the FHIR version is fixed for a manager)
+   */
+  private String unknownHostKey(String url) {
+    String host = hostOf(url);
+    return host == null ? null : usage == null ? host : host + "|" + usage;
+  }
+
+  /** Whether the registry has said, in this run, that it knows of no code system on url's host */
+  private boolean isUnknownHost(String url) {
+    String hostKey = unknownHostKey(url);
+    return hostKey != null && unknownHosts.contains(hostKey);
+  }
+
+  /**
+   * The search for a canonical (url|version) on a server: by url, and by version if there is one. The url is
+   * what's before the first '|' (a url can't have a '|' in it; a version could)
+   */
+  static String searchCriteria(String canonical) {
+    CanonicalPair cp = CanonicalPair.of(canonical);
+    return "?_format=json&url="+Utilities.URLEncode(cp.getUrl())+(cp.hasVersion() ? "&version="+Utilities.URLEncode(cp.getVersion()) : "");
+  }
+
+  /**
+   * When a resolution of url found nothing, remember it if the registry said that it knows
+   * of no code system on url's host at all
+   */
+  private void seeUnknownHost(String url, JsonObject json) {
+    String host = hostOf(url);
+    if (host != null && json.has("unknown-host") && host.equals(json.asString("unknown-host"))) {
+      unknownHosts.add(unknownHostKey(url));
+    }
+  }
+
   private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return new ServerOptionList(url, getMasterClient().getAddress());
@@ -604,6 +679,12 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
     }
+    if (isUnknownHost(url)) {
+      // the registry has said it knows of no code system on this host
+      ServerOptionList ret = new ServerOptionList(url);
+      ret.language = language;
+      return ret;
+    }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(url));
     if (usage != null) {
       request = request + "&usage="+usage;
@@ -620,6 +701,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
         ret.candidates.add(item.asString("url"));
+      }
+      if (ret.authoritative.isEmpty() && ret.candidates.isEmpty()) {
+        seeUnknownHost(url, json);
       }
       return ret;
     } catch (Exception e) {
@@ -1036,13 +1120,21 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
       final TerminologyClientContext tcc = client;
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
       Bundle bnd = tcc.send(again -> tcc.getClient().search("ValueSet", criteria));
+      // only a value set with the url asked for is an answer: a server may return others too
+      // (one that left matches the url found ...1267.39 for ...1267.3), and the url decides the
+      // order they are sorted in below, so the wrong one can win
+      String vsUrl = CanonicalPair.of(canonical).getUrl();
+      List<ValueSet> vslist = new ArrayList<>();
+      for (BundleEntryComponent be : bnd.getEntry()) {
+        if (be.hasResource() && be.getResource() instanceof ValueSet && vsUrl.equals(((ValueSet) be.getResource()).getUrl())) {
+          vslist.add((ValueSet) be.getResource());
+        }
+      }
       String rid = null;
-      if (bnd.getEntry().size() == 0) {
+      if (vslist.isEmpty()) {
         if (isImplicit) {
           // couldn't find it, but can we expand on it? 
           Parameters p= new Parameters();
@@ -1061,22 +1153,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         } else {
           return null;
         }
-      } else if (bnd.getEntry().size() > 1) {
-        List<ValueSet> vslist = new ArrayList<>();
-        for (BundleEntryComponent be : bnd.getEntry()) {
-          if (be.hasResource() && be.getResource() instanceof ValueSet) {
-            vslist.add((ValueSet) be.getResource());
-          }
-        }
-        if (vslist.isEmpty()) {
-          return null;
-        }
+      } else {
         Collections.sort(vslist, new ValueSetUtilities.ValueSetSorter());
         rid = vslist.get(vslist.size()-1).getIdBase();
-      } else {
-        if (bnd.getEntryFirstRep().hasResource() && bnd.getEntryFirstRep().getResource() instanceof ValueSet) {
-          rid = bnd.getEntryFirstRep().getResource().getIdBase();
-        }
       }
       if (rid == null) {
         return null;
@@ -1101,6 +1180,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       return null;
     }
+    if (isUnknownHost(canonical)) {
+      return null; // the registry has said it knows of no code system on this host
+    }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
       request = request + "&usage="+usage;
@@ -1119,6 +1201,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
       if (server == null) {
+        seeUnknownHost(canonical, json);
         return null;
       }
       if (server.contains("://tx.fhir.org")) {
@@ -1139,9 +1222,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       final TerminologyClientContext tcc = client;
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
       Bundle bnd = tcc.send(again -> tcc.getClient().search("CodeSystem", criteria));
       String rid = null;

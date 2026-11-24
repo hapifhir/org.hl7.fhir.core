@@ -1,25 +1,28 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarUtils;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.ByteArrayInputStream;import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.apache.commons.compress.archivers.tar.TarUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NpmPackageTests implements ResourceLoaderTests {
   @Test

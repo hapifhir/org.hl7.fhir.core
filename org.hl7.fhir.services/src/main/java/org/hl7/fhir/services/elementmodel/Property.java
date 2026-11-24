@@ -829,7 +829,8 @@ public class Property {
   public String getXmlTypeName() {
     TypeRefComponent tr = type;
     if (tr == null) {
-      tr = definition.getTypeFirstRep();
+      // getTypeFirstRep() adds an empty type when there isn't one, and this is reading, not changing, the definition
+      tr = definition.hasType() ? definition.getTypeFirstRep() : new TypeRefComponent();
     }
     StructureDefinition sd = context.fetchTypeDefinition(tr.getWorkingCode());
     return sd.getSnapshot().getElementFirstRep().getPath();

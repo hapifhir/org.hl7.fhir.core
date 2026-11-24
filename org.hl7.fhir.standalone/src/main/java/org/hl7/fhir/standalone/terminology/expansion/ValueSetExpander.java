@@ -881,7 +881,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e.getIssues());
+      // the failure may well be because of a supplement with the url of the code system
+      List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+      if (e.getIssues() != null) {
+        issues.addAll(e.getIssues());
+      }
+      addSameUrlSupplementIssues(issues);
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, issues);
     } catch (TerminologyServiceException e) {
       if (e.getOutcome() != null) {
         return (ValueSetExpansionOutcome) e.getOutcome();
@@ -983,8 +989,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       issue.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
       List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
       issues.add(issue);
+      addSameUrlSupplementIssues(issues);
       return new ValueSetExpansionOutcome(issue.getDetails().getText(), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors, issues);
     }
+    addExpansionIssues(sameUrlSupplementIssues());
     if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
       focus.setCompose(null);
       focus.getExtension().clear();
@@ -1158,6 +1166,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (!requiredSupplements.isEmpty()) {      
       return new ValueSetExpansionOutcome(context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements)), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors, false);
     }
+    addExpansionIssues(sameUrlSupplementIssues());
     if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
       focus.setCompose(null);
       focus.getExtension().clear();
@@ -1169,6 +1178,34 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.setText(null);
     }
     return new ValueSetExpansionOutcome(focus);
+  }
+
+  /**
+   * Issues about the expansion that don't stop it: they go in a contained OperationOutcome,
+   * referred to by the expansion-issue extension on the expansion
+   */
+  private void addExpansionIssues(List<OperationOutcomeIssueComponent> issues) {
+    if (issues.isEmpty()) {
+      return;
+    }
+    int n = 1;
+    while (hasContained(focus, "oo" + n)) {
+      n++;
+    }
+    OperationOutcome oo = new OperationOutcome(context.getModelContext());
+    oo.setId("oo" + n);
+    oo.getIssueList().addAll(issues);
+    focus.addContained(oo);
+    focus.getExpansion().addExtension(ExtensionDefinitions.EXT_EXPANSION_ISSUE, new Reference(context.getModelContext(), "#oo" + n));
+  }
+
+  private boolean hasContained(ValueSet vs, String id) {
+    for (Resource r : vs.getContainedList()) {
+      if (id.equals(r.getIdBase())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void stripVersions(List<ValueSetExpansionContainsComponent> contains) {
@@ -1517,8 +1554,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.getCountIncompleteSystems().contains(sv)) {
         dwc.setNoTotal(true);
       }
+      noteSupplementsWithCodeSystemUrl(inc.getSystem());
       String version = determineVersion(inc.getSystem(), inc.getVersion(), exp, expParams);
       CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), version, requiredSupplements, valueSet);
+      if (isSupplementWithCodeSystemUrl(cs)) {
+        cs = null; // the supplement's version is not a version of the code system it has the url of
+      }
       if (cs != null) {
         checkVersion(inc.getSystem(), cs.getVersion(), exp, expParams);
       }
@@ -1526,16 +1567,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (version == null) {
           throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, inc.getSystem());
         } else {
-          List<CodeSystem> list = context.fetchResourceVersions(CodeSystem.class, inc.getSystem());
-          if (list.size() == 0) {
-            throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP_NONE, inc.getSystem(), version);
-          } else {
-            List<String> versions = new ArrayList<>();
-            for (CodeSystem c : list) {
+          List<String> versions = new ArrayList<>();
+          boolean any = false;
+          for (CodeSystem c : context.fetchResourceVersions(CodeSystem.class, inc.getSystem())) {
+            // a supplement with the url of the code system: its version is not a version of the code system
+            if (!c.hasSupplements()) {
+              any = true;
               if (c.hasVersion()) {
                 versions.add(c.getVersion());
               }
             }
+          }
+          if (!any) {
+            throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP_NONE, inc.getSystem(), version);
+          } else {
             Collections.sort(versions);
             throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_EXP, inc.getSystem(), version, presentVersionList(versions));
           }

@@ -741,9 +741,9 @@ public class ProfilePathProcessor {
           .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
           .withSlicing(new PathSlicingParams(true, elementDefinition, null).withDiffs(diffMatches))
           .processPaths(ncursors2, mapHelper, slicerElement);
-      if (typeList.size() > start + 1) {
-        typeSliceElement.setMin(0);
-      }
+      // no min reset here: a type slice the differential doesn't give a min to already has min 0, from the slicer
+      // (when there's more than one type), and resetting it lost a min the differential stated - but only when the
+      // slicing entry was written out (#2586, see the tsmin tests)
     }
     if (elementToRemove != null) {
       getDifferential().getElement().remove(elementToRemove);
@@ -783,6 +783,65 @@ public class ProfilePathProcessor {
     // ok, done with that - next in the base list
     cursors.baseCursor = newBaseLimit + 1;
     cursors.diffCursor = newDiffLimit + 1;
+  }
+
+  /**
+   * The differential is walking into an element (path) without type slicing it - its rows from start to end
+   * (exclusive) are the element's children. If the element has more than one type (other than just Reference),
+   * the only children it can constrain are its extensions: extension and modifierExtension, and anything under them.
+   * Anything else needs the element restricted to one type, or sliced by type, first.
+   * <p>
+   * If wantThrowExceptions, that's a DefinitionException, otherwise it's an error, and the snapshot is still generated
+   * (the children it's about won't be in it). Either way, the generic 'No match found' error isn't also given for
+   * those children (#2596)
+   */
+  private void checkWalkIntoMultipleTypes(ElementDefinition outcome, String path, int start, int end) {
+    if (outcome.getType().size() < 2) {
+      return;
+    }
+    boolean nonReference = false;
+    for (ElementDefinition.TypeRefComponent t : outcome.getType()) {
+      if (!"Reference".equals(t.getWorkingCode())) {
+        nonReference = true;
+      }
+    }
+    if (!nonReference) {
+      return;
+    }
+    int first = -1;
+    for (int i = start; i < end && i < getDifferential().getElement().size(); i++) {
+      ElementDefinition ed = getDifferential().getElement().get(i);
+      if (!isExtensionChild(ed.getPath(), path)) {
+        ed.setUserData(UserDataNames.SNAPSHOT_DIFF_ERROR_REPORTED, true);
+        if (first == -1) {
+          first = i;
+        }
+      }
+    }
+    if (first > -1) {
+      String msg = profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, path, getDifferential().getElement().get(first).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName());
+      profileUtilities.addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.STRUCTURE, "StructureDefinition.differential.element["+first+"]", msg, IssueSeverity.ERROR));
+    }
+  }
+
+  /**
+   * whether childPath is extension or modifierExtension of the element at path, or under one of them. For a choice
+   * element, the children may use the type specific name (value[x] -> valueQuantity.extension)
+   */
+  private boolean isExtensionChild(String childPath, String path) {
+    String rest = null;
+    if (childPath.startsWith(path + ".")) {
+      rest = childPath.substring(path.length() + 1);
+    } else if (path.endsWith("[x]")) {
+      String stem = path.substring(0, path.length() - 3);
+      if (childPath.startsWith(stem) && childPath.indexOf(".", stem.length()) > -1) {
+        rest = childPath.substring(childPath.indexOf(".", stem.length()) + 1);
+      }
+    }
+    if (rest == null) {
+      return false;
+    }
+    return Utilities.existsInList(rest, "extension", "modifierExtension") || rest.startsWith("extension.") || rest.startsWith("modifierExtension.");
   }
 
   private ElementDefinition processSimplePathWithOneMatchingElementInDifferential(ElementDefinition currentBase, String currentBasePath, List<ElementDefinition> diffMatches, ProfilePathProcessorState cursors, MappingAssistant mapHelper, ElementDefinition slicerElement) {
@@ -971,21 +1030,11 @@ public class ProfilePathProcessor {
             outcome.getType().clear();
             outcome.getType().addAll(ntr);
           }
-          if (outcome.getType().size() > 1)
-            for (ElementDefinition.TypeRefComponent t : outcome.getType()) {
-              if (!t.getCode().equals("Reference")) {
-                boolean nonExtension = false;
-                for (ElementDefinition ed : diffMatches)
-                  if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension"))
-                    nonExtension = true;
-                if (nonExtension)
-                  throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
-              }
-            }
         }
         int start = cursors.diffCursor;
         while (cursors.diffCursor <= getDiffLimit() && getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
           cursors.diffCursor++;
+        checkWalkIntoMultipleTypes(outcome, diffMatches.get(0).getPath(), start, cursors.diffCursor);
         if (outcome.hasContentReference()) {
           ProfileUtilities.ElementDefinitionResolution target = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReferenceElement());
           if (target == null)
@@ -1355,27 +1404,13 @@ public class ProfilePathProcessor {
         if (outcome.getType().size() == 0 && !outcome.hasContentReference()) {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, currentBasePath, getDifferential().getElement().get(cursors.diffCursor).getPath(), getProfileName()));
         }
-        boolean nonExtension = false;
-        if (outcome.getType().size() > 1) {
-          for (ElementDefinition.TypeRefComponent t : outcome.getType()) {
-            if (!t.getWorkingCode().equals("Reference")) {
-              for (ElementDefinition ed : diffMatches) {
-                if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension")) {
-                  nonExtension = true;
-                }
-              }
-            }
-          }
-        }
         if (!profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), currentBasePath + ".")) {
           cursors.diffCursor++;
         }
         int start = cursors.diffCursor;
         while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), currentBasePath + "."))
           cursors.diffCursor++;
-        if (nonExtension) {
-          throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, currentBasePath, getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
-        }
+        checkWalkIntoMultipleTypes(outcome, currentBasePath, start, cursors.diffCursor);
         if (outcome.hasContentReference()) {
           ProfileUtilities.ElementDefinitionResolution tgt = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReferenceElement());
           if (tgt == null)
@@ -1548,6 +1583,9 @@ public class ProfilePathProcessor {
             .withDiffLimit(newDiffLimit)
             .withWebUrl(profileUtilities.getWebUrl(dt, getWebUrl()))
             .withContextPathSource(currentBasePath).withContextPathTarget(outcome.getPath())
+            // a new structure (the data type), so a content reference we came through doesn't apply in it. Inheriting the
+            // redirection mapped the data type's paths back onto the element we came from, and recursed forever (fhir-ig-publisher#1299)
+            .withRedirector(new ArrayList<ElementRedirection>())
             .withSlicing(new PathSlicingParams())
             .processPaths(nc, mapHelper, null);
       } else {

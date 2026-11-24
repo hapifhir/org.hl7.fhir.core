@@ -1,9 +1,9 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.hl7.fhir.services.elementmodel.Element;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
 
 public class EntrySummary {
 

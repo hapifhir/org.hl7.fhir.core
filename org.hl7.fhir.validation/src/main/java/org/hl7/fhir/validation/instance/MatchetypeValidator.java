@@ -1,26 +1,21 @@
 package org.hl7.fhir.validation.instance;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.Property;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+
+import java.util.*;
 
 public class MatchetypeValidator {
 

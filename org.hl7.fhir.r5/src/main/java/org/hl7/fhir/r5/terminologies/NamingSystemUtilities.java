@@ -15,6 +15,7 @@ public class NamingSystemUtilities {
   private static Map<String, NamingSystem> systemUrlMap(IWorkerContext context) {
     Map<String, NamingSystem> result = (Map<String, NamingSystem>) context.retrieveAnalysis(NamingSystemUtilities.class);
     if (result == null) {
+      long definitionsVersion = context.getDefinitionsVersion();
       result = new HashMap<>();
       List<NamingSystem> nsl = context.fetchResourcesByType(NamingSystem.class);
       nsl.sort(new ResourceSorters.CanonicalResourceSortByTypeId());
@@ -27,7 +28,7 @@ public class NamingSystemUtilities {
           }
         }
       }
-      context.storeAnalysis(NamingSystemUtilities.class, result);
+      context.storeAnalysis(NamingSystemUtilities.class, result, definitionsVersion);
     }
     return result;
   }

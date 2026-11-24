@@ -2,13 +2,12 @@ package org.hl7.fhir.utilities.npm;
 
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import okhttp3.mockwebserver.MockWebServer;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -61,6 +60,17 @@ public class CIBuildClientTests {
     "  \"name\" : \""+ DUMMY_PACKAGE_NAME +"\",\n" +
     "  \"jurisdiction\" : \"urn:iso:std:iso:3166#CA\"\n" +
     "}";
+
+  /** a branch name goes in a url: a bad one is refused before anything is asked of the server */
+  @Test
+  public void aBadBranchIsRefused() throws IOException {
+    MockWebServer server = new MockWebServer();
+    CIBuildClient ciBuildClient = getCiBuildClient(server);
+    for (String branch : new String[] {"../../x", "a/b", "-x", ""}) {
+      org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> ciBuildClient.loadFromCIBuild(DUMMY_PACKAGE, branch), branch);
+    }
+    assertThat(server.getRequestCount()).isEqualTo(0);
+  }
 
   @Test
   public void testOnlyOneQasQueryUnderRefreshThreshold() throws IOException, InterruptedException {
@@ -141,6 +151,28 @@ public class CIBuildClientTests {
     assertThat(wrongDate).isNotEqualTo(DUMMY_PACKAGE_DATE);
     doReturn(wrongDate).when(npmPackage).date();
     assertFalse(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage));
+  }
+
+  @Test
+  void testIsCurrentBranchPackage() throws IOException, InterruptedException {
+    // a branch's ci-build (current$branch) is checked against the branch's own manifest
+    MockWebServer server = new MockWebServer();
+    CIBuildClient ciBuildClient = getCiBuildClient(server);
+
+    enqueueJson(server, dummyQas);
+    enqueueJson(server, dummyManifest);
+
+    NpmPackage npmPackage = Mockito.spy(NpmPackage.empty());
+    doReturn(DUMMY_PACKAGE_DATE).when(npmPackage).date();
+    assertTrue(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage, "my-branch"));
+
+    server.takeRequest(); // qas.json
+    // JsonParser.parseObjectFromUrl adds ?nocache=<time>, so compare the path without the query
+    assertThat(server.takeRequest().getRequestUrl().encodedPath()).isEqualTo("/ig/Dummy-Organisation/dummy-project/branches/my-branch/package.manifest.json");
+
+    enqueueJson(server, dummyManifest);
+    doReturn("1092302309").when(npmPackage).date();
+    assertFalse(ciBuildClient.isCurrent(DUMMY_PACKAGE, npmPackage, "my-branch"));
   }
 
   private static void enqueueDummyTgzStream(MockWebServer server, String fake_tgz) {

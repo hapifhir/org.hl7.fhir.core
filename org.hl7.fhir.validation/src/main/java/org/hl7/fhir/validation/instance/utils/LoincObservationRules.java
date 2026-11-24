@@ -1,16 +1,12 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import java.util.*;
 
 /**
  * What a LOINC code says about the Observation that uses it - the kind of value (SCALE_TYP), the

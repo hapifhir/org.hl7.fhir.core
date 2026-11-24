@@ -1,21 +1,20 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import okhttp3.mockwebserver.RecordedRequest;
+import okio.Buffer;
+import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import okhttp3.mockwebserver.RecordedRequest;
-import okio.Buffer;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PackageServerTest {
 

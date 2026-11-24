@@ -873,12 +873,30 @@ public class BaseWorkerContextTests {
    */
   static List<Exception> serverAnswers() {
     return List.of(
-      // how FHIRsmith reports a failure it didn't anticipate
-      new EFhirClientException(500, "Error from server: unexpected", OperationOutcomeUtilities.createError("Unexpected error expanding the value set")),
       new EFhirClientException(404, "unknown value set", serverError(OperationOutcome.IssueType.NOTFOUND, "unknown value set")),
-      // there was a response, so its status decides
+      new EFhirClientException(422, "unable to expand", serverError(OperationOutcome.IssueType.BUSINESSRULE, "unable to expand")));
+  }
+
+  /**
+   * $expand failures where the server responded, but not with an answer about the value set, so they are only kept
+   * for this run
+   */
+  static List<Exception> serverFailures() {
+    return List.of(
+      // how FHIRsmith reports a failure it didn't anticipate: INTERNAL_ERROR
+      new EFhirClientException(500, "Error from server: unexpected", OperationOutcomeUtilities.createError("Unexpected error expanding the value set")),
+      // there was a response, so its status decides: INTERNAL_ERROR
       new EFhirClientException(500, "Error reading Http Response", new IOException("unexpected end of stream")),
-      new EFhirClientException(401, "unauthorized"));
+      // not allowed to use the server: NOSERVICE
+      new EFhirClientException(401, "unauthorized"),
+      new EFhirClientException(403, "forbidden"),
+      // no response status and no OperationOutcome - failed on this side: INTERNAL_ERROR
+      new FHIRException("unable to build the request"));
+  }
+
+  private static boolean isForThisRun(TerminologyServiceErrorClass errorClass) {
+    return errorClass == TerminologyServiceErrorClass.SERVER_ERROR || errorClass == TerminologyServiceErrorClass.NOSERVICE
+      || errorClass == TerminologyServiceErrorClass.INTERNAL_ERROR;
   }
 
   private interface Expansion {
@@ -897,7 +915,7 @@ public class BaseWorkerContextTests {
 
     ValueSetExpansionOutcome res = expansion.expand();
     assertNull(res.getValueset());
-    assertEquals(!expectReloaded, res.getErrorClass() == TerminologyServiceErrorClass.SERVER_ERROR, "error class " + res.getErrorClass());
+    assertEquals(!expectReloaded, isForThisRun(res.getErrorClass()), "error class " + res.getErrorClass());
     assertSame(res, expansion.expand());
     Mockito.verify(terminologyClient, times(1)).expandValueset(any(), any(Parameters.class));
     cache.save();
@@ -937,6 +955,12 @@ public class BaseWorkerContextTests {
     expandIncludeTwiceThenReload(failure, true, folder);
   }
 
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandIncludeServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(failure, false, folder);
+  }
+
   private void expandUrlTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
     // an https master, so chooseServer(url) finds it as is
     Mockito.doReturn("https://tx.example.org").when(terminologyClient).getAddress();
@@ -957,6 +981,12 @@ public class BaseWorkerContextTests {
   @MethodSource("serverAnswers")
   void testExpandUrlServerAnswerIsReloaded(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
     expandUrlTwiceThenReload(failure, true, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandUrlServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandUrlTwiceThenReload(failure, false, folder);
   }
 
   @Test
@@ -983,9 +1013,55 @@ public class BaseWorkerContextTests {
     }
   }
 
+  /**
+   * The registry answers, and names no server for the value set: that's an answer (RESOURCE_UNSUPPORTED), not a missing
+   * terminology service (NOSERVICE), so it's kept for later runs like other answers
+   */
   @Test
-  void testExpandUrlNoServerIsReloaded(@TempDir java.nio.file.Path folder) throws IOException {
-    // no server at all, with no failed registry call: that's an answer, kept for later runs
+  void testExpandUrlRegistryNoServerIsReloaded(@TempDir java.nio.file.Path folder) throws IOException {
+    com.sun.net.httpserver.HttpServer registryServer = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("localhost", 0), 0);
+    registryServer.createContext("/", exchange -> {
+      byte[] body = "{\"formatVersion\":\"1\",\"authoritative\":[],\"candidates\":[]}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+      exchange.getResponseHeaders().add("Content-Type", "application/json");
+      exchange.sendResponseHeaders(200, body.length);
+      exchange.getResponseBody().write(body);
+      exchange.close();
+    });
+    registryServer.start();
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(false);
+    try {
+      String registry = "http://localhost:" + registryServer.getAddress().getPort();
+      // before the real cache, which can't save the mock's capabilities
+      context.terminologyClientManager.setMasterClient(terminologyClient, registry);
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+      context.initTxCache(cache);
+      context.expansionParameters = new AtomicReference<>(new Parameters());
+      ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+      ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, res.getErrorClass(), res.getError());
+      cache.save();
+      TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+      ValueSetExpansionOutcome reloaded = next.getExpansion(next.generateExpandToken(DUMMY_URL, opt));
+      assertNotNull(reloaded);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, reloaded.getErrorClass());
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(true);
+      registryServer.stop(0);
+    }
+  }
+
+  @Test
+  void testErrorClassReadsTheOldName() {
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("VALUESET_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("RESOURCE_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.NOSERVICE, TerminologyServiceErrorClass.fromName("NOSERVICE"));
+    assertThrows(IllegalArgumentException.class, () -> TerminologyServiceErrorClass.fromName("NOT_A_CLASS"));
+  }
+
+  @Test
+  void testExpandUrlNoServerIsForThisRun(@TempDir java.nio.file.Path folder) throws IOException {
+    // no terminology server at all: NOSERVICE, so it is asked again next run
     BaseWorkerContext ctx = getBaseWorkerContext();
     TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
     ctx.initTxCache(cache);
@@ -993,10 +1069,10 @@ public class BaseWorkerContextTests {
     ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
 
     ValueSetExpansionOutcome res = ctx.expandVS(opt, DUMMY_URL);
-    assertEquals(TerminologyServiceErrorClass.UNKNOWN, res.getErrorClass(), res.getError());
+    assertEquals(TerminologyServiceErrorClass.NOSERVICE, res.getErrorClass(), res.getError());
     cache.save();
     TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
-    assertNotNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
+    assertNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
   }
 
   private void expandValueSetTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
@@ -1022,6 +1098,12 @@ public class BaseWorkerContextTests {
   @MethodSource("serverAnswers")
   void testExpandValueSetServerAnswerIsReloaded(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
     expandValueSetTwiceThenReload(failure, true, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandValueSetServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandValueSetTwiceThenReload(failure, false, folder);
   }
 
   @Test

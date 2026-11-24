@@ -1,12 +1,5 @@
 package org.hl7.fhir.conversion.tests;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.loaders.XVersionLoader;
 import org.hl7.fhir.convertors.misc.ProfileVersionAdaptor;
@@ -15,28 +8,31 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.Identifier;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.services.conformance.profile.BindingResolution;
 import org.hl7.fhir.services.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities.AllowUnknownProfile;
-import org.hl7.fhir.services.validation.IResourceValidator;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.renderers.RendererFactory;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
 import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -50,6 +46,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SnapShotGenerationXTests {
 

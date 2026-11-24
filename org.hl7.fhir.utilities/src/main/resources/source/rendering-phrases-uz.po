@@ -647,6 +647,11 @@ msgstr "Tizim bo‘ylab qidiruv parametrlari bo‘yicha qisqacha ma’lumot"
 msgid "support"
 msgstr "qo‘llab-quvvatlash"
 
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
+
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"

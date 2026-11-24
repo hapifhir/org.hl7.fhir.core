@@ -26,7 +26,7 @@ public class NpmPackageVersionConverterTests implements ResourceLoaderTests {
 
   @Test
   public void testEvilTgz() throws IOException {
-    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> {
       InputStream tgzStream = getResourceAsInputStream("misc", "npmPackageVersionConverter", "tgz-evil.tgz");
       NpmPackageVersionConverter converter = new NpmPackageVersionConverter(null, null, "r5", null, null);
       converter.loadContentMap(tgzStream);

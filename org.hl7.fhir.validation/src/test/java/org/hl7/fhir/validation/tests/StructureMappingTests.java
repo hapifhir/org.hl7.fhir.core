@@ -1,30 +1,15 @@
 package org.hl7.fhir.validation.tests;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.fml.StructureMapTools;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.model.utilities.formats.IParser;
-import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -43,6 +28,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class StructureMappingTests {
 

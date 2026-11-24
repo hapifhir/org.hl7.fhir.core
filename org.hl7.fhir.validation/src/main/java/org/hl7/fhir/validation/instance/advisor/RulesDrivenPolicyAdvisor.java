@@ -1,18 +1,10 @@
 package org.hl7.fhir.validation.instance.advisor;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeoutException;
-
-import javax.annotation.Nonnull;
-
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.ElementDefinition;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.validation.IMessagingServices;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
@@ -21,6 +13,13 @@ import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPo
 import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation {
