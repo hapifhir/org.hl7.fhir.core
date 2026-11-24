@@ -328,10 +328,12 @@ import org.junit.jupiter.api.*;
    /** clearing with exemptions deletes a link in the folder, not what it links to */
    @Test
    void clearDirectoryWithExemptionsDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-links"));
-     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     java.nio.file.Path testDir = Files.createDirectories(tempDir.resolve("clear-links"));
+
+     java.nio.file.Path precious = Files.createDirectories(testDir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
-     java.nio.file.Path cache = Files.createDirectories(dir.resolve("cache"));
+
+     java.nio.file.Path cache = Files.createDirectories(testDir.resolve("cache"));
      Files.write(cache.resolve("keep.cache"), "k".getBytes(StandardCharsets.UTF_8));
      Files.write(cache.resolve("other.cache"), "o".getBytes(StandardCharsets.UTF_8));
      Files.createSymbolicLink(cache.resolve("sub"), precious);
@@ -343,14 +345,16 @@ import org.junit.jupiter.api.*;
    /** clearing never follows a link, however deep in the folder it is */
    @Test
    void clearDirectoryDoesNotFollowLinks() throws IOException {
-     java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("clear-deep-links"));
-     java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
+     java.nio.file.Path testDir = Files.createDirectories(tempDir.resolve("clear-deep-links"));
+
+     java.nio.file.Path precious = Files.createDirectories(testDir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
-     java.nio.file.Path target = Files.createDirectories(dir.resolve("target").resolve("sub").resolve("deeper"));
-     Files.createSymbolicLink(target.resolve("link"), precious);
-     Files.createSymbolicLink(dir.resolve("target").resolve("file-link"), precious.resolve("a.txt"));
-     FileUtilities.clearDirectory(dir.resolve("target").toString());
-     assertArrayEquals(new String[0], dir.resolve("target").toFile().list());
+
+     java.nio.file.Path target = Files.createDirectories(testDir.resolve("target").resolve("sub").resolve("deeper"));
+     Files.createSymbolicLink(target.resolve("link-to-precious"), precious);
+     Files.createSymbolicLink(testDir.resolve("target").resolve("file-link-to-precious-file"), precious.resolve("a.txt"));
+     FileUtilities.clearDirectory(testDir.resolve("target").toString());
+     assertArrayEquals(new String[0], testDir.resolve("target").toFile().list());
      assertTrue(Files.exists(precious.resolve("a.txt")));
    }
 
@@ -392,17 +396,54 @@ import org.junit.jupiter.api.*;
      }
    }
 
-   /** system folders are never emptied; other folders at the top (common in containers and on build servers) can be */
+   /** system folders are never emptied (path is relative to the file system root) */
    @org.junit.jupiter.params.ParameterizedTest
-   @org.junit.jupiter.params.provider.CsvSource({
-     "'', true", "usr, true", "etc, true", "home, true", "Users, true", "var, true", "opt, true", "mnt, true", "Windows, true",
-     "usr/local, true", "etc/ssl, true", "home/someone, true", "Users/someone, true", "Volumes/disk, true", "private/tmp, true",
-     "var/lib, true", "var/log, true", "var/folders, true", "opt/homebrew, true", "mnt/c, true", "Program Files/x, true",
-     "work, false", "build, false", "output, false", "var/ci, false", "opt/build, false", "mnt/build, false", "srv/igs, false",
-     "usr/local/build, false", "home/someone/ig, false", "var/lib/x, false"})
-   void systemFolders(String path, boolean refused) {
+   @org.junit.jupiter.params.provider.ValueSource(strings = {
+     "",
+     "usr",
+     "etc",
+     "home",
+     "Users",
+     "var",
+     "opt",
+     "mnt",
+     "Windows",
+     "usr/local",
+     "etc/ssl",
+     "home/someone",
+     "Users/someone",
+     "Volumes/disk",
+     "private/tmp",
+     "var/lib",
+     "var/log",
+     "var/folders",
+     "opt/homebrew",
+     "mnt/c",
+     "Program Files/x"})
+   void whyNotSafeToEmptySystemFolder_ReturnsReason(String path) {
      java.nio.file.Path p = File.listRoots()[0].toPath().resolve(path);
-     assertEquals(refused, FileUtilities.whyNotSafeToEmptySystemFolder(p) != null, p.toString());
+     assertNotNull(FileUtilities.whyNotSafeToEmptySystemFolder(p), p.toString());
+   }
+
+   /**
+    * other folders near the top (common in containers and on build servers) can be emptied (path is relative to the
+    * file system root)
+    */
+   @org.junit.jupiter.params.ParameterizedTest
+   @org.junit.jupiter.params.provider.ValueSource(strings = {
+     "work",
+     "build",
+     "output",
+     "var/ci",
+     "opt/build",
+     "mnt/build",
+     "srv/igs",
+     "usr/local/build",
+     "home/someone/ig",
+     "var/lib/x"})
+   void whyNotSafeToEmptySystemFolder_ReturnsNull(String path) {
+     java.nio.file.Path p = File.listRoots()[0].toPath().resolve(path);
+     assertNull(FileUtilities.whyNotSafeToEmptySystemFolder(p), p.toString());
    }
 
    @Test
@@ -464,13 +505,16 @@ import org.junit.jupiter.api.*;
    @Test
    void deleteAllFilesDoesNotFollowLinks() throws IOException {
      java.nio.file.Path dir = Files.createDirectories(tempDir.resolve("delete-all-links"));
+
      java.nio.file.Path precious = Files.createDirectories(dir.resolve("precious"));
      Files.write(precious.resolve("a.txt"), "a".getBytes(StandardCharsets.UTF_8));
+
      java.nio.file.Path work = Files.createDirectories(dir.resolve("work").resolve("sub"));
      Files.write(work.resolve("b.txt"), "b".getBytes(StandardCharsets.UTF_8));
      Files.write(work.resolve("c.html"), "c".getBytes(StandardCharsets.UTF_8));
      Files.createSymbolicLink(work.resolve("link"), precious);
      FileUtilities.deleteAllFiles(dir.resolve("work").toString(), ".txt");
+
      assertFalse(Files.exists(work.resolve("b.txt")));
      assertTrue(Files.exists(work.resolve("c.html")));
      FileUtilities.deleteAllFiles(dir.resolve("work").toString());

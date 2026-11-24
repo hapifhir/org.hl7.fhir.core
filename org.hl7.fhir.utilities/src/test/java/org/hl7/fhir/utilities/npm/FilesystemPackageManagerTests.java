@@ -262,10 +262,19 @@ public class FilesystemPackageManagerTests {
 
   @ParameterizedTest
   @CsvSource({
-    "current$my-branch, true", "current$2026-11-gg-supplement-unversioned, true", "current$v1.2_x, true",
-    "current, false", "1.2.3, false", "dev, false",
+    "current$my-branch, true",
+    "current$2026-11-gg-supplement-unversioned, true",
+    "current$v1.2_x, true",
+    "current, false",
+    "1.2.3, false",
+    "dev, false",
     // the branch name is used in a url and a folder name: no '/' (not supported), and nothing else odd
-    "current$, false", "current$a/b, false", "current$../x, false", "current$-x, false", "current$a b, false", "current$$x, false"
+    "current$, false",
+    "current$a/b, false",
+    "current$../x, false",
+    "current$-x, false",
+    "current$a b, false",
+    "current$$x, false"
   })
   void testIsCurrentBranch(String version, boolean expected) {
     assertEquals(expected, FilesystemPackageCacheManager.isCurrentBranch(version), version);
@@ -276,7 +285,11 @@ public class FilesystemPackageManagerTests {
    * used in a folder name and in a url (current$../../x would be fetched from build.fhir.org/ig/../../x)
    */
   @ParameterizedTest
-  @org.junit.jupiter.params.provider.ValueSource(strings = {"current$../../x", "current$a/b", "current$", "current$-x"})
+  @org.junit.jupiter.params.provider.ValueSource(strings = {
+    "current$../../x",
+    "current$a/b",
+    "current$",
+    "current$-x"})
   void aBadBranchIsRefusedBeforeItIsUsed(String version) throws IOException {
     File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch"));
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
