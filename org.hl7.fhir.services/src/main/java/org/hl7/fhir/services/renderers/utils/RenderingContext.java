@@ -1172,7 +1172,7 @@ public class RenderingContext extends RenderingI18nContext {
    * to give the context a set of its own, to track which anchors rendering uses
    */
   public RenderingContext setAnchors(Set<String> anchors) {
-    this.anchors = anchors;
+    this.anchors = Objects.requireNonNull(anchors);
     return this;
   }
 

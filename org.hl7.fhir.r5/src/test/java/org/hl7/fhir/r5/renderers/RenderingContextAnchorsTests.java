@@ -1,27 +1,28 @@
-package org.hl7.fhir.services.renderers;
+package org.hl7.fhir.r5.renderers;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import org.hl7.fhir.services.renderers.utils.RenderingContext;
-import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.junit.jupiter.api.Test;
 
-public class RenderingContextAnchorsTest {
+class RenderingContextAnchorsTests {
 
   private RenderingContext context() {
     return new RenderingContext(null, null, null, null, "http://hl7.org/fhir", "", Locale.ENGLISH, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
   }
 
   @Test
-  public void testSetAnchorsIsUsedAndSharedByCopies() {
+  void testSetAnchorsIsUsedAndSharedByCopies() {
     RenderingContext rc = context();
     rc.addAnchor("old");
     Set<String> anchors = new HashSet<>();
@@ -45,7 +46,7 @@ public class RenderingContextAnchorsTest {
   }
 
   @Test
-  public void testCopiesMadeBeforeKeepTheOldSet() {
+  void testCopiesMadeBeforeKeepTheOldSet() {
     RenderingContext rc = context();
     RenderingContext before = rc.copy(true);
     Set<String> old = rc.getAnchors();
@@ -53,5 +54,13 @@ public class RenderingContextAnchorsTest {
     rc.addAnchor("a");
     assertSame(old, before.getAnchors());
     assertFalse(before.hasAnchor("a"));
+  }
+
+  @Test
+  void testSetAnchorsRejectsNull() {
+    RenderingContext rc = context();
+    Set<String> anchors = rc.getAnchors();
+    assertThrows(NullPointerException.class, () -> rc.setAnchors(null));
+    assertSame(anchors, rc.getAnchors());
   }
 }
