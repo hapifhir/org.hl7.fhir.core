@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Availability40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ExtendedContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Address40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
@@ -43,15 +48,24 @@ import org.hl7.fhir.model.core.*;
 
 public class Location40_N {
 
+  // R6 hoursOfOperation is an Availability: R4 hoursOfOperation maps to its availableTime, and the rest are cross-version extensions
+  public static final String AVAILABILITY_EXCEPTIONS_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Location.availabilityExceptions";
+  public static final String HOURS_PERIOD_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Location.hoursOfOperation.period";
+  public static final String HOURS_NOT_AVAILABLE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Location.hoursOfOperation.notAvailableTime";
+
+  public static final String CONTACT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Location.contact";
+
   public static org.hl7.fhir.model.core.Location convertLocation(org.hl7.fhir.r4.model.Location src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Location tgt = new org.hl7.fhir.model.core.Location();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Location", "5.0", new String[] {"characteristic", "virtualService"}, CrossVersionElements40_N.urls("Location", "6.0", new String[] {"code"}, CONTACT_EXTENSION_URL, AVAILABILITY_EXCEPTIONS_EXTENSION_URL, HOURS_PERIOD_EXTENSION_URL, HOURS_NOT_AVAILABLE_EXTENSION_URL)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "characteristic", "virtualService");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "code");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertLocationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasOperationalStatus())
       tgt.setOperationalStatus(Coding40_N.convertCoding(src.getOperationalStatus()));
     if (src.hasName())
@@ -60,11 +74,10 @@ public class Location40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasMode())
-      tgt.setModeElement(convertLocationMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertLocationMode(src.getModeElement()), src.fhirType(), "mode"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.getContactFirstRep().addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getTelecom(), src.getExtension(), CONTACT_EXTENSION_URL, tgt::addContact);
     if (src.hasAddress())
       tgt.setAddress(Address40_N.convertAddress(src.getAddress()));
     if (src.hasPhysicalType())
@@ -75,10 +88,14 @@ public class Location40_N {
       tgt.setManagingOrganization(Reference40_N.convertReference(src.getManagingOrganization()));
     if (src.hasPartOf())
       tgt.setPartOf(Reference40_N.convertReference(src.getPartOf()));
-//    for (org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
-//      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    for (org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
+      tgt.getHoursOfOperation().addAvailableTime(Availability40_N.convertAvailableTime(t, "openingTime", "closingTime"));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(HOURS_NOT_AVAILABLE_EXTENSION_URL))
+      CrossVersionDatatype40_N.populateDatatype(ext, tgt.getHoursOfOperation().addNotAvailableTime());
+    if (src.hasExtension(HOURS_PERIOD_EXTENSION_URL))
+      tgt.getHoursOfOperation().setPeriod(Period40_N.convertPeriod((org.hl7.fhir.r4.model.Period) src.getExtensionByUrl(HOURS_PERIOD_EXTENSION_URL).getValue()));
+    if (src.hasAvailabilityExceptions())
+      tgt.addExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL, String40_N.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -87,11 +104,13 @@ public class Location40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Location tgt = new org.hl7.fhir.r4.model.Location();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, AVAILABILITY_EXCEPTIONS_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "characteristic", "virtualService");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "code");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertLocationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasOperationalStatus())
       tgt.setOperationalStatus(Coding40_N.convertCoding(src.getOperationalStatus()));
     if (src.hasName())
@@ -100,12 +119,10 @@ public class Location40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasMode())
-      tgt.setModeElement(convertLocationMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertLocationMode(src.getModeElement()), src.fhirType(), "mode"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getTypeList())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
-    for (ExtendedContactDetail t1 : src.getContactList())
-      for (ContactPoint t : t1.getTelecomList())
-        tgt.addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getContactList(), tgt.getTelecom(), tgt.getExtension(), CONTACT_EXTENSION_URL);
     if (src.hasAddress())
       tgt.setAddress(Address40_N.convertAddress(src.getAddress()));
     if (src.hasForm())
@@ -116,10 +133,17 @@ public class Location40_N {
       tgt.setManagingOrganization(Reference40_N.convertReference(src.getManagingOrganization()));
     if (src.hasPartOf())
       tgt.setPartOf(Reference40_N.convertReference(src.getPartOf()));
-//    for (org.hl7.fhir.model.core.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperationList())
-//      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    if (src.hasHoursOfOperation()) {
+      for (org.hl7.fhir.model.core.Availability.AvailabilityAvailableTimeComponent t : src.getHoursOfOperation().getAvailableTimeList())
+        Availability40_N.convertAvailableTime(t, tgt.addHoursOfOperation(), "openingTime", "closingTime");
+      // R4 Location has nothing for times it's not available
+      for (org.hl7.fhir.model.core.Availability.AvailabilityNotAvailableTimeComponent t : src.getHoursOfOperation().getNotAvailableTimeList())
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(HOURS_NOT_AVAILABLE_EXTENSION_URL, t));
+      if (src.getHoursOfOperation().hasPeriod())
+        tgt.addExtension(HOURS_PERIOD_EXTENSION_URL, Period40_N.convertPeriod(src.getHoursOfOperation().getPeriod()));
+    }
+    if (src.hasExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL))
+      tgt.setAvailabilityExceptionsElement(String40_N.convertString((org.hl7.fhir.model.core.StringType) src.getExtensionByUrl(AVAILABILITY_EXCEPTIONS_EXTENSION_URL).getValue()));
     for (org.hl7.fhir.model.core.Reference t : src.getEndpointList()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }

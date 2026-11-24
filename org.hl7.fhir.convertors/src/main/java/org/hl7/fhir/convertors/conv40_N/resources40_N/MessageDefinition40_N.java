@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
@@ -52,7 +54,12 @@ public class MessageDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MessageDefinition tgt = new org.hl7.fhir.model.core.MessageDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MessageDefinition", "5.0", new String[] {"copyrightLabel"}, CrossVersionElements40_N.urls("MessageDefinition", "6.0", new String[] {}, VersionConvertorConstants.EXT_VERSION_ALGORITHM)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "copyrightLabel");
+    // R6 dropped graph
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "MessageDefinition", tgt.getExtension(), "graph");
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -89,14 +96,14 @@ public class MessageDefinition40_N {
       tgt.setBaseElement(Canonical40_N.convertCanonical(src.getBaseElement()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getParent())
       tgt.getParentList().add(Canonical40_N.convertCanonical(t));
-    if (src.hasEvent())
-      tgt.setEvent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEvent()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "event", tgt, tgt.getExtension());
     if (src.hasCategory())
-      tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
+      tgt.setCategoryElement(CrossVersionElements40_N.toR6Code(src.getCategoryElement(), convertMessageSignificanceCategory(src.getCategoryElement()), src.fhirType(), "category"));
     for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus())
       tgt.addFocus(convertMessageDefinitionFocusComponent(t));
     if (src.hasResponseRequired())
-      tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
+      tgt.setResponseRequiredElement(CrossVersionElements40_N.toR6Code(src.getResponseRequiredElement(), convertMessageheaderResponseRequest(src.getResponseRequiredElement()), src.fhirType(), "responseRequired"));
     for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
     return tgt;
@@ -106,7 +113,11 @@ public class MessageDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition tgt = new org.hl7.fhir.r4.model.MessageDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.url("MessageDefinition", "4.0", "graph"));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "MessageDefinition", "graph");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "copyrightLabel");
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -143,14 +154,13 @@ public class MessageDefinition40_N {
       tgt.setBaseElement(Canonical40_N.convertCanonical(src.getBaseElement()));
     for (org.hl7.fhir.model.core.CanonicalType t : src.getParentList())
       tgt.getParent().add(Canonical40_N.convertCanonical(t));
-    if (src.hasEvent())
-      tgt.setEvent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEvent()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "event", tgt, tgt.getExtension());
     if (src.hasCategory())
-      tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
+      tgt.setCategoryElement(CrossVersionElements40_N.toR4Code(src.getCategoryElement(), convertMessageSignificanceCategory(src.getCategoryElement()), src.fhirType(), "category"));
     for (org.hl7.fhir.model.core.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocusList())
       tgt.addFocus(convertMessageDefinitionFocusComponent(t));
     if (src.hasResponseRequired())
-      tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
+      tgt.setResponseRequiredElement(CrossVersionElements40_N.toR4Code(src.getResponseRequiredElement(), convertMessageheaderResponseRequest(src.getResponseRequiredElement()), src.fhirType(), "responseRequired"));
     for (org.hl7.fhir.model.core.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponseList())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
     return tgt;

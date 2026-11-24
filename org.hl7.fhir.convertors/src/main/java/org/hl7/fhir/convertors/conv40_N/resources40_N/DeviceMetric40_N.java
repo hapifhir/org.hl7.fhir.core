@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Instant40_N;
@@ -40,27 +41,46 @@ import org.hl7.fhir.model.core.Enumeration;
 
 public class DeviceMetric40_N {
 
+  // R6 changed these codes to CodeableConcepts. When R4's code can't carry everything in the CodeableConcept
+  // (other codings, text, a code that isn't in the R4 code list...), the whole CodeableConcept goes in a
+  // cross-version extension on the code, and comes back from there
+
+  private static void keepCodeableConcept(org.hl7.fhir.model.core.CodeableConcept src, org.hl7.fhir.r4.model.Element tgt, org.hl7.fhir.model.core.CodeableConcept regenerated, String path) throws FHIRException {
+    if (tgt != null && (regenerated == null || !src.equalsDeep(regenerated)))
+      tgt.addExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-" + path, CodeableConcept40_N.convertCodeableConcept(src));
+  }
+
+  private static boolean hasKeptCodeableConcept(org.hl7.fhir.r4.model.Element src, String path) {
+    return src.hasExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-" + path);
+  }
+
+  private static org.hl7.fhir.model.core.CodeableConcept keptCodeableConcept(org.hl7.fhir.r4.model.Element src, String path) throws FHIRException {
+    return CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) src.getExtensionByUrl("http://hl7.org/fhir/6.0/StructureDefinition/extension-" + path).getValue());
+  }
+
   public static org.hl7.fhir.model.core.DeviceMetric convertDeviceMetric(org.hl7.fhir.r4.model.DeviceMetric src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DeviceMetric tgt = new org.hl7.fhir.model.core.DeviceMetric();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DeviceMetric", "5.0", new String[] {"measurementFrequency"}, CrossVersionElements40_N.urls("DeviceMetric", "6.0", new String[] {"status", "availability"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "status", "availability");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "measurementFrequency");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasUnit())
       tgt.setUnit(CodeableConcept40_N.convertCodeableConcept(src.getUnit()));
-    if (src.hasParent())
-      tgt.setDevice(Reference40_N.convertReference(src.getParent()));
     if (src.hasSource())
       tgt.setDevice(Reference40_N.convertReference(src.getSource()));
     if (src.hasOperationalStatus())
-      tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
+      tgt.setOperationalStatusElement(CrossVersionElements40_N.toR6Code(src.getOperationalStatusElement(), convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()), src.fhirType(), "operationalStatus"));
+    if (src.hasCategory())
+      tgt.setCategory(hasKeptCodeableConcept(src.getCategoryElement(), "DeviceMetric.category") ? keptCodeableConcept(src.getCategoryElement(), "DeviceMetric.category") : convertDeviceMetricCategory(src.getCategoryElement()));
     if (src.hasColor())
-      tgt.setColor(convertDeviceMetricColor(src.getColorElement()));
-//    if (src.hasMeasurementPeriod())
-//      tgt.setMeasurementPeriod(Timing40_N.convertTiming(src.getMeasurementPeriod()));
+      tgt.setColor(hasKeptCodeableConcept(src.getColorElement(), "DeviceMetric.color") ? keptCodeableConcept(src.getColorElement(), "DeviceMetric.color") : convertDeviceMetricColor(src.getColorElement()));
+    // R6 dropped parent, and measurementPeriod and measurementFrequency don't map
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "DeviceMetric", tgt.getExtension(), "parent", "measurementPeriod");
     for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration())
       tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
     return tgt;
@@ -70,7 +90,9 @@ public class DeviceMetric40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceMetric tgt = new org.hl7.fhir.r4.model.DeviceMetric();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DeviceMetric", "4.0", new String[] {"parent", "measurementPeriod"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "DeviceMetric", "parent", "measurementPeriod");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "status", "availability");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasType())
@@ -79,14 +101,17 @@ public class DeviceMetric40_N {
       tgt.setUnit(CodeableConcept40_N.convertCodeableConcept(src.getUnit()));
     if (src.hasDevice())
       tgt.setSource(Reference40_N.convertReference(src.getDevice()));
-//    if (src.hasParent())
-//      tgt.setParent(Reference40_N.convertReference(src.getParent()));
     if (src.hasOperationalStatus())
-      tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
-    if (src.hasColor())
+      tgt.setOperationalStatusElement(CrossVersionElements40_N.toR4Code(src.getOperationalStatusElement(), convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()), src.fhirType(), "operationalStatus"));
+    if (src.hasCategory()) {
+      tgt.setCategoryElement(convertDeviceMetricCategory(src.getCategory()));
+      keepCodeableConcept(src.getCategory(), tgt.getCategoryElement(), convertDeviceMetricCategory(tgt.getCategoryElement()), "DeviceMetric.category");
+    }
+    if (src.hasColor()) {
       tgt.setColorElement(convertDeviceMetricColor(src.getColor()));
-//    if (src.hasMeasurementPeriod())
-//      tgt.setMeasurementPeriod(Timing40_N.convertTiming(src.getMeasurementPeriod()));
+      keepCodeableConcept(src.getColor(), tgt.getColorElement(), convertDeviceMetricColor(tgt.getColorElement()), "DeviceMetric.color");
+    }
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "measurementFrequency");
     for (org.hl7.fhir.model.core.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibrationList())
       tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
     return tgt;
@@ -216,9 +241,9 @@ public class DeviceMetric40_N {
     org.hl7.fhir.model.core.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.model.core.DeviceMetric.DeviceMetricCalibrationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setType(convertDeviceMetricCalibrationType(src.getTypeElement()));
+      tgt.setType(hasKeptCodeableConcept(src.getTypeElement(), "DeviceMetric.calibration.type") ? keptCodeableConcept(src.getTypeElement(), "DeviceMetric.calibration.type") : convertDeviceMetricCalibrationType(src.getTypeElement()));
     if (src.hasState())
-      tgt.setState(convertDeviceMetricCalibrationState(src.getStateElement()));
+      tgt.setState(hasKeptCodeableConcept(src.getStateElement(), "DeviceMetric.calibration.state") ? keptCodeableConcept(src.getStateElement(), "DeviceMetric.calibration.state") : convertDeviceMetricCalibrationState(src.getStateElement()));
     if (src.hasTime())
       tgt.setTimeElement(Instant40_N.convertInstant(src.getTimeElement()));
     return tgt;
@@ -229,10 +254,14 @@ public class DeviceMetric40_N {
       return null;
     org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasType())
+    if (src.hasType()) {
       tgt.setTypeElement(convertDeviceMetricCalibrationType(src.getType()));
-    if (src.hasState())
+      keepCodeableConcept(src.getType(), tgt.getTypeElement(), convertDeviceMetricCalibrationType(tgt.getTypeElement()), "DeviceMetric.calibration.type");
+    }
+    if (src.hasState()) {
       tgt.setStateElement(convertDeviceMetricCalibrationState(src.getState()));
+      keepCodeableConcept(src.getState(), tgt.getStateElement(), convertDeviceMetricCalibrationState(tgt.getStateElement()), "DeviceMetric.calibration.state");
+    }
     if (src.hasTime())
       tgt.setTimeElement(Instant40_N.convertInstant(src.getTimeElement()));
     return tgt;

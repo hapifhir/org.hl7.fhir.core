@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
@@ -38,6 +40,12 @@ import org.hl7.fhir.model.core.OperationOutcome;
 
 public class OperationOutcome40_N {
 
+  // R6 removed issue.location; R4 locations go in this
+  // R6 issue codes R4 doesn't have
+  public static final String SEVERITY_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-OperationOutcome.issue.severity";
+  public static final String TYPE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-OperationOutcome.issue.code";
+  public static final String ISSUE_LOCATION_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OperationOutcome.issue.location";
+
   public static org.hl7.fhir.model.core.OperationOutcome convertOperationOutcome(org.hl7.fhir.r4.model.OperationOutcome src) throws FHIRException {
     if (src == null)
       return null;
@@ -63,10 +71,12 @@ public class OperationOutcome40_N {
       return null;
     org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    for (org.hl7.fhir.r4.model.StringType t : src.getLocation())
+      tgt.addExtension(ISSUE_LOCATION_EXTENSION_URL, String40_N.convertString(t));
     if (src.hasSeverity())
-      tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
+      tgt.setSeverityElement(CrossVersionElements40_N.toR6Code(src.getSeverityElement(), convertIssueSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasCode())
-      tgt.setCodeElement(convertIssueType(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR6Code(src.getCodeElement(), convertIssueType(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDetails())
       tgt.setDetails(CodeableConcept40_N.convertCodeableConcept(src.getDetails()));
     if (src.hasDiagnostics())
@@ -80,11 +90,13 @@ public class OperationOutcome40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ISSUE_LOCATION_EXTENSION_URL);
+    for (org.hl7.fhir.model.core.Extension ext : src.getExtensionsByUrl(ISSUE_LOCATION_EXTENSION_URL))
+      tgt.getLocation().add(String40_N.convertString((org.hl7.fhir.model.core.StringType) ext.getValue()));
     if (src.hasSeverity())
-      tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
+      tgt.setSeverityElement(CrossVersionElements40_N.toR4Code(src.getSeverityElement(), convertIssueSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasCode())
-      tgt.setCodeElement(convertIssueType(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR4Code(src.getCodeElement(), convertIssueType(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDetails())
       tgt.setDetails(CodeableConcept40_N.convertCodeableConcept(src.getDetails()));
     if (src.hasDiagnostics())
@@ -98,8 +110,10 @@ public class OperationOutcome40_N {
       if (src == null || src.isEmpty())
           return null;
       Enumeration<OperationOutcome.IssueSeverity> tgt = new Enumeration<>(new OperationOutcome.IssueSeverityEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      if (src.getValue() == null) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, SEVERITY_EXTENSION_URL);
+      if (src.hasExtension(SEVERITY_EXTENSION_URL)) {
+          tgt.setValueAsString(src.getExtensionString(SEVERITY_EXTENSION_URL));
+      } else if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
           switch (src.getValue()) {
@@ -144,6 +158,11 @@ public class OperationOutcome40_N {
               case INFORMATION:
                   tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.INFORMATION);
                   break;
+              case SUCCESS:
+                  // R4 doesn't have success: information, with the R6 code kept
+                  tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.INFORMATION);
+                  tgt.addExtension(SEVERITY_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getCode()));
+                  break;
               default:
                   tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.NULL);
                   break;
@@ -156,8 +175,10 @@ public class OperationOutcome40_N {
       if (src == null || src.isEmpty())
           return null;
       Enumeration<OperationOutcome.IssueType> tgt = new Enumeration<>(new OperationOutcome.IssueTypeEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      if (src.getValue() == null) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, TYPE_EXTENSION_URL);
+      if (src.hasExtension(TYPE_EXTENSION_URL)) {
+          tgt.setValueAsString(src.getExtensionString(TYPE_EXTENSION_URL));
+      } else if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
           switch (src.getValue()) {
@@ -363,6 +384,12 @@ public class OperationOutcome40_N {
                   break;
               case INFORMATIONAL:
                   tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INFORMATIONAL);
+                  break;
+              case SUCCESS:
+              case LIMITEDFILTER:
+                  // R4 doesn't have these: informational, with the R6 code kept
+                  tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INFORMATIONAL);
+                  tgt.addExtension(TYPE_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getCode()));
                   break;
               default:
                   tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NULL);

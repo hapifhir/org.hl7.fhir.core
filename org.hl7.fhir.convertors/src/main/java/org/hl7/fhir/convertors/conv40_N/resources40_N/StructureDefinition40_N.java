@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -54,7 +56,8 @@ public class StructureDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.StructureDefinition tgt = new org.hl7.fhir.model.core.StructureDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM, CrossVersionElements40_N.url("StructureDefinition", "5.0", "copyrightLabel"));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "copyrightLabel");
     if (tgt.hasImplicitRules() && VersionConvertorConstants.IMPLICIT_RULES_OMITTED_MANDATORY_CODE.equals(tgt.getImplicitRules())) {
       // the marker recorded that discriminator types were omitted on the way down to R4; they are 
       // restored from the inter-version extension (see ElementDefinition40_N.convertDiscriminatorType), 
@@ -99,7 +102,7 @@ public class StructureDefinition40_N {
     for (org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent t : src.getMapping())
       tgt.addMapping(convertStructureDefinitionMappingComponent(t));
     if (src.hasKind())
-      tgt.setKindElement(convertStructureDefinitionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertStructureDefinitionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasAbstract())
       tgt.setAbstractElement(Boolean40_N.convertBoolean(src.getAbstractElement()));
     for (org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionContextComponent t : src.getContext())
@@ -111,7 +114,7 @@ public class StructureDefinition40_N {
     if (src.hasBaseDefinition())
       tgt.setBaseDefinitionElement(Canonical40_N.convertCanonical(src.getBaseDefinitionElement()));
     if (src.hasDerivation())
-      tgt.setDerivationElement(convertTypeDerivationRule(src.getDerivationElement()));
+      tgt.setDerivationElement(CrossVersionElements40_N.toR6Code(src.getDerivationElement(), convertTypeDerivationRule(src.getDerivationElement()), src.fhirType(), "derivation"));
     if (src.hasSnapshot())
       tgt.setSnapshot(convertStructureDefinitionSnapshotComponent(src.getSnapshot()));
     if (src.hasDifferential())
@@ -124,6 +127,7 @@ public class StructureDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.StructureDefinition tgt = new org.hl7.fhir.r4.model.StructureDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "copyrightLabel");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -164,7 +168,7 @@ public class StructureDefinition40_N {
     for (org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionMappingComponent t : src.getMappingList())
       tgt.addMapping(convertStructureDefinitionMappingComponent(t));
     if (src.hasKind())
-      tgt.setKindElement(convertStructureDefinitionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertStructureDefinitionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasAbstract())
       tgt.setAbstractElement(Boolean40_N.convertBoolean(src.getAbstractElement()));
     for (org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionContextComponent t : src.getContextList())
@@ -176,7 +180,7 @@ public class StructureDefinition40_N {
     if (src.hasBaseDefinition())
       tgt.setBaseDefinitionElement(Canonical40_N.convertCanonical(src.getBaseDefinitionElement()));
     if (src.hasDerivation())
-      tgt.setDerivationElement(convertTypeDerivationRule(src.getDerivationElement()));
+      tgt.setDerivationElement(CrossVersionElements40_N.toR4Code(src.getDerivationElement(), convertTypeDerivationRule(src.getDerivationElement()), src.fhirType(), "derivation"));
     if (src.hasSnapshot())
       tgt.setSnapshot(convertStructureDefinitionSnapshotComponent(src.getSnapshot()));
     if (src.hasDifferential())
@@ -346,7 +350,7 @@ public class StructureDefinition40_N {
     org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionContextComponent tgt = new org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionContextComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertExtensionContextType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertExtensionContextType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasExpression())
       tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
     return tgt;
@@ -358,7 +362,7 @@ public class StructureDefinition40_N {
     org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionContextComponent tgt = new org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionContextComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertExtensionContextType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertExtensionContextType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasExpression())
       tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
     return tgt;

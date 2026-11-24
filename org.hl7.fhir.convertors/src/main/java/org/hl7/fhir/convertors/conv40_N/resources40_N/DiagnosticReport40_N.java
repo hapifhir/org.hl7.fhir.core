@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -46,12 +47,17 @@ public class DiagnosticReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DiagnosticReport tgt = new org.hl7.fhir.model.core.DiagnosticReport();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DiagnosticReport", "5.0", new String[] {"note", "supportingInfo", "composition", "study"}, CrossVersionElements40_N.urls("DiagnosticReport", "6.0", new String[] {"statusReason", "relatesTo", "procedure", "recommendation", "communication", "comparison"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "note", "supportingInfo", "composition", "study");
+    // R4 imagingStudy is R6 study (which can also be a GenomicStudy: those are in the extension)
+    for (org.hl7.fhir.r4.model.Reference t : src.getImagingStudy())
+      tgt.addStudy(Reference40_N.convertReference(t));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason", "relatesTo", "procedure", "recommendation", "communication", "comparison");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDiagnosticReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertDiagnosticReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCode())
@@ -60,8 +66,8 @@ public class DiagnosticReport40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasEffective())
-      tgt.setEffective(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "effective", tgt, tgt.getExtension());
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_N.convertInstantToDateTime(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_N.convertReference(t));
@@ -74,7 +80,7 @@ public class DiagnosticReport40_N {
     if (src.hasConclusion())
       tgt.setConclusionElement(String40_N.convertStringToMarkdown(src.getConclusionElement()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getConclusionCode())
-      tgt.addConclusionCode().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
+      tgt.addConclusionCode(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Attachment t : src.getPresentedForm())
       tgt.addPresentedForm(Attachment40_N.convertAttachment(t));
     return tgt;
@@ -85,11 +91,19 @@ public class DiagnosticReport40_N {
       return null;
     org.hl7.fhir.r4.model.DiagnosticReport tgt = new org.hl7.fhir.r4.model.DiagnosticReport();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "note", "supportingInfo", "composition");
+    for (org.hl7.fhir.model.core.Reference t : src.getStudyList()) {
+      if ("GenomicStudy".equals(t.getType()) || (t.hasReference() && t.getReference().matches("(^|.*/)GenomicStudy/.*")))
+        tgt.addExtension(CrossVersionElements40_N.url("DiagnosticReport", "5.0", "study"), Reference40_N.convertReference(t));
+      else
+        tgt.addImagingStudy(Reference40_N.convertReference(t));
+    }
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason", "relatesTo", "procedure", "recommendation", "communication", "comparison");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDiagnosticReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertDiagnosticReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCode())
@@ -98,8 +112,7 @@ public class DiagnosticReport40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasEffective())
-      tgt.setEffective(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "effective", tgt, tgt.getExtension());
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_N.convertInstantFromDateTime(src.getIssuedElement()));
     for (org.hl7.fhir.model.core.Reference t : src.getPerformerList()) tgt.addPerformer(Reference40_N.convertReference(t));
@@ -112,7 +125,7 @@ public class DiagnosticReport40_N {
     if (src.hasConclusion())
       tgt.setConclusionElement(String40_N.convertString(src.getConclusionElement()));
     for (org.hl7.fhir.model.core.CodeableReference t : src.getConclusionCodeList())
-      tgt.addConclusionCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addConclusionCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.Attachment t : src.getPresentedFormList())
       tgt.addPresentedForm(Attachment40_N.convertAttachment(t));
     return tgt;

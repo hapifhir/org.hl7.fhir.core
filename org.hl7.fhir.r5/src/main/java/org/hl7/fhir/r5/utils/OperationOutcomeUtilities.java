@@ -290,9 +290,17 @@ public class OperationOutcomeUtilities {
       return TerminologyServiceErrorClass.UNKNOWN;
     }
 
+  /**
+   * The class of an issue a terminology server reported. The transient issue types (transient, lock-error, timeout,
+   * throttled) are about the server at the time it was asked, not the request: SERVER_ERROR, so the request is asked
+   * again next run rather than the failure being cached
+   */
   public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcomeIssueComponent issue) {
     if (issue.getCode() == IssueType.TOOCOSTLY) {
       return TerminologyServiceErrorClass.TOO_COSTLY;
+    } else if (issue.getCode() == IssueType.TRANSIENT || issue.getCode() == IssueType.LOCKERROR
+        || issue.getCode() == IssueType.TIMEOUT || issue.getCode() == IssueType.THROTTLED) {
+      return TerminologyServiceErrorClass.SERVER_ERROR;
     } else {
       return TerminologyServiceErrorClass.UNKNOWN;
     }

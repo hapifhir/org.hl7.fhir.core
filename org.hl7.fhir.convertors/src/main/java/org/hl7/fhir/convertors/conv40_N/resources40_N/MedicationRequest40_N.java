@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.DosageDetails40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Duration40_N;
@@ -53,29 +55,34 @@ public class MedicationRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MedicationRequest tgt = new org.hl7.fhir.model.core.MedicationRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "MedicationRequest", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri", "detectedIssue");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationRequest", "5.0", new String[] {"statusChanged", "device"}, CrossVersionElements40_N.urls("MedicationRequest", "6.0", new String[] {"effectiveTiming"}, CrossVersionElements40_N.url("MedicationRequest", "5.0", "informationSource"), CrossVersionElements40_N.url("MedicationRequest", "6.0", "isRecordOfRequest"), CrossVersionElements40_N.url("MedicationRequest", "5.0", "performer"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "statusChanged", "device");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "effectiveTiming");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertMedicationRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertMedicationRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertMedicationRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertMedicationRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertMedicationRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasReportedBooleanType())
       tgt.setIsRecordOfRequestElement(Boolean40_N.convertBoolean(src.getReportedBooleanType()));
     if (src.hasReportedReference())
       tgt.addInformationSource(Reference40_N.convertReference(src.getReportedReference()));
-    if (src.hasMedicationCodeableConcept())
-      tgt.getMedication().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getMedicationCodeableConcept()));
-    if (src.hasMedicationReference())
-      tgt.getMedication().setReference(Reference40_N.convertReference(src.getMedicationReference()));
+    // the information sources R4 couldn't hold, and isRecordOfRequest when there was a source too
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "informationSource");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "isRecordOfRequest");
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertChoiceToCodeableReference(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -88,18 +95,12 @@ public class MedicationRequest40_N {
       tgt.setRequester(Reference40_N.convertReference(src.getRequester()));
     if (src.hasPerformer())
       tgt.addPerformer(Reference40_N.convertReference(src.getPerformer()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "performer");
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_N.convertCodeableConcept(src.getPerformerType()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason().setReference(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
-//      tgt.getInstantiatesCanonical().add(Canonical40_N.convertCanonical(t));
-//    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
-//      tgt.getInstantiatesUri().add(Uri40_N.convertUri(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
@@ -107,17 +108,14 @@ public class MedicationRequest40_N {
       tgt.setCourseOfTherapyType(CodeableConcept40_N.convertCodeableConcept(src.getCourseOfTherapyType()));
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.Dosage t : src.getDosageInstruction())
-      tgt.getDosageInstruction().getStepFirstRep().addComponent(Dosage40_N.convertDosage(t));
+    DosageDetails40_N.convertDosages(src.getDosageInstruction(), src.getExtension(), tgt.getExtension(), "MedicationRequest.dosageInstruction", tgt.getDosageInstruction());
     if (src.hasDispenseRequest())
       tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference40_N.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue())
-//      tgt.addDetectedIssue(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
+    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -126,29 +124,39 @@ public class MedicationRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationRequest tgt = new org.hl7.fhir.r4.model.MedicationRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationRequest", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri", "detectedIssue"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "MedicationRequest", "instantiatesCanonical", "instantiatesUri", "detectedIssue");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "statusChanged", "device");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "effectiveTiming");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertMedicationRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertMedicationRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertMedicationRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertMedicationRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertMedicationRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasIsRecordOfRequest())
-      tgt.setReported(Boolean40_N.convertBoolean(src.getIsRecordOfRequestElement()));
-    if (src.hasInformationSource())
-      tgt.setReported(Reference40_N.convertReference(src.getInformationSourceFirstRep()));
-    if (src.getMedication().hasReference())
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getReference()));
-    if (src.getMedication().hasConcept())
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getConcept()));
+    // R4 reported[x] is boolean | Reference: the first information source, or else isRecordOfRequest. The rest in extensions
+    for (org.hl7.fhir.model.core.Reference t : src.getInformationSourceList()) {
+      if (!tgt.hasReported())
+        tgt.setReported(Reference40_N.convertReference(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationRequest", "5.0", "informationSource"), Reference40_N.convertReference(t));
+    }
+    if (src.hasIsRecordOfRequest()) {
+      if (!tgt.hasReported())
+        tgt.setReported(Boolean40_N.convertBoolean(src.getIsRecordOfRequestElement()));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationRequest", "6.0", "isRecordOfRequest"), Boolean40_N.convertBoolean(src.getIsRecordOfRequestElement()));
+    }
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -159,22 +167,17 @@ public class MedicationRequest40_N {
       tgt.setAuthoredOnElement(DateTime40_N.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
       tgt.setRequester(Reference40_N.convertReference(src.getRequester()));
-    if (src.hasPerformer())
-      tgt.setPerformer(Reference40_N.convertReference(src.getPerformerFirstRep()));
+    for (org.hl7.fhir.model.core.Reference t : src.getPerformerList()) {
+      if (!tgt.hasPerformer())
+        tgt.setPerformer(Reference40_N.convertReference(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationRequest", "5.0", "performer"), Reference40_N.convertReference(t));
+    }
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_N.convertCodeableConcept(src.getPerformerType()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
-    for (org.hl7.fhir.model.core.CodeableReference t : src.getReasonList()) {
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
-    }
-//    for (org.hl7.fhir.model.core.CanonicalType t : src.getInstantiatesCanonicalList())
-//      tgt.getInstantiatesCanonical().add(Canonical40_N.convertCanonical(t));
-//    for (org.hl7.fhir.model.core.UriType t : src.getInstantiatesUriList())
-//      tgt.getInstantiatesUri().add(Uri40_N.convertUri(t));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
@@ -182,16 +185,14 @@ public class MedicationRequest40_N {
       tgt.setCourseOfTherapyType(CodeableConcept40_N.convertCodeableConcept(src.getCourseOfTherapyType()));
     for (org.hl7.fhir.model.core.Reference t : src.getInsuranceList()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    for (DosageDetails.DosageDetailsStepComponent t : src.getDosageInstruction().getStepList())
-      tgt.addDosageInstruction(Dosage40_N.convertDosage(t.getComponentFirstRep()));
+    if (src.hasDosageInstruction())
+      DosageDetails40_N.convertDosageDetails(src.getDosageInstruction(), "MedicationRequest.dosageInstruction", tgt.getDosageInstruction(), tgt.getExtension());
     if (src.hasDispenseRequest())
       tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference40_N.convertReference(src.getPriorPrescription()));
-//    for (org.hl7.fhir.model.core.Reference t : src.getDetectedIssueList())
-//      tgt.addDetectedIssue(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getEventHistoryList())
       tgt.addEventHistory(Reference40_N.convertReference(t));
     return tgt;
@@ -423,7 +424,9 @@ public class MedicationRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.model.core.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MedicationRequest.dispenseRequest", "5.0", new String[] {"dispenserInstruction", "doseAdministrationAid"}, CrossVersionElements40_N.urls("MedicationRequest.dispenseRequest", "6.0", new String[] {"destination"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "dispenserInstruction", "doseAdministrationAid");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "destination");
     if (src.hasInitialFill())
       tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
     if (src.hasDispenseInterval())
@@ -446,6 +449,8 @@ public class MedicationRequest40_N {
       return null;
     org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "dispenserInstruction", "doseAdministrationAid");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "destination");
     if (src.hasInitialFill())
       tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
     if (src.hasDispenseInterval())
@@ -492,8 +497,8 @@ public class MedicationRequest40_N {
       return null;
     org.hl7.fhir.model.core.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.model.core.MedicationRequest.MedicationRequestSubstitutionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasAllowed())
-      tgt.setAllowed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAllowed()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "allowed", tgt, tgt.getExtension());
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     return tgt;
@@ -504,8 +509,7 @@ public class MedicationRequest40_N {
       return null;
     org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasAllowed())
-      tgt.setAllowed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAllowed()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "allowed", tgt, tgt.getExtension());
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     return tgt;

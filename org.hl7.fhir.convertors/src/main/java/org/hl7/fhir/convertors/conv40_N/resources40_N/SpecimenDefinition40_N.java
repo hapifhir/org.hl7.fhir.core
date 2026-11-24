@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Duration40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -47,9 +48,12 @@ public class SpecimenDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.SpecimenDefinition tgt = new org.hl7.fhir.model.core.SpecimenDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("SpecimenDefinition", "5.0", new String[] {"url", "version", "versionAlgorithm", "name", "title", "derivedFromCanonical", "derivedFromUri", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod"}, CrossVersionElements40_N.urls("SpecimenDefinition", "6.0", new String[] {"subjectReference"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "url", "version", "versionAlgorithm", "name", "title", "derivedFromCanonical", "derivedFromUri", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "subjectReference");
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "identifier", tgt.getExtension());
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept40_N.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPatientPreparation())
@@ -68,8 +72,11 @@ public class SpecimenDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition tgt = new org.hl7.fhir.r4.model.SpecimenDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "url", "version", "versionAlgorithm", "name", "title", "derivedFromCanonical", "derivedFromUri", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "subjectReference");
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifierFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "identifier", tgt.getExtension());
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept40_N.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getPatientPreparationList())
@@ -87,13 +94,14 @@ public class SpecimenDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent tgt = new org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("SpecimenDefinition.typeTested", "5.0", new String[] {"singleUse", "testingDestination"}, CrossVersionElements40_N.urls("SpecimenDefinition.typeTested", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "singleUse", "testingDestination");
     if (src.hasIsDerived())
       tgt.setIsDerivedElement(Boolean40_N.convertBoolean(src.getIsDerivedElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasPreference())
-      tgt.setPreferenceElement(convertSpecimenContainedPreference(src.getPreferenceElement()));
+      tgt.setPreferenceElement(CrossVersionElements40_N.toR6Code(src.getPreferenceElement(), convertSpecimenContainedPreference(src.getPreferenceElement()), src.fhirType(), "preference"));
     if (src.hasContainer())
       tgt.setContainer(convertSpecimenDefinitionTypeTestedContainerComponent(src.getContainer()));
     if (src.hasRequirement())
@@ -112,12 +120,13 @@ public class SpecimenDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "singleUse", "testingDestination");
     if (src.hasIsDerived())
       tgt.setIsDerivedElement(Boolean40_N.convertBoolean(src.getIsDerivedElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasPreference())
-      tgt.setPreferenceElement(convertSpecimenContainedPreference(src.getPreferenceElement()));
+      tgt.setPreferenceElement(CrossVersionElements40_N.toR4Code(src.getPreferenceElement(), convertSpecimenContainedPreference(src.getPreferenceElement()), src.fhirType(), "preference"));
     if (src.hasContainer())
       tgt.setContainer(convertSpecimenDefinitionTypeTestedContainerComponent(src.getContainer()));
     if (src.hasRequirement())
@@ -181,9 +190,14 @@ public class SpecimenDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent tgt = new org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasMinimumVolume())
-      tgt.setMinimumVolume(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMinimumVolume()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("SpecimenDefinition.typeTested.container", "6.0", "device"));
+    // R6 dropped these (container.type is the R6 device code)
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "SpecimenDefinition.typeTested.container", tgt.getExtension(), "material", "cap", "description", "capacity");
+    if (src.hasType())
+      tgt.setDevice(CodeableConcept40_N.convertCodeableConcept(src.getType()));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "SpecimenDefinition.typeTested.container", "6.0", "device");
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "minimumVolume", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive())
       tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
     if (src.hasPreparation())
@@ -195,9 +209,13 @@ public class SpecimenDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasMinimumVolume())
-      tgt.setMinimumVolume(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMinimumVolume()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("SpecimenDefinition.typeTested.container", "4.0", new String[] {"material", "cap", "description", "capacity"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "SpecimenDefinition.typeTested.container", "material", "cap", "description", "capacity");
+    if (src.hasDeviceCodeableConcept())
+      tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getDeviceCodeableConcept()));
+    else if (src.hasDevice())
+      CrossVersionElements40_N.elementsToExtensionsForPath(src, "SpecimenDefinition.typeTested.container", tgt.getExtension(), "6.0", "device");
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "minimumVolume", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditiveList())
       tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
     if (src.hasPreparation())
@@ -209,7 +227,10 @@ public class SpecimenDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.model.core.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("SpecimenDefinition.typeTested.container.additive", "6.0", "quantity"));
+    if (src.hasAdditive())
+      tgt.setType(CodeableConcept40_N.convertChoiceToCodeableReference(src.getAdditive()));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "SpecimenDefinition.typeTested.container.additive", "6.0", "quantity");
     return tgt;
   }
 
@@ -218,6 +239,9 @@ public class SpecimenDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    if (src.hasType())
+      tgt.setAdditive(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getType()));
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "SpecimenDefinition.typeTested.container.additive", tgt.getExtension(), "6.0", "quantity");
     return tgt;
   }
 

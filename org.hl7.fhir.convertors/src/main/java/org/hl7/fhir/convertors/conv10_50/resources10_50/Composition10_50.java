@@ -98,7 +98,7 @@ public class Composition10_50 {
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+    switch (java.util.Objects.toString(src.getCode("http://hl7.org/fhir/composition-attestation-mode"), "")) {
       case "personal":
         tgt.setValue(org.hl7.fhir.dstu2.model.Composition.CompositionAttestationMode.PERSONAL);
         break;

@@ -71,7 +71,7 @@ public class DocumentReference43_N {
       tgt.setDateElement(Instant43_N.convertInstantToDateTime(src.getDateElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference43_N.convertReference(t));
     if (src.hasAuthenticator())
-      tgt.addAttester().setMode(new org.hl7.fhir.model.core.CodeableConcept().addCoding(new org.hl7.fhir.model.core.Coding("http://hl7.org/fhir/composition-attestation-mode","official", "Official")))
+      tgt.addAttester().setMode(new org.hl7.fhir.model.core.CodeableConcept().addCoding(new org.hl7.fhir.model.core.Coding("http://terminology.hl7.org/CodeSystem/composition-attestation-mode","official", "Official")))
         .setParty(Reference43_N.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
       tgt.setCustodian(Reference43_N.convertReference(src.getCustodian()));
@@ -111,7 +111,7 @@ public class DocumentReference43_N {
       tgt.setDateElement(Instant43_N.convertInstantFromDateTime(src.getDateElement()));
     for (org.hl7.fhir.model.core.Reference t : src.getAuthorList()) tgt.addAuthor(Reference43_N.convertReference(t));
     for (DocumentReferenceAttesterComponent t : src.getAttesterList()) {
-      if (t.getMode().hasCoding("http://hl7.org/fhir/composition-attestation-mode", "official"))
+      if (t.getMode().hasCoding("http://terminology.hl7.org/CodeSystem/composition-attestation-mode", "official") || t.getMode().hasCoding("http://hl7.org/fhir/composition-attestation-mode", "official"))
         tgt.setAuthenticator(Reference43_N.convertReference(t.getParty()));
     }
     if (src.hasCustodian())
@@ -220,16 +220,16 @@ public class DocumentReference43_N {
       } else {
           switch (src.getValue()) {
               case REPLACES:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("replaces");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("replaces");
                   break;
               case TRANSFORMS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("transforms");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("transforms");
                   break;
               case SIGNS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("signs");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("signs");
                   break;
               case APPENDS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("appends");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("appends");
                   break;
               default:
                   break;
@@ -243,7 +243,11 @@ public class DocumentReference43_N {
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipTypeEnumFactory());
     ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/document-relationship-type")) {
+    String code = src.getCode("http://terminology.hl7.org/CodeSystem/document-relationship-type");
+    if (code == null) {
+      code = src.getCode("http://hl7.org/fhir/document-relationship-type"); // the system before R6
+    }
+    switch (code == null ? "" : code) {
       case "replaces":
         tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType.REPLACES);
         break;
@@ -257,7 +261,7 @@ public class DocumentReference43_N {
         tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType.APPENDS);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType.NULL);
+        // not a code R4 knows: leave the value empty
         break;
     }
     return tgt;

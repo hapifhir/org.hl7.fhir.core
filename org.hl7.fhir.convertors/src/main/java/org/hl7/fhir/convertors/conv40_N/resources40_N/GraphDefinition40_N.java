@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.UsageContext40_N;
@@ -39,11 +41,198 @@ import org.hl7.fhir.exceptions.FHIRException;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class GraphDefinition40_N {
 
+  /*
+   * R4 GraphDefinition is a tree: start (a type) and profile, and links, each with targets (type, profile, params,
+   * compartments) that have links of their own. R6 (the API incubator) is a graph: nodes (nodeId, type, profile) and
+   * links from one node to another (sourceId, targetId, params, compartments).
+   *
+   * R4 -> R6: start/profile is a node, and so is each link target; each (link, target) pair is a link from the node
+   * the link hangs off to the target's node. Node ids are generated (node0, node1... in the order the tree is
+   * walked) unless the R4 has a 5.0 nodeId extension (on the resource for the start node, on the target otherwise).
+   *
+   * R6 -> R4: the tree is walked from the start node. Links from the same node with the same path, sliceName, min,
+   * max and description, one after the other, are one R4 link with several targets. Node ids (unless they're what
+   * R4 -> R6 would generate) and node descriptions are 5.0 extensions. Nodes and links the walk doesn't reach (or
+   * that would make a cycle) are 5.0 extensions on the resource
+   */
+  private static final String GD = "GraphDefinition";
+  private static final String[] V5 = {"identifier", "versionAlgorithm", "title", "copyright", "copyrightLabel"};
+  public static final String NODE_ID_URL = CrossVersionElements40_N.url("GraphDefinition.node", "5.0", "nodeId");
+  public static final String NODE_DESCRIPTION_URL = CrossVersionElements40_N.url("GraphDefinition.node", "5.0", "description");
+
+  private static class ToR6 {
+    private final org.hl7.fhir.model.api.GraphDefinition tgt;
+    private int counter = 0;
+
+    ToR6(org.hl7.fhir.model.api.GraphDefinition tgt) {
+      this.tgt = tgt;
+    }
+
+    void convert(org.hl7.fhir.r4.model.GraphDefinition src) throws FHIRException {
+      if (src.hasStart() || src.hasProfile()) {
+        org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = node(src.getExtension());
+        if (src.hasStart())
+          node.getTypeElement().setValueAsString(src.getStart());
+        if (src.hasProfile())
+          node.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
+        tgt.setStart(node.getNodeId());
+        for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent link : src.getLink())
+          link(node.getNodeId(), link);
+      }
+      // the nodes and links the R4 tree couldn't hold
+      CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "node", "link");
+    }
+
+    private org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node(java.util.List<org.hl7.fhir.r4.model.Extension> extensions) throws FHIRException {
+      org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = tgt.addNode();
+      node.setNodeId("node" + (counter++));
+      for (org.hl7.fhir.r4.model.Extension e : extensions) {
+        if (NODE_ID_URL.equals(e.getUrl()))
+          node.setNodeId(e.getValue().primitiveValue());
+        if (NODE_DESCRIPTION_URL.equals(e.getUrl()))
+          node.setDescription(e.getValue().primitiveValue());
+      }
+      return node;
+    }
+
+    private void link(String sourceId, org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
+      for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent target : src.getTarget()) {
+        org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent link = tgt.addLink();
+        ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, link);
+        CrossVersionElements40_N.copySameElements(src, link, "description", "min", "max", "path", "sliceName");
+        link.setSourceId(sourceId);
+        org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = node(target.getExtension());
+        ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(target, node, NODE_ID_URL, NODE_DESCRIPTION_URL);
+        if (target.hasType())
+          node.getTypeElement().setValueAsString(target.getType());
+        if (target.hasProfile())
+          node.setProfileElement(Canonical40_N.convertCanonical(target.getProfileElement()));
+        link.setTargetId(node.getNodeId());
+        if (target.hasParams())
+          link.setParamsElement(String40_N.convertString(target.getParamsElement()));
+        for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent c : target.getCompartment()) {
+          org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkCompartmentComponent tc = link.addCompartment();
+          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(c, tc);
+          CrossVersionElements40_N.copySameElements(c, tc, "code", "rule", "expression", "description");
+          if (c.hasUse()) {
+            // R4 condition | requirement are R6 where | requires
+            ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(c.getUseElement(), tc.getUseElement());
+            tc.getUseElement().setValueAsString("condition".equals(c.getUseElement().getValueAsString()) ? "where" : "requirement".equals(c.getUseElement().getValueAsString()) ? "requires" : c.getUseElement().getValueAsString());
+          }
+        }
+        for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent child : target.getLink())
+          link(node.getNodeId(), child);
+      }
+    }
+  }
+
+  private static class ToR4 {
+    private final org.hl7.fhir.model.api.GraphDefinition src;
+    private final java.util.Set<org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent> usedNodes = new java.util.HashSet<>();
+    private final java.util.Set<org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent> usedLinks = new java.util.HashSet<>();
+    private int counter = 0;
+
+    ToR4(org.hl7.fhir.model.api.GraphDefinition src) {
+      this.src = src;
+    }
+
+    void convert(org.hl7.fhir.r4.model.GraphDefinition tgt) throws FHIRException {
+      org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent start = node(src.getStart());
+      if (start != null) {
+        usedNodes.add(start);
+        if (start.hasType())
+          tgt.setStart(start.getTypeElement().getValueAsString());
+        if (start.hasProfile())
+          tgt.setProfileElement(Canonical40_N.convertCanonical(start.getProfileElement()));
+        nodeExtensions(start, tgt.getExtension());
+        java.util.List<String> path = new java.util.ArrayList<>();
+        path.add(start.getNodeId());
+        links(start.getNodeId(), tgt.getLink(), path);
+      }
+      for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent n : src.getNodeList())
+        if (!usedNodes.contains(n))
+          tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url(GD, "5.0", "node"), n));
+      for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent l : src.getLinkList())
+        if (!usedLinks.contains(l))
+          tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url(GD, "5.0", "link"), l));
+    }
+
+    private org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node(String id) {
+      for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent n : src.getNodeList())
+        if (n.hasNodeId() && n.getNodeId().equals(id))
+          return n;
+      return null;
+    }
+
+    // the node id, unless it's what R4 -> R6 would generate; and the description
+    private void nodeExtensions(org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node, java.util.List<org.hl7.fhir.r4.model.Extension> tgt) {
+      String id = "node" + (counter++);
+      if (!id.equals(node.getNodeId()))
+        tgt.add(new org.hl7.fhir.r4.model.Extension(NODE_ID_URL, new org.hl7.fhir.r4.model.IdType(node.getNodeId())));
+      if (node.hasDescription())
+        tgt.add(new org.hl7.fhir.r4.model.Extension(NODE_DESCRIPTION_URL, new org.hl7.fhir.r4.model.StringType(node.getDescription())));
+    }
+
+    private void links(String sourceId, java.util.List<org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent> tgtList, java.util.List<String> path) throws FHIRException {
+      org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent current = null;
+      org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent currentSrc = null;
+      for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent l : src.getLinkList()) {
+        if (usedLinks.contains(l) || !sourceId.equals(l.getSourceId()))
+          continue;
+        org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = node(l.getTargetId());
+        if (node == null || path.contains(node.getNodeId()) || usedNodes.contains(node))
+          continue; // left for the extensions
+        usedLinks.add(l);
+        usedNodes.add(node);
+        if (current == null || !sameLink(currentSrc, l)) {
+          current = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent();
+          tgtList.add(current);
+          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(l, current);
+          CrossVersionElements40_N.copySameElements(l, current, "description", "min", "max", "path", "sliceName");
+          currentSrc = l;
+        }
+        org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent target = current.addTarget();
+        ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(node, target);
+        nodeExtensions(node, target.getExtension());
+        if (node.hasType())
+          target.setType(node.getTypeElement().getValueAsString());
+        if (node.hasProfile())
+          target.setProfileElement(Canonical40_N.convertCanonical(node.getProfileElement()));
+        if (l.hasParams())
+          target.setParamsElement(String40_N.convertString(l.getParamsElement()));
+        for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkCompartmentComponent c : l.getCompartmentList()) {
+          org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tc = target.addCompartment();
+          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(c, tc);
+          CrossVersionElements40_N.copySameElements(c, tc, "code", "rule", "expression", "description");
+          if (c.hasUse()) {
+            ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(c.getUseElement(), tc.getUseElement());
+            tc.getUseElement().setValueAsString("where".equals(c.getUseElement().getValueAsString()) ? "condition" : "requires".equals(c.getUseElement().getValueAsString()) ? "requirement" : c.getUseElement().getValueAsString());
+          }
+        }
+        path.add(node.getNodeId());
+        links(node.getNodeId(), target.getLink(), path);
+        path.remove(path.size() - 1);
+      }
+    }
+
+    // whether two R6 links are the same R4 link (they differ only in what belongs to the target)
+    private boolean sameLink(org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent a, org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent b) {
+      org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent ca = new org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent();
+      org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent cb = new org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent();
+      for (String n : new String[] {"description", "min", "max", "path", "sliceName"}) {
+        for (org.hl7.fhir.model.Base v : a.getChildByName(n).getValues()) ca.setProperty(n, v);
+        for (org.hl7.fhir.model.Base v : b.getChildByName(n).getValues()) cb.setProperty(n, v);
+      }
+      return ca.equalsDeep(cb) && a.getExtensionList().isEmpty() && b.getExtensionList().isEmpty() && !a.hasId() && !b.hasId();
+    }
+  }
+
   public static org.hl7.fhir.model.api.GraphDefinition convertGraphDefinition(org.hl7.fhir.r4.model.GraphDefinition src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.api.GraphDefinition tgt = new org.hl7.fhir.model.api.GraphDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls(GD, "5.0", V5,
+      CrossVersionElements40_N.urls(GD, "5.0", new String[] {"node", "link"}, NODE_ID_URL, NODE_DESCRIPTION_URL)));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -68,12 +257,8 @@ public class GraphDefinition40_N {
       tgt.addJurisdiction(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown40_N.convertMarkdown(src.getPurposeElement()));
-//    if (src.hasStart())
-//      tgt.setStartElement(Code40_N.convertCode(src.getStartElement()));
-//    if (src.hasProfile())
-//      tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
-//    for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", V5);
+    new ToR6(tgt).convert(src);
     return tgt;
   }
 
@@ -106,12 +291,8 @@ public class GraphDefinition40_N {
       tgt.addJurisdiction(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown40_N.convertMarkdown(src.getPurposeElement()));
-//    if (src.hasStart())
-//      tgt.setStartElement(Code40_N.convertCode(src.getStartElement()));
-//    if (src.hasProfile())
-//      tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
-//    for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", V5);
+    new ToR4(src).convert(tgt);
     return tgt;
   }
 //
@@ -197,11 +378,11 @@ public class GraphDefinition40_N {
 //    org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasUse())
-//      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
+//      tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertGraphCompartmentUse(src.getUseElement()), src.fhirType(), "use"));
 //    if (src.hasCode())
-//      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
+//      tgt.setCodeElement(CrossVersionElements40_N.toR6Code(src.getCodeElement(), convertCompartmentCode(src.getCodeElement()), src.fhirType(), "code"));
 //    if (src.hasRule())
-//      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
+//      tgt.setRuleElement(CrossVersionElements40_N.toR6Code(src.getRuleElement(), convertGraphCompartmentRule(src.getRuleElement()), src.fhirType(), "rule"));
 //    if (src.hasExpression())
 //      tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
 //    if (src.hasDescription())
@@ -215,11 +396,11 @@ public class GraphDefinition40_N {
 //    org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasUse())
-//      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
+//      tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertGraphCompartmentUse(src.getUseElement()), src.fhirType(), "use"));
 //    if (src.hasCode())
-//      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
+//      tgt.setCodeElement(CrossVersionElements40_N.toR4Code(src.getCodeElement(), convertCompartmentCode(src.getCodeElement()), src.fhirType(), "code"));
 //    if (src.hasRule())
-//      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
+//      tgt.setRuleElement(CrossVersionElements40_N.toR4Code(src.getRuleElement(), convertGraphCompartmentRule(src.getRuleElement()), src.fhirType(), "rule"));
 //    if (src.hasExpression())
 //      tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
 //    if (src.hasDescription())

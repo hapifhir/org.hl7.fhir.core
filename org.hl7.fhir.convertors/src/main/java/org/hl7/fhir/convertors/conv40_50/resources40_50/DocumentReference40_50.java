@@ -243,7 +243,7 @@ public class DocumentReference40_50 {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/document-relationship-type")) {
+    switch (java.util.Objects.toString(src.getCode("http://hl7.org/fhir/document-relationship-type"), "")) {
       case "replaces":
         tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.REPLACES);
         break;

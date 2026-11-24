@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Ratio40_N;
@@ -47,19 +48,21 @@ public class Medication40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Medication tgt = new org.hl7.fhir.model.core.Medication();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Medication", tgt.getExtension(), "amount");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Medication", "5.0", new String[] {"definition"}, CrossVersionElements40_N.urls("Medication", "6.0", new String[] {"packageSize"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "definition");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "packageSize");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertMedicationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasManufacturer())
       tgt.setMarketingAuthorizationHolder(Reference40_N.convertReference(src.getManufacturer()));
     if (src.hasForm())
       tgt.setDoseForm(CodeableConcept40_N.convertCodeableConcept(src.getForm()));
-//    if (src.hasAmount())
-//      tgt.setTotalVolume(Ratio40_N.convertRatio(src.getAmount()));
     for (org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent t : src.getIngredient())
       tgt.addIngredient(convertMedicationIngredientComponent(t));
     if (src.hasBatch())
@@ -71,19 +74,20 @@ public class Medication40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Medication tgt = new org.hl7.fhir.r4.model.Medication();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Medication", "4.0", new String[] {"amount"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Medication", "amount");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "definition");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "packageSize");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertMedicationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasMarketingAuthorizationHolder())
       tgt.setManufacturer(Reference40_N.convertReference(src.getMarketingAuthorizationHolder()));
     if (src.hasDoseForm())
       tgt.setForm(CodeableConcept40_N.convertCodeableConcept(src.getDoseForm()));
-//    if (src.hasTotalVolume())
-//      tgt.setAmount(Ratio40_N.convertRatio(src.getTotalVolume()));
     for (org.hl7.fhir.model.core.Medication.MedicationIngredientComponent t : src.getIngredientList())
       tgt.addIngredient(convertMedicationIngredientComponent(t));
     if (src.hasInstance())
@@ -147,15 +151,16 @@ public class Medication40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.model.core.Medication.MedicationIngredientComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasItemCodeableConcept())
-      tgt.getItem().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getItemCodeableConcept()));
-    if (src.hasItemReference())
-      tgt.getItem().setReference(Reference40_N.convertReference(src.getItemReference()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Medication.ingredient", "5.0", new String[] {}, CrossVersionElements40_N.urls("Medication.ingredient", "6.0", new String[] {"role"}, CrossVersionElements40_N.url("Medication.ingredient", "5.0", "strength"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "role");
+    if (src.hasItem())
+      tgt.setItem(CodeableConcept40_N.convertChoiceToCodeableReference(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(Boolean40_N.convertBoolean(src.getIsActiveElement()));
     if (src.hasStrength())
       tgt.setStrength(Ratio40_N.convertRatio(src.getStrength()));
+    // R6 strength can also be a CodeableConcept or a Quantity
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Medication.ingredient", "5.0", "strength");
     return tgt;
   }
 
@@ -164,14 +169,15 @@ public class Medication40_N {
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.getItem().hasConcept())
-      tgt.setItem(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getItem().getConcept()));
-    if (src.getItem().hasReference())
-      tgt.setItem(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getItem().getReference()));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "role");
+    if (src.hasItem())
+      tgt.setItem(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(Boolean40_N.convertBoolean(src.getIsActiveElement()));
     if (src.hasStrengthRatio())
       tgt.setStrength(Ratio40_N.convertRatio(src.getStrengthRatio()));
+    else if (src.hasStrength())
+      tgt.addExtension(CrossVersionElements40_N.url("Medication.ingredient", "5.0", "strength"), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getStrength()));
     return tgt;
   }
 
@@ -179,7 +185,8 @@ public class Medication40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Medication.MedicationInstanceComponent tgt = new org.hl7.fhir.model.core.Medication.MedicationInstanceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("Medication.instance", "6.0", "identifier"));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Medication.instance", "6.0", "identifier");
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_N.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -192,6 +199,7 @@ public class Medication40_N {
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationBatchComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationBatchComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "Medication.instance", tgt.getExtension(), "6.0", "identifier");
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_N.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())

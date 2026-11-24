@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -50,11 +51,14 @@ public class VisionPrescription40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.VisionPrescription tgt = new org.hl7.fhir.model.core.VisionPrescription();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("VisionPrescription", "5.0", new String[] {}, CrossVersionElements40_N.urls("VisionPrescription", "6.0", new String[] {"basedOn", "groupIdentifier", "intent", "priority", "effectiveEndDate"})));
+    // R6 intent is required, but R4 has nothing to say what it is, so it's not populated (and the R6 resource isn't valid)
+    // unless there's a cross-version extension; see https://jira.hl7.org/browse/FHIR-59957
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "basedOn", "groupIdentifier", "intent", "priority", "effectiveEndDate");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertVisionStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertVisionStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
     if (src.hasPatient())
@@ -75,10 +79,11 @@ public class VisionPrescription40_N {
       return null;
     org.hl7.fhir.r4.model.VisionPrescription tgt = new org.hl7.fhir.r4.model.VisionPrescription();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "basedOn", "groupIdentifier", "intent", "priority", "effectiveEndDate");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertVisionStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertVisionStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
     if (src.hasPatient())
@@ -160,7 +165,7 @@ public class VisionPrescription40_N {
     if (src.hasProduct())
       tgt.setProduct(CodeableConcept40_N.convertCodeableConcept(src.getProduct()));
     if (src.hasEye())
-      tgt.setEyeElement(convertVisionEyes(src.getEyeElement()));
+      tgt.setEyeElement(CrossVersionElements40_N.toR6Code(src.getEyeElement(), convertVisionEyes(src.getEyeElement()), src.fhirType(), "eye"));
     if (src.hasSphere())
       tgt.setSphereElement(Decimal40_N.convertDecimal(src.getSphereElement()));
     if (src.hasCylinder())
@@ -195,7 +200,7 @@ public class VisionPrescription40_N {
     if (src.hasProduct())
       tgt.setProduct(CodeableConcept40_N.convertCodeableConcept(src.getProduct()));
     if (src.hasEye())
-      tgt.setEyeElement(convertVisionEyes(src.getEyeElement()));
+      tgt.setEyeElement(CrossVersionElements40_N.toR4Code(src.getEyeElement(), convertVisionEyes(src.getEyeElement()), src.fhirType(), "eye"));
     if (src.hasSphere())
       tgt.setSphereElement(Decimal40_N.convertDecimal(src.getSphereElement()));
     if (src.hasCylinder())
@@ -276,7 +281,7 @@ public class VisionPrescription40_N {
     if (src.hasAmount())
       tgt.setAmountElement(Decimal40_N.convertDecimal(src.getAmountElement()));
     if (src.hasBase())
-      tgt.setBaseElement(convertVisionBase(src.getBaseElement()));
+      tgt.setBaseElement(CrossVersionElements40_N.toR6Code(src.getBaseElement(), convertVisionBase(src.getBaseElement()), src.fhirType(), "base"));
     return tgt;
   }
 
@@ -288,7 +293,7 @@ public class VisionPrescription40_N {
     if (src.hasAmount())
       tgt.setAmountElement(Decimal40_N.convertDecimal(src.getAmountElement()));
     if (src.hasBase())
-      tgt.setBaseElement(convertVisionBase(src.getBaseElement()));
+      tgt.setBaseElement(CrossVersionElements40_N.toR4Code(src.getBaseElement(), convertVisionBase(src.getBaseElement()), src.fhirType(), "base"));
     return tgt;
   }
 

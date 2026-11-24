@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Address40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -45,11 +46,15 @@ import org.hl7.fhir.model.core.Practitioner.PractitionerCommunicationComponent;
 
 public class Practitioner40_N {
 
+  // communication became a component (language + preferred) in R5: preferred goes on the R4 communication CodeableConcept
+  private static final String COMMUNICATION_PREFERRED_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Practitioner.communication.preferred";
+
   public static org.hl7.fhir.model.core.Practitioner convertPractitioner(org.hl7.fhir.r4.model.Practitioner src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Practitioner tgt = new org.hl7.fhir.model.core.Practitioner();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Practitioner", "5.0", new String[] {"deceased"}));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "deceased");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -65,8 +70,13 @@ public class Practitioner40_N {
     for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment40_N.convertAttachment(t));
     for (org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
       tgt.addQualification(convertPractitionerQualificationComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunication())
-      tgt.addCommunication().setLanguage(CodeableConcept40_N.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunication()) {
+      PractitionerCommunicationComponent c = tgt.addCommunication().setLanguage(CodeableConcept40_N.convertCodeableConcept(t));
+      if (t.hasExtension(COMMUNICATION_PREFERRED_EXTENSION_URL)) {
+        c.getLanguage().removeExtension(COMMUNICATION_PREFERRED_EXTENSION_URL);
+        c.setPreferredElement(Boolean40_N.convertBoolean((org.hl7.fhir.r4.model.BooleanType) t.getExtensionByUrl(COMMUNICATION_PREFERRED_EXTENSION_URL).getValue()));
+      }
+    }
     return tgt;
   }
 
@@ -75,6 +85,7 @@ public class Practitioner40_N {
       return null;
     org.hl7.fhir.r4.model.Practitioner tgt = new org.hl7.fhir.r4.model.Practitioner();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "deceased");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -90,8 +101,12 @@ public class Practitioner40_N {
     for (org.hl7.fhir.model.core.Attachment t : src.getPhotoList()) tgt.addPhoto(Attachment40_N.convertAttachment(t));
     for (org.hl7.fhir.model.core.Practitioner.PractitionerQualificationComponent t : src.getQualificationList())
       tgt.addQualification(convertPractitionerQualificationComponent(t));
-    for (PractitionerCommunicationComponent t : src.getCommunicationList())
-      tgt.addCommunication(CodeableConcept40_N.convertCodeableConcept(t.getLanguage()));
+    for (PractitionerCommunicationComponent t : src.getCommunicationList()) {
+      org.hl7.fhir.r4.model.CodeableConcept cc = CodeableConcept40_N.convertCodeableConcept(t.getLanguage());
+      if (t.hasPreferred())
+        cc.addExtension(COMMUNICATION_PREFERRED_EXTENSION_URL, Boolean40_N.convertBoolean(t.getPreferredElement()));
+      tgt.addCommunication(cc);
+    }
     return tgt;
   }
 
@@ -99,7 +114,8 @@ public class Practitioner40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.model.core.Practitioner.PractitionerQualificationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Practitioner.qualification", "6.0", new String[] {"status"}));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "status");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasCode())
@@ -116,6 +132,7 @@ public class Practitioner40_N {
       return null;
     org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "status");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasCode())

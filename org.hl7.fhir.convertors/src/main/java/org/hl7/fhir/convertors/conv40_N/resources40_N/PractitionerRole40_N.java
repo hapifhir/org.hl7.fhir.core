@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Availability40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ExtendedContactDetail40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -40,11 +45,20 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class PractitionerRole40_N {
 
+  public static final String CONTACT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-PractitionerRole.contact";
+
+  // R6 moved availability into the Availability datatype: availableTime and notAvailable map to that,
+  // and the rest (R4 availabilityExceptions, R6 availability.period) are cross-version extensions
+  public static final String AVAILABILITY_PERIOD_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-PractitionerRole.availability.period";
+  public static final String AVAILABILITY_EXCEPTIONS_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-PractitionerRole.availabilityExceptions";
+
   public static org.hl7.fhir.model.core.PractitionerRole convertPractitionerRole(org.hl7.fhir.r4.model.PractitionerRole src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.PractitionerRole tgt = new org.hl7.fhir.model.core.PractitionerRole();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("PractitionerRole", "5.0", new String[] {"characteristic", "communication"}, CrossVersionElements40_N.urls("PractitionerRole", "6.0", new String[] {"display"}, CONTACT_EXTENSION_URL, AVAILABILITY_PERIOD_EXTENSION_URL)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "characteristic", "communication");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "display");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -62,14 +76,15 @@ public class PractitionerRole40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.getContactFirstRep().addTelecom(ContactPoint40_N.convertContactPoint(t));
-//    for (org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
-//      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-//    for (org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
-//      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    ExtendedContactDetail40_N.convertContacts(src.getTelecom(), src.getExtension(), CONTACT_EXTENSION_URL, tgt::addContact);
+    for (org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
+      tgt.getAvailability().addAvailableTime(Availability40_N.convertAvailableTime(t, "availableStartTime", "availableEndTime"));
+    for (org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
+      tgt.getAvailability().addNotAvailableTime(Availability40_N.convertNotAvailable(t));
+    if (src.hasExtension(AVAILABILITY_PERIOD_EXTENSION_URL))
+      tgt.getAvailability().setPeriod(Period40_N.convertPeriod((org.hl7.fhir.r4.model.Period) src.getExtensionByUrl(AVAILABILITY_PERIOD_EXTENSION_URL).getValue()));
+    if (src.hasAvailabilityExceptions())
+      tgt.addExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL, String40_N.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -78,7 +93,9 @@ public class PractitionerRole40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.PractitionerRole tgt = new org.hl7.fhir.r4.model.PractitionerRole();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, AVAILABILITY_EXCEPTIONS_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "characteristic", "communication");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "display");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -96,15 +113,17 @@ public class PractitionerRole40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getLocationList()) tgt.addLocation(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getHealthcareServiceList())
       tgt.addHealthcareService(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.model.core.ExtendedContactDetail t1 : src.getContactList())
-      for (org.hl7.fhir.model.core.ContactPoint t : t1.getTelecomList())
-        tgt.addTelecom(ContactPoint40_N.convertContactPoint(t));
-//    for (org.hl7.fhir.model.core.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTimeList())
-//      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-//    for (org.hl7.fhir.model.core.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailableList())
-//      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    ExtendedContactDetail40_N.convertContacts(src.getContactList(), tgt.getTelecom(), tgt.getExtension(), CONTACT_EXTENSION_URL);
+    if (src.hasAvailability()) {
+      for (org.hl7.fhir.model.core.Availability.AvailabilityAvailableTimeComponent t : src.getAvailability().getAvailableTimeList())
+        Availability40_N.convertAvailableTime(t, tgt.addAvailableTime(), "availableStartTime", "availableEndTime");
+      for (org.hl7.fhir.model.core.Availability.AvailabilityNotAvailableTimeComponent t : src.getAvailability().getNotAvailableTimeList())
+        Availability40_N.convertNotAvailable(t, tgt.addNotAvailable());
+      if (src.getAvailability().hasPeriod())
+        tgt.addExtension(AVAILABILITY_PERIOD_EXTENSION_URL, Period40_N.convertPeriod(src.getAvailability().getPeriod()));
+    }
+    if (src.hasExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL))
+      tgt.setAvailabilityExceptionsElement(String40_N.convertString((org.hl7.fhir.model.core.StringType) src.getExtensionByUrl(AVAILABILITY_EXCEPTIONS_EXTENSION_URL).getValue()));
     for (org.hl7.fhir.model.core.Reference t : src.getEndpointList()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }

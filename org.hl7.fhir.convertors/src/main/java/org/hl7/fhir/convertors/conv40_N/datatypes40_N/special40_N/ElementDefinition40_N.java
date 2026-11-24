@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
@@ -56,21 +57,21 @@ public class ElementDefinition40_N {
       tgt.setContentReferenceElement(Uri40_N.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent t : src.getType())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue())
-      tgt.setDefaultValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDefaultValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "defaultValue", tgt, tgt.getExtension());
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_N.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_N.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed())
-      tgt.setFixed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getFixed()));
-    if (src.hasPattern())
-      tgt.setPattern(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getPattern()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "fixed", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "pattern", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent t : src.getExample())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue())
-      tgt.setMinValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMinValue()));
-    if (src.hasMaxValue())
-      tgt.setMaxValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMaxValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "minValue", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "maxValue", tgt, tgt.getExtension());
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_N.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r4.model.IdType t : src.getCondition()) tgt.getConditionList().add(Id40_N.convertId(t));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
@@ -118,21 +119,16 @@ public class ElementDefinition40_N {
       tgt.setContentReferenceElement(Uri40_N.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent t : src.getTypeList())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue())
-      tgt.setDefaultValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDefaultValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "defaultValue", tgt, tgt.getExtension());
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_N.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_N.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed())
-      tgt.setFixed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getFixed()));
-    if (src.hasPattern())
-      tgt.setPattern(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getPattern()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "fixed", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "pattern", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionExampleComponent t : src.getExampleList())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue())
-      tgt.setMinValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMinValue()));
-    if (src.hasMaxValue())
-      tgt.setMaxValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMaxValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "minValue", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "maxValue", tgt, tgt.getExtension());
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_N.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.model.core.IdType t : src.getConditionList()) tgt.getCondition().add(Id40_N.convertId(t));
     for (org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraintList())
@@ -225,7 +221,7 @@ public class ElementDefinition40_N {
       tgt.addDiscriminator(convertElementDefinitionSlicingDiscriminatorComponent(t));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasOrdered()) tgt.setOrderedElement(Boolean40_N.convertBoolean(src.getOrderedElement()));
-    if (src.hasRules()) tgt.setRulesElement(convertSlicingRules(src.getRulesElement()));
+    if (src.hasRules()) tgt.setRulesElement(CrossVersionElements40_N.toR6Code(src.getRulesElement(), convertSlicingRules(src.getRulesElement()), src.fhirType(), "rules"));
     return tgt;
   }
 
@@ -237,7 +233,7 @@ public class ElementDefinition40_N {
       tgt.addDiscriminator(convertElementDefinitionSlicingDiscriminatorComponent(t));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasOrdered()) tgt.setOrderedElement(Boolean40_N.convertBoolean(src.getOrderedElement()));
-    if (src.hasRules()) tgt.setRulesElement(convertSlicingRules(src.getRulesElement()));
+    if (src.hasRules()) tgt.setRulesElement(CrossVersionElements40_N.toR4Code(src.getRulesElement(), convertSlicingRules(src.getRulesElement()), src.fhirType(), "rules"));
     return tgt;
   }
 
@@ -295,7 +291,7 @@ public class ElementDefinition40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent tgt = new org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertDiscriminatorType(src.getTypeElement()));
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertDiscriminatorType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     return tgt;
   }
@@ -304,7 +300,7 @@ public class ElementDefinition40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertDiscriminatorType(src.getTypeElement()));
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertDiscriminatorType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     return tgt;
   }
@@ -409,7 +405,7 @@ public class ElementDefinition40_N {
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfileList().add(Canonical40_N.convertCanonical(t));
     tgt.setAggregationList(src.getAggregation().stream().map(ElementDefinition40_N::convertAggregationMode).collect(Collectors.toList()));
-    if (src.hasVersioning()) tgt.setVersioningElement(convertReferenceVersionRules(src.getVersioningElement()));
+    if (src.hasVersioning()) tgt.setVersioningElement(CrossVersionElements40_N.toR6Code(src.getVersioningElement(), convertReferenceVersionRules(src.getVersioningElement()), src.fhirType(), "versioning"));
     return tgt;
   }
 
@@ -423,7 +419,7 @@ public class ElementDefinition40_N {
     for (org.hl7.fhir.model.core.CanonicalType t : src.getTargetProfileList())
       tgt.getTargetProfile().add(Canonical40_N.convertCanonical(t));
     tgt.setAggregation(src.getAggregationList().stream().map(ElementDefinition40_N::convertAggregationMode).collect(Collectors.toList()));
-    if (src.hasVersioning()) tgt.setVersioningElement(convertReferenceVersionRules(src.getVersioningElement()));
+    if (src.hasVersioning()) tgt.setVersioningElement(CrossVersionElements40_N.toR4Code(src.getVersioningElement(), convertReferenceVersionRules(src.getVersioningElement()), src.fhirType(), "versioning"));
     return tgt;
   }
 
@@ -532,8 +528,8 @@ public class ElementDefinition40_N {
     org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionExampleComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_N.convertString(src.getLabelElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -542,8 +538,7 @@ public class ElementDefinition40_N {
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_N.convertString(src.getLabelElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -553,7 +548,7 @@ public class ElementDefinition40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, VersionConvertorConstants.EXT_CONSTRAINT_SUPPRESS);
     if (src.hasKey()) tgt.setKeyElement(Id40_N.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String40_N.convertStringToMarkdown(src.getRequirementsElement()));
-    if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
+    if (src.hasSeverity()) tgt.setSeverityElement(CrossVersionElements40_N.toR6Code(src.getSeverityElement(), convertConstraintSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasHuman()) tgt.setHumanElement(String40_N.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
     if (src.hasXpath()) {
@@ -572,7 +567,7 @@ public class ElementDefinition40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_XPATH_CONSTRAINT);
     if (src.hasKey()) tgt.setKeyElement(Id40_N.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String40_N.convertString(src.getRequirementsElement()));
-    if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
+    if (src.hasSeverity()) tgt.setSeverityElement(CrossVersionElements40_N.toR4Code(src.getSeverityElement(), convertConstraintSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasHuman()) tgt.setHumanElement(String40_N.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
     if (org.hl7.fhir.model.extensions.ExtensionUtilities.hasExtension(src, org.hl7.fhir.r5.extensions.ExtensionDefinitions.EXT_XPATH_CONSTRAINT)) {
@@ -650,7 +645,10 @@ public class ElementDefinition40_N {
   private static ElementDefinitionBindingAdditionalComponent convertAdditional(Extension src) {
     if (src == null) return null;
     ElementDefinitionBindingAdditionalComponent tgt = new ElementDefinitionBindingAdditionalComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, "valueSet", "purpose", "documentation", "shortDoco", "usage", "any");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, "key", "valueSet", "purpose", "documentation", "shortDoco", "usage", "any");
+    if (src.hasExtension("key")) {
+      tgt.setKeyElement(new org.hl7.fhir.model.core.IdType(src.getExtensionByUrl("key").getValue().primitiveValue()));
+    }
     if (src.hasExtension("purpose")) {
       tgt.getPurposeElement().setValueAsString(src.getExtensionByUrl("purpose").getValue().primitiveValue());
     }
@@ -676,6 +674,9 @@ public class ElementDefinition40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Extension tgt = new Extension(ExtensionDefinitions.EXT_BINDING_ADDITIONAL);
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    if (src.hasKey()) {
+      tgt.addExtension(new Extension("key", new org.hl7.fhir.r4.model.IdType(src.getKey())));
+    }
     if (src.hasPurpose()) {
       tgt.addExtension(new Extension("purpose", new org.hl7.fhir.r4.model.CodeType(src.getPurposeElement().primitiveValue())));
     }

@@ -215,16 +215,16 @@ public class Composition43_N {
       } else {
           switch (src.getValue()) {
               case PERSONAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("personal");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("personal");
                   break;
               case PROFESSIONAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("professional");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("professional");
                   break;
               case LEGAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("legal");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("legal");
                   break;
               case OFFICIAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("official");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("official");
                   break;
               default:
                   break;
@@ -238,7 +238,11 @@ public class Composition43_N {
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+    String code = src.getCode("http://terminology.hl7.org/CodeSystem/composition-attestation-mode");
+    if (code == null) {
+      code = src.getCode("http://hl7.org/fhir/composition-attestation-mode"); // the system before R6
+    }
+    switch (code == null ? "" : code) {
       case "personal":
         tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.PERSONAL);
         break;
@@ -252,7 +256,7 @@ public class Composition43_N {
         tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.NULL);
+        // not a code R4 knows: leave the value empty
         break;
     }
     return tgt;

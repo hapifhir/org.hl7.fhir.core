@@ -2,6 +2,8 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
@@ -57,20 +59,45 @@ public class ConceptMap40_N {
   public static final String UNMAPPED_VALUESET_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.group.unmapped.valueSet";
   public static final String UNMAPPED_RELATIONSHIP_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.group.unmapped.relationship";
 
+  public static final String IDENTIFIER_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.identifier"; // the 2nd+ identifiers
+  // an R4 'unmatched' target becomes noMap in R6, so its dependsOn and product (if any) go in these on the R6 source element,
+  // alongside its comment (ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)
+  public static final String NOMAP_DEPENDS_ON_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.dependsOn";
+  public static final String NOMAP_PRODUCT_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.product";
+  // the R5 elements R4 doesn't have. additionalAttribute is handled separately on the way out (see attributeNeedsExtension)
+  private static final String[] R5_ELEMENTS_OUT = {"approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author",
+    "editor", "reviewer", "endorser", "relatedArtifact", "copyrightLabel", "property"};
+  private static final String[] R5_ELEMENTS = {"approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author",
+    "editor", "reviewer", "endorser", "relatedArtifact", "copyrightLabel", "property", "additionalAttribute"};
+  private static final String TARGET_PATH = "ConceptMap.group.element.target";
+
+  private static final String UNMAPPED_COMMENT_EXTENSION_URL = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ConceptMap.group.unmapped.comment";
   private static final String[] UNMAPPED_IGNORED_EXTENSION_URLS = new String[]{
     UNMAPPED_VALUESET_EXTENSION_URL,
-    UNMAPPED_RELATIONSHIP_EXTENSION_URL
+    UNMAPPED_RELATIONSHIP_EXTENSION_URL,
+    UNMAPPED_COMMENT_EXTENSION_URL
+  };
+  private static final String[] TARGET_R5_ELEMENTS = {"property", "valueSet"};
+  private static final String[] ELEMENT_EXTENSION_URLS = {
+    "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.group.element.valueSet",
+    "http://hl7.org/fhir/6.0/StructureDefinition/extension-ConceptMap.group.element.comment"
   };
 
   public static org.hl7.fhir.model.core.ConceptMap convertConceptMap(org.hl7.fhir.r4.model.ConceptMap src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ConceptMap tgt = new org.hl7.fhir.model.core.ConceptMap();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt,
+      CrossVersionElements40_N.urls("ConceptMap", "5.0", R5_ELEMENTS, IDENTIFIER_EXTENSION_URL, CrossVersionElements40_N.url("ConceptMap", "6.0", "allowedRelationship")));
+    // before the groups, so that the attributes they use are already known
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", R5_ELEMENTS);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "allowedRelationship");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(IDENTIFIER_EXTENSION_URL))
+      tgt.addIdentifier(Identifier40_N.convertIdentifier((org.hl7.fhir.r4.model.Identifier) ext.getValue()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasName())
@@ -103,6 +130,7 @@ public class ConceptMap40_N {
       tgt.setTargetScope(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTarget()));
     for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t, tgt));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -111,10 +139,22 @@ public class ConceptMap40_N {
       return null;
     org.hl7.fhir.r4.model.ConceptMap tgt = new org.hl7.fhir.r4.model.ConceptMap();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", R5_ELEMENTS_OUT);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "allowedRelationship");
+    for (org.hl7.fhir.model.core.ConceptMap.AdditionalAttributeComponent aa : src.getAdditionalAttributeList()) {
+      if (attributeNeedsExtension(aa)) {
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("ConceptMap", "5.0", "additionalAttribute"), aa));
+      }
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
-    if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifierFirstRep()));
+    // R4 has only one identifier: the rest go in the cross-version extension
+    for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList()) {
+      if (!tgt.hasIdentifier())
+        tgt.setIdentifier(Identifier40_N.convertIdentifier(t));
+      else
+        tgt.addExtension(IDENTIFIER_EXTENSION_URL, Identifier40_N.convertIdentifier(t));
+    }
     if (src.hasVersion())
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasName())
@@ -147,6 +187,7 @@ public class ConceptMap40_N {
       tgt.setTarget(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTargetScope()));
     for (org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent t : src.getGroupList())
       tgt.addGroup(convertConceptMapGroupComponent(t, src));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -207,7 +248,12 @@ public class ConceptMap40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.model.core.ConceptMap.SourceElementComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ELEMENT_EXTENSION_URLS);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "valueSet");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "comment");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "noMap");
+    String noMapUrl = CrossVersionElements40_N.url("ConceptMap.group.element", "5.0", "noMap");
+    tgt.getExtension().removeIf(e -> noMapUrl.equals(e.getUrl()));
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -221,6 +267,10 @@ public class ConceptMap40_N {
           }
           tgt.addExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(t.getCommentElement()));
         }
+        for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent oe : t.getDependsOn())
+          tgt.addExtension(convertR4OtherElementToExtension(oe, NOMAP_DEPENDS_ON_EXTENSION_URL));
+        for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent oe : t.getProduct())
+          tgt.addExtension(convertR4OtherElementToExtension(oe, NOMAP_PRODUCT_EXTENSION_URL));
       } else {
         tgt.addTarget(convertTargetElementComponent(t, tgtMap));
       }
@@ -232,7 +282,9 @@ public class ConceptMap40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ExtensionDefinitions.EXT_CM_NOMAP_COMMENT);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ExtensionDefinitions.EXT_CM_NOMAP_COMMENT, NOMAP_DEPENDS_ON_EXTENSION_URL, NOMAP_PRODUCT_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "valueSet");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "comment");
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -243,11 +295,17 @@ public class ConceptMap40_N {
       if (src.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
         t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT).getValue()));
       }
+      for (org.hl7.fhir.model.core.Extension ext : src.getExtensionsByUrl(NOMAP_DEPENDS_ON_EXTENSION_URL))
+        t.addDependsOn(convertExtensionToR4OtherElement(ext));
+      for (org.hl7.fhir.model.core.Extension ext : src.getExtensionsByUrl(NOMAP_PRODUCT_EXTENSION_URL))
+        t.addProduct(convertExtensionToR4OtherElement(ext));
       tgt.addTarget(t);
-    } else {
-      for (org.hl7.fhir.model.core.ConceptMap.TargetElementComponent t : src.getTargetList())
-        tgt.addTarget(convertTargetElementComponent(t, srcMap));
-    }
+    } else if (src.hasNoMap())
+      // noMap = false: R4 has no way to say that
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "noMap");
+    // (R6 doesn't allow targets with noMap = true, but if there are any, they're kept)
+    for (org.hl7.fhir.model.core.ConceptMap.TargetElementComponent t : src.getTargetList())
+      tgt.addTarget(convertTargetElementComponent(t, srcMap));
     return tgt;
   }
 
@@ -255,7 +313,8 @@ public class ConceptMap40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.model.core.ConceptMap.TargetElementComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls(TARGET_PATH, "5.0", TARGET_R5_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", TARGET_R5_ELEMENTS);
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -265,9 +324,9 @@ public class ConceptMap40_N {
     if (src.hasComment())
       tgt.setCommentElement(String40_N.convertString(src.getCommentElement()));
     for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
-      tgt.addDependsOn(convertOtherElementComponent(t, tgtMap));
+      tgt.addDependsOn(convertOtherElementComponent(t, tgtMap, TARGET_PATH + ".dependsOn"));
     for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getProduct())
-      tgt.addProduct(convertOtherElementComponent(t, tgtMap));
+      tgt.addProduct(convertOtherElementComponent(t, tgtMap, TARGET_PATH + ".product"));
     return tgt;
   }
 
@@ -276,6 +335,7 @@ public class ConceptMap40_N {
       return null;
     org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", TARGET_R5_ELEMENTS);
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -287,9 +347,9 @@ public class ConceptMap40_N {
     if (src.hasComment())
       tgt.setCommentElement(String40_N.convertString(src.getCommentElement()));
     for (org.hl7.fhir.model.core.ConceptMap.OtherElementComponent t : src.getDependsOnList())
-      tgt.addDependsOn(convertOtherElementComponent(t, srcMap));
+      tgt.addDependsOn(convertOtherElementComponent(t, srcMap, TARGET_PATH + ".dependsOn"));
     for (org.hl7.fhir.model.core.ConceptMap.OtherElementComponent t : src.getProductList())
-      tgt.addProduct(convertOtherElementComponent(t, srcMap));
+      tgt.addProduct(convertOtherElementComponent(t, srcMap, TARGET_PATH + ".product"));
     return tgt;
   }
 
@@ -379,22 +439,51 @@ public class ConceptMap40_N {
       return tgt;
   }
 
-  public static org.hl7.fhir.model.core.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent src, org.hl7.fhir.model.core.ConceptMap tgtMap) throws FHIRException {
+  public static org.hl7.fhir.model.core.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent src, org.hl7.fhir.model.core.ConceptMap tgtMap, String path) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.model.core.ConceptMap.OtherElementComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls(path, "5.0", new String[] {"value", "valueSet"}));
     if (src.hasProperty())
-      tgt.setAttribute(tgtMap.registerAttribute(src.getProperty()));
+      tgt.setAttribute(attributeCode(tgtMap, src.getProperty()));
     if (src.hasSystem()) {
       tgt.setValue(new Coding().setSystem(src.getSystem()).setCode(src.getValue()).setDisplay(src.getDisplay()));
     } else if (src.hasValueElement()) {
       tgt.setValue(String40_N.convertString(src.getValueElement()));
     }
+    // a value that isn't a string or Coding (code, boolean, Quantity) is carried in the cross-version extension
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, path, "5.0", "value", "valueSet");
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.model.core.ConceptMap.OtherElementComponent src, org.hl7.fhir.model.core.ConceptMap srcMap) throws FHIRException {
+  /**
+   * R4 only has the uri of an attribute (OtherElement.property), and on the way back an attribute is created for
+   * it with a code made from the tail of the uri (ConceptMap.registerAttribute). So the attribute only needs to
+   * go in an extension if it has more than that
+   */
+  private static boolean attributeNeedsExtension(org.hl7.fhir.model.core.ConceptMap.AdditionalAttributeComponent aa) {
+    if (!aa.hasUri() || aa.hasDescription() || aa.hasType() || aa.hasExtension() || aa.hasId()) {
+      return true;
+    }
+    String uri = aa.getUri();
+    String code = (uri.contains("/") ? uri.substring(uri.lastIndexOf("/") + 1) : uri).replace("-", "");
+    return !(code.isEmpty() ? "code" : code).equals(aa.getCode());
+  }
+
+  /**
+   * The code for the attribute R4 identifies by the uri in OtherElement.property: an additionalAttribute that
+   * came across from R6 (by its uri, or by its code if it had no uri), or else a new one
+   */
+  private static String attributeCode(org.hl7.fhir.model.core.ConceptMap tgtMap, String property) {
+    for (org.hl7.fhir.model.core.ConceptMap.AdditionalAttributeComponent aa : tgtMap.getAdditionalAttributeList()) {
+      if (property.equals(aa.getUri()) || (!aa.hasUri() && property.equals(aa.getCode()))) {
+        return aa.getCode();
+      }
+    }
+    return tgtMap.registerAttribute(property);
+  }
+
+  public static org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent convertOtherElementComponent(org.hl7.fhir.model.core.ConceptMap.OtherElementComponent src, org.hl7.fhir.model.core.ConceptMap srcMap, String path) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent();
@@ -407,9 +496,42 @@ public class ConceptMap40_N {
       tgt.setValue(src.getValueCoding().getCode());
       tgt.setDisplay(src.getValueCoding().getDisplay());
     } else if (src.hasValue()) {
-        tgt.setValue(src.getValue().primitiveValue());
+      tgt.setValue(src.getValue().primitiveValue());
+      if (!"string".equals(src.getValue().fhirType())) { // (not instanceof: CodeType is a StringType)
+        CrossVersionElements40_N.elementsToExtensionsForPath(src, path, tgt.getExtension(), "5.0", "value");
+      }
     }
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, path, tgt.getExtension(), "5.0", "valueSet");
+    return tgt;
+  }
 
+  private static org.hl7.fhir.model.core.Extension convertR4OtherElementToExtension(org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent src, String url) {
+    org.hl7.fhir.model.core.Extension tgt = new org.hl7.fhir.model.core.Extension().setUrl(url);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    if (src.hasProperty())
+      tgt.addExtension("property", Uri40_N.convertUri(src.getPropertyElement()));
+    if (src.hasSystem())
+      tgt.addExtension("system", ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSystemElement()));
+    if (src.hasValue())
+      tgt.addExtension("value", String40_N.convertString(src.getValueElement()));
+    if (src.hasDisplay())
+      tgt.addExtension("display", String40_N.convertString(src.getDisplayElement()));
+    return tgt;
+  }
+
+  private static org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent convertExtensionToR4OtherElement(org.hl7.fhir.model.core.Extension src) {
+    org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, "property", "system", "value", "display");
+    for (org.hl7.fhir.model.core.Extension ext : src.getExtensionList()) {
+      switch (ext.getUrl()) {
+        case "property": tgt.setPropertyElement(Uri40_N.convertUri((org.hl7.fhir.model.core.UriType) ext.getValue())); break;
+        case "system": tgt.setSystemElement((org.hl7.fhir.r4.model.CanonicalType) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(ext.getValue())); break;
+        case "value": tgt.setValueElement(String40_N.convertString((org.hl7.fhir.model.core.StringType) ext.getValue())); break;
+        case "display": tgt.setDisplayElement(String40_N.convertString((org.hl7.fhir.model.core.StringType) ext.getValue())); break;
+        default: break;
+      }
+    }
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -419,7 +541,7 @@ public class ConceptMap40_N {
     org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupUnmappedComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, UNMAPPED_IGNORED_EXTENSION_URLS);
     if (src.hasMode())
-      tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertConceptMapGroupUnmappedMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -430,6 +552,8 @@ public class ConceptMap40_N {
       tgt.setValueSetElement(Canonical40_N.convertCanonical((org.hl7.fhir.r4.model.CanonicalType) src.getExtensionByUrl(UNMAPPED_VALUESET_EXTENSION_URL).getValue()));
     if (src.hasExtension(UNMAPPED_RELATIONSHIP_EXTENSION_URL))
       tgt.setRelationship(ConceptMapRelationship.fromCode(src.getExtensionByUrl(UNMAPPED_RELATIONSHIP_EXTENSION_URL).getValue().primitiveValue()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "comment");
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -439,7 +563,7 @@ public class ConceptMap40_N {
     org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupUnmappedComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, UNMAPPED_IGNORED_EXTENSION_URLS);
     if (src.hasMode())
-      tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertConceptMapGroupUnmappedMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -450,6 +574,8 @@ public class ConceptMap40_N {
       tgt.addExtension(UNMAPPED_VALUESET_EXTENSION_URL, Canonical40_N.convertCanonical(src.getValueSetElement()));
     if (src.hasRelationship())
       tgt.addExtension(UNMAPPED_RELATIONSHIP_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getRelationship().toCode()));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "comment");
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 

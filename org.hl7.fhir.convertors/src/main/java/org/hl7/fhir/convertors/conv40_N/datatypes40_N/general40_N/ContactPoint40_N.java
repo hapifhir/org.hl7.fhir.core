@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.PositiveInt40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
@@ -11,9 +13,9 @@ public class ContactPoint40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.ContactPoint tgt = new org.hl7.fhir.model.core.ContactPoint();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasSystem()) tgt.setSystemElement(convertContactPointSystem(src.getSystemElement()));
+    if (src.hasSystem()) tgt.setSystemElement(CrossVersionElements40_N.toR6Code(src.getSystemElement(), convertContactPointSystem(src.getSystemElement()), src.fhirType(), "system"));
     if (src.hasValue()) tgt.setValueElement(String40_N.convertString(src.getValueElement()));
-    if (src.hasUse()) tgt.setUseElement(convertContactPointUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertContactPointUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasRank()) tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
     if (src.hasPeriod()) tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     return tgt;
@@ -23,9 +25,9 @@ public class ContactPoint40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ContactPoint tgt = new org.hl7.fhir.r4.model.ContactPoint();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasSystem()) tgt.setSystemElement(convertContactPointSystem(src.getSystemElement()));
+    if (src.hasSystem()) tgt.setSystemElement(CrossVersionElements40_N.toR4Code(src.getSystemElement(), convertContactPointSystem(src.getSystemElement()), src.fhirType(), "system"));
     if (src.hasValue()) tgt.setValueElement(String40_N.convertString(src.getValueElement()));
-    if (src.hasUse()) tgt.setUseElement(convertContactPointUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertContactPointUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasRank()) tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
     if (src.hasPeriod()) tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     return tgt;

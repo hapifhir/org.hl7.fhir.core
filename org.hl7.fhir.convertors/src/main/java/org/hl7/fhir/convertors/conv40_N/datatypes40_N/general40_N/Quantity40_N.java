@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Code40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Decimal40_N;
@@ -15,7 +17,7 @@ public class Quantity40_N {
     org.hl7.fhir.model.core.Quantity tgt = new org.hl7.fhir.model.core.Quantity();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasValue()) tgt.setValueElement(Decimal40_N.convertDecimal(src.getValueElement()));
-    if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
+    if (src.hasComparator()) tgt.setComparatorElement(CrossVersionElements40_N.toR6Code(src.getComparatorElement(), convertQuantityComparator(src.getComparatorElement()), src.fhirType(), "comparator"));
     if (src.hasUnit()) tgt.setUnitElement(String40_N.convertString(src.getUnitElement()));
     if (src.hasSystem()) tgt.setSystemElement(Uri40_N.convertUri(src.getSystemElement()));
     if (src.hasCode()) tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
@@ -27,7 +29,7 @@ public class Quantity40_N {
     org.hl7.fhir.r4.model.Quantity tgt = new org.hl7.fhir.r4.model.Quantity();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasValue()) tgt.setValueElement(Decimal40_N.convertDecimal(src.getValueElement()));
-    if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
+    if (src.hasComparator()) tgt.setComparatorElement(CrossVersionElements40_N.toR4Code(src.getComparatorElement(), convertQuantityComparator(src.getComparatorElement()), src.fhirType(), "comparator"));
     if (src.hasUnit()) tgt.setUnitElement(String40_N.convertString(src.getUnitElement()));
     if (src.hasSystem()) tgt.setSystemElement(Uri40_N.convertUri(src.getSystemElement()));
     if (src.hasCode()) tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
@@ -94,7 +96,7 @@ public class Quantity40_N {
     if (src == null || tgt == null) return;
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasValue()) tgt.setValue(src.getValue());
-    if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
+    if (src.hasComparator()) tgt.setComparatorElement(CrossVersionElements40_N.toR6Code(src.getComparatorElement(), convertQuantityComparator(src.getComparatorElement()), src.fhirType(), "comparator"));
     if (src.hasUnit()) tgt.setUnit(src.getUnit());
     if (src.hasSystem()) tgt.setSystem(src.getSystem());
     if (src.hasCode()) tgt.setCode(src.getCode());
@@ -104,7 +106,7 @@ public class Quantity40_N {
     if (src == null || tgt == null) return;
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasValue()) tgt.setValue(src.getValue());
-    if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
+    if (src.hasComparator()) tgt.setComparatorElement(CrossVersionElements40_N.toR4Code(src.getComparatorElement(), convertQuantityComparator(src.getComparatorElement()), src.fhirType(), "comparator"));
     if (src.hasUnit()) tgt.setUnit(src.getUnit());
     if (src.hasSystem()) tgt.setSystem(src.getSystem());
     if (src.hasCode()) tgt.setCode(src.getCode());

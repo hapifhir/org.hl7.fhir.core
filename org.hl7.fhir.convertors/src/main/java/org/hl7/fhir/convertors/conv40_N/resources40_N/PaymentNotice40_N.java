@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Money40_N;
@@ -47,11 +48,12 @@ public class PaymentNotice40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.PaymentNotice tgt = new org.hl7.fhir.model.core.PaymentNotice();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("PaymentNotice", "5.0", new String[] {}, CrossVersionElements40_N.urls("PaymentNotice", "6.0", new String[] {"statusReason", "claimIdentifier", "patient"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason", "claimIdentifier", "patient");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertPaymentNoticeStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
     if (src.hasResponse())
@@ -80,10 +82,11 @@ public class PaymentNotice40_N {
       return null;
     org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason", "claimIdentifier", "patient");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertPaymentNoticeStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
     if (src.hasResponse())

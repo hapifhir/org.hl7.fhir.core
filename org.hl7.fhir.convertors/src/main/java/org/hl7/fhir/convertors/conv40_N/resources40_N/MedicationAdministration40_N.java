@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -47,21 +49,22 @@ public class MedicationAdministration40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MedicationAdministration tgt = new org.hl7.fhir.model.core.MedicationAdministration();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "MedicationAdministration", tgt.getExtension(), "instantiates");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationAdministration", "5.0", new String[] {"basedOn", "recorded", "isSubPotent", "subPotentReason"}, CrossVersionElements40_N.urls("MedicationAdministration", "6.0", new String[] {}, CrossVersionElements40_N.url("MedicationAdministration", "5.0", "category"), CrossVersionElements40_N.url("MedicationAdministration", "6.0", "occurrence"), CrossVersionElements40_N.url("MedicationAdministration", "5.0", "device"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "basedOn", "recorded", "isSubPotent", "subPotentReason");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiatesUri().add(Uri40_N.convertUri(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertMedicationAdministrationStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
-    if (src.hasMedicationCodeableConcept())
-      tgt.getMedication().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getMedicationCodeableConcept()));
-    if (src.hasMedicationReference())
-      tgt.getMedication().setReference(Reference40_N.convertReference(src.getMedicationReference()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "category");
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertChoiceToCodeableReference(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasContext())
@@ -70,15 +73,15 @@ public class MedicationAdministration40_N {
       tgt.addSupportingInformation(Reference40_N.convertReference(t));
     if (src.hasEffective())
       tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
+    // R6 occurrence can also be a Timing
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "occurrence");
     for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDevice()) tgt.addDevice(Reference40_N.convertReferenceToCodeableReference(t));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "device");
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     if (src.hasDosage())
       tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
@@ -91,42 +94,46 @@ public class MedicationAdministration40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration tgt = new org.hl7.fhir.r4.model.MedicationAdministration();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationAdministration", "4.0", new String[] {"instantiates"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "MedicationAdministration", "instantiates");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "basedOn", "recorded", "isSubPotent", "subPotentReason");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    for (org.hl7.fhir.model.core.UriType t : src.getInstantiatesUriList()) tgt.getInstantiates().add(Uri40_N.convertUri(t));
     for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertMedicationAdministrationStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getStatusReasonList())
       tgt.addStatusReason(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategoryFirstRep()));
-    if (src.getMedication().hasConcept())
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getConcept()));
-    if (src.getMedication().hasReference())
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getReference()));
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList()) {
+      if (!tgt.hasCategory())
+        tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationAdministration", "5.0", "category"), CodeableConcept40_N.convertCodeableConcept(t));
+    }
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setContext(Reference40_N.convertReference(src.getEncounter()));
     for (org.hl7.fhir.model.core.Reference t : src.getSupportingInformationList())
       tgt.addSupportingInformation(Reference40_N.convertReference(t));
-    if (src.hasOccurrence())
+    if (src.hasOccurrenceDateTimeType() || src.hasOccurrencePeriod())
       tgt.setEffective(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    else if (src.hasOccurrence())
+      tgt.addExtension(CrossVersionElements40_N.url("MedicationAdministration", "6.0", "occurrence"), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
     for (org.hl7.fhir.model.core.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformerList())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
-    for (CodeableReference t : src.getDeviceList())
-      if (t.hasReference())
+    // R4 device is only a Reference: anything more goes whole in a 5.0 extension
+    for (CodeableReference t : src.getDeviceList()) {
+      if (t.hasReference() && !t.hasConcept() && !t.hasId() && !t.hasExtension())
         tgt.addDevice(Reference40_N.convertReference(t.getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("MedicationAdministration", "5.0", "device"), t));
+    }
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     if (src.hasDosage())
       tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
@@ -217,10 +224,12 @@ public class MedicationAdministration40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.model.core.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("MedicationAdministration.performer", "5.0", "actor"));
+    // the whole actor, if it was more than a reference
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "MedicationAdministration.performer", "5.0", "actor");
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_N.convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
+    if (src.hasActor() && !tgt.hasActor())
       tgt.setActor(Reference40_N.convertReferenceToCodeableReference(src.getActor()));
     return tgt;
   }
@@ -232,8 +241,12 @@ public class MedicationAdministration40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_N.convertCodeableConcept(src.getFunction()));
-    if (src.hasActor() && src.getActor().hasReference())
-      tgt.setActor(Reference40_N.convertReference(src.getActor().getReference()));
+    if (src.hasActor()) {
+      if (src.getActor().hasReference())
+        tgt.setActor(Reference40_N.convertReference(src.getActor().getReference()));
+      if (src.getActor().hasConcept() || src.getActor().hasId() || src.getActor().hasExtension())
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("MedicationAdministration.performer", "5.0", "actor"), src.getActor()));
+    }
     return tgt;
   }
 
@@ -252,8 +265,8 @@ public class MedicationAdministration40_N {
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasDose())
       tgt.setDose(SimpleQuantity40_N.convertSimpleQuantity(src.getDose()));
-    if (src.hasRate())
-      tgt.setRate(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getRate()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "rate", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -272,8 +285,7 @@ public class MedicationAdministration40_N {
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasDose())
       tgt.setDose(SimpleQuantity40_N.convertSimpleQuantity(src.getDose()));
-    if (src.hasRate())
-      tgt.setRate(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getRate()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "rate", tgt, tgt.getExtension());
     return tgt;
   }
 }

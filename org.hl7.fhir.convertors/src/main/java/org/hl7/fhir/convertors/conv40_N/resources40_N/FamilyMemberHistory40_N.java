@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -50,11 +51,15 @@ public class FamilyMemberHistory40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.FamilyMemberHistory tgt = new org.hl7.fhir.model.core.FamilyMemberHistory();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("FamilyMemberHistory", "5.0", new String[] {"procedure"}, CrossVersionElements40_N.urls("FamilyMemberHistory", "6.0", new String[] {"recorder", "asserter"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "procedure");
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "FamilyMemberHistory", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri", "estimatedAge");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "recorder", "asserter");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertFamilyHistoryStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertFamilyHistoryStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_N.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasPatient())
@@ -67,16 +72,13 @@ public class FamilyMemberHistory40_N {
       tgt.setRelationship(CodeableConcept40_N.convertCodeableConcept(src.getRelationship()));
     if (src.hasSex())
       tgt.setSex(CodeableConcept40_N.convertCodeableConcept(src.getSex()));
-    if (src.hasBorn())
-      tgt.setBorn(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getBorn()));
-    if (src.hasAge())
-      tgt.setAge(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAge()));
-    if (src.hasDeceased())
-      tgt.setDeceased(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDeceased()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "born", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "age", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "deceased", tgt, tgt.getExtension());
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
       tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
@@ -87,11 +89,14 @@ public class FamilyMemberHistory40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("FamilyMemberHistory", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri", "estimatedAge"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "FamilyMemberHistory", "instantiatesCanonical", "instantiatesUri", "estimatedAge");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "procedure");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "recorder", "asserter");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertFamilyHistoryStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertFamilyHistoryStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_N.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasPatient())
@@ -104,18 +109,10 @@ public class FamilyMemberHistory40_N {
       tgt.setRelationship(CodeableConcept40_N.convertCodeableConcept(src.getRelationship()));
     if (src.hasSex())
       tgt.setSex(CodeableConcept40_N.convertCodeableConcept(src.getSex()));
-    if (src.hasBorn())
-      tgt.setBorn(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getBorn()));
-    if (src.hasAge())
-      tgt.setAge(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAge()));
-    if (src.hasDeceased())
-      tgt.setDeceased(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDeceased()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "born", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "age", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "deceased", tgt, tgt.getExtension());
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.model.core.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getConditionList())
       tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
@@ -191,8 +188,8 @@ public class FamilyMemberHistory40_N {
       tgt.setOutcome(CodeableConcept40_N.convertCodeableConcept(src.getOutcome()));
     if (src.hasContributedToDeath())
       tgt.setContributedToDeathElement(Boolean40_N.convertBoolean(src.getContributedToDeathElement()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     return tgt;
   }
@@ -208,8 +205,7 @@ public class FamilyMemberHistory40_N {
       tgt.setOutcome(CodeableConcept40_N.convertCodeableConcept(src.getOutcome()));
     if (src.hasContributedToDeath())
       tgt.setContributedToDeathElement(Boolean40_N.convertBoolean(src.getContributedToDeathElement()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     return tgt;
   }

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -48,13 +49,17 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport tgt = new org.hl7.fhir.model.core.MeasureReport();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "MeasureReport", tgt.getExtension(), "improvementNotation");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MeasureReport", "5.0", new String[] {"dataUpdateType", "reportingVendor", "location", "inputParameters", "supplementalData"}, CrossVersionElements40_N.urls("MeasureReport", "6.0", new String[] {"category", "messages"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "dataUpdateType", "reportingVendor", "location", "inputParameters", "supplementalData");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "category", "messages");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMeasureReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertMeasureReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
-      tgt.setTypeElement(convertMeasureReportType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertMeasureReportType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasMeasure())
       tgt.setMeasureElement(Canonical40_N.convertCanonical(src.getMeasureElement()));
     if (src.hasSubject())
@@ -76,13 +81,16 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport tgt = new org.hl7.fhir.r4.model.MeasureReport();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MeasureReport", "4.0", new String[] {"improvementNotation"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "MeasureReport", "improvementNotation");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "dataUpdateType", "reportingVendor", "location", "inputParameters", "supplementalData");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "category", "messages");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertMeasureReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertMeasureReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
-      tgt.setTypeElement(convertMeasureReportType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertMeasureReportType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasMeasure())
       tgt.setMeasureElement(Canonical40_N.convertCanonical(src.getMeasureElement()));
     if (src.hasSubject())
@@ -214,7 +222,9 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupComponent tgt = new org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group", "5.0", new String[] {"linkId", "subject", "measureScore"}, CrossVersionElements40_N.urls("MeasureReport.group", "6.0", new String[] {"title", "calculatedDate", "description", "type", "scoring", "compositeScoring", "improvementNotation", "improvementNotationGuidance"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "subject", "measureScore");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title", "calculatedDate", "description", "type", "scoring", "compositeScoring", "improvementNotation", "improvementNotationGuidance");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation())
@@ -231,12 +241,16 @@ public class MeasureReport40_N {
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "subject");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title", "calculatedDate", "description", "type", "scoring", "compositeScoring", "improvementNotation", "improvementNotationGuidance");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulationList())
       tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
     if (src.hasMeasureScoreQuantity())
       tgt.setMeasureScore(Quantity40_N.convertQuantity(src.getMeasureScoreQuantity()));
+    else if (src.hasMeasureScore())
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "measureScore");
     for (org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifierList())
       tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
     return tgt;
@@ -246,7 +260,9 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupPopulationComponent tgt = new org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupPopulationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group.population", "5.0", new String[] {"linkId", "subjectReport", "subjects"}, CrossVersionElements40_N.urls("MeasureReport.group.population", "6.0", new String[] {"title", "description", "countQuantity"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "subjectReport", "subjects");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title", "description", "countQuantity");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -261,6 +277,8 @@ public class MeasureReport40_N {
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "subjectReport", "subjects");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title", "description", "countQuantity");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -274,9 +292,15 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupStratifierComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group.stratifier", "5.0", new String[] {"linkId"}, CrossVersionElements40_N.urls("MeasureReport.group.stratifier", "6.0", new String[] {"title", "description"}, CrossVersionElements40_N.url("MeasureReport.group.stratifier", "4.0", "code"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title", "description");
+    // R6 has one code: the first, and the rest as 4.0 extensions
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
-      tgt.setCode(CodeableConcept40_N.convertCodeableConcept(t));
+      if (!tgt.hasCode())
+        tgt.setCode(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MeasureReport.group.stratifier", "4.0", "code"), CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent t : src.getStratum())
       tgt.addStratum(convertStratifierGroupComponent(t));
     return tgt;
@@ -286,8 +310,13 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    tgt.addCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("MeasureReport.group.stratifier", "4.0", "code"));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title", "description");
+    if (src.hasCode())
+      tgt.addCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
+    for (org.hl7.fhir.model.core.Extension e : src.getExtensionsByUrl(CrossVersionElements40_N.url("MeasureReport.group.stratifier", "4.0", "code")))
+      tgt.addCode(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) e.getValue()));
     for (org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponent t : src.getStratumList())
       tgt.addStratum(convertStratifierGroupComponent(t));
     return tgt;
@@ -297,7 +326,8 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponent tgt = new org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum", "5.0", new String[] {"value", "measureScore"}, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "value", "measureScore");
     if (src.hasValue())
       tgt.setValue(CodeableConcept40_N.convertCodeableConcept(src.getValue()));
     for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent())
@@ -316,12 +346,16 @@ public class MeasureReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasValueCodeableConcept())
       tgt.setValue(CodeableConcept40_N.convertCodeableConcept(src.getValueCodeableConcept()));
+    else if (src.hasValue())
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "value");
     for (org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponentComponent t : src.getComponentList())
       tgt.addComponent(convertStratifierGroupComponentComponent(t));
     for (org.hl7.fhir.model.core.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulationList())
       tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
     if (src.hasMeasureScoreQuantity())
       tgt.setMeasureScore(Quantity40_N.convertQuantity(src.getMeasureScoreQuantity()));
+    else if (src.hasMeasureScore())
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "measureScore");
     return tgt;
   }
 
@@ -329,7 +363,9 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponentComponent tgt = new org.hl7.fhir.model.core.MeasureReport.StratifierGroupComponentComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum.component", "5.0", new String[] {"linkId", "value"}, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum.component", "6.0", new String[] {"description"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "value");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "description");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -342,10 +378,14 @@ public class MeasureReport40_N {
       return null;
     org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "description");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasValueCodeableConcept())
       tgt.setValue(CodeableConcept40_N.convertCodeableConcept(src.getValueCodeableConcept()));
+    else if (src.hasValue())
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "value");
     return tgt;
   }
 
@@ -353,7 +393,9 @@ public class MeasureReport40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MeasureReport.StratifierGroupPopulationComponent tgt = new org.hl7.fhir.model.core.MeasureReport.StratifierGroupPopulationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum.population", "5.0", new String[] {"linkId", "subjectReport", "subjects"}, CrossVersionElements40_N.urls("MeasureReport.group.stratifier.stratum.population", "6.0", new String[] {"countQuantity"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "subjectReport", "subjects");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "countQuantity");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -368,6 +410,8 @@ public class MeasureReport40_N {
       return null;
     org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "subjectReport", "subjects");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "countQuantity");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasCount())

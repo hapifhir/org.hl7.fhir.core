@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Signature40_N;
@@ -44,6 +46,8 @@ import org.hl7.fhir.model.core.Enumeration;
 
 public class Bundle40_N {
 
+  public static final String EXT_SIGNATURE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Bundle.signature";
+
   public static org.hl7.fhir.model.core.Bundle convertBundle(org.hl7.fhir.r4.model.Bundle src) throws FHIRException {
     if (src == null)
       return null;
@@ -52,7 +56,7 @@ public class Bundle40_N {
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
     if (src.hasType())
-      tgt.setTypeElement(convertBundleType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertBundleType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasTimestamp())
       tgt.setTimestampElement(Instant40_N.convertInstant(src.getTimestampElement()));
     if (src.hasTotal())
@@ -60,6 +64,9 @@ public class Bundle40_N {
     for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry())
       tgt.addEntry(convertBundleEntryComponent(t));
+    // R6 dropped Bundle.signature, and a Bundle has no extensions, so it goes on meta
+    if (src.hasSignature())
+      tgt.getMeta().addExtension(EXT_SIGNATURE, Signature40_N.convertSignature(src.getSignature()));
     return tgt;
   }
 
@@ -71,7 +78,7 @@ public class Bundle40_N {
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
     if (src.hasType())
-      tgt.setTypeElement(convertBundleType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertBundleType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasTimestamp())
       tgt.setTimestampElement(Instant40_N.convertInstant(src.getTimestampElement()));
     if (src.hasTotal())
@@ -79,6 +86,10 @@ public class Bundle40_N {
     for (org.hl7.fhir.model.core.Bundle.BundleLinkComponent t : src.getLinkList()) tgt.addLink(convertBundleLinkComponent(t));
     for (org.hl7.fhir.model.core.Bundle.BundleEntryComponent t : src.getEntryList())
       tgt.addEntry(convertBundleEntryComponent(t));
+    if (src.hasMeta() && src.getMeta().hasExtension(EXT_SIGNATURE)) {
+      tgt.setSignature(Signature40_N.convertSignature((org.hl7.fhir.model.core.Signature) src.getMeta().getExtensionByUrl(EXT_SIGNATURE).getValue()));
+      tgt.getMeta().getExtension().removeIf(ext -> EXT_SIGNATURE.equals(ext.getUrl()));
+    }
     return tgt;
   }
 
@@ -238,7 +249,7 @@ public class Bundle40_N {
     org.hl7.fhir.model.core.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.model.core.Bundle.BundleEntrySearchComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertSearchEntryMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasScore())
       tgt.setScoreElement(Decimal40_N.convertDecimal(src.getScoreElement()));
     return tgt;
@@ -250,7 +261,7 @@ public class Bundle40_N {
     org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertSearchEntryMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasScore())
       tgt.setScoreElement(Decimal40_N.convertDecimal(src.getScoreElement()));
     return tgt;
@@ -314,7 +325,7 @@ public class Bundle40_N {
     org.hl7.fhir.model.core.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.model.core.Bundle.BundleEntryRequestComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMethod())
-      tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
+      tgt.setMethodElement(CrossVersionElements40_N.toR6Code(src.getMethodElement(), convertHTTPVerb(src.getMethodElement()), src.fhirType(), "method"));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasIfNoneMatch())
@@ -334,7 +345,7 @@ public class Bundle40_N {
     org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMethod())
-      tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
+      tgt.setMethodElement(CrossVersionElements40_N.toR4Code(src.getMethodElement(), convertHTTPVerb(src.getMethodElement()), src.fhirType(), "method"));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasIfNoneMatch())

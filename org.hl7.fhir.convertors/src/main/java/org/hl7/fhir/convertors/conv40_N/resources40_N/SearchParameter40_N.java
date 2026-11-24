@@ -3,6 +3,8 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.UsageContext40_N;
@@ -50,11 +52,20 @@ import org.hl7.fhir.model.core.UriType;
 
 public class SearchParameter40_N {
 
+  // R4 xpathUsage codes that R6 processingMode doesn't have
+  public static final String XPATH_USAGE_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-SearchParameter.xpathUsage";
+  // R6 modifier codes that R4 doesn't have
+  public static final String MODIFIER_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-SearchParameter.modifier";
+
   public static org.hl7.fhir.model.core.SearchParameter convertSearchParameter(org.hl7.fhir.r4.model.SearchParameter src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.SearchParameter tgt = new org.hl7.fhir.model.core.SearchParameter();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("SearchParameter", "5.0", new String[] {"identifier", "title", "copyright", "copyrightLabel", "constraint"}, CrossVersionElements40_N.urls("SearchParameter", "6.0", new String[] {"aliasCode"}, VersionConvertorConstants.EXT_VERSION_ALGORITHM)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "identifier", "title", "copyright", "copyrightLabel", "constraint");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "aliasCode");
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -88,8 +99,8 @@ public class SearchParameter40_N {
       tgt.setTypeElement(Enumerations40_N.convertSearchParamType(src.getTypeElement()));
     if (src.hasExpression())
       tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
-//    if (src.hasXpath())
-//      tgt.setXpathElement(String40_N.convertString(src.getXpathElement()));
+    // R6 dropped xpath
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "SearchParameter", tgt.getExtension(), "xpath");
     if (src.hasXpathUsage())
       tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTargetList().add(Uri40_N.convertUriFromCode(t));
@@ -113,7 +124,11 @@ public class SearchParameter40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SearchParameter tgt = new org.hl7.fhir.r4.model.SearchParameter();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.url("SearchParameter", "4.0", "xpath"));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "identifier", "title", "copyright", "copyrightLabel", "constraint");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "aliasCode");
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -147,8 +162,7 @@ public class SearchParameter40_N {
       tgt.setTypeElement(Enumerations40_N.convertSearchParamType(src.getTypeElement()));
     if (src.hasExpression())
       tgt.setExpressionElement(String40_N.convertString(src.getExpressionElement()));
-//    if (src.hasXpath())
-//      tgt.setXpathElement(String40_N.convertString(src.getXpathElement()));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "SearchParameter", "xpath");
     if (src.hasProcessingMode())
       tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
     for (UriType t : src.getTargetList()) tgt.getTarget().add(Uri40_N.convertUriToCode(t));
@@ -184,10 +198,10 @@ public class SearchParameter40_N {
                   tgt.setValue(SearchParameter.SearchProcessingModeType.PHONETIC);
                   break;
               case NEARBY:
-                  tgt.setValue(SearchParameter.SearchProcessingModeType.OTHER);
-                  break;
               case DISTANCE:
+                  // R6 has no nearby or distance: keep the R4 code
                   tgt.setValue(SearchParameter.SearchProcessingModeType.OTHER);
+                  tgt.addExtension(XPATH_USAGE_EXTENSION_URL, new org.hl7.fhir.model.core.CodeType(src.getCode()));
                   break;
               case OTHER:
                   tgt.setValue(SearchParameter.SearchProcessingModeType.OTHER);
@@ -204,7 +218,11 @@ public class SearchParameter40_N {
       if (src == null || src.isEmpty())
           return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SearchParameter.XPathUsageTypeEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, XPATH_USAGE_EXTENSION_URL);
+      if (src.hasExtension(XPATH_USAGE_EXTENSION_URL)) {
+        tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.fromCode(src.getExtensionByUrl(XPATH_USAGE_EXTENSION_URL).getValue().primitiveValue()));
+        return tgt;
+      }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
@@ -318,7 +336,11 @@ public class SearchParameter40_N {
       if (src == null || src.isEmpty())
           return null;
       Enumeration<SearchParameter.SearchModifierAllCodes> tgt = new Enumeration<>(new SearchParameter.SearchModifierAllCodesEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, MODIFIER_EXTENSION_URL);
+      if (src.hasExtension(MODIFIER_EXTENSION_URL)) {
+        tgt.setValue(SearchParameter.SearchModifierAllCodes.fromCode(src.getExtensionByUrl(MODIFIER_EXTENSION_URL).getValue().primitiveValue()));
+        return tgt;
+      }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
@@ -413,7 +435,9 @@ public class SearchParameter40_N {
                   tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.OFTYPE);
                   break;
               default:
-                  tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode.NULL);
+                  // a code R4 doesn't have: keep it
+                  tgt.setValue(null);
+                  tgt.addExtension(MODIFIER_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getCode()));
                   break;
           }
       }

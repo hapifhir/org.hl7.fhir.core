@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Uri40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
@@ -43,22 +48,45 @@ import org.hl7.fhir.model.core.MessageHeader;
 
 public class MessageHeader40_N {
 
+  // R4 elements that R6 removed. (R4 sender is R6 source.sender)
+  public static final String ENTERER_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MessageHeader.enterer";
+  public static final String AUTHOR_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MessageHeader.author";
+  public static final String RESPONSIBLE_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MessageHeader.responsible";
+  public static final String DESTINATION_TARGET_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-MessageHeader.destination.target";
+  // R5 elements/types R4 doesn't have: endpoint as a Reference(Endpoint), and response.identifier as an Identifier (R4: id)
+  public static final String DESTINATION_ENDPOINT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MessageHeader.destination.endpoint";
+  public static final String SOURCE_ENDPOINT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MessageHeader.source.endpoint";
+  public static final String RESPONSE_IDENTIFIER_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MessageHeader.response.identifier";
+
   public static org.hl7.fhir.model.core.MessageHeader convertMessageHeader(org.hl7.fhir.r4.model.MessageHeader src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MessageHeader tgt = new org.hl7.fhir.model.core.MessageHeader();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
-    if (src.hasEventUriType())
-      tgt.setEvent(Canonical40_N.convertUriToCanonical(src.getEventUriType()));
+    if (src.hasEnterer())
+      tgt.addExtension(ENTERER_EXTENSION_URL, Reference40_N.convertReference(src.getEnterer()));
+    if (src.hasAuthor())
+      tgt.addExtension(AUTHOR_EXTENSION_URL, Reference40_N.convertReference(src.getAuthor()));
+    if (src.hasResponsible())
+      tgt.addExtension(RESPONSIBLE_EXTENSION_URL, Reference40_N.convertReference(src.getResponsible()));
+    // an R4 uri is an R6 canonical, unless it was an R6 uri to start with (see below)
+    if (src.hasEventUriType()) {
+      if ("uri".equals(src.getEventUriType().getExtensionString(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE))) {
+        org.hl7.fhir.model.core.UriType u = Uri40_N.convertUri(src.getEventUriType());
+        u.getExtension().removeIf(e -> VersionConvertorConstants.EXT_ORIGINAL_DATATYPE.equals(e.getUrl()));
+        tgt.setEvent(u);
+      } else
+        tgt.setEvent(Canonical40_N.convertUriToCanonical(src.getEventUriType()));
+    }
     if (src.hasEventCoding())
       tgt.setEvent(Coding40_N.convertCoding(src.getEventCoding()));
     
     for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
-//    if (src.hasEnterer())
-//      tgt.setEnterer(Reference40_N.convertReference(src.getEnterer()));
     if (src.hasSource())
       tgt.setSource(convertMessageSourceComponent(src.getSource()));
+    if (src.hasSender())
+      tgt.getSource().setSender(Reference40_N.convertReference(src.getSender()));
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     if (src.hasResponse())
@@ -73,17 +101,28 @@ public class MessageHeader40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageHeader tgt = new org.hl7.fhir.r4.model.MessageHeader();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, ENTERER_EXTENSION_URL, AUTHOR_EXTENSION_URL, RESPONSIBLE_EXTENSION_URL);
+    if (src.hasExtension(ENTERER_EXTENSION_URL))
+      tgt.setEnterer(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) src.getExtensionByUrl(ENTERER_EXTENSION_URL).getValue()));
+    if (src.hasExtension(AUTHOR_EXTENSION_URL))
+      tgt.setAuthor(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) src.getExtensionByUrl(AUTHOR_EXTENSION_URL).getValue()));
+    if (src.hasExtension(RESPONSIBLE_EXTENSION_URL))
+      tgt.setResponsible(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) src.getExtensionByUrl(RESPONSIBLE_EXTENSION_URL).getValue()));
     if (src.hasEventCanonicalType())
       tgt.setEvent(Canonical40_N.convertCanonicalToUri(src.getEventCanonicalType()));
+    if (src.hasEvent() && "uri".equals(src.getEvent().fhirType())) {
+      org.hl7.fhir.r4.model.UriType u = Uri40_N.convertUri((org.hl7.fhir.model.core.UriType) src.getEvent());
+      u.addExtension(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.r4.model.CodeType("uri"));
+      tgt.setEvent(u);
+    }
     if (src.hasEventCoding())
       tgt.setEvent(Coding40_N.convertCoding(src.getEventCoding()));
     for (org.hl7.fhir.model.core.MessageHeader.MessageDestinationComponent t : src.getDestinationList())
       tgt.addDestination(convertMessageDestinationComponent(t));
-//    if (src.hasEnterer())
-//      tgt.setEnterer(Reference40_N.convertReference(src.getEnterer()));
     if (src.hasSource())
       tgt.setSource(convertMessageSourceComponent(src.getSource()));
+    if (src.hasSource() && src.getSource().hasSender())
+      tgt.setSender(Reference40_N.convertReference(src.getSource().getSender()));
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     if (src.hasResponse())
@@ -98,12 +137,16 @@ public class MessageHeader40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.model.core.MessageHeader.MessageDestinationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, DESTINATION_ENDPOINT_EXTENSION_URL);
+    if (src.hasTarget())
+      tgt.addExtension(DESTINATION_TARGET_EXTENSION_URL, Reference40_N.convertReference(src.getTarget()));
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasEndpoint()) {
       tgt.setEndpoint(Url40_N.convertUrl(src.getEndpointElement()));
     }
+    if (src.hasExtension(DESTINATION_ENDPOINT_EXTENSION_URL))
+      tgt.setEndpoint(Reference40_N.convertReference((org.hl7.fhir.r4.model.Reference) src.getExtensionByUrl(DESTINATION_ENDPOINT_EXTENSION_URL).getValue()));
     if (src.hasReceiver())
       tgt.setReceiver(Reference40_N.convertReference(src.getReceiver()));
     return tgt;
@@ -113,11 +156,15 @@ public class MessageHeader40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, DESTINATION_TARGET_EXTENSION_URL);
+    if (src.hasExtension(DESTINATION_TARGET_EXTENSION_URL))
+      tgt.setTarget(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) src.getExtensionByUrl(DESTINATION_TARGET_EXTENSION_URL).getValue()));
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasEndpointUrlType()) {
       tgt.setEndpointElement(Url40_N.convertUrl(src.getEndpointUrlType()));
+    } else if (src.hasEndpointReference()) {
+      tgt.addExtension(DESTINATION_ENDPOINT_EXTENSION_URL, Reference40_N.convertReference(src.getEndpointReference()));
     }
     if (src.hasReceiver())
       tgt.setReceiver(Reference40_N.convertReference(src.getReceiver()));
@@ -128,7 +175,7 @@ public class MessageHeader40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MessageHeader.MessageSourceComponent tgt = new org.hl7.fhir.model.core.MessageHeader.MessageSourceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, SOURCE_ENDPOINT_EXTENSION_URL);
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasSoftware())
@@ -139,6 +186,8 @@ public class MessageHeader40_N {
       tgt.setContact(ContactPoint40_N.convertContactPoint(src.getContact()));
     if (src.hasEndpoint())
       tgt.setEndpoint(Url40_N.convertUrl(src.getEndpointElement()));
+    if (src.hasExtension(SOURCE_ENDPOINT_EXTENSION_URL))
+      tgt.setEndpoint(Reference40_N.convertReference((org.hl7.fhir.r4.model.Reference) src.getExtensionByUrl(SOURCE_ENDPOINT_EXTENSION_URL).getValue()));
     return tgt;
   }
 
@@ -157,6 +206,9 @@ public class MessageHeader40_N {
       tgt.setContact(ContactPoint40_N.convertContactPoint(src.getContact()));
     if (src.hasEndpointUrlType())
       tgt.setEndpointElement(Url40_N.convertUrl(src.getEndpointUrlType()));
+    else if (src.hasEndpointReference())
+      tgt.addExtension(SOURCE_ENDPOINT_EXTENSION_URL, Reference40_N.convertReference(src.getEndpointReference()));
+    // (source.sender is R4 MessageHeader.sender, which convertMessageHeader handles)
     return tgt;
   }
 
@@ -164,11 +216,13 @@ public class MessageHeader40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.model.core.MessageHeader.MessageHeaderResponseComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasIdentifier())
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, RESPONSE_IDENTIFIER_EXTENSION_URL);
+    if (src.hasExtension(RESPONSE_IDENTIFIER_EXTENSION_URL))
+      tgt.setIdentifier(Identifier40_N.convertIdentifier((org.hl7.fhir.r4.model.Identifier) src.getExtensionByUrl(RESPONSE_IDENTIFIER_EXTENSION_URL).getValue()));
+    else if (src.hasIdentifier())
       tgt.setIdentifier(new org.hl7.fhir.model.core.Identifier().setValue(src.getIdentifier()));
     if (src.hasCode())
-      tgt.setCodeElement(convertResponseType(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR6Code(src.getCodeElement(), convertResponseType(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDetails())
       tgt.setDetails(Reference40_N.convertReference(src.getDetails()));
     return tgt;
@@ -179,10 +233,14 @@ public class MessageHeader40_N {
       return null;
     org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasIdentifier())
+    if (src.hasIdentifier()) {
       tgt.setIdentifierElement(new org.hl7.fhir.r4.model.IdType(src.getIdentifier().getValue()));
+      // R4 only has the value: if there's more, the whole identifier goes in the cross-version extension
+      if (!src.getIdentifier().copy(org.hl7.fhir.model.Base.COPY_NOTHING).setValue(null).isEmpty())
+        tgt.addExtension(RESPONSE_IDENTIFIER_EXTENSION_URL, Identifier40_N.convertIdentifier(src.getIdentifier()));
+    }
     if (src.hasCode())
-      tgt.setCodeElement(convertResponseType(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR4Code(src.getCodeElement(), convertResponseType(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDetails())
       tgt.setDetails(Reference40_N.convertReference(src.getDetails()));
     return tgt;

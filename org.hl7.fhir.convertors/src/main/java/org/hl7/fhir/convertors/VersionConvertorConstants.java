@@ -45,6 +45,7 @@ public class VersionConvertorConstants {
   public static final String EXT_EXP_VS_CONT_PROP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property";
   public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
+  public static final String EXT_GROUP_INDEX = "http://hl7.org/fhir/tools/StructureDefinition/conversion-group-index"; // which source element a split-up target element came from, when several target elements came from one source element
   public static final String EXT_ADDITIONAL_BINDING = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional";
   public static final String EXT_CONSTRAINT_SUPPRESS = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.constraint.suppress"; // introduced in R5
   public static final String EXT_DISCRIMINATOR_TYPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.slicing.discriminator.type"; // for discriminator types introduced in R5 (position)
@@ -89,6 +90,14 @@ public class VersionConvertorConstants {
   public static final String EXT_COM_REQ_ONBEHALF = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CommunicationRequest.requester.onBehalfOf";
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
   public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
+  public static final String EXT_CODEABLE_REFERENCE_REFERENCE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeableReference.reference"; // the reference, when a CodeableReference with both concept and reference goes into an R4 CodeableConcept
+  public static final String EXT_CODEABLE_REFERENCE_CONCEPT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeableReference.concept"; // the concept, when a CodeableReference with a concept goes into an R4 Reference
+  public static final String EXT_TASK_FOCUS = "http://hl7.org/fhir/6.0/StructureDefinition/extension-Task.focus"; // focus became 0..* Reference|canonical in R6; the R4 focus holds the first Reference
+  public static final String EXT_CLAIM_SUPPORTINGINFO_TIMING = "http://hl7.org/fhir/6.0/StructureDefinition/extension-Claim.supportingInfo.timing"; // R6 timing can be a dateTime with a time, or a Timing, which R4 date|Period can't hold
+  public static final String EXT_EOB_SUPPORTINGINFO_TIMING = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ExplanationOfBenefit.supportingInfo.timing"; // ditto for ExplanationOfBenefit
+  public static final String EXT_RISK_PREDICTION_PROBABILITY = "http://hl7.org/fhir/6.0/StructureDefinition/extension-RiskAssessment.prediction.probability"; // a Quantity probability, which R4 decimal|Range can't hold
+  public static final String EXT_SERVICEREQUEST_AS_NEEDED_FOR = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ServiceRequest.asNeededFor"; // the 2nd+ asNeededFor (the first goes in asNeededCodeableConcept)
+  public static final String EXT_PROCEDURE_OUTCOME = "http://hl7.org/fhir/6.0/StructureDefinition/extension-Procedure.outcome"; // outcome became 0..* CodeableReference in R6; the 2nd+ outcomes in R4
   public static final String EXT_VERSION_ALGORITHM = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CanonicalResource.versionAlgorithm";
   // ValueSet.scope (trial use in R5, removed in R6) is represented by this extension in other versions
   public static final String EXT_VS_SCOPE = "http://hl7.org/fhir/StructureDefinition/valueset-scope";

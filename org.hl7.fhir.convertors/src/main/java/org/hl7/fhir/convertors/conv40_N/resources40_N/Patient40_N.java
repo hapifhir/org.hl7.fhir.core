@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Address40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -46,6 +47,9 @@ import org.hl7.fhir.model.core.Patient;
 
 public class Patient40_N {
 
+  // the R6 additions to contact that R4 doesn't have
+  private static final String[] CONTACT_R6_ELEMENTS = {"role", "additionalName", "additionalAddress"};
+
   public static org.hl7.fhir.model.core.Patient convertPatient(org.hl7.fhir.r4.model.Patient src) throws FHIRException {
     if (src == null)
       return null;
@@ -62,13 +66,13 @@ public class Patient40_N {
       tgt.setGenderElement(Enumerations40_N.convertAdministrativeGender(src.getGenderElement()));
     if (src.hasBirthDate())
       tgt.setBirthDateElement(Date40_N.convertDate(src.getBirthDateElement()));
-    if (src.hasDeceased())
-      tgt.setDeceased(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDeceased()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "deceased", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(Address40_N.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept40_N.convertCodeableConcept(src.getMaritalStatus()));
-    if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMultipleBirth()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "multipleBirth", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment40_N.convertAttachment(t));
     for (org.hl7.fhir.r4.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
@@ -99,13 +103,11 @@ public class Patient40_N {
       tgt.setGenderElement(Enumerations40_N.convertAdministrativeGender(src.getGenderElement()));
     if (src.hasBirthDate())
       tgt.setBirthDateElement(Date40_N.convertDate(src.getBirthDateElement()));
-    if (src.hasDeceased())
-      tgt.setDeceased(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDeceased()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "deceased", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.Address t : src.getAddressList()) tgt.addAddress(Address40_N.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept40_N.convertCodeableConcept(src.getMaritalStatus()));
-    if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMultipleBirth()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "multipleBirth", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.Attachment t : src.getPhotoList()) tgt.addPhoto(Attachment40_N.convertAttachment(t));
     for (org.hl7.fhir.model.core.Patient.ContactComponent t : src.getContactList())
       tgt.addContact(convertContactComponent(t));
@@ -124,7 +126,8 @@ public class Patient40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Patient.ContactComponent tgt = new org.hl7.fhir.model.core.Patient.ContactComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Patient.contact", "6.0", CONTACT_R6_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", CONTACT_R6_ELEMENTS);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRelationship())
       tgt.addRelationship(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasName())
@@ -147,6 +150,7 @@ public class Patient40_N {
       return null;
     org.hl7.fhir.r4.model.Patient.ContactComponent tgt = new org.hl7.fhir.r4.model.Patient.ContactComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", CONTACT_R6_ELEMENTS);
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getRelationshipList())
       tgt.addRelationship(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasName())
@@ -196,7 +200,7 @@ public class Patient40_N {
     if (src.hasOther())
       tgt.setOther(Reference40_N.convertReference(src.getOther()));
     if (src.hasType())
-      tgt.setTypeElement(convertLinkType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertLinkType(src.getTypeElement()), src.fhirType(), "type"));
     return tgt;
   }
 
@@ -208,7 +212,7 @@ public class Patient40_N {
     if (src.hasOther())
       tgt.setOther(Reference40_N.convertReference(src.getOther()));
     if (src.hasType())
-      tgt.setTypeElement(convertLinkType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertLinkType(src.getTypeElement()), src.fhirType(), "type"));
     return tgt;
   }
 

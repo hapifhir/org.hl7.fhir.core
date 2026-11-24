@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -47,15 +48,16 @@ public class GuidanceResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.GuidanceResponse tgt = new org.hl7.fhir.model.core.GuidanceResponse();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("GuidanceResponse", "5.0", new String[] {}, CrossVersionElements40_N.urls("GuidanceResponse", "6.0", new String[] {"topic", "location", "inputParameters", "indicator"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "topic", "location", "inputParameters", "indicator");
     if (src.hasRequestIdentifier())
       tgt.setRequestIdentifier(Identifier40_N.convertIdentifier(src.getRequestIdentifier()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-    if (src.hasModule())
-      tgt.setModule(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getModule()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "module", tgt, tgt.getExtension());
     if (src.hasStatus())
-      tgt.setStatusElement(convertGuidanceResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertGuidanceResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -64,10 +66,7 @@ public class GuidanceResponse40_N {
       tgt.setOccurrenceDateTimeElement(DateTime40_N.convertDateTime(src.getOccurrenceDateTimeElement()));
     if (src.hasPerformer())
       tgt.setPerformer(Reference40_N.convertReference(src.getPerformer()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getEvaluationMessage())
       tgt.addEvaluationMessage(Reference40_N.convertReference(t));
@@ -75,6 +74,7 @@ public class GuidanceResponse40_N {
       tgt.setOutputParameters(Reference40_N.convertReference(src.getOutputParameters()));
     if (src.hasResult())
       tgt.addResult(Reference40_N.convertReference(src.getResult()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "result", tgt.getExtension());
     for (org.hl7.fhir.r4.model.DataRequirement t : src.getDataRequirement())
       tgt.addDataRequirement(DataRequirement40_N.convertDataRequirement(t));
     return tgt;
@@ -85,14 +85,14 @@ public class GuidanceResponse40_N {
       return null;
     org.hl7.fhir.r4.model.GuidanceResponse tgt = new org.hl7.fhir.r4.model.GuidanceResponse();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "topic", "location", "inputParameters", "indicator");
     if (src.hasRequestIdentifier())
       tgt.setRequestIdentifier(Identifier40_N.convertIdentifier(src.getRequestIdentifier()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-    if (src.hasModule())
-      tgt.setModule(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getModule()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "module", tgt, tgt.getExtension());
     if (src.hasStatus())
-      tgt.setStatusElement(convertGuidanceResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertGuidanceResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -101,19 +101,15 @@ public class GuidanceResponse40_N {
       tgt.setOccurrenceDateTimeElement(DateTime40_N.convertDateTime(src.getOccurrenceDateTimeElement()));
     if (src.hasPerformer())
       tgt.setPerformer(Reference40_N.convertReference(src.getPerformer()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    if (src.hasEvaluationMessage())
-      tgt.addEvaluationMessage(Reference40_N.convertReference(src.getEvaluationMessageFirstRep()));
+    for (org.hl7.fhir.model.core.Reference t : src.getEvaluationMessageList())
+      tgt.addEvaluationMessage(Reference40_N.convertReference(t));
     if (src.hasOutputParameters())
       tgt.setOutputParameters(Reference40_N.convertReference(src.getOutputParameters()));
     if (src.hasResult())
       tgt.setResult(Reference40_N.convertReference(src.getResultFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "result", tgt.getExtension());
     for (org.hl7.fhir.model.core.DataRequirement t : src.getDataRequirementList())
       tgt.addDataRequirement(DataRequirement40_N.convertDataRequirement(t));
     return tgt;

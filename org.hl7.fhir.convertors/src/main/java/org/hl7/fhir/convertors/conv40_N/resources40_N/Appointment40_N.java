@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -45,11 +47,23 @@ import org.hl7.fhir.model.core.*;
 
 public class Appointment40_N {
 
+  private static boolean isTextOnly(org.hl7.fhir.model.core.CodeableReference cr) {
+    org.hl7.fhir.model.core.CodeableConcept c = cr.getConcept();
+    return !cr.hasReference() && !cr.hasId() && !cr.hasExtension() && c.hasText() && !c.hasCoding() && !c.hasId() && !c.hasExtension()
+      && !c.getTextElement().hasId() && !c.getTextElement().hasExtension();
+  }
+
+  // R6 participant.required is a boolean: R4's information-only code goes here
+  public static final String PARTICIPANT_REQUIRED_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Appointment.participant.required";
+
   public static org.hl7.fhir.model.core.Appointment convertAppointment(org.hl7.fhir.r4.model.Appointment src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Appointment tgt = new org.hl7.fhir.model.core.Appointment();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Appointment", "5.0", new String[] {"patientInstruction", "class", "replaces", "virtualService", "previousAppointment", "originatingAppointment", "account", "cancellationDate", "subject", "recurrenceId", "occurrenceChanged", "recurrenceTemplate", "priority"}, CrossVersionElements40_N.urls("Appointment", "6.0", new String[] {}, CrossVersionElements40_N.url("Appointment", "5.0", "note"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "class", "replaces", "virtualService", "previousAppointment", "originatingAppointment", "account", "cancellationDate", "subject", "recurrenceId", "occurrenceChanged", "recurrenceTemplate", "priority");
+    // R4 priority is a number, R6's a CodeableConcept: each version's is carried in the other as an extension
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Appointment", tgt.getExtension(), "priority");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
@@ -59,17 +73,12 @@ public class Appointment40_N {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasAppointmentType())
       tgt.setAppointmentType(CodeableConcept40_N.convertCodeableConcept(src.getAppointmentType()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
-    if (src.hasPriority())
-      tgt.setPriority(convertAppointmentPriority(src.getPriorityElement()));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
@@ -85,8 +94,11 @@ public class Appointment40_N {
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
     if (src.hasComment())
       tgt.getNoteFirstRep().setTextElement(MarkDown40_N.convertStringToMarkdown(src.getCommentElement()));
-//    if (src.hasPatientInstruction())
-//      tgt.setPatientInstructionElement(String40_N.convertString(src.getPatientInstructionElement()));
+    // the notes that R4 comment couldn't hold
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "note");
+    if (src.hasPatientInstruction())
+      tgt.addPatientInstruction().getConcept().setTextElement(String40_N.convertString(src.getPatientInstructionElement()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "patientInstruction");
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertAppointmentParticipantComponent(t));
@@ -99,7 +111,9 @@ public class Appointment40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Appointment tgt = new org.hl7.fhir.r4.model.Appointment();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Appointment", "4.0", new String[] {"priority"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Appointment", "priority");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "class", "replaces", "virtualService", "previousAppointment", "originatingAppointment", "account", "cancellationDate", "subject", "recurrenceId", "occurrenceChanged", "recurrenceTemplate", "priority");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
@@ -109,19 +123,12 @@ public class Appointment40_N {
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getServiceCategoryList())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableReference t : src.getServiceTypeList())
-      tgt.addServiceType(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getSpecialtyList())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasAppointmentType())
       tgt.setAppointmentType(CodeableConcept40_N.convertCodeableConcept(src.getAppointmentType()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
-    if (src.hasPriority())
-      tgt.setPriorityElement(convertAppointmentPriority(src.getPriority()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.model.core.Reference t : src.getSupportingInformationList())
@@ -135,10 +142,19 @@ public class Appointment40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getSlotList()) tgt.addSlot(Reference40_N.convertReference(t));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
-    if (src.hasNote())
-      tgt.setCommentElement(String40_N.convertString(src.getNoteFirstRep().getTextElement()));
-//    if (src.hasPatientInstruction())
-//      tgt.setPatientInstructionElement(String40_N.convertString(src.getPatientInstructionElement()));
+    // R4 has a single comment string: a first note that's only text goes there, the rest in the extension
+    for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) {
+      if (t == src.getNoteList().get(0) && !t.hasAuthor() && !t.hasTime() && !t.hasId() && !t.hasExtension())
+        tgt.setCommentElement(String40_N.convertString(t.getTextElement()));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("Appointment", "5.0", "note"), Annotation40_N.convertAnnotation(t));
+    }
+    // R4 patientInstruction is a string: a single instruction that's only text maps to that; otherwise the
+    // instructions go in the extension
+    if (src.getPatientInstructionList().size() == 1 && isTextOnly(src.getPatientInstructionFirstRep()))
+      tgt.setPatientInstructionElement(String40_N.convertString(src.getPatientInstructionFirstRep().getConcept().getTextElement()));
+    else
+      CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "patientInstruction");
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Appointment.AppointmentParticipantComponent t : src.getParticipantList())
       tgt.addParticipant(convertAppointmentParticipantComponent(t));
@@ -147,18 +163,6 @@ public class Appointment40_N {
     return tgt;
   }
 
-
-  private static UnsignedIntType convertAppointmentPriority(CodeableConcept src) {
-    UnsignedIntType tgt = new UnsignedIntType(convertAppointmentPriorityFromR5(src));
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    return tgt;
-  }
-
-  private static CodeableConcept convertAppointmentPriority(UnsignedIntType src) {
-    CodeableConcept tgt = src.hasValue() ? convertAppointmentPriorityToR5(src.getValue()) : new CodeableConcept();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    return tgt;
-  }
 
   public static org.hl7.fhir.model.core.CodeableConcept convertAppointmentPriorityToR5(int priority) {
     return null;
@@ -314,7 +318,9 @@ public class Appointment40_N {
                   tgt.setValue(false);
                   break;
               case INFORMATIONONLY:
+                  // R6 doesn't have information-only: keep it in an extension
                   tgt.setValue(false);
+                  tgt.addExtension(PARTICIPANT_REQUIRED_EXTENSION_URL, new org.hl7.fhir.model.core.CodeType("information-only"));
                   break;
               default:
                   break;
@@ -327,8 +333,12 @@ public class Appointment40_N {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Appointment.ParticipantRequiredEnumFactory());
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.getValue()) { // case REQUIRED:
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, PARTICIPANT_REQUIRED_EXTENSION_URL);
+    if (src.hasExtension(PARTICIPANT_REQUIRED_EXTENSION_URL)) {
+      tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.fromCode(src.getExtensionByUrl(PARTICIPANT_REQUIRED_EXTENSION_URL).getValue().primitiveValue()));
+    } else if (!src.hasValue()) {
+      // nothing
+    } else if (src.getValue()) { // case REQUIRED:
       tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.REQUIRED);
     } else { // case OPTIONAL + others:
       tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.OPTIONAL);

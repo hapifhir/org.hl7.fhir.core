@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Duration40_N;
@@ -45,25 +47,96 @@ import org.hl7.fhir.model.core.Enumerations;
 
 public class Encounter40_N {
 
+  // R6 reason.use, on each R4 reasonCode / reasonReference that came from that reason
+  public static final String REASON_USE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Encounter.reason.use";
+
+  /**
+   * R6 reason is a list of (use, values). Each value becomes an R4 reasonCode (a concept, with any reference on it in
+   * the CodeableReference extension) or reasonReference, carrying the reason's uses as extensions
+   */
+  private static void convertReasons(org.hl7.fhir.model.core.Encounter src, org.hl7.fhir.r4.model.Encounter tgt) throws FHIRException {
+    for (ReasonComponent r : src.getReasonList()) {
+      for (CodeableReference v : r.getValueList()) {
+        org.hl7.fhir.r4.model.Element e;
+        if (v.hasConcept()) {
+          e = CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(v);
+          tgt.addReasonCode((org.hl7.fhir.r4.model.CodeableConcept) e);
+        } else {
+          e = Reference40_N.convertReference(v.getReference());
+          tgt.addReasonReference((org.hl7.fhir.r4.model.Reference) e);
+        }
+        for (org.hl7.fhir.model.core.CodeableConcept u : r.getUseList())
+          e.addExtension(REASON_USE_EXTENSION_URL, CodeableConcept40_N.convertCodeableConcept(u));
+      }
+    }
+  }
+
+  /**
+   * The reverse: the R4 reasons are grouped by their set of uses, one R6 reason for each set (in the order they
+   * first appear, codes before references)
+   */
+  private static void convertReasons(org.hl7.fhir.r4.model.Encounter src, org.hl7.fhir.model.core.Encounter tgt) throws FHIRException {
+    java.util.List<org.hl7.fhir.r4.model.Element> values = new java.util.ArrayList<>();
+    values.addAll(src.getReasonCode());
+    values.addAll(src.getReasonReference());
+    java.util.Map<String, ReasonComponent> groups = new java.util.HashMap<>();
+    for (org.hl7.fhir.r4.model.Element e : values) {
+      java.util.List<org.hl7.fhir.r4.model.CodeableConcept> uses = new java.util.ArrayList<>();
+      StringBuilder key = new StringBuilder();
+      for (org.hl7.fhir.r4.model.Extension ext : e.getExtensionsByUrl(REASON_USE_EXTENSION_URL)) {
+        org.hl7.fhir.r4.model.CodeableConcept u = (org.hl7.fhir.r4.model.CodeableConcept) ext.getValue();
+        uses.add(u);
+        for (org.hl7.fhir.r4.model.Coding c : u.getCoding())
+          key.append(c.getSystem()).append("#").append(c.getVersion()).append("#").append(c.getCode()).append("#").append(c.getDisplay()).append(";");
+        key.append(u.getText()).append("|");
+      }
+      ReasonComponent r = groups.get(key.toString());
+      if (r == null) {
+        r = tgt.addReason();
+        for (org.hl7.fhir.r4.model.CodeableConcept u : uses)
+          r.addUse(CodeableConcept40_N.convertCodeableConcept(u));
+        groups.put(key.toString(), r);
+      }
+      CodeableReference v;
+      if (e instanceof org.hl7.fhir.r4.model.CodeableConcept) {
+        v = CodeableConcept40_N.convertCodeableConceptToCodeableReference((org.hl7.fhir.r4.model.CodeableConcept) e);
+        if (v.hasConcept())
+          v.getConcept().removeExtension(REASON_USE_EXTENSION_URL);
+      } else {
+        v = Reference40_N.convertReferenceToCodeableReference((org.hl7.fhir.r4.model.Reference) e);
+        v.getReference().removeExtension(REASON_USE_EXTENSION_URL);
+      }
+      r.addValue(v);
+    }
+  }
+
+  // the R6 classes R4's single Coding can't hold
+  public static final String CLASS_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Encounter.class";
+
   public static org.hl7.fhir.model.core.Encounter convertEncounter(org.hl7.fhir.r4.model.Encounter src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Encounter tgt = new org.hl7.fhir.model.core.Encounter();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Encounter", "5.0", new String[] {"subjectStatus", "careTeam", "virtualService", "plannedStartDate", "plannedEndDate", "class", "serviceType"}, CrossVersionElements40_N.urls("Encounter", "6.0", new String[] {"businessStatus"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "subjectStatus", "careTeam", "virtualService", "plannedStartDate", "plannedEndDate");
+    // R6 dropped statusHistory and classHistory
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Encounter", tgt.getExtension(), "statusHistory", "classHistory");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "businessStatus");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
-//    for (org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
-//      tgt.addStatusHistory(convertStatusHistoryComponent(t));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
+    CrossVersionElements40_N.keepR4Code(src.getStatusElement(), tgt.getStatusElement(), convertEncounterStatus(tgt.getStatusElement()), CrossVersionElements40_N.url("Encounter", "4.0", "status"));
     if (src.hasClass_())
-      tgt.addClass_(new org.hl7.fhir.model.core.CodeableConcept().addCoding(Coding40_N.convertCoding(src.getClass_())));
-//    for (org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
-//      tgt.addClassHistory(convertClassHistoryComponent(t));
+      tgt.addClass_(CodeableConcept40_N.convertCodingToCodeableConcept(src.getClass_(), CLASS_EXTENSION_URL));
+    // the other classes (R4 has only one)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "class");
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasServiceType())
-      tgt.addServiceType(new CodeableReference(CodeableConcept40_N.convertCodeableConcept(src.getServiceType())));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getServiceType()));
+    // the other service types (R4 has only one)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "serviceType");
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_N.convertCodeableConcept(src.getPriority()));
     if (src.hasSubject())
@@ -79,10 +152,7 @@ public class Encounter40_N {
       tgt.setActualPeriod(Period40_N.convertPeriod(src.getPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration40_N.convertDuration(src.getLength()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason().addValue(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason().addValue(Reference40_N.convertReferenceToCodeableReference(t));
+    convertReasons(src, tgt);
     for (org.hl7.fhir.r4.model.Encounter.DiagnosisComponent t : src.getDiagnosis())
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getAccount()) tgt.addAccount(Reference40_N.convertReference(t));
@@ -101,21 +171,30 @@ public class Encounter40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Encounter tgt = new org.hl7.fhir.r4.model.Encounter();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Encounter", "4.0", new String[] {"statusHistory", "classHistory"}));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "subjectStatus", "careTeam", "virtualService", "plannedStartDate", "plannedEndDate");
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Encounter", "statusHistory", "classHistory");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "businessStatus");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
-//    for (org.hl7.fhir.model.core.Encounter.StatusHistoryComponent t : src.getStatusHistoryList())
-//      tgt.addStatusHistory(convertStatusHistoryComponent(t));
-    if (src.hasClass_())
-      tgt.setClass_(Coding40_N.convertCoding(src.getClass_FirstRep().getCodingFirstRep()));
-//    for (org.hl7.fhir.model.core.Encounter.ClassHistoryComponent t : src.getClassHistoryList())
-//      tgt.addClassHistory(convertClassHistoryComponent(t));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
+    CrossVersionElements40_N.restoreR4Code(tgt.getStatusElement(), CrossVersionElements40_N.url("Encounter", "4.0", "status"));
+    // R4 class is a single Coding: the first class (all of it, if it's more than a coding), and the rest in the extension
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getClass_List()) {
+      if (!tgt.hasClass_())
+        tgt.setClass_(CodeableConcept40_N.convertCodeableConceptToCoding(t, CLASS_EXTENSION_URL));
+      else
+        tgt.addExtension(CLASS_EXTENSION_URL, CodeableConcept40_N.convertCodeableConcept(t));
+    }
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getTypeList())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.getServiceTypeFirstRep().hasConcept())
-      tgt.setServiceType(CodeableConcept40_N.convertCodeableConcept(src.getServiceTypeFirstRep().getConcept()));
+    for (CodeableReference t : src.getServiceTypeList()) {
+      if (!tgt.hasServiceType())
+        tgt.setServiceType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Encounter", "5.0", "serviceType"), t));
+    }
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_N.convertCodeableConcept(src.getPriority()));
     if (src.hasSubject())
@@ -131,14 +210,7 @@ public class Encounter40_N {
       tgt.setPeriod(Period40_N.convertPeriod(src.getActualPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration40_N.convertDuration(src.getLength()));
-    for (ReasonComponent t1 : src.getReasonList())
-      for (CodeableReference t : t1.getValueList())
-        if (t.hasConcept())
-          tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (ReasonComponent t1 : src.getReasonList())
-      for (CodeableReference t : t1.getValueList())
-        if (t.hasReference())
-          tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    convertReasons(src, tgt);
     for (org.hl7.fhir.model.core.Encounter.DiagnosisComponent t : src.getDiagnosisList())
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.model.core.Reference t : src.getAccountList()) tgt.addAccount(Reference40_N.convertReference(t));
@@ -238,7 +310,7 @@ public class Encounter40_N {
 //    org.hl7.fhir.model.core.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.model.core.Encounter.StatusHistoryComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasStatus())
-//      tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
+//      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
 //    if (src.hasPeriod())
 //      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
 //    return tgt;
@@ -250,7 +322,7 @@ public class Encounter40_N {
 //    org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasStatus())
-//      tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
+//      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
 //    if (src.hasPeriod())
 //      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
 //    return tgt;
@@ -312,13 +384,15 @@ public class Encounter40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Encounter.DiagnosisComponent tgt = new org.hl7.fhir.model.core.Encounter.DiagnosisComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Encounter.diagnosis", "5.0", new String[] {"condition", "use"}));
     if (src.hasCondition())
       tgt.addCondition(Reference40_N.convertReferenceToCodeableReference(src.getCondition()));
     if (src.hasUse())
       tgt.addUse(CodeableConcept40_N.convertCodeableConcept(src.getUse()));
-//    if (src.hasRank())
-//      tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
+    // the conditions and uses R4 had no room for
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Encounter.diagnosis", "5.0", "condition", "use");
+    // R6 dropped rank
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Encounter.diagnosis", tgt.getExtension(), "rank");
     return tgt;
   }
 
@@ -326,13 +400,22 @@ public class Encounter40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Encounter.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.Encounter.DiagnosisComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasCondition() && src.getConditionFirstRep().hasReference())
-      tgt.setCondition(Reference40_N.convertReference(src.getConditionFirstRep().getReference()));
-    if (src.hasUse())
-      tgt.setUse(CodeableConcept40_N.convertCodeableConcept(src.getUseFirstRep()));
-//    if (src.hasRank())
-//      tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("Encounter.diagnosis", "4.0", "rank"));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Encounter.diagnosis", "rank");
+    // R4 condition is a single reference: the first condition that's just a reference, and the rest in the extension
+    for (CodeableReference t : src.getConditionList()) {
+      if (!tgt.hasCondition() && t.hasReference() && !t.hasConcept() && !t.hasId() && !t.hasExtension())
+        tgt.setCondition(Reference40_N.convertReference(t.getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Encounter.diagnosis", "5.0", "condition"), t));
+    }
+    // R4 has one use: the first, and the rest in the extension
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getUseList()) {
+      if (!tgt.hasUse())
+        tgt.setUse(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("Encounter.diagnosis", "5.0", "use"), CodeableConcept40_N.convertCodeableConcept(t));
+    }
     return tgt;
   }
 
@@ -396,7 +479,7 @@ public class Encounter40_N {
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEncounterLocationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEncounterLocationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasPhysicalType())
       tgt.setForm(CodeableConcept40_N.convertCodeableConcept(src.getPhysicalType()));
     if (src.hasPeriod())
@@ -412,7 +495,7 @@ public class Encounter40_N {
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEncounterLocationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEncounterLocationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasForm())
       tgt.setPhysicalType(CodeableConcept40_N.convertCodeableConcept(src.getForm()));
     if (src.hasPeriod())

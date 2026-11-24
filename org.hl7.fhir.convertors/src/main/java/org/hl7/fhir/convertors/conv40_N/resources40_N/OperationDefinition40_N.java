@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.Utilities40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -50,11 +52,20 @@ import org.hl7.fhir.model.core.UriType;
 
 public class OperationDefinition40_N {
 
+  private static final String[] R5_ELEMENTS = {"identifier", "copyright", "copyrightLabel"};
+  private static final String[] R6_ELEMENTS = {"synchronicity"};
+  private static final String[] PARAMETER_R5_ELEMENTS = {"scope", "allowedType"};
+
   public static org.hl7.fhir.model.core.OperationDefinition convertOperationDefinition(org.hl7.fhir.r4.model.OperationDefinition src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.OperationDefinition tgt = new org.hl7.fhir.model.core.OperationDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("OperationDefinition", "5.0", R5_ELEMENTS,
+      VersionConvertorConstants.EXT_VERSION_ALGORITHM, CrossVersionElements40_N.url("OperationDefinition", "6.0", "synchronicity")));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", R5_ELEMENTS);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", R6_ELEMENTS);
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -66,7 +77,7 @@ public class OperationDefinition40_N {
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertOperationKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertOperationKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
     if (src.hasDate())
@@ -114,6 +125,10 @@ public class OperationDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.OperationDefinition tgt = new org.hl7.fhir.r4.model.OperationDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", R5_ELEMENTS);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", R6_ELEMENTS);
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -125,7 +140,7 @@ public class OperationDefinition40_N {
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertOperationKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertOperationKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
     if (src.hasDate())
@@ -218,11 +233,12 @@ public class OperationDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.model.core.OperationDefinition.OperationDefinitionParameterComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("OperationDefinition.parameter", "5.0", PARAMETER_R5_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", PARAMETER_R5_ELEMENTS);
     if (src.hasName())
       tgt.setNameElement(Code40_N.convertCode(src.getNameElement()));
     if (src.hasUse())
-      tgt.setUseElement(convertOperationParameterUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertOperationParameterUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasMin())
       tgt.setMinElement(Integer40_N.convertIntegerToUnsigned(src.getMinElement()));
     if (src.hasMax())
@@ -250,10 +266,11 @@ public class OperationDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", PARAMETER_R5_ELEMENTS);
     if (src.hasName())
       tgt.setNameElement(Code40_N.convertCode(src.getNameElement()));
     if (src.hasUse())
-      tgt.setUseElement(convertOperationParameterUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertOperationParameterUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasMin())
       tgt.setMinElement(Integer40_N.convertInteger(src.getMinElement()));
     if (src.hasMax())

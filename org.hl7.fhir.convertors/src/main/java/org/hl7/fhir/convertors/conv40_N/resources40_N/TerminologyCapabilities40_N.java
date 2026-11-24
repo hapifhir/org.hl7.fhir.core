@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.UsageContext40_N;
@@ -49,11 +55,38 @@ import org.hl7.fhir.model.core.Enumerations;
 
 public class TerminologyCapabilities40_N {
 
+  // R6 removed closure; an R4 closure goes in this (with a sub-extension 'translation')
+  public static final String CLOSURE_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-TerminologyCapabilities.closure";
+  private static final String[] R5_ELEMENTS = {"identifier", "copyrightLabel"};
+  private static final String[] R6_ELEMENTS = {"supplements"};
+  private static final String[] IMPLEMENTATION_R6_ELEMENTS = {"fragmentSupport", "supplementSupport"};
+  private static final String[] CODESYSTEM_R5_ELEMENTS = {"content"};
+  private static final String[] CODESYSTEM_R6_ELEMENTS = {"supplement", "versionAlgorithm"};
+  private static final String[] VERSION_R6_ELEMENTS = {"content", "supplement"};
+
+  private static String[] ignore(String path, String[] r5, String[] r6, String... others) {
+    List<String> res = new ArrayList<>(Arrays.asList(CrossVersionElements40_N.urls(path, "5.0", r5, others)));
+    res.addAll(Arrays.asList(CrossVersionElements40_N.urls(path, "6.0", r6)));
+    return res.toArray(new String[0]);
+  }
+
   public static org.hl7.fhir.model.core.TerminologyCapabilities convertTerminologyCapabilities(org.hl7.fhir.r4.model.TerminologyCapabilities src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.TerminologyCapabilities tgt = new org.hl7.fhir.model.core.TerminologyCapabilities();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, ignore("TerminologyCapabilities", R5_ELEMENTS, R6_ELEMENTS,
+      VersionConvertorConstants.EXT_VERSION_ALGORITHM, CLOSURE_EXTENSION_URL));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", R5_ELEMENTS);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", R6_ELEMENTS);
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
+    if (src.hasClosure()) {
+      org.hl7.fhir.model.core.Extension ext = new org.hl7.fhir.model.core.Extension().setUrl(CLOSURE_EXTENSION_URL);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getClosure(), ext);
+      if (src.getClosure().hasTranslation())
+        ext.addExtension("translation", Boolean40_N.convertBoolean(src.getClosure().getTranslationElement()));
+      tgt.addExtension(ext);
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -83,7 +116,7 @@ public class TerminologyCapabilities40_N {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_N.convertMarkdown(src.getCopyrightElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertCapabilityStatementKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasSoftware())
       tgt.setSoftware(convertTerminologyCapabilitiesSoftwareComponent(src.getSoftware()));
     if (src.hasImplementation())
@@ -95,7 +128,7 @@ public class TerminologyCapabilities40_N {
     if (src.hasExpansion())
       tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
     if (src.hasCodeSearch())
-      tgt.setCodeSearchElement(convertCodeSearchSupport(src.getCodeSearchElement()));
+      tgt.setCodeSearchElement(CrossVersionElements40_N.toR6Code(src.getCodeSearchElement(), convertCodeSearchSupport(src.getCodeSearchElement()), src.fhirType(), "codeSearch"));
     if (src.hasValidateCode())
       tgt.setValidateCode(convertTerminologyCapabilitiesValidateCodeComponent(src.getValidateCode()));
     if (src.hasTranslation())
@@ -107,7 +140,17 @@ public class TerminologyCapabilities40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CLOSURE_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", R5_ELEMENTS);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", R6_ELEMENTS);
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
+    if (src.hasExtension(CLOSURE_EXTENSION_URL)) {
+      org.hl7.fhir.model.core.Extension ext = src.getExtensionByUrl(CLOSURE_EXTENSION_URL);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(ext, tgt.getClosure(), "translation");
+      if (ext.hasExtension("translation"))
+        tgt.getClosure().setTranslationElement(Boolean40_N.convertBoolean((org.hl7.fhir.model.core.BooleanType) ext.getExtensionByUrl("translation").getValue()));
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -137,7 +180,7 @@ public class TerminologyCapabilities40_N {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_N.convertMarkdown(src.getCopyrightElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertCapabilityStatementKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasSoftware())
       tgt.setSoftware(convertTerminologyCapabilitiesSoftwareComponent(src.getSoftware()));
     if (src.hasImplementation())
@@ -149,7 +192,7 @@ public class TerminologyCapabilities40_N {
     if (src.hasExpansion())
       tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
     if (src.hasCodeSearch())
-      tgt.setCodeSearchElement(convertCodeSearchSupport(src.getCodeSearchElement()));
+      tgt.setCodeSearchElement(CrossVersionElements40_N.toR4Code(src.getCodeSearchElement(), convertCodeSearchSupport(src.getCodeSearchElement()), src.fhirType(), "codeSearch"));
     if (src.hasValidateCode())
       tgt.setValidateCode(convertTerminologyCapabilitiesValidateCodeComponent(src.getValidateCode()));
     if (src.hasTranslation())
@@ -283,7 +326,8 @@ public class TerminologyCapabilities40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent tgt = new org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ignore("TerminologyCapabilities.implementation", new String[0], IMPLEMENTATION_R6_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", IMPLEMENTATION_R6_ELEMENTS);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasUrl())
@@ -296,6 +340,7 @@ public class TerminologyCapabilities40_N {
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", IMPLEMENTATION_R6_ELEMENTS);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasUrl())
@@ -307,7 +352,9 @@ public class TerminologyCapabilities40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tgt = new org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ignore("TerminologyCapabilities.codeSystem", CODESYSTEM_R5_ELEMENTS, CODESYSTEM_R6_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", CODESYSTEM_R5_ELEMENTS);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", CODESYSTEM_R6_ELEMENTS);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_N.convertCanonical(src.getUriElement()));
     for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion())
@@ -322,6 +369,8 @@ public class TerminologyCapabilities40_N {
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", CODESYSTEM_R5_ELEMENTS);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", CODESYSTEM_R6_ELEMENTS);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_N.convertCanonical(src.getUriElement()));
     for (org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersionList())
@@ -335,7 +384,8 @@ public class TerminologyCapabilities40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent tgt = new org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, ignore("TerminologyCapabilities.codeSystem.version", new String[0], VERSION_R6_ELEMENTS));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", VERSION_R6_ELEMENTS);
     if (src.hasCode())
       tgt.setValueElement(String40_N.convertString(src.getCodeElement()));
     if (src.hasIsDefault())
@@ -354,6 +404,7 @@ public class TerminologyCapabilities40_N {
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", VERSION_R6_ELEMENTS);
     if (src.hasValue())
       tgt.setCodeElement(String40_N.convertString(src.getValueElement()));
     if (src.hasIsDefault())

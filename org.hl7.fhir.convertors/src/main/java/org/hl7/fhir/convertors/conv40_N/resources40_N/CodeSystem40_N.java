@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -57,7 +58,9 @@ public class CodeSystem40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CodeSystem tgt = new org.hl7.fhir.model.core.CodeSystem();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt,
+      CrossVersionElements40_N.urls("CodeSystem", "5.0", CrossVersionElements40_N.R5_METADATA, VersionConvertorConstants.EXT_VERSION_ALGORITHM));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", CrossVersionElements40_N.R5_METADATA);
     if (tgt.hasImplicitRules() && VersionConvertorConstants.IMPLICIT_RULES_OMITTED_MANDATORY_CODE.equals(tgt.getImplicitRules())) {
       // the marker recorded that filter operators were omitted on the way down to R4; they are 
       // restored from the inter-version extension below, so the marker no longer applies
@@ -100,13 +103,13 @@ public class CodeSystem40_N {
     if (src.hasValueSet())
       tgt.setValueSetElement(Canonical40_N.convertCanonical(src.getValueSetElement()));
     if (src.hasHierarchyMeaning())
-      tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
+      tgt.setHierarchyMeaningElement(CrossVersionElements40_N.toR6Code(src.getHierarchyMeaningElement(), convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()), src.fhirType(), "hierarchyMeaning"));
     if (src.hasCompositional())
       tgt.setCompositionalElement(Boolean40_N.convertBoolean(src.getCompositionalElement()));
     if (src.hasVersionNeeded())
       tgt.setVersionNeededElement(Boolean40_N.convertBoolean(src.getVersionNeededElement()));
     if (src.hasContent())
-      tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
+      tgt.setContentElement(CrossVersionElements40_N.toR6Code(src.getContentElement(), convertCodeSystemContentMode(src.getContentElement()), src.fhirType(), "content"));
     if (src.hasSupplements())
       tgt.setSupplementsElement(Canonical40_N.convertCanonical(src.getSupplementsElement()));
     if (src.hasCount())
@@ -125,6 +128,7 @@ public class CodeSystem40_N {
       return null;
     org.hl7.fhir.r4.model.CodeSystem tgt = new org.hl7.fhir.r4.model.CodeSystem();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", CrossVersionElements40_N.R5_METADATA);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -164,13 +168,13 @@ public class CodeSystem40_N {
     if (src.hasValueSet())
       tgt.setValueSetElement(Canonical40_N.convertCanonical(src.getValueSetElement()));
     if (src.hasHierarchyMeaning())
-      tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
+      tgt.setHierarchyMeaningElement(CrossVersionElements40_N.toR4Code(src.getHierarchyMeaningElement(), convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()), src.fhirType(), "hierarchyMeaning"));
     if (src.hasCompositional())
       tgt.setCompositionalElement(Boolean40_N.convertBoolean(src.getCompositionalElement()));
     if (src.hasVersionNeeded())
       tgt.setVersionNeededElement(Boolean40_N.convertBoolean(src.getVersionNeededElement()));
     if (src.hasContent())
-      tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
+      tgt.setContentElement(CrossVersionElements40_N.toR4Code(src.getContentElement(), convertCodeSystemContentMode(src.getContentElement()), src.fhirType(), "content"));
     if (src.hasSupplements())
       tgt.setSupplementsElement(Canonical40_N.convertCanonical(src.getSupplementsElement()));
     if (src.hasCount())
@@ -488,7 +492,7 @@ public class CodeSystem40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertPropertyType(src.getTypeElement()), src.fhirType(), "type"));
     return tgt;
   }
 
@@ -504,7 +508,7 @@ public class CodeSystem40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertPropertyType(src.getTypeElement()), src.fhirType(), "type"));
     return tgt;
   }
 
@@ -665,8 +669,8 @@ public class CodeSystem40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -677,8 +681,7 @@ public class CodeSystem40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_N.convertCode(src.getCodeElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 }

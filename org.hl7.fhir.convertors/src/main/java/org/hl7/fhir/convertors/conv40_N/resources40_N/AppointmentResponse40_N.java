@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Instant40_N;
@@ -45,7 +46,8 @@ public class AppointmentResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.AppointmentResponse tgt = new org.hl7.fhir.model.core.AppointmentResponse();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("AppointmentResponse", "5.0", new String[] {"occurrenceDate", "proposedNewTime", "recurrenceId", "recurring"}, CrossVersionElements40_N.urls("AppointmentResponse", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "occurrenceDate", "proposedNewTime", "recurrenceId", "recurring");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasAppointment())
@@ -59,7 +61,7 @@ public class AppointmentResponse40_N {
     if (src.hasActor())
       tgt.setActor(Reference40_N.convertReference(src.getActor()));
     if (src.hasParticipantStatus())
-      tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
+      tgt.setParticipantStatusElement(CrossVersionElements40_N.toR6Code(src.getParticipantStatusElement(), convertParticipantStatus(src.getParticipantStatusElement()), src.fhirType(), "participantStatus"));
     if (src.hasComment())
       tgt.setCommentElement(String40_N.convertStringToMarkdown(src.getCommentElement()));
     return tgt;
@@ -70,6 +72,7 @@ public class AppointmentResponse40_N {
       return null;
     org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "occurrenceDate", "proposedNewTime", "recurrenceId", "recurring");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasAppointment())
@@ -83,7 +86,7 @@ public class AppointmentResponse40_N {
     if (src.hasActor())
       tgt.setActor(Reference40_N.convertReference(src.getActor()));
     if (src.hasParticipantStatus())
-      tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
+      tgt.setParticipantStatusElement(CrossVersionElements40_N.toR4Code(src.getParticipantStatusElement(), convertParticipantStatus(src.getParticipantStatusElement()), src.fhirType(), "participantStatus"));
     if (src.hasComment())
       tgt.setCommentElement(String40_N.convertString(src.getCommentElement()));
     return tgt;

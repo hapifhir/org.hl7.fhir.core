@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -49,24 +50,30 @@ public class DeviceRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DeviceRequest tgt = new org.hl7.fhir.model.core.DeviceRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DeviceRequest", "5.0", new String[] {"doNotPerform", "quantity", "asNeeded", "asNeededFor"}, CrossVersionElements40_N.urls("DeviceRequest", "6.0", new String[] {"location"}, CrossVersionElements40_N.url("DeviceRequest", "6.0", "product"))));
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "DeviceRequest", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "doNotPerform", "quantity", "asNeeded", "asNeededFor");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "location");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.r4.model.Reference t : src.getPriorRequest())
-//      tgt.addPriorRequest(Reference40_N.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPriorRequest())
+      tgt.addReplaces(Reference40_N.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDeviceRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertDeviceRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasCodeCodeableConcept())
       tgt.setProduct(CodeableConcept40_N.convertCodeableConcept(src.getCodeCodeableConcept()));
     else if (src.hasCodeReference())
       tgt.setProduct(Reference40_N.convertReference(src.getCodeReference()));
+    // R6 product can also be a canonical
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "product");
 
     for (org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter())
       tgt.addParameter(convertDeviceRequestParameterComponent(t));
@@ -74,8 +81,8 @@ public class DeviceRequest40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_N.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -84,10 +91,7 @@ public class DeviceRequest40_N {
       tgt.getPerformer().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getPerformerType()));
     if (src.hasPerformer())
       tgt.getPerformer().setReference(Reference40_N.convertReference(src.getPerformer()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(Reference40_N.convertReference(t));
@@ -101,32 +105,36 @@ public class DeviceRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceRequest tgt = new org.hl7.fhir.r4.model.DeviceRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DeviceRequest", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "DeviceRequest", "instantiatesCanonical", "instantiatesUri");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "doNotPerform", "quantity", "asNeeded", "asNeededFor");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "location");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.model.core.Reference t : src.getPriorRequestList())
-//      tgt.addPriorRequest(Reference40_N.convertReference(t));
+    for (org.hl7.fhir.model.core.Reference t : src.getReplacesList())
+      tgt.addPriorRequest(Reference40_N.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDeviceRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertDeviceRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasProductCodeableConcept())
       tgt.setCode(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProductCodeableConcept()));
-    if (src.hasProductReference())
+    else if (src.hasProductReference())
       tgt.setCode(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProductReference()));
+    else if (src.hasProduct())
+      tgt.addExtension(CrossVersionElements40_N.url("DeviceRequest", "6.0", "product"), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProduct()));
     for (org.hl7.fhir.model.core.DeviceRequest.DeviceRequestParameterComponent t : src.getParameterList())
       tgt.addParameter(convertDeviceRequestParameterComponent(t));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_N.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -135,12 +143,7 @@ public class DeviceRequest40_N {
       tgt.setPerformerType(CodeableConcept40_N.convertCodeableConcept(src.getPerformer().getConcept()));
     if (src.getPerformer().hasReference())
       tgt.setPerformer(Reference40_N.convertReference(src.getPerformer().getReference()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Reference t : src.getInsuranceList()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getSupportingInfoList())
       tgt.addSupportingInfo(Reference40_N.convertReference(t));
@@ -379,8 +382,8 @@ public class DeviceRequest40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -391,8 +394,7 @@ public class DeviceRequest40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 }

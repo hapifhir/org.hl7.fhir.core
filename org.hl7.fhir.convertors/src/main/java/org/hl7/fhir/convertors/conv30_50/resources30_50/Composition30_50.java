@@ -99,7 +99,7 @@ public class Composition30_50 {
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+    switch (java.util.Objects.toString(src.getCode("http://hl7.org/fhir/composition-attestation-mode"), "")) {
       case "personal":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.PERSONAL);
         break;
@@ -361,7 +361,7 @@ public class Composition30_50 {
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.DocumentConfidentialityEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getCode()) {
+    switch (java.util.Objects.toString(src.getCode(), "")) {
       case "U":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality.U);
         break;

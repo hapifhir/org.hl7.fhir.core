@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -57,7 +58,8 @@ public class ActivityDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ActivityDefinition tgt = new org.hl7.fhir.model.core.ActivityDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ActivityDefinition", "5.0", new String[] {"versionAlgorithm", "copyrightLabel", "asNeeded"}, CrossVersionElements40_N.urls("ActivityDefinition", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "versionAlgorithm", "copyrightLabel", "asNeeded");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -74,8 +76,8 @@ public class ActivityDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -115,28 +117,29 @@ public class ActivityDefinition40_N {
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getLibrary())
       tgt.getLibraryList().add(Canonical40_N.convertCanonical(t));
     if (src.hasKind())
-      tgt.setKindElement(convertActivityDefinitionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertActivityDefinitionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    // R4 and R6 allow different types
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), "ActivityDefinition", "timing", tgt, tgt.getExtension());
     if (src.hasLocation())
-      tgt.setLocation(new CodeableReference(Reference40_N.convertReference(src.getLocation())));
+      tgt.setLocation(Reference40_N.convertReferenceToCodeableReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
-    if (src.hasProduct())
-      tgt.setProduct(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProduct()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "product", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
-    for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.getDosageInstruction().getStepFirstRep().addComponent(Dosage40_N.convertDosage(t));
+    if (src.hasDosage())
+      org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.DosageDetails40_N.convertDosages(src.getDosage(), src.getExtension(), tgt.getExtension(), "ActivityDefinition.dosageInstruction", tgt.getDosageInstruction());
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSpecimenRequirement())
@@ -149,6 +152,7 @@ public class ActivityDefinition40_N {
       tgt.setTransformElement(Canonical40_N.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent t : src.getDynamicValue())
       tgt.addDynamicValue(convertActivityDefinitionDynamicValueComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -157,6 +161,7 @@ public class ActivityDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.ActivityDefinition tgt = new org.hl7.fhir.r4.model.ActivityDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "versionAlgorithm", "copyrightLabel", "asNeeded");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -173,8 +178,7 @@ public class ActivityDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -214,28 +218,27 @@ public class ActivityDefinition40_N {
     for (org.hl7.fhir.model.core.CanonicalType t : src.getLibraryList())
       tgt.getLibrary().add(Canonical40_N.convertCanonical(t));
     if (src.hasKind())
-      tgt.setKindElement(convertActivityDefinitionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertActivityDefinitionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
-    if (src.getLocation().hasReference())
-      tgt.setLocation(Reference40_N.convertReference(src.getLocation().getReference()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), "ActivityDefinition", "timing", tgt, tgt.getExtension());
+    if (src.hasLocation())
+      tgt.setLocation(Reference40_N.convertCodeableReferenceToReference(src.getLocation()));
     for (org.hl7.fhir.model.core.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipantList())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
-    if (src.hasProduct())
-      tgt.setProduct(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProduct()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "product", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
-    for (DosageDetails.DosageDetailsStepComponent t : src.getDosageInstruction().getStepList()) tgt.addDosage(Dosage40_N.convertDosage(t.getComponentFirstRep()));
+    if (src.hasDosageInstruction())
+      org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.DosageDetails40_N.convertDosageDetails(src.getDosageInstruction(), "ActivityDefinition.dosageInstruction", tgt.getDosage(), tgt.getExtension());
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getBodySiteList())
       tgt.addBodySite(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.CanonicalType t : src.getSpecimenRequirementList())
@@ -248,6 +251,7 @@ public class ActivityDefinition40_N {
       tgt.setTransformElement(Canonical40_N.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.model.core.ActivityDefinition.ActivityDefinitionDynamicValueComponent t : src.getDynamicValueList())
       tgt.addDynamicValue(convertActivityDefinitionDynamicValueComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -258,6 +262,11 @@ public class ActivityDefinition40_N {
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
       if (src.getValue() == null) {
           tgt.setValue(null);
+          if (src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
+              // an R6 request type that R4 doesn't have
+              tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME));
+              tgt.removeExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME);
+          }
       } else {
           switch (src.getValue()) {
               case APPOINTMENT:
@@ -285,14 +294,15 @@ public class ActivityDefinition40_N {
                   tgt.setValue(ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
                   break;
               case TASK:
-                  tgt.setValue(null);
-                  tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new CodeType("Task"));
+                  tgt.setValue(ActivityDefinition.RequestResourceTypes.TASK);
                   break;
               case VISIONPRESCRIPTION:
                   tgt.setValue(ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
                   break;
               default:
-                  tgt.setValue(ActivityDefinition.RequestResourceTypes.NULL);
+                  // a request type R6 doesn't have (e.g. SupplyRequest)
+                  tgt.setValue(null);
+                  tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new CodeType(src.getCode()));
                   break;
           }
       }
@@ -335,11 +345,16 @@ public class ActivityDefinition40_N {
                 case SERVICEREQUEST:
                     tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.SERVICEREQUEST);
                     break;
+                case TASK:
+                    tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.TASK);
+                    break;
                 case VISIONPRESCRIPTION:
                     tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION);
                     break;
                 default:
-                    tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.NULL);
+                    // a request type R4 doesn't have (e.g. RequestOrchestration)
+                    tgt.setValue(null);
+                    tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new org.hl7.fhir.r4.model.CodeType(src.getCode()));
                     break;
             }
         }
@@ -499,9 +514,10 @@ public class ActivityDefinition40_N {
     org.hl7.fhir.model.core.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.model.core.ActivityDefinition.ActivityDefinitionParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertActivityParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -511,9 +527,10 @@ public class ActivityDefinition40_N {
     org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertActivityParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -584,6 +601,7 @@ public class ActivityDefinition40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -596,6 +614,7 @@ public class ActivityDefinition40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }
