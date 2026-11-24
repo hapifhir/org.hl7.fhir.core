@@ -37,7 +37,7 @@ public class PackageClient {
 
   private PackageServer server;
   private String address;
-  private final RegistryAnswerCache answers;
+  private final RegistryAnswerCache registryAnswerCache;
 
 
   public PackageClient(PackageServer server) {
@@ -52,7 +52,7 @@ public class PackageClient {
     super();
     this.server = server;
     address = this.server.getUrl();
-    this.answers = answers;
+    this.registryAnswerCache = answers;
   }
 
   public boolean exists(String id, String ver) throws IOException {
@@ -70,9 +70,9 @@ public class PackageClient {
   }
 
   private InputStream fetchTarball(String id, String ver) throws IOException {
-    if (answers != null) {
+    if (registryAnswerCache != null) {
       // the package itself is never kept, only a 404 for it
-      return answers.get(url(id, ver), () -> fetchTarballFromServer(id, ver), stream -> false);
+      return registryAnswerCache.get(url(id, ver), () -> fetchTarballFromServer(id, ver), stream -> false);
     }
     return fetchTarballFromServer(id, ver);
   }
@@ -116,7 +116,7 @@ public class PackageClient {
     JsonObject json;
     try {
       // a list without versions isn't kept; registries answer an unknown package with 404, which is kept briefly
-      json = answers == null ? fetchJson(url) : answers.get(url, () -> fetchJson(url),
+      json = registryAnswerCache == null ? fetchJson(url) : registryAnswerCache.get(url, () -> fetchJson(url),
         j -> j.hasObject("versions") && canRead(() -> readVersions(j, new ArrayList<>())));
       boolean hasDates = readVersions(json, res);
       if (hasDates) {
@@ -202,7 +202,7 @@ public class PackageClient {
     List<PackageInfo> res = new ArrayList<>();
     try {
       String url = Utilities.pathURL(address, "catalog?") + params;
-      JsonArray json = answers == null ? fetchJsonArray(url) : answers.get(url, () -> fetchJsonArray(url),
+      JsonArray json = registryAnswerCache == null ? fetchJsonArray(url) : registryAnswerCache.get(url, () -> fetchJsonArray(url),
         j -> canRead(() -> readCatalog(j, new ArrayList<>())));
       boolean hasDates = readCatalog(json, res);
       if (exactMatch) {

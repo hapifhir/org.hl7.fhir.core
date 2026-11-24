@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import lombok.Getter;
+
 /**
  * A budget for one run of an expression language or template engine (FHIRPath, Liquid) over content that can't be
  * trusted: an expression comes from content (an invariant, a template, a ViewDefinition), and can be written so that it
@@ -21,10 +23,15 @@ public class ExecutionLimits {
   /** the longest string a run can make (characters) */
   public static final int DEFAULT_MAX_STRING_LENGTH = 10000000;
 
+  @Getter
   private final long maxMillis;
+  @Getter
   private final int maxDepth;
+  @Getter
   private final int maxItems;
+  @Getter
   private final int maxStringLength;
+  @Getter
   private final long maxSteps;
 
   /**
@@ -32,12 +39,13 @@ public class ExecutionLimits {
    * It's cheap (~25ns), but FHIRPath asks twice for every node it evaluates; a run goes over its time by no more than
    * this many units of work
    */
-  static final int CLOCK_EVERY = 50;
+  static final int WORK_UNITS_PER_CLOCK_READ = 50;
 
   private boolean started; // whether the clock has started
   private long start; // System.nanoTime() when it did
   private boolean outOfTime; // once out of time, always out of time
-  private long sinceClock; // units of work since the clock was last read
+  private long workUnitsSinceLastClockRead; // units of work since the clock was last read
+  @Getter
   private int depth;
   private long steps;
 
@@ -83,7 +91,7 @@ public class ExecutionLimits {
    * call by itself is one step, so without this the clock could go unread for a very long time while each step does
    * a lot of work
    */
-  public boolean isOutOfTime(long work) {
+  public boolean isOutOfTime(long workUnit) {
     if (maxMillis <= 0) {
       return false;
     }
@@ -93,8 +101,8 @@ public class ExecutionLimits {
     if (!started) {
       return startClock();
     }
-    sinceClock += Math.max(work, 1);
-    if (sinceClock < CLOCK_EVERY) {
+    workUnitsSinceLastClockRead += Math.max(workUnit, 1);
+    if (workUnitsSinceLastClockRead < WORK_UNITS_PER_CLOCK_READ) {
       return false;
     }
     return readClock();
@@ -124,7 +132,7 @@ public class ExecutionLimits {
   }
 
   private boolean readClock() {
-    sinceClock = 0;
+    workUnitsSinceLastClockRead = 0;
     // nanoTime (not currentTimeMillis): it's not changed when the system clock is set. Elapsed time is compared, not a
     // deadline, so a huge maxMillis can't overflow
     long elapsedMillis = (System.nanoTime() - start) / 1_000_000;
@@ -149,18 +157,10 @@ public class ExecutionLimits {
     depth--;
   }
 
-  public int getDepth() {
-    return depth;
-  }
-
   /** One more step of work: false if that's more than the run can take */
   public boolean step() {
     steps++;
     return maxSteps <= 0 || steps <= maxSteps;
-  }
-
-  public long getMaxSteps() {
-    return maxSteps;
   }
 
   /** whether a collection of this many items is too big */
@@ -171,22 +171,6 @@ public class ExecutionLimits {
   /** whether a string this long is too long */
   public boolean isTooLong(long length) {
     return maxStringLength > 0 && length > maxStringLength;
-  }
-
-  public long getMaxMillis() {
-    return maxMillis;
-  }
-
-  public int getMaxDepth() {
-    return maxDepth;
-  }
-
-  public int getMaxItems() {
-    return maxItems;
-  }
-
-  public int getMaxStringLength() {
-    return maxStringLength;
   }
 
   /** the time limit in seconds, as messages say it */
