@@ -1392,6 +1392,40 @@ public class BaseWorkerContextTests {
     assertFalse(ctxt.getExpansionParameters().hasParameter("tx-resource"));
   }
 
+  /** an edited supplement drops the cached includes of the system it supplements, and only those */
+  @Test
+  void changedSupplementClearsCachedIncludeOfItsSystem() throws Exception {
+    String sct = "http://snomed.info/sct";
+    String supplementUrl = "http://example.org/fhir/CodeSystem/sct-supplement";
+    SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing();
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    ctxt.initTxCache(cache);
+    CodeSystem supplement = supplement(supplementUrl, sct, "A");
+    ctxt.cacheResource(supplement);
+    TerminologyCache.CacheToken sctInclude = cacheInclude(ctxt, cache, sct, "22298006");
+    TerminologyCache.CacheToken loincInclude = cacheInclude(ctxt, cache, "http://loinc.org", "8867-4");
+
+    ctxt.dropResource(supplement);
+    ctxt.cacheResource(supplement(supplementUrl, sct, "A changed"));
+
+    assertNull(cache.getExpansion(sctInclude));
+    assertNotNull(cache.getExpansion(loincInclude));
+  }
+
+  /** an include's server answer, cached as the context caches it */
+  private TerminologyCache.CacheToken cacheInclude(SimpleWorkerContext ctxt, TerminologyCache cache, String system, String code) {
+    ValueSet include = new ValueSet();
+    include.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    include.getCompose().setInactive(true).addInclude().setSystem(system).addConcept().setCode(code);
+    TerminologyCache.CacheToken token = cache.generateExpandToken(include, new ExpansionOptions().withHierarchical(false));
+    token.setDependencies(() -> ctxt.findExpansionDependencies(include, ctxt.getExpansionParameters()));
+    ValueSet answer = new ValueSet();
+    answer.getExpansion().setTotal(1).addContains().setSystem(system).setCode(code);
+    cache.cacheExpansion(token, new ValueSetExpansionOutcome(answer), false);
+    assertNotNull(cache.getExpansion(token));
+    return token;
+  }
+
   @Test
   void externalLookupAnswerIsPersisted() {
     // the lookups didn't fail, so their 'not found' is kept for later runs
