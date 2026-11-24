@@ -13,7 +13,7 @@ class ExecutionLimitsTest {
   @ValueSource(longs = {Long.MAX_VALUE, Long.MAX_VALUE - 1, 0, -1, Long.MIN_VALUE})
   void noTimeLimit(long maxMillis) {
     ExecutionLimits limits = new ExecutionLimits(maxMillis, 0, 0, 0);
-    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 3; i++) {
+    for (int i = 0; i < ExecutionLimits.WORK_UNITS_PER_CLOCK_READ * 3; i++) {
       assertFalse(limits.isOutOfTime());
     }
     assertFalse(limits.isOutOfTimeNow());
@@ -38,10 +38,10 @@ class ExecutionLimitsTest {
     int calls = 0;
     while (!limits.isOutOfTime()) {
       calls++;
-      assertTrue(calls < ExecutionLimits.CLOCK_EVERY, "not noticed after " + calls + " calls");
+      assertTrue(calls < ExecutionLimits.WORK_UNITS_PER_CLOCK_READ, "not noticed after " + calls + " calls");
     }
-    assertTrue(calls < ExecutionLimits.CLOCK_EVERY);
-    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 3; i++) {
+    assertTrue(calls < ExecutionLimits.WORK_UNITS_PER_CLOCK_READ);
+    for (int i = 0; i < ExecutionLimits.WORK_UNITS_PER_CLOCK_READ * 3; i++) {
       assertTrue(limits.isOutOfTime());
     }
     assertTrue(limits.isOutOfTimeNow());
@@ -56,7 +56,7 @@ class ExecutionLimitsTest {
     ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
     assertFalse(limits.isOutOfTime()); // starts the clock
     Thread.sleep(20);
-    assertTrue(limits.isOutOfTime(ExecutionLimits.CLOCK_EVERY));
+    assertTrue(limits.isOutOfTime(ExecutionLimits.WORK_UNITS_PER_CLOCK_READ));
     assertTrue(limits.isOutOfTime());
   }
 
@@ -66,16 +66,16 @@ class ExecutionLimitsTest {
     ExecutionLimits limits = new ExecutionLimits(1, 0, 0, 0);
     assertFalse(limits.isOutOfTime()); // starts the clock
     Thread.sleep(20);
-    int half = ExecutionLimits.CLOCK_EVERY / 2;
+    int half = ExecutionLimits.WORK_UNITS_PER_CLOCK_READ / 2;
     assertFalse(limits.isOutOfTime(half - 1)); // clock not read yet
-    assertTrue(limits.isOutOfTime(ExecutionLimits.CLOCK_EVERY - half + 1));
+    assertTrue(limits.isOutOfTime(ExecutionLimits.WORK_UNITS_PER_CLOCK_READ - half + 1));
   }
 
   /** while there's time, it's never out of time, however often it's asked */
   @Test
   void notOutOfTimeWhileThereIsTime() {
     ExecutionLimits limits = new ExecutionLimits(60000, 0, 0, 0);
-    for (int i = 0; i < ExecutionLimits.CLOCK_EVERY * 10; i++) {
+    for (int i = 0; i < ExecutionLimits.WORK_UNITS_PER_CLOCK_READ * 10; i++) {
       assertFalse(limits.isOutOfTime());
     }
     assertFalse(limits.isOutOfTimeNow());
