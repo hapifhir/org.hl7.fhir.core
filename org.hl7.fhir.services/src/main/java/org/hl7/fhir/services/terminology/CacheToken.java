@@ -17,8 +17,8 @@ public class CacheToken {
   private String request;
 
   /**
-   * What the answer depends on (see TerminologyCache.DependencyResolver), worked out only when the answer is stored,
-   * so that a look up costs no more than it did
+   * What the answer depends on (see TerminologyCache.DependencyResolver), worked out on a miss, before the answer is
+   * (see TerminologyCache.captureDependencies), so that a hit costs no more than it did
    */
   @Getter @Setter
   private Supplier<Map<String, String>> dependencies;
