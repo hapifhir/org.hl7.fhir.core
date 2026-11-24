@@ -323,9 +323,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // memory only until initTxCache() is called - a context doesn't touch any folder unless it's asked to
   @Getter
+  /** see {@link TerminologyCache.DependencyResolver} */
+  private final TerminologyCache.DependencyResolver txResolver = new TerminologyCache.DependencyResolver() {
+    @Override
+    public String stateOf(String request) {
+      return txDependencyState(request);
+    }
+
+    @Override
+    public boolean hasNoContent(String request) {
+      return txDependencyHasNoContent(request);
+    }
+  };
   protected TerminologyCache txCache = new TerminologyCache(this, null);
   {
-    txCache.setDependencyResolver(this::txDependencyState);
+    txCache.setDependencyResolver(txResolver);
   }
   protected TimeTracker clock;
   private boolean tlogging = true;
@@ -1177,6 +1189,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (res != null) {
         return res;
       }
+    } else {
+      txCache.captureDependencies(cacheToken);
     }
 
     List<String> allErrors = new ArrayList<>();
@@ -1418,7 +1432,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * digest of the ValueSet or CodeSystem it names, or of the supplements of the code system it names.
    * {@link TerminologyCache#ABSENT} when there is none, {@link TerminologyCache#NO_CONTENT} for a code system whose
    * content isn't here (a not-present stub, such as THO's for SNOMED CT and LOINC, says nothing about the answer), and
-   * {@link TerminologyCache#FAILED} when it can't be loaded
+   * {@link TerminologyCache#FAILED} when it can't be loaded. The digest of one fetched from a terminology server starts
+   * with {@link TerminologyCache#FETCHED}
    */
   public String txDependencyState(String request) {
     try {
@@ -1457,7 +1472,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent())) {
       return TerminologyCache.NO_CONTENT;
     }
-    return txCache.contentDigest(cr);
+    // see findTxResource
+    return (cr.hasUserData(UserDataNames.render_external_link) ? TerminologyCache.FETCHED : "") + txCache.contentDigest(cr);
+  }
+
+  /** whether {@link #txDependencyState} would be ABSENT or NO_CONTENT, without working out a digest */
+  private boolean txDependencyHasNoContent(String request) {
+    if (request.startsWith("supplements ")) {
+      String ref = request.substring("supplements ".length());
+      String url = ref.contains("|") ? ref.substring(0, ref.indexOf('|')) : ref;
+      String version = ref.contains("|") ? ref.substring(ref.indexOf('|') + 1) : null;
+      if (version == null) {
+        CodeSystem cs = fetchForKey(CodeSystem.class, url, null, null, null);
+        version = cs == null ? null : cs.getVersion();
+      }
+      return codeSystems.getSupplements(url, version).isEmpty();
+    }
+    CanonicalResource cr = resolveTxDependency(request);
+    return cr == null || (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent()));
   }
 
   private static boolean isUsedContent(CodeSystemContentMode content) {
@@ -1485,14 +1517,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.invalidateRemoved(url);
         txCache.invalidateRemoved(supplements);
       } else {
-        txCache.invalidate(url);
-        txCache.invalidate(supplements);
+        // checked against this context: a copy shares the cache
+        txCache.invalidate(url, txResolver);
+        txCache.invalidate(supplements, txResolver);
       }
     }
   }
 
-  /** dependencies that couldn't be loaded, so each is only reported once */
   private volatile boolean txResourcesLoaded;
+  /** dependencies that couldn't be loaded, so each is only reported once */
   private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
 
   private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
@@ -2790,9 +2823,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
-    txCache.setDependencyResolver(this::txDependencyState);
+    txCache.setDependencyResolver(txResolver);
     if (txResourcesLoaded) {
-      txCache.resourcesLoaded();
+      txCache.resourcesLoaded(txResolver);
     }
     terminologyClientManager.setCache(txCache);
   }
@@ -2804,7 +2837,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void txResourcesLoaded() {
     txResourcesLoaded = true;
     if (txCache != null) {
-      txCache.resourcesLoaded();
+      txCache.resourcesLoaded(txResolver);
     }
   }
 
