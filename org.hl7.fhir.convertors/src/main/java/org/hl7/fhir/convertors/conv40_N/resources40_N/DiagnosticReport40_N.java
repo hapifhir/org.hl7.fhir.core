@@ -93,7 +93,7 @@ public class DiagnosticReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
     CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "note", "supportingInfo", "composition");
     for (org.hl7.fhir.model.core.Reference t : src.getStudyList()) {
-      if ("GenomicStudy".equals(t.getType()) || (t.hasReference() && t.getReference().matches("(^|.*/)GenomicStudy/.*")))
+      if ("GenomicStudy".equals(t.getType()) || (t.hasReference() && (t.getReference().startsWith("GenomicStudy/") || t.getReference().contains("/GenomicStudy/"))))
         tgt.addExtension(CrossVersionElements40_N.url("DiagnosticReport", "5.0", "study"), Reference40_N.convertReference(t));
       else
         tgt.addImagingStudy(Reference40_N.convertReference(t));

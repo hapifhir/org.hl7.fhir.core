@@ -258,7 +258,7 @@ public class Subscription40_N {
     int q = criteria.indexOf("?");
     String type = q < 0 ? null : criteria.substring(0, q);
     String query = q < 0 ? criteria : criteria.substring(q + 1);
-    for (String part : query.split("&")) {
+    for (String part : org.hl7.fhir.utilities.Utilities.simpleSplit(query, "&")) {
       if (part.isEmpty())
         continue;
       SubscriptionFilterByComponent f = new SubscriptionFilterByComponent();

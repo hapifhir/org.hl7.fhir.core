@@ -256,7 +256,7 @@ public class CrossVersionElements40_N {
   private static boolean inR5(String path, String name) {
     return R5_ELEMENTS.computeIfAbsent(path + "." + name, k -> {
       try {
-        String[] parts = path.split("\\.");
+        String[] parts = org.hl7.fhir.utilities.Utilities.simpleSplit(path, ".");
         org.hl7.fhir.r5.model.Base b = org.hl7.fhir.r5.model.ResourceFactory.createResourceOrType(parts[0]);
         for (int i = 1; i < parts.length; i++) {
           if (b.getChildByName(parts[i]) == null)
@@ -509,7 +509,7 @@ public class CrossVersionElements40_N {
   private static boolean allows(String typeCode, String type) {
     if (typeCode == null)
       return false;
-    for (String t : typeCode.split("\\|")) {
+    for (String t : org.hl7.fhir.utilities.Utilities.simpleSplit(typeCode, "|")) {
       t = t.trim();
       if (t.contains("("))
         t = t.substring(0, t.indexOf("("));
