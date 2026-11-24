@@ -2785,7 +2785,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
-    // checks what it holds against what is already loaded
     txCache.setDependencyResolver(txResolver);
     terminologyClientManager.setCache(txCache);
   }

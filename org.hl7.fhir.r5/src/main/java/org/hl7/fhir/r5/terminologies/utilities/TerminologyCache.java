@@ -474,9 +474,10 @@ public class TerminologyCache {
    * {@link #NO_CONTENT} or {@link #FAILED}.
    *
    * The cache asks only when the context loads, changes or drops a resource with a url that some answer depends on
-   * (see {@link TerminologyCache#invalidate}) or drops it, and when it is given the resolver, and drops the answers
+   * (see {@link TerminologyCache#invalidate}) or drops it, and drops the answers
    * that were stored with a different state. A dependency that is absent isn't taken as changed, since the context may
-   * not have loaded it yet: an answer that depended on something deleted between runs is kept, as before
+   * not have loaded it yet: an answer that depended on something deleted between runs is kept, as before. So is one
+   * that depends on something loaded before the context was given the cache (see setDependencyResolver)
    */
   public interface DependencyResolver {
     String stateOf(String request);
@@ -1229,21 +1230,13 @@ public class TerminologyCache {
   }
 
   /**
-   * see {@link DependencyResolver}. The entries held (read from disk) that depend on something the context has already
-   * loaded are checked now; the rest are checked as it loads what they depend on
+   * see {@link DependencyResolver}. The entries read from disk are checked as the context loads what they depend on, so
+   * what it loaded before it was given the cache isn't compared: a url can be loaded again from a later package (THO's
+   * after core's), and the entries recorded against that one would be dropped every run
    */
   public void setDependencyResolver(DependencyResolver resolver) {
-    List<String> urls;
     synchronized (lock) {
       dependencyResolver = resolver;
-      urls = new ArrayList<>(dependents.keySet());
-    }
-    if (resolver != null) {
-      // each request is resolved once, and a resource's digest is kept (see contentDigest)
-      Map<String, String> now = new HashMap<>();
-      for (String url : urls) {
-        check(url, resolver, now);
-      }
     }
   }
 
@@ -1295,7 +1288,10 @@ public class TerminologyCache {
     dependencyChangedAt.put(url, ++dependencyChanges);
   }
 
-  /** drops the entries whose dependencies with this url aren't in the state they were stored with */
+  /**
+   * drops the entries whose dependencies with this url aren't in the state they were stored with. Each request is
+   * resolved once, and a resource's digest is kept (see contentDigest)
+   */
   private void check(String url, DependencyResolver resolver, Map<String, String> now) {
     List<CacheEntry> entries;
     synchronized (lock) {

@@ -657,38 +657,15 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertNotNull(cacheB.getValidation(validationToken(cacheB, null)));
 
       // the next run, an edited code system: the entries are dropped when the context loads it
-      TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
-      states.clear();
-      cacheC.setDependencyResolver(resolver());
-      assertNotNull(cacheC.getExpansion(expandToken(cacheC, null)));
-      states.put(VS, "1");
       states.put(CS, "b");
+      TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
+      cacheC.setDependencyResolver(resolver());
       asked.set(0);
       cacheC.invalidate("http://example.org/fhir/ValueSet/test");
       cacheC.invalidate("http://example.org/fhir/CodeSystem/local");
       assertEquals(2, asked.get());
       assertNull(cacheC.getExpansion(expandToken(cacheC, null)));
       assertNull(cacheC.getValidation(validationToken(cacheC, null)));
-      deleteTempCacheDirectory(dir);
-    }
-
-    @Test
-    void testEntriesAreCheckedAgainstWhatIsLoadedBeforeTheResolverIsSet() throws IOException {
-      // core is loaded before the context is given its cache folder
-      Path dir = createTempCacheDirectory();
-      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
-      cacheA.cacheExpansion(expandToken(cacheA, Map.of(VS, "1", CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
-      cacheA.save();
-
-      states.put(CS, "b");
-      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
-      cacheB.setDependencyResolver(resolver());
-      assertNull(cacheB.getExpansion(expandToken(cacheB, null)));
-
-      states.put(CS, "a");
-      TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext());
-      cacheC.setDependencyResolver(resolver());
-      assertNotNull(cacheC.getExpansion(expandToken(cacheC, null)));
       deleteTempCacheDirectory(dir);
     }
 
