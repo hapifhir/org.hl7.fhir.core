@@ -25,8 +25,8 @@ class ManagedFileAccessAllowedPathsTest {
 
   @AfterEach
   void reset() {
-    ManagedFileAccess.setAllowedPaths(null);
-    ManagedFileAccess.setAccessPolicy(ManagedFileAccess.FileAccessPolicy.DIRECT);
+    ManagedFileAccess.setAllowedPaths(ManagedFileAccess.defaultAllowedPaths());
+    ManagedFileAccess.setAccessPolicy(ManagedFileAccess.defaultFileAccessPolicy());
   }
 
   private Path setUp() throws IOException {

@@ -673,39 +673,39 @@ public class FileUtilities {
    * @return null if the folder may be emptied, else why not
    */
   public static String whyNotSafeToEmpty(String folder) {
-    Path real;
+    Path realPath;
     try {
       // not normalised first: toRealPath resolves a .. after a link from where the link leads, as emptying it would
-      real = Paths.get(folder).toAbsolutePath().toRealPath();
+      realPath = Paths.get(folder).toAbsolutePath().toRealPath();
     } catch (Exception e) {
       return null; // it doesn't exist, so there's nothing to empty
     }
-    String reason = whyNotSafeToEmptySystemFolder(real);
+    String reason = whyNotSafeToEmptySystemFolder(realPath);
     if (reason != null) {
       return reason;
     }
     Path home = realPathOf(System.getProperty("user.home"));
     if (home != null) {
-      if (home.startsWith(real)) {
+      if (home.startsWith(realPath)) {
         return "it is the user's home folder, or contains it";
       }
-      String name = real.getFileName().toString().toLowerCase();
-      if (home.equals(real.getParent()) && (HOME_FOLDERS.contains(name) || name.startsWith("onedrive"))) {
+      String name = realPath.getFileName().toString().toLowerCase();
+      if (home.equals(realPath.getParent()) && (HOME_FOLDERS.contains(name) || name.startsWith("onedrive"))) {
         return "it is one of the standard folders in the user's home folder";
       }
-      if (real.equals(realPathOf(home.resolve(".fhir").resolve("packages").toString()))) {
+      if (realPath.equals(realPathOf(home.resolve(".fhir").resolve("packages").toString()))) {
         return "it is the FHIR package cache";
       }
     }
     Path tmp = realPathOf(System.getProperty("java.io.tmpdir"));
-    if (tmp != null && tmp.startsWith(real)) {
+    if (tmp != null && tmp.startsWith(realPath)) {
       return "it is the system temporary folder, or contains it";
     }
-    Path cwd = realPathOf(Paths.get("").toAbsolutePath().toString());
-    if (cwd != null && cwd.startsWith(real)) {
+    Path currentDirectory = realPathOf(Paths.get("").toAbsolutePath().toString());
+    if (currentDirectory != null && currentDirectory.startsWith(realPath)) {
       return "it is the current folder, or contains it";
     }
-    if (Files.exists(real.resolve(".git"), LinkOption.NOFOLLOW_LINKS)) {
+    if (Files.exists(realPath.resolve(".git"), LinkOption.NOFOLLOW_LINKS)) {
       return "it is the root of a git repository";
     }
     return null;
