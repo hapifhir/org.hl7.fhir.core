@@ -1737,8 +1737,13 @@ public class TxTester implements ITerminologyRequestIdProvider {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerErrors().get(0);
-      oo.setText(null);
-      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      if (oo != null) {
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+        oo.setText(null);
+        pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;
