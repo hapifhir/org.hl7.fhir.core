@@ -634,35 +634,15 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
-    void testDroppedDependencyIsHeldUntilItIsLoadedAgain() throws IOException {
-      // an edited resource is dropped and loaded again: the answers that depend on it are put back if it is as it was
+    void testAbsentDependencyIsNotAChangeButADroppedOneIs() throws IOException {
+      // the context may not have loaded it yet, so a deletion between runs isn't seen
       TerminologyCache cache = createTerminologyCache();
       cache.setDependencyResolver(resolver());
       cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
-
-      // a lookup can come before the context has loaded everything
       cache.invalidate("http://example.org/fhir/CodeSystem/local");
       assertNotNull(cache.getExpansion(expandToken(cache, null)));
 
-      states.put(CS, "a");
       cache.invalidateRemoved("http://example.org/fhir/CodeSystem/local");
-      assertNull(cache.getExpansion(expandToken(cache, null)));
-      cache.invalidate("http://example.org/fhir/CodeSystem/local");
-      assertNotNull(cache.getExpansion(expandToken(cache, null)));
-
-      // loaded again, edited
-      cache.invalidateRemoved("http://example.org/fhir/CodeSystem/local");
-      states.put(CS, "b");
-      cache.invalidate("http://example.org/fhir/CodeSystem/local");
-      assertNull(cache.getExpansion(expandToken(cache, null)));
-
-      // dropped, and not loaded again
-      cache.cacheExpansion(expandToken(cache, Map.of(CS, "b")), new ValueSetExpansionOutcome(valueSet()), true);
-      states.remove(CS);
-      cache.invalidateRemoved("http://example.org/fhir/CodeSystem/local");
-      cache.resourcesLoaded();
-      states.put(CS, "b");
-      cache.invalidate("http://example.org/fhir/CodeSystem/local");
       assertNull(cache.getExpansion(expandToken(cache, null)));
     }
 
@@ -684,15 +664,38 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertNotNull(cacheB.getValidation(validationToken(cacheB, null)));
 
       // the next run, an edited code system: the entries are dropped when the context loads it
-      states.put(CS, "b");
       TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString());
+      states.clear();
       cacheC.setDependencyResolver(resolver());
+      assertNotNull(cacheC.getExpansion(expandToken(cacheC, null)));
+      states.put(VS, "1");
+      states.put(CS, "b");
       asked.set(0);
       cacheC.invalidate("http://example.org/fhir/ValueSet/test");
       cacheC.invalidate("http://example.org/fhir/CodeSystem/local");
       assertEquals(2, asked.get());
       assertNull(cacheC.getExpansion(expandToken(cacheC, null)));
       assertNull(cacheC.getValidation(validationToken(cacheC, null)));
+      deleteTempCacheDirectory(dir);
+    }
+
+    @Test
+    void testEntriesAreCheckedAgainstWhatIsLoadedBeforeTheResolverIsSet() throws IOException {
+      // core is loaded before the context is given its cache folder
+      Path dir = createTempCacheDirectory();
+      TerminologyCache cacheA = new TerminologyCache(new Object(), dir.toString());
+      cacheA.cacheExpansion(expandToken(cacheA, Map.of(VS, "1", CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cacheA.save();
+
+      states.put(CS, "b");
+      TerminologyCache cacheB = new TerminologyCache(new Object(), dir.toString());
+      cacheB.setDependencyResolver(resolver());
+      assertNull(cacheB.getExpansion(expandToken(cacheB, null)));
+
+      states.put(CS, "a");
+      TerminologyCache cacheC = new TerminologyCache(new Object(), dir.toString());
+      cacheC.setDependencyResolver(resolver());
+      assertNotNull(cacheC.getExpansion(expandToken(cacheC, null)));
       deleteTempCacheDirectory(dir);
     }
 
@@ -739,22 +742,9 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
-    void testAbsentDependencyHasChangedOnceEverythingIsLoaded() throws IOException {
-      // deleted since the last run: there is no drop to say so
-      TerminologyCache cache = createTerminologyCache();
-      cache.setDependencyResolver(resolver());
-      cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
-      cache.invalidate("http://example.org/fhir/CodeSystem/local");
-      assertNotNull(cache.getExpansion(expandToken(cache, null)));
-      cache.resourcesLoaded();
-      assertNull(cache.getExpansion(expandToken(cache, null)));
-    }
-
-    @Test
     void testCodeSystemWithoutContentIsLikeAnAbsentOne() throws IOException {
       TerminologyCache cache = createTerminologyCache();
       cache.setDependencyResolver(resolver());
-      cache.resourcesLoaded();
       cache.cacheExpansion(expandToken(cache, Map.of(CS, TerminologyCache.ABSENT)), new ValueSetExpansionOutcome(valueSet()), true);
       // a not-present stub is loaded: the answer still came from the server
       states.put(CS, TerminologyCache.NO_CONTENT);
@@ -763,6 +753,27 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
       // a complete code system becomes a not-present one
       cache.cacheExpansion(expandToken(cache, Map.of(CS, "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNull(cache.getExpansion(expandToken(cache, null)));
+    }
+
+    @Test
+    void testFetchedFromAServerIsLikeAnAbsentOne() throws IOException {
+      // a code system only the server has is fetched for a later request (a rendering, say): the server had it all along
+      TerminologyCache cache = createTerminologyCache();
+      cache.setDependencyResolver(resolver());
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, TerminologyCache.ABSENT)), new ValueSetExpansionOutcome(valueSet()), true);
+      states.put(CS, TerminologyCache.FETCHED + "a");
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+
+      // and is the same as one loaded with that content
+      cache.cacheExpansion(expandToken(cache, Map.of(CS, TerminologyCache.FETCHED + "a")), new ValueSetExpansionOutcome(valueSet()), true);
+      states.put(CS, "a");
+      cache.invalidate("http://example.org/fhir/CodeSystem/local");
+      assertNotNull(cache.getExpansion(expandToken(cache, null)));
+
+      states.put(CS, TerminologyCache.FETCHED + "b");
       cache.invalidate("http://example.org/fhir/CodeSystem/local");
       assertNull(cache.getExpansion(expandToken(cache, null)));
     }
@@ -883,7 +894,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertNotNull(cache.getExpansion(expandToken(cache, null)));
       // not fetched yet, in the next run say
       states.remove(imp);
-      cache.resourcesLoaded();
+      cache.invalidate("http://example.org/fhir/ValueSet/import");
       assertNotNull(cache.getExpansion(expandToken(cache, null)));
 
       // what it imports changes

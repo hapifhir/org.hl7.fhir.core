@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -978,7 +979,7 @@ public class BaseWorkerContextTests {
     assertNotNull(lookUp(cache, vs));
 
     // loaded again, unchanged
-    context.dropResource(cs);
+    context.setAllowLoadingDuplicates(true);
     context.cacheResource(codeSystem("http://example.org/cs", "A"));
     assertNotNull(lookUp(cache, vs));
 
@@ -1021,7 +1022,7 @@ public class BaseWorkerContextTests {
 
     ValueSet same = vs.copy();
     same.setTitle("A new title");
-    context.dropResource(vs);
+    context.setAllowLoadingDuplicates(true);
     context.cacheResource(same);
     assertNotNull(lookUp(cache, same));
 
@@ -1030,6 +1031,65 @@ public class BaseWorkerContextTests {
     context.dropResource(same);
     context.cacheResource(edited);
     assertNull(lookUp(cache, edited));
+  }
+
+  @Test
+  void testTxCacheHasAGetter() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    assertSame(cache, context.getTxCache());
+  }
+
+  @Test
+  void testCacheIsCheckedAgainstWhatIsLoadedBeforeItIsGiven(@TempDir java.nio.file.Path folder) throws IOException {
+    // core is loaded before the context is given its cache folder
+    CodeSystem cs = codeSystem("http://example.org/cs", "A");
+    context.cacheResource(cs);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    context.initTxCache(cache);
+    storeExpansion(cache, vs);
+    cache.unload();
+
+    // the next run
+    context.dropResource(cs);
+    context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+    assertNotNull(lookUp(next, vs));
+    context.initTxCache(next);
+    assertNull(lookUp(next, vs));
+  }
+
+  @Test
+  void testBatchValidationSeesAnEditMadeWhileItIsWorkedOut() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    CodeSystem cs = codeSystem("http://example.org/cs", "A");
+    context.cacheResource(cs);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    AtomicInteger validated = new AtomicInteger();
+    Mockito.doAnswer(invocation -> {
+      if (validated.incrementAndGet() == 1) {
+        context.dropResource(cs);
+        context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
+      }
+      return createdValidationResult;
+    }).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
+    Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any());
+
+    for (int i = 0; i < 2; i++) {
+      List<CodingValidationRequest> codes = List.of(new CodingValidationRequest(new Coding("http://example.org/other", "a", null)));
+      context.validateCodeBatch(ValidationOptions.defaults(), codes, vs, false);
+      assertSame(createdValidationResult, codes.get(0).getResult());
+    }
+    // it wasn't known which code system the first answer used, so it wasn't stored
+    assertEquals(2, validated.get());
   }
 
   private static OperationOutcome serverError(OperationOutcome.IssueType type, String text) {
