@@ -693,8 +693,6 @@ public class ValidationService {
     validationEngine.setDebug(validationEngineParameters.isDoDebug());
     validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
     loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
-    // the cached terminology answers that depend on something deleted since they were stored are dropped now
-    validationEngine.getContext().txResourcesLoaded();
     validationEngine.setDoNative(validationEngineParameters.isDoNative());
     log.info("  Get set... ");
 

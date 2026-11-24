@@ -320,20 +320,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
+  /** see {@link TerminologyCache.DependencyResolver} */
+  private final TerminologyCache.DependencyResolver txResolver = this::txDependencyState;
   // memory only until initTxCache() is called - a context doesn't touch any folder unless it's asked to
   @Getter
-  /** see {@link TerminologyCache.DependencyResolver} */
-  private final TerminologyCache.DependencyResolver txResolver = new TerminologyCache.DependencyResolver() {
-    @Override
-    public String stateOf(String request) {
-      return txDependencyState(request);
-    }
-
-    @Override
-    public boolean hasNoContent(String request) {
-      return txDependencyHasNoContent(request);
-    }
-  };
   protected TerminologyCache txCache = new TerminologyCache(this, null);
   {
     txCache.setDependencyResolver(txResolver);
@@ -1403,12 +1393,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * with its supplements, which the code and display are checked against whether or not the ValueSet names it
    */
   public Map<String, String> findValidationDependencies(ValueSet vs, List<Coding> codings) {
-    return validationDependencies(vs == null ? Collections.emptyMap() : findExpansionDependencies(vs, getExpansionParametersForCacheToken()), codings);
-  }
-
-  private Map<String, String> validationDependencies(Map<String, String> valueSetDependencies, List<Coding> codings) {
-    Map<String, String> res = new LinkedHashMap<>(valueSetDependencies);
     Parameters p = getExpansionParametersForCacheToken();
+    Map<String, String> res = vs == null ? new LinkedHashMap<>() : findExpansionDependencies(vs, p);
     for (Coding c : codings) {
       if (c.getSystem() != null) {
         addCodeSystemDependencies(res, c.getSystem(), c.getVersion(), c.hasVersion() ? Collections.emptyList() : pinnedVersions(c.getSystem(), p));
@@ -1475,22 +1461,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return (cr.hasUserData(UserDataNames.render_external_link) ? TerminologyCache.FETCHED : "") + txCache.contentDigest(cr);
   }
 
-  /** whether {@link #txDependencyState} would be ABSENT or NO_CONTENT, without working out a digest */
-  private boolean txDependencyHasNoContent(String request) {
-    if (request.startsWith("supplements ")) {
-      String ref = request.substring("supplements ".length());
-      String url = ref.contains("|") ? ref.substring(0, ref.indexOf('|')) : ref;
-      String version = ref.contains("|") ? ref.substring(ref.indexOf('|') + 1) : null;
-      if (version == null) {
-        CodeSystem cs = fetchForKey(CodeSystem.class, url, null, null, null);
-        version = cs == null ? null : cs.getVersion();
-      }
-      return codeSystems.getSupplements(url, version).isEmpty();
-    }
-    CanonicalResource cr = resolveTxDependency(request);
-    return cr == null || (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent()));
-  }
-
   private static boolean isUsedContent(CodeSystemContentMode content) {
     return content == CodeSystemContentMode.COMPLETE || content == CodeSystemContentMode.FRAGMENT || content == CodeSystemContentMode.SUPPLEMENT;
   }
@@ -1523,7 +1493,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private volatile boolean txResourcesLoaded;
   /** dependencies that couldn't be loaded, so each is only reported once */
   private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
 
@@ -1651,17 +1620,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 1st pass: what is in the cache? 
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
-    Map<String, String>[] vsDependencies = new Map[1]; // worked out once for the batch, if anything is stored
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
       if (t.getCacheToken() != null) {
         Coding coding = t.getCoding();
-        t.getCacheToken().setDependencies(() -> {
-          if (vsDependencies[0] == null) {
-            vsDependencies[0] = findValidationDependencies(vs, Collections.emptyList());
-          }
-          return validationDependencies(vsDependencies[0], List.of(coding));
-        });
+        t.getCacheToken().setDependencies(() -> findValidationDependencies(vs, List.of(coding)));
       }
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
@@ -2822,22 +2785,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
+    // checks what it holds against what is already loaded
     txCache.setDependencyResolver(txResolver);
-    if (txResourcesLoaded) {
-      txCache.resourcesLoaded(txResolver);
-    }
     terminologyClientManager.setCache(txCache);
-  }
-
-  /**
-   * Everything the terminology operations can depend on is loaded: from now on, a cached answer that depends on a
-   * ValueSet, CodeSystem or supplement that isn't there (it was deleted since the answer was stored) is dropped
-   */
-  public void txResourcesLoaded() {
-    txResourcesLoaded = true;
-    if (txCache != null) {
-      txCache.resourcesLoaded(txResolver);
-    }
   }
 
   public void clearTSCache(String url) throws Exception {
