@@ -194,9 +194,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     testReport = new TestReport();
   }
 
-  public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(ModelContext.fullCoreContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
-  }
+  // public static void main(String[] args) throws Exception {
+    // new TxTester(new InternalTxLoader(ModelContext.fullCoreContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
+  // }
 
   public void addLoader(ITxTesterLoader loader) {
     this.loaders.add(loader);
