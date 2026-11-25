@@ -28,7 +28,7 @@ The hook only checks commands Claude runs. `gh pr create` in your own terminal i
 
 ## Recommended local setup (optional)
 
-- Check out `kindling` and `fhir-ig-publisher` next to this repo (`../kindling`, `../fhir-ig-publisher`). The reviewers grep them before calling code unused or a public API change safe. Without them, the reviewers fall back to `gh search code`, which is slower and less complete.
+- Check out `kindling`, `fhir-ig-publisher` and `fhir-test-cases` anywhere you like. The reviewers grep kindling and fhir-ig-publisher before calling code unused or a public API change safe. The first time a task needs one, Claude checks `../<name>`. If it isn't there, Claude asks for the path or offers to clone it, then remembers the answer in your own auto-memory (`~/.claude/projects/...`), not in this repo. See "Sibling repositories" in `../CLAUDE.md`. This needs auto-memory on, which is the default. With it off, Claude asks once per session. Without the checkouts, the reviewers fall back to `gh search code`, which is slower and less complete.
 - Install and log in to `gh`.
 - Settings that have worked well for large reviews. Put them in your own `~/.claude/settings.json`, not the shared file: `"model": "opus"` and `"alwaysThinkingEnabled": true`.
 - The `security-guidance` plugin (`/plugin install security-guidance@claude-plugins-official`) adds security checks on edits and commits. It also runs model reviews on commit and push, so it uses extra usage.

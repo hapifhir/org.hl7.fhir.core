@@ -5,11 +5,11 @@ description: Code review entry point for org.hl7.fhir.core and its sibling repos
 
 # HL7 Code Review Skill
 
-This skill supports code review for org.hl7.fhir.core and the repos usually checked out next to it (siblings of this repo's root directory).
+This skill supports code review for org.hl7.fhir.core and its sibling repos. They are often checked out next to this repo, but not always. Resolve a sibling's real path as described in "Sibling repositories" in `CLAUDE.md` before using it.
 
 ## Projects
 
-| Local path (relative to this repo's root) | GitHub repo |
+| Default location (relative to this repo's root) | GitHub repo |
 |---|---|
 | `.` | `hapifhir/org.hl7.fhir.core` |
 | `../fhir-ig-publisher` | `HL7/fhir-ig-publisher` |
