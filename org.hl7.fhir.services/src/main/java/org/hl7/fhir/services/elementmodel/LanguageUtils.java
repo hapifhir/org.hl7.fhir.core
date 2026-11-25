@@ -730,14 +730,21 @@ public class LanguageUtils {
       String context = null;
       if (e.getName().equals("extension")) {
         context = id;
-        e = e.getNamedChild("value");
+        // the text is the extension's value; a complex extension (e.g. a cross-version extension for a data type)
+        // has none - it has sub-extensions instead, which are looked at below
+        Element value = e.getNamedChild("value", false);
+        if (value != null) {
+          e = value;
+        }
       } else {
         context = elementPath;        
       }
-      String src = e.primitiveValue();
-      String tgt = getTranslation(e, lang);
-      // no need to check for an existing unit: add() ignores one with the same id and source text
-      list.add(new TranslationUnit(lang, id, context, src, tgt));
+      if (!e.getName().equals("extension")) {
+        String src = e.primitiveValue();
+        String tgt = getTranslation(e, lang);
+        // no need to check for an existing unit: add() ignores one with the same id and source text
+        list.add(new TranslationUnit(lang, id, context, src, tgt));
+      }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildList()) {

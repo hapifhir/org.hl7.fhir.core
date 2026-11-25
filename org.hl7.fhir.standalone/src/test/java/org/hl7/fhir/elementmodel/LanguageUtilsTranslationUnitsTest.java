@@ -145,4 +145,25 @@ class LanguageUtilsTranslationUnitsTest {
     assertEquals(List.of("CodeSystem.concept.display|Same", "CodeSystem.concept.definition|Same", "CodeSystem.concept.display|Other", "CodeSystem.concept.definition|Different"),
         units.stream().filter(s -> s.startsWith("CodeSystem.concept.")).collect(Collectors.toList()));
   }
+
+  /**
+   * A cross-version extension for a translatable element: its value is the text. One that is complex (it has
+   * sub-extensions instead of a value, as when a data type is carried across versions) has no text of its own - it
+   * used to stop the IG publisher with a NullPointerException
+   */
+  @Test
+  void crossVersionExtensions() throws Exception {
+    IWorkerContext context = TestingUtilities.getSharedWorkerContext();
+    String xv = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.title";
+    String json = "{\"resourceType\":\"CodeSystem\",\"extension\":["
+        + "{\"url\":\"" + xv + "\",\"valueString\":\"Simple\"},"
+        + "{\"url\":\"" + xv + "\",\"extension\":[{\"url\":\"part\",\"valueString\":\"Part\"}]}],"
+        + "\"status\":\"draft\",\"content\":\"complete\"}";
+    Element e = new org.hl7.fhir.services.elementmodel.JsonParser(context).parseSingle(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)), null);
+
+    List<TranslationUnit> list = new LanguageUtils(context).generateTranslations(e, "fr");
+
+    assertEquals(List.of("ActorDefinition.title|Simple"),
+        list.stream().map(tu -> tu.getId() + "|" + tu.getSrcText()).filter(s -> s.startsWith("ActorDefinition.")).collect(Collectors.toList()));
+  }
 }
