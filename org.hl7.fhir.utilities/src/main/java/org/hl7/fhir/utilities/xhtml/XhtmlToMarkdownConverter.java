@@ -216,6 +216,10 @@ public class XhtmlToMarkdownConverter {
         break;
       case "details":
         break;
+      case "fieldset":
+      case "legend":
+        // controls for the page, not content (e.g. the checkboxes that show and hide a table's columns)
+        break;
       case "header":
         break;
       case "footer":

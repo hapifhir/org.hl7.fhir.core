@@ -39,4 +39,16 @@ public class XhtmlToMdTests {
 //    FileUtilities.stringToFile(output, "/Users/grahamegrieve/work/test-cases/xhtml/page3.output.md");
     Assertions.assertEquals(expected, output);
   }
+
+  /** a fieldset (e.g. the column toggles above a table) is page controls, not content: it's left out, not an error */
+  @Test
+  public void testFieldsetIsLeftOut() throws Exception {
+    XhtmlNode x = new XhtmlParser().parse("<div><fieldset><legend>Show:</legend><label><input type=\"checkbox\"/> Mappings</label></fieldset><p>Text</p></div>", "div");
+    XhtmlToMarkdownConverter conv = new XhtmlToMarkdownConverter(false);
+    conv.configureForIGs(false);
+    String output = conv.convert(x);
+    Assertions.assertTrue(output.contains("Text"), output);
+    Assertions.assertFalse(output.contains("Show:"), output);
+    Assertions.assertFalse(output.contains("Mappings"), output);
+  }
 }
