@@ -147,19 +147,11 @@ public class ManagedFileAccess {
   }
 
   /**
-   * Whether the path is under one of the allowed folders (see {@link #inAllowedPaths}), for code that is choosing
-   * between candidate locations and should pass over one it can't use, rather than fail on it
-   */
-  public static boolean isAllowedPath(String pathname) {
-    return inAllowedPaths(pathname);
-  }
-
-  /**
    * Whether the path is under one of the allowed folders, where it really is: . and .. are resolved, and so are
    * symbolic links, as far as the path exists (the rest of it is yet to be created). Compared by path segments, so
    * /ig-other isn't under /ig
    */
-  private static boolean inAllowedPaths(String pathname) {
+  public static boolean inAllowedPaths(String pathname) {
     List<String> allowedPathsRef = allowedPaths; // keep a reference to the original list throughout this method, even if the original is replaced by another thread.
     if (allowedPathsRef.isEmpty()) {
       return true;
