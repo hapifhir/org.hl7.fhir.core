@@ -18,7 +18,7 @@ This skill supports code review for org.hl7.fhir.core and its sibling repos. The
 
 ## Offering the Full PR Review Command
 
-When asked to review a GitHub PR (not just its txCache or test resources), first check whether the PR belongs to one of the projects covered by the `/hl7-pr-review` command:
+When asked to review a GitHub PR (not just its txCache or test resources), first check whether the PR belongs to one of the projects covered by the `/hl7-large-code-review` command:
 
 | Project | GitHub Repo |
 |---|---|
@@ -27,7 +27,7 @@ When asked to review a GitHub PR (not just its txCache or test resources), first
 | kindling | `HL7/kindling` |
 
 Skip this section if:
-- the review is already running under `/hl7-pr-review` (which uses this skill for txCache files),
+- the review is already running under `/hl7-large-code-review` (which uses this skill for txCache files),
 - the user only asked about txCache or test resources, or
 - the user is reviewing their own unpushed branch. Use `/pre-pr-review` for that.
 
@@ -43,7 +43,7 @@ If the repo is not one of the three above (for example `FHIR/fhir-test-cases`), 
 
 ### 2. Work out the command arguments
 
-`/hl7-pr-review` takes a PR number and the local branch name. Fill in whichever one the user didn't give:
+`/hl7-large-code-review` takes a PR number and the local branch name. Fill in whichever one the user didn't give:
 
 ```bash
 # Branch from a PR number
@@ -60,10 +60,10 @@ If neither can be determined, use `<PR#>` or `<branch>` as a placeholder in the 
 Use the AskUserQuestion tool to ask whether to run the full review. Put the exact command that would run in the `preview` field of the first option. For example:
 
 - Question: "PR #2799 is in hapifhir/org.hl7.fhir.core. Run the full review command?"
-- Option 1: **Run /hl7-pr-review (Recommended)**. Description: SpotBugs diff against master, a parallel review focused on security and duplication, and a list of areas to review manually. Preview:
+- Option 1: **Run /hl7-large-code-review (Recommended)**. Description: SpotBugs diff against master, a parallel review focused on security and duplication, and a list of areas to review manually. Preview:
 
   ```
-  /hl7-pr-review 2799 2026-10-gg-more
+  /hl7-large-code-review 2799 2026-10-gg-more
 
   PR:     #2799  (hapifhir/org.hl7.fhir.core)
   Branch: 2026-10-gg-more
@@ -74,7 +74,7 @@ Use the AskUserQuestion tool to ask whether to run the full review. Put the exac
 
 - Option 2: **Review without the command**. Description: a lighter review using only this skill and the conversation.
 
-If the user picks the command, invoke it with the Skill tool (`skill: "hl7-pr-review"`, `args: "<PR#> <branch>"`). If they decline, do a lighter review: start one `fhir-core-reviewer` agent on the PR diff (`gh pr diff <n>`, or the merge-base diff of the local branch) and report its verified findings.
+If the user picks the command, invoke it with the Skill tool (`skill: "hl7-large-code-review"`, `args: "<PR#> <branch>"`). If they decline, do a lighter review: start one `fhir-core-reviewer` agent on the PR diff (`gh pr diff <n>`, or the merge-base diff of the local branch) and report its verified findings.
 
 ## Reviewing txCache Changes
 
