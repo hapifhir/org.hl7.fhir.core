@@ -26,7 +26,7 @@ git diff --stat "$BASE" <branch>
 
 - Check that the local branch head matches `headRefOid`. If it doesn't, tell the user, and review `headRefOid` (fetch it if needed).
 - Separate generated model code (`// This file is generated code` header), txCache files and other test resources, and hand-written code.
-- If the PR changes public API, note it for the sibling check (`../kindling`, `../fhir-ig-publisher`).
+- If the PR changes public API, resolve the kindling and fhir-ig-publisher paths now (see "Sibling repositories" in `CLAUDE.md`), so the step 3 agents can check them.
 
 ## Step 2: SpotBugs, in the background
 
@@ -39,7 +39,7 @@ Start about 3 `fhir-core-reviewer` agents in one message (`subagent_type: fhir-c
 - **FHIRPath, context and terminology**, including the per-version copies
 - **Renderers, convertors, generated code and test resources**
 
-Each brief: the base and head SHAs, that agent's file list, and "Review `git diff <BASE> <HEAD> -- <files>` following your instructions and return your tables." For large areas, split further rather than give one agent hundreds of files.
+Each brief: the base and head SHAs, that agent's file list, the sibling paths resolved in step 1 (if any), and "Review `git diff <BASE> <HEAD> -- <files>` following your instructions and return your tables." For large areas, split further rather than give one agent hundreds of files.
 
 For txCache files, follow the txCache section of the `hl7-code-review` skill yourself.
 

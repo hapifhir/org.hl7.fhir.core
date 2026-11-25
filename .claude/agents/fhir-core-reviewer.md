@@ -18,7 +18,7 @@ The brief tells you the diff range and which files or area to cover. Read the fu
 - Don't flag license headers. The build adds them.
 - Don't flag a missing `@ParameterizedTest` when a `parameters()` method exists. The annotation is usually inherited from a base class.
 - Test code follows `.claude/rules/tests.md`: no defensive-programming suggestions, and focus on whether the assertions test the intended behaviour.
-- Before calling anything dead or unused, or when a public API is renamed, removed or changed, grep `../kindling` and `../fhir-ig-publisher` (relative to the repo root) for it. If they aren't checked out, use `gh search code --repo HL7/kindling --repo HL7/fhir-ig-publisher <Symbol>`. Say which method you used.
+- Before calling anything dead or unused, or when a public API is renamed, removed or changed, grep the kindling and fhir-ig-publisher checkout paths given in your brief for it. If your brief gives no paths, don't guess them; use `gh search code --repo HL7/kindling --repo HL7/fhir-ig-publisher <Symbol>`. Say which method you used.
 
 ## HL7-specific checklist
 

@@ -30,7 +30,7 @@ git log --oneline "$BASE"..HEAD
 Start `fhir-core-reviewer` agents with the Agent tool (`subagent_type: fhir-core-reviewer`). Send all of them in one message so they run at the same time.
 - Up to about 15 hand-written files: start one agent with all of them.
 - More than that: start up to 3 agents, split by area. The areas are (a) validator, HTTP and utilities; (b) FHIRPath, context and terminology; (c) renderers, convertors, generated code and test resources.
-- Each brief contains: the base and head SHAs, the file list for that agent, and the instruction "Review `git diff <BASE> <HEAD_SHA> -- <files>` following your instructions and return your tables." Nothing else.
+- Each brief contains: the base and head SHAs, the file list for that agent, and the instruction "Review `git diff <BASE> <HEAD_SHA> -- <files>` following your instructions and return your tables." Nothing else, except: if the diff changes public API, resolve the kindling and fhir-ig-publisher paths (see "Sibling repositories" in `CLAUDE.md`) and add them to the brief.
 - Summarise txCache changes yourself, following `.claude/rules/txcache.md`. Don't send them to the agents.
 
 ## 3. Verify before reporting

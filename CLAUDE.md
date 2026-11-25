@@ -27,8 +27,26 @@ Files that start with `// This file is generated code - do not edit it.` (mainly
 ## Downstream consumers
 
 `kindling` (HL7/kindling) and `fhir-ig-publisher` (HL7/fhir-ig-publisher) import core classes directly. For example, kindling's `RdfGenerator` uses `org.hl7.fhir.dstu3.formats.TurtleLexer`. So "no callers in this repo" does **not** mean dead code.
-- Before you delete or call unused any public class or method, or change a public signature, grep the sibling checkouts `../kindling` and `../fhir-ig-publisher` if they exist.
+- Before you delete or call unused any public class or method, or change a public signature, grep the kindling and fhir-ig-publisher checkouts (see "Sibling repositories").
 - If they aren't checked out, say so, and use `gh search code --repo HL7/kindling --repo HL7/fhir-ig-publisher <Symbol>` instead.
+
+## Sibling repositories
+
+Developers clone these wherever they like, so never assume a path.
+
+| Name | GitHub repo | Default location to try |
+|---|---|---|
+| kindling | `HL7/kindling` | `../kindling` |
+| fhir-ig-publisher | `HL7/fhir-ig-publisher` | `../fhir-ig-publisher` |
+| fhir-test-cases | `FHIR/fhir-test-cases` | `../fhir-test-cases` |
+
+When a task needs one of them, resolve its path in this order:
+1. **Memory.** Use the `sibling-repo-paths` auto-memory if it exists. Check that the remembered path still exists. If it doesn't, treat the repo as unknown.
+2. **Default location.** Accept the default location only if `git -C <path> remote -v` shows a URL containing the GitHub repo name.
+3. **Ask.** Use AskUserQuestion with these options: clone it to the default location (`gh repo clone <GitHub repo> <path>`, recommended), give another path (verify it as in step 2), or "not checked out, use `gh search code`".
+4. **Remember.** Write or update the `sibling-repo-paths` memory (type `reference`, one line per repo with an absolute path or "not checked out") in your auto-memory directory, and its `MEMORY.md` pointer. Record "not checked out" too, so you don't ask again. Never store these paths under this repo's `.claude/`.
+
+Subagents can't ask the user or read your memory. Resolve the paths first and put them in the subagent's brief.
 
 ## Build and analysis
 
