@@ -1,6 +1,6 @@
 ## Project Conventions
 
-This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @Disabled annotations (not @Ignore), and do not use unnecessary `public` modifiers on test classes/methods. Always run `mvn test -pl <module>` after making test changes to verify they pass.
+This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @Disabled annotations (not @Ignore), and do not use unnecessary `public` modifiers on test classes/methods. After changing a test, run it with `mvn test -pl <module> -Dtest=<TestClass>` and report the result.
 
 ## Module map
 
@@ -51,6 +51,7 @@ Subagents can't ask the user or read your memory. Resolve the paths first and pu
 ## Build and analysis
 
 - Compile without tests: `mvn -B -Dmaven.test.skip install`. Single module tests: `mvn test -pl <module> -Dtest=<TestClass>`.
+- Ask the developer before you start full-reactor or multi-module runs (for example `mvn install` across modules). They take a long time, and they rewrite `target/` directories that the developer's own test runs may be using. Say which modules or tests you want to run and why.
 - For SpotBugs, see the "SpotBugs" section of `README.md`. To compare a branch's SpotBugs results with master, use the `spotbugs-diff` skill.
 - Test resources come partly from the `fhir-test-cases` artifact. `txCache` directories hold recorded terminology server responses (see `.claude/rules/txcache.md`).
 

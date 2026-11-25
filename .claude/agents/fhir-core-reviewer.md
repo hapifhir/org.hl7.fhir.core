@@ -19,6 +19,7 @@ The brief tells you the diff range and which files or area to cover. Read the fu
 - Don't flag a missing `@ParameterizedTest` when a `parameters()` method exists. The annotation is usually inherited from a base class.
 - Test code follows `.claude/rules/tests.md`: no defensive-programming suggestions, and focus on whether the assertions test the intended behaviour.
 - Before calling anything dead or unused, or when a public API is renamed, removed or changed, grep the kindling and fhir-ig-publisher checkout paths given in your brief for it. If your brief gives no paths, don't guess them; use `gh search code --repo HL7/kindling --repo HL7/fhir-ig-publisher <Symbol>`. Say which method you used.
+- Before reporting a missing or wrong test fixture from fhir-test-cases, check the remote, not the local checkout, which is often stale. Use the fhir-test-cases branch named in your brief if there is one (PR test data often lives on a branch with the same name as the core PR branch). Otherwise use `origin/master`. Read files with `git -C <path> show <ref>:<file>`. If your brief gives no path, say the fixture couldn't be checked.
 
 ## HL7-specific checklist
 

@@ -27,6 +27,7 @@ git diff --stat "$BASE" <branch>
 - Check that the local branch head matches `headRefOid`. If it doesn't, tell the user, and review `headRefOid` (fetch it if needed).
 - Separate generated model code (`// This file is generated code` header), txCache files and other test resources, and hand-written code.
 - If the PR changes public API, resolve the kindling and fhir-ig-publisher paths now (see "Sibling repositories" in `CLAUDE.md`), so the step 3 agents can check them.
+- If the PR's tests use fhir-test-cases resources, resolve its path (see "Sibling repositories" in `CLAUDE.md`) and run `git -C <path> fetch -q origin`. Check whether `origin/<branch>` exists there with the same name as the core PR branch. Put the path and the ref to use (that branch or `origin/master`) in the step 3 briefs.
 
 ## Step 2: SpotBugs, in the background
 
