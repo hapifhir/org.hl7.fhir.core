@@ -78,6 +78,11 @@ public class CrossVersionElements40_N {
   }
 
   private static void addR4Extension(List<org.hl7.fhir.r4.model.Extension> extensions, String url, Base v) throws FHIRException {
+    if (v.isEmpty()) {
+      // an empty element (e.g. one a getXElement() call made) has nothing to carry: an extension for it would have no
+      // value, and be invalid
+      return;
+    }
     if (v instanceof org.hl7.fhir.model.core.Enumeration) {
       org.hl7.fhir.r4.model.CodeType code = new org.hl7.fhir.r4.model.CodeType(v.primitiveValue());
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement((org.hl7.fhir.model.core.Element) v, code);
@@ -311,6 +316,10 @@ public class CrossVersionElements40_N {
       }
       String url = url(path, "4.0", name);
       for (org.hl7.fhir.r4.model.Base v : p.getValues()) {
+        if (v.isEmpty()) {
+          // nothing to carry (see addR4Extension)
+          continue;
+        }
         if (v instanceof org.hl7.fhir.r4.model.Enumeration) {
           org.hl7.fhir.model.core.CodeType code = new org.hl7.fhir.model.core.CodeType(v.primitiveValue());
           ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement((org.hl7.fhir.r4.model.Element) v, code);
