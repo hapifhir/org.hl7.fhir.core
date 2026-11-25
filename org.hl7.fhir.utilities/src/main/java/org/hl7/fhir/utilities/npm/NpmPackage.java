@@ -722,6 +722,11 @@ public class NpmPackage {
    * package.json). FHIRsmith (library/package-names.js) normalises the same way.
    */
   public static String entryNameKey(String name) {
+    return normalisedEntryName(name).toLowerCase(Locale.ROOT);
+  }
+
+  /** entryNameKey, but keeping the case */
+  private static String normalisedEntryName(String name) {
     String n = Normalizer.normalize(name, Normalizer.Form.NFC).replace('\\', '/');
     StringBuilder b = new StringBuilder();
     for (String s : pathSegments(n)) {
@@ -732,7 +737,7 @@ public class NpmPackage {
         b.append(s);
       }
     }
-    return b.toString().toLowerCase(Locale.ROOT);
+    return b.toString();
   }
 
   /**
@@ -835,16 +840,18 @@ public class NpmPackage {
   }
 
   /**
-   * Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey. Not in
-   * the example folders ({@link #EXAMPLE_FOLDERS}): which of two examples of the same name a reader ends up with doesn't
-   * matter, and published packages have them (de.basisprofil.r4#0.9.13 has two package/examples/Example-observation-bmi.json)
+   * Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey. Except
+   * two examples (in {@link #EXAMPLE_FOLDERS}) of exactly the same name - case and all: which of them a reader ends up
+   * with doesn't matter, and published packages have them (de.basisprofil.r4#0.9.13 has two
+   * package/examples/Example-observation-bmi.json). Names that differ in case are still refused there: unpacked onto a
+   * file system that ignores case, they're one file, and the package cache refuses a name whose case doesn't match
    */
   public static void checkDuplicateName(Map<String, String> names, String name, String desc) throws IOException {
     String key = entryNameKey(name);
-    if (isInExampleFolder(key)) {
+    String earlier = names.putIfAbsent(key, name);
+    if (earlier != null && isInExampleFolder(key) && normalisedEntryName(earlier).equals(normalisedEntryName(name))) {
       return;
     }
-    String earlier = names.putIfAbsent(key, name);
     if (earlier != null) {
       throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- "+(earlier.equals(name)
         ? "it has more than one file named "+name
