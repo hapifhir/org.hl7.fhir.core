@@ -347,33 +347,43 @@ public class FilesystemPackageCacheManagerLocks {
      * lock file: it may not be able to lock it yet (the other process hasn't released it), or it may lock it - and then
      * two processes think they have the package. Either way, it tries again, with the lock file that's there now. So
      * once locked, check that the file locked is still the one called lockFile. All the waiting together is limited
-     * by the lock timeout
+     * by the lock timeout.
+     *
+     * The file is closed while waiting for another process to be done with it: on Windows, a file is only really
+     * deleted once every handle to it is closed (the process that holds the lock deletes the lock file by closing it),
+     * so waiting with it open would be waiting for ever
      */
     private FileChannel lockTheLockFile(Set<OpenOption> openOptions, LockParameters lockParameters, FileLock[] fileLock) throws IOException, InterruptedException {
       final int attempts = 10;
       final long deadline = System.nanoTime() + lockParameters.getLockTimeoutTimeUnit().toNanos(lockParameters.getLockTimeoutTime());
       for (int i = 1; ; i++) {
         FileChannel channel = getFileChannel(openOptions);
+        FileLock fl;
         try {
           // the file just opened (the window between opening and looking is tiny, where the window this closes is
           // all the time spent waiting for the lock)
           Object opened = fileKey(lockFile);
-          long left = Math.max(1, deadline - System.nanoTime());
-          FileLock fl = getFileLock(channel, lockParameters.withLockTimeoutTime(left).withLockTimeoutTimeUnit(TimeUnit.NANOSECONDS));
-          if (fl == null) {
-            log.debug("lockFile was moved away by the process that held it, but it hasn't released it yet, trying again: " + lockFile.getName());
-          } else if (isStillTheLockFile(lockFile, opened)) {
+          fl = channel.tryLock(0, Long.MAX_VALUE, false);
+          if (fl != null && isStillTheLockFile(lockFile, opened)) {
+            log.debug("fileLock acquired: " + lockFile.toPath());
             fileLock[0] = fl;
             return channel;
-          } else {
+          }
+          if (fl != null) {
             log.debug("lockFile was replaced while waiting for it, trying again: " + lockFile.getName());
             fl.release();
           }
-        } catch (IOException | InterruptedException | RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
           channel.close();
           throw e;
         }
         channel.close();
+        if (fl == null) {
+          // another process holds it: wait until it's done with it (it deletes the lock file, or moves it away)
+          log.debug("Unable to get fileLock and waiting for deletion: " + lockFile.toPath());
+          long left = Math.max(1, deadline - System.nanoTime());
+          waitForLockFileDeletion(lockFile, lockParameters.withLockTimeoutTime(left).withLockTimeoutTimeUnit(TimeUnit.NANOSECONDS));
+        }
         if (i == attempts) {
           throw new IOException("Unable to lock " + lockFile.getName() + ": it kept being replaced by other processes");
         }
@@ -397,24 +407,6 @@ public class FilesystemPackageCacheManagerLocks {
       throw new IOException("Unable to get file lock after " + retries + " retries.");
     }
 
-    /**
-     * Locks the file the channel has open; if another process has it locked, waits until the lock file is deleted (or
-     * moved away) and tries once more. Null if it still can't: the file open is then the one the other process moved
-     * away, which it hasn't released yet (see lockTheLockFile)
-     */
-    private FileLock getFileLock(FileChannel channel, LockParameters resolvedLockParameters) throws IOException, InterruptedException {
-      FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
-
-      if (fileLock == null) {
-        log.debug("Unable to get fileLock on first attempt and waiting for deletion: " + lockFile.toPath());
-        waitForLockFileDeletion(lockFile, resolvedLockParameters);
-        fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
-      }
-      if (fileLock != null) {
-        log.debug("fileLock acquired: " + lockFile.toPath());
-      }
-      return fileLock;
-    }
   }
 
   private static void logSystemSpecificFileSystemException(FileSystemException e) {

@@ -188,6 +188,35 @@ class NpmPackageTests implements ResourceLoaderTests {
     assertTrue(thrown.getMessage().contains("which are the same file to some systems"), thrown.getMessage());
   }
 
+  /** Two examples of the same name are fine (published packages have them): only the example folders are let off */
+  @Test
+  void testDuplicateExamplesAreFine(@TempDir Path tempDir) throws IOException {
+    for (String[] names : new String[][] {
+        {"package/examples/Example-observation-bmi.json", "package/examples/Example-observation-bmi.json"},
+        {"package/example/x.json", "./package/Example/X.json"},
+        {"package/examples/sub/x.json", "package/examples/sub/x.json"}}) {
+      java.io.ByteArrayOutputStream tar = new java.io.ByteArrayOutputStream();
+      try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(tar), "UTF-8")) {
+        addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+        addTarEntry(tarOut, names[0], "{\"resourceType\":\"Observation\",\"id\":\"a\"}".getBytes(StandardCharsets.UTF_8));
+        addTarEntry(tarOut, names[1], "{\"resourceType\":\"Observation\",\"id\":\"b\"}".getBytes(StandardCharsets.UTF_8));
+      }
+      byte[] tgz = tar.toByteArray();
+      NpmPackage.fromPackage(new ByteArrayInputStream(tgz));
+      NpmPackage.extractFromTgz(new ByteArrayInputStream(tgz), "test", tempDir.resolve("x" + names[1].length()).toString(), true);
+    }
+    // but not in a folder that only starts with the name of one
+    java.io.ByteArrayOutputStream tar = new java.io.ByteArrayOutputStream();
+    try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(tar), "UTF-8")) {
+      addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/examples2/x.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/examples2/x.json", PACKAGE_JSON);
+    }
+    byte[] tgz = tar.toByteArray();
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
+    assertTrue(thrown.getMessage().contains("more than one file named package/examples2/x.json"), thrown.getMessage());
+  }
+
   /** A name with a .. segment (/ or \\ separated) is refused by every reader; .. elsewhere in a name is fine */
   @Test
   void testDotDotSegments(@TempDir Path tempDir) throws IOException {

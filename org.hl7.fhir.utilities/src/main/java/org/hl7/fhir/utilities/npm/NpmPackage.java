@@ -834,14 +834,32 @@ public class NpmPackage {
     return loadedSize[0];
   }
 
-  /** Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey */
+  /**
+   * Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey. Not in
+   * the example folders ({@link #EXAMPLE_FOLDERS}): which of two examples of the same name a reader ends up with doesn't
+   * matter, and published packages have them (de.basisprofil.r4#0.9.13 has two package/examples/Example-observation-bmi.json)
+   */
   public static void checkDuplicateName(Map<String, String> names, String name, String desc) throws IOException {
-    String earlier = names.putIfAbsent(entryNameKey(name), name);
+    String key = entryNameKey(name);
+    if (isInExampleFolder(key)) {
+      return;
+    }
+    String earlier = names.putIfAbsent(key, name);
     if (earlier != null) {
       throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- "+(earlier.equals(name)
         ? "it has more than one file named "+name
         : "it has files named "+earlier+" and "+name+", which are the same file to some systems"));
     }
+  }
+
+  /** whether a file (its entryNameKey) is in one of the example folders, or a folder in one */
+  private static boolean isInExampleFolder(String key) {
+    for (String f : EXAMPLE_FOLDERS) {
+      if (key.startsWith("package/" + f + "/")) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /** Refuses a package once what has been decompressed passes maxLoadSize (0 = no limit) */
