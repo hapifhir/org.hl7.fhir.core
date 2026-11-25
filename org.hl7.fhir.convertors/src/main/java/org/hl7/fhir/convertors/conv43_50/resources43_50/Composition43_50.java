@@ -250,7 +250,7 @@ public class Composition43_50 {
         tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.NULL);
+        // not a code the target version knows: the value is left empty
         break;
     }
     return tgt;

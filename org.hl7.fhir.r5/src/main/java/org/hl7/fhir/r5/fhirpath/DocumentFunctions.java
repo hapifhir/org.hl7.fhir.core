@@ -555,6 +555,16 @@ class DocumentFunctions {
     return r != null && "Composition".equals(r.fhirType()) && containsSection(r, item) ? r : null;
   }
 
+  /** the fullUrl of the document entry that has the resource - null if none does */
+  private String fullUrl(Base bundle, Base resource) {
+    for (Base e : children(bundle, "entry")) {
+      if (single(e, "resource") == resource) {
+        return primitive(e, "fullUrl");
+      }
+    }
+    return null;
+  }
+
   /** the document the evaluation is on */
   private Base document(Base root, Base focusResource) {
     if (root != null && "Bundle".equals(root.fhirType())) {
@@ -596,24 +606,8 @@ class DocumentFunctions {
       return null;
     }
     Base bundle = document(root, focusResource);
-    Base comp = null;
-    String compFullUrl = null;
-    if (bundle != null) {
-      for (Base e : children(bundle, "entry")) {
-        Base r = single(e, "resource");
-        if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, section)) {
-          comp = r;
-          compFullUrl = primitive(e, "fullUrl");
-          break;
-        }
-      }
-    }
-    if (comp == null) {
-      Base r = root != null && "Composition".equals(root.fhirType()) ? root : focusResource;
-      if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, section)) {
-        comp = r;
-      }
-    }
+    Base comp = sectionComposition(root, focusResource, section);
+    String compFullUrl = bundle != null && comp != null ? fullUrl(bundle, comp) : null;
     List<Base> result = new ArrayList<>();
     for (Base ref : children(section, "entry")) {
       String reference = primitive(ref, "reference");

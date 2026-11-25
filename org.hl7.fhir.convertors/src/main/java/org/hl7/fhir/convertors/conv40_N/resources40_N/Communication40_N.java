@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
@@ -284,11 +285,14 @@ public class Communication40_N {
     org.hl7.fhir.model.core.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.model.core.Communication.CommunicationPayloadComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasContent()) {
-      if (src.getContent() instanceof StringType) {
-        // the whole concept, if R6 had more than its text (see below)
+      if (src.getContent() instanceof StringType && src.getContent().hasExtension(PAYLOAD_CONCEPT_URL)) {
+        // an R6 concept (see below)
         CodeableConcept tgtc = CodeableConcept40_N.convertStringToCodeableConcept(src.getContentStringType(), PAYLOAD_CONCEPT_URL);
         tgtc.getExtension().removeIf(e -> PAYLOAD_CONCEPT_URL.equals(e.getUrl()));
         tgt.setContent(tgtc);
+      } else if (src.getContent() instanceof StringType) {
+        // R6 has string as well
+        tgt.setContent(String40_N.convertString(src.getContentStringType()));
       } else {
         // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
         CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "content", tgt, tgt.getExtension());
@@ -307,10 +311,9 @@ public class Communication40_N {
         StringType tgts = new StringType();
         ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getContent(), tgts);
         tgts.setValue(src.getContentCodeableConcept().getText());
-        // R4 has a string: the text, and the whole concept in a 5.0 extension if there's more to it
-        CodeableConcept cc = src.getContentCodeableConcept();
-        if (cc.hasCoding() || cc.hasId() || cc.hasExtension())
-          tgts.addExtension(PAYLOAD_CONCEPT_URL, CodeableConcept40_N.convertCodeableConcept(cc));
+        // R4 has a string: the text, and the whole concept in a 5.0 extension (R6 has string too, so the extension says
+        // it was a concept)
+        tgts.addExtension(PAYLOAD_CONCEPT_URL, CodeableConcept40_N.convertCodeableConcept(src.getContentCodeableConcept()));
         tgt.setContent(tgts);
       } else {
         CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "content", tgt, tgt.getExtension());

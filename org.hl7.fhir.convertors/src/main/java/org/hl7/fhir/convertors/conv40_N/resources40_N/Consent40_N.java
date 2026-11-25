@@ -104,7 +104,11 @@ public class Consent40_N {
       tgt.addVerification(convertConsentVerificationComponent(t));
     // the root R4 provision type is R6 decision; the types below it should alternate (see convertprovisionComponent)
     if (src.hasProvision()) {
-      tgt.addProvision(convertprovisionComponent(src.getProvision()));
+      // a provision that's only a type is just the decision (see below)
+      org.hl7.fhir.r4.model.Consent.ProvisionComponent rest = src.getProvision().copy();
+      rest.setTypeElement(null);
+      if (!rest.isEmpty())
+        tgt.addProvision(convertprovisionComponent(src.getProvision()));
       if (src.getProvision().hasType())
         tgt.setDecisionElement(convertConsentProvisionType(src.getProvision().getTypeElement()));
     }
@@ -157,6 +161,9 @@ public class Consent40_N {
       else
         tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Consent", "5.0", "provision"), t));
     }
+    // R4 has the decision as the type of the root provision: with no provision, a provision with just the type
+    if (!tgt.hasProvision() && src.hasDecision())
+      tgt.getProvision().setTypeElement(convertConsentProvisionType(src.getDecisionElement()));
     return tgt;
   }
 

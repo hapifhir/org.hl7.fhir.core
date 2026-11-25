@@ -36,7 +36,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class CoverageEligibilityResponse40_N {
 
-  // statusReason is new in R6 - carried in R5 as a cross-version extension
+  // statusReason is new in R6 - carried in R4 as a cross-version extension
   public static final String STATUS_REASON_EXTENSION_URL = "http://hl7.org/fhir/6.0/StructureDefinition/extension-CoverageEligibilityResponse.statusReason";
 
   public static org.hl7.fhir.model.core.CoverageEligibilityResponse convertCoverageEligibilityResponse(org.hl7.fhir.r4.model.CoverageEligibilityResponse src) throws FHIRException {
@@ -49,7 +49,7 @@ public class CoverageEligibilityResponse40_N {
     if (src.hasStatus())
       tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasExtension(STATUS_REASON_EXTENSION_URL))
-      tgt.setStatusReason(src.getExtensionByUrl(STATUS_REASON_EXTENSION_URL).getValue().primitiveValue());
+      tgt.setStatusReasonElement(org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(STATUS_REASON_EXTENSION_URL).getValue()));
     for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose())
       tgt.getPurposeList().add(convertEligibilityResponsePurpose(t));
     if (src.hasPatient())

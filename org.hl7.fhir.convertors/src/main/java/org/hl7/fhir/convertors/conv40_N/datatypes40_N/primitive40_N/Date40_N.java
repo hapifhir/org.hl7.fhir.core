@@ -31,23 +31,23 @@ public class Date40_N {
 
   /**
    * R6 dateTime to R4 date for path.name: a value with more precision than a date goes to R4 as its date, and
-   * the full value in a 5.0 extension
+   * the full value in a cross-version extension (version: the version that made it a dateTime)
    */
-  public static org.hl7.fhir.r4.model.DateType convertDateTimeToDate(org.hl7.fhir.model.core.DateTimeType src, String path, String name) {
+  public static org.hl7.fhir.r4.model.DateType convertDateTimeToDate(org.hl7.fhir.model.core.DateTimeType src, String path, String version, String name) {
     if (!src.hasValue() || src.getValueAsString().length() <= 10)
       return convertDateTimeToDate(src);
     org.hl7.fhir.r4.model.DateType tgt = new org.hl7.fhir.r4.model.DateType(src.getValueAsString().substring(0, 10));
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    tgt.addExtension(CrossVersionElements40_N.url(path, "5.0", name), new org.hl7.fhir.r4.model.DateTimeType(src.getValueAsString()));
+    tgt.addExtension(CrossVersionElements40_N.url(path, version, name), new org.hl7.fhir.r4.model.DateTimeType(src.getValueAsString()));
     return tgt;
   }
 
   /**
-   * R4 to R6: the reverse of {@link #convertDateTimeToDate(org.hl7.fhir.model.core.DateTimeType, String, String)}
+   * R4 to R6: the reverse of {@link #convertDateTimeToDate(org.hl7.fhir.model.core.DateTimeType, String, String, String)}
    */
-  public static org.hl7.fhir.model.core.DateTimeType convertDatetoDateTime(org.hl7.fhir.r4.model.DateType src, String path, String name) {
+  public static org.hl7.fhir.model.core.DateTimeType convertDatetoDateTime(org.hl7.fhir.r4.model.DateType src, String path, String version, String name) {
     org.hl7.fhir.model.core.DateTimeType tgt = convertDatetoDateTime(src);
-    String url = CrossVersionElements40_N.url(path, "5.0", name);
+    String url = CrossVersionElements40_N.url(path, version, name);
     if (tgt.hasExtension(url)) {
       tgt.setValueAsString(tgt.getExtensionByUrl(url).getValue().primitiveValue());
       tgt.getExtension().removeIf(e -> url.equals(e.getUrl()));

@@ -52,6 +52,13 @@ public class JsonCreatorDirect implements JsonCreator {
   // one entry per open object or array: whether something has been written in it yet (so the next thing needs a comma).
   // Objects and arrays count as something too, including empty ones
   private List<Boolean> valued = new ArrayList<Boolean>();
+
+  // the current object or array has a value (there might not be one, if the caller writes a primitive on its own)
+  private void setValued() {
+    if (!valued.isEmpty()) {
+      valued.set(0, true);
+    }
+  }
   private int indent;
 
   public JsonCreatorDirect(Writer writer) {
@@ -70,7 +77,7 @@ public class JsonCreatorDirect implements JsonCreator {
     writer.write("{");
     stepIn();
     if (!valued.isEmpty()) {
-      valued.set(0, true);
+      setValued();
     }
     valued.add(0, false);
   }
@@ -126,7 +133,7 @@ public class JsonCreatorDirect implements JsonCreator {
   public void nullValue() throws IOException {
     checkState();
     writer.write("null");
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -140,7 +147,7 @@ public class JsonCreatorDirect implements JsonCreator {
   public void value(String value) throws IOException {
     checkState();
     writer.write("\"" + Utilities.escapeJson(value) + "\"");
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -152,7 +159,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("true");
     else
       writer.write("false");
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -162,7 +169,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else
       writer.write(value.toString());
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -172,7 +179,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else
       writer.write(value);
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -182,7 +189,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else
       writer.write(value.toString());
-    valued.set(0, true);
+    setValued();
   }
 
   @Override
@@ -190,7 +197,7 @@ public class JsonCreatorDirect implements JsonCreator {
     checkState();
     writer.write("[");
     if (!valued.isEmpty()) {
-      valued.set(0, true);
+      setValued();
     }
     valued.add(0, false);
   }

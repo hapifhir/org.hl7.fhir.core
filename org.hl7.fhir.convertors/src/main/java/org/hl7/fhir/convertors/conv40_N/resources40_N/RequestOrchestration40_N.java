@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -153,13 +154,27 @@ public class RequestOrchestration40_N {
     }
     for (RequestGroup.RequestGroupActionRelatedActionComponent t : src.getRelatedAction())
       tgt.addRelatedAction(convertRelatedAction(t));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getParticipant())
-      tgt.addParticipant().setActor(Reference40_N.convertReference(t));
+    // the types R4 and R6 allow differ (R6 RelativeTime)
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), "RequestOrchestration.action", "timing", tgt, tgt.getExtension());
+    // (in the order of their group indexes, if they have them - see below)
+    java.util.List<RequestOrchestration.RequestOrchestrationActionParticipantComponent> participants = new java.util.ArrayList<>();
+    java.util.Map<RequestOrchestration.RequestOrchestrationActionParticipantComponent, Integer> index = new java.util.IdentityHashMap<>();
+    for (org.hl7.fhir.r4.model.Reference t : src.getParticipant()) {
+      RequestOrchestration.RequestOrchestrationActionParticipantComponent p = new RequestOrchestration.RequestOrchestrationActionParticipantComponent();
+      p.setActor(Reference40_N.convertReference(t));
+      groupIndex(t, p.getActor(), p, index);
+      participants.add(p);
+    }
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtension())
-      if (PARTICIPANT_URL.equals(ext.getUrl()))
-        CrossVersionDatatype40_N.populateDatatype(ext, tgt.addParticipant());
+      if (PARTICIPANT_URL.equals(ext.getUrl())) {
+        RequestOrchestration.RequestOrchestrationActionParticipantComponent p = new RequestOrchestration.RequestOrchestrationActionParticipantComponent();
+        CrossVersionDatatype40_N.populateDatatype(ext, p);
+        groupIndex(ext, p, p, index);
+        participants.add(p);
+      }
+    if (!index.isEmpty())
+      participants.sort((a, b) -> Integer.compare(index.getOrDefault(a, Integer.MAX_VALUE), index.getOrDefault(b, Integer.MAX_VALUE)));
+    tgt.getParticipantList().addAll(participants);
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasGroupingBehavior())
@@ -210,13 +225,29 @@ public class RequestOrchestration40_N {
     }
     for (RequestOrchestration.RequestOrchestrationActionRelatedActionComponent t : src.getRelatedActionList())
       tgt.addRelatedAction(convertRelatedAction(t));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    // the types R4 and R6 allow differ (R6 RelativeTime)
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), "RequestOrchestration.action", "timing", tgt, tgt.getExtension());
+    // R4 participants are references; the rest are extensions. If that changes their order, each gets its position
+    // in a group index extension
+    boolean reordered = false;
+    boolean other = false;
     for (RequestOrchestration.RequestOrchestrationActionParticipantComponent t : src.getParticipantList()) {
-      if (isJustAnActorReference(t))
-        tgt.addParticipant(Reference40_N.convertReference(t.getActorReference()));
-      else
-        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(PARTICIPANT_URL, t));
+      if (isJustAnActorReference(t) && other)
+        reordered = true;
+      other = other || !isJustAnActorReference(t);
+    }
+    for (int i = 0; i < src.getParticipantList().size(); i++) {
+      RequestOrchestration.RequestOrchestrationActionParticipantComponent t = src.getParticipantList().get(i);
+      org.hl7.fhir.r4.model.Element e;
+      if (isJustAnActorReference(t)) {
+        e = Reference40_N.convertReference(t.getActorReference());
+        tgt.addParticipant((org.hl7.fhir.r4.model.Reference) e);
+      } else {
+        e = CrossVersionDatatype40_N.convertToExtension(PARTICIPANT_URL, t);
+        tgt.addExtension((org.hl7.fhir.r4.model.Extension) e);
+      }
+      if (reordered)
+        e.addExtension(VersionConvertorConstants.EXT_GROUP_INDEX, new org.hl7.fhir.r4.model.IntegerType(i));
     }
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
@@ -235,6 +266,16 @@ public class RequestOrchestration40_N {
     for (RequestOrchestration.RequestOrchestrationActionComponent t : src.getActionList())
       tgt.addAction(convertAction(t));
     return tgt;
+  }
+
+  // the group index on src, if there is one, and the copy of it taken off the R6 element
+  private static void groupIndex(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.model.Base copy, RequestOrchestration.RequestOrchestrationActionParticipantComponent p,
+      java.util.Map<RequestOrchestration.RequestOrchestrationActionParticipantComponent, Integer> index) {
+    org.hl7.fhir.r4.model.Extension ext = src.getExtensionByUrl(VersionConvertorConstants.EXT_GROUP_INDEX);
+    if (ext != null && ext.getValue() instanceof org.hl7.fhir.r4.model.IntegerType)
+      index.put(p, ((org.hl7.fhir.r4.model.IntegerType) ext.getValue()).getValue());
+    if (copy instanceof org.hl7.fhir.model.core.Element)
+      ((org.hl7.fhir.model.core.Element) copy).getExtension().removeIf(e -> VersionConvertorConstants.EXT_GROUP_INDEX.equals(e.getUrl()));
   }
 
   private static boolean isJustAnActorReference(RequestOrchestration.RequestOrchestrationActionParticipantComponent p) {

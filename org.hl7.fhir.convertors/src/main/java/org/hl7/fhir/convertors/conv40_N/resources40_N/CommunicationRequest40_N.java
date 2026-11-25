@@ -286,13 +286,8 @@ public class CommunicationRequest40_N {
       org.hl7.fhir.model.extensions.ExtensionUtilities.removeExtension(tgt, VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
     } else if (src.hasContent()) {
       org.hl7.fhir.r4.model.Type content = src.getContent();
-      if (content instanceof org.hl7.fhir.r4.model.StringType) {
-        org.hl7.fhir.r4.model.StringType string = (org.hl7.fhir.r4.model.StringType) content;
-        org.hl7.fhir.model.core.CodeableConcept code = new org.hl7.fhir.model.core.CodeableConcept();
-        code.setTextElement((org.hl7.fhir.model.core.StringType) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(string));
-        tgt.setContent(code);
-      } else
-        tgt.setContent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(content));
+      // R6 has string as well (and an R6 concept comes back from the extension above)
+      tgt.setContent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(content));
     }
     return tgt;
   }
@@ -306,13 +301,13 @@ public class CommunicationRequest40_N {
       org.hl7.fhir.model.core.DataType content = src.getContent();
       if (content instanceof org.hl7.fhir.model.core.CodeableConcept) {
         org.hl7.fhir.model.core.CodeableConcept code = (org.hl7.fhir.model.core.CodeableConcept) content;
+        // R4 has no concept: its text, and the whole concept in the extension (R6 has string too, so the extension
+        // says it was a concept)
         if (code.hasText())
           tgt.setContent(new org.hl7.fhir.r4.model.StringType(code.getText()));
-        if (code.hasCoding() || code.hasExtension()) {
-          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
-          e.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(code));
-          tgt.addExtension(e);
-        }
+        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_PAYLOAD_CONTENT);
+        e.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(code));
+        tgt.addExtension(e);
       } else
         tgt.setContent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(content));
     }

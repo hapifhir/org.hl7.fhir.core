@@ -47,6 +47,8 @@ public class Dosage40_N {
     if (src.hasMaxDosePerPeriod()) {
       org.hl7.fhir.model.core.DosageSafety.DosageSafetyDoseLimitComponent l = tgt.getSafety().addDoseLimit();
       l.setScope(org.hl7.fhir.model.core.DosageSafety.DoseLimitScopeVS.PERIOD);
+      // the Ratio's id and extensions are the dose limit's
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getMaxDosePerPeriod(), l);
       if (src.getMaxDosePerPeriod().hasNumerator())
         l.setValue(Quantity40_N.convertQuantity(src.getMaxDosePerPeriod().getNumerator()));
       if (src.getMaxDosePerPeriod().hasDenominator()) {
@@ -97,6 +99,7 @@ public class Dosage40_N {
           switch (l.getScope()) {
           case PERIOD:
             org.hl7.fhir.r4.model.Ratio r = new org.hl7.fhir.r4.model.Ratio();
+            ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(l, r);
             if (l.hasValue())
               r.setNumerator(Quantity40_N.convertQuantity(l.getValueQuantity()));
             if (l.hasPeriod()) {
@@ -132,12 +135,17 @@ public class Dosage40_N {
       return false;
     java.util.Set<org.hl7.fhir.model.core.DosageSafety.DoseLimitScopeVS> seen = new java.util.HashSet<>();
     for (org.hl7.fhir.model.core.DosageSafety.DosageSafetyDoseLimitComponent l : safety.getDoseLimitList()) {
-      if (!l.hasScope() || !seen.add(l.getScope()) || l.hasText() || l.hasId() || l.hasExtension())
+      // (a period limit's id and extensions are the R4 Ratio's)
+      if (!l.hasScope() || !seen.add(l.getScope()) || l.hasText()
+          || (l.getScope() != org.hl7.fhir.model.core.DosageSafety.DoseLimitScopeVS.PERIOD && (l.hasId() || l.hasExtension())))
         return false;
       if (l.hasValue() && !l.hasValueQuantity())
         return false;
       switch (l.getScope()) {
       case PERIOD:
+        // an empty R4 Ratio is no Ratio
+        if (!l.hasValue() && !l.hasPeriod() && !l.hasId() && !l.hasExtension())
+          return false;
         break;
       case ADMINISTRATION:
       case LIFETIME:

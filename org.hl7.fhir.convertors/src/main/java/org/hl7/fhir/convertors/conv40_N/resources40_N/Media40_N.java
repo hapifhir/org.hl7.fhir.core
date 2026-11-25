@@ -202,7 +202,8 @@ public class Media40_N {
         // the attachment's height etc. are Media's
         for (String n : MEDIA_SIZE) {
           String url = CrossVersionElements40_N.url("Attachment", "5.0", n);
-          if (att.hasExtension(url) && !tgt.getChildByName(n).hasValues()) {
+          // (unless Media's own is in a 4.0 extension: then the attachment's is the attachment's)
+          if (att.hasExtension(url) && !tgt.getChildByName(n).hasValues() && !src.hasExtension(CrossVersionElements40_N.url("Media", "4.0", n))) {
             tgt.setProperty(n, att.getExtensionByUrl(url).getValue());
             att.getExtension().removeIf(e -> url.equals(e.getUrl()));
           }

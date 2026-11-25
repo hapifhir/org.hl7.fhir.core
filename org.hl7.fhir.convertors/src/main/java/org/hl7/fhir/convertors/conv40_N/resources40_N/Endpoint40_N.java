@@ -118,8 +118,10 @@ public class Endpoint40_N {
       tgt.addContact(ContactPoint40_N.convertContactPoint(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-    // R4 has one set of payload types and mime types: the first payload goes there, the rest in the extension
-    boolean first = true;
+    // R4 has one set of payload types and mime types: the first payload goes there, the rest in the extension (and
+    // if the first has an id or extensions, they all go in the extension)
+    boolean first = !src.getPayloadList().isEmpty() && !src.getPayloadList().get(0).hasId() && !src.getPayloadList().get(0).hasExtension()
+      && !src.getPayloadList().get(0).hasModifierExtension();
     for (EndpointPayloadComponent t : src.getPayloadList()) {
       if (first) {
         for (org.hl7.fhir.model.core.CodeableConcept c : t.getTypeList())

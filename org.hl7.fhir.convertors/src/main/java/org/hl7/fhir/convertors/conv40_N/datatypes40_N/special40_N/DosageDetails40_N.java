@@ -28,6 +28,7 @@ import org.hl7.fhir.model.core.DosageDetails;
  */
 public class DosageDetails40_N {
 
+  private static final String DATA_ABSENT_REASON = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
   private static final String[] DETAILS = {"renderedInstruction", "safety"};
   private static final String[] STEP = {"start", "end", "count", "safety"};
 
@@ -70,6 +71,12 @@ public class DosageDetails40_N {
         // the sequence extension is only needed if going back to R4 wouldn't make the same sequence
         if (src.size() > 1 && d.hasSequence() && d.getSequence() == i && !d.getSequenceElement().hasExtension() && !d.getSequenceElement().hasId())
           c.getExtension().removeIf(ext -> sequenceUrl.equals(ext.getUrl()));
+        // one of several dosages with no sequence: going back to R4 would make one, so the extension says there isn't
+        if (src.size() > 1 && !d.hasSequence()) {
+          org.hl7.fhir.model.core.IntegerType none = new org.hl7.fhir.model.core.IntegerType();
+          none.addExtension(DATA_ABSENT_REASON, new org.hl7.fhir.model.core.CodeType("not-applicable"));
+          c.addExtension(sequenceUrl, none);
+        }
         if (step.getComponentList().isEmpty()) {
           CrossVersionElements40_N.extensionsToElementsForPath(d.getExtension(), step, path + ".step", "6.0", STEP);
           removeExtensions(c.getExtension(), path + ".step", STEP);
@@ -104,7 +111,10 @@ public class DosageDetails40_N {
       boolean first = true;
       for (org.hl7.fhir.model.core.Dosage c : step.getComponentList()) {
         org.hl7.fhir.r4.model.Dosage d = Dosage40_N.convertDosage(c);
-        if (!d.hasSequence() && several)
+        if (d.hasSequenceElement() && !d.getSequenceElement().hasValue() && d.getSequenceElement().hasExtension(DATA_ABSENT_REASON))
+          // the R4 dosage had no sequence (see above)
+          d.setSequenceElement(null);
+        else if (!d.hasSequence() && several)
           d.setSequence(i);
         if (first)
           CrossVersionElements40_N.elementsToExtensionsForPath(step, path + ".step", d.getExtension(), "6.0", STEP);

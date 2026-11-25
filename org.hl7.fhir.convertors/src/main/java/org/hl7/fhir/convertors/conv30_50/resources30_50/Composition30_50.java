@@ -113,7 +113,7 @@ public class Composition30_50 {
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.NULL);
+        // not a code the target version knows: the value is left empty
         break;
     }
     return tgt;
@@ -381,7 +381,7 @@ public class Composition30_50 {
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality.V);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality.NULL);
+        // not a code the target version knows: the value is left empty
         break;
     }
     return tgt;

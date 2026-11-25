@@ -87,11 +87,21 @@ public class ResearchStudy40_N {
     CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt.getRecruitment(), RECRUITMENT, "5.0", RECRUITMENT_V5);
     CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt.getRecruitment(), RECRUITMENT, "6.0", RECRUITMENT_V6);
     // sponsor, principalInvestigator -> associatedParty
-    if (src.hasSponsor())
-      tgt.addAssociatedParty(partyFor("sponsor", Reference40_N.convertReference(src.getSponsor())));
-    if (src.hasPrincipalInvestigator())
-      tgt.addAssociatedParty(partyFor("primary-investigator", Reference40_N.convertReference(src.getPrincipalInvestigator())));
+    // (unless the extension has them as well - see below)
     CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "associatedParty");
+    java.util.List<ResearchStudy.ResearchStudyAssociatedPartyComponent> others = new java.util.ArrayList<>(tgt.getAssociatedPartyList());
+    tgt.getAssociatedPartyList().clear();
+    if (src.hasSponsor()) {
+      ResearchStudy.ResearchStudyAssociatedPartyComponent p = partyFor("sponsor", Reference40_N.convertReference(src.getSponsor()));
+      if (others.stream().noneMatch(o -> o.equalsDeep(p)))
+        tgt.addAssociatedParty(p);
+    }
+    if (src.hasPrincipalInvestigator()) {
+      ResearchStudy.ResearchStudyAssociatedPartyComponent p = partyFor("primary-investigator", Reference40_N.convertReference(src.getPrincipalInvestigator()));
+      if (others.stream().noneMatch(o -> o.equalsDeep(p)))
+        tgt.addAssociatedParty(p);
+    }
+    tgt.getAssociatedPartyList().addAll(others);
     for (org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyArmComponent t : src.getArm())
       tgt.addComparisonGroup(convertArm(t));
     for (org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyObjectiveComponent t : src.getObjective())
@@ -151,14 +161,34 @@ public class ResearchStudy40_N {
     for (org.hl7.fhir.model.core.Extension e : src.getExtensionsByUrl(ENROLLMENT_URL))
       tgt.addEnrollment(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) e.getValue()));
     // associatedParty -> sponsor, principalInvestigator
+    // going back, the sponsor and principal investigator come first: if that would change the order, all the parties
+    // are in the extension (and R4 to R6 leaves out the sponsor and principal investigator it finds there)
+    ResearchStudy.ResearchStudyAssociatedPartyComponent sponsor = null;
+    ResearchStudy.ResearchStudyAssociatedPartyComponent pi = null;
     for (ResearchStudy.ResearchStudyAssociatedPartyComponent t : src.getAssociatedPartyList()) {
-      if (!tgt.hasSponsor() && isParty(t, "sponsor"))
-        tgt.setSponsor(Reference40_N.convertReference(t.getParty()));
-      else if (!tgt.hasPrincipalInvestigator() && isParty(t, "primary-investigator"))
-        tgt.setPrincipalInvestigator(Reference40_N.convertReference(t.getParty()));
-      else
-        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(PARTY_URL, t));
+      if (sponsor == null && isParty(t, "sponsor"))
+        sponsor = t;
+      else if (pi == null && isParty(t, "primary-investigator"))
+        pi = t;
     }
+    java.util.List<ResearchStudy.ResearchStudyAssociatedPartyComponent> order = new java.util.ArrayList<>();
+    if (sponsor != null)
+      order.add(sponsor);
+    if (pi != null)
+      order.add(pi);
+    for (ResearchStudy.ResearchStudyAssociatedPartyComponent t : src.getAssociatedPartyList())
+      if (t != sponsor && t != pi)
+        order.add(t);
+    boolean all = false;
+    for (int i = 0; i < order.size(); i++)
+      all = all || order.get(i) != src.getAssociatedPartyList().get(i);
+    if (sponsor != null)
+      tgt.setSponsor(Reference40_N.convertReference(sponsor.getParty()));
+    if (pi != null)
+      tgt.setPrincipalInvestigator(Reference40_N.convertReference(pi.getParty()));
+    for (ResearchStudy.ResearchStudyAssociatedPartyComponent t : src.getAssociatedPartyList())
+      if (all || (t != sponsor && t != pi))
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(PARTY_URL, t));
     for (ResearchStudy.ResearchStudyComparisonGroupComponent t : src.getComparisonGroupList())
       tgt.addArm(convertArm(t));
     for (ResearchStudy.ResearchStudyObjectiveComponent t : src.getObjectiveList())

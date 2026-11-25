@@ -103,12 +103,22 @@ public class Task40_N {
       tgt.setOwner(Reference40_N.convertReference(src.getOwner()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
-    if (src.hasReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getReasonCode()));
-    if (src.hasReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(src.getReasonReference()));
-    // the reasons R4 had no room for
+    // the reasons R4 had no room for (and if they include the reasonCode and reasonReference, they're all there - see
+    // below)
     CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "reason");
+    java.util.List<CodeableReference> others = new java.util.ArrayList<>(tgt.getReasonList());
+    tgt.getReasonList().clear();
+    if (src.hasReasonCode()) {
+      CodeableReference r = CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getReasonCode());
+      if (others.stream().noneMatch(o -> o.equalsDeep(r)))
+        tgt.addReason(r);
+    }
+    if (src.hasReasonReference()) {
+      CodeableReference r = Reference40_N.convertReferenceToCodeableReference(src.getReasonReference());
+      if (others.stream().noneMatch(o -> o.equalsDeep(r)))
+        tgt.addReason(r);
+    }
+    tgt.getReasonList().addAll(others);
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory())
@@ -185,14 +195,34 @@ public class Task40_N {
     // R4 has one reasonCode and one reasonReference: the first reason with a concept goes to reasonCode (with any
     // reference on it in an extension), the first that's only a reference goes to reasonReference, and the rest go
     // in the extension
+    // (going back, reasonCode and reasonReference come first: if that would change the order, all the reasons are
+    // in the extension, and R4 to R6 leaves out the ones it finds there)
+    CodeableReference code = null;
+    CodeableReference ref = null;
     for (CodeableReference t : src.getReasonList()) {
-      if (!tgt.hasReasonCode() && t.hasConcept())
-        tgt.setReasonCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
-      else if (!tgt.hasReasonReference() && !t.hasConcept() && t.hasReference())
-        tgt.setReasonReference(Reference40_N.convertReference(t.getReference()));
-      else
-        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Task", "5.0", "reason"), t));
+      if (code == null && t.hasConcept())
+        code = t;
+      else if (ref == null && !t.hasConcept() && t.hasReference())
+        ref = t;
     }
+    java.util.List<CodeableReference> order = new java.util.ArrayList<>();
+    if (code != null)
+      order.add(code);
+    if (ref != null)
+      order.add(ref);
+    for (CodeableReference t : src.getReasonList())
+      if (t != code && t != ref)
+        order.add(t);
+    boolean all = false;
+    for (int i = 0; i < order.size(); i++)
+      all = all || order.get(i) != src.getReasonList().get(i);
+    if (code != null)
+      tgt.setReasonCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(code));
+    if (ref != null)
+      tgt.setReasonReference(Reference40_N.convertReference(ref.getReference()));
+    for (CodeableReference t : src.getReasonList())
+      if (all || (t != code && t != ref))
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Task", "5.0", "reason"), t));
     for (org.hl7.fhir.model.core.Reference t : src.getInsuranceList()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.model.core.Reference t : src.getRelevantHistoryList())

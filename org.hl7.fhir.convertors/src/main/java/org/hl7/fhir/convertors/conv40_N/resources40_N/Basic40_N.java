@@ -50,7 +50,7 @@ public class Basic40_N {
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreatedElement(Date40_N.convertDatetoDateTime(src.getCreatedElement(), "Basic", "created"));
+      tgt.setCreatedElement(Date40_N.convertDatetoDateTime(src.getCreatedElement(), "Basic", "6.0", "created"));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_N.convertReference(src.getAuthor()));
     return tgt;
@@ -67,8 +67,9 @@ public class Basic40_N {
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
+    // (R5 Basic.created is a date, so the extension is 6.0)
     if (src.hasCreated())
-      tgt.setCreatedElement(Date40_N.convertDateTimeToDate(src.getCreatedElement(), "Basic", "created"));
+      tgt.setCreatedElement(Date40_N.convertDateTimeToDate(src.getCreatedElement(), "Basic", "6.0", "created"));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_N.convertReference(src.getAuthor()));
     return tgt;

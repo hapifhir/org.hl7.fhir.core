@@ -110,14 +110,18 @@ public class Subscription40_N {
       if (isTopic(criteria)) {
         ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getCriteriaElement(), tgt.getTopicElement(), EXT_FILTER_CRITERIA);
         tgt.setTopic(criteria);
+        // if any of the R4 strings isn't what the filters make again, they're all kept (R6 -> R4 uses them rather
+        // than composing them)
+        boolean keep = false;
         for (org.hl7.fhir.r4.model.Extension e : src.getCriteriaElement().getExtensionsByUrl(EXT_FILTER_CRITERIA)) {
           String fc = e.getValue().primitiveValue();
           List<SubscriptionFilterByComponent> filters = decompose(fc);
           tgt.getFilterByList().addAll(filters);
-          if (!fc.equals(compose(filters)))
-            // keep the R4 string; R6 -> R4 uses it rather than composing one
-            tgt.getTopicElement().addExtension(EXT_FILTER_CRITERIA, new org.hl7.fhir.model.core.StringType(fc));
+          keep = keep || !fc.equals(compose(filters));
         }
+        if (keep)
+          for (org.hl7.fhir.r4.model.Extension e : src.getCriteriaElement().getExtensionsByUrl(EXT_FILTER_CRITERIA))
+            tgt.getTopicElement().addExtension(EXT_FILTER_CRITERIA, new org.hl7.fhir.model.core.StringType(e.getValue().primitiveValue()));
       } else {
         tgt.addExtension(CrossVersionElements40_N.url(SUB, "4.0", "criteria"), String40_N.convertString(src.getCriteriaElement()));
         tgt.setTopic(EVERYTHING_TOPIC);

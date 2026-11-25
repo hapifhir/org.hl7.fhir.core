@@ -269,7 +269,7 @@ public class DocumentReference30_50 {
       tgt.setValue(org.hl7.fhir.dstu3.model.DocumentReference.DocumentRelationshipType.APPENDS);
       break;
     default:
-      tgt.setValue(org.hl7.fhir.dstu3.model.DocumentReference.DocumentRelationshipType.NULL);
+      // not a code the target version knows: the value is left empty
       break;
     }
 

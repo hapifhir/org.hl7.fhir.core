@@ -46,6 +46,7 @@ public class VersionConvertorConstants {
   public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
   public static final String EXT_GROUP_INDEX = "http://hl7.org/fhir/tools/StructureDefinition/conversion-group-index"; // which source element a split-up target element came from, when several target elements came from one source element
+  public static final String EXT_SECURITY_LABEL_ONLY = "http://hl7.org/fhir/tools/StructureDefinition/conversion-security-label-only"; // on an R6 security label that looks like (R4) Composition.confidentiality, but was just a security label
   public static final String EXT_ADDITIONAL_BINDING = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional";
   public static final String EXT_CONSTRAINT_SUPPRESS = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.constraint.suppress"; // introduced in R5
   public static final String EXT_DISCRIMINATOR_TYPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.slicing.discriminator.type"; // for discriminator types introduced in R5 (position)

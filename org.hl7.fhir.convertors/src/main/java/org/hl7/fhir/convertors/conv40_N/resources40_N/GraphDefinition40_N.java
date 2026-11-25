@@ -96,9 +96,20 @@ public class GraphDefinition40_N {
     }
 
     private void link(String sourceId, org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
-      for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent target : src.getTarget()) {
+      if (!src.hasTarget()) {
+        // R4 allows a link with no targets: an R6 link with no targetId (which R6 requires)
         org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent link = tgt.addLink();
         ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, link);
+        CrossVersionElements40_N.copySameElements(src, link, "description", "min", "max", "path", "sliceName");
+        link.setSourceId(sourceId);
+      }
+      boolean first = true;
+      for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent target : src.getTarget()) {
+        org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent link = tgt.addLink();
+        // the R4 link's id and extensions go on the first R6 link (going back, the others are merged into it)
+        if (first)
+          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, link);
+        first = false;
         CrossVersionElements40_N.copySameElements(src, link, "description", "min", "max", "path", "sliceName");
         link.setSourceId(sourceId);
         org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = node(target.getExtension());
@@ -179,6 +190,16 @@ public class GraphDefinition40_N {
       for (org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionLinkComponent l : src.getLinkList()) {
         if (usedLinks.contains(l) || !sourceId.equals(l.getSourceId()))
           continue;
+        if (!l.hasTargetId()) {
+          // an R4 link with no targets (see ToR6.link)
+          usedLinks.add(l);
+          org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent link = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent();
+          tgtList.add(link);
+          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(l, link);
+          CrossVersionElements40_N.copySameElements(l, link, "description", "min", "max", "path", "sliceName");
+          current = null;
+          continue;
+        }
         org.hl7.fhir.model.api.GraphDefinition.GraphDefinitionNodeComponent node = node(l.getTargetId());
         if (node == null || path.contains(node.getNodeId()) || usedNodes.contains(node))
           continue; // left for the extensions
@@ -223,7 +244,8 @@ public class GraphDefinition40_N {
         for (org.hl7.fhir.model.Base v : a.getChildByName(n).getValues()) ca.setProperty(n, v);
         for (org.hl7.fhir.model.Base v : b.getChildByName(n).getValues()) cb.setProperty(n, v);
       }
-      return ca.equalsDeep(cb) && a.getExtensionList().isEmpty() && b.getExtensionList().isEmpty() && !a.hasId() && !b.hasId();
+      // (the R4 link's id and extensions are on the first one - see ToR6.link)
+      return ca.equalsDeep(cb) && b.getExtensionList().isEmpty() && b.getModifierExtensionList().isEmpty() && !b.hasId();
     }
   }
 

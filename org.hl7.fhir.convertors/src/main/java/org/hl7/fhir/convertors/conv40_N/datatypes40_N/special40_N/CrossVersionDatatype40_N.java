@@ -41,6 +41,31 @@ public class CrossVersionDatatype40_N {
     }
   }
 
+  // the sub-extension that holds an element's modifier extensions
+  private static final String MODIFIER = "modifierExtension";
+
+  private static void addModifierExtension(Base tgt, org.hl7.fhir.model.core.Extension ext) throws FHIRException {
+    if (tgt instanceof org.hl7.fhir.model.core.BackboneElement)
+      ((org.hl7.fhir.model.core.BackboneElement) tgt).addModifierExtension(ext);
+    else if (tgt instanceof org.hl7.fhir.model.core.BackboneType)
+      ((org.hl7.fhir.model.core.BackboneType) tgt).addModifierExtension(ext);
+    else if (tgt instanceof org.hl7.fhir.model.core.DomainResource)
+      ((org.hl7.fhir.model.core.DomainResource) tgt).addModifierExtension(ext);
+    else
+      throw new FHIRException("A modifier extension on " + tgt.fhirType() + ", which can't have one");
+  }
+
+  private static void addModifierExtension(org.hl7.fhir.r4.model.Base tgt, org.hl7.fhir.r4.model.Extension ext) throws FHIRException {
+    if (tgt instanceof org.hl7.fhir.r4.model.BackboneElement)
+      ((org.hl7.fhir.r4.model.BackboneElement) tgt).addModifierExtension(ext);
+    else if (tgt instanceof org.hl7.fhir.r4.model.BackboneType)
+      ((org.hl7.fhir.r4.model.BackboneType) tgt).addModifierExtension(ext);
+    else if (tgt instanceof org.hl7.fhir.r4.model.DomainResource)
+      ((org.hl7.fhir.r4.model.DomainResource) tgt).addModifierExtension(ext);
+    else
+      throw new FHIRException("A modifier extension on " + tgt.fhirType() + ", which can't have one");
+  }
+
   public static org.hl7.fhir.r4.model.Extension convertToExtension(String url, Base src) throws FHIRException {
     org.hl7.fhir.r4.model.Extension tgt = new org.hl7.fhir.r4.model.Extension(url);
     populateExtension(src, tgt);
@@ -64,7 +89,10 @@ public class CrossVersionDatatype40_N {
         name = name.substring(0, name.length() - 3);
       }
       for (Base v : p.getValues()) {
-        if ("extension".equals(name) || "modifierExtension".equals(name)) {
+        if ("modifierExtension".equals(name)) {
+          // kept apart (in a modifierExtension sub-extension), so it comes back as a modifier extension
+          tgt.addExtension().setUrl(MODIFIER).addExtension(Extension40_N.convertExtension((org.hl7.fhir.model.core.Extension) v));
+        } else if ("extension".equals(name)) {
           tgt.addExtension(Extension40_N.convertExtension((org.hl7.fhir.model.core.Extension) v));
         } else if (v instanceof org.hl7.fhir.model.core.Enumeration) {
           // R4 has code, but the R6 Enumeration isn't a CodeType
@@ -111,6 +139,34 @@ public class CrossVersionDatatype40_N {
     }
   }
 
+  // the choice element of tgt that url is [choice][Type] for, if there is one
+  private static Property choiceProperty(Base tgt, String url) {
+    for (Property p : tgt.getChildren()) {
+      String n = p.getName();
+      if (n.endsWith("[x]") && url.startsWith(n.substring(0, n.length() - 3)) && url.length() > n.length() - 3
+          && Character.isUpperCase(url.charAt(n.length() - 3)))
+        return p;
+    }
+    return null;
+  }
+
+  // the value as the type, if the type is a primitive R4 doesn't have (so the value is a string)
+  private static org.hl7.fhir.model.core.DataType choiceValue(String type, org.hl7.fhir.model.core.DataType v) {
+    type = Character.toLowerCase(type.charAt(0)) + type.substring(1);
+    if (v instanceof org.hl7.fhir.model.core.StringType && !type.equals("string")) {
+      try {
+        org.hl7.fhir.model.core.DataType t = (org.hl7.fhir.model.core.DataType) org.hl7.fhir.model.core.ResourceFactory.createType(type);
+        if (t instanceof org.hl7.fhir.model.core.PrimitiveType) {
+          ((org.hl7.fhir.model.core.PrimitiveType<?>) t).setValueAsString(v.primitiveValue());
+          return t;
+        }
+      } catch (Exception e) {
+        // not a type
+      }
+    }
+    return v;
+  }
+
   public static void populateDatatype(org.hl7.fhir.r4.model.Extension src, Base tgt, String... urlsToIgnore) throws FHIRException {
     List<String> ignore = Arrays.asList(urlsToIgnore);
     if (src.hasId() && tgt instanceof org.hl7.fhir.model.core.Element) {
@@ -123,10 +179,18 @@ public class CrossVersionDatatype40_N {
       }
       if (Utilities.isAbsoluteUrl(url)) {
         ((org.hl7.fhir.model.core.Element) tgt).addExtension(Extension40_N.convertExtension(sub));
+      } else if (MODIFIER.equals(url)) {
+        for (org.hl7.fhir.r4.model.Extension m : sub.getExtension())
+          addModifierExtension(tgt, Extension40_N.convertExtension(m));
       } else if (sub.hasValue()) {
         org.hl7.fhir.model.core.DataType v = ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(sub.getValue());
         Property p = tgt.getChildByName(url);
-        tgt.setProperty(p == null ? url : p.getName(), v);
+        Property cp = p == null ? choiceProperty(tgt, url) : null;
+        if (cp != null) {
+          // [choice][Type], e.g. valueInteger64 - a primitive type R4 doesn't have is a string (see populateExtension)
+          tgt.setProperty(cp.getName(), choiceValue(url.substring(cp.getName().length() - 3), v));
+        } else
+          tgt.setProperty(p == null ? url : p.getName(), v);
       } else {
         populateDatatype(sub, addChild(tgt, url));
       }
@@ -159,7 +223,12 @@ public class CrossVersionDatatype40_N {
         name = name.substring(0, name.length() - 3);
       }
       for (org.hl7.fhir.r4.model.Base v : p.getValues()) {
-        if ("extension".equals(name) || "modifierExtension".equals(name)) {
+        if ("modifierExtension".equals(name)) {
+          // kept apart (see populateExtension)
+          org.hl7.fhir.model.core.Extension m = new org.hl7.fhir.model.core.Extension().setUrl(MODIFIER);
+          m.addExtension(Extension40_N.convertExtension((org.hl7.fhir.r4.model.Extension) v));
+          tgt.addExtension(m);
+        } else if ("extension".equals(name)) {
           tgt.addExtension(Extension40_N.convertExtension((org.hl7.fhir.r4.model.Extension) v));
         } else if (v instanceof org.hl7.fhir.r4.model.Enumeration) {
           org.hl7.fhir.model.core.CodeType code = new org.hl7.fhir.model.core.CodeType(v.primitiveValue());
@@ -190,6 +259,9 @@ public class CrossVersionDatatype40_N {
       }
       if (Utilities.isAbsoluteUrl(url)) {
         ((org.hl7.fhir.r4.model.Element) tgt).addExtension(Extension40_N.convertExtension(sub));
+      } else if (MODIFIER.equals(url)) {
+        for (org.hl7.fhir.model.core.Extension m : sub.getExtensionList())
+          addModifierExtension(tgt, Extension40_N.convertExtension(m));
       } else if (sub.hasValue()) {
         tgt.setProperty(r4PropertyName(tgt, url), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(sub.getValue()));
       } else {

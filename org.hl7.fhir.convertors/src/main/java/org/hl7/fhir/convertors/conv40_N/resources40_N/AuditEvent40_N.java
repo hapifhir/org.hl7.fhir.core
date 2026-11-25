@@ -244,7 +244,8 @@ public class AuditEvent40_N {
         else
           tgt.setNetwork(new org.hl7.fhir.model.core.StringType(src.getNetwork().getAddress()));
       }
-      if (src.getNetwork().hasType() && src.getNetwork().getType() != org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._5)
+      // (type 5 is a uri, unless there's no address to say so)
+      if (src.getNetwork().hasType() && (src.getNetwork().getType() != org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._5 || !src.getNetwork().hasAddress()))
         tgt.addExtension(NETWORK_TYPE_EXTENSION_URL, new org.hl7.fhir.model.core.CodeType(src.getNetwork().getTypeElement().getValueAsString()));
     }
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPurposeOfUse())
@@ -279,90 +280,13 @@ public class AuditEvent40_N {
       // a reference: R4 has nowhere for it
       tgt.getNetwork().addExtension(NETWORK_EXTENSION_URL, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getNetwork()));
     }
+    // an R4 network type with no address
+    if (!src.hasNetworkStringType() && !src.hasNetworkUriType() && src.hasExtension(NETWORK_TYPE_EXTENSION_URL))
+      tgt.getNetwork().getTypeElement().setValueAsString(src.getExtensionByUrl(NETWORK_TYPE_EXTENSION_URL).getValue().primitiveValue());
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getAuthorizationList())
       tgt.addPurposeOfUse(CodeableConcept40_N.convertCodeableConcept(t));
     return tgt;
   }
-
-//  public static org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkComponent convertAuditEventAgentNetworkComponent(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasAddress())
-//      tgt.setAddressElement(String40_N.convertString(src.getAddressElement()));
-//    if (src.hasType())
-//      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertAuditEventAgentNetworkType(src.getTypeElement()), src.fhirType(), "type"));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent convertAuditEventAgentNetworkComponent(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasAddress())
-//      tgt.setAddressElement(String40_N.convertString(src.getAddressElement()));
-//    if (src.hasType())
-//      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertAuditEventAgentNetworkType(src.getTypeElement()), src.fhirType(), "type"));
-//    return tgt;
-//  }
-//
-//  static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType> convertAuditEventAgentNetworkType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> src) throws FHIRException {
-//    if (src == null || src.isEmpty())
-//      return null;
-//    org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.model.core.Enumeration<>(new org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    switch (src.getValue()) {
-//      case _1:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType._1);
-//        break;
-//      case _2:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType._2);
-//        break;
-//      case _3:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType._3);
-//        break;
-//      case _4:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType._4);
-//        break;
-//      case _5:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType._5);
-//        break;
-//      default:
-//        tgt.setValue(org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType.NULL);
-//        break;
-//    }
-//    return tgt;
-//  }
-//
-//  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> convertAuditEventAgentNetworkType(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.AuditEvent.AuditEventAgentNetworkType> src) throws FHIRException {
-//    if (src == null || src.isEmpty())
-//      return null;
-//    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    switch (src.getValue()) {
-//      case _1:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._1);
-//        break;
-//      case _2:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._2);
-//        break;
-//      case _3:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._3);
-//        break;
-//      case _4:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._4);
-//        break;
-//      case _5:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._5);
-//        break;
-//      default:
-//        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType.NULL);
-//        break;
-//    }
-//    return tgt;
-//  }
 
   public static org.hl7.fhir.model.core.AuditEvent.AuditEventSourceComponent convertAuditEventSourceComponent(org.hl7.fhir.r4.model.AuditEvent.AuditEventSourceComponent src) throws FHIRException {
     if (src == null)

@@ -57,6 +57,7 @@ public class DocumentReference40_N {
   public static final String ATTESTATION_MODE_SYSTEM = "http://terminology.hl7.org/CodeSystem/composition-attestation-mode";
   // marks the identifier that was the R4 masterIdentifier
   public static final String MASTER_IDENTIFIER_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.masterIdentifier";
+  private static final String CONTEXT_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.context";
   public static final String SOURCE_PATIENT_INFO_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.context.sourcePatientInfo";
 
   /**
@@ -116,8 +117,18 @@ public class DocumentReference40_N {
       tgt.addSecurityLabel(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContentComponent t : src.getContent())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
-    if (src.hasContext())
+    if (src.hasContext()) {
       convertDocumentReferenceContextComponent(src.getContext(), tgt);
+      // R6 has no context element: its id and extensions (including modifier extensions) are a 4.0 extension
+      org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent c = src.getContext();
+      if (c.hasId() || c.hasExtension() || c.hasModifierExtension()) {
+        org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent own = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent();
+        own.setId(c.getId());
+        own.getExtension().addAll(c.getExtension());
+        own.getModifierExtension().addAll(c.getModifierExtension());
+        tgt.addExtension(CrossVersionDatatype40_N.convertR4ElementToExtension(CONTEXT_URL, own));
+      }
+    }
     CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "related");
     return tgt;
   }
@@ -167,6 +178,10 @@ public class DocumentReference40_N {
     for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceContentComponent t : src.getContentList())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     convertDocumentReferenceContextComponent(src, tgt.getContext());
+    if (src.hasExtension(CONTEXT_URL)) {
+      CrossVersionDatatype40_N.populateR4Element(src.getExtensionByUrl(CONTEXT_URL), tgt.getContext());
+      tgt.getExtension().removeIf(e -> CONTEXT_URL.equals(e.getUrl()));
+    }
     for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceRelatedComponent t : src.getRelatedList()) {
       if (!(t.hasTarget() && !t.hasCode() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension()))
         tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("DocumentReference", "6.0", "related"), t));

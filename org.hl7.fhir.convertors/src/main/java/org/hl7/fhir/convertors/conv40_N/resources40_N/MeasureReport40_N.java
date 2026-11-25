@@ -247,7 +247,7 @@ public class MeasureReport40_N {
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.model.core.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulationList())
       tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
-    if (src.hasMeasureScoreQuantity())
+    if (src.hasMeasureScore() && "Quantity".equals(src.getMeasureScore().fhirType())) // not a Duration (which R4 would make a Quantity)
       tgt.setMeasureScore(Quantity40_N.convertQuantity(src.getMeasureScoreQuantity()));
     else if (src.hasMeasureScore())
       CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "measureScore");
@@ -352,7 +352,7 @@ public class MeasureReport40_N {
       tgt.addComponent(convertStratifierGroupComponentComponent(t));
     for (org.hl7.fhir.model.core.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulationList())
       tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
-    if (src.hasMeasureScoreQuantity())
+    if (src.hasMeasureScore() && "Quantity".equals(src.getMeasureScore().fhirType())) // not a Duration (which R4 would make a Quantity)
       tgt.setMeasureScore(Quantity40_N.convertQuantity(src.getMeasureScoreQuantity()));
     else if (src.hasMeasureScore())
       CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "measureScore");

@@ -49,7 +49,8 @@ public class ResearchSubject40_N {
     if (src.hasIndividual())
       tgt.setSubject(Reference40_N.convertReference(src.getIndividual()));
     CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "subjectState");
-    if (src.hasStatus() && !hasState(tgt, src.getStatusElement().getValueAsString())) {
+    // if the states are in the extension, they all are (see below)
+    if (src.hasStatus() && !tgt.hasSubjectState()) {
       ResearchSubject.ResearchSubjectSubjectStateComponent state = tgt.addSubjectState();
       state.getCode().addCoding().setSystem(STATUS_SYSTEM).setCode(src.getStatusElement().getValueAsString());
     }
@@ -90,8 +91,14 @@ public class ResearchSubject40_N {
       }
     }
     String url = CrossVersionElements40_N.url("ResearchSubject", "6.0", "subjectState");
+    // the states the R4 status doesn't make again go in the extension - and if any do, they all do (so that their
+    // order is kept, and there's no question which of them is the R4 status)
+    boolean all = false;
     for (ResearchSubject.ResearchSubjectSubjectStateComponent t : src.getSubjectStateList())
       if (t != status || !isJustTheCode(t))
+        all = true;
+    for (ResearchSubject.ResearchSubjectSubjectStateComponent t : src.getSubjectStateList())
+      if (all)
         tgt.addExtension(org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N.convertToExtension(url, t));
     CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", V6);
     for (org.hl7.fhir.model.core.Reference t : src.getConsentList())
@@ -116,10 +123,4 @@ public class ResearchSubject40_N {
     return state.equalsDeep(regenerated);
   }
 
-  private static boolean hasState(ResearchSubject tgt, String code) {
-    for (ResearchSubject.ResearchSubjectSubjectStateComponent t : tgt.getSubjectStateList())
-      if (t.getCode().hasCoding(STATUS_SYSTEM, code))
-        return true;
-    return false;
-  }
 }

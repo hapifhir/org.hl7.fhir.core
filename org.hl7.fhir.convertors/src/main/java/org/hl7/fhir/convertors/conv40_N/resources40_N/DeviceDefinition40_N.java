@@ -52,7 +52,6 @@ public class DeviceDefinition40_N {
 
   // R6 dropped DeviceDefinition.owner - carried as the same cross-version extension DeviceDefinition50_N uses
   public static final String OWNER_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-DeviceDefinition.owner";
-  private static final String SYSTEM_NAME_TYPE = "http://hl7.org/fhir/device-nametype";
   private static final String SYSTEM_LANG = "urn:ietf:bcp:47";
 
   public static org.hl7.fhir.model.core.DeviceDefinition convertDeviceDefinition(org.hl7.fhir.r4.model.DeviceDefinition src) throws FHIRException {
@@ -106,16 +105,22 @@ public class DeviceDefinition40_N {
       if (t.getValueQuantity().size() + t.getValueCode().size() <= 1) {
         tgt.addProperty(convertDeviceDefinitionPropertyComponent(t));
       } else {
+        // the R4 property's id and extensions go on the first one (going back, the others are merged into it)
+        boolean first = true;
         for (org.hl7.fhir.r4.model.Quantity q : t.getValueQuantity()) {
           org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionPropertyComponent p = tgt.addProperty();
-          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(t, p);
+          if (first)
+            ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(t, p);
+          first = false;
           if (t.hasType())
             p.setType(CodeableConcept40_N.convertCodeableConcept(t.getType()));
           p.setValue(Quantity40_N.convertQuantity(q));
         }
         for (org.hl7.fhir.r4.model.CodeableConcept c : t.getValueCode()) {
           org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionPropertyComponent p = tgt.addProperty();
-          ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(t, p);
+          if (first)
+            ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(t, p);
+          first = false;
           if (t.hasType())
             p.setType(CodeableConcept40_N.convertCodeableConcept(t.getType()));
           p.setValue(CodeableConcept40_N.convertCodeableConcept(c));
@@ -320,111 +325,17 @@ public class DeviceDefinition40_N {
     return tgt;
   }
 
-  // R4 device-nametype codes map onto the R6 codes as for Device40_N. R6 has fewer codes: the R4 code is kept (4.0
-  // extension on the concept) unless R6 has it too; the R6 concept is kept (6.0 extension on the code) when the R4 code
-  // can't make it again
+  // see DeviceNameType40_N
   public static final String NAME_TYPE_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DeviceDefinition.deviceName.type";
   public static final String NAME_TYPE_CONCEPT_EXTENSION_URL = "http://hl7.org/fhir/6.0/StructureDefinition/extension-DeviceDefinition.deviceName.type";
-  private static final String SYSTEM_NAME_TYPE_THO = "http://terminology.hl7.org/CodeSystem/device-nametype";
 
   static public org.hl7.fhir.model.core.CodeableConcept convertDeviceNameType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.model.core.CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(src, NAME_TYPE_CONCEPT_EXTENSION_URL);
-    if (kept != null)
-      return kept;
-    org.hl7.fhir.model.core.CodeableConcept tgt = new org.hl7.fhir.model.core.CodeableConcept();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, NAME_TYPE_CONCEPT_EXTENSION_URL);
-    if (src.getValue() != null) {
-      switch (src.getValue()) {
-        case USERFRIENDLYNAME:
-        case MODELNAME:
-          tgt.addCoding(SYSTEM_NAME_TYPE_THO, "user-friendly-name", "User Friendly name");
-          break;
-        case PATIENTREPORTEDNAME:
-          tgt.addCoding(SYSTEM_NAME_TYPE_THO, "patient-reported-name", "Patient Reported name");
-          break;
-        case MANUFACTURERNAME:
-          tgt.addCoding(SYSTEM_NAME_TYPE_THO, "registered-name", "Registered name");
-          break;
-        default:
-          break;
-      }
-      if (src.getValue() != org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.USERFRIENDLYNAME && src.getValue() != org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.PATIENTREPORTEDNAME
-        && src.getValue() != org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MANUFACTURERNAME)
-        tgt.addExtension(NAME_TYPE_EXTENSION_URL, new org.hl7.fhir.model.core.CodeType(src.getValueAsString()));
-    }
-    return tgt;
+    return DeviceNameType40_N.convertToR6(src, NAME_TYPE_EXTENSION_URL, NAME_TYPE_CONCEPT_EXTENSION_URL);
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> convertDeviceNameType(org.hl7.fhir.model.core.CodeableConcept src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameTypeEnumFactory());
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, NAME_TYPE_EXTENSION_URL);
-    if (src.hasExtension(NAME_TYPE_EXTENSION_URL)) {
-      tgt.setValueAsString(src.getExtensionByUrl(NAME_TYPE_EXTENSION_URL).getValue().primitiveValue());
-    } else if (src.hasCoding(SYSTEM_NAME_TYPE_THO, "user-friendly-name") || src.hasCoding(SYSTEM_NAME_TYPE, "user-friendly-name")) {
-      tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.USERFRIENDLYNAME);
-    } else if (src.hasCoding(SYSTEM_NAME_TYPE_THO, "patient-reported-name") || src.hasCoding(SYSTEM_NAME_TYPE, "patient-reported-name")) {
-      tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.PATIENTREPORTEDNAME);
-    } else if (src.hasCoding(SYSTEM_NAME_TYPE_THO, "registered-name") || src.hasCoding(SYSTEM_NAME_TYPE, "registered-name")) {
-      tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MANUFACTURERNAME);
-    } else {
-      tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.OTHER);
-    }
-    // the R4 code doesn't carry all of the R6 concept: if it can't make the same concept again, keep the concept
-    CodeableConcept40_N.keepCodeableConcept(src, tgt, convertDeviceNameType(tgt), NAME_TYPE_CONCEPT_EXTENSION_URL);
-    return tgt;
+    return DeviceNameType40_N.convertToR4(src, new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameTypeEnumFactory()), NAME_TYPE_EXTENSION_URL, NAME_TYPE_CONCEPT_EXTENSION_URL);
   }
-//
-//  public static org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionSpecializationComponent convertDeviceDefinitionSpecializationComponent(org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionSpecializationComponent tgt = new org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionSpecializationComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasSystemType())
-//      tgt.setSystemTypeElement(String40_N.convertString(src.getSystemTypeElement()));
-//    if (src.hasVersion())
-//      tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent convertDeviceDefinitionSpecializationComponent(org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionSpecializationComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasSystemType())
-//      tgt.setSystemTypeElement(String40_N.convertString(src.getSystemTypeElement()));
-//    if (src.hasVersion())
-//      tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionCapabilityComponent convertDeviceDefinitionCapabilityComponent(org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionCapabilityComponent tgt = new org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionCapabilityComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasType())
-//      tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDescription())
-//      tgt.addDescription(CodeableConcept40_N.convertCodeableConcept(t));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent convertDeviceDefinitionCapabilityComponent(org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionCapabilityComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-//    if (src.hasType())
-//      tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-//    for (org.hl7.fhir.model.core.CodeableConcept t : src.getDescription())
-//      tgt.addDescription(CodeableConcept40_N.convertCodeableConcept(t));
-//    return tgt;
-//  }
 
   public static org.hl7.fhir.model.core.DeviceDefinition.DeviceDefinitionPropertyComponent convertDeviceDefinitionPropertyComponent(org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionPropertyComponent src) throws FHIRException {
     if (src == null)
@@ -502,7 +413,8 @@ public class DeviceDefinition40_N {
   private static boolean mergeProperty(org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionPropertyComponent last, org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionPropertyComponent next) {
     if (!last.hasType() || !next.hasType() || !last.getType().equalsDeep(next.getType()))
       return false;
-    if (last.hasId() || last.hasExtension() || last.hasModifierExtension() || next.hasId() || next.hasExtension() || next.hasModifierExtension())
+    // (the R4 property's id and extensions are on the first one - see the split in R4 to R6)
+    if (next.hasId() || next.hasExtension() || next.hasModifierExtension())
       return false;
     if (last.getValueQuantity().size() + last.getValueCode().size() == 0 || next.getValueQuantity().size() + next.getValueCode().size() != 1)
       return false;

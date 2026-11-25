@@ -260,7 +260,7 @@ public class DocumentReference43_50 {
         tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType.APPENDS);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DocumentRelationshipType.NULL);
+        // not a code the target version knows: the value is left empty
         break;
     }
     return tgt;

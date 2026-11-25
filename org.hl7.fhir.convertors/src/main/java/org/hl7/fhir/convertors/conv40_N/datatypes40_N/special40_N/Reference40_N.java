@@ -41,6 +41,18 @@ public class Reference40_N {
       if (tgt.getReference().isEmpty())
         tgt.setReference(null);
     }
+    // the id and extensions are the CodeableReference's, if convertCodeableReferenceToReference says so
+    String marker = org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE;
+    if ("CodeableReference".equals(src.getExtensionString(marker)) && tgt.hasReference()) {
+      org.hl7.fhir.model.core.Reference r = tgt.getReference();
+      r.getExtension().removeIf(e -> marker.equals(e.getUrl()));
+      tgt.setId(r.getId());
+      r.setId(null);
+      tgt.getExtension().addAll(r.getExtension());
+      r.getExtension().clear();
+      if (r.isEmpty())
+        tgt.setReference(null);
+    }
     return tgt;
   }
 
@@ -53,6 +65,12 @@ public class Reference40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Reference tgt = src.hasReference() ? convertReference(src.getReference()) : new org.hl7.fhir.r4.model.Reference();
+    // the CodeableReference's own id and extensions, if the Reference has none of its own (marked as the
+    // CodeableReference's, for the way back)
+    if ((src.hasId() || src.hasExtension()) && !tgt.hasId() && !tgt.hasExtension()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      tgt.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.r4.model.CodeType("CodeableReference"));
+    }
     if (src.hasConcept())
       tgt.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_CODEABLE_REFERENCE_CONCEPT, org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N.convertCodeableConcept(src.getConcept()));
     return tgt;

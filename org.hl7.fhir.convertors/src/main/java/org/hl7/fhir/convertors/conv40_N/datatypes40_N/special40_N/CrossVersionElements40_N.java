@@ -35,7 +35,8 @@ public class CrossVersionElements40_N {
     "effectivePeriod", "http://hl7.org/fhir/StructureDefinition/resource-effectivePeriod");
 
   public static String url(String type, String version, String name) {
-    String core = R4_CORE_EXTENSIONS.get(name);
+    // the R4 core extensions are for resource level elements (from R5)
+    String core = "5.0".equals(version) && !type.contains(".") ? R4_CORE_EXTENSIONS.get(name) : null;
     return core != null ? core : "http://hl7.org/fhir/" + version + "/StructureDefinition/extension-" + type + "." + name;
   }
 
@@ -83,8 +84,18 @@ public class CrossVersionElements40_N {
       extensions.add(new org.hl7.fhir.r4.model.Extension(url, code));
     } else if (CrossVersionDatatype40_N.isR4Type(v)) {
       extensions.add(new org.hl7.fhir.r4.model.Extension(url, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType((org.hl7.fhir.model.core.DataType) v)));
+    } else if (v.isPrimitive()) {
+      // a primitive type R4 doesn't have (integer64): a string, marked with the R6 type
+      org.hl7.fhir.r4.model.StringType str = new org.hl7.fhir.r4.model.StringType(v.primitiveValue());
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement((org.hl7.fhir.model.core.Element) v, str);
+      str.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.r4.model.CodeType(v.fhirType()));
+      extensions.add(new org.hl7.fhir.r4.model.Extension(url, str));
     } else {
-      extensions.add(CrossVersionDatatype40_N.convertToExtension(url, v));
+      org.hl7.fhir.r4.model.Extension ext = CrossVersionDatatype40_N.convertToExtension(url, v);
+      // a data type R4 doesn't have (e.g. CodeableReference): the element might be a choice, so the type is recorded
+      if (!v.fhirType().contains("."))
+        ext.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.r4.model.CodeType(v.fhirType()));
+      extensions.add(ext);
     }
   }
 
@@ -140,8 +151,20 @@ public class CrossVersionElements40_N {
       String url = url(path, version, name);
       for (org.hl7.fhir.r4.model.Extension ext : extensions) {
         if (url.equals(ext.getUrl())) {
-          if (ext.hasValue()) {
+          String type = ext.hasValue() ? ext.getValue().getExtensionString(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE)
+            : ext.getExtensionString(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE);
+          if (ext.hasValue() && type != null) {
+            // a primitive type R4 doesn't have (see addR4Extension)
+            org.hl7.fhir.model.core.DataType v = (org.hl7.fhir.model.core.DataType) org.hl7.fhir.model.core.ResourceFactory.createType(type);
+            ((org.hl7.fhir.model.core.PrimitiveType<?>) v).setValueAsString(ext.getValue().primitiveValue());
+            tgt.setProperty(p.getName(), v);
+          } else if (ext.hasValue()) {
             tgt.setProperty(p.getName(), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(ext.getValue()));
+          } else if (type != null) {
+            // a data type R4 doesn't have (see addR4Extension)
+            org.hl7.fhir.model.core.DataType v = (org.hl7.fhir.model.core.DataType) org.hl7.fhir.model.core.ResourceFactory.createType(type);
+            CrossVersionDatatype40_N.populateDatatype(ext, v, org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE);
+            tgt.setProperty(p.getName(), v);
           } else {
             CrossVersionDatatype40_N.populateDatatype(ext, CrossVersionDatatype40_N.addChild(tgt, name));
           }
@@ -197,9 +220,14 @@ public class CrossVersionElements40_N {
       for (org.hl7.fhir.r4.model.Extension ext : srcExtensions)
         if (ext.getUrl() != null && ext.getUrl().startsWith(prefix) && !ext.getUrl().substring(prefix.length()).contains("."))
           names.add(ext.getUrl().substring(prefix.length()));
+      // and the R4 core extensions that url() uses instead
+      if ("5.0".equals(version) && !path.contains("."))
+        for (Map.Entry<String, String> e : R4_CORE_EXTENSIONS.entrySet())
+          if (srcExtensions.stream().anyMatch(x -> e.getValue().equals(x.getUrl())))
+            names.add(e.getKey());
       for (String name : names) {
         Property p = tgt.getChildByName(name);
-        if (p == null || isHandled(path, name) || !url(path, version, name).startsWith(prefix))
+        if (p == null || isHandled(path, name))
           continue;
         // if something else already set the element, the extension is just a copy of it
         if (!p.hasValues())
@@ -290,7 +318,11 @@ public class CrossVersionElements40_N {
         } else if (v instanceof org.hl7.fhir.r4.model.Type && hasR6Type(v.fhirType())) {
           extensions.add(new org.hl7.fhir.model.core.Extension(url, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType((org.hl7.fhir.r4.model.Type) v)));
         } else {
-          extensions.add(CrossVersionDatatype40_N.convertR4ElementToExtension(url, v));
+          org.hl7.fhir.model.core.Extension ext = CrossVersionDatatype40_N.convertR4ElementToExtension(url, v);
+          // a data type R6 doesn't have (e.g. Contributor): the element might be a choice, so the type is recorded
+          if (!v.fhirType().contains("."))
+            ext.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.model.core.CodeType(v.fhirType()));
+          extensions.add(ext);
         }
       }
     }
@@ -305,9 +337,20 @@ public class CrossVersionElements40_N {
       String url = url(path, "4.0", name);
       for (org.hl7.fhir.model.core.Extension ext : extensions) {
         if (url.equals(ext.getUrl())) {
+          org.hl7.fhir.r4.model.Property p = r4Child(tgt, name);
+          String type = ext.getExtensionString(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE);
           if (ext.hasValue()) {
-            org.hl7.fhir.r4.model.Property p = r4Child(tgt, name);
             tgt.setProperty(p == null ? name : p.getName(), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(ext.getValue()));
+          } else if (type != null) {
+            // a data type R6 doesn't have (see r4ElementsToExtensions)
+            org.hl7.fhir.r4.model.Base v = org.hl7.fhir.r4.model.ResourceFactory.createType(type);
+            org.hl7.fhir.model.core.Extension copy = new org.hl7.fhir.model.core.Extension();
+            copy.setId(ext.getId());
+            for (org.hl7.fhir.model.core.Extension sub : ext.getExtensionList())
+              if (!org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE.equals(sub.getUrl()))
+                copy.addExtension(sub);
+            CrossVersionDatatype40_N.populateR4Element(copy, v);
+            tgt.setProperty(p == null ? name : p.getName(), v);
           } else {
             CrossVersionDatatype40_N.populateR4Element(ext, tgt.addChild(name));
           }
@@ -370,7 +413,7 @@ public class CrossVersionElements40_N {
     org.hl7.fhir.r4.model.Property p = r4Child(src, name);
     if (p != null && p.hasValues()) {
       org.hl7.fhir.r4.model.Base v = p.getValues().get(0);
-      if (allows(tgt.getChildByName(name), v.fhirType()))
+      if (allows(tgt.getChildByName(name), v.fhirType()) && hasR6Type(v.fhirType()))
         tgt.setProperty(name + "[x]", ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType((org.hl7.fhir.r4.model.Type) v));
       else
         r4ElementsToExtensions(src, path, tgtExtensions, name);
@@ -389,7 +432,7 @@ public class CrossVersionElements40_N {
     if (p != null && p.hasValues()) {
       Base v = p.getValues().get(0);
       org.hl7.fhir.r4.model.Property tp = r4Child(tgt, name);
-      if (tp != null && allows(tp.getTypeCode(), v.fhirType()))
+      if (tp != null && allows(tp.getTypeCode(), v.fhirType()) && CrossVersionDatatype40_N.isR4Type(v))
         tgt.setProperty(name + "[x]", ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType((org.hl7.fhir.model.core.DataType) v));
       else
         elementsToExtensionsForPath(src, path, tgtExtensions, "5.0", name);

@@ -48,6 +48,7 @@ import org.hl7.fhir.model.core.Enumerations;
 public class Encounter40_N {
 
   // R6 reason.use, on each R4 reasonCode / reasonReference that came from that reason
+  private static final String REASON_URL = CrossVersionElements40_N.url("Encounter", "5.0", "reason");
   public static final String REASON_USE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Encounter.reason.use";
 
   /**
@@ -55,6 +56,20 @@ public class Encounter40_N {
    * the CodeableReference extension) or reasonReference, carrying the reason's uses as extensions
    */
   private static void convertReasons(org.hl7.fhir.model.core.Encounter src, org.hl7.fhir.r4.model.Encounter tgt) throws FHIRException {
+    reasonValues(src, tgt);
+    // if grouping them by use again wouldn't make the same reasons (a reason with no values, or with an id or
+    // extensions, or two with the same uses...), the R6 reasons are a 5.0 extension as well, and they're what comes back
+    org.hl7.fhir.model.core.Encounter check = new org.hl7.fhir.model.core.Encounter();
+    convertReasons(tgt, check);
+    boolean same = check.getReasonList().size() == src.getReasonList().size();
+    for (int i = 0; same && i < src.getReasonList().size(); i++)
+      same = src.getReasonList().get(i).equalsDeep(check.getReasonList().get(i));
+    if (!same)
+      for (ReasonComponent r : src.getReasonList())
+        tgt.addExtension(org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N.convertToExtension(REASON_URL, r));
+  }
+
+  private static void reasonValues(org.hl7.fhir.model.core.Encounter src, org.hl7.fhir.r4.model.Encounter tgt) throws FHIRException {
     for (ReasonComponent r : src.getReasonList()) {
       for (CodeableReference v : r.getValueList()) {
         org.hl7.fhir.r4.model.Element e;
@@ -76,6 +91,12 @@ public class Encounter40_N {
    * first appear, codes before references)
    */
   private static void convertReasons(org.hl7.fhir.r4.model.Encounter src, org.hl7.fhir.model.core.Encounter tgt) throws FHIRException {
+    if (src.hasExtension(REASON_URL)) {
+      // the R6 reasons as they were (see above)
+      CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "reason");
+      tgt.getExtension().removeIf(e -> REASON_URL.equals(e.getUrl()));
+      return;
+    }
     java.util.List<org.hl7.fhir.r4.model.Element> values = new java.util.ArrayList<>();
     values.addAll(src.getReasonCode());
     values.addAll(src.getReasonReference());
@@ -303,54 +324,6 @@ public class Encounter40_N {
       }
       return tgt;
   }
-
-//  public static org.hl7.fhir.model.core.Encounter.StatusHistoryComponent convertStatusHistoryComponent(org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.model.core.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.model.core.Encounter.StatusHistoryComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    if (src.hasStatus())
-//      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
-//    if (src.hasPeriod())
-//      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent convertStatusHistoryComponent(org.hl7.fhir.model.core.Encounter.StatusHistoryComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    if (src.hasStatus())
-//      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEncounterStatus(src.getStatusElement()), src.fhirType(), "status"));
-//    if (src.hasPeriod())
-//      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.model.core.Encounter.ClassHistoryComponent convertClassHistoryComponent(org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.model.core.Encounter.ClassHistoryComponent tgt = new org.hl7.fhir.model.core.Encounter.ClassHistoryComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    if (src.hasClass_())
-//      tgt.setClass_(Coding40_N.convertCoding(src.getClass_()));
-//    if (src.hasPeriod())
-//      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-//    return tgt;
-//  }
-//
-//  public static org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent convertClassHistoryComponent(org.hl7.fhir.model.core.Encounter.ClassHistoryComponent src) throws FHIRException {
-//    if (src == null)
-//      return null;
-//    org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent tgt = new org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent();
-//    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    if (src.hasClass_())
-//      tgt.setClass_(Coding40_N.convertCoding(src.getClass_()));
-//    if (src.hasPeriod())
-//      tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-//    return tgt;
-//  }
 
   public static org.hl7.fhir.model.core.Encounter.EncounterParticipantComponent convertEncounterParticipantComponent(org.hl7.fhir.r4.model.Encounter.EncounterParticipantComponent src) throws FHIRException {
     if (src == null)

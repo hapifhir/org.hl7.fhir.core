@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -96,9 +97,14 @@ public class Composition40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference40_N.convertReference(t));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
-    // R6 moved confidentiality to a security label
+    // R6 moved confidentiality to a security label: the last one (see below). If R4 has no confidentiality, the
+    // security labels that look like it are marked as just labels
     if (src.hasConfidentiality())
       tgt.getMeta().addSecurity(convertDocumentConfidentiality(src.getConfidentialityElement()));
+    else
+      for (org.hl7.fhir.model.core.Coding c : tgt.getMeta().getSecurityList())
+        if (isConfidentiality(c))
+          c.addExtension(VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY, new org.hl7.fhir.model.core.BooleanType(true));
     for (org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -138,16 +144,22 @@ public class Composition40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getAuthorList()) tgt.addAuthor(Reference40_N.convertReference(t));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
-    // the confidentiality security label is R4 confidentiality (and not a security label as well)
-    for (org.hl7.fhir.model.core.Coding c : src.getMeta().getSecurityList()) {
-      if (isConfidentiality(c)) {
-        tgt.setConfidentialityElement(convertDocumentConfidentiality(c));
-        tgt.getMeta().getSecurity().removeIf(s -> CONFIDENTIALITY_SYSTEM.equals(s.getSystem()) || !s.hasSystem() ? c.getCode().equals(s.getCode()) : false);
-        if (tgt.getMeta().isEmpty())
-          tgt.setMeta(null);
-        break;
-      }
+    // the last confidentiality security label (that isn't marked as just a label) is R4 confidentiality, and not a
+    // security label as well
+    int conf = -1;
+    for (int i = 0; i < src.getMeta().getSecurityList().size(); i++) {
+      org.hl7.fhir.model.core.Coding c = src.getMeta().getSecurityList().get(i);
+      if (isConfidentiality(c) && !c.hasExtension(VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY))
+        conf = i;
     }
+    if (conf >= 0) {
+      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getMeta().getSecurityList().get(conf)));
+      tgt.getMeta().getSecurity().remove(conf);
+    }
+    for (org.hl7.fhir.r4.model.Coding c : tgt.getMeta().getSecurity())
+      c.getExtension().removeIf(e -> VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY.equals(e.getUrl()));
+    if (tgt.getMeta().isEmpty())
+      tgt.setMeta(null);
     for (org.hl7.fhir.model.core.Composition.CompositionAttesterComponent t : src.getAttesterList())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())

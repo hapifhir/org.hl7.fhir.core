@@ -171,8 +171,8 @@ public class BiologicallyDerivedProduct40_N {
       CrossVersionElements40_N.urls(COLLECTION, "6.0", new String[] {"sourcePatient", "sourceOrganization", "procedure"}));
     if (src.hasCollector())
       tgt.setCollector(Reference40_N.convertReference(src.getCollector()));
-    if (src.hasSource()) {
-      // decided by the reference type
+    if (src.hasSource() && !src.hasExtension(CrossVersionElements40_N.url(COLLECTION, "6.0", "sourcePatient"))) {
+      // decided by the reference type (unless the source is the R6 sourcePatient, in the extension)
       if (src.getSource().getReference() != null && src.getSource().getReference().contains("Organization/"))
         tgt.setSourceOrganization(Reference40_N.convertReference(src.getSource()));
       else

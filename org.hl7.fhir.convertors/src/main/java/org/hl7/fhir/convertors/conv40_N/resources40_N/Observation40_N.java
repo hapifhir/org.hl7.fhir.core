@@ -73,8 +73,9 @@ public class Observation40_N {
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_N.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_N.convertReference(t));
-    if (src.hasValue()) {
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    {
+      // the types R4 and R6 allow differ
+      CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     }
 
     if (src.hasDataAbsentReason())
@@ -126,8 +127,9 @@ public class Observation40_N {
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_N.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.model.core.Reference t : src.getPerformerList()) tgt.addPerformer(Reference40_N.convertReference(t));
-    if (src.hasValue()) {
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    {
+      // the types R4 and R6 allow differ
+      CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_N.convertCodeableConcept(src.getDataAbsentReason()));
@@ -283,8 +285,9 @@ public class Observation40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasValue()) {
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    {
+      // the types R4 and R6 allow differ
+      CrossVersionElements40_N.choiceToR6(src, src.getExtension(), "Observation.component", "value", tgt, tgt.getExtension());
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_N.convertCodeableConcept(src.getDataAbsentReason()));
@@ -302,8 +305,9 @@ public class Observation40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasValue()) {
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    {
+      // the types R4 and R6 allow differ
+      CrossVersionElements40_N.choiceToR4(src, src.getExtension(), "Observation.component", "value", tgt, tgt.getExtension());
     }
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept40_N.convertCodeableConcept(src.getDataAbsentReason()));

@@ -63,7 +63,11 @@ public class Bundle40_N {
       tgt.setTotalElement(UnsignedInt40_N.convertUnsignedInt(src.getTotalElement()));
     for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry())
-      tgt.addEntry(convertBundleEntryComponent(t));
+      if (t == src.getEntry().get(src.getEntry().size() - 1) && isIssues(t))
+        // R4 has the issues as an outcome entry (see below)
+        tgt.setIssues(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertResource(t.getResource()));
+      else
+        tgt.addEntry(convertBundleEntryComponent(t));
     // R6 dropped Bundle.signature, and a Bundle has no extensions, so it goes on meta
     if (src.hasSignature())
       tgt.getMeta().addExtension(EXT_SIGNATURE, Signature40_N.convertSignature(src.getSignature()));
@@ -86,11 +90,29 @@ public class Bundle40_N {
     for (org.hl7.fhir.model.core.Bundle.BundleLinkComponent t : src.getLinkList()) tgt.addLink(convertBundleLinkComponent(t));
     for (org.hl7.fhir.model.core.Bundle.BundleEntryComponent t : src.getEntryList())
       tgt.addEntry(convertBundleEntryComponent(t));
+    // R4 has no Bundle.issues: the R4 way is an entry with search.mode = outcome (the last entry)
+    if (src.hasIssues()) {
+      org.hl7.fhir.r4.model.Bundle.BundleEntryComponent e = tgt.addEntry();
+      e.setResource(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertResource(src.getIssues()));
+      e.getSearch().setMode(org.hl7.fhir.r4.model.Bundle.SearchEntryMode.OUTCOME);
+    }
     if (src.hasMeta() && src.getMeta().hasExtension(EXT_SIGNATURE)) {
       tgt.setSignature(Signature40_N.convertSignature((org.hl7.fhir.model.core.Signature) src.getMeta().getExtensionByUrl(EXT_SIGNATURE).getValue()));
       tgt.getMeta().getExtension().removeIf(ext -> EXT_SIGNATURE.equals(ext.getUrl()));
     }
     return tgt;
+  }
+
+  // an entry that is just an OperationOutcome with search.mode = outcome - R6 Bundle.issues
+  private static boolean isIssues(org.hl7.fhir.r4.model.Bundle.BundleEntryComponent e) {
+    if (!(e.getResource() instanceof org.hl7.fhir.r4.model.OperationOutcome) || !e.hasSearch() || e.getSearch().getMode() != org.hl7.fhir.r4.model.Bundle.SearchEntryMode.OUTCOME)
+      return false;
+    org.hl7.fhir.r4.model.Bundle.BundleEntryComponent rest = e.copy();
+    rest.setResource(null);
+    rest.getSearch().setModeElement(null);
+    if (rest.getSearch().isEmpty())
+      rest.setSearch(null);
+    return rest.isEmpty();
   }
 
   static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.Bundle.BundleType> convertBundleType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Bundle.BundleType> src) throws FHIRException {

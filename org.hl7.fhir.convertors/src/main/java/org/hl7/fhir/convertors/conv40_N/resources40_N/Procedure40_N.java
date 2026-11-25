@@ -75,6 +75,10 @@ public class Procedure40_N {
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasPerformed())
       tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getPerformed()));
+    // an R6 occurrence of a type R4 performed[x] doesn't have (Timing)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "occurrence");
+    String occurrenceUrl = CrossVersionElements40_N.url("Procedure", "5.0", "occurrence");
+    tgt.getExtension().removeIf(e -> occurrenceUrl.equals(e.getUrl()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
     if (src.hasAsserter())
@@ -130,8 +134,12 @@ public class Procedure40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setPerformed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    if (src.hasOccurrence()) {
+      if (src.getOccurrence() instanceof org.hl7.fhir.model.core.Timing)
+        CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "occurrence");
+      else
+        tgt.setPerformed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    }
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
     if (src.hasReportedReference())
