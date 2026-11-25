@@ -194,7 +194,7 @@ public class PathBuilder {
     }
     // c:\temp is only a candidate: if file access is confined and it isn't one of the allowed folders (e.g. it didn't
     // exist when the confinement was set up, so [tmp] was somewhere else then), it isn't the temp folder now either
-    if (!ManagedFileAccess.isAllowedPath(Utilities.C_TEMP_DIR)) {
+    if (!ManagedFileAccess.inAllowedPaths(Utilities.C_TEMP_DIR)) {
       return false;
     }
     File tmp = ManagedFileAccess.file(Utilities.C_TEMP_DIR);
