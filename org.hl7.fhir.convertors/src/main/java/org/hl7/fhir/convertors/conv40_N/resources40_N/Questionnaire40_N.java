@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -67,7 +68,10 @@ public class Questionnaire40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Questionnaire tgt = new org.hl7.fhir.model.core.Questionnaire();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM, CrossVersionElements40_N.url("Questionnaire", "5.0", "copyrightLabel"));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "copyrightLabel");
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -111,6 +115,7 @@ public class Questionnaire40_N {
     for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(Coding40_N.convertCoding(t));
     for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireItemComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -119,6 +124,9 @@ public class Questionnaire40_N {
       return null;
     org.hl7.fhir.r4.model.Questionnaire tgt = new org.hl7.fhir.r4.model.Questionnaire();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "copyrightLabel");
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -161,6 +169,7 @@ public class Questionnaire40_N {
     for (org.hl7.fhir.model.core.Coding t : src.getCodeList()) tgt.addCode(Coding40_N.convertCoding(t));
     for (org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent t : src.getItemList())
       tgt.addItem(convertQuestionnaireItemComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -173,16 +182,16 @@ public class Questionnaire40_N {
       tgt.setLinkIdElement(String40_N.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
       tgt.getDefinitionList().add(Uri40_N.convertUri(src.getDefinitionElement()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "definition", tgt.getExtension());
     for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(Coding40_N.convertCoding(t));
     if (src.hasPrefix())
       tgt.setPrefixElement(String40_N.convertString(src.getPrefixElement()));
     if (src.hasText())
       tgt.setTextElement(MarkDown40_N.convertStringToMarkdown(src.getTextElement()));
     if (src.hasType()) {
-      tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
-      if (src.getType() == QuestionnaireItemType.CHOICE) {
-        tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSONLY);
-      } else if (src.getType() == QuestionnaireItemType.OPENCHOICE) {
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertQuestionnaireItemType(src.getTypeElement()), src.fhirType(), "type"));
+      // choice -> no answerConstraint, since R6 presumes optionsOnly when it is missing
+      if (src.getType() == QuestionnaireItemType.OPENCHOICE) {
         tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSORSTRING);
       }
     }
@@ -195,7 +204,7 @@ public class Questionnaire40_N {
     for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen())
       tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
     if (src.hasEnableBehavior())
-      tgt.setEnableBehaviorElement(convertEnableWhenBehavior(src.getEnableBehaviorElement()));
+      tgt.setEnableBehaviorElement(CrossVersionElements40_N.toR6Code(src.getEnableBehaviorElement(), convertEnableWhenBehavior(src.getEnableBehaviorElement()), src.fhirType(), "enableBehavior"));
     if (src.hasRequired())
       tgt.setRequiredElement(Boolean40_N.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeats())
@@ -212,6 +221,7 @@ public class Questionnaire40_N {
       tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
     for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireItemComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -224,6 +234,7 @@ public class Questionnaire40_N {
       tgt.setLinkIdElement(String40_N.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
       tgt.setDefinitionElement(Uri40_N.convertUri(src.getDefinitionList().get(0)));
+    CrossVersionElements40_N.extraValuesToR4(src, "definition", tgt.getExtension());
     for (org.hl7.fhir.model.core.Coding t : src.getCodeList()) tgt.addCode(Coding40_N.convertCoding(t));
     if (src.hasPrefix())
       tgt.setPrefixElement(String40_N.convertString(src.getPrefixElement()));
@@ -231,15 +242,15 @@ public class Questionnaire40_N {
       tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     if (src.hasType())
       tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement(), src.getAnswerConstraint()));
-    if (src.hasAnswerConstraint() && src.getAnswerConstraint() == QuestionnaireAnswerConstraint.OPTIONSORTYPE) {
-      // optionsOnly and optionsOrString are both carried by the R4 item type, but optionsOrType has
-      // nowhere to go, so it goes into the cross-version extension rather than being lost (#2549)
+    if (src.hasAnswerConstraint() && !(src.getAnswerConstraint() == QuestionnaireAnswerConstraint.OPTIONSORSTRING && tgt.getType() == QuestionnaireItemType.OPENCHOICE)) {
+      // only optionsOrString on an open-choice item is carried by the R4 item type. Anything else (optionsOrType,
+      // an explicit optionsOnly, a constraint on a non-coding item) goes into the cross-version extension (#2549)
       tgt.addExtension(ANSWER_CONSTRAINT_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getAnswerConstraint().toCode()));
     }
     for (org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhenList())
       tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
     if (src.hasEnableBehavior())
-      tgt.setEnableBehaviorElement(convertEnableWhenBehavior(src.getEnableBehaviorElement()));
+      tgt.setEnableBehaviorElement(CrossVersionElements40_N.toR4Code(src.getEnableBehaviorElement(), convertEnableWhenBehavior(src.getEnableBehaviorElement()), src.fhirType(), "enableBehavior"));
     if (src.hasRequired())
       tgt.setRequiredElement(Boolean40_N.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeats())
@@ -256,6 +267,7 @@ public class Questionnaire40_N {
       tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
     for (org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent t : src.getItemList())
       tgt.addItem(convertQuestionnaireItemComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -264,7 +276,10 @@ public class Questionnaire40_N {
           return null;
       Enumeration<Questionnaire.QuestionnaireItemTypeUsable> tgt = new Enumeration<>(new Questionnaire.QuestionnaireItemTypeUsableEnumFactory());
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      tgt.addExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL, new CodeType(src.getValueAsString()));
+      if (src.getValue() == org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION) {
+        // the only R4 type that can't be regenerated from the R6 type (+ answerConstraint)
+        tgt.addExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL, new CodeType(src.getValueAsString()));
+      }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
@@ -452,9 +467,10 @@ public class Questionnaire40_N {
     if (src.hasQuestion())
       tgt.setQuestionElement(String40_N.convertString(src.getQuestionElement()));
     if (src.hasOperator())
-      tgt.setOperatorElement(convertQuestionnaireItemOperator(src.getOperatorElement()));
-    if (src.hasAnswer())
-      tgt.setAnswer(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAnswer()));
+      tgt.setOperatorElement(CrossVersionElements40_N.toR6Code(src.getOperatorElement(), convertQuestionnaireItemOperator(src.getOperatorElement()), src.fhirType(), "operator"));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "answer", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -466,9 +482,9 @@ public class Questionnaire40_N {
     if (src.hasQuestion())
       tgt.setQuestionElement(String40_N.convertString(src.getQuestionElement()));
     if (src.hasOperator())
-      tgt.setOperatorElement(convertQuestionnaireItemOperator(src.getOperatorElement()));
-    if (src.hasAnswer())
-      tgt.setAnswer(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAnswer()));
+      tgt.setOperatorElement(CrossVersionElements40_N.toR4Code(src.getOperatorElement(), convertQuestionnaireItemOperator(src.getOperatorElement()), src.fhirType(), "operator"));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "answer", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -553,10 +569,11 @@ public class Questionnaire40_N {
       return null;
     org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemAnswerOptionComponent tgt = new org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemAnswerOptionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasInitialSelected())
       tgt.setInitialSelectedElement(Boolean40_N.convertBoolean(src.getInitialSelectedElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -565,10 +582,10 @@ public class Questionnaire40_N {
       return null;
     org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent tgt = new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasInitialSelected())
       tgt.setInitialSelectedElement(Boolean40_N.convertBoolean(src.getInitialSelectedElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -577,8 +594,9 @@ public class Questionnaire40_N {
       return null;
     org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemInitialComponent tgt = new org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemInitialComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -587,8 +605,8 @@ public class Questionnaire40_N {
       return null;
     org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemInitialComponent tgt = new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemInitialComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -51,16 +53,18 @@ public class CarePlan40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CarePlan tgt = new org.hl7.fhir.model.core.CarePlan();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.url("CarePlan", "5.0", "addresses"));
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "CarePlan", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCarePlanStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertCarePlanStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertCarePlanIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertCarePlanIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasTitle())
@@ -82,6 +86,8 @@ public class CarePlan40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getAddresses())
       tgt.addAddresses(Reference40_N.convertReferenceToCodeableReference(t));
+    // the ones that were more than a reference
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "addresses");
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(Reference40_N.convertReference(t));
@@ -95,16 +101,17 @@ public class CarePlan40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan tgt = new org.hl7.fhir.r4.model.CarePlan();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("CarePlan", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "CarePlan", "instantiatesCanonical", "instantiatesUri");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getReplacesList()) tgt.addReplaces(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCarePlanStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertCarePlanStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertCarePlanIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertCarePlanIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasTitle())
@@ -124,9 +131,13 @@ public class CarePlan40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getContributorList())
       tgt.addContributor(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getCareTeamList()) tgt.addCareTeam(Reference40_N.convertReference(t));
-    for (CodeableReference t : src.getAddressesList())
-      if (t.hasReference())
+    // R4 addresses is only a Reference: anything more goes whole in a 5.0 extension
+    for (CodeableReference t : src.getAddressesList()) {
+      if (t.hasReference() && !t.hasConcept() && !t.hasId() && !t.hasExtension())
         tgt.addAddresses(Reference40_N.convertReference(t.getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("CarePlan", "5.0", "addresses"), t));
+    }
     for (org.hl7.fhir.model.core.Reference t : src.getSupportingInfoList())
       tgt.addSupportingInfo(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getGoalList()) tgt.addGoal(Reference40_N.convertReference(t));
@@ -275,15 +286,12 @@ public class CarePlan40_N {
       return null;
     org.hl7.fhir.model.core.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.model.core.CarePlan.CarePlanActivityComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept())
-      tgt.addPerformedActivity(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference())
-      tgt.addPerformedActivity(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getOutcomeCodeableConcept(), src.getOutcomeReference(), tgt.getPerformedActivityList());
     for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(Annotation40_N.convertAnnotation(t));
     if (src.hasReference())
       tgt.setPlannedActivityReference(Reference40_N.convertReference(src.getReference()));
-//    if (src.hasDetail())
-//      tgt.setPlannedActivityDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
+    // R6 dropped detail (it's meant to be a request resource now): it's kept whole in a 4.0 extension
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "CarePlan.activity", tgt.getExtension(), "detail");
     return tgt;
   }
 
@@ -291,18 +299,12 @@ public class CarePlan40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    for (CodeableReference t : src.getPerformedActivityList())
-      if (t.hasConcept())
-        tgt.addOutcomeCodeableConcept(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getPerformedActivityList())
-      if (t.hasReference())
-        tgt.addOutcomeReference(Reference40_N.convertReference(t.getReference()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("CarePlan.activity", "4.0", "detail"));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "CarePlan.activity", "detail");
+    CodeableConcept40_N.convertReasonsToR4(src.getPerformedActivityList(), tgt.getOutcomeCodeableConcept(), tgt.getOutcomeReference());
     for (org.hl7.fhir.model.core.Annotation t : src.getProgressList()) tgt.addProgress(Annotation40_N.convertAnnotation(t));
     if (src.hasPlannedActivityReference())
       tgt.setReference(Reference40_N.convertReference(src.getPlannedActivityReference()));
-//    if (src.hasPlannedActivityDetail())
-//      tgt.setDetail(convertCarePlanActivityDetailComponent(src.getPlannedActivityDetail()));
     return tgt;
   }
 //
@@ -312,7 +314,7 @@ public class CarePlan40_N {
 //    org.hl7.fhir.model.core.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.model.core.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasKind())
-//      tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
+//      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertCarePlanActivityKind(src.getKindElement()), src.fhirType(), "kind"));
 //    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
 //      tgt.getInstantiatesCanonical().add(Canonical40_N.convertCanonical(t));
 //    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
@@ -325,7 +327,7 @@ public class CarePlan40_N {
 //      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
 //    for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(Reference40_N.convertReference(t));
 //    if (src.hasStatus())
-//      tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
+//      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertCarePlanActivityStatus(src.getStatusElement()), src.fhirType(), "status"));
 //    if (src.hasStatusReason())
 //      tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
 //    if (src.hasDoNotPerform())
@@ -352,7 +354,7 @@ public class CarePlan40_N {
 //    org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
 //    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasKind())
-//      tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
+//      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertCarePlanActivityKind(src.getKindElement()), src.fhirType(), "kind"));
 //    for (org.hl7.fhir.model.core.CanonicalType t : src.getInstantiatesCanonicalList())
 //      tgt.getInstantiatesCanonical().add(Canonical40_N.convertCanonical(t));
 //    for (org.hl7.fhir.model.core.UriType t : src.getInstantiatesUriList())
@@ -367,7 +369,7 @@ public class CarePlan40_N {
 //        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
 //    for (org.hl7.fhir.model.core.Reference t : src.getGoalList()) tgt.addGoal(Reference40_N.convertReference(t));
 //    if (src.hasStatus())
-//      tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
+//      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertCarePlanActivityStatus(src.getStatusElement()), src.fhirType(), "status"));
 //    if (src.hasStatusReason())
 //      tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
 //    if (src.hasDoNotPerform())

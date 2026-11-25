@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Canonical40_N;
@@ -49,12 +50,13 @@ public class QuestionnaireResponse40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "identifier", tgt.getExtension());
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasQuestionnaire())
       tgt.setQuestionnaireElement(Canonical40_N.convertCanonical(src.getQuestionnaireElement()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertQuestionnaireResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -77,12 +79,13 @@ public class QuestionnaireResponse40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifierFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "identifier", tgt.getExtension());
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasQuestionnaire())
       tgt.setQuestionnaireElement(Canonical40_N.convertCanonical(src.getQuestionnaireElement()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertQuestionnaireResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -171,6 +174,7 @@ public class QuestionnaireResponse40_N {
       tgt.setLinkIdElement(String40_N.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
       tgt.getDefinitionList().add(Uri40_N.convertUri(src.getDefinitionElement()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "definition", tgt.getExtension());
     if (src.hasText())
       tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer())
@@ -189,6 +193,7 @@ public class QuestionnaireResponse40_N {
       tgt.setLinkIdElement(String40_N.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
       tgt.setDefinitionElement(Uri40_N.convertUri(src.getDefinitionList().get(0)));
+    CrossVersionElements40_N.extraValuesToR4(src, "definition", tgt.getExtension());
     if (src.hasText())
       tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     for (org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswerList())
@@ -203,8 +208,8 @@ public class QuestionnaireResponse40_N {
       return null;
     org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireResponseItemComponent(t));
     return tgt;
@@ -215,8 +220,7 @@ public class QuestionnaireResponse40_N {
       return null;
     org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItemList())
       tgt.addItem(convertQuestionnaireResponseItemComponent(t));
     return tgt;

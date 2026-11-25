@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
@@ -43,6 +44,12 @@ import org.hl7.fhir.model.core.*;
 
 public class AllergyIntolerance40_N {
 
+  public static final String TYPE_SYSTEM = "http://hl7.org/fhir/allergy-intolerance-type";
+  public static final String CATEGORY_SYSTEM = "http://hl7.org/fhir/allergy-intolerance-category";
+  // R6 type and category concepts that the R4 codes can't hold
+  public static final String TYPE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-AllergyIntolerance.type";
+  public static final String CATEGORY_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-AllergyIntolerance.category";
+
   public static org.hl7.fhir.model.core.AllergyIntolerance convertAllergyIntolerance(org.hl7.fhir.r4.model.AllergyIntolerance src) throws FHIRException {
     if (src == null)
       return null;
@@ -54,27 +61,30 @@ public class AllergyIntolerance40_N {
       tgt.setClinicalStatus(CodeableConcept40_N.convertCodeableConcept(src.getClinicalStatus()));
     if (src.hasVerificationStatus())
       tgt.setVerificationStatus(CodeableConcept40_N.convertCodeableConcept(src.getVerificationStatus()));
-    if (src.hasType())
-      tgt.setType(convertAllergyIntoleranceType(src.getTypeElement()));
-    tgt.setCategoryList(src.getCategory().stream()
-      .map(AllergyIntolerance40_N::convertAllergyIntoleranceCategory)
-      .collect(Collectors.toList()));
+    if (src.hasType()) {
+      CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(src.getTypeElement(), TYPE_EXTENSION_URL);
+      tgt.setType(kept != null ? kept : convertAllergyIntoleranceType(src.getTypeElement()));
+    }
+    for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory()) {
+      CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(t, CATEGORY_EXTENSION_URL);
+      tgt.addCategory(kept != null ? kept : convertAllergyIntoleranceCategory(t));
+    }
     if (src.hasCriticality())
-      tgt.setCriticalityElement(convertAllergyIntoleranceCriticality(src.getCriticalityElement()));
+      tgt.setCriticalityElement(CrossVersionElements40_N.toR6Code(src.getCriticalityElement(), convertAllergyIntoleranceCriticality(src.getCriticalityElement()), src.fhirType(), "criticality"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasPatient())
       tgt.setPatient(Reference40_N.convertReference(src.getPatient()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_N.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
     if (src.hasAsserter())
-      tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
+      tgt.setAsserter(Reference40_N.convertReference(src.getAsserter()));
     if (src.hasLastOccurrence())
       tgt.setLastOccurrenceElement(DateTime40_N.convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
@@ -94,24 +104,30 @@ public class AllergyIntolerance40_N {
       tgt.setClinicalStatus(CodeableConcept40_N.convertCodeableConcept(src.getClinicalStatus()));
     if (src.hasVerificationStatus())
       tgt.setVerificationStatus(CodeableConcept40_N.convertCodeableConcept(src.getVerificationStatus()));
-    if (src.hasType())
+    if (src.hasType()) {
       tgt.setTypeElement(convertAllergyIntoleranceType(src.getType()));
-    tgt.setCategory(src.getCategoryList().stream()
-      .map(AllergyIntolerance40_N::convertAllergyIntoleranceCategory)
-      .collect(Collectors.toList()));
+      CodeableConcept40_N.keepCodeableConcept(src.getType(), tgt.getTypeElement(), convertAllergyIntoleranceType(tgt.getTypeElement()), TYPE_EXTENSION_URL);
+    }
+    for (CodeableConcept t : src.getCategoryList()) {
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> c = convertAllergyIntoleranceCategory(t);
+      CodeableConcept40_N.keepCodeableConcept(t, c, convertAllergyIntoleranceCategory(c), CATEGORY_EXTENSION_URL);
+      tgt.getCategory().add(c);
+    }
     if (src.hasCriticality())
-      tgt.setCriticalityElement(convertAllergyIntoleranceCriticality(src.getCriticalityElement()));
+      tgt.setCriticalityElement(CrossVersionElements40_N.toR4Code(src.getCriticalityElement(), convertAllergyIntoleranceCriticality(src.getCriticalityElement()), src.fhirType(), "criticality"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasPatient())
       tgt.setPatient(Reference40_N.convertReference(src.getPatient()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_N.convertDateTime(src.getRecordedDateElement()));
-    tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
+    if (src.hasRecorder())
+      tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
+    if (src.hasAsserter())
+      tgt.setAsserter(Reference40_N.convertReference(src.getAsserter()));
     if (src.hasLastOccurrence())
       tgt.setLastOccurrenceElement(DateTime40_N.convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
@@ -130,10 +146,10 @@ public class AllergyIntolerance40_N {
       } else {
           switch (src.getValue()) {
               case ALLERGY:
-                  tgt.addCoding("http://hl7.org/fhir/allergy-intolerance-type", "allergy", "Allergy");
+                  tgt.addCoding(TYPE_SYSTEM, "allergy", "Allergy");
                   break;
               case INTOLERANCE:
-                  tgt.addCoding("http://hl7.org/fhir/allergy-intolerance-type", "intolerance", "Intolerance");
+                  tgt.addCoding(TYPE_SYSTEM, "intolerance", "Intolerance");
                   break;
               default:
                   break;
@@ -147,9 +163,9 @@ public class AllergyIntolerance40_N {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceTypeEnumFactory());
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasCoding("http://hl7.org/fhir/allergy-intolerance-type", "allergy")) {
+    if (src.hasCoding(TYPE_SYSTEM, "allergy")) {
       tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceType.ALLERGY);
-    } else if (src.hasCoding("http://hl7.org/fhir/allergy-intolerance-type", "intolerance")) {
+    } else if (src.hasCoding(TYPE_SYSTEM, "intolerance")) {
       tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceType.INTOLERANCE);
     }
     return tgt;
@@ -163,16 +179,16 @@ public class AllergyIntolerance40_N {
       if (src.getValue() != null) {
           switch (src.getValue()) {
               case FOOD:
-                  tgt.addCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "food", "Food");
+                  tgt.addCoding(CATEGORY_SYSTEM, "food", "Food");
                   break;
               case MEDICATION:
-                tgt.addCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "medication", "Medication");
+                tgt.addCoding(CATEGORY_SYSTEM, "medication", "Medication");
                   break;
               case ENVIRONMENT:
-                tgt.addCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "environment", "Environment");
+                tgt.addCoding(CATEGORY_SYSTEM, "environment", "Environment");
                   break;
               case BIOLOGIC:
-                tgt.addCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "biologic", "Biologic");
+                tgt.addCoding(CATEGORY_SYSTEM, "biologic", "Biologic");
                   break;
               default:
                   break;
@@ -186,13 +202,13 @@ public class AllergyIntolerance40_N {
           return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategoryEnumFactory());
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      if (src.hasCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "food")) {
+      if (src.hasCoding(CATEGORY_SYSTEM, "food")) {
         tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory.FOOD);
-      } else if (src.hasCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "medication")) {
+      } else if (src.hasCoding(CATEGORY_SYSTEM, "medication")) {
         tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory.MEDICATION);
-      } else if (src.hasCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "environment")) {
+      } else if (src.hasCoding(CATEGORY_SYSTEM, "environment")) {
         tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory.ENVIRONMENT);
-      } else if (src.hasCoding("http://hl7.org/fhir/ValueSet/allergy-intolerance-category", "biologic")) {
+      } else if (src.hasCoding(CATEGORY_SYSTEM, "biologic")) {
         tgt.setValue(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory.BIOLOGIC);
       }
       return tgt;
@@ -258,13 +274,13 @@ public class AllergyIntolerance40_N {
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept40_N.convertCodeableConcept(src.getSubstance()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation())
-      tgt.addManifestation(new CodeableReference(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addManifestation(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasOnset())
       tgt.setOnsetElement(DateTime40_N.convertDateTime(src.getOnsetElement()));
     if (src.hasSeverity())
-      tgt.setSeverityElement(convertAllergyIntoleranceSeverity(src.getSeverityElement()));
+      tgt.setSeverityElement(CrossVersionElements40_N.toR6Code(src.getSeverityElement(), convertAllergyIntoleranceSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasExposureRoute())
       tgt.setExposureRoute(CodeableConcept40_N.convertCodeableConcept(src.getExposureRoute()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
@@ -279,13 +295,13 @@ public class AllergyIntolerance40_N {
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept40_N.convertCodeableConcept(src.getSubstance()));
     for (CodeableReference t : src.getManifestationList())
-      if (t.hasConcept()) tgt.addManifestation(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addManifestation(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasOnset())
       tgt.setOnsetElement(DateTime40_N.convertDateTime(src.getOnsetElement()));
     if (src.hasSeverity())
-      tgt.setSeverityElement(convertAllergyIntoleranceSeverity(src.getSeverityElement()));
+      tgt.setSeverityElement(CrossVersionElements40_N.toR4Code(src.getSeverityElement(), convertAllergyIntoleranceSeverity(src.getSeverityElement()), src.fhirType(), "severity"));
     if (src.hasExposureRoute())
       tgt.setExposureRoute(CodeableConcept40_N.convertCodeableConcept(src.getExposureRoute()));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -54,17 +55,19 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse tgt = new org.hl7.fhir.model.core.ClaimResponse();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ClaimResponse", "5.0", new String[] {"traceNumber", "decision", "event", "encounter", "diagnosisRelatedGroup"}, CrossVersionElements40_N.urls("ClaimResponse", "6.0", new String[] {"statusReason", "supportingInfo"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "decision", "event", "encounter", "diagnosisRelatedGroup");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason", "supportingInfo");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertClaimResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertClaimResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
       tgt.setSubType(CodeableConcept40_N.convertCodeableConcept(src.getSubType()));
     if (src.hasUse())
-      tgt.setUseElement(convertUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasPatient())
       tgt.setSubject(Reference40_N.convertReference(src.getPatient()));
     if (src.hasCreated())
@@ -76,7 +79,7 @@ public class ClaimResponse40_N {
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
     if (src.hasOutcome())
-      tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
+      tgt.setOutcomeElement(CrossVersionElements40_N.toR6Code(src.getOutcomeElement(), convertRemittanceOutcome(src.getOutcomeElement()), src.fhirType(), "outcome"));
     if (src.hasDisposition())
       tgt.setDispositionElement(String40_N.convertString(src.getDispositionElement()));
     if (src.hasPreAuthRef())
@@ -114,16 +117,18 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse tgt = new org.hl7.fhir.r4.model.ClaimResponse();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "decision", "event", "encounter", "diagnosisRelatedGroup");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason", "supportingInfo");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertClaimResponseStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertClaimResponseStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
       tgt.setSubType(CodeableConcept40_N.convertCodeableConcept(src.getSubType()));
     if (src.hasUse())
-      tgt.setUseElement(convertUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasSubject())
       tgt.setPatient(Reference40_N.convertReference(src.getSubject()));
     if (src.hasCreated())
@@ -135,7 +140,7 @@ public class ClaimResponse40_N {
     if (src.hasRequest())
       tgt.setRequest(Reference40_N.convertReference(src.getRequest()));
     if (src.hasOutcome())
-      tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
+      tgt.setOutcomeElement(CrossVersionElements40_N.toR4Code(src.getOutcomeElement(), convertRemittanceOutcome(src.getOutcomeElement()), src.fhirType(), "outcome"));
     if (src.hasDisposition())
       tgt.setDispositionElement(String40_N.convertString(src.getDispositionElement()));
     if (src.hasPreAuthRef())
@@ -340,7 +345,9 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.ItemComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.ItemComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.item", "5.0", new String[] {"traceNumber", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.item", "6.0", new String[] {"informationSequence"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "reviewOutcome");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "informationSequence");
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_N.convertPositiveInt(src.getItemSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -357,6 +364,8 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ItemComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ItemComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "reviewOutcome");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "informationSequence");
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_N.convertPositiveInt(src.getItemSequenceElement()));
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getNoteNumberList())
@@ -372,7 +381,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.AdjudicationComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.AdjudicationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.item.adjudication", "5.0", new String[] {}, CrossVersionElements40_N.urls("ClaimResponse.item.adjudication", "6.0", new String[] {"decisionDate"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "decisionDate");
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -380,7 +390,7 @@ public class ClaimResponse40_N {
     if (src.hasAmount())
       tgt.setAmount(Money40_N.convertMoney(src.getAmount()));
     if (src.hasValue())
-      tgt.setQuantity(Decimal40_N.convertDecimalToQuantity(src.getValueElement()));
+      tgt.setQuantity(Decimal40_N.convertDecimalToQuantity(src.getValueElement(), "http://hl7.org/fhir/5.0/StructureDefinition/extension-ClaimResponse.item.adjudication.quantity"));
     return tgt;
   }
 
@@ -389,6 +399,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "decisionDate");
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -396,7 +407,7 @@ public class ClaimResponse40_N {
     if (src.hasAmount())
       tgt.setAmount(Money40_N.convertMoney(src.getAmount()));
     if (src.hasQuantity())
-      tgt.setValueElement(Decimal40_N.convertDecimal(src.getQuantity().getValueElement()));
+      tgt.setValueElement(Decimal40_N.convertQuantityToDecimal(src.getQuantity(), "http://hl7.org/fhir/5.0/StructureDefinition/extension-ClaimResponse.item.adjudication.quantity"));
     return tgt;
   }
 
@@ -404,7 +415,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.ItemDetailComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.ItemDetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.item.detail", "5.0", new String[] {"traceNumber", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.item.detail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "reviewOutcome");
     if (src.hasDetailSequence())
       tgt.setDetailSequenceElement(PositiveInt40_N.convertPositiveInt(src.getDetailSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -421,6 +433,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "reviewOutcome");
     if (src.hasDetailSequence())
       tgt.setDetailSequenceElement(PositiveInt40_N.convertPositiveInt(src.getDetailSequenceElement()));
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getNoteNumberList())
@@ -436,7 +449,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.SubDetailComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.SubDetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.item.detail.subDetail", "5.0", new String[] {"traceNumber", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.item.detail.subDetail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "reviewOutcome");
     if (src.hasSubDetailSequence())
       tgt.setSubDetailSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSubDetailSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -451,6 +465,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "reviewOutcome");
     if (src.hasSubDetailSequence())
       tgt.setSubDetailSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSubDetailSequenceElement()));
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getNoteNumberList())
@@ -464,7 +479,9 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.AddedItemComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.addItem", "5.0", new String[] {"traceNumber", "revenue", "productOrServiceEnd", "request", "tax", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.addItem", "6.0", new String[] {"subject", "informationSequence", "category"}, CrossVersionElements40_N.url("ClaimResponse.addItem", "5.0", "bodySite"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "revenue", "productOrServiceEnd", "request", "tax", "reviewOutcome");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "subject", "informationSequence", "category");
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence())
       tgt.getItemSequenceList().add(PositiveInt40_N.convertPositiveInt(t));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence())
@@ -478,10 +495,10 @@ public class ClaimResponse40_N {
       tgt.addModifier(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -494,6 +511,7 @@ public class ClaimResponse40_N {
       tgt.getBodySiteFirstRep().addSite(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getBodySite()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite())
       tgt.getBodySiteFirstRep().addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "ClaimResponse.addItem", "5.0", "bodySite");
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
       tgt.getNoteNumberList().add(PositiveInt40_N.convertPositiveInt(t));
     for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication())
@@ -508,6 +526,8 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "revenue", "productOrServiceEnd", "request", "tax", "reviewOutcome");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "subject", "informationSequence", "category");
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getItemSequenceList())
       tgt.getItemSequence().add(PositiveInt40_N.convertPositiveInt(t));
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getDetailSequenceList())
@@ -521,10 +541,8 @@ public class ClaimResponse40_N {
       tgt.addModifier(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getProgramCodeList())
       tgt.addProgramCode(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -533,10 +551,15 @@ public class ClaimResponse40_N {
       tgt.setFactorElement(Decimal40_N.convertDecimal(src.getFactorElement()));
     if (src.hasNet())
       tgt.setNet(Money40_N.convertMoney(src.getNet()));
-    if (src.getBodySiteFirstRep().hasSite())
-      tgt.setBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
-    for (org.hl7.fhir.model.core.CodeableConcept t : src.getBodySiteFirstRep().getSubSiteList())
-      tgt.addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    // R4 has a single bodySite and a list of subSite: if the R6 bodySite is more than that, it all goes in 5.0 extensions
+    if (src.getBodySiteList().size() == 1 && src.getBodySiteFirstRep().getSiteList().size() <= 1 && !src.getBodySiteFirstRep().hasId()
+        && !src.getBodySiteFirstRep().hasExtension() && !src.getBodySiteFirstRep().hasModifierExtension()) {
+      if (src.getBodySiteFirstRep().hasSite())
+        tgt.setBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
+      for (org.hl7.fhir.model.core.CodeableConcept t : src.getBodySiteFirstRep().getSubSiteList())
+        tgt.addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    } else
+      CrossVersionElements40_N.elementsToExtensionsForPath(src, "ClaimResponse.addItem", tgt.getExtension(), "5.0", "bodySite");
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getNoteNumberList())
       tgt.getNoteNumber().add(PositiveInt40_N.convertPositiveInt(t));
     for (org.hl7.fhir.model.core.ClaimResponse.AdjudicationComponent t : src.getAdjudicationList())
@@ -550,7 +573,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.AddedItemDetailComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.AddedItemDetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.addItem.detail", "5.0", new String[] {"traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.addItem.detail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome");
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_N.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -577,6 +601,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome");
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_N.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getModifierList())
@@ -602,7 +627,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.AddedItemSubDetailComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.AddedItemSubDetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.addItem.detail.subDetail", "5.0", new String[] {"traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome"}, CrossVersionElements40_N.urls("ClaimResponse.addItem.detail.subDetail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome");
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_N.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -627,6 +653,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "revenue", "productOrServiceEnd", "tax", "reviewOutcome");
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_N.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getModifierList())
@@ -714,11 +741,17 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.NoteComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.NoteComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.processNote", "5.0", new String[] {}, CrossVersionElements40_N.urls("ClaimResponse.processNote", "6.0", new String[] {"class"}, CrossVersionElements40_N.url("ClaimResponse.processNote", "5.0", "type"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "class");
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_N.convertPositiveInt(src.getNumberElement()));
-    if (src.hasType())
-      tgt.getType().addCoding().setSystem("http://hl7.org/fhir/note-type").setCode(src.getType().toCode());
+    if (src.hasType()) {
+      org.hl7.fhir.model.core.CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(src.getTypeElement(), CrossVersionElements40_N.url("ClaimResponse.processNote", "5.0", "type"));
+      if (kept != null)
+        tgt.setType(kept);
+      else
+        tgt.getType().addCoding().setSystem("http://hl7.org/fhir/note-type").setCode(src.getType().toCode());
+    }
     if (src.hasText())
       tgt.setTextElement(String40_N.convertStringToMarkdown(src.getTextElement()));
     if (src.hasLanguage())
@@ -731,10 +764,20 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.NoteComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.NoteComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "class");
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_N.convertPositiveInt(src.getNumberElement()));
-    if (src.hasType() && src.getType().hasCoding("http://hl7.org/fhir/note-type"))
-      tgt.setType(org.hl7.fhir.r4.model.Enumerations.NoteType.fromCode(src.getType().getCode("http://hl7.org/fhir/note-type")));
+    if (src.hasType()) {
+      // R4 type is a code: if it can't make the same R6 concept, the concept is kept in a 5.0 extension on it
+      if (src.getType().hasCoding("http://hl7.org/fhir/note-type"))
+        tgt.setType(org.hl7.fhir.r4.model.Enumerations.NoteType.fromCode(src.getType().getCode("http://hl7.org/fhir/note-type")));
+      org.hl7.fhir.model.core.CodeableConcept regen = null;
+      if (tgt.hasType()) {
+        regen = new org.hl7.fhir.model.core.CodeableConcept();
+        regen.addCoding().setSystem("http://hl7.org/fhir/note-type").setCode(tgt.getType().toCode());
+      }
+      CodeableConcept40_N.keepCodeableConcept(src.getType(), tgt.getTypeElement(), regen, CrossVersionElements40_N.url("ClaimResponse.processNote", "5.0", "type"));
+    }
     if (src.hasText())
       tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     if (src.hasLanguage())
@@ -782,7 +825,8 @@ public class ClaimResponse40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ClaimResponse.ErrorComponent tgt = new org.hl7.fhir.model.core.ClaimResponse.ErrorComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("ClaimResponse.error", "5.0", new String[] {"expression"}, CrossVersionElements40_N.urls("ClaimResponse.error", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "expression");
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_N.convertPositiveInt(src.getItemSequenceElement()));
     if (src.hasDetailSequence())
@@ -799,6 +843,7 @@ public class ClaimResponse40_N {
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "expression");
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_N.convertPositiveInt(src.getItemSequenceElement()));
     if (src.hasDetailSequence())

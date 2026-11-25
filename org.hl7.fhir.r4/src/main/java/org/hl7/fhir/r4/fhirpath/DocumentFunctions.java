@@ -43,6 +43,10 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  *   <li><b>sameSubject([other])</b> - whether the focus resource has the same subject (or patient) as other, or
  *   without other, as the document's Composition: see {@link #sameSubject}. Empty when other is given but is
  *   empty: only when other isn't given at all is the Composition used.</li>
+ *   <li><b>isKnown()</b> - the input is sections. Whether each is known: its emptyReason is missing, or is
+ *   nil known (list-empty-reason#nilknown). Any other emptyReason is not known. See {@link #isKnown}.</li>
+ *   <li><b>hasData()</b> - the input is sections. Whether each has its data: it has an emptyReason, or else it
+ *   has entries. See {@link #hasData}.</li>
  *   <li><b>hasCoding(system, code [, version])</b> - the input is Codings or CodeableConcepts. Whether any coding
  *   in them matches: a parameter that is a string must match the coding's system, code or version precisely; a
  *   parameter that is empty, or the version when it isn't given, is ignored. True or false, or empty when the input
@@ -333,11 +337,33 @@ class DocumentFunctions {
    * one), or, without other, if the evaluation isn't on a document (a Bundle of type document with a Composition).
    * Otherwise true when the references are identical strings - when both have one; else when both have an identifier,
    * when the identifiers' system and value are identical; otherwise false. Exact matching, without resolving: outside
-   * the document, the context might treat two different references differently
+   * the document, the context might treat two different references differently.
+   * <p>
+   * On a section of a Composition, it is the section's focus that is checked: true when the section has no focus;
+   * otherwise whether the focus is the same as the subject of other - or, without other, of the section's
+   * Composition - compared as above (empty when that has no subject, or more than one)
    */
   Boolean sameSubject(Base root, Base focusResource, List<Base> focus, List<Base> other) {
     if (focus.size() != 1 || focus.get(0) == null) {
       return null;
+    }
+    // a section: its focus, if it has one, against the Composition's subject (or other's)
+    Base comp = sectionComposition(root, focusResource, focus.get(0));
+    if (comp != null) {
+      Base sectionFocus = single(focus.get(0), "focus");
+      if (sectionFocus == null) {
+        return true;
+      }
+      Base target;
+      if (other != null) {
+        if (other.size() != 1) {
+          return null;
+        }
+        target = subjectOf(other.get(0));
+      } else {
+        target = subjectOf(comp);
+      }
+      return target == null ? null : sameReference(sectionFocus, target);
     }
     Base o;
     if (other != null) {
@@ -354,6 +380,14 @@ class DocumentFunctions {
     if (a == null || b == null) {
       return null;
     }
+    return sameReference(a, b);
+  }
+
+  /**
+   * whether two references are to the same thing: identical reference strings, when both have one; else, when both
+   * have an identifier, the same system and value; otherwise false
+   */
+  private boolean sameReference(Base a, Base b) {
     String refA = primitive(a, "reference");
     String refB = primitive(b, "reference");
     if (!isEmpty(refA) && !isEmpty(refB)) {
@@ -366,6 +400,50 @@ class DocumentFunctions {
       return !isEmpty(valueA) && valueA.equals(primitive(idB, "value")) && sameString(primitive(idA, "system"), primitive(idB, "system"));
     }
     return false;
+  }
+
+  private static final String LIST_EMPTY_REASON = "http://terminology.hl7.org/CodeSystem/list-empty-reason";
+
+  /**
+   * isKnown(): the input is sections. A section is known when its emptyReason is missing, or is nil known
+   * (http://terminology.hl7.org/CodeSystem/list-empty-reason#nilknown). Any other emptyReason - not asked, withheld,
+   * unavailable, closed, one with only text - is not known, and an item that isn't a section of a Composition is not
+   * known. Empty when the input is empty; otherwise true when every item is known
+   */
+  Boolean isKnown(Base root, Base focusResource, List<Base> focus) {
+    if (focus.isEmpty()) {
+      return null;
+    }
+    for (Base item : focus) {
+      if (sectionComposition(root, focusResource, item) == null) {
+        return false;
+      }
+      Base reason = single(item, "emptyReason");
+      if (reason != null && !hasCoding(reason, LIST_EMPTY_REASON, "nilknown")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * hasData(): the input is sections. A section has its data when it has an emptyReason (it says why it is
+   * empty), or else when it has entries; an item that isn't a section of a Composition doesn't. Empty when the input
+   * is empty; otherwise true when every item has its data
+   */
+  Boolean hasData(Base root, Base focusResource, List<Base> focus) {
+    if (focus.isEmpty()) {
+      return null;
+    }
+    for (Base item : focus) {
+      if (sectionComposition(root, focusResource, item) == null) {
+        return false;
+      }
+      if (single(item, "emptyReason") == null && children(item, "entry").isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -454,6 +532,37 @@ class DocumentFunctions {
     return list;
   }
 
+  /**
+   * the Composition an item is a section of (at any depth): one in the document the evaluation is on, or the
+   * Composition it is on - null when the item isn't a section of one
+   */
+  private Base sectionComposition(Base root, Base focusResource, Base item) {
+    if (item == null || item.isResource() || item.isPrimitive()) {
+      return null;
+    }
+    Base bundle = document(root, focusResource);
+    if (bundle != null) {
+      for (Base e : children(bundle, "entry")) {
+        Base r = single(e, "resource");
+        if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, item)) {
+          return r;
+        }
+      }
+    }
+    Base r = root != null && "Composition".equals(root.fhirType()) ? root : focusResource;
+    return r != null && "Composition".equals(r.fhirType()) && containsSection(r, item) ? r : null;
+  }
+
+  /** the fullUrl of the document entry that has the resource - null if none does */
+  private String fullUrl(Base bundle, Base resource) {
+    for (Base e : children(bundle, "entry")) {
+      if (single(e, "resource") == resource) {
+        return primitive(e, "fullUrl");
+      }
+    }
+    return null;
+  }
+
   /** the document the evaluation is on */
   private Base document(Base root, Base focusResource) {
     if (root != null && "Bundle".equals(root.fhirType())) {
@@ -495,24 +604,8 @@ class DocumentFunctions {
       return null;
     }
     Base bundle = document(root, focusResource);
-    Base comp = null;
-    String compFullUrl = null;
-    if (bundle != null) {
-      for (Base e : children(bundle, "entry")) {
-        Base r = single(e, "resource");
-        if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, section)) {
-          comp = r;
-          compFullUrl = primitive(e, "fullUrl");
-          break;
-        }
-      }
-    }
-    if (comp == null) {
-      Base r = root != null && "Composition".equals(root.fhirType()) ? root : focusResource;
-      if (r != null && "Composition".equals(r.fhirType()) && containsSection(r, section)) {
-        comp = r;
-      }
-    }
+    Base comp = sectionComposition(root, focusResource, section);
+    String compFullUrl = bundle != null && comp != null ? fullUrl(bundle, comp) : null;
     List<Base> result = new ArrayList<>();
     for (Base ref : children(section, "entry")) {
       String reference = primitive(ref, "reference");

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Boolean40_N;
@@ -47,21 +48,23 @@ public class Slot40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Slot tgt = new org.hl7.fhir.model.core.Slot();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Slot", "5.0", new String[] {}, CrossVersionElements40_N.urls("Slot", "6.0", new String[] {}, "http://hl7.org/fhir/5.0/StructureDefinition/extension-Slot.appointmentType")));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasAppointmentType())
       tgt.addAppointmentType(CodeableConcept40_N.convertCodeableConcept(src.getAppointmentType()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-Slot.appointmentType"))
+      tgt.addAppointmentType(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) ext.getValue()));
     if (src.hasSchedule())
       tgt.setSchedule(Reference40_N.convertReference(src.getSchedule()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertSlotStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertSlotStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStart())
       tgt.setStartElement(Instant40_N.convertInstant(src.getStartElement()));
     if (src.hasEnd())
@@ -83,16 +86,20 @@ public class Slot40_N {
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getServiceCategoryList())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (CodeableReference t : src.getServiceTypeList())
-      if (t.hasConcept())
-        tgt.addServiceType(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getSpecialtyList())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasAppointmentType())
-      tgt.setAppointmentType(CodeableConcept40_N.convertCodeableConcept(src.getAppointmentTypeFirstRep()));
+    // R4 has one appointmentType: the rest go in the cross-version extension
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getAppointmentTypeList()) {
+      if (!tgt.hasAppointmentType())
+        tgt.setAppointmentType(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Slot.appointmentType", CodeableConcept40_N.convertCodeableConcept(t));
+    }
     if (src.hasSchedule())
       tgt.setSchedule(Reference40_N.convertReference(src.getSchedule()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertSlotStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertSlotStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStart())
       tgt.setStartElement(Instant40_N.convertInstant(src.getStartElement()));
     if (src.hasEnd())

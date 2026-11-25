@@ -33,6 +33,46 @@ public class Reference40_N {
   public static CodeableReference convertReferenceToCodeableReference(org.hl7.fhir.r4.model.Reference src) {
     CodeableReference tgt = new CodeableReference();
     tgt.setReference(convertReference(src));
+    // the concept, if convertCodeableReferenceToReference put one there
+    String url = org.hl7.fhir.convertors.VersionConvertorConstants.EXT_CODEABLE_REFERENCE_CONCEPT;
+    if (src.hasExtension(url) && src.getExtensionByUrl(url).getValue() instanceof org.hl7.fhir.r4.model.CodeableConcept) {
+      tgt.setConcept(org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) src.getExtensionByUrl(url).getValue()));
+      tgt.getReference().getExtension().removeIf(e -> url.equals(e.getUrl()));
+      if (tgt.getReference().isEmpty())
+        tgt.setReference(null);
+    }
+    // the id and extensions are the CodeableReference's, if convertCodeableReferenceToReference says so
+    String marker = org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE;
+    if ("CodeableReference".equals(src.getExtensionString(marker)) && tgt.hasReference()) {
+      org.hl7.fhir.model.core.Reference r = tgt.getReference();
+      r.getExtension().removeIf(e -> marker.equals(e.getUrl()));
+      tgt.setId(r.getId());
+      r.setId(null);
+      tgt.getExtension().addAll(r.getExtension());
+      r.getExtension().clear();
+      if (r.isEmpty())
+        tgt.setReference(null);
+    }
+    return tgt;
+  }
+
+  /**
+   * For R6 CodeableReferences whose R4 element is only a Reference: the concept goes on the Reference in the
+   * cross-version extension for CodeableReference.concept (so a concept-only CodeableReference becomes a Reference
+   * with just that extension)
+   */
+  public static org.hl7.fhir.r4.model.Reference convertCodeableReferenceToReference(CodeableReference src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Reference tgt = src.hasReference() ? convertReference(src.getReference()) : new org.hl7.fhir.r4.model.Reference();
+    // the CodeableReference's own id and extensions, if the Reference has none of its own (marked as the
+    // CodeableReference's, for the way back)
+    if ((src.hasId() || src.hasExtension()) && !tgt.hasId() && !tgt.hasExtension()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      tgt.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new org.hl7.fhir.r4.model.CodeType("CodeableReference"));
+    }
+    if (src.hasConcept())
+      tgt.addExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_CODEABLE_REFERENCE_CONCEPT, org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N.convertCodeableConcept(src.getConcept()));
     return tgt;
   }
   
@@ -42,6 +82,8 @@ public class Reference40_N {
     org.hl7.fhir.model.core.CanonicalType tgt = new org.hl7.fhir.model.core.CanonicalType();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasReference()) tgt.setValue(src.getReference());
+    // a canonical has no display: it's the display extension
+    if (src.hasDisplay()) tgt.addExtension(EXT_DISPLAY, new org.hl7.fhir.model.core.StringType(src.getDisplay()));
     return tgt;
   }
 
@@ -50,21 +92,26 @@ public class Reference40_N {
     org.hl7.fhir.r4.model.Reference tgt = new org.hl7.fhir.r4.model.Reference();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasValue()) tgt.setReference(src.getValue());
+    restoreDisplay(tgt);
     return tgt;
   }
   
 
-  static public org.hl7.fhir.r4.model.Reference convertCodeableReferenceToReference(org.hl7.fhir.model.core.CodeableReference src) {
-    org.hl7.fhir.r4.model.Reference tgt = new org.hl7.fhir.r4.model.Reference();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    tgt.setReference(src.getReference().getReference());
-    return tgt;
-  }
-
   public static org.hl7.fhir.r4.model.Reference convertCanonicalToReference(org.hl7.fhir.model.core.CanonicalType src) {
     org.hl7.fhir.r4.model.Reference dst = new org.hl7.fhir.r4.model.Reference(src.getValue());
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, dst);
+    restoreDisplay(dst);
     return dst;
+  }
+
+  public static final String EXT_DISPLAY = "http://hl7.org/fhir/StructureDefinition/display";
+
+  // the display extension on the canonical is the Reference's display
+  private static void restoreDisplay(org.hl7.fhir.r4.model.Reference tgt) {
+    if (tgt.hasExtension(EXT_DISPLAY)) {
+      tgt.setDisplay(tgt.getExtensionByUrl(EXT_DISPLAY).getValue().primitiveValue());
+      tgt.getExtension().removeIf(e -> EXT_DISPLAY.equals(e.getUrl()));
+    }
 
   }
 

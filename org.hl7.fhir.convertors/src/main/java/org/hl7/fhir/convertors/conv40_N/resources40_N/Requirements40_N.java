@@ -13,6 +13,7 @@ import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.MarkDown40_N
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Uri40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Url40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Reference40_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.*;
@@ -72,27 +73,13 @@ public class Requirements40_N {
   public static final String REFERENCE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.reference";
   public static final String STATEMENT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement";
 
-  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
-    URL_EXTENSION_URL,
-    VERSION_EXTENSION_URL,
-    NAME_EXTENSION_URL,
-    TITLE_EXTENSION_URL,
-    STATUS_EXTENSION_URL,
-    EXPERIMENTAL_EXTENSION_URL,
-    DATE_EXTENSION_URL,
-    PUBLISHER_EXTENSION_URL,
-    CONTACT_EXTENSION_URL,
-    DESCRIPTION_EXTENSION_URL,
-    USE_CONTEXT_EXTENSION_URL,
-    JURISDICTION_EXTENSION_URL,
-    PURPOSE_EXTENSION_URL,
-    COPYRIGHT_EXTENSION_URL,
-    COPYRIGHT_LABEL_EXTENSION_URL,
-    DERIVED_FROM_EXTENSION_URL,
-    ACTOR_EXTENSION_URL,
-    REFERENCE_EXTENSION_URL,
-    STATEMENT_EXTENSION_URL
-  };
+
+  // Requirements is new in R5, so it's a Basic in R4. identifier is Basic's; everything else is a cross-version extension.
+  // R6 changed actor (canonical -> backbone) and statement, and added imports: those are 6.0 extensions. R4 Basics
+  // written by older versions of this convertor (5.0 actor canonicals and statements) are still read
+  private static final String[] V5 = {"url", "version", "versionAlgorithm", "name", "title", "status", "experimental", "date", "publisher",
+    "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "derivedFrom", "reference"};
+  private static final String[] V6 = {"imports", "actor", "statement"};
 
   public static org.hl7.fhir.model.core.Requirements convertRequirements(org.hl7.fhir.r4.model.Basic src) throws FHIRException {
     if (src == null)
@@ -101,65 +88,15 @@ public class Requirements40_N {
       throw new FHIRException("Error in logic: this basic resource is not an Requirements");
     }
     org.hl7.fhir.model.core.Requirements tgt = new org.hl7.fhir.model.core.Requirements();
-
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
-    
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt,
+      CrossVersionElements40_N.urls("Requirements", "5.0", V5, CrossVersionElements40_N.urls("Requirements", "6.0", V6, ACTOR_EXTENSION_URL, STATEMENT_EXTENSION_URL)));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-
-    if (src.hasExtension(URL_EXTENSION_URL)) {
-      tgt.setUrlElement(Uri40_N.convertUri((org.hl7.fhir.r4.model.UriType) src.getExtensionByUrl(URL_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(VERSION_EXTENSION_URL)) {
-      tgt.setVersionElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(VERSION_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(NAME_EXTENSION_URL)) {
-      tgt.setNameElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(NAME_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(TITLE_EXTENSION_URL)) {
-      tgt.setTitleElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(TITLE_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(STATUS_EXTENSION_URL)) {
-      tgt.setStatus(PublicationStatus.fromCode(src.getExtensionByUrl(STATUS_EXTENSION_URL).getValue().primitiveValue()));
-    }
-    if (src.hasExtension(EXPERIMENTAL_EXTENSION_URL)) {
-      tgt.setExperimentalElement(Boolean40_N.convertBoolean((org.hl7.fhir.r4.model.BooleanType) src.getExtensionByUrl(EXPERIMENTAL_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(DATE_EXTENSION_URL)) {
-      tgt.setDateElement(DateTime40_N.convertDateTime((org.hl7.fhir.r4.model.DateTimeType) src.getExtensionByUrl(DATE_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(PUBLISHER_EXTENSION_URL)) {
-      tgt.setPublisherElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(PUBLISHER_EXTENSION_URL).getValue()));
-    }
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(CONTACT_EXTENSION_URL)) {
-      tgt.addContact(ContactDetail40_N.convertContactDetail((org.hl7.fhir.r4.model.ContactDetail) ext.getValue()));
-    }
-    if (src.hasExtension(DESCRIPTION_EXTENSION_URL)) {
-      tgt.setPublisherElement(MarkDown40_N.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src.getExtensionByUrl(DESCRIPTION_EXTENSION_URL).getValue()));
-    }
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(USE_CONTEXT_EXTENSION_URL)) {
-      tgt.addUseContext(UsageContext40_N.convertUsageContext((org.hl7.fhir.r4.model.UsageContext) ext.getValue()));
-    }
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(JURISDICTION_EXTENSION_URL)) {
-      tgt.addJurisdiction(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) ext.getValue()));
-    }
-    if (src.hasExtension(PURPOSE_EXTENSION_URL)) {
-      tgt.setPurposeElement(MarkDown40_N.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src.getExtensionByUrl(PURPOSE_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(COPYRIGHT_EXTENSION_URL)) {
-      tgt.setCopyrightElement(MarkDown40_N.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src.getExtensionByUrl(COPYRIGHT_EXTENSION_URL).getValue()));
-    }
-    if (src.hasExtension(COPYRIGHT_LABEL_EXTENSION_URL)) {
-      tgt.setCopyrightLabelElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(COPYRIGHT_LABEL_EXTENSION_URL).getValue()));
-    }
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(DERIVED_FROM_EXTENSION_URL)) {
-      tgt.getDerivedFromList().add(Canonical40_N.convertCanonical((org.hl7.fhir.r4.model.CanonicalType) ext.getValue()));
-    }
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", V5);
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", V6);
+    // the older form
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(ACTOR_EXTENSION_URL)) {
       tgt.addActor().setReferenceElement(Canonical40_N.convertCanonical((org.hl7.fhir.r4.model.CanonicalType) ext.getValue()));
-    }
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(REFERENCE_EXTENSION_URL)) {
-      tgt.getReferenceList().add(Url40_N.convertUrl((org.hl7.fhir.r4.model.UrlType) ext.getValue()));
     }
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(STATEMENT_EXTENSION_URL)) {
       convertRequirementsStatement(ext, tgt.addStatement());
@@ -167,107 +104,18 @@ public class Requirements40_N {
     return tgt;
   }
 
-
   public static org.hl7.fhir.r4.model.Basic convertRequirements(org.hl7.fhir.model.core.Requirements src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
     tgt.getCode().getCodingFirstRep().setSystem("http://hl7.org/fhir/fhir-types").setCode("Requirements"); // note use of R5 type system
-    
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-    if (src.hasUrl()) {
-      tgt.addExtension(URL_EXTENSION_URL, Uri40_N.convertUri(src.getUrlElement()));
-    }
-    if (src.hasVersion()) {
-      tgt.addExtension(VERSION_EXTENSION_URL, String40_N.convertString(src.getVersionElement()));
-    }
-    if (src.hasName()) {
-      tgt.addExtension(NAME_EXTENSION_URL, String40_N.convertString(src.getNameElement()));
-    }
-    if (src.hasTitle()) {
-      tgt.addExtension(TITLE_EXTENSION_URL, String40_N.convertString(src.getTitleElement()));
-    }
-    if (src.hasStatus()) {
-      tgt.addExtension(STATUS_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getStatus().toCode()));
-    }
-    if (src.hasExperimental()) {
-      tgt.addExtension(EXPERIMENTAL_EXTENSION_URL, Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    }
-    if (src.hasDate()) {
-      tgt.addExtension(DATE_EXTENSION_URL, DateTime40_N.convertDateTime(src.getDateElement()));
-    }
-    if (src.hasPublisher()) {
-      tgt.addExtension(PUBLISHER_EXTENSION_URL, String40_N.convertString(src.getPublisherElement()));
-    }
-    for (ContactDetail cd : src.getContactList()) {
-      tgt.addExtension(CONTACT_EXTENSION_URL, ContactDetail40_N.convertContactDetail(cd));
-    }
-    if (src.hasDescription()) {
-      tgt.addExtension(DESCRIPTION_EXTENSION_URL, MarkDown40_N.convertMarkdown(src.getDescriptionElement()));
-    }
-    for (UsageContext cd : src.getUseContextList()) {
-      tgt.addExtension(USE_CONTEXT_EXTENSION_URL, UsageContext40_N.convertUsageContext(cd));
-    }
-    for (CodeableConcept cd : src.getJurisdictionList()) {
-      tgt.addExtension(JURISDICTION_EXTENSION_URL, CodeableConcept40_N.convertCodeableConcept(cd));
-    }
-    if (src.hasPurpose()) {
-      tgt.addExtension(PURPOSE_EXTENSION_URL, MarkDown40_N.convertMarkdown(src.getPurposeElement()));
-    }
-    if (src.hasCopyright()) {
-      tgt.addExtension(COPYRIGHT_EXTENSION_URL, MarkDown40_N.convertMarkdown(src.getCopyrightElement()));
-    }
-    if (src.hasCopyrightLabel()) {
-      tgt.addExtension(COPYRIGHT_LABEL_EXTENSION_URL, String40_N.convertString(src.getCopyrightLabelElement()));
-    }
-    for (CanonicalType ref : src.getDerivedFromList()) {
-      tgt.addExtension(DERIVED_FROM_EXTENSION_URL, Canonical40_N.convertCanonical(ref));
-    }
-    for (Requirements.RequirementsActorComponent ref : src.getActorList()) {
-      tgt.addExtension(ACTOR_EXTENSION_URL, Canonical40_N.convertCanonical(ref.getReferenceElement()));
-    }
-    for (UrlType ref : src.getReferenceList()) {
-      tgt.addExtension(REFERENCE_EXTENSION_URL, Url40_N.convertUrl(ref));
-    }
-    for (RequirementsStatementComponent ref : src.getStatementList()) {
-      org.hl7.fhir.r4.model.Extension tgte = new org.hl7.fhir.r4.model.Extension(STATEMENT_EXTENSION_URL);
-      tgt.addExtension(tgte);
-      convertRequirementsStatement(ref, tgte);
-    }
-
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", V5);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", V6);
     return tgt;
   }
-
-  private static void convertRequirementsStatement(RequirementsStatementComponent src, Extension tgt) {
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasKey()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.key", Id40_N.convertId(src.getKeyElement()));
-    }
-    if (src.hasLabel()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.label", String40_N.convertString(src.getLabelElement()));
-    }
-    for (Enumeration<ConformanceExpectation> t : src.getConformanceList()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.conformance", new org.hl7.fhir.r4.model.CodeType(t.getCode()));
-    }
-    if (src.hasRequirement()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.requirement", MarkDown40_N.convertMarkdown(src.getRequirementElement()));
-    }
-    if (src.hasDerivedFrom()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.derivedFrom", Canonical40_N.convertCanonical(src.getDerivedFrom().getReferenceElement()));
-    }
-    for (UrlType ref : src.getSatisfiedByList()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.satisfiedBy", Url40_N.convertUrl(ref));
-    }
-    for (UrlType ref : src.getReferenceList()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.reference", Url40_N.convertUrl(ref));
-    }
-    for (Reference ref : src.getSourceList()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement.source", Reference40_N.convertReference(ref));
-    }
-  }
-
 
   private static void convertRequirementsStatement(Extension src, RequirementsStatementComponent tgt) {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, 

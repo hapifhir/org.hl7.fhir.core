@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -48,17 +50,23 @@ public class Procedure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Procedure tgt = new org.hl7.fhir.model.core.Procedure();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Procedure", "5.0", new String[] {"focus", "recorded", "supportingInfo"}, CrossVersionElements40_N.urls("Procedure", "6.0", new String[] {}, VersionConvertorConstants.EXT_PROCEDURE_OUTCOME,
+       CrossVersionElements40_N.url("Procedure", "5.0", "category"), CrossVersionElements40_N.url("Procedure", "5.0", "reported"))));
+    // R6 dropped instantiatesCanonical and instantiatesUri
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Procedure", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "focus", "recorded", "supportingInfo");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertProcedureStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertProcedureStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
     if (src.hasCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
+    // the categories R4's single category couldn't hold
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "category");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
@@ -67,36 +75,35 @@ public class Procedure40_N {
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasPerformed())
       tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getPerformed()));
+    // an R6 occurrence of a type R4 performed[x] doesn't have (Timing)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "occurrence");
+    String occurrenceUrl = CrossVersionElements40_N.url("Procedure", "5.0", "occurrence");
+    tgt.getExtension().removeIf(e -> occurrenceUrl.equals(e.getUrl()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
     if (src.hasAsserter())
       tgt.setReported(Reference40_N.convertReference(src.getAsserter()));
+    // R6 reported can also be a boolean
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "reported");
     for (org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
-      tgt.addBodyStructure(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addBodyStructure(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     if (src.hasOutcome())
-      tgt.addOutcome(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getOutcome())));
+      tgt.addOutcome(CodeableConcept40_N.convertChoiceToCodeableReference(src.getOutcome()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_PROCEDURE_OUTCOME))
+      tgt.addOutcome(CodeableConcept40_N.convertChoiceToCodeableReference(ext.getValue()));
     for (org.hl7.fhir.r4.model.Reference t : src.getReport()) tgt.addReport(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getComplication())
-      tgt.addComplication().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getComplicationDetail())
-      tgt.addComplication().setReference(Reference40_N.convertReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getComplication(), src.getComplicationDetail(), tgt.getComplicationList());
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFollowUp())
-      tgt.addFollowUp(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addFollowUp(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice())
       tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getUsedReference())
-      tgt.addUsed(Reference40_N.convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getUsedCode())
-      tgt.addUsed(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getUsedCode(), src.getUsedReference(), tgt.getUsedList());
     return tgt;
   }
 
@@ -104,63 +111,68 @@ public class Procedure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Procedure tgt = new org.hl7.fhir.r4.model.Procedure();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Procedure", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Procedure", "instantiatesCanonical", "instantiatesUri");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "focus", "recorded", "supportingInfo");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertProcedureStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertProcedureStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
-    if (src.hasCategory())
-      tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategoryFirstRep()));
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList()) {
+      if (!tgt.hasCategory())
+        tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("Procedure", "5.0", "category"), CodeableConcept40_N.convertCodeableConcept(t));
+    }
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setPerformed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    if (src.hasOccurrence()) {
+      if (src.getOccurrence() instanceof org.hl7.fhir.model.core.Timing)
+        CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "occurrence");
+      else
+        tgt.setPerformed(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    }
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_N.convertReference(src.getRecorder()));
     if (src.hasReportedReference())
       tgt.setAsserter(Reference40_N.convertReference(src.getReportedReference()));
+    else if (src.hasReported())
+      tgt.addExtension(CrossVersionElements40_N.url("Procedure", "5.0", "reported"), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getReported()));
     for (org.hl7.fhir.model.core.Procedure.ProcedurePerformerComponent t : src.getPerformerList())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.CodeableReference t : src.getBodyStructureList())
-      tgt.addBodySite(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (org.hl7.fhir.model.core.CodeableReference t : src.getOutcomeList())
-      tgt.setOutcome(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (org.hl7.fhir.model.core.Reference t : src.getReportList()) tgt.addReport(Reference40_N.convertReference(t));
-    for (CodeableReference t : src.getComplicationList()) {
-      if (t.hasConcept()) {
-        tgt.addComplication(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-      }
-      if (t.hasReference()) {
-        tgt.addComplicationDetail(Reference40_N.convertReference(t.getReference()));
+      tgt.addBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+    // R4 outcome is a single CodeableConcept: the first outcome goes there (if it has a concept), and the
+    // rest go in the cross-version extension
+    for (org.hl7.fhir.model.core.CodeableReference t : src.getOutcomeList()) {
+      org.hl7.fhir.r4.model.Type outcome = CodeableConcept40_N.convertCodeableReferenceToChoice(t);
+      if (outcome != null) {
+        if (!tgt.hasOutcome() && !tgt.hasExtension(VersionConvertorConstants.EXT_PROCEDURE_OUTCOME) && outcome instanceof org.hl7.fhir.r4.model.CodeableConcept) {
+          tgt.setOutcome((org.hl7.fhir.r4.model.CodeableConcept) outcome);
+        } else {
+          tgt.addExtension(VersionConvertorConstants.EXT_PROCEDURE_OUTCOME, outcome);
+        }
       }
     }
+    for (org.hl7.fhir.model.core.Reference t : src.getReportList()) tgt.addReport(Reference40_N.convertReference(t));
+    CodeableConcept40_N.convertReasonsToR4(src.getComplicationList(), tgt.getComplication(), tgt.getComplicationDetail());
     for (org.hl7.fhir.model.core.CodeableReference t : src.getFollowUpList())
-      tgt.addFollowUp(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addFollowUp(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.model.core.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDeviceList())
       tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
-    for (CodeableReference t : src.getUsedList())
-      if (t.hasReference())
-        tgt.addUsedReference(Reference40_N.convertReference(t.getReference()));
-    for (CodeableReference t : src.getUsedList())
-      if (t.hasConcept())
-        tgt.addUsedCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+    CodeableConcept40_N.convertReasonsToR4(src.getUsedList(), tgt.getUsedCode(), tgt.getUsedReference());
     return tgt;
   }
 
@@ -250,7 +262,8 @@ public class Procedure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.model.core.Procedure.ProcedurePerformerComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("Procedure.performer", "5.0", "period"));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Procedure.performer", "5.0", "period");
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_N.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -265,6 +278,7 @@ public class Procedure40_N {
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "Procedure.performer", tgt.getExtension(), "5.0", "period");
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_N.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Address40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
@@ -48,7 +49,8 @@ public class Person40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Person tgt = new org.hl7.fhir.model.core.Person();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Person", "5.0", new String[] {"communication", "deceased", "maritalStatus"}, CrossVersionElements40_N.urls("Person", "6.0", new String[] {}, "http://hl7.org/fhir/5.0/StructureDefinition/extension-Person.photo")));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "communication", "deceased", "maritalStatus");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(HumanName40_N.convertHumanName(t));
@@ -61,6 +63,8 @@ public class Person40_N {
     for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(Address40_N.convertAddress(t));
     if (src.hasPhoto())
       tgt.addPhoto(Attachment40_N.convertAttachment(src.getPhoto()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-Person.photo"))
+      tgt.addPhoto(Attachment40_N.convertAttachment((org.hl7.fhir.r4.model.Attachment) ext.getValue()));
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference40_N.convertReference(src.getManagingOrganization()));
     if (src.hasActive())
@@ -74,6 +78,7 @@ public class Person40_N {
       return null;
     org.hl7.fhir.r4.model.Person tgt = new org.hl7.fhir.r4.model.Person();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "communication", "deceased", "maritalStatus");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.HumanName t : src.getNameList()) tgt.addName(HumanName40_N.convertHumanName(t));
@@ -84,8 +89,13 @@ public class Person40_N {
     if (src.hasBirthDate())
       tgt.setBirthDateElement(Date40_N.convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.model.core.Address t : src.getAddressList()) tgt.addAddress(Address40_N.convertAddress(t));
-    if (src.hasPhoto())
-      tgt.setPhoto(Attachment40_N.convertAttachment(src.getPhotoFirstRep()));
+    // R4 has one photo: the rest go in the cross-version extension
+    for (org.hl7.fhir.model.core.Attachment t : src.getPhotoList()) {
+      if (!tgt.hasPhoto())
+        tgt.setPhoto(Attachment40_N.convertAttachment(t));
+      else
+        tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-Person.photo", Attachment40_N.convertAttachment(t));
+    }
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference40_N.convertReference(src.getManagingOrganization()));
     if (src.hasActive())
@@ -102,7 +112,7 @@ public class Person40_N {
     if (src.hasTarget())
       tgt.setTarget(Reference40_N.convertReference(src.getTarget()));
     if (src.hasAssurance())
-      tgt.setAssuranceElement(convertIdentityAssuranceLevel(src.getAssuranceElement()));
+      tgt.setAssuranceElement(CrossVersionElements40_N.toR6Code(src.getAssuranceElement(), convertIdentityAssuranceLevel(src.getAssuranceElement()), src.fhirType(), "assurance"));
     return tgt;
   }
 
@@ -114,7 +124,7 @@ public class Person40_N {
     if (src.hasTarget())
       tgt.setTarget(Reference40_N.convertReference(src.getTarget()));
     if (src.hasAssurance())
-      tgt.setAssuranceElement(convertIdentityAssuranceLevel(src.getAssuranceElement()));
+      tgt.setAssuranceElement(CrossVersionElements40_N.toR4Code(src.getAssuranceElement(), convertIdentityAssuranceLevel(src.getAssuranceElement()), src.fhirType(), "assurance"));
     return tgt;
   }
 

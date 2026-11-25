@@ -68,6 +68,26 @@
 
     <build>
         <plugins>
+            <!-- the terminology service tests are for running by hand (e.g. from the IDE) against
+                 terminology servers; maven doesn't run them -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/LocalTerminologyServiceTests.java</exclude>
+                                <exclude>**/ExternalTerminologyServiceTests.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Suppress empty JAR warning while this module has no sources -->
             <plugin>
                 <groupId>org.apache.felix</groupId>

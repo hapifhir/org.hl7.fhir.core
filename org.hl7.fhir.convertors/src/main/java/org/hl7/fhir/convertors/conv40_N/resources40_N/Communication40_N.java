@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -47,11 +49,16 @@ import org.hl7.fhir.model.core.Enumerations;
 
 public class Communication40_N {
 
+  private static final String PAYLOAD_CONCEPT_URL = CrossVersionElements40_N.url("Communication.payload", "5.0", "content");
+
+
   public static org.hl7.fhir.model.core.Communication convertCommunication(org.hl7.fhir.r4.model.Communication src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Communication tgt = new org.hl7.fhir.model.core.Communication();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped instantiatesCanonical and instantiatesUri
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Communication", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -59,13 +66,13 @@ public class Communication40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getInResponseTo())
       tgt.addInResponseTo(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertCommunicationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertCommunicationPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertCommunicationPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium())
       tgt.addMedium(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasSubject())
@@ -82,10 +89,7 @@ public class Communication40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(Reference40_N.convertReference(t));
     if (src.hasSender())
       tgt.setSender(Reference40_N.convertReference(src.getSender()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent t : src.getPayload())
       tgt.addPayload(convertCommunicationPayloadComponent(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
@@ -96,7 +100,8 @@ public class Communication40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Communication tgt = new org.hl7.fhir.r4.model.Communication();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Communication", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Communication", "instantiatesCanonical", "instantiatesUri");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.getIdentifier().add(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -104,13 +109,13 @@ public class Communication40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getInResponseToList())
       tgt.addInResponseTo(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertCommunicationStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.setStatusReason(CodeableConcept40_N.convertCodeableConcept(src.getStatusReason()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertCommunicationPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertCommunicationPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getMediumList())
       tgt.addMedium(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasSubject())
@@ -127,12 +132,7 @@ public class Communication40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getRecipientList()) tgt.addRecipient(Reference40_N.convertReference(t));
     if (src.hasSender())
       tgt.setSender(Reference40_N.convertReference(src.getSender()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Communication.CommunicationPayloadComponent t : src.getPayloadList())
       tgt.addPayload(convertCommunicationPayloadComponent(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
@@ -285,14 +285,17 @@ public class Communication40_N {
     org.hl7.fhir.model.core.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.model.core.Communication.CommunicationPayloadComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasContent()) {
-      if (src.getContent() instanceof StringType) {
-        CodeableConcept tgtc = new CodeableConcept();
-        ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getContent(), tgtc);
-        tgtc.setText(src.getContentStringType().getValue());
+      if (src.getContent() instanceof StringType && src.getContent().hasExtension(PAYLOAD_CONCEPT_URL)) {
+        // an R6 concept (see below)
+        CodeableConcept tgtc = CodeableConcept40_N.convertStringToCodeableConcept(src.getContentStringType(), PAYLOAD_CONCEPT_URL);
+        tgtc.getExtension().removeIf(e -> PAYLOAD_CONCEPT_URL.equals(e.getUrl()));
         tgt.setContent(tgtc);
+      } else if (src.getContent() instanceof StringType) {
+        // R6 has string as well
+        tgt.setContent(String40_N.convertString(src.getContentStringType()));
       } else {
-        if (src.hasContent())
-          tgt.setContent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getContent()));
+        // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+        CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "content", tgt, tgt.getExtension());
       }
     }
     return tgt;
@@ -308,10 +311,12 @@ public class Communication40_N {
         StringType tgts = new StringType();
         ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getContent(), tgts);
         tgts.setValue(src.getContentCodeableConcept().getText());
+        // R4 has a string: the text, and the whole concept in a 5.0 extension (R6 has string too, so the extension says
+        // it was a concept)
+        tgts.addExtension(PAYLOAD_CONCEPT_URL, CodeableConcept40_N.convertCodeableConcept(src.getContentCodeableConcept()));
         tgt.setContent(tgts);
       } else {
-        if (src.hasContent())
-          tgt.setContent(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getContent()));
+        CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "content", tgt, tgt.getExtension());
       }
     }
     return tgt;

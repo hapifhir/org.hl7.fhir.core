@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -44,11 +46,12 @@ public class EpisodeOfCare40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.EpisodeOfCare tgt = new org.hl7.fhir.model.core.EpisodeOfCare();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("EpisodeOfCare", "5.0", new String[] {"reason"}, CrossVersionElements40_N.urls("EpisodeOfCare", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "reason");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEpisodeOfCareStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
@@ -75,10 +78,11 @@ public class EpisodeOfCare40_N {
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare tgt = new org.hl7.fhir.r4.model.EpisodeOfCare();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "reason");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEpisodeOfCareStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.model.core.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistoryList())
       tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getTypeList())
@@ -182,7 +186,7 @@ public class EpisodeOfCare40_N {
     org.hl7.fhir.model.core.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.model.core.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasStatus())
-      tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEpisodeOfCareStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     return tgt;
@@ -194,7 +198,7 @@ public class EpisodeOfCare40_N {
     org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasStatus())
-      tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEpisodeOfCareStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     return tgt;
@@ -204,13 +208,15 @@ public class EpisodeOfCare40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.model.core.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("EpisodeOfCare.diagnosis", "5.0", new String[] {"condition", "use"}));
     if (src.hasCondition())
       tgt.addCondition(Reference40_N.convertReferenceToCodeableReference(src.getCondition()));
     if (src.hasRole())
       tgt.addUse(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
-//    if (src.hasRank())
-//      tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
+    // the conditions and uses R4 had no room for
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "EpisodeOfCare.diagnosis", "5.0", "condition", "use");
+    // R6 dropped rank
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "EpisodeOfCare.diagnosis", tgt.getExtension(), "rank");
     return tgt;
   }
 
@@ -218,13 +224,22 @@ public class EpisodeOfCare40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasCondition())
-      tgt.setCondition(Reference40_N.convertCodeableReferenceToReference(src.getConditionFirstRep()));
-    if (src.hasUse())
-      tgt.setRole(CodeableConcept40_N.convertCodeableConcept(src.getUseFirstRep()));
-//    if (src.hasRank())
-//      tgt.setRankElement(PositiveInt40_N.convertPositiveInt(src.getRankElement()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("EpisodeOfCare.diagnosis", "4.0", "rank"));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "EpisodeOfCare.diagnosis", "rank");
+    // R4 condition is a single reference: the first condition that's just a reference, and the rest in the extension
+    for (org.hl7.fhir.model.core.CodeableReference t : src.getConditionList()) {
+      if (!tgt.hasCondition() && t.hasReference() && !t.hasConcept() && !t.hasId() && !t.hasExtension())
+        tgt.setCondition(Reference40_N.convertReference(t.getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("EpisodeOfCare.diagnosis", "5.0", "condition"), t));
+    }
+    // R4 has one role: the first use, and the rest in the extension
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getUseList()) {
+      if (!tgt.hasRole())
+        tgt.setRole(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("EpisodeOfCare.diagnosis", "5.0", "use"), CodeableConcept40_N.convertCodeableConcept(t));
+    }
     return tgt;
   }
 }

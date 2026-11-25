@@ -1619,6 +1619,8 @@ public class FHIRPathEngine {
       case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
       case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
       case HasCoding: return checkParamCount(lexer, location, exp, 2, 3);
+      case IsKnown: return checkParamCount(lexer, location, exp, 0);
+      case HasData: return checkParamCount(lexer, location, exp, 0);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -4565,6 +4567,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case SameSubject: {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
       }
+      case IsKnown:
+      case HasData: {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
       case HasCoding: {
         checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String),
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -4863,6 +4869,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case ResourcesIn: return funcResourcesIn(context, focus, exp);
       case SameSubject: return funcSameSubject(context, focus, exp);
       case HasCoding: return funcHasCoding(context, focus, exp);
+      case IsKnown: return funcIsKnown(context, focus, exp);
+      case HasData: return funcHasData(context, focus, exp);
 
 
     case Custom: { 
@@ -5413,6 +5421,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
     return same == null ? new ArrayList<Base>() : makeBoolean(same);
+  }
+
+  private List<Base> funcIsKnown(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    Boolean known = new DocumentFunctions(this).isKnown(context.rootResource, context.focusResource, focus);
+    return known == null ? new ArrayList<Base>() : makeBoolean(known);
+  }
+
+  private List<Base> funcHasData(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    Boolean has = new DocumentFunctions(this).hasData(context.rootResource, context.focusResource, focus);
+    return has == null ? new ArrayList<Base>() : makeBoolean(has);
   }
 
   private List<Base> funcHasCoding(ExecutionContext context, List<Base> focus, ExpressionNode expr) {

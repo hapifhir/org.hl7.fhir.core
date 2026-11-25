@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.Utilities40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Canonical40_N;
@@ -13,14 +14,15 @@ public class DataRequirement40_N {
   public static org.hl7.fhir.model.core.DataRequirement convertDataRequirement(org.hl7.fhir.r4.model.DataRequirement src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.model.core.DataRequirement tgt = new org.hl7.fhir.model.core.DataRequirement();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CrossVersionElements40_N.urls("DataRequirement", "5.0", new String[] {"valueFilter"}, CrossVersionElements40_N.urls("DataRequirement", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "valueFilter");
     if (src.hasType()) {
       Utilities40_N.convertType(src.getTypeElement(), tgt.getTypeElement());   
     }
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile())
       tgt.getProfileList().add(Canonical40_N.convertCanonical(t));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.StringType t : src.getMustSupport())
       tgt.getMustSupportList().add(String40_N.convertString(t));
     for (org.hl7.fhir.r4.model.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilter())
@@ -37,13 +39,13 @@ public class DataRequirement40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.DataRequirement tgt = new org.hl7.fhir.r4.model.DataRequirement();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "valueFilter");
     if (src.hasType()) {
       Utilities40_N.convertType(src.getTypeElement(), tgt.getTypeElement());   
     }
     for (org.hl7.fhir.model.core.CanonicalType t : src.getProfileList())
       tgt.getProfile().add(Canonical40_N.convertCanonical(t));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.StringType t : src.getMustSupportList())
       tgt.getMustSupport().add(String40_N.convertString(t));
     for (org.hl7.fhir.model.core.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilterList())
@@ -84,8 +86,8 @@ public class DataRequirement40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasSearchParam()) tgt.setSearchParamElement(String40_N.convertString(src.getSearchParamElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -95,8 +97,7 @@ public class DataRequirement40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasSearchParam()) tgt.setSearchParamElement(String40_N.convertString(src.getSearchParamElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -105,7 +106,7 @@ public class DataRequirement40_N {
     org.hl7.fhir.model.core.DataRequirement.DataRequirementSortComponent tgt = new org.hl7.fhir.model.core.DataRequirement.DataRequirementSortComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
-    if (src.hasDirection()) tgt.setDirectionElement(convertSortDirection(src.getDirectionElement()));
+    if (src.hasDirection()) tgt.setDirectionElement(CrossVersionElements40_N.toR6Code(src.getDirectionElement(), convertSortDirection(src.getDirectionElement()), src.fhirType(), "direction"));
     return tgt;
   }
 
@@ -114,7 +115,7 @@ public class DataRequirement40_N {
     org.hl7.fhir.r4.model.DataRequirement.DataRequirementSortComponent tgt = new org.hl7.fhir.r4.model.DataRequirement.DataRequirementSortComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_N.convertString(src.getPathElement()));
-    if (src.hasDirection()) tgt.setDirectionElement(convertSortDirection(src.getDirectionElement()));
+    if (src.hasDirection()) tgt.setDirectionElement(CrossVersionElements40_N.toR4Code(src.getDirectionElement(), convertSortDirection(src.getDirectionElement()), src.fhirType(), "direction"));
     return tgt;
   }
 

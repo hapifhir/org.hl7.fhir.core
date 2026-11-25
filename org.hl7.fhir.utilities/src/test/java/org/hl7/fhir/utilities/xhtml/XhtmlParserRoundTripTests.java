@@ -27,7 +27,7 @@ class XhtmlParserRoundTripTests {
       Arguments.of(DIV + "a &amp; b &lt; c &gt; &#169; &#x00A9; &nbsp;d</div>",
         "<div xmlns=\"http://www.w3.org/1999/xhtml\">a &amp; b &lt; c &gt; &copy; &copy; &nbsp;d</div>"),
       Arguments.of(DIV + "a<!-- a comment -->b<![CDATA[<x> & y]]>c</div>",
-        "<div xmlns=\"http://www.w3.org/1999/xhtml\">a  <!-- a comment -->b  <![CDATA[<x> & y]]>c</div>"),
+        "<div xmlns=\"http://www.w3.org/1999/xhtml\">a<!-- a comment -->b<![CDATA[<x> & y]]>c</div>"),
       Arguments.of(DIV + "<a href=\"x?a=1&amp;b=2\" title='say \"hi\"'>l</a><img src=\"i.png\" alt=\"pic\"/></div>",
         "<div xmlns=\"http://www.w3.org/1999/xhtml\"><a href=\"x?a=1&amp;b=2\" title=\"say &quot;hi&quot;\">l</a><img src=\"i.png\" alt=\"pic\"/></div>"),
       Arguments.of(DIV + "<table><tr><td>1</td><td>2</td></tr></table><br/><hr/></div>",

@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -849,7 +850,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   public void setUserAgent(String value) {
     if (hasClient()) {
-      getMasterClient().setUserAgent(value);
+      // what the tool is, and this library's version, as the factory makes them
+      getMasterClient().setUserAgent(VersionUtil.toolingUserAgent(value));
     }
   }
 

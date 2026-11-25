@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -358,9 +360,13 @@ public class FilesystemPackageManagerLockTests {
     });
   }
 
-  /** the lock file says which process holds it */
+  /**
+   * the lock file says which process holds it. Not on Windows: there the lock is mandatory, so while the lock file is
+   * locked nothing else can read it - not even another file handle in the same process
+   */
   @Test
   void testTheLockFileHasTheProcessId() throws IOException {
+    Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS, "a locked file can't be read on Windows");
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = getPackageLockFile();
     // left by a process that died: what's in it is replaced

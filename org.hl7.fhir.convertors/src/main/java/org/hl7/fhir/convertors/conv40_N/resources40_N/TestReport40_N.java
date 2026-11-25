@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.*;
@@ -47,11 +49,11 @@ public class TestReport40_N {
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertTestReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasTestScript())
-      tgt.setTestScript(src.getTestScript().getReference());
+      tgt.setTestScriptElement(Reference40_N.convertReferenceToCanonical(src.getTestScript()));
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR6Code(src.getResultElement(), convertTestReportResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasScore())
       tgt.setScoreElement(Decimal40_N.convertDecimal(src.getScoreElement()));
     if (src.hasTester())
@@ -66,6 +68,7 @@ public class TestReport40_N {
       tgt.addTest(convertTestReportTestComponent(t));
     if (src.hasTeardown())
       tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -79,11 +82,11 @@ public class TestReport40_N {
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertTestReportStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasTestScript())
       tgt.setTestScript(Reference40_N.convertCanonicalToReference(src.getTestScriptElement()));
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR4Code(src.getResultElement(), convertTestReportResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasScore())
       tgt.setScoreElement(Decimal40_N.convertDecimal(src.getScoreElement()));
     if (src.hasTester())
@@ -98,6 +101,7 @@ public class TestReport40_N {
       tgt.addTest(convertTestReportTestComponent(t));
     if (src.hasTeardown())
       tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -223,11 +227,12 @@ public class TestReport40_N {
     org.hl7.fhir.model.testing.TestReport.TestReportParticipantComponent tgt = new org.hl7.fhir.model.testing.TestReport.TestReportParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertTestReportParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertTestReportParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasUri())
       tgt.setUriElement(Uri40_N.convertUri(src.getUriElement()));
     if (src.hasDisplay())
       tgt.setDisplayElement(String40_N.convertString(src.getDisplayElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -237,11 +242,12 @@ public class TestReport40_N {
     org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent tgt = new org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertTestReportParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertTestReportParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasUri())
       tgt.setUriElement(Uri40_N.convertUri(src.getUriElement()));
     if (src.hasDisplay())
       tgt.setDisplayElement(String40_N.convertString(src.getDisplayElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -304,6 +310,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestReport.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -314,6 +321,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.model.testing.TestReport.SetupActionComponent t : src.getActionList())
       tgt.addAction(convertSetupActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -326,6 +334,7 @@ public class TestReport40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -338,6 +347,7 @@ public class TestReport40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -347,11 +357,12 @@ public class TestReport40_N {
     org.hl7.fhir.model.testing.TestReport.SetupActionOperationComponent tgt = new org.hl7.fhir.model.testing.TestReport.SetupActionOperationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR6Code(src.getResultElement(), convertTestReportActionResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasMessage())
       tgt.setMessageElement(MarkDown40_N.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail())
       tgt.setDetailElement(Uri40_N.convertUri(src.getDetailElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -361,11 +372,12 @@ public class TestReport40_N {
     org.hl7.fhir.r4.model.TestReport.SetupActionOperationComponent tgt = new org.hl7.fhir.r4.model.TestReport.SetupActionOperationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR4Code(src.getResultElement(), convertTestReportActionResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasMessage())
       tgt.setMessageElement(MarkDown40_N.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail())
       tgt.setDetailElement(Uri40_N.convertUri(src.getDetailElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -439,11 +451,12 @@ public class TestReport40_N {
     org.hl7.fhir.model.testing.TestReport.SetupActionAssertComponent tgt = new org.hl7.fhir.model.testing.TestReport.SetupActionAssertComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR6Code(src.getResultElement(), convertTestReportActionResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasMessage())
       tgt.setMessageElement(MarkDown40_N.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail())
       tgt.setDetailElement(String40_N.convertString(src.getDetailElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -453,11 +466,12 @@ public class TestReport40_N {
     org.hl7.fhir.r4.model.TestReport.SetupActionAssertComponent tgt = new org.hl7.fhir.r4.model.TestReport.SetupActionAssertComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasResult())
-      tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
+      tgt.setResultElement(CrossVersionElements40_N.toR4Code(src.getResultElement(), convertTestReportActionResult(src.getResultElement()), src.fhirType(), "result"));
     if (src.hasMessage())
       tgt.setMessageElement(MarkDown40_N.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail())
       tgt.setDetailElement(String40_N.convertString(src.getDetailElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -472,6 +486,7 @@ public class TestReport40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.TestReport.TestActionComponent t : src.getAction())
       tgt.addAction(convertTestActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -486,6 +501,7 @@ public class TestReport40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.model.testing.TestReport.TestActionComponent t : src.getActionList())
       tgt.addAction(convertTestActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -498,6 +514,7 @@ public class TestReport40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -510,6 +527,7 @@ public class TestReport40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -520,6 +538,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestReport.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -530,6 +549,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.model.testing.TestReport.TeardownActionComponent t : src.getActionList())
       tgt.addAction(convertTeardownActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -540,6 +560,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -550,6 +571,7 @@ public class TestReport40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

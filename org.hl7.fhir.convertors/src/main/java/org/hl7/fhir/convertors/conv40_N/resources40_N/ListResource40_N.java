@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -48,19 +49,22 @@ public class ListResource40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ListResource tgt = new org.hl7.fhir.model.core.ListResource();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("List", "5.0", new String[] {}, CrossVersionElements40_N.urls("List", "6.0", new String[] {"contributor"}, "http://hl7.org/fhir/5.0/StructureDefinition/extension-List.subject")));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "contributor");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertListStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertListStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasMode())
-      tgt.setModeElement(convertListMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertListMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
       tgt.addSubject(Reference40_N.convertReference(src.getSubject()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-List.subject"))
+      tgt.addSubject(Reference40_N.convertReference((org.hl7.fhir.r4.model.Reference) ext.getValue()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -82,18 +86,24 @@ public class ListResource40_N {
       return null;
     org.hl7.fhir.r4.model.ListResource tgt = new org.hl7.fhir.r4.model.ListResource();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "contributor");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertListStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertListStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasMode())
-      tgt.setModeElement(convertListMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertListMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(Reference40_N.convertReference(src.getSubjectFirstRep()));
+    // R4 has one subject: the rest go in the cross-version extension
+    for (org.hl7.fhir.model.core.Reference t : src.getSubjectList()) {
+      if (!tgt.hasSubject())
+        tgt.setSubject(Reference40_N.convertReference(t));
+      else
+        tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-List.subject", Reference40_N.convertReference(t));
+    }
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasDate())

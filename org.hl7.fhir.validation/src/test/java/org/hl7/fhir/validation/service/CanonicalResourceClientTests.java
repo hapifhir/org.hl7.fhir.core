@@ -19,6 +19,7 @@ class CanonicalResourceClientTests
   void testGetTerminologyClient() throws URISyntaxException {
     ITerminologyClientN client = new CanonicalResourceClient(mock(IWorkerContext.class)).getTerminologyClient("http://dummyserver/fhir");
 
-    assertEquals("fhir/validator/" + VersionUtil.getVersion(), client.getUserAgent());
+    // the tool's user agent, then this library's version (see VersionUtil.toolingUserAgent)
+    assertEquals("fhir/validator/" + VersionUtil.getVersion() + " fhir-core/" + VersionUtil.getVersion(), client.getUserAgent());
   }
 }

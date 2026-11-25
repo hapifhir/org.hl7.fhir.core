@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -52,7 +55,11 @@ public class ServiceRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ServiceRequest tgt = new org.hl7.fhir.model.core.ServiceRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ServiceRequest", "5.0", new String[] {"focus"}, CrossVersionElements40_N.urls("ServiceRequest", "6.0", new String[] {"statusReason"}, CrossVersionElements40_N.url("ServiceRequest", "5.0", "orderDetail"), CrossVersionElements40_N.url("ServiceRequest", "5.0", "supportingInfo"), CrossVersionElements40_N.url("ServiceRequest", "5.0", "patientInstruction"), CrossVersionElements40_N.url("ServiceRequest", "5.0", "asNeeded"), VersionConvertorConstants.EXT_SERVICEREQUEST_AS_NEEDED_FOR)));
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "ServiceRequest", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri", "specimen");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "focus");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -60,29 +67,40 @@ public class ServiceRequest40_N {
     if (src.hasRequisition())
       tgt.setRequisition(Identifier40_N.convertIdentifier(src.getRequisition()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertServiceRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertServiceRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertServiceRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertServiceRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertServiceRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertServiceRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getCode()));
+    // R6 requires orderDetail.parameter.code, and R4 has nothing to put there, so this isn't valid;
+    // see https://jira.hl7.org/browse/FHIR-59958
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail())
       tgt.addOrderDetail().addParameter().setValue(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasQuantity())
-      tgt.setQuantity(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getQuantity()));
+    // the order details that were more than a single concept
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "orderDetail");
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "quantity", tgt, tgt.getExtension());
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
-    if (src.hasAsNeeded())
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
+    // R4 asNeeded[x] is boolean|CodeableConcept; R6 has asNeeded (boolean) and asNeededFor (0..*)
+    if (src.hasAsNeededBooleanType())
       tgt.setAsNeededElement(Boolean40_N.convertBoolean(src.getAsNeededBooleanType()));
+    else if (src.hasAsNeededCodeableConcept())
+      tgt.addAsNeededFor(CodeableConcept40_N.convertCodeableConcept(src.getAsNeededCodeableConcept()));
+    // an explicit R6 asNeeded alongside asNeededFor
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "asNeeded");
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_SERVICEREQUEST_AS_NEEDED_FOR))
+      tgt.addAsNeededFor(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) ext.getValue()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_N.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -90,22 +108,18 @@ public class ServiceRequest40_N {
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_N.convertCodeableConcept(src.getPerformerType()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationCode())
-      tgt.addLocation(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getLocationReference())
-      tgt.addLocation(Reference40_N.convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getLocationCode(), src.getLocationReference(), tgt.getLocationList());
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(Reference40_N.convertReferenceToCodeableReference(t));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "supportingInfo");
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
-      tgt.addBodyStructure(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addBodyStructure(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     if (src.hasPatientInstruction())
       tgt.addPatientInstruction().setInstruction(String40_N.convertStringToMarkdown(src.getPatientInstructionElement()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "patientInstruction");
     for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory())
       tgt.addRelevantHistory(Reference40_N.convertReference(t));
     return tgt;
@@ -115,7 +129,10 @@ public class ServiceRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ServiceRequest tgt = new org.hl7.fhir.r4.model.ServiceRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ServiceRequest", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri", "specimen"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "ServiceRequest", "instantiatesCanonical", "instantiatesUri", "specimen");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "focus");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -123,32 +140,42 @@ public class ServiceRequest40_N {
     if (src.hasRequisition())
       tgt.setRequisition(Identifier40_N.convertIdentifier(src.getRequisition()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertServiceRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertServiceRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasIntent())
-      tgt.setIntentElement(convertServiceRequestIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertServiceRequestIntent(src.getIntentElement()), src.fhirType(), "intent"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertServiceRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertServiceRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_N.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getCode()));
+    // R4 orderDetail is a list of concepts: an R6 orderDetail that's just a single concept parameter value is one;
+    // the rest go in 5.0 extensions
     for (ServiceRequestOrderDetailComponent t : src.getOrderDetailList()) {
-      if (t.getParameterFirstRep().hasValueCodeableConcept()) {
-       tgt.addOrderDetail(CodeableConcept40_N.convertCodeableConcept(t.getParameterFirstRep().getValueCodeableConcept()));
-      }
+      if (isSimpleOrderDetail(t))
+        tgt.addOrderDetail(CodeableConcept40_N.convertCodeableConcept(t.getParameterFirstRep().getValueCodeableConcept()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("ServiceRequest", "5.0", "orderDetail"), t));
     }
-    if (src.hasQuantity())
-      tgt.setQuantity(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getQuantity()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "quantity", tgt, tgt.getExtension());
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
-    if (src.hasAsNeeded())
-      tgt.setAsNeeded(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAsNeededElement()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
+    // R4 asNeeded[x] is boolean|CodeableConcept: the first asNeededFor goes there (asNeeded = true is implied), and
+    // the rest go in the cross-version extension
+    if (src.hasAsNeededFor()) {
+      tgt.setAsNeeded(CodeableConcept40_N.convertCodeableConcept(src.getAsNeededForList().get(0)));
+      for (int i = 1; i < src.getAsNeededForList().size(); i++)
+        tgt.addExtension(VersionConvertorConstants.EXT_SERVICEREQUEST_AS_NEEDED_FOR, CodeableConcept40_N.convertCodeableConcept(src.getAsNeededForList().get(i)));
+      // asNeeded is implied by asNeededFor, but it might be there too
+      if (src.hasAsNeededElement())
+        tgt.addExtension(CrossVersionElements40_N.url("ServiceRequest", "5.0", "asNeeded"), Boolean40_N.convertBoolean(src.getAsNeededElement()));
+    } else if (src.hasAsNeeded())
+      tgt.setAsNeeded(Boolean40_N.convertBoolean(src.getAsNeededElement()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_N.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -156,27 +183,25 @@ public class ServiceRequest40_N {
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_N.convertCodeableConcept(src.getPerformerType()));
     for (org.hl7.fhir.model.core.Reference t : src.getPerformerList()) tgt.addPerformer(Reference40_N.convertReference(t));
-    for (CodeableReference t : src.getLocationList())
-      if (t.hasConcept())
-        tgt.addLocationCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getLocationList())
-      if (t.hasReference())
-        tgt.addLocationReference(Reference40_N.convertReference(t.getReference()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getLocationList(), tgt.getLocationCode(), tgt.getLocationReference());
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Reference t : src.getInsuranceList()) tgt.addInsurance(Reference40_N.convertReference(t));
-    for (CodeableReference t : src.getSupportingInfoList())
-      if (t.hasReference())
+    for (CodeableReference t : src.getSupportingInfoList()) {
+      if (t.hasReference() && !t.hasConcept() && !t.hasId() && !t.hasExtension())
         tgt.addSupportingInfo(Reference40_N.convertReference(t.getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("ServiceRequest", "5.0", "supportingInfo"), t));
+    }
     for (org.hl7.fhir.model.core.CodeableReference  t : src.getBodyStructureList())
-      tgt.addBodySite(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    if (src.getPatientInstructionFirstRep().hasInstructionMarkdownType())
-      tgt.setPatientInstructionElement(String40_N.convertString(src.getPatientInstructionFirstRep().getInstructionMarkdownType()));
+    // R4 patientInstruction is a single string: the first instruction that's just markdown; the rest in 5.0 extensions
+    for (org.hl7.fhir.model.core.ServiceRequest.ServiceRequestPatientInstructionComponent t : src.getPatientInstructionList()) {
+      if (!tgt.hasPatientInstruction() && t.hasInstructionMarkdownType() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension())
+        tgt.setPatientInstructionElement(String40_N.convertString(t.getInstructionMarkdownType()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("ServiceRequest", "5.0", "patientInstruction"), t));
+    }
     for (org.hl7.fhir.model.core.Reference t : src.getRelevantHistoryList())
       tgt.addRelevantHistory(Reference40_N.convertReference(t));
     return tgt;
@@ -402,5 +427,11 @@ public class ServiceRequest40_N {
           }
       }
       return tgt;
+  }
+
+  private static boolean isSimpleOrderDetail(ServiceRequestOrderDetailComponent t) {
+    return !t.hasId() && !t.hasExtension() && !t.hasModifierExtension() && !t.hasParameterFocus() && t.getParameterList().size() == 1
+      && t.getParameterFirstRep().hasValueCodeableConcept() && !t.getParameterFirstRep().hasCode() && !t.getParameterFirstRep().hasId()
+      && !t.getParameterFirstRep().hasExtension() && !t.getParameterFirstRep().hasModifierExtension();
   }
 }

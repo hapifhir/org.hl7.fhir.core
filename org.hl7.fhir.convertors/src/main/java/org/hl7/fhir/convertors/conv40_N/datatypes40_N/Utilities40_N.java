@@ -144,4 +144,32 @@ public class Utilities40_N {
     return tgt;
   }
 
+
+  /**
+   * As for {@link #convertCodeableConceptToPositiveIntOrString(org.hl7.fhir.model.core.CodeableConcept)}, but if the
+   * concept has more than text (codings), the whole concept goes on the R4 value in the extension url
+   */
+  public static org.hl7.fhir.r4.model.Type convertCodeableConceptToPositiveIntOrString(org.hl7.fhir.model.core.CodeableConcept src, String url) throws FHIRException {
+    org.hl7.fhir.r4.model.Type tgt = convertCodeableConceptToPositiveIntOrString(src);
+    if (tgt != null && (src.hasCoding() || src.hasId())) {
+      org.hl7.fhir.r4.model.CodeableConcept cc = (org.hl7.fhir.r4.model.CodeableConcept) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src);
+      cc.getExtension().removeIf(e -> VersionConvertorConstants.EXT_ORIGINAL_DATATYPE.equals(e.getUrl()));
+      ((org.hl7.fhir.r4.model.Element) tgt).addExtension(url, cc);
+    }
+    return tgt;
+  }
+
+  /**
+   * The reverse of {@link #convertCodeableConceptToPositiveIntOrString(org.hl7.fhir.model.core.CodeableConcept, String)}
+   */
+  public static org.hl7.fhir.model.core.CodeableConcept convertPositiveIntOrStringToCodeableConcept(org.hl7.fhir.r4.model.Type src, String url) throws FHIRException {
+    org.hl7.fhir.model.core.CodeableConcept tgt = convertPositiveIntOrStringToCodeableConcept(src);
+    if (tgt != null && ((org.hl7.fhir.r4.model.Element) src).hasExtension(url)) {
+      org.hl7.fhir.model.core.CodeableConcept kept = (org.hl7.fhir.model.core.CodeableConcept) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(((org.hl7.fhir.r4.model.Element) src).getExtensionByUrl(url).getValue());
+      tgt.getExtension().removeIf(e -> url.equals(e.getUrl()));
+      tgt.setId(kept.getId());
+      tgt.getCodingList().addAll(kept.getCodingList());
+    }
+    return tgt;
+  }
 }

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -51,7 +52,9 @@ public class EventDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.EventDefinition tgt = new org.hl7.fhir.model.core.EventDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("EventDefinition", "5.0", new String[] {"versionAlgorithm", "copyrightLabel"}, CrossVersionElements40_N.urls("EventDefinition", "6.0", new String[] {"library"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "versionAlgorithm", "copyrightLabel");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "library");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -68,8 +71,8 @@ public class EventDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -116,6 +119,8 @@ public class EventDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.EventDefinition tgt = new org.hl7.fhir.r4.model.EventDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "versionAlgorithm", "copyrightLabel");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "library");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -132,8 +137,7 @@ public class EventDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())

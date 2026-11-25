@@ -315,7 +315,7 @@ public class DocumentReference10_50 {
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipTypeEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/document-relationship-type")) {
+    switch (java.util.Objects.toString(src.getCode("http://hl7.org/fhir/document-relationship-type"), "")) {
     case "replaces":
       tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.REPLACES);
       break;
@@ -329,7 +329,7 @@ public class DocumentReference10_50 {
       tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.APPENDS);
       break;
     default:
-      tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.NULL);
+      // not a code the target version knows: the value is left empty
       break;
     }
 

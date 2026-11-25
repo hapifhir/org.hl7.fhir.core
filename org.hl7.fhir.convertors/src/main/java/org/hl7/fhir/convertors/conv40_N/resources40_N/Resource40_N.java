@@ -48,6 +48,8 @@ public class Resource40_N {
       return Appointment40_N.convertAppointment((org.hl7.fhir.r4.model.Appointment) src);
     if (src instanceof org.hl7.fhir.r4.model.AppointmentResponse)
       return AppointmentResponse40_N.convertAppointmentResponse((org.hl7.fhir.r4.model.AppointmentResponse) src);
+    if (src instanceof org.hl7.fhir.r4.model.AdverseEvent)
+      return AdverseEvent40_N.convertAdverseEvent((org.hl7.fhir.r4.model.AdverseEvent) src);
     if (src instanceof org.hl7.fhir.r4.model.AuditEvent)
       return AuditEvent40_N.convertAuditEvent((org.hl7.fhir.r4.model.AuditEvent) src);
     if (src instanceof org.hl7.fhir.r4.model.Basic) {
@@ -58,6 +60,12 @@ public class Resource40_N {
         return Requirements40_N.convertRequirements((org.hl7.fhir.r4.model.Basic) src);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "SubscriptionTopic")) {
         return SubscriptionTopic40_N.convertSubscriptionTopic((org.hl7.fhir.r4.model.Basic) src);
+      } else if (DeviceAssociation40_N.isDeviceAssociation(basic)) {
+        return DeviceAssociation40_N.convertDeviceAssociation(basic);
+      } else if (NutritionIntake40_N.isNutritionIntake(basic)) {
+        return NutritionIntake40_N.convertNutritionIntake(basic);
+      } else if (ArtifactAssessment40_N.isArtifactAssessment(basic)) {
+        return ArtifactAssessment40_N.convertArtifactAssessment(basic);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "TestPlan")) {
         return TestPlan40_N.convertTestPlan((org.hl7.fhir.r4.model.Basic) src);
       } else {
@@ -101,6 +109,8 @@ public class Resource40_N {
       return Coverage40_N.convertCoverage((org.hl7.fhir.r4.model.Coverage) src);
     if (src instanceof org.hl7.fhir.r4.model.CoverageEligibilityRequest)
       return CoverageEligibilityRequest40_N.convertCoverageEligibilityRequest((org.hl7.fhir.r4.model.CoverageEligibilityRequest) src);
+    if (src instanceof org.hl7.fhir.r4.model.CoverageEligibilityResponse)
+      return CoverageEligibilityResponse40_N.convertCoverageEligibilityResponse((org.hl7.fhir.r4.model.CoverageEligibilityResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.DetectedIssue)
       return DetectedIssue40_N.convertDetectedIssue((org.hl7.fhir.r4.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r4.model.DeviceDefinition)
@@ -189,6 +199,18 @@ public class Resource40_N {
       return Patient40_N.convertPatient((org.hl7.fhir.r4.model.Patient) src);
     if (src instanceof org.hl7.fhir.r4.model.PaymentNotice)
       return PaymentNotice40_N.convertPaymentNotice((org.hl7.fhir.r4.model.PaymentNotice) src);
+    if (src instanceof org.hl7.fhir.r4.model.PaymentReconciliation)
+      return PaymentReconciliation40_N.convertPaymentReconciliation((org.hl7.fhir.r4.model.PaymentReconciliation) src);
+    if (src instanceof org.hl7.fhir.r4.model.RequestGroup)
+      return RequestOrchestration40_N.convertRequestOrchestration((org.hl7.fhir.r4.model.RequestGroup) src);
+    if (src instanceof org.hl7.fhir.r4.model.Evidence)
+      return Evidence40_N.convertEvidence((org.hl7.fhir.r4.model.Evidence) src);
+    if (src instanceof org.hl7.fhir.r4.model.EvidenceVariable)
+      return EvidenceVariable40_N.convertEvidenceVariable((org.hl7.fhir.r4.model.EvidenceVariable) src);
+    if (src instanceof org.hl7.fhir.r4.model.ResearchStudy)
+      return ResearchStudy40_N.convertResearchStudy((org.hl7.fhir.r4.model.ResearchStudy) src);
+    if (src instanceof org.hl7.fhir.r4.model.ResearchSubject)
+      return ResearchSubject40_N.convertResearchSubject((org.hl7.fhir.r4.model.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.r4.model.Person)
       return Person40_N.convertPerson((org.hl7.fhir.r4.model.Person) src);
     if (src instanceof org.hl7.fhir.r4.model.PlanDefinition)
@@ -260,12 +282,20 @@ public class Resource40_N {
       return ActivityDefinition40_N.convertActivityDefinition((org.hl7.fhir.model.core.ActivityDefinition) src);
     if (src instanceof org.hl7.fhir.model.core.AllergyIntolerance)
       return AllergyIntolerance40_N.convertAllergyIntolerance((org.hl7.fhir.model.core.AllergyIntolerance) src);
+    if (src instanceof org.hl7.fhir.model.core.DeviceAssociation)
+      return DeviceAssociation40_N.convertDeviceAssociation((org.hl7.fhir.model.core.DeviceAssociation) src);
+    if (src instanceof org.hl7.fhir.model.core.NutritionIntake)
+      return NutritionIntake40_N.convertNutritionIntake((org.hl7.fhir.model.core.NutritionIntake) src);
+    if (src instanceof org.hl7.fhir.model.core.ArtifactAssessment)
+      return ArtifactAssessment40_N.convertArtifactAssessment((org.hl7.fhir.model.core.ArtifactAssessment) src);
     if (src instanceof org.hl7.fhir.model.core.ActorDefinition)
       return ActorDefinition40_N.convertActorDefinition((org.hl7.fhir.model.core.ActorDefinition) src);
     if (src instanceof org.hl7.fhir.model.core.Appointment)
       return Appointment40_N.convertAppointment((org.hl7.fhir.model.core.Appointment) src);
     if (src instanceof org.hl7.fhir.model.core.AppointmentResponse)
       return AppointmentResponse40_N.convertAppointmentResponse((org.hl7.fhir.model.core.AppointmentResponse) src);
+    if (src instanceof org.hl7.fhir.model.core.AdverseEvent)
+      return AdverseEvent40_N.convertAdverseEvent((org.hl7.fhir.model.core.AdverseEvent) src);
     if (src instanceof org.hl7.fhir.model.core.AuditEvent)
       return AuditEvent40_N.convertAuditEvent((org.hl7.fhir.model.core.AuditEvent) src);
     if (src instanceof org.hl7.fhir.model.core.Basic) return Basic40_N.convertBasic((org.hl7.fhir.model.core.Basic) src);
@@ -306,6 +336,8 @@ public class Resource40_N {
       return Coverage40_N.convertCoverage((org.hl7.fhir.model.core.Coverage) src);
     if (src instanceof org.hl7.fhir.model.core.CoverageEligibilityRequest)
       return CoverageEligibilityRequest40_N.convertCoverageEligibilityRequest((org.hl7.fhir.model.core.CoverageEligibilityRequest) src);
+    if (src instanceof org.hl7.fhir.model.core.CoverageEligibilityResponse)
+      return CoverageEligibilityResponse40_N.convertCoverageEligibilityResponse((org.hl7.fhir.model.core.CoverageEligibilityResponse) src);
     if (src instanceof org.hl7.fhir.model.core.DetectedIssue)
       return DetectedIssue40_N.convertDetectedIssue((org.hl7.fhir.model.core.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.model.core.DeviceDefinition)
@@ -320,6 +352,9 @@ public class Resource40_N {
       return DiagnosticReport40_N.convertDiagnosticReport((org.hl7.fhir.model.core.DiagnosticReport) src);
 //    if (src instanceof org.hl7.fhir.model.core.DocumentManifest)
 //      return DocumentManifest40_N.convertDocumentManifest((org.hl7.fhir.model.core.DocumentManifest) src);
+    // an R4 Media is a DocumentReference marked with the Media.status extension
+    if (src instanceof org.hl7.fhir.model.core.DocumentReference && Media40_N.isMedia((org.hl7.fhir.model.core.DocumentReference) src))
+      return Media40_N.convertMedia((org.hl7.fhir.model.core.DocumentReference) src);
     if (src instanceof org.hl7.fhir.model.core.DocumentReference)
       return DocumentReference40_N.convertDocumentReference((org.hl7.fhir.model.core.DocumentReference) src);
     if (src instanceof org.hl7.fhir.model.core.Encounter)
@@ -359,8 +394,6 @@ public class Resource40_N {
       return Measure40_N.convertMeasure((org.hl7.fhir.model.core.Measure) src);
     if (src instanceof org.hl7.fhir.model.core.MeasureReport)
       return MeasureReport40_N.convertMeasureReport((org.hl7.fhir.model.core.MeasureReport) src);
-    if (src instanceof org.hl7.fhir.model.core.DocumentReference)
-      return Media40_N.convertMedia((org.hl7.fhir.model.core.DocumentReference) src);
     if (src instanceof org.hl7.fhir.model.core.Medication)
       return Medication40_N.convertMedication((org.hl7.fhir.model.core.Medication) src);
     if (src instanceof org.hl7.fhir.model.core.MedicationAdministration)
@@ -395,6 +428,18 @@ public class Resource40_N {
       return Patient40_N.convertPatient((org.hl7.fhir.model.core.Patient) src);
     if (src instanceof org.hl7.fhir.model.core.PaymentNotice)
       return PaymentNotice40_N.convertPaymentNotice((org.hl7.fhir.model.core.PaymentNotice) src);
+    if (src instanceof org.hl7.fhir.model.core.PaymentReconciliation)
+      return PaymentReconciliation40_N.convertPaymentReconciliation((org.hl7.fhir.model.core.PaymentReconciliation) src);
+    if (src instanceof org.hl7.fhir.model.core.RequestOrchestration)
+      return RequestOrchestration40_N.convertRequestOrchestration((org.hl7.fhir.model.core.RequestOrchestration) src);
+    if (src instanceof org.hl7.fhir.model.core.Evidence)
+      return Evidence40_N.convertEvidence((org.hl7.fhir.model.core.Evidence) src);
+    if (src instanceof org.hl7.fhir.model.core.EvidenceVariable)
+      return EvidenceVariable40_N.convertEvidenceVariable((org.hl7.fhir.model.core.EvidenceVariable) src);
+    if (src instanceof org.hl7.fhir.model.core.ResearchStudy)
+      return ResearchStudy40_N.convertResearchStudy((org.hl7.fhir.model.core.ResearchStudy) src);
+    if (src instanceof org.hl7.fhir.model.core.ResearchSubject)
+      return ResearchSubject40_N.convertResearchSubject((org.hl7.fhir.model.core.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.model.core.Person)
       return Person40_N.convertPerson((org.hl7.fhir.model.core.Person) src);
     if (src instanceof org.hl7.fhir.model.core.PlanDefinition)

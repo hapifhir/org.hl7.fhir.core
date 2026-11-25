@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -62,8 +63,8 @@ public class Parameters40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasResource())
       tgt.setResource(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertResource(src.getResource()));
     for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart())
@@ -78,8 +79,7 @@ public class Parameters40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasResource())
       tgt.setResource(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertResource(src.getResource()));
     for (org.hl7.fhir.model.core.Parameters.ParametersParameterComponent t : src.getPartList())

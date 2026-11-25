@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Canonical40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.MarkDown40_N;
@@ -13,12 +14,13 @@ public class RelatedArtifact40_N {
   public static org.hl7.fhir.model.core.RelatedArtifact convertRelatedArtifact(org.hl7.fhir.r4.model.RelatedArtifact src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.model.core.RelatedArtifact tgt = new org.hl7.fhir.model.core.RelatedArtifact();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertRelatedArtifactType(src.getTypeElement()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CrossVersionElements40_N.urls("RelatedArtifact", "5.0", new String[] {"resourceReference"}));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "resourceReference");
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertRelatedArtifactType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasLabel()) tgt.setLabelElement(String40_N.convertString(src.getLabelElement()));
     if (src.hasDisplay()) tgt.setDisplayElement(String40_N.convertString(src.getDisplayElement()));
     if (src.hasCitation()) tgt.setCitationElement(MarkDown40_N.convertMarkdown(src.getCitationElement()));
-    if (src.hasUrl()) tgt.getDocument().setUrlElement(Url40_N.convertUrl(src.getUrlElement()));
+    if (src.hasUrl()) tgt.setUrlElement(Url40_N.convertUrl(src.getUrlElement()));
     if (src.hasDocument()) tgt.setDocument(Attachment40_N.convertAttachment(src.getDocument()));
     if (src.hasResource()) tgt.setResourceElement(Canonical40_N.convertCanonical(src.getResourceElement()));
     return tgt;
@@ -28,11 +30,12 @@ public class RelatedArtifact40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.RelatedArtifact tgt = new org.hl7.fhir.r4.model.RelatedArtifact();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertRelatedArtifactType(src.getTypeElement()));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "resourceReference");
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertRelatedArtifactType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasLabel()) tgt.setLabelElement(String40_N.convertString(src.getLabelElement()));
     if (src.hasDisplay()) tgt.setDisplayElement(String40_N.convertString(src.getDisplayElement()));
     if (src.hasCitation()) tgt.setCitationElement(MarkDown40_N.convertMarkdown(src.getCitationElement()));
-    if (src.getDocument().hasUrl()) tgt.setUrlElement(Url40_N.convertUrl(src.getDocument().getUrlElement()));
+    if (src.hasUrl()) tgt.setUrlElement(Url40_N.convertUrl(src.getUrlElement()));
     if (src.hasDocument()) tgt.setDocument(Attachment40_N.convertAttachment(src.getDocument()));
     if (src.hasResource()) tgt.setResourceElement(Canonical40_N.convertCanonical(src.getResourceElement()));
     return tgt;

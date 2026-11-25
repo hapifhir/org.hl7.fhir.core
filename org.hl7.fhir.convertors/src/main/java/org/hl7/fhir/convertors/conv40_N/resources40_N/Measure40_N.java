@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -61,7 +62,9 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure tgt = new org.hl7.fhir.model.core.Measure();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Measure", "5.0", new String[] {"versionAlgorithm", "copyrightLabel"}, CrossVersionElements40_N.urls("Measure", "6.0", new String[] {"reportingFrequency"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "versionAlgorithm", "copyrightLabel");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "reportingFrequency");
     if (src.hasScoring())
       tgt.addExtension(SCORING_EXTENSION_URL, CodeableConcept40_N.convertCodeableConcept(src.getScoring()));
     if (src.hasCompositeScoring())
@@ -88,8 +91,8 @@ public class Measure40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -138,12 +141,19 @@ public class Measure40_N {
       tgt.setRationaleElement(MarkDown40_N.convertMarkdown(src.getRationaleElement()));
     if (src.hasClinicalRecommendationStatement())
       tgt.setClinicalRecommendationStatementElement(MarkDown40_N.convertMarkdown(src.getClinicalRecommendationStatementElement()));
-    for (org.hl7.fhir.r4.model.MarkdownType t : src.getDefinition())
-      tgt.addTerm().setDefinitionElement(MarkDown40_N.convertMarkdown(t));
+    // R4 definition is R6 term.definition; the term's code is a 5.0 extension on the R4 definition
+    String termCode = CrossVersionElements40_N.url("Measure.term", "5.0", "code");
+    for (org.hl7.fhir.r4.model.MarkdownType t : src.getDefinition()) {
+      MeasureTermComponent term = tgt.addTerm().setDefinitionElement(MarkDown40_N.convertMarkdown(t));
+      if (t.hasExtension(termCode) && t.getExtensionByUrl(termCode).getValue() instanceof org.hl7.fhir.r4.model.CodeableConcept)
+        term.setCode(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) t.getExtensionByUrl(termCode).getValue()));
+      term.getDefinitionElement().getExtension().removeIf(e -> termCode.equals(e.getUrl()));
+    }
     for (org.hl7.fhir.r4.model.Measure.MeasureGroupComponent t : src.getGroup())
       tgt.addGroup(convertMeasureGroupComponent(t));
     for (org.hl7.fhir.r4.model.Measure.MeasureSupplementalDataComponent t : src.getSupplementalData())
       tgt.addSupplementalData(convertMeasureSupplementalDataComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -152,6 +162,8 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure tgt = new org.hl7.fhir.r4.model.Measure();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, SCORING_EXTENSION_URL, COMPOSITE_SCORING_EXTENSION_URL, TYPE_EXTENSION_URL, IMPROVEMENT_NOTATION_EXTENSION_URL, GUIDANCE_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "versionAlgorithm", "copyrightLabel");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "reportingFrequency");
     if (src.hasExtension(SCORING_EXTENSION_URL))
       tgt.setScoring(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) src.getExtensionByUrl(SCORING_EXTENSION_URL).getValue()));
     if (src.hasExtension(COMPOSITE_SCORING_EXTENSION_URL))
@@ -178,8 +190,7 @@ public class Measure40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -228,12 +239,17 @@ public class Measure40_N {
       tgt.setRationaleElement(MarkDown40_N.convertMarkdown(src.getRationaleElement()));
     if (src.hasClinicalRecommendationStatement())
       tgt.setClinicalRecommendationStatementElement(MarkDown40_N.convertMarkdown(src.getClinicalRecommendationStatementElement()));
-    for (MeasureTermComponent t : src.getTermList())
-      tgt.getDefinition().add(MarkDown40_N.convertMarkdown(t.getDefinitionElement()));
+    for (MeasureTermComponent t : src.getTermList()) {
+      org.hl7.fhir.r4.model.MarkdownType d = t.hasDefinitionElement() ? MarkDown40_N.convertMarkdown(t.getDefinitionElement()) : new org.hl7.fhir.r4.model.MarkdownType();
+      if (t.hasCode())
+        d.addExtension(CrossVersionElements40_N.url("Measure.term", "5.0", "code"), CodeableConcept40_N.convertCodeableConcept(t.getCode()));
+      tgt.getDefinition().add(d);
+    }
     for (org.hl7.fhir.model.core.Measure.MeasureGroupComponent t : src.getGroupList())
       tgt.addGroup(convertMeasureGroupComponent(t));
     for (org.hl7.fhir.model.core.Measure.MeasureSupplementalDataComponent t : src.getSupplementalDataList())
       tgt.addSupplementalData(convertMeasureSupplementalDataComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -241,7 +257,9 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.model.core.Measure.MeasureGroupComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Measure.group", "5.0", new String[] {"linkId", "type", "subject", "basis", "scoring", "scoringUnit", "rateAggregation", "improvementNotation", "library"}, CrossVersionElements40_N.urls("Measure.group", "6.0", new String[] {"title", "basisRequirement", "scoringPrecision", "compositeScoring", "component", "improvementNotationGuidance"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "type", "subject", "basis", "scoring", "scoringUnit", "rateAggregation", "improvementNotation", "library");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title", "basisRequirement", "scoringPrecision", "compositeScoring", "component", "improvementNotationGuidance");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
@@ -250,6 +268,7 @@ public class Measure40_N {
       tgt.addPopulation(convertMeasureGroupPopulationComponent(t));
     for (org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponent t : src.getStratifier())
       tgt.addStratifier(convertMeasureGroupStratifierComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -258,6 +277,8 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure.MeasureGroupComponent tgt = new org.hl7.fhir.r4.model.Measure.MeasureGroupComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "type", "subject", "basis", "scoring", "scoringUnit", "rateAggregation", "improvementNotation", "library");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title", "basisRequirement", "scoringPrecision", "compositeScoring", "component", "improvementNotationGuidance");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
@@ -266,6 +287,7 @@ public class Measure40_N {
       tgt.addPopulation(convertMeasureGroupPopulationComponent(t));
     for (org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent t : src.getStratifierList())
       tgt.addStratifier(convertMeasureGroupStratifierComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -273,13 +295,16 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Measure.group.population", "5.0", new String[] {"linkId", "groupDefinition", "inputPopulationId", "aggregateMethod"}, CrossVersionElements40_N.urls("Measure.group.population", "6.0", new String[] {"title"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "groupDefinition", "inputPopulationId", "aggregateMethod");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -288,12 +313,15 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure.MeasureGroupPopulationComponent tgt = new org.hl7.fhir.r4.model.Measure.MeasureGroupPopulationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "groupDefinition", "inputPopulationId", "aggregateMethod");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -301,7 +329,9 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Measure.group.stratifier", "5.0", new String[] {"linkId", "groupDefinition"}, CrossVersionElements40_N.urls("Measure.group.stratifier", "6.0", new String[] {"title"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "groupDefinition");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "title");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
@@ -310,6 +340,7 @@ public class Measure40_N {
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
     for (org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponentComponent t : src.getComponent())
       tgt.addComponent(convertMeasureGroupStratifierComponentComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -318,6 +349,8 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponent tgt = new org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "groupDefinition");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "title");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
@@ -326,6 +359,7 @@ public class Measure40_N {
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
     for (org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponentComponent t : src.getComponentList())
       tgt.addComponent(convertMeasureGroupStratifierComponentComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -333,13 +367,16 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponentComponent tgt = new org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponentComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Measure.group.stratifier.component", "5.0", new String[] {"linkId", "groupDefinition"}, CrossVersionElements40_N.urls("Measure.group.stratifier.component", "6.0", new String[] {"valueSet", "unit"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId", "groupDefinition");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "valueSet", "unit");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -348,12 +385,15 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponentComponent tgt = new org.hl7.fhir.r4.model.Measure.MeasureGroupStratifierComponentComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId", "groupDefinition");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "valueSet", "unit");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -361,7 +401,9 @@ public class Measure40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure.MeasureSupplementalDataComponent tgt = new org.hl7.fhir.model.core.Measure.MeasureSupplementalDataComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Measure.supplementalData", "5.0", new String[] {"linkId"}, CrossVersionElements40_N.urls("Measure.supplementalData", "6.0", new String[] {"valueSet", "unit"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "linkId");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "valueSet", "unit");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getUsage())
@@ -370,6 +412,7 @@ public class Measure40_N {
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -378,6 +421,8 @@ public class Measure40_N {
       return null;
     org.hl7.fhir.r4.model.Measure.MeasureSupplementalDataComponent tgt = new org.hl7.fhir.r4.model.Measure.MeasureSupplementalDataComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "linkId");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "valueSet", "unit");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getUsageList())
@@ -386,6 +431,7 @@ public class Measure40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasCriteria())
       tgt.setCriteria(Expression40_N.convertExpression(src.getCriteria()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

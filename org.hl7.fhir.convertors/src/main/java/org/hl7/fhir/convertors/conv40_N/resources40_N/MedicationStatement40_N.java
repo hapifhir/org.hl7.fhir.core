@@ -2,6 +2,8 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.DosageDetails40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -49,45 +51,41 @@ public class MedicationStatement40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.MedicationStatement tgt = new org.hl7.fhir.model.core.MedicationStatement();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_MED_STAT_STATUS_5);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "MedicationStatement", tgt.getExtension(), "basedOn", "statusReason");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationStatement", "5.0", new String[] {"relatedClinicalInformation", "adherence"}, CrossVersionElements40_N.urls("MedicationStatement", "6.0", new String[] {"author"}, CrossVersionElements40_N.url("MedicationStatement", "5.0", "category"), CrossVersionElements40_N.url("MedicationStatement", "5.0", "informationSource"), VersionConvertorConstants.EXT_MED_STAT_STATUS_5)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "relatedClinicalInformation", "adherence");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "author");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasPrimitiveExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS_5)) {
       tgt.setStatus(org.hl7.fhir.model.core.MedicationStatement.MedicationStatementStatusCodes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_MED_STAT_STATUS_5)));
     } else if (src.hasStatus()) {
       tgt.addExtension(new org.hl7.fhir.model.core.Extension(VersionConvertorConstants.EXT_MED_STAT_STATUS_4, new org.hl7.fhir.model.core.CodeType(src.getStatus().toCode())));
-      tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertMedicationStatementStatus(src.getStatusElement()), src.fhirType(), "status"));
     }
-//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
-//      tgt.addStatusReason(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
-    if (src.hasMedicationCodeableConcept()) {
-      tgt.getMedication().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getMedicationCodeableConcept()));
-    }
-    if (src.hasMedicationReference()) {
-      tgt.getMedication().setReference(Reference40_N.convertReference(src.getMedicationReference()));
-    }
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "category");
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertChoiceToCodeableReference(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasContext())
       tgt.setEncounter(Reference40_N.convertReference(src.getContext()));
-    if (src.hasEffective())
-      tgt.setEffective(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "effective", tgt, tgt.getExtension());
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_N.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
       tgt.addInformationSource(Reference40_N.convertReference(src.getInformationSource()));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "informationSource");
     for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom())
       tgt.addDerivedFrom(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.getDosage().getStepFirstRep().addComponent(Dosage40_N.convertDosage(t));
+    DosageDetails40_N.convertDosages(src.getDosage(), src.getExtension(), tgt.getExtension(), "MedicationStatement.dosage", tgt.getDosage());
     return tgt;
   }
 
@@ -95,48 +93,47 @@ public class MedicationStatement40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationStatement tgt = new org.hl7.fhir.r4.model.MedicationStatement();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_MED_STAT_STATUS_4);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("MedicationStatement", "4.0", new String[] {"basedOn", "statusReason"}, VersionConvertorConstants.EXT_MED_STAT_STATUS_4));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "MedicationStatement", "basedOn", "statusReason");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "relatedClinicalInformation", "adherence");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "author");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
-//    for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
+    for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
 
     if (src.hasPrimitiveExtension(VersionConvertorConstants.EXT_MED_STAT_STATUS_4)) {
       tgt.setStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_MED_STAT_STATUS_4)));
     } else if (src.hasStatus()) {
       tgt.addExtension(new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_MED_STAT_STATUS_5, new org.hl7.fhir.r4.model.CodeType(src.getStatus().toCode())));
-      tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertMedicationStatementStatus(src.getStatusElement()), src.fhirType(), "status"));
     }
-//    for (org.hl7.fhir.model.core.CodeableConcept t : src.getStatusReasonList())
-//      tgt.addStatusReason(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategoryFirstRep()));
-    if (src.getMedication().hasConcept()) {
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getConcept()));
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList()) {
+      if (!tgt.hasCategory())
+        tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationStatement", "5.0", "category"), CodeableConcept40_N.convertCodeableConcept(t));
     }
-    if (src.getMedication().hasReference()) {
-      tgt.setMedication(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getMedication().getReference()));
-    }
+    if (src.hasMedication())
+      tgt.setMedication(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getMedication()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setContext(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasEffective())
-      tgt.setEffective(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "effective", tgt, tgt.getExtension());
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_N.convertDateTime(src.getDateAssertedElement()));
-    if (src.hasInformationSource())
-      tgt.setInformationSource(Reference40_N.convertReference(src.getInformationSourceFirstRep()));
+    for (org.hl7.fhir.model.core.Reference t : src.getInformationSourceList()) {
+      if (!tgt.hasInformationSource())
+        tgt.setInformationSource(Reference40_N.convertReference(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("MedicationStatement", "5.0", "informationSource"), Reference40_N.convertReference(t));
+    }
     for (org.hl7.fhir.model.core.Reference t : src.getDerivedFromList())
       tgt.addDerivedFrom(Reference40_N.convertReference(t));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
-    for (DosageDetails.DosageDetailsStepComponent t : src.getDosage().getStepList()) tgt.addDosage(Dosage40_N.convertDosage(t.getComponentFirstRep()));
+    if (src.hasDosage())
+      DosageDetails40_N.convertDosageDetails(src.getDosage(), "MedicationStatement.dosage", tgt.getDosage(), tgt.getExtension());
     return tgt;
   }
 

@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.model.core.CodeableReference;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Duration40_N;
@@ -48,11 +51,15 @@ public class Specimen40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Specimen tgt = new org.hl7.fhir.model.core.Specimen();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Specimen", "5.0", new String[] {"combined", "role", "feature"}, CrossVersionElements40_N.urls("Specimen", "6.0", new String[] {"focus"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "combined", "role", "feature");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "focus");
+    // R6 dropped accessionIdentifier
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Specimen", tgt.getExtension(), "accessionIdentifier");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertSpecimenStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubject())
@@ -77,11 +84,14 @@ public class Specimen40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen tgt = new org.hl7.fhir.r4.model.Specimen();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.url("Specimen", "4.0", "accessionIdentifier"));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Specimen", "accessionIdentifier");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "combined", "role", "feature");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "focus");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertSpecimenStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubject())
@@ -164,11 +174,12 @@ public class Specimen40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.model.core.Specimen.SpecimenCollectionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Specimen.collection", "5.0", new String[] {"device", "procedure"}, CrossVersionElements40_N.url("Specimen.collection", "6.0", "bodyStructure")));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "device", "procedure");
     if (src.hasCollector())
       tgt.setCollector(Reference40_N.convertReference(src.getCollector()));
-    if (src.hasCollected())
-      tgt.setCollected(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getCollected()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "collected", tgt, tgt.getExtension());
     if (src.hasDuration())
       tgt.setDuration(Duration40_N.convertDuration(src.getDuration()));
     if (src.hasQuantity())
@@ -176,9 +187,11 @@ public class Specimen40_N {
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasBodySite())
-      tgt.addBodyStructure().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getBodySite()));
-    if (src.hasFastingStatus())
-      tgt.setFastingStatus(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getFastingStatus()));
+      tgt.addBodyStructure(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getBodySite()));
+    // the body structures R4's single bodySite couldn't hold
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Specimen.collection", "6.0", "bodyStructure");
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "fastingStatus", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -187,20 +200,24 @@ public class Specimen40_N {
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "device", "procedure");
     if (src.hasCollector())
       tgt.setCollector(Reference40_N.convertReference(src.getCollector()));
-    if (src.hasCollected())
-      tgt.setCollected(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getCollected()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "collected", tgt, tgt.getExtension());
     if (src.hasDuration())
       tgt.setDuration(Duration40_N.convertDuration(src.getDuration()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
-    if (src.getBodyStructureFirstRep().hasConcept())
-      tgt.setBodySite(CodeableConcept40_N.convertCodeableConcept(src.getBodyStructureFirstRep().getConcept()));
-    if (src.hasFastingStatus())
-      tgt.setFastingStatus(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getFastingStatus()));
+    // R4 bodySite is a single CodeableConcept: the first body structure goes there, the rest in extensions
+    for (CodeableReference t : src.getBodyStructureList()) {
+      if (!tgt.hasBodySite())
+        tgt.setBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Specimen.collection", "6.0", "bodyStructure"), t));
+    }
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "fastingStatus", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -208,14 +225,18 @@ public class Specimen40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.model.core.Specimen.SpecimenProcessingComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Specimen.processing", "6.0", new String[] {"performer", "device", "additive"}));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Specimen.processing", "6.0", "performer", "device");
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
-//    if (src.hasProcedure())
-//      tgt.setProcedure(CodeableConcept40_N.convertCodeableConcept(src.getProcedure()));
+    // R4 procedure is R6 method
+    if (src.hasProcedure())
+      tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive().getType().setReference(Reference40_N.convertReference(t));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTime()));
+    // the additives that weren't just a reference
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Specimen.processing", "6.0", "additive");
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "time", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -224,13 +245,19 @@ public class Specimen40_N {
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "Specimen.processing", tgt.getExtension(), "6.0", "performer", "device");
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
-//    if (src.hasProcedure())
-//      tgt.setProcedure(CodeableConcept40_N.convertCodeableConcept(src.getProcedure()));
-    for (Specimen.SpecimenProcessingAdditiveComponent t : src.getAdditiveList()) tgt.addAdditive(Reference40_N.convertReference(t.getType().getReference()));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTime()));
+    if (src.hasMethod())
+      tgt.setProcedure(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
+    // R4 additive is a reference: an R6 additive that's just a reference to the substance is that; the others go in the extension
+    for (Specimen.SpecimenProcessingAdditiveComponent t : src.getAdditiveList()) {
+      if (t.getType().hasReference() && !t.getType().hasConcept() && !t.hasQuantity() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension())
+        tgt.addAdditive(Reference40_N.convertReference(t.getType().getReference()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Specimen.processing", "6.0", "additive"), t));
+    }
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "time", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -239,18 +266,13 @@ public class Specimen40_N {
       return null;
     org.hl7.fhir.model.core.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.model.core.Specimen.SpecimenContainerComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-//      tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    if (src.hasDescription())
-//      tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
-//    if (src.hasType())
-//      tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-//    if (src.hasCapacity())
-//      tgt.setCapacity(SimpleQuantity40_N.convertSimpleQuantity(src.getCapacity()));
-//    if (src.hasSpecimenQuantity())
-//      tgt.setSpecimenQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getSpecimenQuantity()));
-//    if (src.hasAdditive())
-//      tgt.setAdditive(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAdditive()));
+    // R6 container.device is a CodeableReference: R4 type is the concept (the reference rides as an extension on it)
+    if (src.hasType())
+      tgt.setDevice(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getType()));
+    if (src.hasSpecimenQuantity())
+      tgt.setSpecimenQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getSpecimenQuantity()));
+    // R6 dropped the rest
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Specimen.container", tgt.getExtension(), "identifier", "description", "capacity", "additive");
     return tgt;
   }
 
@@ -258,19 +280,12 @@ public class Specimen40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-//    for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
-//      tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
-//    if (src.hasDescription())
-//      tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
-//    if (src.hasType())
-//      tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-//    if (src.hasCapacity())
-//      tgt.setCapacity(SimpleQuantity40_N.convertSimpleQuantity(src.getCapacity()));
-//    if (src.hasSpecimenQuantity())
-//      tgt.setSpecimenQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getSpecimenQuantity()));
-//    if (src.hasAdditive())
-//      tgt.setAdditive(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAdditive()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Specimen.container", "4.0", new String[] {"identifier", "description", "capacity", "additive"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Specimen.container", "identifier", "description", "capacity", "additive");
+    if (src.hasDevice())
+      tgt.setType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getDevice()));
+    if (src.hasSpecimenQuantity())
+      tgt.setSpecimenQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getSpecimenQuantity()));
     return tgt;
   }
 }

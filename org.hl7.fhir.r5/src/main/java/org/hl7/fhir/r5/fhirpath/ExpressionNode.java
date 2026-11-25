@@ -62,7 +62,7 @@ public class ExpressionNode {
     HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf, Debug,
 
     // Document functions (see DocumentFunctions) - local extensions too
-    Section, Entry, EntryIn, Resources, ResourcesIn, SameSubject, HasCoding;
+    Section, Entry, EntryIn, Resources, ResourcesIn, SameSubject, HasCoding, IsKnown, HasData;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -173,6 +173,8 @@ public class ExpressionNode {
       if (name.equals("resourcesIn")) return Function.ResourcesIn;
       if (name.equals("sameSubject")) return Function.SameSubject;
       if (name.equals("hasCoding")) return Function.HasCoding;
+      if (name.equals("isKnown")) return Function.IsKnown;
+      if (name.equals("hasData")) return Function.HasData;
 
       return null;
     }
@@ -286,6 +288,8 @@ public class ExpressionNode {
         case ResourcesIn: return "resourcesIn";
         case SameSubject: return "sameSubject";
         case HasCoding: return "hasCoding";
+        case IsKnown: return "isKnown";
+        case HasData: return "hasData";
       default: return "?custom?";
       }
     }

@@ -3,6 +3,8 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Range40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -47,7 +49,11 @@ public class ObservationDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ObservationDefinition tgt = new org.hl7.fhir.model.core.ObservationDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "ObservationDefinition", tgt.getExtension(), "validCodedValueSet", "normalCodedValueSet", "abnormalCodedValueSet", "criticalCodedValueSet");
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ObservationDefinition", "5.0", new String[] {"url", "version", "versionAlgorithm", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod", "derivedFromCanonical", "derivedFromUri", "subject", "performerType", "specimen", "device", "hasMember", "component"}, CrossVersionElements40_N.urls("ObservationDefinition", "6.0", new String[] {"bodyStructure", "supportingDevice"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "url", "version", "versionAlgorithm", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod", "derivedFromCanonical", "derivedFromUri", "subject", "performerType", "specimen", "device", "hasMember", "component");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "bodyStructure", "supportingDevice");
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCode())
@@ -67,17 +73,15 @@ public class ObservationDefinition40_N {
       for (org.hl7.fhir.r4.model.Coding c : src.getQuantitativeDetails().getUnit().getCoding()) {
         tgt.addPermittedUnit(Coding40_N.convertCoding(c));
       }
+      // R6 has only the unit codings (permittedUnit): the rest of quantitativeDetails is 4.0 extensions
+      CrossVersionElements40_N.r4ElementsToExtensions(src.getQuantitativeDetails(), QD, tgt.getExtension(), "customaryUnit", "conversionFactor", "decimalPrecision");
+      org.hl7.fhir.r4.model.CodeableConcept unit = src.getQuantitativeDetails().getUnit();
+      if (unit.hasText() || unit.hasId() || unit.hasExtension())
+        CrossVersionElements40_N.r4ElementsToExtensions(src.getQuantitativeDetails(), QD, tgt.getExtension(), "unit");
     }
 
-//        for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-//        if (src.hasValidCodedValueSet())
-//            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
-//        if (src.hasNormalCodedValueSet())
-//            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
-//        if (src.hasAbnormalCodedValueSet())
-//            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
-//        if (src.hasCriticalCodedValueSet())
-//            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
+    for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval())
+      tgt.addQualifiedValue(convertQualifiedInterval(t));
     return tgt;
   }
 
@@ -85,7 +89,10 @@ public class ObservationDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ObservationDefinition tgt = new org.hl7.fhir.r4.model.ObservationDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ObservationDefinition", "4.0", new String[] {"validCodedValueSet", "normalCodedValueSet", "abnormalCodedValueSet", "criticalCodedValueSet"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "ObservationDefinition", "validCodedValueSet", "normalCodedValueSet", "abnormalCodedValueSet", "criticalCodedValueSet");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "url", "version", "versionAlgorithm", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod", "derivedFromCanonical", "derivedFromUri", "subject", "performerType", "specimen", "device", "hasMember", "component");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "bodyStructure", "supportingDevice");
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCode())
@@ -101,18 +108,84 @@ public class ObservationDefinition40_N {
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasPreferredReportName())
       tgt.setPreferredReportNameElement(String40_N.convertString(src.getPreferredReportNameElement()));
-    for (org.hl7.fhir.model.core.Coding c : src.getPermittedUnitList()) {
-      tgt.getQuantitativeDetails().getUnit().addCoding(Coding40_N.convertCoding(c));
+    String unitUrl = CrossVersionElements40_N.url(QD, "4.0", "unit");
+    if (!src.hasExtension(unitUrl)) {
+      for (org.hl7.fhir.model.core.Coding c : src.getPermittedUnitList()) {
+        tgt.getQuantitativeDetails().getUnit().addCoding(Coding40_N.convertCoding(c));
+      }
     }
-//        for (org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedIntervalList()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-//        if (src.hasValidCodedValueSet())
-//            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
-//        if (src.hasNormalCodedValueSet())
-//            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
-//        if (src.hasAbnormalCodedValueSet())
-//            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
-//        if (src.hasCriticalCodedValueSet())
-//            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
+    for (String n : new String[] {"customaryUnit", "conversionFactor", "decimalPrecision", "unit"}) {
+      String u = CrossVersionElements40_N.url(QD, "4.0", n);
+      tgt.getExtension().removeIf(e -> u.equals(e.getUrl()));
+    }
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt.getQuantitativeDetails(), QD, "customaryUnit", "conversionFactor", "decimalPrecision", "unit");
+    for (org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedValueComponent t : src.getQualifiedValueList())
+      tgt.addQualifiedInterval(convertQualifiedValue(t));
+    return tgt;
+  }
+
+  private static final String QV = "ObservationDefinition.qualifiedValue";
+  private static final String QD = "ObservationDefinition.quantitativeDetails";
+  // R6 moved the coded value sets from the resource into qualifiedValue; interpretation is new in R6
+  private static final String[] QV_V5 = {"validCodedValueSet", "normalCodedValueSet", "abnormalCodedValueSet", "criticalCodedValueSet"};
+  private static final String[] QV_V6 = {"interpretation"};
+
+  /**
+   * R4 qualifiedInterval -> R6 qualifiedValue (renamed in R5; category -> rangeCategory, gender -> sexParameterForClinicalUse)
+   */
+  public static org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedValueComponent convertQualifiedInterval(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
+    org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedValueComponent tgt = new org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedValueComponent();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls(QV, "5.0", QV_V5, CrossVersionElements40_N.urls(QV, "6.0", QV_V6)));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, QV, "5.0", QV_V5);
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, QV, "6.0", QV_V6);
+    if (src.hasContext())
+      tgt.setContext(CodeableConcept40_N.convertCodeableConcept(src.getContext()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAppliesTo())
+      tgt.addAppliesTo(CodeableConcept40_N.convertCodeableConcept(t));
+    if (src.hasGender()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getGenderElement(), tgt.getSexParameterForClinicalUseElement());
+      tgt.getSexParameterForClinicalUseElement().setValueAsString(src.getGenderElement().getValueAsString());
+    }
+    if (src.hasAge())
+      tgt.setAge(Range40_N.convertRange(src.getAge()));
+    if (src.hasGestationalAge())
+      tgt.setGestationalAge(Range40_N.convertRange(src.getGestationalAge()));
+    if (src.hasCondition())
+      tgt.setConditionElement(String40_N.convertString(src.getConditionElement()));
+    if (src.hasCategory()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getCategoryElement(), tgt.getRangeCategoryElement());
+      tgt.getRangeCategoryElement().setValueAsString(src.getCategoryElement().getValueAsString());
+    }
+    if (src.hasRange())
+      tgt.setRange(Range40_N.convertRange(src.getRange()));
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertQualifiedValue(org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedValueComponent src) throws FHIRException {
+    org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, QV, tgt.getExtension(), "5.0", QV_V5);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, QV, tgt.getExtension(), "6.0", QV_V6);
+    if (src.hasRangeCategory()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getRangeCategoryElement(), tgt.getCategoryElement());
+      tgt.getCategoryElement().setValueAsString(src.getRangeCategoryElement().getValueAsString());
+    }
+    if (src.hasRange())
+      tgt.setRange(Range40_N.convertRange(src.getRange()));
+    if (src.hasContext())
+      tgt.setContext(CodeableConcept40_N.convertCodeableConcept(src.getContext()));
+    for (org.hl7.fhir.model.core.CodeableConcept t : src.getAppliesToList())
+      tgt.addAppliesTo(CodeableConcept40_N.convertCodeableConcept(t));
+    if (src.hasSexParameterForClinicalUse()) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getSexParameterForClinicalUseElement(), tgt.getGenderElement());
+      tgt.getGenderElement().setValueAsString(src.getSexParameterForClinicalUseElement().getValueAsString());
+    }
+    if (src.hasAge())
+      tgt.setAge(Range40_N.convertRange(src.getAge()));
+    if (src.hasGestationalAge())
+      tgt.setGestationalAge(Range40_N.convertRange(src.getGestationalAge()));
+    if (src.hasCondition())
+      tgt.setConditionElement(String40_N.convertString(src.getConditionElement()));
     return tgt;
   }
 
@@ -223,7 +296,7 @@ public class ObservationDefinition40_N {
 //        org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.model.core.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
 //        copyElement(src, tgt);
 //        if (src.hasCategory())
-//            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
+//            tgt.setCategoryElement(CrossVersionElements40_N.toR6Code(src.getCategoryElement(), convertObservationRangeCategory(src.getCategoryElement()), src.fhirType(), "category"));
 //        if (src.hasRange())
 //            tgt.setRange(convertRange(src.getRange()));
 //        if (src.hasContext())
@@ -246,7 +319,7 @@ public class ObservationDefinition40_N {
 //        org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
 //        copyElement(src, tgt);
 //        if (src.hasCategory())
-//            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
+//            tgt.setCategoryElement(CrossVersionElements40_N.toR4Code(src.getCategoryElement(), convertObservationRangeCategory(src.getCategoryElement()), src.fhirType(), "category"));
 //        if (src.hasRange())
 //            tgt.setRange(convertRange(src.getRange()));
 //        if (src.hasContext())

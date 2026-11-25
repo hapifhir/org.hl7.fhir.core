@@ -4,7 +4,9 @@ import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.UsageContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Boolean40_N;
@@ -61,7 +63,8 @@ public class ImplementationGuide40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ImplementationGuide tgt = new org.hl7.fhir.model.core.ImplementationGuide();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("ImplementationGuide", "5.0", new String[] {"identifier", "purpose", "copyrightLabel"}, CrossVersionElements40_N.urls("ImplementationGuide", "6.0", new String[] {}, VersionConvertorConstants.EXT_VERSION_ALGORITHM)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "identifier", "purpose", "copyrightLabel");
     if (tgt.hasImplicitRules() && VersionConvertorConstants.IMPLICIT_RULES_OMITTED_MANDATORY_CODE.equals(tgt.getImplicitRules())) {
       // the marker recorded that a mandatory page name[x] was omitted on the way down to R4; the 
       // page content is restored from the inter-version extensions below, so it no longer applies
@@ -110,6 +113,7 @@ public class ImplementationGuide40_N {
       tgt.setDefinition(convertImplementationGuideDefinitionComponent(src.getDefinition()));
     if (src.hasManifest())
       tgt.setManifest(convertImplementationGuideManifestComponent(src.getManifest()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -118,6 +122,7 @@ public class ImplementationGuide40_N {
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide tgt = new org.hl7.fhir.r4.model.ImplementationGuide();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "identifier", "purpose", "copyrightLabel");
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -214,6 +219,7 @@ public class ImplementationGuide40_N {
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasExtension(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON))
       tgt.setReasonElement(MarkDown40_N.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON).getValue()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -230,6 +236,7 @@ public class ImplementationGuide40_N {
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasReason())
       tgt.addExtension(VersionConvertorConstants.EXT_IG_DEPENDSON_REASON, MarkDown40_N.convertMarkdown(src.getReasonElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -242,6 +249,7 @@ public class ImplementationGuide40_N {
       tgt.setTypeElement(Uri40_N.convertUriFromCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -254,6 +262,7 @@ public class ImplementationGuide40_N {
       tgt.setTypeElement(Uri40_N.convertUriToCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_N.convertCanonical(src.getProfileElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -274,11 +283,17 @@ public class ImplementationGuide40_N {
       org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
       p.getCode().setCode(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "code"));
       p.getCode().setSystem(VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT);
+      // the whole Coding, if the code alone wouldn't make it (see below)
+      org.hl7.fhir.r4.model.Extension ce = e.getExtensionByUrl("code");
+      String codeUrl = CrossVersionElements40_N.url("ImplementationGuide.definition.parameter", "5.0", "code");
+      if (ce != null && ce.hasValue() && ce.getValue().hasExtension(codeUrl) && ce.getValue().getExtensionByUrl(codeUrl).getValue() instanceof org.hl7.fhir.r4.model.Coding)
+        p.setCode(Coding40_N.convertCoding((org.hl7.fhir.r4.model.Coding) ce.getValue().getExtensionByUrl(codeUrl).getValue()));
       p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "value"));
       tgt.addParameter(p);
     }
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
       tgt.addTemplate(convertImplementationGuideDefinitionTemplateComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -299,6 +314,10 @@ public class ImplementationGuide40_N {
         } else {
           org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_IG_DEFINITION_PARAMETER);
           org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.CodeType(t.getCode().getCode()));
+          // the code is all there is room for: if that isn't enough to make the Coding again, the Coding is a 5.0 extension on it
+          org.hl7.fhir.model.core.Coding c = t.getCode();
+          if (!VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT.equals(c.getSystem()) || c.hasDisplay() || c.hasVersion() || c.hasUserSelected() || c.hasId() || c.hasExtension())
+            eCode.getValue().addExtension(CrossVersionElements40_N.url("ImplementationGuide.definition.parameter", "5.0", "code"), Coding40_N.convertCoding(c));
           org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
           e.addExtension(eCode);
           e.addExtension(eValue);
@@ -319,6 +338,7 @@ public class ImplementationGuide40_N {
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -331,6 +351,7 @@ public class ImplementationGuide40_N {
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -359,6 +380,7 @@ public class ImplementationGuide40_N {
     }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_N.convertId(src.getGroupingIdElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -378,17 +400,19 @@ public class ImplementationGuide40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasIsExample())
       tgt.setExample(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getIsExampleElement()));
-    boolean profileAsExample = src.hasProfile() && (!src.hasIsExample() || src.getIsExample());
+    // R4 example[x] as a canonical says the resource is an example of that profile, so only when R6 says it's an example
+    boolean profileAsExample = src.hasProfile() && src.hasIsExample() && src.getIsExample();
     if (profileAsExample) {
       tgt.setExample(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProfileList().get(0)));
     }
     // any profile not represented as example[x] is parked on the inter-version extension - 
-    // including the first, when the resource is not an example
+    // including the first, when the resource is not (or isn't said to be) an example
     for (CanonicalType p : src.getProfileList().subList(profileAsExample ? 1 : 0, src.getProfileList().size())) {
       tgt.addExtension(VersionConvertorConstants.EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical40_N.convertCanonical(p));
     }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_N.convertId(src.getGroupingIdElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -401,6 +425,8 @@ public class ImplementationGuide40_N {
       tgt.setNameElement(Url40_N.convertUrl((UrlType) src.getExtensionByUrl(VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME).getValue()));
     }
     if (src.hasNameReference()) {
+      // R6 source can't be a Reference: the reference is the url source, and the Reference is kept as a 4.0 extension
+      CrossVersionElements40_N.r4ElementsToExtensions(src, "ImplementationGuide.definition.page", tgt.getExtension(), "name");
       tgt.setSource(new org.hl7.fhir.model.core.UrlType(src.getNameReference().getReference()));
       if (!tgt.hasName()) {
         tgt.setName(tgt.getSourceUrlType().asStringValue());
@@ -427,6 +453,7 @@ public class ImplementationGuide40_N {
       tgt.setGenerationElement(convertGuidePageGeneration(src.getGenerationElement()));
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent t : src.getPage())
       tgt.addPage(convertImplementationGuideDefinitionPageComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -435,24 +462,32 @@ public class ImplementationGuide40_N {
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasName()) {
+    // R4 has no page name: keep it, unless it's the url source, which is what it comes back as
+    if (src.hasName() && !(src.hasSourceUrlType() && src.getName().equals(src.getSourceUrlType().getValue()))) {
       tgt.addExtension().setUrl(VersionConvertorConstants.EXT_IG_DEFINITION_PAGE_NAME).setValue(Url40_N.convertUrl(src.getNameElement()));
     }
     if (src.hasSourceUrlType()) {
       tgt.setName(Url40_N.convertUrl(src.getSourceUrlType()));
+    } else if (src.hasSourceMarkdownType()) {
+      // (markdown first: a MarkdownType is a StringType too)
+      tgt.addExtension(VersionConvertorConstants.EXT_IG_PAGE_SOURCE, MarkDown40_N.convertMarkdown(src.getSourceMarkdownType()));
     } else if (src.hasSourceStringType()) {
       // R4 name[x] can only hold a url; park the string source on the inter-version extension. 
       // The resource-level converter marks implicitRules because the mandatory name[x] is omitted
       tgt.addExtension(VersionConvertorConstants.EXT_IG_PAGE_SOURCE, String40_N.convertString(src.getSourceStringType()));
-    } else if (src.hasSourceMarkdownType()) {
-      tgt.addExtension(VersionConvertorConstants.EXT_IG_PAGE_SOURCE, MarkDown40_N.convertMarkdown(src.getSourceMarkdownType()));
-    } 
+    }
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasGeneration())
       tgt.setGenerationElement(convertGuidePageGeneration(src.getGenerationElement()));
     for (org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDefinitionPageComponent t : src.getPageList())
       tgt.addPage(convertImplementationGuideDefinitionPageComponent(t));
+    String pn = CrossVersionElements40_N.url("ImplementationGuide.definition.page", "4.0", "name");
+    if (src.hasExtension(pn)) {
+      tgt.getExtension().removeIf(e -> pn.equals(e.getUrl()));
+      CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "ImplementationGuide.definition.page", "name");
+    }
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -527,8 +562,14 @@ public class ImplementationGuide40_N {
         tgt.getCode().setSystem(VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT);  
       }
     }
+    // the whole Coding, if R4 couldn't carry it (see below)
+    String codeUrl = CrossVersionElements40_N.url("ImplementationGuide.definition.parameter", "5.0", "code");
+    if (src.hasExtension(codeUrl) && src.getExtensionByUrl(codeUrl).getValue() instanceof org.hl7.fhir.r4.model.Coding)
+      tgt.setCode(Coding40_N.convertCoding((org.hl7.fhir.r4.model.Coding) src.getExtensionByUrl(codeUrl).getValue()));
+    tgt.getExtension().removeIf(e -> codeUrl.equals(e.getUrl()));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -537,10 +578,18 @@ public class ImplementationGuide40_N {
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasCode())
+    if (src.hasCode()) {
       tgt.setCode(src.getCode().getCode());
+      // R4 has just the code, and the system comes from that: if that wouldn't make the same Coding, the Coding is a 5.0 extension
+      org.hl7.fhir.model.core.Coding c = src.getCode();
+      String system = Utilities.existsInList(c.getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template") ?
+        VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_BASE : VersionConvertorConstants.EXT_IG_DEFINITION_PARAM_URL_EXT;
+      if (!system.equals(c.getSystem()) || c.hasDisplay() || c.hasVersion() || c.hasUserSelected() || c.hasId() || c.hasExtension())
+        tgt.addExtension(CrossVersionElements40_N.url("ImplementationGuide.definition.parameter", "5.0", "code"), Coding40_N.convertCoding(c));
+    }
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -613,6 +662,7 @@ public class ImplementationGuide40_N {
       tgt.setSourceElement(String40_N.convertString(src.getSourceElement()));
     if (src.hasScope())
       tgt.setScopeElement(String40_N.convertString(src.getScopeElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -627,6 +677,7 @@ public class ImplementationGuide40_N {
       tgt.setSourceElement(String40_N.convertString(src.getSourceElement()));
     if (src.hasScope())
       tgt.setScopeElement(String40_N.convertString(src.getScopeElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -643,6 +694,7 @@ public class ImplementationGuide40_N {
       tgt.addPage(convertManifestPageComponent(t));
     for (org.hl7.fhir.r4.model.StringType t : src.getImage()) tgt.getImageList().add(String40_N.convertString(t));
     for (org.hl7.fhir.r4.model.StringType t : src.getOther()) tgt.getOtherList().add(String40_N.convertString(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -659,6 +711,7 @@ public class ImplementationGuide40_N {
       tgt.addPage(convertManifestPageComponent(t));
     for (org.hl7.fhir.model.core.StringType t : src.getImageList()) tgt.getImage().add(String40_N.convertString(t));
     for (org.hl7.fhir.model.core.StringType t : src.getOtherList()) tgt.getOther().add(String40_N.convertString(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -680,6 +733,7 @@ public class ImplementationGuide40_N {
     }
     if (src.hasRelativePath())
       tgt.setRelativePathElement(Url40_N.convertUrl(src.getRelativePathElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -692,17 +746,19 @@ public class ImplementationGuide40_N {
       tgt.setReference(Reference40_N.convertReference(src.getReference()));
     if (src.hasIsExample())
       tgt.setExample(Boolean40_N.convertBoolean(src.getIsExampleElement()));
-    boolean profileAsExample = src.hasProfile() && (!src.hasIsExample() || src.getIsExample());
+    // R4 example[x] as a canonical says the resource is an example of that profile, so only when R6 says it's an example
+    boolean profileAsExample = src.hasProfile() && src.hasIsExample() && src.getIsExample();
     if (profileAsExample) {
       tgt.setExample(Canonical40_N.convertCanonical(src.getProfileList().get(0)));
     }
     // any profile not represented as example[x] is parked on the inter-version extension - 
-    // including the first, when the resource is not an example
+    // including the first, when the resource is not (or isn't said to be) an example
     for (CanonicalType p : src.getProfileList().subList(profileAsExample ? 1 : 0, src.getProfileList().size())) {
       tgt.addExtension(VersionConvertorConstants.EXT_IG_MANIFEST_RESOURCE_PROFILE, Canonical40_N.convertCanonical(p));
     }
     if (src.hasRelativePath())
       tgt.setRelativePathElement(Url40_N.convertUrl(src.getRelativePathElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -716,6 +772,7 @@ public class ImplementationGuide40_N {
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getAnchor()) tgt.getAnchorList().add(String40_N.convertString(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -729,6 +786,7 @@ public class ImplementationGuide40_N {
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     for (org.hl7.fhir.model.core.StringType t : src.getAnchorList()) tgt.getAnchor().add(String40_N.convertString(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,15 +65,15 @@ public class Condition40_N {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
-      tgt.addBodyStructure().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
+      tgt.addBodyStructure(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
-    if (src.hasAbatement())
-      tgt.setAbatement(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAbatement()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "abatement", tgt, tgt.getExtension());
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_N.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
@@ -80,8 +82,15 @@ public class Condition40_N {
       tgt.setAsserter(Reference40_N.convertReference(src.getAsserter()));
     for (org.hl7.fhir.r4.model.Condition.ConditionStageComponent t : src.getStage())
       tgt.addStage(convertConditionStageComponent(t));
-    for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
-      tgt.getEvidenceList().addAll(convertConditionEvidenceComponent(t));
+    // R6 evidence is a list of CodeableReference; an R4 evidence that becomes more than one of them gets the group
+    // index (the position of the R4 evidence) on each, so it can be reassembled going back
+    for (int i = 0; i < src.getEvidence().size(); i++) {
+      List<CodeableReference> list = convertConditionEvidenceComponent(src.getEvidence().get(i));
+      if (list.size() > 1)
+        for (CodeableReference cr : list)
+          cr.addExtension(VersionConvertorConstants.EXT_GROUP_INDEX, new org.hl7.fhir.model.core.IntegerType(i));
+      tgt.getEvidenceList().addAll(list);
+    }
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     return tgt;
   }
@@ -104,15 +113,13 @@ public class Condition40_N {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.model.core.CodeableReference t : src.getBodyStructureList())
-      tgt.addBodySite(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOnset())
-      tgt.setOnset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOnset()));
-    if (src.hasAbatement())
-      tgt.setAbatement(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getAbatement()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "onset", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "abatement", tgt, tgt.getExtension());
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_N.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
@@ -121,8 +128,22 @@ public class Condition40_N {
       tgt.setAsserter(Reference40_N.convertReference(src.getAsserter()));
     for (org.hl7.fhir.model.core.Condition.ConditionStageComponent t : src.getStageList())
       tgt.addStage(convertConditionStageComponent(t));
-    for (CodeableReference t : src.getEvidenceList())
-      tgt.addEvidence(convertConditionEvidenceComponent(t));
+    // CodeableReferences with the same group index (see above) go back into one R4 evidence
+    java.util.Map<String, org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent> groups = new java.util.HashMap<>();
+    for (CodeableReference t : src.getEvidenceList()) {
+      org.hl7.fhir.model.core.Extension gx = t.getExtensionByUrl(VersionConvertorConstants.EXT_GROUP_INDEX);
+      String g = gx != null && gx.hasValue() ? gx.getValue().primitiveValue() : null;
+      org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent e = convertConditionEvidenceComponent(t);
+      e.getExtension().removeIf(x -> VersionConvertorConstants.EXT_GROUP_INDEX.equals(x.getUrl()));
+      if (g != null && groups.containsKey(g)) {
+        groups.get(g).getCode().addAll(e.getCode());
+        groups.get(g).getDetail().addAll(e.getDetail());
+      } else {
+        tgt.addEvidence(e);
+        if (g != null)
+          groups.put(g, e);
+      }
+    }
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     return tgt;
   }
@@ -157,6 +178,15 @@ public class Condition40_N {
     if (src == null)
       return null;
     List<org.hl7.fhir.model.core.CodeableReference> list = new ArrayList<>();
+    // a single code and a single detail is one CodeableReference with both (the reverse of what happens below)
+    if (src.getCode().size() == 1 && src.getDetail().size() == 1) {
+      org.hl7.fhir.model.core.CodeableReference tgt = new org.hl7.fhir.model.core.CodeableReference();
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      tgt.setConcept(CodeableConcept40_N.convertCodeableConcept(src.getCodeFirstRep()));
+      tgt.setReference(Reference40_N.convertReference(src.getDetailFirstRep()));
+      list.add(tgt);
+      return list;
+    }
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) {
       org.hl7.fhir.model.core.CodeableReference tgt = new org.hl7.fhir.model.core.CodeableReference();
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);

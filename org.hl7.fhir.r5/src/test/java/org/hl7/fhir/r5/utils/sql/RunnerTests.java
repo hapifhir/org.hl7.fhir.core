@@ -268,10 +268,13 @@ class RunnerTests {
     provider.addResource(parseResource(SIX_NAMES));
     Runner runner = newRunner(provider, storage);
     runner.setMaxRows(5000);
+    // 1000 rows, each getting a column of 11,000 values: 11,000,000 cells, over the limit (ExecutionLimits.DEFAULT_MAX_ITEMS).
+    // The values are cheap to make (one repeat, not one per value: thousand.select(thousand) took more than 30s on CI)
     String thousand = "(1).repeat(iif($this < 1000, $this + 1, {}))";
+    String eleven = "(1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11)";
     JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
         + "\"resource\":\"Patient\",\"select\":[{\"forEach\":\"" + thousand + "\",\"column\":[{\"name\":\"n\",\"path\":\"$this\"}]},"
-        + "{\"column\":[{\"name\":\"m\",\"collection\":true,\"path\":\"" + thousand + ".select(" + thousand + ")\"}]}]}");
+        + "{\"column\":[{\"name\":\"m\",\"collection\":true,\"path\":\"" + thousand + ".select(" + eleven + ")\"}]}]}");
     long start = System.currentTimeMillis();
     FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
     assertTrue(e.getMessage().contains("values in a column"), e.getMessage());

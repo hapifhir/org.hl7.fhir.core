@@ -41,7 +41,10 @@ class ManagedFileAccessAllowedPathsTest {
   @Test
   void filesInsideAreFine() throws IOException {
     Path ig = setUp();
-    assertEquals("in", new String(ManagedFileAccess.inStream(ig.resolve("in.txt").toString()).readAllBytes(), StandardCharsets.UTF_8));
+    // closed, or on Windows the temp folder can't be deleted
+    try (java.io.InputStream in = ManagedFileAccess.inStream(ig.resolve("in.txt").toString())) {
+      assertEquals("in", new String(in.readAllBytes(), StandardCharsets.UTF_8));
+    }
     Files.createDirectories(ig.resolve("sub"));
     ManagedFileAccess.outStream(ig.resolve("sub/../out.txt").toString()).close();
     ManagedFileAccess.file(ig.resolve("not-yet/there.txt").toString());

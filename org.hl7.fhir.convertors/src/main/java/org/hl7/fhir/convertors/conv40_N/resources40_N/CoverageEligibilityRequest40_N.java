@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Money40_N;
@@ -52,11 +53,13 @@ public class CoverageEligibilityRequest40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CoverageEligibilityRequest tgt = new org.hl7.fhir.model.core.CoverageEligibilityRequest();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("CoverageEligibilityRequest", "5.0", new String[] {"event"}, CrossVersionElements40_N.urls("CoverageEligibilityRequest", "6.0", new String[] {"statusReason"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "event");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEligibilityRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEligibilityRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_N.convertCodeableConcept(src.getPriority()));
     tgt.setPurposeList(src.getPurpose().stream()
@@ -64,8 +67,8 @@ public class CoverageEligibilityRequest40_N {
       .collect(Collectors.toList()));
     if (src.hasPatient())
       tgt.setPatient(Reference40_N.convertReference(src.getPatient()));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
     if (src.hasEnterer())
@@ -90,10 +93,12 @@ public class CoverageEligibilityRequest40_N {
       return null;
     org.hl7.fhir.r4.model.CoverageEligibilityRequest tgt = new org.hl7.fhir.r4.model.CoverageEligibilityRequest();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "event");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEligibilityRequestStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEligibilityRequestStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_N.convertCodeableConcept(src.getPriority()));
     tgt.setPurpose(src.getPurposeList().stream()
@@ -101,8 +106,7 @@ public class CoverageEligibilityRequest40_N {
       .collect(Collectors.toList()));
     if (src.hasPatient())
       tgt.setPatient(Reference40_N.convertReference(src.getPatient()));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_N.convertDateTime(src.getCreatedElement()));
     if (src.hasEnterer())
@@ -353,10 +357,8 @@ public class CoverageEligibilityRequest40_N {
       return null;
     org.hl7.fhir.model.core.CoverageEligibilityRequest.DiagnosisComponent tgt = new org.hl7.fhir.model.core.CoverageEligibilityRequest.DiagnosisComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasDiagnosisCodeableConcept())
-      tgt.getDiagnosis().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getDiagnosisCodeableConcept()));
-    if (src.hasDiagnosisCodeableConcept())
-      tgt.getDiagnosis().setReference(Reference40_N.convertReference(src.getDiagnosisReference()));
+    if (src.hasDiagnosis())
+      tgt.setDiagnosis(CodeableConcept40_N.convertChoiceToCodeableReference(src.getDiagnosis()));
     return tgt;
   }
 
@@ -366,7 +368,7 @@ public class CoverageEligibilityRequest40_N {
     org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getDiagnosis()));
     return tgt;
   }
 }

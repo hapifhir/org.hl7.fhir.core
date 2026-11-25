@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.UsageContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Boolean40_N;
@@ -46,11 +48,17 @@ import org.hl7.fhir.model.core.Enumerations;
 
 public class CompartmentDefinition40_N {
 
+  // R6 compartment codes that R4 doesn't have
+  public static final String CODE_EXTENSION_URL = "http://hl7.org/fhir/6.0/StructureDefinition/extension-CompartmentDefinition.code";
+
   public static org.hl7.fhir.model.core.CompartmentDefinition convertCompartmentDefinition(org.hl7.fhir.r4.model.CompartmentDefinition src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CompartmentDefinition tgt = new org.hl7.fhir.model.core.CompartmentDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("CompartmentDefinition", "5.0", new String[] {"title"}, CrossVersionElements40_N.urls("CompartmentDefinition", "6.0", new String[] {}, VersionConvertorConstants.EXT_VERSION_ALGORITHM)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "title");
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -87,6 +95,9 @@ public class CompartmentDefinition40_N {
       return null;
     org.hl7.fhir.r4.model.CompartmentDefinition tgt = new org.hl7.fhir.r4.model.CompartmentDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "title");
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -122,7 +133,11 @@ public class CompartmentDefinition40_N {
       if (src == null || src.isEmpty())
           return null;
     org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType>(new org.hl7.fhir.model.core.CompartmentDefinition.CompartmentTypeEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CODE_EXTENSION_URL);
+      if (src.hasExtension(CODE_EXTENSION_URL)) {
+        tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType.fromCode(src.getExtensionByUrl(CODE_EXTENSION_URL).getValue().primitiveValue()));
+        return tgt;
+      }
       if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
@@ -175,7 +190,9 @@ public class CompartmentDefinition40_N {
                   tgt.setValue(CompartmentDefinition.CompartmentType.DEVICE);
                   break;
               default:
-                  tgt.setValue(CompartmentDefinition.CompartmentType.NULL);
+                  // a compartment R4 doesn't have (Group): keep the code
+                  tgt.setValue(null);
+                  tgt.addExtension(CODE_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getCode()));
                   break;
           }
       }
@@ -186,10 +203,13 @@ public class CompartmentDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.model.core.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("CompartmentDefinition.resource", "5.0", new String[] {"startParam", "endParam"}));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "CompartmentDefinition.resource", "5.0", "startParam", "endParam");
+    // R6 dropped documentation
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "CompartmentDefinition.resource", tgt.getExtension(), "documentation");
     if (src.hasCode())
       tgt.setCodeElement(convertResourceCode(src.getCodeElement()));
-    for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.setStartParamElement(String40_N.convertStringToUri(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.getParamList().add(String40_N.convertString(t));
     return tgt;
   }
 
@@ -198,7 +218,9 @@ public class CompartmentDefinition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("CompartmentDefinition.resource", "4.0", "documentation"));
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "CompartmentDefinition.resource", tgt.getExtension(), "5.0", "startParam", "endParam");
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "CompartmentDefinition.resource", "documentation");
     if (src.hasCode())
       tgt.setCodeElement(convertResourceCode(src.getCodeElement()));
     for (org.hl7.fhir.model.core.StringType t : src.getParamList()) tgt.getParam().add(String40_N.convertString(t));
@@ -213,7 +235,9 @@ public class CompartmentDefinition40_N {
     try {
       tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.ExtendedResourceTypes.fromCode(src.getCode()));
     } catch (Exception e) {
-      tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.ExtendedResourceTypes.NULL);
+      // a resource type R6 doesn't have: no value, and the R4 code is kept
+      tgt.setValue(null);
+      tgt.addExtension(CODE_URL, new org.hl7.fhir.model.core.CodeType(src.getCode()));
     }
     return tgt;
   }
@@ -222,9 +246,14 @@ public class CompartmentDefinition40_N {
     if (src == null || src.isEmpty())
       return null;
     CodeType tgt = new CodeType();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    tgt.setValue(src.getValue().toCode());
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CODE_URL);
+    if (src.hasExtension(CODE_URL))
+      tgt.setValue(src.getExtensionString(CODE_URL));
+    else if (src.getValue() != null)
+      tgt.setValue(src.getValue().toCode());
     return tgt;
   }
+
+  private static final String CODE_URL = org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N.url("CompartmentDefinition.resource", "4.0", "code");
 
 }
