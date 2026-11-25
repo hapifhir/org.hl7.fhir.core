@@ -1,6 +1,6 @@
 # Claude Code setup for org.hl7.fhir.core
 
-This directory holds shared [Claude Code](https://code.claude.com/docs) configuration. It's picked up automatically when you run `claude` in this repo; there's nothing to copy into `~/.claude/`. The first time, Claude Code asks you to trust the folder. The permissions and hooks below apply only after you accept.
+This directory holds shared [Claude Code](https://code.claude.com/docs) configuration. It's picked up automatically when you run `claude` in this repo; there's nothing to copy into `~/.claude/`. The first time, Claude Code asks you to trust the folder. The hook below applies only after you accept. After that, it runs automatically before every Bash command Claude runs, without a permission prompt, including after you pull changes to it. You can see registered hooks with `/hooks`, and turn all hooks off by adding `"disableAllHooks": true` to your `.claude/settings.local.json`.
 
 ## What's here
 
@@ -15,7 +15,7 @@ This directory holds shared [Claude Code](https://code.claude.com/docs) configur
 | `skills/spotbugs-diff/` | Runs SpotBugs on two commits in temporary worktrees and lists the new issues, using `scripts/spotbugs_diff.py`. | `/spotbugs-diff [<base> <head>]`. |
 | `skills/regex/` | ReDoS and correctness checks for regexes (OWASP/OpenSSF guidance, `npx safe-regex2`). | Loads when a regex is involved. Needs Node/npx for `safe-regex2`. |
 | `hooks/require-pre-pr-review.sh` | Blocks Claude's `gh pr create` until `/pre-pr-review` has a clean (or user-acknowledged) result for the current HEAD. | Automatic. See below. |
-| `settings.json` | Registers the hook and pre-approves read-only `git`/`gh` commands. | Automatic. Put personal settings in `settings.local.json` (gitignored). |
+| `settings.json` | Registers the hook. It grants no permissions, so Claude asks before running commands unless you allow them yourself. | Automatic. Put personal settings in `settings.local.json` (gitignored). See "Optional: pre-approve review commands" below. |
 
 ## Before opening a PR
 
@@ -32,6 +32,32 @@ The hook only checks commands Claude runs. `gh pr create` in your own terminal i
 - Install and log in to `gh`.
 - Settings that have worked well for large reviews. Put them in your own `~/.claude/settings.json`, not the shared file: `"model": "opus"` and `"alwaysThinkingEnabled": true`.
 - The `security-guidance` plugin (`/plugin install security-guidance@claude-plugins-official`) adds security checks on edits and commits. It also runs model reviews on commit and push, so it uses extra usage.
+
+## Optional: pre-approve review commands
+
+The shared `settings.json` deliberately grants no permissions, so nobody gets elevated permissions just by opening the repo. The review skills run many `git` and `gh` commands, and you'll be asked to approve each one. To skip those prompts, add the rules below to your own `.claude/settings.local.json` (gitignored). If that file already has a `permissions.allow` list, merge them into it.
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git show:*)",
+      "Bash(git merge-base:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git fetch:*)",
+      "Bash(git worktree add --detach:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh search code:*)"
+    ]
+  }
+}
+```
+
+Most of these are read-only. The exceptions are `git fetch`, which updates your remote-tracking refs, and `git worktree add --detach`, which creates a worktree on disk for `/spotbugs-diff`. The `gh` rules call the GitHub API with your credentials. Leave out any rule you'd rather approve each time.
 
 ## Changing this setup
 
