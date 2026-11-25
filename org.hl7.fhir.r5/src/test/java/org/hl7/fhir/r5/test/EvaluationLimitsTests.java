@@ -311,4 +311,20 @@ class EvaluationLimitsTests {
     assertEquals(200000, engine.evaluate(engine.parse("{{ s || strip_html }}", "test"), new Patient(), null).length());
     assertTrue(System.currentTimeMillis() - start < 5000);
   }
+
+  /**
+   * A template's output is limited (ExecutionLimits.DEFAULT_MAX_STRING_LENGTH), but a host that runs its own templates
+   * over big values it built itself (the comparison pages) can lift the limit with setMaxStringLength
+   */
+  @Test
+  void theOutputLimitCanBeLifted() {
+    Patient p = new Patient();
+    p.addName().setFamily("a".repeat(6000000));
+    LiquidEngine engine = new LiquidEngine(TestingUtilities.getSharedWorkerContext(), null);
+    LiquidDocument doc = engine.parse("{{ Patient.name.family }}{{ Patient.name.family }}", "test");
+    FHIRException e = assertThrows(FHIRException.class, () -> engine.evaluate(doc, p, null));
+    assertTrue(e.getMessage().contains("10000000"), e.getMessage());
+    engine.setMaxStringLength(0);
+    assertEquals(12000000, engine.evaluate(doc, p, null).length());
+  }
 }

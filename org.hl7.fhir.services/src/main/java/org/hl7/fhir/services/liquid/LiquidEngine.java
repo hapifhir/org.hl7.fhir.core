@@ -201,6 +201,22 @@ public class LiquidEngine implements IHostApplicationServices {
   public static final int MAX_DEPTH = 100;
 
   /**
+   * The longest string a run of a template can make, and the most output it can make (characters; 0 or less for no
+   * limit). Templates and values from content are limited (ExecutionLimits.DEFAULT_MAX_STRING_LENGTH); a host that
+   * runs its own templates over values it built itself (e.g. the comparison pages) can lift the limit. Not used when
+   * the run is part of another engine's run, which has its own limits
+   */
+  private int maxStringLength = org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH;
+
+  public int getMaxStringLength() {
+    return maxStringLength;
+  }
+
+  public void setMaxStringLength(int maxStringLength) {
+    this.maxStringLength = maxStringLength;
+  }
+
+  /**
    * The limits of a run of a template: the app context's, if it's the context of a run of another engine; otherwise
    * new ones. Every FHIRPath expression the template runs spends the same budget (the FHIRPath engine finds it in the
    * context Liquid passes it)
@@ -208,7 +224,7 @@ public class LiquidEngine implements IHostApplicationServices {
   private org.hl7.fhir.utilities.ExecutionLimits limitsFor(Object externalContext) {
     org.hl7.fhir.utilities.ExecutionLimits limits = org.hl7.fhir.utilities.LimitedExecutionContext.limitsOf(externalContext);
     return limits != null ? limits : new org.hl7.fhir.utilities.ExecutionLimits(engine.getMaxExecutionMillis(), MAX_DEPTH,
-        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH);
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, maxStringLength);
   }
 
   /** going into a for, if, capture or include: the run mustn't be out of time, or nested too deeply */

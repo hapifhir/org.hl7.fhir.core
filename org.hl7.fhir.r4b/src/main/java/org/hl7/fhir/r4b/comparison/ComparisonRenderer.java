@@ -225,6 +225,9 @@ public class ComparisonRenderer implements IHostApplicationServices {
 
   private String processTemplate(String template, String name, Map<String, Base> vars) {
     LiquidEngine engine = new LiquidEngine(contextRight, this);
+    // the templates are the publication package's, and the big values (the comparison tables) are built here, not by
+    // the template: comparing two large value sets (e.g. all of LOINC) makes tables far bigger than content should
+    engine.setMaxStringLength(0);
     LiquidDocument doc = engine.parse(template, name + ".template");
     return engine.evaluate(doc, Tuple.fromMap(vars), vars);
   }
