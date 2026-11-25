@@ -1,6 +1,6 @@
 ---
 name: fhir-core-reviewer
-description: Read-only code reviewer for org.hl7.fhir.core changes. Give it a diff range (base..head) and a set of files or an area to review. It returns verified findings only. Used by the /pre-pr-review and /hl7-pr-review skills.
+description: Read-only code reviewer for org.hl7.fhir.core changes. Give it a diff range (base..head) and a set of files or an area to review. It returns verified findings only. Used by the /pre-pr-review and /hl7-large-code-review skills.
 tools: Read, Grep, Glob, Bash
 model: opus
 effort: high

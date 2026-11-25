@@ -1,6 +1,6 @@
 ---
-name: hl7-pr-review
-description: Full review of a large org.hl7.fhir.core, fhir-ig-publisher or kindling PR - SpotBugs diff, parallel review, and a list of areas for manual review. Long-running. Start it only when the user types /hl7-pr-review or confirms it through the hl7-code-review skill's question.
+name: hl7-large-code-review
+description: Full review of a large org.hl7.fhir.core, fhir-ig-publisher or kindling PR - SpotBugs diff, parallel review, and a list of areas for manual review. Long-running. Start it only when the user types /hl7-large-code-review or confirms it through the hl7-code-review skill's question.
 argument-hint: "<PR#> <branch> [output-dir]"
 ---
 
