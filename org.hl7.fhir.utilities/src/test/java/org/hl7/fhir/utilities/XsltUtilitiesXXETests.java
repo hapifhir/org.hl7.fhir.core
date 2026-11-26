@@ -2,7 +2,10 @@ package org.hl7.fhir.utilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +15,10 @@ import org.hl7.fhir.utilities.xslt.XsltUtilities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 /**
  * Demonstrates local-file disclosure via an XML external entity whose SYSTEM identifier is an
@@ -57,7 +64,7 @@ class XsltUtilitiesXXETests {
     """;
 
   @TempDir
-  Path work;
+  Path tempDir;
 
   Path source;
   Path style;
@@ -65,7 +72,7 @@ class XsltUtilitiesXXETests {
 
   @BeforeEach
   void setUp() throws Exception {
-    Path secret = work.resolve("canary-secret.txt");
+    Path secret = tempDir.resolve("canary-secret.txt");
     Files.writeString(secret, CANARY);
 
     /*
@@ -79,22 +86,138 @@ class XsltUtilitiesXXETests {
       + "<!DOCTYPE root [<!ENTITY xxe SYSTEM \"" + secret.toAbsolutePath() + "\">]>\n"
       + "<root>&xxe;</root>\n";
 
-    source = work.resolve("input.xml");
-    style = work.resolve("identity.xsl");
-    output = work.resolve("output.txt");
+    source = tempDir.resolve("input.xml");
+    style = tempDir.resolve("identity.xsl");
+    output = tempDir.resolve("output.txt");
     Files.writeString(source, inputXml);
     Files.writeString(style, XSL);
   }
 
   @Test
   void twoArgOverloadBlocksExternalEntity() {
-    assertThrows(Exception.class, () -> XsltUtilities.saxonTransform(source.toString(), style.toString()));
+    Exception e = assertThrows(Exception.class, () -> XsltUtilities.saxonTransform(source.toString(), style.toString()));
+    // Rejected by the XXE-protected parser, not just by Saxon's ACCESS_EXTERNAL_DTD setting
+    assertThat(messages(e)).contains("DOCTYPE is disallowed");
+  }
+
+  /**
+   * Runs each public transform overload with a given source and stylesheet, and returns the
+   * principal output as text.
+   */
+  enum Overload {
+    MAP_SAXON_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        return new String(XsltUtilities.saxonTransform(Map.of(), Files.readAllBytes(source), Files.readAllBytes(style)), StandardCharsets.UTF_8);
+      }
+    },
+    MAP_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        return new String(XsltUtilities.transform(Map.of(), Files.readAllBytes(source), Files.readAllBytes(style)), StandardCharsets.UTF_8);
+      }
+    },
+    TWO_ARG_SAXON_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        return XsltUtilities.saxonTransform(source.toString(), style.toString());
+      }
+    },
+    FIVE_ARG_SAXON_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        XsltUtilities.saxonTransform(dir.toString(), source.toString(), style.toString(), output.toString(), null);
+        return Files.readString(output);
+      }
+    },
+    SIX_ARG_SAXON_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        XsltUtilities.saxonTransform(dir.toString(), source.toString(), style.toString(), output.toString(), null, null);
+        return Files.readString(output);
+      }
+    },
+    FILE_TRANSFORM {
+      @Override
+      String run(Path dir, Path source, Path style, Path output) throws Exception {
+        XsltUtilities.transform(dir.toString(), source.toString(), style.toString(), output.toString(), null);
+        return Files.readString(output);
+      }
+    };
+
+    abstract String run(Path dir, Path source, Path style, Path output) throws Exception;
+  }
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @EnumSource(Overload.class)
+  @ResourceLock(Resources.SYSTEM_ERR)
+  void resultDocumentIsRefused(Overload overload) throws Exception {
+    Path pwned = tempDir.resolve("pwned.txt");
+    Path resultDocStyle = tempDir.resolve("result-document.xsl");
+    Files.writeString(resultDocStyle, """
+      <?xml version="1.0"?>
+      <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output method="text"/>
+        <xsl:template match="/">
+          <xsl:result-document href="%s" method="text">pwned</xsl:result-document>
+        </xsl:template>
+      </xsl:stylesheet>
+      """.formatted(pwned.toUri()));
+    Path plain = writePlainSource();
+
+    /*
+     * With extension functions disabled (see XsltUtilities.restrictEnvironment), Saxon refuses
+     * xsl:result-document when the stylesheet is compiled, before the result-document handler is
+     * ever reached. The exception only says "Errors were reported during stylesheet compilation":
+     * the reason goes to Saxon's default error listener, which writes to System.err, so that's
+     * captured to check the stylesheet was refused for the right reason.
+     */
+    PrintStream originalErr = System.err;
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
+    System.setErr(new PrintStream(err, true, StandardCharsets.UTF_8));
+    try {
+      assertThrows(Exception.class, () -> overload.run(tempDir, plain, resultDocStyle, output));
+    } finally {
+      System.setErr(originalErr);
+    }
+
+    assertThat(err.toString(StandardCharsets.UTF_8)).contains("xsl:result-document is disabled when extension functions are disabled");
+    assertThat(pwned).doesNotExist();
+  }
+
+  @ParameterizedTest(name = "{index}: {0}")
+  @EnumSource(Overload.class)
+  void environmentIsHidden(Overload overload) throws Exception {
+    assumeTrue(System.getenv("PATH") != null, "needs PATH set to show it is hidden");
+    Path envStyle = tempDir.resolve("env.xsl");
+    Files.writeString(envStyle, """
+      <?xml version="1.0"?>
+      <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:output method="text"/>
+        <xsl:template match="/">env=<xsl:value-of select="environment-variable('PATH')"/>;all=<xsl:value-of select="string-join(available-environment-variables(), ',')"/>;prop=<xsl:value-of select="system-property('user.home')"/>;version=<xsl:value-of select="system-property('xsl:version')"/></xsl:template>
+      </xsl:stylesheet>
+      """);
+    Path plain = writePlainSource();
+
+    String out = overload.run(tempDir, plain, envStyle, output);
+
+    // xsl: namespace properties still work; environment variables and Java system properties don't
+    assertThat(out).matches("env=;all=;prop=;version=\\d\\.\\d");
+  }
+
+  /** All the messages in the exception's cause chain, so assertions don't depend on how Saxon wraps them. */
+  private static String messages(Throwable e) {
+    StringBuilder b = new StringBuilder();
+    for (Throwable t = e; t != null; t = t.getCause()) {
+      b.append(t.getMessage()).append('\n');
+    }
+    return b.toString();
   }
 
   @Test
   void sixArgOverloadDoesNotLeakLocalFile() throws Exception {
     try {
-      XsltUtilities.saxonTransform(work.toString(), source.toString(), style.toString(), output.toString(), null, null);
+      XsltUtilities.saxonTransform(tempDir.toString(), source.toString(), style.toString(), output.toString(), null, null);
     } catch (Exception e) {
       return; // blocked: acceptable
     }
@@ -104,7 +227,7 @@ class XsltUtilitiesXXETests {
   @Test
   void fiveArgOverloadDoesNotLeakLocalFile() throws Exception {
     try {
-      XsltUtilities.saxonTransform(work.toString(), source.toString(), style.toString(), output.toString(), null);
+      XsltUtilities.saxonTransform(tempDir.toString(), source.toString(), style.toString(), output.toString(), null);
     } catch (Exception e) {
       return; // blocked: acceptable
     }
@@ -114,7 +237,7 @@ class XsltUtilitiesXXETests {
   @Test
   void transformOverloadDoesNotLeakLocalFile() throws Exception {
     try {
-      XsltUtilities.transform(work.toString(), source.toString(), style.toString(), output.toString(), null);
+      XsltUtilities.transform(tempDir.toString(), source.toString(), style.toString(), output.toString(), null);
     } catch (Exception e) {
       return; // blocked: acceptable
     }
@@ -171,7 +294,7 @@ class XsltUtilitiesXXETests {
   @Test
   void sixArgOverloadTransformsOrdinaryDocument() throws Exception {
     Path plain = writePlainSource();
-    Path paramStyle = work.resolve("param.xsl");
+    Path paramStyle = tempDir.resolve("param.xsl");
     Files.writeString(paramStyle, """
       <?xml version="1.0"?>
       <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -181,7 +304,7 @@ class XsltUtilitiesXXETests {
       </xsl:stylesheet>
       """);
 
-    XsltUtilities.saxonTransform(work.toString(), plain.toString(), paramStyle.toString(), output.toString(), null, Map.of("suffix", "-world"));
+    XsltUtilities.saxonTransform(tempDir.toString(), plain.toString(), paramStyle.toString(), output.toString(), null, Map.of("suffix", "-world"));
 
     assertThat(readOutput()).isEqualTo("hello-world");
   }
@@ -190,7 +313,7 @@ class XsltUtilitiesXXETests {
   void fiveArgOverloadTransformsOrdinaryDocument() throws Exception {
     Path plain = writePlainSource();
 
-    XsltUtilities.saxonTransform(work.toString(), plain.toString(), style.toString(), output.toString(), null);
+    XsltUtilities.saxonTransform(tempDir.toString(), plain.toString(), style.toString(), output.toString(), null);
 
     assertThat(readOutput()).isEqualTo("hello");
   }
@@ -199,7 +322,7 @@ class XsltUtilitiesXXETests {
   void transformOverloadTransformsOrdinaryDocument() throws Exception {
     Path plain = writePlainSource();
 
-    XsltUtilities.transform(work.toString(), plain.toString(), style.toString(), output.toString(), null);
+    XsltUtilities.transform(tempDir.toString(), plain.toString(), style.toString(), output.toString(), null);
 
     assertThat(readOutput()).isEqualTo("hello");
   }
@@ -207,14 +330,14 @@ class XsltUtilitiesXXETests {
   @Test
   void stylesheetIncludeFromSubdirectoryResolvesUnderXsltDir() throws Exception {
     Path plain = writePlainSource();
-    Files.createDirectories(work.resolve("sub"));
-    Files.writeString(work.resolve("sub").resolve("included.xsl"), """
+    Files.createDirectories(tempDir.resolve("sub"));
+    Files.writeString(tempDir.resolve("sub").resolve("included.xsl"), """
       <?xml version="1.0"?>
       <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <xsl:template name="greet">included:<xsl:value-of select="/root"/></xsl:template>
       </xsl:stylesheet>
       """);
-    Path including = work.resolve("including.xsl");
+    Path including = tempDir.resolve("including.xsl");
     Files.writeString(including, """
       <?xml version="1.0"?>
       <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -224,13 +347,13 @@ class XsltUtilitiesXXETests {
       </xsl:stylesheet>
       """);
 
-    XsltUtilities.saxonTransform(work.toString(), plain.toString(), including.toString(), output.toString(), null);
+    XsltUtilities.saxonTransform(tempDir.toString(), plain.toString(), including.toString(), output.toString(), null);
 
     assertThat(readOutput()).isEqualTo("included:hello");
   }
 
   private Path writePlainSource() throws Exception {
-    Path plain = work.resolve("plain.xml");
+    Path plain = tempDir.resolve("plain.xml");
     Files.writeString(plain, "<?xml version=\"1.0\"?>\n<root>hello</root>\n");
     return plain;
   }

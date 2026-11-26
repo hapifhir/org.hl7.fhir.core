@@ -20,6 +20,8 @@ import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.utilities.xslt.XsltURIResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -31,53 +33,83 @@ import org.junit.jupiter.params.provider.ValueSource;
 class XsltURIResolverTests {
 
   @TempDir
-  Path work;
+  Path tempDir;
 
-  Path root;
-  Path outside;
+  /** allowed directory within tempDir (allowed) **/
+  Path allowedDirectory;
+
+  /** outside directory (not allowed) **/
+  Path outsideDirectory;
 
   @BeforeEach
   void setUp() throws Exception {
-    root = work.resolve("root");
-    Files.createDirectories(root.resolve("sub"));
-    Files.writeString(root.resolve("a.xsl"), "A");
-    Files.writeString(root.resolve("sub").resolve("b.xsl"), "B");
-    outside = work.resolve("outside.txt");
-    Files.writeString(outside, "OUTSIDE");
+    allowedDirectory = tempDir.resolve("allowedDirectory");
+    Files.createDirectories(allowedDirectory.resolve("sub"));
+    Files.writeString(allowedDirectory.resolve("a.xsl"), "A");
+    Files.writeString(allowedDirectory.resolve("sub").resolve("b.xsl"), "B");
+    outsideDirectory = tempDir.resolve("outside.txt");
+    Files.writeString(outsideDirectory, "OUTSIDE");
   }
 
   @ParameterizedTest(name = "{index}: {0}")
   @CsvSource({"a.xsl, A", "sub/b.xsl, B", "sub\\b.xsl, B", "sub/../a.xsl, A"})
   void relativeHrefResolvesUnderRoot(String href, String expected) throws Exception {
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     assertThat(read(resolver.resolve(href, null))).isEqualTo(expected);
   }
 
   @Test
   void absoluteHrefInsideRootIsResolved() throws Exception {
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
-    String href = root.resolve("sub").resolve("b.xsl").toAbsolutePath().toString();
+    String href = allowedDirectory.resolve("sub").resolve("b.xsl").toAbsolutePath().toString();
 
     assertThat(read(resolver.resolve(href, null))).isEqualTo("B");
   }
 
   @Test
   void absoluteHrefOutsideRootIsRejected() {
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
-    String href = outside.toAbsolutePath().toString();
+    String href = outsideDirectory.toAbsolutePath().toString();
 
     assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
   }
 
+  /**
+   * The target doesn't exist, so if toRealPath() ran first it would fail with NoSuchFileException.
+   * Getting the "not permitted" refusal shows the lexical check ran before any filesystem access.
+   */
+  @Test
+  void absoluteHrefOutsideRootIsRejectedBeforeFilesystemAccess() {
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
+
+    String href = tempDir.resolve("missing").resolve("none.xml").toAbsolutePath().toString();
+
+    TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
+    assertThat(e).hasMessageContaining("is not permitted");
+  }
+
+  /**
+   * A UNC path outside the root must be refused lexically: touching it would open an SMB connection,
+   * which can leak an NTLM hash. The host is unresolvable so the test can't reach the network.
+   */
+  @Test
+  @EnabledOnOs(OS.WINDOWS)
+  void uncHrefIsRejectedBeforeFilesystemAccess() {
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
+
+    TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve("\\\\host.invalid\\share\\x.xml", null));
+    assertThat(e).hasMessageContaining("is not permitted");
+  }
+
   @Test
   void absoluteHrefToSiblingDirectoryWithSharedPrefixIsRejected() throws Exception {
-    Path sibling = work.resolve("root-sibling");
+    Path sibling = tempDir.resolve("root-sibling");
     Files.createDirectories(sibling);
     Files.writeString(sibling.resolve("x.xsl"), "SIBLING");
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     String href = sibling.resolve("x.xsl").toAbsolutePath().toString();
 
@@ -87,41 +119,41 @@ class XsltURIResolverTests {
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(strings = {"../outside.txt", "sub/../../outside.txt", "..\\outside.txt"})
   void traversalOutsideRootIsRejected(String href) {
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
   }
 
   @Test
   void symlinkedDirectoryPointingOutsideRootIsRejected() throws Exception {
-    Path outsideDir = Files.createDirectories(work.resolve("outside-dir"));
+    Path outsideDir = Files.createDirectories(tempDir.resolve("outside-dir"));
     Files.writeString(outsideDir.resolve("secret.xsl"), "SECRET");
-    createSymlinkOrSkip(root.resolve("pivot"), outsideDir);
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    createSymlinkOrSkip(allowedDirectory.resolve("pivot"), outsideDir);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     assertThrows(TransformerException.class, () -> resolver.resolve("pivot/secret.xsl", null));
   }
 
   @Test
   void symlinkedFilePointingOutsideRootIsRejected() {
-    createSymlinkOrSkip(root.resolve("link.xsl"), outside);
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    createSymlinkOrSkip(allowedDirectory.resolve("link.xsl"), outsideDirectory);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     assertThrows(TransformerException.class, () -> resolver.resolve("link.xsl", null));
   }
 
   @Test
   void symlinkPointingInsideRootIsResolved() throws Exception {
-    createSymlinkOrSkip(root.resolve("alias"), root.resolve("sub"));
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    createSymlinkOrSkip(allowedDirectory.resolve("alias"), allowedDirectory.resolve("sub"));
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     assertThat(read(resolver.resolve("alias/b.xsl", null))).isEqualTo("B");
   }
 
   @Test
   void symlinkedRootIsResolved() throws Exception {
-    Path linkedRoot = work.resolve("linked-root");
-    createSymlinkOrSkip(linkedRoot, root);
+    Path linkedRoot = tempDir.resolve("linked-root");
+    createSymlinkOrSkip(linkedRoot, allowedDirectory);
     XsltURIResolver resolver = new XsltURIResolver(linkedRoot.toString(), null);
 
     assertThat(read(resolver.resolve("sub/b.xsl", null))).isEqualTo("B");
@@ -130,7 +162,7 @@ class XsltURIResolverTests {
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(strings = {"http://example.org/a.xsl", "https://example.org/a.xsl"})
   void remoteHrefWithoutAltIsRejected(String href) {
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), null);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), null);
 
     TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve(href, null));
     assertThat(e).hasMessageContaining("remote resources require a caller-supplied resolver");
@@ -139,7 +171,7 @@ class XsltURIResolverTests {
   @Test
   void remoteHrefIsRejectedWhenAltReturnsNull() {
     URIResolver declining = (href, base) -> null;
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), declining);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), declining);
 
     TransformerException e = assertThrows(TransformerException.class, () -> resolver.resolve("http://example.org/a.xsl", null));
     assertThat(e).hasMessageContaining("remote resources require a caller-supplied resolver");
@@ -148,7 +180,7 @@ class XsltURIResolverTests {
   @Test
   void remoteHrefIsServedByAlt() throws Exception {
     Source fromAlt = new StreamSource(new ByteArrayInputStream("ALT".getBytes(StandardCharsets.UTF_8)));
-    XsltURIResolver resolver = new XsltURIResolver(root.toString(), (href, base) -> fromAlt);
+    XsltURIResolver resolver = new XsltURIResolver(allowedDirectory.toString(), (href, base) -> fromAlt);
 
     assertThat(resolver.resolve("http://example.org/a.xsl", null)).isSameAs(fromAlt);
   }
