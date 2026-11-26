@@ -601,13 +601,6 @@ public class Utilities {
     return PathBuilder.getPathBuilder().buildPath(a);
   }
 
-  public static String forcePath(String... args) throws IOException {
-    String path = path(args);
-    String folder = FileUtilities.getDirectoryForFile(path);
-    FileUtilities.createDirectory(folder);
-    return path;
-  }
-
   /**
      * Composes a path string using by concatenating the passed arguments.
      *
@@ -640,7 +633,7 @@ public class Utilities {
       if (arg != null) {
         if (!d)
           d = !noString(arg);
-        else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/") && !arg.startsWith("?") && !arg.startsWith("&"))
+        else if (!s.toString().endsWith("/") && !arg.startsWith("/") && !arg.startsWith("?") && !arg.startsWith("&"))
           s.append("/");
         s.append(arg);
       }

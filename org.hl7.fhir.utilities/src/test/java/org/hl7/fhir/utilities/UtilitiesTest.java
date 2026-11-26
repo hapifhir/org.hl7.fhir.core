@@ -64,7 +64,7 @@ class UtilitiesTest {
 
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
-  public void testTempDirPath() throws IOException {
+  void testTempDirPath() throws IOException {
     if (FhirSettings.hasTempPath()) {
       assertEquals(Utilities.path("[tmp]", TEST_TXT), FhirSettings.getTempPath() +File.separator+ TEST_TXT);
     } else {
@@ -74,7 +74,7 @@ class UtilitiesTest {
 
   @Test
   @DisplayName("Test Utilities.path maps user directory correctly")
-  public void testUserDirPath() throws IOException {
+  void testUserDirPath() throws IOException {
     assertEquals(Utilities.path("[user]", TEST_TXT), getUserDirectory() + TEST_TXT);
   }
 
@@ -324,7 +324,7 @@ class UtilitiesTest {
   @ParameterizedTest
   @MethodSource("windowsRootPaths")
   @EnabledOnOs({OS.WINDOWS})
-  public void testPathCantStartWithRootWindows(String[] pathStrings) {
+  void testPathCantStartWithRootWindows(String[] pathStrings) {
     testCantStartWithRoot(pathStrings);
   }
 
@@ -345,7 +345,7 @@ class UtilitiesTest {
   @ParameterizedTest
   @MethodSource("macAndLinuxRootPaths")
   @EnabledOnOs({OS.MAC, OS.LINUX})
-  public void testPathCantStartWithRootMacAndLinux(String[] pathStrings) {
+  void testPathCantStartWithRootMacAndLinux(String[] pathStrings) {
     testCantStartWithRoot(pathStrings);
   }
 
@@ -372,7 +372,7 @@ class UtilitiesTest {
   @ParameterizedTest
   @MethodSource("macAndLinuxNonFirstElementStartPaths")
   @EnabledOnOs({OS.MAC, OS.LINUX})
-  public void testPathMustStartWithFirstElementMacAndLinux(String[] pathStrings) {
+  void testPathMustStartWithFirstElementMacAndLinux(String[] pathStrings) {
     testPathMustStartWithFirstElement(pathStrings);
   }
 
@@ -395,7 +395,7 @@ class UtilitiesTest {
   @ParameterizedTest
   @MethodSource("macAndLinuxValidPaths")
   @EnabledOnOs({OS.MAC, OS.LINUX})
-  public void testValidPathsMacAndLinux(String[] pathStrings, String expectedPath) throws IOException {
+  void testValidPathsMacAndLinux(String[] pathStrings, String expectedPath) throws IOException {
     testValidPath(pathStrings,expectedPath);
   }
 
@@ -415,7 +415,7 @@ class UtilitiesTest {
   @ParameterizedTest
   @MethodSource("windowsValidPaths")
   @EnabledOnOs({OS.WINDOWS})
-  public void testValidPathsWindows(String[] pathStrings, String expectedPath) throws IOException {
+  void testValidPathsWindows(String[] pathStrings, String expectedPath) throws IOException {
     testValidPath(pathStrings,expectedPath);
   }
 
@@ -440,7 +440,7 @@ class UtilitiesTest {
 
   @ParameterizedTest
   @MethodSource("nullOrEmptyFirstEntryPaths")
-  public void testNullOrEmptyFirstPathEntryFails(String[] pathsStrings) {
+  void testNullOrEmptyFirstPathEntryFails(String[] pathsStrings) {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathsStrings);
     });

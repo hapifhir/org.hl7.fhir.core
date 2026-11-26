@@ -610,7 +610,7 @@ public class XMLUtil {
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource source = new DOMSource(doc);
     StreamResult streamResult =  new StreamResult(ManagedFileAccess.file(filename));
-    transformer.transform(source, streamResult);    
+    transformer.transform(source, streamResult);
   }
 
   public static String getXsiType(org.w3c.dom.Element element) {
