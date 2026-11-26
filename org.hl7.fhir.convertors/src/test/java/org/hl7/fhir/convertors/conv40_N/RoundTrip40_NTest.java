@@ -82,7 +82,7 @@ class RoundTrip40_NTest {
   static final java.util.Set<String> R4_UNSUPPORTED = new java.util.TreeSet<>(java.util.Arrays.asList(
     "CatalogEntry", "ChargeItem", "ChargeItemDefinition", "ClinicalImpression", "Contract", "DeviceUseStatement",
     "DocumentManifest", "EffectEvidenceSynthesis", "EnrollmentRequest", "EnrollmentResponse",
-    "ImmunizationEvaluation", "ImmunizationRecommendation", "InsurancePlan", "Invoice", "Linkage",
+    "ImmunizationEvaluation", "ImmunizationRecommendation", "InsurancePlan", "Linkage",
     "MedicationKnowledge", "MedicinalProduct", "MedicinalProductAuthorization", "MedicinalProductContraindication",
     "MedicinalProductIndication", "MedicinalProductIngredient", "MedicinalProductInteraction",
     "MedicinalProductManufactured", "MedicinalProductPackaged", "MedicinalProductPharmaceutical",

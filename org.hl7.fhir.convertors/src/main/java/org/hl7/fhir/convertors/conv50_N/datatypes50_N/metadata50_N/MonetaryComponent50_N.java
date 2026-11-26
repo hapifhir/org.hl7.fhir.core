@@ -55,6 +55,9 @@ public class MonetaryComponent50_N {
         case SURCHARGE:
           tgt.setValue(org.hl7.fhir.model.core.MonetaryComponent.PriceComponentType.SURCHARGE);
           break;
+        case DEDUCTION:
+          tgt.setValue(org.hl7.fhir.model.core.MonetaryComponent.PriceComponentType.DISCOUNT);
+          break;
         case DISCOUNT:
           tgt.setValue(org.hl7.fhir.model.core.MonetaryComponent.PriceComponentType.DISCOUNT);
           break;

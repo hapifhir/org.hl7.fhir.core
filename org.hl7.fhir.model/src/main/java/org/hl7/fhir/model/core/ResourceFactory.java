@@ -165,6 +165,8 @@ public class ResourceFactory extends Factory {
             return new ImplementationGuide();
         if ("Ingredient".equals(name))
             return new Ingredient();
+        if ("Invoice".equals(name))
+            return new Invoice();
         if ("Library".equals(name))
             return new Library();
         if ("List".equals(name))
@@ -506,6 +508,7 @@ public class ResourceFactory extends Factory {
         case "Immunization": return new Immunization();
         case "ImplementationGuide": return new ImplementationGuide();
         case "Ingredient": return new Ingredient();
+        case "Invoice": return new Invoice();
         case "Library": return new Library();
         case "List": return new ListResource();
         case "Location": return new Location();

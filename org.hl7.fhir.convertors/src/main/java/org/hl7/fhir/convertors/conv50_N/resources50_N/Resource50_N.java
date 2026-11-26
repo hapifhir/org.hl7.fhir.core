@@ -138,6 +138,8 @@ public class Resource50_N {
       return Immunization50_N.convertImmunization((org.hl7.fhir.r5.model.Immunization) src);
     if (src instanceof org.hl7.fhir.r5.model.ImplementationGuide)
       return ImplementationGuide50_N.convertImplementationGuide((org.hl7.fhir.r5.model.ImplementationGuide) src);
+    if (src instanceof org.hl7.fhir.r5.model.Invoice)
+      return Invoice50_N.convertInvoice((org.hl7.fhir.r5.model.Invoice) src);
     if (src instanceof org.hl7.fhir.r5.model.Library)
       return Library50_N.convertLibrary((org.hl7.fhir.r5.model.Library) src);
     if (src instanceof org.hl7.fhir.r5.model.ListResource)
@@ -342,6 +344,8 @@ public class Resource50_N {
       return Immunization50_N.convertImmunization((org.hl7.fhir.model.core.Immunization) src);
     if (src instanceof org.hl7.fhir.model.core.ImplementationGuide)
       return ImplementationGuide50_N.convertImplementationGuide((org.hl7.fhir.model.core.ImplementationGuide) src);
+    if (src instanceof org.hl7.fhir.model.core.Invoice)
+      return Invoice50_N.convertInvoice((org.hl7.fhir.model.core.Invoice) src);
     if (src instanceof org.hl7.fhir.model.core.Library)
       return Library50_N.convertLibrary((org.hl7.fhir.model.core.Library) src);
     if (src instanceof org.hl7.fhir.model.core.ListResource)
