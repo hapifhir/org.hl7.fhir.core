@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.terminologies.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -14,10 +15,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -44,12 +48,16 @@ class TerminologyClientManagerRoutingTest {
   private static final String CS_B = "http://example.org/cs/b";
   private static final String CS_C = "http://example.org/cs/c";
   private static final String CS_UNKNOWN = "http://example.org/cs/nobody-has-this";
+  // a supplement to A that only X knows (the Infoway fr-CA supplement to v3 ActCode pattern)
+  private static final String SUPP_A = "http://example.org/supplement/a-fr|1.0.0";
 
   // A and B: MAIN is authoritative, X and Y are candidates (the THO pattern)
   private static final String RESP_AUTH = "{\"authoritative\":[{\"url\":\""+MAIN+"\"}],"+
       "\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
   // C: nobody authoritative, X and Y are candidates
   private static final String RESP_CAND = "{\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
+  // the supplement to A: X is authoritative
+  private static final String RESP_SUPP = "{\"authoritative\":[{\"url\":\""+X+"\"}]}";
   // the registry knows no server at all
   private static final String RESP_NONE = "{}";
 
@@ -77,7 +85,9 @@ class TerminologyClientManagerRoutingTest {
     @Override
     protected JsonObject fetchRegistryJson(String request) throws IOException, JsonException {
       String json;
-      if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
+      if (request.contains(enc(SUPP_A))) {
+        json = RESP_SUPP;
+      } else if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
         json = RESP_AUTH;
       } else if (request.contains(enc(CS_C))) {
         json = RESP_CAND;
@@ -268,5 +278,49 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
     assertEquals(Y, tc.getAddress());
     assertTrue(searches.stream().anyMatch(q -> q.startsWith(X+"|")), "X should have been searched: "+searches);
+  }
+
+  private static ValueSet valueSetOnA(boolean requireSupplement) {
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://example.org/vs/a");
+    vs.getCompose().addInclude().setSystem(CS_A);
+    if (requireSupplement) {
+      vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(SUPP_A));
+    }
+    return vs;
+  }
+
+  @Test
+  void testRequiredSupplementRoutesToServerThatKnowsIt() throws IOException {
+    // MAIN is authoritative for A, but the value set requires a supplement to A that only X
+    // knows, and X is a candidate for A: the value set has to go to X
+    TestManager mgr = makeManager();
+    Set<String> systems = Set.of(CS_A); // immutable, as callers sometimes pass
+    TerminologyClientContext tc = mgr.chooseServer(valueSetOnA(true), systems, false);
+    assertEquals(X, tc.getAddress());
+    assertTrue(logged(mgr, "Found partially authoritative server"), "expected partially authoritative routing: "+messages(mgr));
+    assertEquals(Set.of(CS_A), systems);
+  }
+
+  @Test
+  void testNoRequiredSupplementRoutesToAuthoritativeServer() throws IOException {
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(valueSetOnA(false), Set.of(CS_A), false);
+    assertEquals(MAIN, tc.getAddress());
+  }
+
+  @Test
+  void testIsKnownToEcosystem() throws IOException {
+    TestManager mgr = makeManager();
+    assertTrue(mgr.isKnownToEcosystem(SUPP_A));
+    assertTrue(mgr.isKnownToEcosystem(CS_A));
+    assertFalse(mgr.isKnownToEcosystem(CS_UNKNOWN));
+  }
+
+  @Test
+  void testRequiredSupplementSingleServer() throws IOException {
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseSingleServer(valueSetOnA(true), Set.of(CS_A), true);
+    assertEquals(X, tc.getAddress());
   }
 }

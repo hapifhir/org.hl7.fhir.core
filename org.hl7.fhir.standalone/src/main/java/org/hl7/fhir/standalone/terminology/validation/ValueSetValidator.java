@@ -654,6 +654,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     List<String> missingSupplements = checkForMissingSupplements();
     if (!missingSupplements.isEmpty()) {
+      if (throwToServer && anySupplementOnlyOnServer(missingSupplements)) {
+        // we don't have the supplement, but the ecosystem knows a server that does, so this has to be done
+        // there. The routing takes the value set's required supplements into account, so it goes to a server
+        // that knows them (e.g. the Infoway fr-CA supplement to v3 ActCode is on the Canadian server, not
+        // tx.fhir.org). A supplement no one has is reported here, as before
+        throw new FHIRException(NO_TRY_THE_SERVER);
+      }
       String msg = context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements));
       throw new TerminologyServiceProtectionException(msg, TerminologyServiceErrorClass.BUSINESS_RULE, IssueType.NOTFOUND, I18nConstants.VALUESET_SUPPLEMENT_MISSING, OpIssueCode.NotFound);
     }
@@ -741,6 +748,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   // an unversioned supplement applies to every version, a versioned one only to that version - the same rule
   // as CanonicalResourceManager.getSupplements(url, version)
+  private boolean anySupplementOnlyOnServer(List<String> supplements) {
+    if (tcm == null) {
+      return false;
+    }
+    for (String s : supplements) {
+      if (tcm.isKnownToEcosystem(s) && context.fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule()) == null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private List<String> supplementsFor(String system, String version) {
     List<String> res = new ArrayList<>();
     for (String s : requiredSupplements) {
