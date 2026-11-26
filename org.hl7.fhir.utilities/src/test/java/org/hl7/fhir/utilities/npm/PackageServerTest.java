@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,9 +138,13 @@ class PackageServerTest {
     String packageServerUrl = server.getPackageServerUrl();
     server.enqueueDummyPackage();
 
-    PackageServer testServer = new PackageServer(packageServerUrl)
-      .withAllowHttp(true)
-      .withAllowPrivateNetwork(true);
+    PackageServer testServer = PackageServer.getPackageServerFromPOJO(ServerDetailsPOJO.builder()
+      .url(packageServerUrl)
+      .type("fhir-package")
+      .authenticationType("none")
+      .allowHttp(true)
+      .allowPrivateNetwork(true)
+      .build());
 
     PackageClient packageClient = new PackageClient(testServer);
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);

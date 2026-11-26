@@ -113,6 +113,7 @@ public class PackageServer {
     if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return HTTPAuthenticationMode.BASIC;
     if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return HTTPAuthenticationMode.TOKEN;
     if (pojo.getAuthenticationType().equalsIgnoreCase("apikey")) return HTTPAuthenticationMode.APIKEY;
+    if ("none".equalsIgnoreCase(pojo.getAuthenticationType())) return HTTPAuthenticationMode.NONE;
     return null;
   }
 
