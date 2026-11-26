@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
@@ -49,12 +50,21 @@ import org.hl7.fhir.model.core.NamingSystem;
 
 public class NamingSystem40_N {
 
+  // the R5 elements R4 doesn't have (other than url, version and title, which have their own constants)
+  private static final String[] R5_ELEMENTS = {"identifier", "experimental", "purpose", "copyright", "approvalDate", "lastReviewDate",
+    "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "copyrightLabel"};
+
   public static org.hl7.fhir.model.core.NamingSystem convertNamingSystem(org.hl7.fhir.r4.model.NamingSystem src) throws FHIRException {
     if (src == null)
       return null;
   
     org.hl7.fhir.model.core.NamingSystem tgt = new org.hl7.fhir.model.core.NamingSystem();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL, VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION, VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("NamingSystem", "5.0", R5_ELEMENTS,
+      VersionConvertorConstants.EXT_NAMINGSYSTEM_URL, VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION, VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE,
+      VersionConvertorConstants.EXT_VERSION_ALGORITHM));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", R5_ELEMENTS);
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
 
     if (src.getExtensionsByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).size() == 1) {
       tgt.setUrlElement(Uri40_N.convertUri((UriType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).getValue()));
@@ -71,7 +81,7 @@ public class NamingSystem40_N {
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertNamingSystemType(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertNamingSystemType(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -100,6 +110,9 @@ public class NamingSystem40_N {
       return null;
     org.hl7.fhir.r4.model.NamingSystem tgt = new org.hl7.fhir.r4.model.NamingSystem();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", R5_ELEMENTS);
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrlElement()) {
       tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).setValue(Uri40_N.convertUri(src.getUrlElement())));
     }
@@ -113,7 +126,7 @@ public class NamingSystem40_N {
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertNamingSystemType(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertNamingSystemType(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -193,9 +206,10 @@ public class NamingSystem40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.model.core.NamingSystem.NamingSystemUniqueIdComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("NamingSystem.uniqueId", "5.0", new String[] {"authoritative"}));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "authoritative");
     if (src.hasType())
-      tgt.setTypeElement(convertNamingSystemIdentifierType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertNamingSystemIdentifierType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     if (src.hasPreferred())
@@ -212,8 +226,9 @@ public class NamingSystem40_N {
       return null;
     org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "authoritative");
     if (src.hasType())
-      tgt.setTypeElement(convertNamingSystemIdentifierType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertNamingSystemIdentifierType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     if (src.hasPreferred())

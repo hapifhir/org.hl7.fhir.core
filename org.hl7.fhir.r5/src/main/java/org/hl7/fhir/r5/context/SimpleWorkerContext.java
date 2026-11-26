@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
@@ -351,14 +352,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   /**
-   * Known limitation (a bug, not yet fixed): resources loaded here don't go through the package hacks
-   * (PackageHackerR5.fixRegisteredResource and fixLoadedResource), which are only applied on the
-   * registerResourceFromPackage / PackageResourceLoader path. So the work arounds for problems in
-   * published packages - including the SimpleQuantity sqty-1 fix - are not applied to anything loaded here
+   * When there is package information (pi), the resources loaded here go through the package hacks
+   * (PackageHackerR5.fixPackageResource), just like the ones that are lazy loaded. Loose files and zips
+   * (no package information) don't
    */
   private Resource loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
-      return loadFromFile(stream, name, loader, filter);
+      return loadFromFile(stream, name, loader, filter, pi);
     else if (name.endsWith(".json"))
       return loadFromFileJson(stream, name, loader, filter, pi);
     else if (name.equals("version.info"))
@@ -451,6 +451,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
   
 	public Resource loadFromFile(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter) throws FHIRException {
+	  return loadFromFile(stream, name, loader, filter, null);
+	}
+
+  private Resource loadFromFile(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws FHIRException {
 		Resource f;
 		try {
 		  if (loader != null)
@@ -475,6 +479,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	        if (path != null) {
 	          e.getResource().setWebPath(path);
 	        }
+	        fixPackageResource(e.getResource(), pi);
 		      cacheResource(e.getResource());
 	      }
 		  }
@@ -484,6 +489,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (path != null) {
           f.setWebPath(path);
         }
+        fixPackageResource(f, pi);
 		    cacheResource(f);
 		  }
 		}
@@ -501,6 +507,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (r instanceof Bundle)
           f = (Bundle) r;
         else if (filter == null || filter.isOkToLoad(f)) {
+          fixPackageResource(r, pi);
           cacheResourceFromPackage(r, pi);
         }
       }
@@ -514,10 +521,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           if (path != null) {
             e.getResource().setWebPath(path);
           }
+          fixPackageResource(e.getResource(), pi);
           cacheResourceFromPackage(e.getResource(), pi);
         }
     }
     return f;
+  }
+
+  /**
+   * a resource loaded directly from a package (not lazy loaded) gets the same package hacks as one that is lazy loaded
+   */
+  private void fixPackageResource(Resource r, PackageInformation pi) {
+    if (pi != null && r instanceof CanonicalResource) {
+      PackageHackerR5.fixPackageResource((CanonicalResource) r, pi);
+    }
   }
 
 	private void loadFromPack(String path, IContextResourceLoader loader) throws IOException, FHIRException {
@@ -776,7 +793,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) {
   	Resource r; 
   	try {
-  		r = p.parse(ManagedFileAccess.inStream(filename));
+  		r = p.parseFile(filename);
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           cacheResource(e.getResource());

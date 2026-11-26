@@ -102,6 +102,28 @@ public class VersionUtil {
     }
   }
 
+  /**
+   * The User-Agent for the tooling's requests to a terminology server: what the tool says it is
+   * (fhir/validator/6.9.12, fhir/publisher...), then the version of this library, so a server
+   * can tell which clients are behind what it sees, and what they do (which core release sends
+   * what as tx-resource, say). tx.fhir.org saw most requests with no User-Agent of the tool's
+   * own - okhttp's default, or hapi-fhir-tooling-client - when the tool didn't give one.
+   *
+   * @param userAgent what the tool gave, or null
+   * @return userAgent + " fhir-core/{version}", or "fhir-core/{version}" alone when no
+   *   userAgent was given; userAgent as it is if it names a fhir-core version already
+   */
+  public static String toolingUserAgent(String userAgent) {
+    String core = "fhir-core/" + getVersion();
+    if (userAgent == null || userAgent.trim().isEmpty()) {
+      return core;
+    }
+    if (userAgent.contains("fhir-core/")) {
+      return userAgent;
+    }
+    return userAgent.trim() + " " + core;
+  }
+
   public static String getBaseVersion() {
     String ver = getVersion();
     return ver.contains("-") ? ver.substring(0, ver.indexOf("-")) : ver;

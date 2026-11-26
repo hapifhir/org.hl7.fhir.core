@@ -3,6 +3,8 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N.ContactDetail40_N;
@@ -58,7 +60,11 @@ public class CapabilityStatement40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CapabilityStatement tgt = new org.hl7.fhir.model.core.CapabilityStatement();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("CapabilityStatement", "5.0", new String[] {"identifier", "copyrightLabel", "acceptLanguage"}, CrossVersionElements40_N.urls("CapabilityStatement", "6.0", new String[] {"actorDefinition"}, VersionConvertorConstants.EXT_VERSION_ALGORITHM)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "identifier", "copyrightLabel", "acceptLanguage");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "actorDefinition");
+    if (src.hasExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM))
+      tgt.setVersionAlgorithm(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_VERSION_ALGORITHM).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -88,7 +94,7 @@ public class CapabilityStatement40_N {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_N.convertMarkdown(src.getCopyrightElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertCapabilityStatementKind(src.getKindElement()), src.fhirType(), "kind"));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiates())
       tgt.getInstantiatesList().add(Canonical40_N.convertCanonical(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getImports())
@@ -121,6 +127,10 @@ public class CapabilityStatement40_N {
       return null;
     org.hl7.fhir.r4.model.CapabilityStatement tgt = new org.hl7.fhir.r4.model.CapabilityStatement();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "identifier", "copyrightLabel", "acceptLanguage");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "actorDefinition");
+    if (src.hasVersionAlgorithm())
+      tgt.addExtension(VersionConvertorConstants.EXT_VERSION_ALGORITHM, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getVersionAlgorithm()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasVersion())
@@ -150,7 +160,7 @@ public class CapabilityStatement40_N {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_N.convertMarkdown(src.getCopyrightElement()));
     if (src.hasKind())
-      tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertCapabilityStatementKind(src.getKindElement()), src.fhirType(), "kind"));
     for (org.hl7.fhir.model.core.CanonicalType t : src.getInstantiatesList())
       tgt.getInstantiates().add(Canonical40_N.convertCanonical(t));
     for (org.hl7.fhir.model.core.CanonicalType t : src.getImportsList())
@@ -288,7 +298,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertRestfulCapabilityMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertRestfulCapabilityMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     if (src.hasSecurity())
@@ -312,7 +322,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertRestfulCapabilityMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertRestfulCapabilityMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     if (src.hasSecurity())
@@ -408,7 +418,9 @@ public class CapabilityStatement40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("CapabilityStatement.rest.resource", "5.0", new String[] {"conditionalPatch"}, CrossVersionElements40_N.urls("CapabilityStatement.rest.resource", "6.0", new String[] {"definition"})));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "CapabilityStatement.rest.resource", "5.0", "conditionalPatch");
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "CapabilityStatement.rest.resource", "6.0", "definition");
     if (src.hasType())
       tgt.setTypeElement(Uri40_N.convertUriFromCode(src.getTypeElement()));
     if (src.hasProfile())
@@ -420,7 +432,7 @@ public class CapabilityStatement40_N {
     for (org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent t : src.getInteraction())
       tgt.addInteraction(convertResourceInteractionComponent(t));
     if (src.hasVersioning())
-      tgt.setVersioningElement(convertResourceVersionPolicy(src.getVersioningElement()));
+      tgt.setVersioningElement(CrossVersionElements40_N.toR6Code(src.getVersioningElement(), convertResourceVersionPolicy(src.getVersioningElement()), src.fhirType(), "versioning"));
     if (src.hasReadHistory())
       tgt.setReadHistoryElement(Boolean40_N.convertBoolean(src.getReadHistoryElement()));
     if (src.hasUpdateCreate())
@@ -428,11 +440,11 @@ public class CapabilityStatement40_N {
     if (src.hasConditionalCreate())
       tgt.setConditionalCreateElement(Boolean40_N.convertBoolean(src.getConditionalCreateElement()));
     if (src.hasConditionalRead())
-      tgt.setConditionalReadElement(convertConditionalReadStatus(src.getConditionalReadElement()));
+      tgt.setConditionalReadElement(CrossVersionElements40_N.toR6Code(src.getConditionalReadElement(), convertConditionalReadStatus(src.getConditionalReadElement()), src.fhirType(), "conditionalRead"));
     if (src.hasConditionalUpdate())
       tgt.setConditionalUpdateElement(Boolean40_N.convertBoolean(src.getConditionalUpdateElement()));
     if (src.hasConditionalDelete())
-      tgt.setConditionalDeleteElement(convertConditionalDeleteStatus(src.getConditionalDeleteElement()));
+      tgt.setConditionalDeleteElement(CrossVersionElements40_N.toR6Code(src.getConditionalDeleteElement(), convertConditionalDeleteStatus(src.getConditionalDeleteElement()), src.fhirType(), "conditionalDelete"));
     tgt.setReferencePolicyList(src.getReferencePolicy().stream()
       .map(CapabilityStatement40_N::convertReferenceHandlingPolicy)
       .collect(Collectors.toList()));
@@ -452,6 +464,8 @@ public class CapabilityStatement40_N {
       return null;
     org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "CapabilityStatement.rest.resource", tgt.getExtension(), "5.0", "conditionalPatch");
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "CapabilityStatement.rest.resource", tgt.getExtension(), "6.0", "definition");
     if (src.hasType())
       tgt.setTypeElement(Uri40_N.convertUriToCode(src.getTypeElement()));
     if (src.hasProfile())
@@ -463,7 +477,7 @@ public class CapabilityStatement40_N {
     for (org.hl7.fhir.model.core.CapabilityStatement.ResourceInteractionComponent t : src.getInteractionList())
       tgt.addInteraction(convertResourceInteractionComponent(t));
     if (src.hasVersioning())
-      tgt.setVersioningElement(convertResourceVersionPolicy(src.getVersioningElement()));
+      tgt.setVersioningElement(CrossVersionElements40_N.toR4Code(src.getVersioningElement(), convertResourceVersionPolicy(src.getVersioningElement()), src.fhirType(), "versioning"));
     if (src.hasReadHistory())
       tgt.setReadHistoryElement(Boolean40_N.convertBoolean(src.getReadHistoryElement()));
     if (src.hasUpdateCreate())
@@ -471,11 +485,11 @@ public class CapabilityStatement40_N {
     if (src.hasConditionalCreate())
       tgt.setConditionalCreateElement(Boolean40_N.convertBoolean(src.getConditionalCreateElement()));
     if (src.hasConditionalRead())
-      tgt.setConditionalReadElement(convertConditionalReadStatus(src.getConditionalReadElement()));
+      tgt.setConditionalReadElement(CrossVersionElements40_N.toR4Code(src.getConditionalReadElement(), convertConditionalReadStatus(src.getConditionalReadElement()), src.fhirType(), "conditionalRead"));
     if (src.hasConditionalUpdate())
       tgt.setConditionalUpdateElement(Boolean40_N.convertBoolean(src.getConditionalUpdateElement()));
     if (src.hasConditionalDelete())
-      tgt.setConditionalDeleteElement(convertConditionalDeleteStatus(src.getConditionalDeleteElement()));
+      tgt.setConditionalDeleteElement(CrossVersionElements40_N.toR4Code(src.getConditionalDeleteElement(), convertConditionalDeleteStatus(src.getConditionalDeleteElement()), src.fhirType(), "conditionalDelete"));
     tgt.setReferencePolicy(src.getReferencePolicyList().stream()
       .map(CapabilityStatement40_N::convertReferenceHandlingPolicy)
       .collect(Collectors.toList()));
@@ -722,7 +736,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.model.core.CapabilityStatement.ResourceInteractionComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.ResourceInteractionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertTypeRestfulInteraction(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR6Code(src.getCodeElement(), convertTypeRestfulInteraction(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     return tgt;
@@ -734,7 +748,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertTypeRestfulInteraction(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR4Code(src.getCodeElement(), convertTypeRestfulInteraction(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     return tgt;
@@ -894,7 +908,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.model.core.CapabilityStatement.SystemInteractionComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.SystemInteractionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertSystemRestfulInteraction(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR6Code(src.getCodeElement(), convertSystemRestfulInteraction(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     return tgt;
@@ -906,7 +920,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertSystemRestfulInteraction(src.getCodeElement()));
+      tgt.setCodeElement(CrossVersionElements40_N.toR4Code(src.getCodeElement(), convertSystemRestfulInteraction(src.getCodeElement()), src.fhirType(), "code"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     return tgt;
@@ -1032,7 +1046,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertEventCapabilityMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertEventCapabilityMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDefinition())
       tgt.setDefinitionElement(Canonical40_N.convertCanonical(src.getDefinitionElement()));
     return tgt;
@@ -1044,7 +1058,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertEventCapabilityMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertEventCapabilityMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDefinition())
       tgt.setDefinitionElement(Canonical40_N.convertCanonical(src.getDefinitionElement()));
     return tgt;
@@ -1102,7 +1116,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementDocumentComponent tgt = new org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementDocumentComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertDocumentMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR6Code(src.getModeElement(), convertDocumentMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     if (src.hasProfile())
@@ -1116,7 +1130,7 @@ public class CapabilityStatement40_N {
     org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertDocumentMode(src.getModeElement()));
+      tgt.setModeElement(CrossVersionElements40_N.toR4Code(src.getModeElement(), convertDocumentMode(src.getModeElement()), src.fhirType(), "mode"));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(MarkDown40_N.convertMarkdown(src.getDocumentationElement()));
     if (src.hasProfile())

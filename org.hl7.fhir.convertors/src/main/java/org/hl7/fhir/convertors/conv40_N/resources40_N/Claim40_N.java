@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Money40_N;
@@ -54,17 +56,19 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim tgt = new org.hl7.fhir.model.core.Claim();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Claim", "5.0", new String[] {"traceNumber", "encounter", "diagnosisRelatedGroup", "event", "patientPaid"}, CrossVersionElements40_N.urls("Claim", "6.0", new String[] {"statusReason"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "encounter", "diagnosisRelatedGroup", "event", "patientPaid");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertClaimStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertClaimStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
       tgt.setSubType(CodeableConcept40_N.convertCodeableConcept(src.getSubType()));
     if (src.hasUse())
-      tgt.setUseElement(convertUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasPatient())
       tgt.setSubject(Reference40_N.convertReference(src.getPatient()));
     if (src.hasBillablePeriod())
@@ -116,16 +120,18 @@ public class Claim40_N {
       return null;
     org.hl7.fhir.r4.model.Claim tgt = new org.hl7.fhir.r4.model.Claim();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "encounter", "diagnosisRelatedGroup", "event", "patientPaid");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "statusReason");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertClaimStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertClaimStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
       tgt.setSubType(CodeableConcept40_N.convertCodeableConcept(src.getSubType()));
     if (src.hasUse())
-      tgt.setUseElement(convertUse(src.getUseElement()));
+      tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasSubject())
       tgt.setPatient(Reference40_N.convertReference(src.getSubject()));
     if (src.hasBillablePeriod())
@@ -338,6 +344,8 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.CareTeamComponent tgt = new org.hl7.fhir.model.core.Claim.CareTeamComponent();
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Claim.careTeam", tgt.getExtension(), "responsible");
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
@@ -354,7 +362,8 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Claim.CareTeamComponent tgt = new org.hl7.fhir.r4.model.Claim.CareTeamComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.careTeam", "4.0", new String[] {"responsible"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Claim.careTeam", "responsible");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasProvider())
@@ -370,17 +379,22 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.SupportingInformationComponent tgt = new org.hl7.fhir.model.core.Claim.SupportingInformationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.supportingInfo", "5.0", new String[] {}, CrossVersionElements40_N.urls("Claim.supportingInfo", "6.0", new String[] {"subCategory"}, VersionConvertorConstants.EXT_CLAIM_SUPPORTINGINFO_TIMING)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "subCategory");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    if (src.hasTimingDateType())
+      tgt.setTiming(Date40_N.convertDatetoDateTime(src.getTimingDateType()));
+    else // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+ CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "timing", tgt, tgt.getExtension());
+    if (src.hasExtension(VersionConvertorConstants.EXT_CLAIM_SUPPORTINGINFO_TIMING))
+      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_CLAIM_SUPPORTINGINFO_TIMING).getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     return tgt;
@@ -391,16 +405,23 @@ public class Claim40_N {
       return null;
     org.hl7.fhir.r4.model.Claim.SupportingInformationComponent tgt = new org.hl7.fhir.r4.model.Claim.SupportingInformationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "subCategory");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_N.convertCodeableConcept(src.getCategory()));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // R4 timing is date|Period: a dateTime with a time, or a Timing, goes in the cross-version extension
+    if (src.hasTiming()) {
+      if (src.getTiming() instanceof org.hl7.fhir.model.core.DateTimeType && !src.getTiming().primitiveValue().contains("T"))
+        tgt.setTiming(Date40_N.convertDateTimeToDate((org.hl7.fhir.model.core.DateTimeType) src.getTiming()));
+      else if (src.getTiming() instanceof org.hl7.fhir.model.core.Period)
+        tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+      else
+        tgt.addExtension(VersionConvertorConstants.EXT_CLAIM_SUPPORTINGINFO_TIMING, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    }
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_N.convertCodeableConcept(src.getReason()));
     return tgt;
@@ -410,13 +431,13 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.DiagnosisComponent tgt = new org.hl7.fhir.model.core.Claim.DiagnosisComponent();
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Claim.diagnosis", tgt.getExtension(), "packageCode");
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
-    if (src.hasDiagnosisCodeableConcept())
-      tgt.getDiagnosis().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getDiagnosisCodeableConcept()));
-    if (src.hasDiagnosisReference())
-      tgt.getDiagnosis().setReference(Reference40_N.convertReference(src.getDiagnosisReference()));
+    if (src.hasDiagnosis())
+      tgt.setDiagnosis(CodeableConcept40_N.convertChoiceToCodeableReference(src.getDiagnosis()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasOnAdmission())
@@ -430,11 +451,12 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Claim.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.Claim.DiagnosisComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.diagnosis", "4.0", new String[] {"packageCode"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Claim.diagnosis", "packageCode");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getDiagnosis()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getTypeList())
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasOnAdmission())
@@ -455,10 +477,8 @@ public class Claim40_N {
       tgt.addType(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
-    if (src.hasProcedureReference())
-      tgt.getProcedure().setReference(Reference40_N.convertReference(src.getProcedureReference()));
-    if (src.hasProcedureCodeableConcept())
-      tgt.getProcedure().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getProcedureCodeableConcept()));
+    if (src.hasProcedure())
+      tgt.setProcedure(CodeableConcept40_N.convertChoiceToCodeableReference(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -475,7 +495,7 @@ public class Claim40_N {
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasProcedure())
-      tgt.setProcedure(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProcedure()));
+      tgt.setProcedure(CodeableConcept40_N.convertCodeableReferenceToChoice(src.getProcedure()));
     for (org.hl7.fhir.model.core.Reference t : src.getUdiList()) tgt.addUdi(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -533,8 +553,8 @@ public class Claim40_N {
       tgt.setDateElement(Date40_N.convertDate(src.getDateElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -547,8 +567,7 @@ public class Claim40_N {
       tgt.setDateElement(Date40_N.convertDate(src.getDateElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -556,7 +575,9 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.ItemComponent tgt = new org.hl7.fhir.model.core.Claim.ItemComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.item", "5.0", new String[] {"traceNumber", "productOrServiceEnd", "request", "patientPaid", "tax"}, CrossVersionElements40_N.urls("Claim.item", "6.0", new String[] {"subject"}, CrossVersionElements40_N.url("Claim.item", "5.0", "bodySite"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "productOrServiceEnd", "request", "patientPaid", "tax");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "subject");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence())
@@ -577,10 +598,10 @@ public class Claim40_N {
       tgt.addModifier(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -594,6 +615,7 @@ public class Claim40_N {
       tgt.getBodySiteFirstRep().addSite(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getBodySite()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite())
       tgt.getBodySiteFirstRep().addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Claim.item", "5.0", "bodySite");
     for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addEncounter(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
     return tgt;
@@ -604,6 +626,8 @@ public class Claim40_N {
       return null;
     org.hl7.fhir.r4.model.Claim.ItemComponent tgt = new org.hl7.fhir.r4.model.Claim.ItemComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "productOrServiceEnd", "request", "patientPaid", "tax");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "subject");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.model.core.PositiveIntType t : src.getCareTeamSequenceList())
@@ -624,10 +648,8 @@ public class Claim40_N {
       tgt.addModifier(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getProgramCodeList())
       tgt.addProgramCode(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.hasServiced())
-      tgt.setServiced(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getServiced()));
-    if (src.hasLocation())
-      tgt.setLocation(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getLocation()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "serviced", tgt, tgt.getExtension());
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "location", tgt, tgt.getExtension());
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -637,10 +659,15 @@ public class Claim40_N {
     if (src.hasNet())
       tgt.setNet(Money40_N.convertMoney(src.getNet()));
     for (org.hl7.fhir.model.core.Reference t : src.getUdiList()) tgt.addUdi(Reference40_N.convertReference(t));
-    if (src.getBodySiteFirstRep().hasSite())
-      tgt.setBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
-    for (org.hl7.fhir.model.core.CodeableConcept t : src.getBodySiteFirstRep().getSubSiteList())
-      tgt.addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    // R4 has a single bodySite and a list of subSite: if the R6 bodySite is more than that, it all goes in 5.0 extensions
+    if (src.getBodySiteList().size() == 1 && src.getBodySiteFirstRep().getSiteList().size() <= 1 && !src.getBodySiteFirstRep().hasId()
+        && !src.getBodySiteFirstRep().hasExtension() && !src.getBodySiteFirstRep().hasModifierExtension()) {
+      if (src.getBodySiteFirstRep().hasSite())
+        tgt.setBodySite(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
+      for (org.hl7.fhir.model.core.CodeableConcept t : src.getBodySiteFirstRep().getSubSiteList())
+        tgt.addSubSite(CodeableConcept40_N.convertCodeableConcept(t));
+    } else
+      CrossVersionElements40_N.elementsToExtensionsForPath(src, "Claim.item", tgt.getExtension(), "5.0", "bodySite");
     for (org.hl7.fhir.model.core.Reference t : src.getEncounterList()) tgt.addEncounter(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Claim.DetailComponent t : src.getDetailList()) tgt.addDetail(convertDetailComponent(t));
     return tgt;
@@ -650,7 +677,8 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.DetailComponent tgt = new org.hl7.fhir.model.core.Claim.DetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.item.detail", "5.0", new String[] {"traceNumber", "productOrServiceEnd", "patientPaid", "tax"}, CrossVersionElements40_N.urls("Claim.item.detail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "productOrServiceEnd", "patientPaid", "tax");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -682,6 +710,7 @@ public class Claim40_N {
       return null;
     org.hl7.fhir.r4.model.Claim.DetailComponent tgt = new org.hl7.fhir.r4.model.Claim.DetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "productOrServiceEnd", "patientPaid", "tax");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -712,7 +741,8 @@ public class Claim40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Claim.SubDetailComponent tgt = new org.hl7.fhir.model.core.Claim.SubDetailComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Claim.item.detail.subDetail", "5.0", new String[] {"traceNumber", "productOrServiceEnd", "patientPaid", "tax"}, CrossVersionElements40_N.urls("Claim.item.detail.subDetail", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "traceNumber", "productOrServiceEnd", "patientPaid", "tax");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -742,6 +772,7 @@ public class Claim40_N {
       return null;
     org.hl7.fhir.r4.model.Claim.SubDetailComponent tgt = new org.hl7.fhir.r4.model.Claim.SubDetailComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "traceNumber", "productOrServiceEnd", "patientPaid", "tax");
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_N.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())

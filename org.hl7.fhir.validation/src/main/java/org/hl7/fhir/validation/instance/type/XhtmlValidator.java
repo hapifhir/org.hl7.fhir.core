@@ -1,16 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.utilities.formats.FormatUtilities;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -22,6 +13,8 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.UrlUtil;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
 
 public class XhtmlValidator extends BaseValidator {
 

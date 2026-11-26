@@ -1,12 +1,12 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.net.URISyntaxException;
-
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.net.URISyntaxException;
 
 public class PackageListTests {
 

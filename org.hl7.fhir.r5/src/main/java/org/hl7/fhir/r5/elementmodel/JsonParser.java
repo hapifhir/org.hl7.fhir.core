@@ -359,15 +359,6 @@ public class JsonParser extends ParserBase {
     return null;
   }
   
-  private JsonProperty getJsonPropertyByBaseName(String name, List<JsonProperty> children) {
-    for (JsonProperty p : children) {
-      if (p.getTag() == 0 && p.getName().startsWith(name)) {
-        return p;
-      }
-    }
-    return null;
-  }
-  
   private void processChildren(List<ValidationMessage> errors, String path, JsonObject object) {
     for (JsonProperty p : object.getProperties()) {
       if (p.isUnquotedName()) {
@@ -398,20 +389,17 @@ public class JsonParser extends ParserBase {
         }
       } else { 
         String baseName = property.getJsonName().substring(0, property.getName().length()-3);
-        jp = getJsonPropertyByBaseName(baseName, children);
-        JsonProperty jp1 = getJsonPropertyByBaseName("_"+baseName, children);
-        if (jp != null || jp1 != null) {
-          for (TypeRefComponent type : property.getDefinition().getType()) {
-            String eName = baseName + Utilities.capitalize(type.getWorkingCode());
-            if ((jp != null && jp.getName().equals(eName) || (jp1 != null && jp1.getName().equals("_"+eName)))) {
-              if (!isPrimitive(type.getWorkingCode()) && jp != null) {
-                parseChildComplex(errors, path, jp, context, property, eName, false);
-                break;
-              } else if (isPrimitive(type.getWorkingCode()) && (jp != null || jp1 != null)) {
-                parseChildPrimitive(errors, jp, jp1, context, property, path, eName, false);
-                break;
-              }
-            }
+        // look for the type names, not just the base name: valueSet is not value[x] (#2771)
+        for (TypeRefComponent type : property.getDefinition().getType()) {
+          String eName = baseName + Utilities.capitalize(type.getWorkingCode());
+          jp = getJsonPropertyByName(eName, children);
+          JsonProperty jp1 = getJsonPropertyByName("_"+eName, children);
+          if (!isPrimitive(type.getWorkingCode()) && jp != null) {
+            parseChildComplex(errors, path, jp, context, property, eName, false);
+            break;
+          } else if (isPrimitive(type.getWorkingCode()) && (jp != null || jp1 != null)) {
+            parseChildPrimitive(errors, jp, jp1, context, property, path, eName, false);
+            break;
           }
         }
       }
@@ -685,7 +673,7 @@ public class JsonParser extends ParserBase {
             if (m != null && m.isJsonString() && arr1.isUnquoted(i)) {
               logError(errors, "2022-11-26", line(m), col(m), path+"."+name+"["+i+"]", IssueType.INVALID, context.formatMessage(I18nConstants.JSON_PROPERTY_VALUE_NO_QUOTES, "item", m.asString()), IssueSeverity.ERROR);
             } else if (m == null && f == null) {
-              if (arr1.size() < arr2.size()) {
+              if (arrC(arr1) < arrC(arr2)) { // either can be absent (#2806)
                 logError(errors, "2026-05-18", line(arr2), col(arr2), path+"."+name, IssueType.INVALID,
                   context.formatMessage(I18nConstants.JSON_PROPERTY_INVALID_ARRAY, i), IssueSeverity.ERROR);
               } else {

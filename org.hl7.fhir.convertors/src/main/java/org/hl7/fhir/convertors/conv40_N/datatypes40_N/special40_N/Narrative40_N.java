@@ -9,7 +9,7 @@ public class Narrative40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.Narrative tgt = new org.hl7.fhir.model.core.Narrative();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasStatus()) tgt.setStatusElement(convertNarrativeStatus(src.getStatusElement()));
+    if (src.hasStatus()) tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertNarrativeStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasDiv()) tgt.setDiv(xhtml40_N.convertXhtml(src.getDiv()));
     return tgt;
   }
@@ -18,7 +18,7 @@ public class Narrative40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Narrative tgt = new org.hl7.fhir.r4.model.Narrative();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasStatus()) tgt.setStatusElement(convertNarrativeStatus(src.getStatusElement()));
+    if (src.hasStatus()) tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertNarrativeStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasDiv()) tgt.setDiv(xhtml40_N.convertXhtml(src.getDiv()));
     return tgt;
   }

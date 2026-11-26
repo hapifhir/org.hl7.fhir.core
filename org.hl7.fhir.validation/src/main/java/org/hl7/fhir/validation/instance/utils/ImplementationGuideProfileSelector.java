@@ -1,30 +1,13 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.core.CodeableConcept;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Enumerations.BindingStrength;
-import org.hl7.fhir.model.core.ImplementationGuide;
 import org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDefinitionResourceComponent;
 import org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideGlobalComponent;
-import org.hl7.fhir.model.core.PackageInformation;
-import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.model.core.TypeConvertor;
-import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.terminology.ValidationResult;
@@ -32,6 +15,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import java.util.*;
 
 /**
  * Works out which profiles an implementation guide makes apply to a resource, for FHIRPath conformsTo() when it names an

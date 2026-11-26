@@ -33,16 +33,18 @@ public class LockfileTestProcessUtility {
    *
    * @param args The arguments to the main method. The first argument is the path to create the lockfile in, the second
    *             argument is the name of the lockfile, and the third argument is the number of seconds to wait before
-   *             deleting the lockfile.
+   *             deleting the lockfile. An optional fourth is the number of seconds to wait after moving the lockfile
+   *             away before releasing it (0 if it isn't there).
    */
   public static void main(String[] args) {
 
     String path = args[0];
     String lockFileName = args[1];
     int seconds = Integer.parseInt(args[2]);
+    int secondsAfterMove = args.length > 3 ? Integer.parseInt(args[3]) : 0;
 
     try {
-      lockWaitAndDelete(path, lockFileName, seconds);
+      lockWaitAndDelete(path, lockFileName, seconds, secondsAfterMove);
     } catch (InterruptedException | IOException e) {
       throw new RuntimeException(e);
     }
@@ -62,8 +64,17 @@ public class LockfileTestProcessUtility {
    * System.out and System.err can be processed before tests return results.
    */
   public static Thread lockWaitAndDeleteInNewProcess(String path, String lockFileName, int seconds)  {
+    return lockWaitAndDeleteInNewProcess(path, lockFileName, seconds, 0);
+  }
+
+  /**
+   * As lockWaitAndDeleteInNewProcess(path, lockFileName, seconds), but the process waits secondsAfterMove after moving
+   * the lockfile away before it releases it - as FilesystemPackageCacheManagerLocks does, but long enough that a
+   * process waiting for the lockfile to go is sure to find the moved one still locked
+   */
+  public static Thread lockWaitAndDeleteInNewProcess(String path, String lockFileName, int seconds, int secondsAfterMove)  {
     Thread t = new Thread(() -> {
-      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes", LockfileTestProcessUtility.class.getName(), path, lockFileName, Integer.toString(seconds));
+      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes", LockfileTestProcessUtility.class.getName(), path, lockFileName, Integer.toString(seconds), Integer.toString(secondsAfterMove));
       try {
         Process process = processBuilder.start();
         process.getErrorStream().transferTo(System.err);
@@ -92,7 +103,7 @@ public class LockfileTestProcessUtility {
   /* TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
       the test code.
    */
-  private static void lockWaitAndDelete(String path, String lockFileName, int seconds) throws InterruptedException, IOException {
+  private static void lockWaitAndDelete(String path, String lockFileName, int seconds, int secondsAfterMove) throws InterruptedException, IOException {
 
     File lockFile = Paths.get(path,lockFileName).toFile();
 
@@ -129,6 +140,7 @@ public class LockfileTestProcessUtility {
           toDelete = lockFile;
         }
 
+        Thread.sleep(secondsAfterMove * 1000L);
         fileLock.release();
         channel.close();
 

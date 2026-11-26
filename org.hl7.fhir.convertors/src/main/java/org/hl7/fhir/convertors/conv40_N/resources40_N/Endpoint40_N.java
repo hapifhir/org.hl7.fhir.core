@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
@@ -50,12 +52,19 @@ public class Endpoint40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Endpoint tgt = new org.hl7.fhir.model.core.Endpoint();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Endpoint", "5.0", new String[] {"description", "environmentType", "connectionType", "payload"},
+      CrossVersionElements40_N.urls("Endpoint", "6.0", new String[] {"availability"},
+      CrossVersionElements40_N.urls("Endpoint.payload", "6.0", new String[] {"profileCanonical", "profileUri"}))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "description", "environmentType");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "availability");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
-    if (src.hasConnectionType())
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertEndpointStatus(src.getStatusElement()), src.fhirType(), "status"));
+    // the full list, if R4 couldn't hold it, is in the extension
+    if (src.hasExtension(CrossVersionElements40_N.url("Endpoint", "5.0", "connectionType")))
+      CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "connectionType");
+    else if (src.hasConnectionType())
       tgt.addConnectionType(Coding40_N.convertCodingToCodeableConcept(src.getConnectionType()));
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
@@ -65,10 +74,17 @@ public class Endpoint40_N {
       tgt.addContact(ContactPoint40_N.convertContactPoint(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayload().addType(CodeableConcept40_N.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getPayloadMimeType())
-      tgt.addPayload().getMimeTypeList().add(Code40_N.convertCode(t));
+    // R4 has one set of payload types and mime types: that's one payload. Any others are in the extension
+    if (src.hasPayloadType() || src.hasPayloadMimeType() || src.hasExtension(CrossVersionElements40_N.url("Endpoint.payload", "6.0", "profileCanonical"))
+      || src.hasExtension(CrossVersionElements40_N.url("Endpoint.payload", "6.0", "profileUri"))) {
+      EndpointPayloadComponent p = tgt.addPayload();
+      for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPayloadType())
+        p.addType(CodeableConcept40_N.convertCodeableConcept(t));
+      for (org.hl7.fhir.r4.model.CodeType t : src.getPayloadMimeType())
+        p.getMimeTypeList().add(Code40_N.convertCode(t));
+      CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), p, "Endpoint.payload", "6.0", "profileCanonical", "profileUri");
+    }
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "payload");
     if (src.hasAddress())
       tgt.setAddressElement(Url40_N.convertUrl(src.getAddressElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getHeader()) tgt.getHeaderList().add(String40_N.convertString(t));
@@ -80,12 +96,20 @@ public class Endpoint40_N {
       return null;
     org.hl7.fhir.r4.model.Endpoint tgt = new org.hl7.fhir.r4.model.Endpoint();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "description", "environmentType");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "availability");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
-    if (src.hasConnectionType())
-      tgt.setConnectionType(Coding40_N.convertCoding(src.getConnectionTypeFirstRep()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertEndpointStatus(src.getStatusElement()), src.fhirType(), "status"));
+    if (src.hasConnectionType()) {
+      org.hl7.fhir.model.core.CodeableConcept ct = src.getConnectionTypeFirstRep();
+      if (ct.hasCoding())
+        tgt.setConnectionType(Coding40_N.convertCoding(ct.getCodingFirstRep()));
+      // R4 only has room for one Coding: if there's more than that, the full list goes in the extension
+      if (src.getConnectionTypeList().size() > 1 || ct.getCodingList().size() != 1 || ct.hasText() || ct.hasId() || ct.hasExtension())
+        CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "connectionType");
+    }
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())
@@ -94,12 +118,22 @@ public class Endpoint40_N {
       tgt.addContact(ContactPoint40_N.convertContactPoint(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
-    for (EndpointPayloadComponent t : src.getPayloadList())
-      if (t.hasType())
-        tgt.addPayloadType(CodeableConcept40_N.convertCodeableConcept(t.getTypeFirstRep()));
-    for (EndpointPayloadComponent t : src.getPayloadList())
-      if (t.hasMimeType())
-        tgt.getPayloadMimeType().add(Code40_N.convertCode(t.getMimeTypeList().get(0)));
+    // R4 has one set of payload types and mime types: the first payload goes there, the rest in the extension (and
+    // if the first has an id or extensions, they all go in the extension)
+    boolean first = !src.getPayloadList().isEmpty() && !src.getPayloadList().get(0).hasId() && !src.getPayloadList().get(0).hasExtension()
+      && !src.getPayloadList().get(0).hasModifierExtension();
+    for (EndpointPayloadComponent t : src.getPayloadList()) {
+      if (first) {
+        for (org.hl7.fhir.model.core.CodeableConcept c : t.getTypeList())
+          tgt.addPayloadType(CodeableConcept40_N.convertCodeableConcept(c));
+        for (org.hl7.fhir.model.core.CodeType c : t.getMimeTypeList())
+          tgt.getPayloadMimeType().add(Code40_N.convertCode(c));
+        CrossVersionElements40_N.elementsToExtensionsForPath(t, "Endpoint.payload", tgt.getExtension(), "6.0", "profileCanonical", "profileUri");
+        first = false;
+      } else {
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Endpoint", "5.0", "payload"), t));
+      }
+    }
     if (src.hasAddress())
       tgt.setAddressElement(Url40_N.convertUrl(src.getAddressElement()));
     for (org.hl7.fhir.model.core.StringType t : src.getHeaderList()) tgt.getHeader().add(String40_N.convertString(t));

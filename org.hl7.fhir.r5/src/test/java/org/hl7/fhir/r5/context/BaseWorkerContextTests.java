@@ -8,9 +8,12 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -26,6 +29,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -471,6 +478,146 @@ public class BaseWorkerContextTests {
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult),eq(true));
   }
 
+  private static final String UNKNOWN_SYSTEM = "http://example.org/unknown-system";
+
+  /**
+   * Set up a code from a system that neither the context nor the server knows, as the renderers ask
+   * for displays: no value set, and the local check throws to the server
+   */
+  private ValidationOptions setUpUnknownSystem() {
+    ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), isNull(), any(), eq("Coding"));
+    Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), isNull(), any());
+    AtomicReference<Set<String>> unknownSystems = new AtomicReference<>();
+    Mockito.doAnswer(inv -> {
+      unknownSystems.set(inv.getArgument(0));
+      return null;
+    }).when(valueSetCheckerSimple).setUnknownSystems(any());
+    Mockito.doAnswer(inv -> {
+      unknownSystems.get().add(UNKNOWN_SYSTEM);
+      throw new VSCheckerException("A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated", new ArrayList<>(), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+    }).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
+    return validationOptions;
+  }
+
+  private static ValidationResult unknownSystemAnswer() {
+    ValidationResult res = new ValidationResult(ValidationMessage.IssueSeverity.ERROR, "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found", TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, new ArrayList<>());
+    res.setUnknownSystems(new HashSet<>(Set.of(UNKNOWN_SYSTEM)));
+    return res;
+  }
+
+  @Test
+  void unknownCodeSystemIsOnlyAskedAboutOnce() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    ValidationResult first = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    ValidationResult second = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+    ValidationResult third = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    Mockito.verify(context, times(1)).validateOnServer2(any(), isNull(), any(), any(), any());
+    // the local warning, as without the shortcut
+    String localWarning = "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated";
+    assertEquals(localWarning, first.getMessage());
+    assertEquals("Local Warning: " + localWarning + ". Server Error: " + localWarning, first.getDiagnostics());
+    for (ValidationResult res : List.of(first, second, third)) {
+      assertEquals(ValidationMessage.IssueSeverity.WARNING, res.getSeverity());
+      assertEquals(first.getMessage(), res.getMessage());
+      assertEquals(first.getDiagnostics(), res.getDiagnostics());
+      assertNull(res.getErrorClass());
+    }
+    // the answer is held for this run only: it isn't put in the terminology cache
+    Mockito.verify(terminologyCache, times(0)).cacheValidation(any(), any(), anyBoolean());
+  }
+
+  @Test
+  void failedRequestAboutUnknownCodeSystemIsAskedAgain() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doThrow(new FHIRException("Read timed out")).doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    ValidationResult failed = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    assertEquals(TerminologyServiceErrorClass.SERVER_ERROR, failed.getErrorClass());
+    ValidationResult answered = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+    assertEquals(ValidationMessage.IssueSeverity.WARNING, answered.getSeverity());
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+
+    // the real answer is remembered
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "c", null), null, null);
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemIsAskedAgainForAVersion() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null).setVersion("1.0"), null, null);
+
+    Mockito.verify(context, times(2)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  private ValueSet unknownSystemValueSet(ValidationOptions validationOptions, ValueSetValidator checker) {
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("http://example.org/vs");
+    valueSet.getCompose().addInclude().setSystem(UNKNOWN_SYSTEM);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(validationOptions), any(Coding.class), same(valueSet), any(), eq("Coding"));
+    Mockito.doReturn(checker).when(context).constructValueSetCheckerSimple(any(), same(valueSet), any());
+    return valueSet;
+  }
+
+  @Test
+  void unknownCodeSystemWithAValueSetKeepsTheError() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    ValueSet valueSet = unknownSystemValueSet(validationOptions, valueSetCheckerSimple);
+    ValidationResult res = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), valueSet, null);
+
+    assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, res.getErrorClass());
+    Mockito.verify(context, Mockito.never()).validateOnServer2(any(), same(valueSet), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemWithoutALocalCheckKeepsTheError() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), isNull(), any(), any(), any());
+    context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), null, null);
+
+    // no local check, so no local warning to give
+    ValidationOptions noClient = validationOptions.withNoClient();
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(same(noClient), any(Coding.class), isNull(), any(), eq("Coding"));
+    ValidationResult res = context.validateCode(noClient, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+
+    assertEquals(ValidationMessage.IssueSeverity.ERROR, res.getSeverity());
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, res.getErrorClass());
+    Mockito.verify(context, times(1)).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
+  @Test
+  void unknownCodeSystemFirstSeenWithAValueSetGetsTheWarningWithoutOne() throws IOException {
+    ValidationOptions validationOptions = setUpUnknownSystem();
+    // checked against a value set first: the local check hands it to the server, which doesn't know the
+    // system, so the system is recorded as unsupported
+    ValueSetValidator valueSetChecker = Mockito.mock(ValueSetValidator.class);
+    Mockito.doThrow(new FHIRException(ValueSetValidator.NO_TRY_THE_SERVER)).when(valueSetChecker).validateCode(eq("Coding"), any(Coding.class));
+    ValueSet valueSet = unknownSystemValueSet(validationOptions, valueSetChecker);
+    Mockito.doReturn(unknownSystemAnswer()).when(context).validateOnServer2(any(), same(valueSet), any(), any(), any());
+    ValidationResult withValueSet = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "a", null), valueSet, null);
+    assertEquals(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, withValueSet.getErrorClass());
+
+    // then against no value set: the warning the server would have given, without asking it
+    ValidationResult res = context.validateCode(validationOptions, new Coding(UNKNOWN_SYSTEM, "b", null), null, null);
+
+    String localWarning = "A definition for CodeSystem '" + UNKNOWN_SYSTEM + "' could not be found, so the code cannot be validated";
+    assertEquals(ValidationMessage.IssueSeverity.WARNING, res.getSeverity());
+    assertEquals(localWarning, res.getMessage());
+    assertEquals("Local Warning: " + localWarning + ". Server Error: " + localWarning, res.getDiagnostics());
+    assertNull(res.getErrorClass());
+    Mockito.verify(context, Mockito.never()).validateOnServer2(any(), isNull(), any(), any(), any());
+  }
+
   @Test
   public void testValidateCodableConceptWithCache() throws IOException {
     CodeableConcept codeableConcept = new CodeableConcept();
@@ -699,6 +846,266 @@ public class BaseWorkerContextTests {
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
   }
 
+  private static OperationOutcome serverError(OperationOutcome.IssueType type, String text) {
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(type).getDetails().setText(text);
+    return oo;
+  }
+
+  private static EFhirClientException status(int code) {
+    // the way the client reports an error page from a proxy or gateway: an 'exception' issue with only a text
+    return new EFhirClientException(code, "HTTP " + code, OperationOutcomeUtilities.createError("<html><body>" + code + "</body></html>"));
+  }
+
+  /**
+   * $expand failures where the server couldn't be reached just then
+   */
+  static List<Exception> unavailableFailures() {
+    return List.of(
+      new FHIRException(new java.net.SocketTimeoutException("timed out")), // as the R5 client reports it
+      new EFhirClientException(0, "timed out", new EFhirClientException(0, "timed out", new java.net.SocketTimeoutException("timed out"))), // the R4 client
+      new FHIRException(new java.net.ConnectException("connection refused")),
+      status(408), status(429), status(502), status(503), status(504));
+  }
+
+  /**
+   * $expand failures that are the server's answer, so they are kept for later runs
+   */
+  static List<Exception> serverAnswers() {
+    return List.of(
+      new EFhirClientException(404, "unknown value set", serverError(OperationOutcome.IssueType.NOTFOUND, "unknown value set")),
+      new EFhirClientException(422, "unable to expand", serverError(OperationOutcome.IssueType.BUSINESSRULE, "unable to expand")));
+  }
+
+  /**
+   * $expand failures where the server responded, but not with an answer about the value set, so they are only kept
+   * for this run
+   */
+  static List<Exception> serverFailures() {
+    return List.of(
+      // how FHIRsmith reports a failure it didn't anticipate: INTERNAL_ERROR
+      new EFhirClientException(500, "Error from server: unexpected", OperationOutcomeUtilities.createError("Unexpected error expanding the value set")),
+      // there was a response, so its status decides: INTERNAL_ERROR
+      new EFhirClientException(500, "Error reading Http Response", new IOException("unexpected end of stream")),
+      // not allowed to use the server: NOSERVICE
+      new EFhirClientException(401, "unauthorized"),
+      new EFhirClientException(403, "forbidden"),
+      // no response status and no OperationOutcome - failed on this side: INTERNAL_ERROR
+      new FHIRException("unable to build the request"));
+  }
+
+  private static boolean isForThisRun(TerminologyServiceErrorClass errorClass) {
+    return errorClass == TerminologyServiceErrorClass.SERVER_ERROR || errorClass == TerminologyServiceErrorClass.NOSERVICE
+      || errorClass == TerminologyServiceErrorClass.INTERNAL_ERROR;
+  }
+
+  private interface Expansion {
+    ValueSetExpansionOutcome expand() throws IOException;
+  }
+
+  /**
+   * With a real cache: a failed $expand is answered from the cache for the rest of the run. A new cache on the same
+   * folder (the next run) has it only if it was the server's answer.
+   */
+  private void expandTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder, Expansion expansion,
+                                     java.util.function.Function<TerminologyCache, TerminologyCache.CacheToken> token) throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    context.initTxCache(cache);
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(any(), any(Parameters.class));
+
+    ValueSetExpansionOutcome res = expansion.expand();
+    assertNull(res.getValueset());
+    assertEquals(!expectReloaded, isForThisRun(res.getErrorClass()), "error class " + res.getErrorClass());
+    assertSame(res, expansion.expand());
+    Mockito.verify(terminologyClient, times(1)).expandValueset(any(), any(Parameters.class));
+    cache.save();
+
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+    ValueSetExpansionOutcome reloaded = next.getExpansion(token.apply(next));
+    if (expectReloaded) {
+      assertNotNull(reloaded);
+      assertEquals(res.getError(), reloaded.getError());
+      assertEquals(res.getErrorClass(), reloaded.getErrorClass());
+    } else {
+      assertNull(reloaded);
+    }
+  }
+
+  private void expandIncludeTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent().setSystem("http://example.org/cs");
+    Mockito.doReturn(new Parameters()).when(context).constructParameters(any(), any(), any(ValueSet.class), anyBoolean());
+    ValueSet vs = new ValueSet();
+    vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
+    vs.getCompose().getInclude().add(inc);
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(null, inc, true, false),
+      cache -> cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true)));
+  }
+
+  @ParameterizedTest
+  @MethodSource("unavailableFailures")
+  void testExpandIncludeUnavailableIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(failure, false, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverAnswers")
+  void testExpandIncludeServerAnswerIsReloaded(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(failure, true, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandIncludeServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandIncludeTwiceThenReload(failure, false, folder);
+  }
+
+  private void expandUrlTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
+    // an https master, so chooseServer(url) finds it as is
+    Mockito.doReturn("https://tx.example.org").when(terminologyClient).getAddress();
+    context.terminologyClientManager.setMasterClient(terminologyClient, null);
+    context.expansionParameters = new AtomicReference<>(new Parameters());
+    ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, DUMMY_URL),
+      cache -> cache.generateExpandToken(DUMMY_URL, opt));
+  }
+
+  @ParameterizedTest
+  @MethodSource("unavailableFailures")
+  void testExpandUrlUnavailableIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandUrlTwiceThenReload(failure, false, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverAnswers")
+  void testExpandUrlServerAnswerIsReloaded(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandUrlTwiceThenReload(failure, true, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandUrlServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandUrlTwiceThenReload(failure, false, folder);
+  }
+
+  @Test
+  void testExpandUrlRegistryDownIsForThisRun(@TempDir java.nio.file.Path folder) throws IOException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy policy = org.hl7.fhir.utilities.http.ManagedWebAccess.getAccessPolicy();
+    // the registry call fails with an IOException, as a timeout does, so there's no server to ask
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy.PROHIBITED);
+    try {
+      // before the real cache, which can't save the mock's capabilities
+      context.terminologyClientManager.setMasterClient(terminologyClient, "http://tx-registry.example.org");
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+      context.initTxCache(cache);
+      context.expansionParameters = new AtomicReference<>(new Parameters());
+      ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+      ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+      assertEquals(TerminologyServiceErrorClass.SERVER_ERROR, res.getErrorClass(), res.getError());
+      assertSame(res, context.expandVS(opt, DUMMY_URL));
+      cache.save();
+      TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+      assertNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(policy);
+    }
+  }
+
+  /**
+   * The registry answers, and names no server for the value set: that's an answer (RESOURCE_UNSUPPORTED), not a missing
+   * terminology service (NOSERVICE), so it's kept for later runs like other answers
+   */
+  @Test
+  void testExpandUrlRegistryNoServerIsReloaded(@TempDir java.nio.file.Path folder) throws IOException {
+    com.sun.net.httpserver.HttpServer registryServer = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("localhost", 0), 0);
+    registryServer.createContext("/", exchange -> {
+      byte[] body = "{\"formatVersion\":\"1\",\"authoritative\":[],\"candidates\":[]}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+      exchange.getResponseHeaders().add("Content-Type", "application/json");
+      exchange.sendResponseHeaders(200, body.length);
+      exchange.getResponseBody().write(body);
+      exchange.close();
+    });
+    registryServer.start();
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(false);
+    try {
+      String registry = "http://localhost:" + registryServer.getAddress().getPort();
+      // before the real cache, which can't save the mock's capabilities
+      context.terminologyClientManager.setMasterClient(terminologyClient, registry);
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+      context.initTxCache(cache);
+      context.expansionParameters = new AtomicReference<>(new Parameters());
+      ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+      ValueSetExpansionOutcome res = context.expandVS(opt, DUMMY_URL);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, res.getErrorClass(), res.getError());
+      cache.save();
+      TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+      ValueSetExpansionOutcome reloaded = next.getExpansion(next.generateExpandToken(DUMMY_URL, opt));
+      assertNotNull(reloaded);
+      assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, reloaded.getErrorClass());
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setSsrfProtectionEnabled(true);
+      registryServer.stop(0);
+    }
+  }
+
+  @Test
+  void testErrorClassReadsTheOldName() {
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("VALUESET_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.RESOURCE_UNSUPPORTED, TerminologyServiceErrorClass.fromName("RESOURCE_UNSUPPORTED"));
+    assertEquals(TerminologyServiceErrorClass.NOSERVICE, TerminologyServiceErrorClass.fromName("NOSERVICE"));
+    assertThrows(IllegalArgumentException.class, () -> TerminologyServiceErrorClass.fromName("NOT_A_CLASS"));
+  }
+
+  @Test
+  void testExpandUrlNoServerIsForThisRun(@TempDir java.nio.file.Path folder) throws IOException {
+    // no terminology server at all: NOSERVICE, so it is asked again next run
+    BaseWorkerContext ctx = getBaseWorkerContext();
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    ctx.initTxCache(cache);
+    ctx.expansionParameters = new AtomicReference<>(new Parameters());
+    ExpansionOptions opt = new ExpansionOptions().withCacheOk(true);
+
+    ValueSetExpansionOutcome res = ctx.expandVS(opt, DUMMY_URL);
+    assertEquals(TerminologyServiceErrorClass.NOSERVICE, res.getErrorClass(), res.getError());
+    cache.save();
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+    assertNull(next.getExpansion(next.generateExpandToken(DUMMY_URL, opt)));
+  }
+
+  private void expandValueSetTwiceThenReload(Exception failure, boolean expectReloaded, java.nio.file.Path folder) throws IOException {
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true).withCacheOk(true);
+    // there's no local code system, so the include is server side: the whole value set goes straight to the
+    // server, without trying to expand it locally first (fhir-ig-publisher#1469)
+    expandTwiceThenReload(failure, expectReloaded, folder, () -> context.expandVS(opt, vs, new Parameters(), false),
+      cache -> cache.generateExpandToken(vs, opt));
+    Mockito.verify(context, Mockito.never()).constructValueSetExpanderSimple(any(ValidationOptions.class));
+  }
+
+  @ParameterizedTest
+  @MethodSource("unavailableFailures")
+  void testExpandValueSetUnavailableIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandValueSetTwiceThenReload(failure, false, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverAnswers")
+  void testExpandValueSetServerAnswerIsReloaded(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandValueSetTwiceThenReload(failure, true, folder);
+  }
+
+  @ParameterizedTest
+  @MethodSource("serverFailures")
+  void testExpandValueSetServerFailureIsForThisRun(Exception failure, @TempDir java.nio.file.Path folder) throws IOException {
+    expandValueSetTwiceThenReload(failure, false, folder);
+  }
+
   @Test
   void setLocaleSetsDefaultDisplayLanguageIfNoDisplayLanguage() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
@@ -830,5 +1237,35 @@ public class BaseWorkerContextTests {
         : context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), version);
     assertSame(cs, result);
     Mockito.verify(terminologyCache).getCodeSystem(canonical);
+  }
+
+  @Test
+  void externalLookupAnswerIsPersisted() {
+    // the lookups didn't fail, so their 'not found' is kept for later runs
+    assertExternalLookupsCached(true);
+  }
+
+  @Test
+  void failedExternalLookupIsForThisRun() throws IOException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy policy = org.hl7.fhir.utilities.http.ManagedWebAccess.getAccessPolicy();
+    // the registry call fails with an IOException, as a timeout does
+    org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy.PROHIBITED);
+    try {
+      context.terminologyClientManager.setMasterClient(terminologyClient, "http://tx-registry.example.org");
+      assertExternalLookupsCached(false);
+    } finally {
+      org.hl7.fhir.utilities.http.ManagedWebAccess.setAccessPolicy(policy);
+    }
+  }
+
+  private void assertExternalLookupsCached(boolean persistent) {
+    String vs = "http://example.org/ValueSet/unknown";
+    String cs = "http://example.org/CodeSystem/unknown";
+    // the server has no such value set
+    Mockito.doReturn(new Bundle()).when(terminologyClient).search(Mockito.eq("ValueSet"), Mockito.anyString());
+    assertNull(context.findTxResource(ValueSet.class, vs, VersionResolutionRules.defaultRule()));
+    assertNull(context.findTxResource(CodeSystem.class, cs, VersionResolutionRules.defaultRule()));
+    Mockito.verify(terminologyCache).cacheValueSet(vs, null, persistent);
+    Mockito.verify(terminologyCache).cacheCodeSystem(cs, null, persistent);
   }
 }

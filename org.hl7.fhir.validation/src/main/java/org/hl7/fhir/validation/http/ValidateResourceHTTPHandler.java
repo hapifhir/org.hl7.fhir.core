@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -15,10 +16,8 @@ import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -31,10 +30,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Handler for validating resources
  */
+@Slf4j
 class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   public static final String VALIDATE_LOCATION = "http-request";
 
@@ -116,9 +117,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         case ParamNames.OUTPUT_STYLE:
           params.setOutputStyle(pair.getValue());
           break;
-        case ParamNames.R5_BUNDLE_RELATIVE_REFERENCE_POLICY:
-          params.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(pair.getValue()));
-          break;
         case ParamNames.QUESTIONNAIRE_MODE:
           params.setQuestionnaireMode(QuestionnaireMode.fromCode(pair.getValue()));
           break;
@@ -183,8 +181,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           params.setAllowDoubleQuotesInFHIRPath(Boolean.parseBoolean(pair.getValue()));
           break;
         case ParamNames.CHECK_DISPLAY:
-          CheckDisplayOption checkDisplayOption = CheckDisplayOption.valueOf(pair.getValue());
-          params.setCheckDisplay(checkDisplayOption);
+          warnCheckDisplayIgnored();
           break;
         case ParamNames.RESOURCE_ID_RULE:
           try {
@@ -229,6 +226,17 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         .setProfile(bundleProfiles.get(i)));
     }
     return params;
+  }
+
+  private static final AtomicBoolean checkDisplayWarned = new AtomicBoolean(false);
+
+  /**
+   * checkDisplay never had any effect, so it is ignored. The warning goes to the server log once, not once per request
+   */
+  private static void warnCheckDisplayIgnored() {
+    if (checkDisplayWarned.compareAndSet(false, true)) {
+      log.warn("The parameter '" + ParamNames.CHECK_DISPLAY + "' has never had any effect, and is deprecated - it is ignored, and will be removed in a future release");
+    }
   }
 
   private static void throwIllegalArgumentException(NameValuePair pair, Exception e) {

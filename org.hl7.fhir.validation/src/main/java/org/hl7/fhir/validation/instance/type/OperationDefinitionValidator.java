@@ -1,18 +1,15 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.model.core.CanonicalType;
 import org.hl7.fhir.model.core.DataType;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.OperationDefinition;
 import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.utilities.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -22,6 +19,9 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OperationDefinitionValidator extends BaseValidator {
 

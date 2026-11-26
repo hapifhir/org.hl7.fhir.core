@@ -1,26 +1,16 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Property;
-import org.hl7.fhir.services.client.ITerminologyClientN;
-import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ElementDefinition.*;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.ElementDefinition.ConstraintSeverity;
-import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent;
-import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
-import org.hl7.fhir.model.core.ElementDefinition.SlicingRules;
-import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.model.core.Enumerations.BindingStrength;
 import org.hl7.fhir.model.utilities.TerminologyUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
+import org.hl7.fhir.services.client.ITerminologyClientN;
+import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.terminology.ExpansionOptions;
 import org.hl7.fhir.services.terminology.ITerminologyClientManager;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
@@ -33,6 +23,12 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CompliesWithChecker {
 

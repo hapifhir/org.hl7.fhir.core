@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.TriggerDefinition;
@@ -9,11 +10,12 @@ public class TriggerDefinition40_N {
   public static org.hl7.fhir.model.core.TriggerDefinition convertTriggerDefinition(org.hl7.fhir.r4.model.TriggerDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.model.core.TriggerDefinition tgt = new org.hl7.fhir.model.core.TriggerDefinition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CrossVersionElements40_N.urls("TriggerDefinition", "5.0", new String[] {"code", "subscriptionTopic"}, CrossVersionElements40_N.urls("TriggerDefinition", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "code", "subscriptionTopic");
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertTriggerType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasName()) tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    // R4 and R6 allow different types
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), "TriggerDefinition", "timing", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.DataRequirement t : src.getData())
       tgt.addData(DataRequirement40_N.convertDataRequirement(t));
     if (src.hasCondition()) tgt.setCondition(Expression40_N.convertExpression(src.getCondition()));
@@ -24,10 +26,10 @@ public class TriggerDefinition40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.TriggerDefinition tgt = new org.hl7.fhir.r4.model.TriggerDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "code", "subscriptionTopic");
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertTriggerType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasName()) tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), "TriggerDefinition", "timing", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.DataRequirement t : src.getDataList())
       tgt.addData(DataRequirement40_N.convertDataRequirement(t));
     if (src.hasCondition()) tgt.setCondition(Expression40_N.convertExpression(src.getCondition()));

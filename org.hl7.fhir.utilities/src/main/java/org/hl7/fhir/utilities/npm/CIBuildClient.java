@@ -83,15 +83,35 @@ public class CIBuildClient {
   }
 
   public boolean isCurrent(String id, NpmPackage npmPackage) throws IOException {
+    return isCurrent(id, npmPackage, null);
+  }
+
+  /**
+   * Whether a cached ci-build of a package is still the latest build: of the main branch, or, when
+   * branch is not null, of that branch (a current$branch package), which has its own manifest
+   */
+  public boolean isCurrent(String id, NpmPackage npmPackage, String branch) throws IOException {
     checkCIServerQueried();
     String packageManifestUrl = ciPackageUrls.get(id);
+    if (branch != null) {
+      checkBranch(branch);
+      packageManifestUrl = Utilities.pathURL(packageManifestUrl, "branches", branch);
+    }
     JsonObject packageManifestJson = JsonParser.parseObjectFromUrl(Utilities.pathURL(packageManifestUrl, "package.manifest.json"));
     String currentDate = packageManifestJson.asString("date");
     String packageDate = npmPackage.date();
     return currentDate.equals(packageDate); // nup, we need a new copy
   }
 
+  /** a branch name goes in a url: it has to be one FilesystemPackageCacheManager.isCurrentBranch allows (null is the main branch) */
+  private static void checkBranch(String branch) {
+    if (branch != null && !FilesystemPackageCacheManager.isCurrentBranch("current$" + branch)) {
+      throw new FHIRException("The branch name '" + branch + "' is illegal: it must be letters, digits, '.', '_' and '-' (not starting with one of those three)");
+    }
+  }
+
   BasePackageCacheManager.InputStreamWithSrc loadFromCIBuild(String id, String branch) {
+    checkBranch(branch);
     checkCIServerQueried();
 
     if (ciPackageUrls.containsKey(id)) {

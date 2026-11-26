@@ -1,47 +1,28 @@
 package org.hl7.fhir.comparison.tests;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
-import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderRN.NullLoaderKnowledgeProviderRN;
 import org.hl7.fhir.convertors.loaders.loaderRN.R4ToRNLoader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.services.comparison.CapabilityStatementComparer;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.comparison.*;
 import org.hl7.fhir.services.comparison.CapabilityStatementComparer.CapabilityStatementComparison;
-import org.hl7.fhir.services.comparison.CodeSystemComparer;
 import org.hl7.fhir.services.comparison.CodeSystemComparer.CodeSystemComparison;
-import org.hl7.fhir.services.comparison.ComparisonSession;
-import org.hl7.fhir.services.comparison.StructureDefinitionComparer;
 import org.hl7.fhir.services.comparison.StructureDefinitionComparer.ProfileComparison;
-import org.hl7.fhir.services.comparison.ValueSetComparer;
 import org.hl7.fhir.services.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.services.conformance.profile.BindingResolution;
 import org.hl7.fhir.services.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.model.core.formats.JsonParser;
-import org.hl7.fhir.model.core.formats.XmlParser;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.services.renderers.CodeSystemRenderer;
 import org.hl7.fhir.services.renderers.RendererFactory;
 import org.hl7.fhir.services.renderers.StructureDefinitionRenderer;
@@ -52,6 +33,7 @@ import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMo
 import org.hl7.fhir.services.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -74,6 +56,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.Stream;
 
 
 public class ComparisonTests {
@@ -166,8 +155,8 @@ public class ComparisonTests {
       CodeSystemComparer cs = new CodeSystemComparer(session);
       CodeSystemComparison csc = cs.compare((CodeSystem) left, (CodeSystem) right);
       Assertions.assertTrue(csc.getUnion().getConceptList().size() > csc.getIntersection().getConceptList().size());
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-union.json"), csc.getUnion());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-intersection.json"), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
@@ -179,8 +168,8 @@ public class ComparisonTests {
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-union.json"), csc.getUnion());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-intersection.json"), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
@@ -196,8 +185,8 @@ public class ComparisonTests {
       genSnapshot(utils, (StructureDefinition) right);
       StructureDefinitionComparer pc = new StructureDefinitionComparer(session, utils, utils);
       ProfileComparison csc = pc.compare((StructureDefinition) left, (StructureDefinition) right);
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-union.json"), csc.getUnion());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-intersection.json"), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
@@ -217,8 +206,8 @@ public class ComparisonTests {
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
       CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-union.json"), csc.getUnion());
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "comparison", name + "-intersection.json"), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));

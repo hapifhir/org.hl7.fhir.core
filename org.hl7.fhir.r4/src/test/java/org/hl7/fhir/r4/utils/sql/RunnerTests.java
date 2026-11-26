@@ -167,4 +167,99 @@ class RunnerTests {
 
     assertEquals(depth, storage.getResults().size(), "one row per nested item");
   }
+
+  // getReferenceKey() on a contained reference: the provider can only find the target inside the
+  // resource being processed, so the runner must pass that resource through. It used to pass null,
+  // and a contained target never had a key
+  @Test
+  void referenceKeyResolvesContainedReference() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource("{\"resourceType\":\"Observation\",\"id\":\"o1\",\"status\":\"final\","
+        + "\"contained\":[{\"resourceType\":\"Patient\",\"id\":\"p1\"}],"
+        + "\"code\":{\"text\":\"x\"},\"subject\":{\"reference\":\"#p1\"}}"));
+    Runner runner = newRunner(provider, storage);
+
+    runner.execute(JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Observation\",\"select\":[{\"column\":["
+        + "{\"name\":\"any\",\"path\":\"subject.getReferenceKey()\"},"
+        + "{\"name\":\"pat\",\"path\":\"subject.getReferenceKey(Patient)\"},"
+        + "{\"name\":\"grp\",\"path\":\"subject.getReferenceKey(Group)\"}]}]}"));
+
+    assertEquals(1, storage.getResults().size());
+    JsonObject row = (JsonObject) storage.getResults().get(0);
+    assertEquals("Patient/p1", row.asString("any"));
+    assertEquals("Patient/p1", row.asString("pat"));
+    assertTrue(row.get("grp") instanceof JsonNull, "a contained Patient is not a Group");
+  }
+
+  // six names, each with six given names
+  private static final String SIX_NAMES = "{\"resourceType\":\"Patient\",\"id\":\"p1\",\"name\":["
+      + "{\"family\":\"a\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"b\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"c\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"d\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"e\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]},{\"family\":\"f\",\"given\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]}"
+      + "]}";
+
+  // each forEach multiplies the rows by the items it iterates (here, 6 names x 6 given names): nested ones can make
+  // millions of rows from one resource, so the rows one resource can make are capped (configurably)
+  private static final String NAMES_BY_NAMES = "{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+      + "\"resource\":\"Patient\",\"select\":[{\"forEach\":\"name\",\"column\":[{\"name\":\"f1\",\"path\":\"family\"}],"
+      + "\"select\":[{\"forEach\":\"given\",\"column\":[{\"name\":\"g\",\"path\":\"$this\"}]}]}]}";
+
+  @Test
+  void rowsBeyondTheLimitFail() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(20);
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(JsonParser.parseObject(NAMES_BY_NAMES)));
+    assertTrue(e.getMessage().contains("more than 20 rows"), e.getMessage());
+  }
+
+  @Test
+  void rowsUpToTheLimitAreFine() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(36);
+    runner.execute(JsonParser.parseObject(NAMES_BY_NAMES));
+    assertEquals(36, storage.getResults().size());
+  }
+
+  // the time limit is for each resource, and the FHIRPath the view runs spends it
+  @Test
+  void aResourceThatTakesTooLongFails() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxExecutionMillis(200);
+    String slow = "(1).repeat(iif($this < 1000, $this + 1, {})).select((1).repeat(iif($this < 1000, $this + 1, {})).count()).count()";
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"column\":[{\"name\":\"n\",\"path\":\"" + slow + "\"}]}]}");
+    long start = System.currentTimeMillis();
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("didn't finish"), e.getMessage());
+    assertTrue(System.currentTimeMillis() - start < 30000);
+  }
+  /** a collection column's values go in every row: rows times values is limited */
+  @Test
+  void aCollectionColumnInManyRowsFails() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(SIX_NAMES));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRows(5000);
+    // 1000 rows, each getting a column of 11,000 values: 11,000,000 cells, over the limit (ExecutionLimits.DEFAULT_MAX_ITEMS).
+    // The values are cheap to make (one repeat, not one per value: thousand.select(thousand) took more than 30s on CI)
+    String thousand = "(1).repeat(iif($this < 1000, $this + 1, {}))";
+    String eleven = "(1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11)";
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"forEach\":\"" + thousand + "\",\"column\":[{\"name\":\"n\",\"path\":\"$this\"}]},"
+        + "{\"column\":[{\"name\":\"m\",\"collection\":true,\"path\":\"" + thousand + ".select(" + eleven + ")\"}]}]}");
+    long start = System.currentTimeMillis();
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("values in a column"), e.getMessage());
+    assertTrue(System.currentTimeMillis() - start < 30000);
+  }
 }

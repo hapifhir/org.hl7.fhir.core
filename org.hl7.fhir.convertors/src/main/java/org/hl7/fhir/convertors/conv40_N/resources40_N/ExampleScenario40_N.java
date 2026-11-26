@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
@@ -53,6 +55,7 @@ public class ExampleScenario40_N {
   private static final String INSTANCE_STRUCTURE_VERSION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.structureVersion";
   private static final String INSTANCE_STRUCTURE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.structureProfile";
   private static final String INSTANCE_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.content";
+  private static final String INSTANCE_STRUCTURE_TYPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.structureType";
   private static final String INSTANCE_VERSION_TITLE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.version.title";
   private static final String INSTANCE_VERSION_CONTENT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.instance.version.content";
   private static final String PROCESS_STEP_NUMBER = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ExampleScenario.process.step.number";
@@ -109,6 +112,7 @@ public class ExampleScenario40_N {
       tgt.addProcess(convertExampleScenarioProcessComponent(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getWorkflow())
       tgt.addExtension(WORKFLOW, Canonical40_N.convertCanonical(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -164,6 +168,7 @@ public class ExampleScenario40_N {
     for (org.hl7.fhir.model.core.Extension e : src.getExtensionsByUrl(WORKFLOW))
       tgt.getWorkflow().add(Canonical40_N.convertCanonical(e.getValueCanonicalType()));
 
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -175,11 +180,12 @@ public class ExampleScenario40_N {
     if (src.hasActorId())
       tgt.setKeyElement(String40_N.convertString(src.getActorIdElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertExampleScenarioActorType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasName())
       tgt.setTitleElement(String40_N.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown40_N.convertMarkdown(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -191,20 +197,26 @@ public class ExampleScenario40_N {
     if (src.hasKey())
       tgt.setActorIdElement(String40_N.convertString(src.getKeyElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertExampleScenarioActorType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasTitle())
       tgt.setNameElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown40_N.convertMarkdown(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
+
+  // R6 actor types that R4 doesn't have (collective, other)
+  public static final String ACTOR_TYPE_EXTENSION_URL = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ExampleScenario.actor.type";
 
   static public org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.core.Enumerations.ActorDefinitionActorType> convertExampleScenarioActorType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
       if (src == null || src.isEmpty())
           return null;
       Enumeration<Enumerations.ActorDefinitionActorType> tgt = new Enumeration<>(new Enumerations.ActorDefinitionActorTypeEnumFactory());
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      if (src.getValue() == null) {
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, ACTOR_TYPE_EXTENSION_URL);
+      if (src.hasExtension(ACTOR_TYPE_EXTENSION_URL)) {
+          tgt.setValueAsString(src.getExtensionByUrl(ACTOR_TYPE_EXTENSION_URL).getValue().primitiveValue());
+      } else if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
           switch (src.getValue()) {
@@ -237,6 +249,12 @@ public class ExampleScenario40_N {
               case SYSTEM:
                   tgt.setValue(ExampleScenario.ExampleScenarioActorType.ENTITY);
                   break;
+              case COLLECTIVE:
+              case OTHER:
+                  // R4 has person and entity: anything that isn't a person is an entity, and the R6 code is kept
+                  tgt.setValue(ExampleScenario.ExampleScenarioActorType.ENTITY);
+                  tgt.addExtension(ACTOR_TYPE_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getValueAsString()));
+                  break;
               default:
                   tgt.setValue(ExampleScenario.ExampleScenarioActorType.NULL);
                   break;
@@ -249,10 +267,12 @@ public class ExampleScenario40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioInstanceComponent tgt = new org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioInstanceComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, INSTANCE_STRUCTURE_VERSION, INSTANCE_STRUCTURE_PROFILE, INSTANCE_CONTENT);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, INSTANCE_STRUCTURE_VERSION, INSTANCE_STRUCTURE_PROFILE, INSTANCE_CONTENT, INSTANCE_STRUCTURE_TYPE);
     if (src.hasResourceId())
       tgt.setKeyElement(String40_N.convertString(src.getResourceIdElement()));
-    if (src.hasResourceType()) {
+    if (src.hasExtension(INSTANCE_STRUCTURE_TYPE))
+      tgt.setStructureType(Coding40_N.convertCoding((org.hl7.fhir.r4.model.Coding) src.getExtensionByUrl(INSTANCE_STRUCTURE_TYPE).getValue()));
+    else if (src.hasResourceType()) {
       tgt.getStructureType().setCode(src.getResourceType().toCode());
       tgt.getStructureType().setSystem("http://hl7.org/fhir/fhir-types");
     }
@@ -274,6 +294,7 @@ public class ExampleScenario40_N {
       tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
     for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstance())
       tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -294,8 +315,22 @@ public class ExampleScenario40_N {
       tgt.addExtension(INSTANCE_CONTENT, Reference40_N.convertReference(src.getContent()));
     if (src.hasKey())
       tgt.setResourceIdElement(String40_N.convertString(src.getKeyElement()));
-    if (src.hasStructureType())
-      tgt.setResourceType(FHIRResourceType.fromCode(src.getStructureType().getCode()));
+    if (src.hasStructureType()) {
+      // R4 only has the FHIR resource type code; any other structure type, or more than the code, goes in a 5.0 extension
+      org.hl7.fhir.model.core.Coding st = src.getStructureType();
+      FHIRResourceType rt = null;
+      if ("http://hl7.org/fhir/fhir-types".equals(st.getSystem()) && st.hasCode()) {
+        try {
+          rt = FHIRResourceType.fromCode(st.getCode());
+        } catch (FHIRException e) {
+          rt = null;
+        }
+      }
+      if (rt != null)
+        tgt.setResourceType(rt);
+      if (rt == null || st.hasDisplay() || st.hasVersion() || st.hasUserSelected() || st.hasId() || st.hasExtension())
+        tgt.addExtension(INSTANCE_STRUCTURE_TYPE, Coding40_N.convertCoding(st));
+    }
     if (src.hasTitle())
       tgt.setNameElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasDescription())
@@ -304,6 +339,7 @@ public class ExampleScenario40_N {
       tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
     for (org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstanceList())
       tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -336,6 +372,7 @@ public class ExampleScenario40_N {
       tgt.setTitleElement(String40_N.convertString((org.hl7.fhir.r4.model.StringType) src.getExtensionByUrl(INSTANCE_VERSION_TITLE).getValue()));
     if (src.hasExtension(INSTANCE_VERSION_CONTENT))
       tgt.setContent(Reference40_N.convertReference((org.hl7.fhir.r4.model.Reference) src.getExtensionByUrl(INSTANCE_VERSION_CONTENT).getValue()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -352,6 +389,7 @@ public class ExampleScenario40_N {
       tgt.addExtension(INSTANCE_VERSION_TITLE, String40_N.convertString(src.getTitleElement()));
     if (src.hasContent())
       tgt.addExtension(INSTANCE_VERSION_CONTENT, Reference40_N.convertReference(src.getContent()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -364,6 +402,7 @@ public class ExampleScenario40_N {
       tgt.setInstanceReferenceElement(String40_N.convertString(src.getResourceIdElement()));
     if (src.hasVersionId())
       tgt.setVersionReferenceElement(String40_N.convertString(src.getVersionIdElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -376,6 +415,7 @@ public class ExampleScenario40_N {
       tgt.setResourceIdElement(String40_N.convertString(src.getInstanceReferenceElement()));
     if (src.hasVersionReference())
       tgt.setVersionIdElement(String40_N.convertString(src.getVersionReferenceElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -394,6 +434,7 @@ public class ExampleScenario40_N {
       tgt.setPostConditionsElement(MarkDown40_N.convertMarkdown(src.getPostConditionsElement()));
     for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep())
       tgt.addStep(convertExampleScenarioProcessStepComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -412,6 +453,7 @@ public class ExampleScenario40_N {
       tgt.setPostConditionsElement(MarkDown40_N.convertMarkdown(src.getPostConditionsElement()));
     for (org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStepList())
       tgt.addStep(convertExampleScenarioProcessStepComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -435,6 +477,7 @@ public class ExampleScenario40_N {
       tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation()));
     for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative())
       tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -457,6 +500,7 @@ public class ExampleScenario40_N {
     }
     for (org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternativeList())
       tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -467,7 +511,11 @@ public class ExampleScenario40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
 //    if (src.hasNumber())
 //      tgt.setNumberElement(String40_N.convertString(src.getNumberElement()));
-    if (src.hasType()) {
+    // the whole Coding, if R4 couldn't carry it (see below)
+    String typeUrl = CrossVersionElements40_N.url("ExampleScenario.process.step.operation", "5.0", "type");
+    if (src.getTypeElement().hasExtension(typeUrl))
+      tgt.setType(Coding40_N.convertCoding((org.hl7.fhir.r4.model.Coding) src.getTypeElement().getExtensionByUrl(typeUrl).getValue()));
+    else if (src.hasType()) {
       tgt.getType().setSystem("http://hl7.org/fhir/restful-interaction");
       tgt.getType().setCode(src.getType());
     }
@@ -487,6 +535,7 @@ public class ExampleScenario40_N {
       tgt.setRequest(convertExampleScenarioInstanceContainedInstanceComponent(src.getRequest()));
     if (src.hasResponse())
       tgt.setResponse(convertExampleScenarioInstanceContainedInstanceComponent(src.getResponse()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -499,8 +548,13 @@ public class ExampleScenario40_N {
       tgt.setNumber(src.getExtensionByUrl("http://hl7.org/fhir/4.0/StructureDefinition/extension-ExampleScenario.process.step.operation.number").getValueStringType().toString());
     else
       tgt.setNumber(stepPosition);
-    if (src.hasType())
+    if (src.hasType()) {
       tgt.setType(src.getType().getCode());
+      // R4 has just the code (of a restful interaction): anything else, the Coding is a 5.0 extension on it
+      org.hl7.fhir.model.core.Coding c = src.getType();
+      if (!"http://hl7.org/fhir/restful-interaction".equals(c.getSystem()) || c.hasDisplay() || c.hasVersion() || c.hasUserSelected() || c.hasId() || c.hasExtension())
+        tgt.getTypeElement().addExtension(CrossVersionElements40_N.url("ExampleScenario.process.step.operation", "5.0", "type"), Coding40_N.convertCoding(c));
+    }
     if (src.hasTitle())
       tgt.setNameElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasInitiator())
@@ -517,6 +571,7 @@ public class ExampleScenario40_N {
       tgt.setRequest(convertExampleScenarioInstanceContainedInstanceComponent(src.getRequest()));
     if (src.hasResponse())
       tgt.setResponse(convertExampleScenarioInstanceContainedInstanceComponent(src.getResponse()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -531,6 +586,7 @@ public class ExampleScenario40_N {
       tgt.setDescriptionElement(MarkDown40_N.convertMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep())
       tgt.addStep(convertExampleScenarioProcessStepComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -545,6 +601,7 @@ public class ExampleScenario40_N {
       tgt.setDescriptionElement(MarkDown40_N.convertMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.model.core.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStepList())
       tgt.addStep(convertExampleScenarioProcessStepComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

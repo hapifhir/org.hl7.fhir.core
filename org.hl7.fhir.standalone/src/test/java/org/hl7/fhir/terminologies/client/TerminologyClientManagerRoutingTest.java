@@ -1,6 +1,7 @@
 package org.hl7.fhir.terminologies.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -15,10 +16,13 @@ import java.util.Set;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.CanonicalType;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
@@ -50,12 +54,16 @@ class TerminologyClientManagerRoutingTest {
   private static final String CS_B = "http://example.org/cs/b";
   private static final String CS_C = "http://example.org/cs/c";
   private static final String CS_UNKNOWN = "http://example.org/cs/nobody-has-this";
+  // a supplement to A that only X knows (the Infoway fr-CA supplement to v3 ActCode pattern)
+  private static final String SUPP_A = "http://example.org/supplement/a-fr|1.0.0";
 
   // A and B: MAIN is authoritative, X and Y are candidates (the THO pattern)
   private static final String RESP_AUTH = "{\"authoritative\":[{\"url\":\""+MAIN+"\"}],"+
       "\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
   // C: nobody authoritative, X and Y are candidates
   private static final String RESP_CAND = "{\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
+  // the supplement to A: X is authoritative
+  private static final String RESP_SUPP = "{\"authoritative\":[{\"url\":\""+X+"\"}]}";
   // the registry knows no server at all
   private static final String RESP_NONE = "{}";
 
@@ -64,8 +72,14 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext.setAllowNonConformantServers(true);
   }
 
-  /** server address -> code systems it really has (complete content) */
+  /** server address -> code systems it has CodeSystem resources for (complete content) */
   private final Map<String, Set<String>> hosted = new HashMap<>();
+  /** server address -> code systems it has CodeSystem resources for, that say the content is not present */
+  private final Map<String, Set<String>> hostedNotPresent = new HashMap<>();
+  /** server address -> code systems its TerminologyCapabilities lists, without saying what the content is */
+  private final Map<String, Set<String>> listed = new HashMap<>();
+  /** server address -> code systems its TerminologyCapabilities lists, saying the content is not present */
+  private final Map<String, Set<String>> listedNotPresent = new HashMap<>();
   /** "server|criteria" for every CodeSystem search made */
   private final List<String> searches = new ArrayList<>();
 
@@ -77,7 +91,9 @@ class TerminologyClientManagerRoutingTest {
     @Override
     protected JsonObject fetchRegistryJson(String request) throws IOException, JsonException {
       String json;
-      if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
+      if (request.contains(enc(SUPP_A))) {
+        json = RESP_SUPP;
+      } else if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
         json = RESP_AUTH;
       } else if (request.contains(enc(CS_C))) {
         json = RESP_CAND;
@@ -100,7 +116,7 @@ class TerminologyClientManagerRoutingTest {
       case "getUserAgent": return "fhir-core-tests";
       case "getCapabilitiesStatement":
       case "getCapabilitiesStatementQuick": return new CapabilityStatement();
-      case "getTerminologyCapabilities": return new TerminologyCapabilities();
+      case "getTerminologyCapabilities": return terminologyCapabilities(address);
       case "search": return search(address, (String) args[1]);
       case "toString": return "fake client: " + address;
       case "equals": return proxy == args[0];
@@ -115,18 +131,34 @@ class TerminologyClientManagerRoutingTest {
     });
   }
 
+  private TerminologyCapabilities terminologyCapabilities(String address) {
+    TerminologyCapabilities tc = new TerminologyCapabilities();
+    for (String url : listed.getOrDefault(address, new HashSet<>())) {
+      tc.addCodeSystem().setUri(url);
+    }
+    for (String url : listedNotPresent.getOrDefault(address, new HashSet<>())) {
+      tc.addCodeSystem().setUri(url).setContent(CodeSystemContentMode.NOTPRESENT);
+    }
+    return tc;
+  }
+
   private Bundle search(String address, String criteria) {
     searches.add(address+"|"+criteria);
     Bundle bnd = new Bundle();
-    for (String url : hosted.getOrDefault(address, new HashSet<>())) {
+    addCodeSystems(bnd, hosted.getOrDefault(address, new HashSet<>()), criteria, CodeSystemContentMode.COMPLETE);
+    addCodeSystems(bnd, hostedNotPresent.getOrDefault(address, new HashSet<>()), criteria, CodeSystemContentMode.NOTPRESENT);
+    return bnd;
+  }
+
+  private void addCodeSystems(Bundle bnd, Set<String> urls, String criteria, CodeSystemContentMode content) {
+    for (String url : urls) {
       if (criteria.contains(org.hl7.fhir.utilities.Utilities.escapeUrl(url))) {
         CodeSystem cs = new CodeSystem();
         cs.setUrl(url);
-        cs.setContent(CodeSystemContentMode.COMPLETE);
+        cs.setContent(content);
         bnd.addEntry().setResource(cs);
       }
     }
-    return bnd;
   }
 
   private class TestFactory implements ITerminologyClientFactoryN {
@@ -221,5 +253,80 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
     assertEquals(MAIN, tc.getAddress());
     assertEquals(2, searches.size(), "both candidates should have been checked: "+searches);
+  }
+  @Test
+  void testCandidateWhoseCodeSystemSaysContentNotPresentIsSkipped() throws IOException {
+    // a server that holds the concepts in its own tables, and says not-present, has to be
+    // registered as authoritative to be used
+    hostedNotPresent.put(X, systems(CS_C));
+    hosted.put(Y, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(Y, tc.getAddress());
+    assertTrue(logged(mgr, "Candidate server "+X+" dropped for "+CS_C), "expected X to be dropped: "+messages(mgr));
+  }
+
+  @Test
+  void testCandidateThatListsCodeSystemInTerminologyCapabilitiesIsUsedWithoutSearching() throws IOException {
+    listed.put(X, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(X, tc.getAddress());
+    assertEquals(0, searches.size(), "the TerminologyCapabilities is enough: "+searches);
+  }
+
+  @Test
+  void testCandidateWhoseTerminologyCapabilitiesSaysContentNotPresentIsSearched() throws IOException {
+    listedNotPresent.put(X, systems(CS_C));
+    listedNotPresent.put(Y, systems(CS_C));
+    hosted.put(Y, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(Y, tc.getAddress());
+    assertTrue(searches.stream().anyMatch(q -> q.startsWith(X+"|")), "X should have been searched: "+searches);
+  }
+
+  private static ValueSet valueSetOnA(boolean requireSupplement) {
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://example.org/vs/a");
+    vs.getCompose().addInclude().setSystem(CS_A);
+    if (requireSupplement) {
+      vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(SUPP_A));
+    }
+    return vs;
+  }
+
+  @Test
+  void testRequiredSupplementRoutesToServerThatKnowsIt() throws IOException {
+    // MAIN is authoritative for A, but the value set requires a supplement to A that only X
+    // knows, and X is a candidate for A: the value set has to go to X
+    TestManager mgr = makeManager();
+    Set<String> systems = Set.of(CS_A); // immutable, as callers sometimes pass
+    TerminologyClientContext tc = mgr.chooseServer(valueSetOnA(true), systems, false);
+    assertEquals(X, tc.getAddress());
+    assertTrue(logged(mgr, "Found partially authoritative server"), "expected partially authoritative routing: "+messages(mgr));
+    assertEquals(Set.of(CS_A), systems);
+  }
+
+  @Test
+  void testNoRequiredSupplementRoutesToAuthoritativeServer() throws IOException {
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(valueSetOnA(false), Set.of(CS_A), false);
+    assertEquals(MAIN, tc.getAddress());
+  }
+
+  @Test
+  void testIsKnownToEcosystem() throws IOException {
+    TestManager mgr = makeManager();
+    assertTrue(mgr.isKnownToEcosystem(SUPP_A));
+    assertTrue(mgr.isKnownToEcosystem(CS_A));
+    assertFalse(mgr.isKnownToEcosystem(CS_UNKNOWN));
+  }
+
+  @Test
+  void testRequiredSupplementSingleServer() throws IOException {
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseSingleServer(valueSetOnA(true), Set.of(CS_A), true);
+    assertEquals(X, tc.getAddress());
   }
 }

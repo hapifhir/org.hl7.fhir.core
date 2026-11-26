@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Instant43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer64_43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
-import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.Enumerations;
 import org.hl7.fhir.r4b.model.SubscriptionStatus;
 
@@ -26,9 +25,7 @@ public class SubscriptionStatus43_50 {
       tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
     }
     if (src.hasEventsSinceSubscriptionStart()) {
-      org.hl7.fhir.r4b.model.StringType value = new org.hl7.fhir.r4b.model.StringType();
-      value.setValue(src.getEventsSinceSubscriptionStartElement().getValueAsString());
-      tgt.setEventsSinceSubscriptionStartElement(value);
+      tgt.setEventsSinceSubscriptionStartElement(Integer64_43_50.convertInteger64ToString(src.getEventsSinceSubscriptionStartElement()));
     }
     if (src.hasNotificationEvent()) {
       for (org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent element : src.getNotificationEvent()) {
@@ -50,7 +47,10 @@ public class SubscriptionStatus43_50 {
   }
 
   private static org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
+    if (src == null)
+      return null;
     org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasEventNumber()) {
       tgt.setEventNumberElement(Integer64_43_50.convertInteger64ToString(src.getEventNumberElement()));
     }
@@ -70,48 +70,64 @@ public class SubscriptionStatus43_50 {
 
   private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.SubscriptionStatus> convertSubscriptionStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes> src) {
       Enumerations.SubscriptionStatusEnumFactory enumFactory = new Enumerations.SubscriptionStatusEnumFactory();
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.SubscriptionStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory);
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
       if (src.getValue() == null) {
-          return null;
+          tgt.setValue(null);
       } else {
           switch (src.getValue()) {
               case ACTIVE:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.ACTIVE);
+                  tgt.setValue(Enumerations.SubscriptionStatus.ACTIVE);
+                  break;
               case ERROR:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.ERROR);
+                  tgt.setValue(Enumerations.SubscriptionStatus.ERROR);
+                  break;
               case ENTEREDINERROR:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.ERROR);
+                  tgt.setValue(Enumerations.SubscriptionStatus.ERROR);
+                  break;
               case OFF:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.OFF);
+                  tgt.setValue(Enumerations.SubscriptionStatus.OFF);
+                  break;
               case REQUESTED:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.REQUESTED);
+                  tgt.setValue(Enumerations.SubscriptionStatus.REQUESTED);
+                  break;
               case NULL:
-                  return new Enumeration<>(enumFactory, Enumerations.SubscriptionStatus.NULL);
+                  tgt.setValue(Enumerations.SubscriptionStatus.NULL);
+                  break;
           }
       }
-      return null;
+      return tgt;
   }
 
   private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionNotificationType> convertSubscriptionNotificationType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType> src) {
       SubscriptionStatus.SubscriptionNotificationTypeEnumFactory enumFactory = new SubscriptionStatus.SubscriptionNotificationTypeEnumFactory();
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionNotificationType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory);
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
       if (src.getValue() == null) {
-         return null;
+         tgt.setValue(null);
       } else {
           switch (src.getValue()) {
               case EVENTNOTIFICATION:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.EVENTNOTIFICATION);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.EVENTNOTIFICATION);
+                  break;
               case HANDSHAKE:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.HANDSHAKE);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.HANDSHAKE);
+                  break;
               case HEARTBEAT:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.HEARTBEAT);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.HEARTBEAT);
+                  break;
               case QUERYEVENT:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.QUERYEVENT);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.QUERYEVENT);
+                  break;
               case QUERYSTATUS:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.QUERYSTATUS);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.QUERYSTATUS);
+                  break;
               case NULL:
-                  return new Enumeration<>(enumFactory, SubscriptionStatus.SubscriptionNotificationType.NULL);
+                  tgt.setValue(SubscriptionStatus.SubscriptionNotificationType.NULL);
+                  break;
           }
       }
-      return null;
+      return tgt;
   }
 
 
@@ -130,9 +146,7 @@ public class SubscriptionStatus43_50 {
       tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
     }
     if (src.hasEventsSinceSubscriptionStart()) {
-      org.hl7.fhir.r5.model.Integer64Type value = new org.hl7.fhir.r5.model.Integer64Type();
-      value.fromStringValue(src.getEventsSinceSubscriptionStartElement().getValueAsString());
-      tgt.setEventsSinceSubscriptionStartElement(value);
+      tgt.setEventsSinceSubscriptionStartElement(Integer64_43_50.convertStringToInteger64(src.getEventsSinceSubscriptionStartElement()));
     }
     if (src.hasNotificationEvent()) {
       for (org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent element : src.getNotificationEvent()) {
@@ -154,7 +168,10 @@ public class SubscriptionStatus43_50 {
   }
 
   private static org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent convertSubscriptionStatusNotificationEventComponent(org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent src) {
+    if (src == null)
+      return null;
     org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent tgt = new org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionStatusNotificationEventComponent();
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasEventNumber()) {
       tgt.setEventNumberElement(Integer64_43_50.convertStringToInteger64(src.getEventNumberElement()));
     }
@@ -174,45 +191,60 @@ public class SubscriptionStatus43_50 {
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes> convertSubscriptionStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.SubscriptionStatus> src) {
       org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodesEnumFactory enumFactory = new org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodesEnumFactory();
+      org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(enumFactory);
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
       if (src.getValue() == null) {
-         return null;
+         tgt.setValue(null);
       } else {
           switch (src.getValue()) {
               case ACTIVE:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.ACTIVE);
+                  tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.ACTIVE);
+                  break;
               case ERROR:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.ERROR);
+                  tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.ERROR);
+                  break;
               case OFF:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.OFF);
+                  tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.OFF);
+                  break;
               case REQUESTED:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.REQUESTED);
+                  tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.REQUESTED);
+                  break;
               case NULL:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.NULL);
+                  tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes.NULL);
+                  break;
           }
       }
-      return null;
+      return tgt;
   }
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType> convertSubscriptionNotificationType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionStatus.SubscriptionNotificationType> src) {
       org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationTypeEnumFactory enumFactory = new org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationTypeEnumFactory();
+      org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(enumFactory);
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
       if (src.getValue() == null) {
-         return null;
+         tgt.setValue(null);
       } else {
           switch (src.getValue()) {
               case EVENTNOTIFICATION:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.EVENTNOTIFICATION);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.EVENTNOTIFICATION);
+                  break;
               case HANDSHAKE:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.HANDSHAKE);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.HANDSHAKE);
+                  break;
               case HEARTBEAT:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.HEARTBEAT);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.HEARTBEAT);
+                  break;
               case QUERYEVENT:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.QUERYEVENT);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.QUERYEVENT);
+                  break;
               case QUERYSTATUS:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.QUERYSTATUS);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.QUERYSTATUS);
+                  break;
               case NULL:
-                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.NULL);
+                  tgt.setValue(org.hl7.fhir.r5.model.SubscriptionStatus.SubscriptionNotificationType.NULL);
+                  break;
           }
       }
-      return null;
+      return tgt;
   }
 }

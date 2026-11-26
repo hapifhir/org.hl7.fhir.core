@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -45,7 +46,8 @@ public class Schedule40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Schedule tgt = new org.hl7.fhir.model.core.Schedule();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Schedule", "5.0", new String[] {"name"}, CrossVersionElements40_N.urls("Schedule", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "name");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -53,7 +55,7 @@ public class Schedule40_N {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getActor()) tgt.addActor(Reference40_N.convertReference(t));
@@ -69,6 +71,7 @@ public class Schedule40_N {
       return null;
     org.hl7.fhir.r4.model.Schedule tgt = new org.hl7.fhir.r4.model.Schedule();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "name");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -76,8 +79,7 @@ public class Schedule40_N {
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getServiceCategoryList())
       tgt.addServiceCategory(CodeableConcept40_N.convertCodeableConcept(t));
     for (CodeableReference t : src.getServiceTypeList())
-      if (t.hasConcept())
-        tgt.addServiceType(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addServiceType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getSpecialtyList())
       tgt.addSpecialty(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.Reference t : src.getActorList()) tgt.addActor(Reference40_N.convertReference(t));

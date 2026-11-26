@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ExtendedContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -40,11 +41,18 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class OrganizationAffiliation40_N {
 
+  // R6 dropped OrganizationAffiliation.network
+  public static final String NETWORK_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OrganizationAffiliation.network";
+
+  public static final String CONTACT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-OrganizationAffiliation.contact";
+
   public static org.hl7.fhir.model.core.OrganizationAffiliation convertOrganizationAffiliation(org.hl7.fhir.r4.model.OrganizationAffiliation src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.OrganizationAffiliation tgt = new org.hl7.fhir.model.core.OrganizationAffiliation();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CONTACT_EXTENSION_URL);
+    for (org.hl7.fhir.r4.model.Reference t : src.getNetwork())
+      tgt.addExtension(NETWORK_EXTENSION_URL, Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -62,8 +70,7 @@ public class OrganizationAffiliation40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.getContactFirstRep().addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getTelecom(), src.getExtension(), CONTACT_EXTENSION_URL, tgt::addContact);
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -72,7 +79,9 @@ public class OrganizationAffiliation40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.OrganizationAffiliation tgt = new org.hl7.fhir.r4.model.OrganizationAffiliation();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, NETWORK_EXTENSION_URL);
+    for (org.hl7.fhir.model.core.Extension ext : src.getExtensionsByUrl(NETWORK_EXTENSION_URL))
+      tgt.addNetwork(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) ext.getValue()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -90,9 +99,7 @@ public class OrganizationAffiliation40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getLocationList()) tgt.addLocation(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Reference t : src.getHealthcareServiceList())
       tgt.addHealthcareService(Reference40_N.convertReference(t));
-    for (org.hl7.fhir.model.core.ExtendedContactDetail t1 : src.getContactList())
-      for (org.hl7.fhir.model.core.ContactPoint t : t1.getTelecomList())
-        tgt.addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getContactList(), tgt.getTelecom(), tgt.getExtension(), CONTACT_EXTENSION_URL);
     for (org.hl7.fhir.model.core.Reference t : src.getEndpointList()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }

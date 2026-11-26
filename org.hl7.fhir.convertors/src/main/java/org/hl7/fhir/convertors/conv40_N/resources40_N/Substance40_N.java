@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Ratio40_N;
@@ -43,23 +44,38 @@ import org.hl7.fhir.model.core.Substance;
 
 public class Substance40_N {
 
+  private static boolean isSimpleInstance(org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t) {
+    return !t.hasIdentifier() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension();
+  }
+
   public static org.hl7.fhir.model.core.Substance convertSubstance(org.hl7.fhir.r4.model.Substance src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Substance tgt = new org.hl7.fhir.model.core.Substance();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    // R6 dropped ingredient
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Substance", tgt.getExtension(), "ingredient");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertFHIRSubstanceStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasCode())
-      tgt.getCode().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
+      tgt.setCode(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
-    for (org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t : src.getInstance())
-      convertSubstanceInstanceComponent(t, tgt);
+    // R6 Substance is the instance: a single instance with no identifier maps to expiry and quantity. Otherwise the
+    // instances go in cross-version extensions
+    if (src.getInstance().size() == 1 && isSimpleInstance(src.getInstanceFirstRep())) {
+      org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t = src.getInstanceFirstRep();
+      if (t.hasExpiry())
+        tgt.setExpiryElement(DateTime40_N.convertDateTime(t.getExpiryElement()));
+      if (t.hasQuantity())
+        tgt.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(t.getQuantity()));
+    } else {
+      CrossVersionElements40_N.r4ElementsToExtensions(src, "Substance", tgt.getExtension(), "instance");
+    }
     return tgt;
   }
 
@@ -67,17 +83,26 @@ public class Substance40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Substance tgt = new org.hl7.fhir.r4.model.Substance();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Substance", "4.0", new String[] {"ingredient", "instance"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Substance", "ingredient");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertFHIRSubstanceStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
-    if (src.getCode().hasConcept())
-      tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode().getConcept()));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
+    if (src.hasExpiry() || src.hasQuantity()) {
+      org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t = tgt.addInstance();
+      if (src.hasExpiry())
+        t.setExpiryElement(DateTime40_N.convertDateTime(src.getExpiryElement()));
+      if (src.hasQuantity())
+        t.setQuantity(SimpleQuantity40_N.convertSimpleQuantity(src.getQuantity()));
+    }
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Substance", "instance");
     return tgt;
   }
 

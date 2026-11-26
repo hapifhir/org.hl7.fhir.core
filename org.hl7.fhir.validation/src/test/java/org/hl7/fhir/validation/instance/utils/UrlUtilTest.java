@@ -1,13 +1,12 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.standalone.testing.TestingUtilities;
 
 public class UrlUtilTest {
   private IWorkerContext context;

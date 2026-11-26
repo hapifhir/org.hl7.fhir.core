@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.DateTime40_N;
@@ -42,23 +43,31 @@ import org.hl7.fhir.model.core.Enumeration;
 
 public class DetectedIssue40_N {
 
+  // R6 severity concepts that the R4 code can't hold
+  public static final String SEVERITY_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-DetectedIssue.severity";
+
   public static org.hl7.fhir.model.core.DetectedIssue convertDetectedIssue(org.hl7.fhir.r4.model.DetectedIssue src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DetectedIssue tgt = new org.hl7.fhir.model.core.DetectedIssue();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DetectedIssue", "5.0", new String[] {"category", "encounter"}, CrossVersionElements40_N.urls("DetectedIssue", "6.0", new String[] {"qualityOfEvidence", "expectedOnsetType", "medicationClass", "managementCode"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "category", "encounter");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "qualityOfEvidence", "expectedOnsetType", "medicationClass", "managementCode");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDetectedIssueStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertDetectedIssueStatus(src.getStatusElement()), src.fhirType(), "status"));
+    CrossVersionElements40_N.keepR4Code(src.getStatusElement(), tgt.getStatusElement(), convertDetectedIssueStatus(tgt.getStatusElement()), CrossVersionElements40_N.url("DetectedIssue", "4.0", "status"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasSeverity())
-      tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverityElement()));
+    if (src.hasSeverity()) {
+      org.hl7.fhir.model.core.CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(src.getSeverityElement(), SEVERITY_EXTENSION_URL);
+      tgt.setSeverity(kept != null ? kept : convertDetectedIssueSeverity(src.getSeverityElement()));
+    }
     if (src.hasPatient())
       tgt.setSubject(Reference40_N.convertReference(src.getPatient()));
-    if (src.hasIdentified())
-      tgt.setIdentified(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getIdentified()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "identified", tgt, tgt.getExtension());
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_N.convertReference(src.getAuthor()));
     for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(Reference40_N.convertReference(t));
@@ -78,18 +87,22 @@ public class DetectedIssue40_N {
       return null;
     org.hl7.fhir.r4.model.DetectedIssue tgt = new org.hl7.fhir.r4.model.DetectedIssue();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "category", "encounter");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "qualityOfEvidence", "expectedOnsetType", "medicationClass", "managementCode");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertDetectedIssueStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertDetectedIssueStatus(src.getStatusElement()), src.fhirType(), "status"));
+    CrossVersionElements40_N.restoreR4Code(tgt.getStatusElement(), CrossVersionElements40_N.url("DetectedIssue", "4.0", "status"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
-    if (src.hasSeverity())
+    if (src.hasSeverity()) {
       tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverity()));
+      CodeableConcept40_N.keepCodeableConcept(src.getSeverity(), tgt.getSeverityElement(), convertDetectedIssueSeverity(tgt.getSeverityElement()), SEVERITY_EXTENSION_URL);
+    }
     if (src.hasSubject())
       tgt.setPatient(Reference40_N.convertReference(src.getSubject()));
-    if (src.hasIdentified())
-      tgt.setIdentified(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getIdentified()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "identified", tgt, tgt.getExtension());
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_N.convertReference(src.getAuthor()));
     for (org.hl7.fhir.model.core.Reference t : src.getImplicatedList()) tgt.addImplicated(Reference40_N.convertReference(t));
@@ -207,6 +220,7 @@ public class DetectedIssue40_N {
       } else if (src.hasCoding("http://terminology.hl7.org/CodeSystem/detectedissue-severity", "moderate")) {
         tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.MODERATE);
       } else if (src.hasCoding("http://terminology.hl7.org/CodeSystem/detectedissue-severity", "low")) {
+        tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.LOW);
       }
       return tgt;
   }
@@ -237,7 +251,8 @@ public class DetectedIssue40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.model.core.DetectedIssue.DetectedIssueMitigationComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("DetectedIssue.mitigation", "5.0", new String[] {"note"}, CrossVersionElements40_N.urls("DetectedIssue.mitigation", "6.0", new String[] {})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "note");
     if (src.hasAction())
       tgt.setAction(CodeableConcept40_N.convertCodeableConcept(src.getAction()));
     if (src.hasDate())
@@ -252,6 +267,7 @@ public class DetectedIssue40_N {
       return null;
     org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "note");
     if (src.hasAction())
       tgt.setAction(CodeableConcept40_N.convertCodeableConcept(src.getAction()));
     if (src.hasDate())

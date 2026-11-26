@@ -1,44 +1,31 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.*;
+import org.hl7.fhir.model.utilities.ConceptMapUtilities;
+import org.hl7.fhir.model.utilities.StructureMapUtilities;
+import org.hl7.fhir.model.utilities.ValueSetUtilities;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.TypeDetails;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.ConceptMap;
-import org.hl7.fhir.model.core.ElementDefinition;
-import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.model.core.Enumerations.BindingStrength;
-import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.fml.StructureMap;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupComponent;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupInputComponent;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeModeVS;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapInputModeVS;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapModelModeVS;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapStructureComponent;
-import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.model.utilities.ConceptMapUtilities;
-import org.hl7.fhir.model.utilities.ValueSetUtilities;
+import org.hl7.fhir.services.fml.ResolvedGroup;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.services.validation.IResourceValidator;
-import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.services.fml.ResolvedGroup;
-import org.hl7.fhir.model.utilities.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -47,6 +34,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class StructureMapValidator extends BaseValidator {

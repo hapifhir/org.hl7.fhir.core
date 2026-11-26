@@ -422,7 +422,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public List<String> fetchCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
     for (CodeSystem cs : context.fetchResourceVersions(CodeSystem.class, system)) {
-      if (cs.hasVersion()) {
+      // a supplement can have the url of the code system it supplements, but its version is not a
+      // version of that code system
+      if (cs.hasVersion() && !cs.hasSupplements()) {
         res.add(cs.getVersion());
       }
     }
@@ -485,6 +487,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * a url element is not the test - some resources (e.g. Composition, ResearchStudy) have a url and are not canonical.
    *
    * Before R5 there is no CanonicalResource definition to find, so the core list for the version is used as well.
+   *
+   * Thread safe: the cache is a ConcurrentHashMap, and the context calls it makes (fetchTypeDefinition,
+   * fetchResource) are thread safe in the context implementations
    */
   public boolean isCanonicalResource(String type) {
     if (type == null) {

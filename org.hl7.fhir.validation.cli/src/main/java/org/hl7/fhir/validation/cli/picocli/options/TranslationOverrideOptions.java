@@ -36,7 +36,7 @@ public class TranslationOverrideOptions {
 
   @CommandLine.Option(
       names = {"-po"},
-      description = "Load translations from a .po file at runtime (overrides the shipped properties for that bundle+locale). Repeatable. Filename must follow the project convention, e.g. validator-messages-de.po or rendering-phrases-pt_BR.po."
+      description = "Load translations from a .po file at runtime (overrides the shipped properties for that bundle+locale). Repeatable. Filename must follow the project convention, e.g. validator-messages-de.po or rendering-phrases-pt.po."
       )
   public void setPoFiles(File[] files) {
     if (files != null) {

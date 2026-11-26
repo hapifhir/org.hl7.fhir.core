@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.metadata40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.Utilities40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Canonical40_N;
@@ -16,7 +18,7 @@ public class ParameterDefinition40_N {
     org.hl7.fhir.model.core.ParameterDefinition tgt = new org.hl7.fhir.model.core.ParameterDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasName()) tgt.setNameElement(Code40_N.convertCode(src.getNameElement()));
-    if (src.hasUse()) tgt.setUseElement(convertParameterUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertParameterUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasMin()) tgt.setMinElement(Integer40_N.convertInteger(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_N.convertString(src.getMaxElement()));
     if (src.hasDocumentation()) tgt.setDocumentationElement(String40_N.convertString(src.getDocumentationElement()));
@@ -32,7 +34,7 @@ public class ParameterDefinition40_N {
     org.hl7.fhir.r4.model.ParameterDefinition tgt = new org.hl7.fhir.r4.model.ParameterDefinition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     if (src.hasName()) tgt.setNameElement(Code40_N.convertCode(src.getNameElement()));
-    if (src.hasUse()) tgt.setUseElement(convertParameterUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertParameterUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasMin()) tgt.setMinElement(Integer40_N.convertInteger(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_N.convertString(src.getMaxElement()));
     if (src.hasDocumentation()) tgt.setDocumentationElement(String40_N.convertString(src.getDocumentationElement()));

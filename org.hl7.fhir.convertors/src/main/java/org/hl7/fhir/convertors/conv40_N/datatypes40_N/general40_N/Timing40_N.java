@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.BackboneElement40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.DateTime40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Decimal40_N;
@@ -37,20 +38,21 @@ public class Timing40_N {
   public static org.hl7.fhir.model.core.Timing.TimingRepeatComponent convertTimingRepeatComponent(org.hl7.fhir.r4.model.Timing.TimingRepeatComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.model.core.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.model.core.Timing.TimingRepeatComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasBounds())
-      tgt.setBounds(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getBounds()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, CrossVersionElements40_N.urls("Timing.repeat", "5.0", new String[] {}, CrossVersionElements40_N.urls("Timing.repeat", "6.0", new String[] {"startOffset", "endOffset"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "startOffset", "endOffset");
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "bounds", tgt, tgt.getExtension());
     if (src.hasCount()) tgt.setCountElement(PositiveInt40_N.convertPositiveInt(src.getCountElement()));
     if (src.hasCountMax()) tgt.setCountMaxElement(PositiveInt40_N.convertPositiveInt(src.getCountMaxElement()));
     if (src.hasDuration()) tgt.setDurationElement(Decimal40_N.convertDecimal(src.getDurationElement()));
     if (src.hasDurationMax()) tgt.setDurationMaxElement(Decimal40_N.convertDecimal(src.getDurationMaxElement()));
-    if (src.hasDurationUnit()) tgt.setDurationUnitElement(convertUnitsOfTime(src.getDurationUnitElement()));
+    if (src.hasDurationUnit()) tgt.setDurationUnitElement(CrossVersionElements40_N.toR6Code(src.getDurationUnitElement(), convertUnitsOfTime(src.getDurationUnitElement()), src.fhirType(), "durationUnit"));
     if (src.hasFrequency()) tgt.setFrequencyElement(PositiveInt40_N.convertPositiveInt(src.getFrequencyElement()));
     if (src.hasFrequencyMax())
       tgt.setFrequencyMaxElement(PositiveInt40_N.convertPositiveInt(src.getFrequencyMaxElement()));
     if (src.hasPeriod()) tgt.setPeriodElement(Decimal40_N.convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(Decimal40_N.convertDecimal(src.getPeriodMaxElement()));
-    if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
+    if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(CrossVersionElements40_N.toR6Code(src.getPeriodUnitElement(), convertUnitsOfTime(src.getPeriodUnitElement()), src.fhirType(), "periodUnit"));
     tgt.setDayOfWeekList(src.getDayOfWeek().stream().map(Timing40_N::convertDayOfWeek).collect(Collectors.toList()));
     if (src.hasWhen())
       tgt.setWhenList(src.getWhen().stream().map(Timing40_N::convertEventTiming).collect(Collectors.toList()));
@@ -63,19 +65,19 @@ public class Timing40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r4.model.Timing.TimingRepeatComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasBounds())
-      tgt.setBounds(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getBounds()));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "startOffset", "endOffset");
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "bounds", tgt, tgt.getExtension());
     if (src.hasCount()) tgt.setCountElement(PositiveInt40_N.convertPositiveInt(src.getCountElement()));
     if (src.hasCountMax()) tgt.setCountMaxElement(PositiveInt40_N.convertPositiveInt(src.getCountMaxElement()));
     if (src.hasDuration()) tgt.setDurationElement(Decimal40_N.convertDecimal(src.getDurationElement()));
     if (src.hasDurationMax()) tgt.setDurationMaxElement(Decimal40_N.convertDecimal(src.getDurationMaxElement()));
-    if (src.hasDurationUnit()) tgt.setDurationUnitElement(convertUnitsOfTime(src.getDurationUnitElement()));
+    if (src.hasDurationUnit()) tgt.setDurationUnitElement(CrossVersionElements40_N.toR4Code(src.getDurationUnitElement(), convertUnitsOfTime(src.getDurationUnitElement()), src.fhirType(), "durationUnit"));
     if (src.hasFrequency()) tgt.setFrequencyElement(PositiveInt40_N.convertPositiveInt(src.getFrequencyElement()));
     if (src.hasFrequencyMax())
       tgt.setFrequencyMaxElement(PositiveInt40_N.convertPositiveInt(src.getFrequencyMaxElement()));
     if (src.hasPeriod()) tgt.setPeriodElement(Decimal40_N.convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(Decimal40_N.convertDecimal(src.getPeriodMaxElement()));
-    if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
+    if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(CrossVersionElements40_N.toR4Code(src.getPeriodUnitElement(), convertUnitsOfTime(src.getPeriodUnitElement()), src.fhirType(), "periodUnit"));
     tgt.setDayOfWeek(src.getDayOfWeekList().stream().map(Timing40_N::convertDayOfWeek).collect(Collectors.toList()));
     if (src.hasWhen())
       tgt.setWhen(src.getWhenList().stream().map(Timing40_N::convertEventTiming).collect(Collectors.toList()));

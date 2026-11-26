@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -58,7 +59,9 @@ public class ValueSet40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ValueSet tgt = new org.hl7.fhir.model.core.ValueSet();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VERSION_ALGORITHM);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt,
+      CrossVersionElements40_N.urls("ValueSet", "5.0", CrossVersionElements40_N.R5_METADATA, VersionConvertorConstants.EXT_VERSION_ALGORITHM));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", CrossVersionElements40_N.R5_METADATA);
     if (tgt.hasImplicitRules() && VersionConvertorConstants.IMPLICIT_RULES_OMITTED_MANDATORY_CODE.equals(tgt.getImplicitRules())) {
       // the marker recorded that filter operators were omitted on the way down to R4; they are 
       // restored from the inter-version extension below, so the marker no longer applies
@@ -110,6 +113,7 @@ public class ValueSet40_N {
       return null;
     org.hl7.fhir.r4.model.ValueSet tgt = new org.hl7.fhir.r4.model.ValueSet();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", CrossVersionElements40_N.R5_METADATA);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
@@ -324,7 +328,7 @@ public class ValueSet40_N {
     if (src.hasProperty())
       tgt.setPropertyElement(Code40_N.convertCode(src.getPropertyElement()));
     if (src.hasOp())
-      tgt.setOpElement(convertFilterOperator(src.getOpElement()));
+      tgt.setOpElement(CrossVersionElements40_N.toR6Code(src.getOpElement(), convertFilterOperator(src.getOpElement()), src.fhirType(), "op"));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     for (org.hl7.fhir.r4.model.Extension ex : src.getExtensionsByUrl(VersionConvertorConstants.EXT_VALUESET_FILTER_FILTER))
@@ -340,7 +344,7 @@ public class ValueSet40_N {
     if (src.hasProperty())
       tgt.setPropertyElement(Code40_N.convertCode(src.getPropertyElement()));
     if (src.hasOp())
-      tgt.setOpElement(convertFilterOperator(src.getOpElement()));
+      tgt.setOpElement(CrossVersionElements40_N.toR4Code(src.getOpElement(), convertFilterOperator(src.getOpElement()), src.fhirType(), "op"));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     for (org.hl7.fhir.model.core.ValueSet.ConceptSetFilterComponent t : src.getFilterList())
@@ -484,7 +488,9 @@ public class ValueSet40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.model.core.ValueSet.ValueSetExpansionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_VS_EXP_PROP);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt,
+      CrossVersionElements40_N.urls("ValueSet.expansion", "5.0", new String[] {"next"}, VersionConvertorConstants.EXT_VS_EXP_PROP));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "next");
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri40_N.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -516,6 +522,7 @@ public class ValueSet40_N {
       return null;
     org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "next");
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri40_N.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -543,8 +550,8 @@ public class ValueSet40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -555,8 +562,7 @@ public class ValueSet40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_N.convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 

@@ -236,7 +236,7 @@ public class Composition43_50 {
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+    switch (java.util.Objects.toString(src.getCode("http://hl7.org/fhir/composition-attestation-mode"), "")) {
       case "personal":
         tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.PERSONAL);
         break;
@@ -250,7 +250,7 @@ public class Composition43_50 {
         tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Composition.CompositionAttestationMode.NULL);
+        // not a code the target version knows: the value is left empty
         break;
     }
     return tgt;

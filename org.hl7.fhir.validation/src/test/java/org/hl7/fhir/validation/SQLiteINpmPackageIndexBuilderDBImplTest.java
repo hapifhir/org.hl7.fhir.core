@@ -1,21 +1,15 @@
 package org.hl7.fhir.validation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.sql.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class SQLiteINpmPackageIndexBuilderDBImplTest {
 
@@ -110,6 +104,35 @@ class SQLiteINpmPackageIndexBuilderDBImplTest {
       a.build();
       assertEquals(2, countRows(fa));
       assertEquals(1, countRows(fb));
+    } finally {
+      NpmPackageIndexBuilder.setExtensionFactory(old);
+    }
+  }
+
+  @Test
+  void resourcesWithComplexRootPropertiesAreInTheDatabase() throws Exception {
+    NpmPackageIndexBuilder.INpmPackageIndexBuilderDBImplFactory old = NpmPackageIndexBuilder.getExtensionFactory();
+    NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
+    try {
+      String filename = tempDir.resolve(".index.db").toString();
+      NpmPackageIndexBuilder builder = new NpmPackageIndexBuilder();
+      builder.start(filename);
+      // Media.type and Media.content are complex; content.id once made this resource fail to go into the database
+      builder.seeFile("Media-chest-xray.json", ("{\"resourceType\":\"Media\",\"id\":\"chest-xray\","
+        + "\"type\":{\"coding\":[{\"code\":\"image\"}]},"
+        + "\"content\":{\"id\":\"a1\",\"contentType\":\"image/jpeg\",\"url\":\"http://example.org/Binary/A12345\"}}").getBytes(StandardCharsets.UTF_8));
+      builder.seeFile("Patient-p.json", patient("p"));
+      builder.build();
+
+      assertEquals(2, countRows(filename));
+      try (Connection c = DriverManager.getConnection("jdbc:sqlite:" + filename);
+           Statement s = c.createStatement();
+           ResultSet rs = s.executeQuery("select Id, Url, Type, Content from ResourceList where FileName = 'Media-chest-xray.json'")) {
+        assertEquals("chest-xray", rs.getString(1));
+        assertNull(rs.getString(2));
+        assertNull(rs.getString(3));
+        assertNull(rs.getString(4));
+      }
     } finally {
       NpmPackageIndexBuilder.setExtensionFactory(old);
     }

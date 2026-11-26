@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -10,8 +12,8 @@ public class Address40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.Address tgt = new org.hl7.fhir.model.core.Address();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
-    if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertAddressUse(src.getUseElement()), src.fhirType(), "use"));
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertAddressType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasText()) tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getLine()) tgt.getLineList().add(String40_N.convertString(t));
     if (src.hasCity()) tgt.setCityElement(String40_N.convertString(src.getCityElement()));
@@ -27,8 +29,8 @@ public class Address40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Address tgt = new org.hl7.fhir.r4.model.Address();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
-    if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertAddressUse(src.getUseElement()), src.fhirType(), "use"));
+    if (src.hasType()) tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertAddressType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasText()) tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     for (org.hl7.fhir.model.core.StringType t : src.getLineList()) tgt.getLine().add(String40_N.convertString(t));
     if (src.hasCity()) tgt.setCityElement(String40_N.convertString(src.getCityElement()));

@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import org.apache.commons.codec.binary.Base64InputStream;
+import org.hl7.fhir.utilities.Utilities;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import org.apache.commons.codec.binary.Base64InputStream;
-
-import org.hl7.fhir.utilities.Utilities;
 
 public class Base64Util {
    /**

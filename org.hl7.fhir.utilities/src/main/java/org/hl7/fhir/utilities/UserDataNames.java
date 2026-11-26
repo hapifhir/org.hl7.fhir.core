@@ -18,6 +18,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_IS_DERIVED = "derived.fact";
   public static final String SNAPSHOT_INHERITED_INLINE_EXTENSION = "SNAPSHOT_INHERITED_INLINE_EXTENSION";
   public static final String SNAPSHOT_GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
+  public static final String SNAPSHOT_DIFF_ERROR_REPORTED = "profileutilities.snapshot.error-reported"; // on a differential element: Boolean - a specific error has been given for it, so the generic 'No match found' one isn't needed (#2596)
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
   public static final String SNAPSHOT_ERRORS = "profileutils.snapshot.errors";
@@ -27,6 +28,8 @@ public class UserDataNames {
   public static final String SNAPSHOT_slice_name = "slice-name";
   public static final String SNAPSHOT_SORT_ed_index = "ed.index";
   public static final String SNAPSHOT_diff_source = "diff-source";
+  public static final String SNAPSHOT_ORIGINAL_MARKDOWN = "SNAPSHOT_ORIGINAL_MARKDOWN"; // on markdown in a snapshot element where relative links were made absolute: the text before that was done
+  public static final String SNAPSHOT_diff_doc_changed = "diff-doc-changed"; // on a differential element: Boolean - whether its documentation differs from the base, worked out when the snapshot was generated (see ProfileUtilities.hasDocumentationChanges)
   public static final String SNAPSHOT_regeneration_tracker = "hack.regnerated";
   
   public static final String LANGUTILS_ORPHAN = "translations.orphans";
@@ -40,7 +43,6 @@ public class UserDataNames {
   public static final String render_tx_pattern = "tx.pattern";
   public static final String render_link = "render.link";
   public static final String render_external_link = "External.Link";
-  public static final String render_dict_generator_anchors = "dict.generator.anchors";
   public static final String render_presentation = "presentation";
   public static final String render_src_package = "package"; // <--- this value is reused by HAPI and can't change without consultation
   public static final String renderer_is_generated = "renderer.generated";
@@ -76,13 +78,14 @@ public class UserDataNames {
   public static final String TX_ASSOCIATED_CODESYSTEM = "cs";
   public static final String tx_cs_version_notes = "cs.version.notes";
   public static final String tx_known_supplements = "supplements.installed";
+  public static final String tx_designation_no_language = "tx.designation.no-language"; // on a designation merged into a code system from a supplement that has no language: its language is unknown - it does not take the code system's language
+  public static final String tx_implicit_vs_by_url = "tx.implicit.vs.by-url"; // an implicit value set that goes to a terminology server by its url, not as a resource (see ImplicitValueSets)
 
   public static final String validator_bundle_resolution = "validator.bundle.resolution";
   public static final String validator_bundle_resolved = "validator.bundle.resolved";
   public static final String validator_expression_cache = "validator.expression.cache";
   public static final String validator_slice_expression_cache = "slice.expression.cache";
-  public static final String validator_entry_map = "validator.entrymap";
-  public static final String validator_entry_map_reverse = "validator.entrymapR";
+  public static final String validator_bundle_index = "validator.bundle.index";
   public static final String validation_bundle_error = "bundle.error.noted";
   
   public static final String map_profile = "profile";

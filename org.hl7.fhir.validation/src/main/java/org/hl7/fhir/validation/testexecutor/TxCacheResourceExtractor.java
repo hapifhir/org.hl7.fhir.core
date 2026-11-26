@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.testexecutor;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,8 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class TxCacheResourceExtractor {
   public static void extractTxCacheResources(String targetDirectory) throws IOException {

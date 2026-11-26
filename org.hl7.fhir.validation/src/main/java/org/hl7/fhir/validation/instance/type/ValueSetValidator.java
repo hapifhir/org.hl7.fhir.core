@@ -1,29 +1,23 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.utilities.CodeSystemUtilities;
-import org.hl7.fhir.model.utilities.TerminologyUtilities;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -31,19 +25,15 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.codesystem.BCP47Checker;
-import org.hl7.fhir.validation.codesystem.CPTChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemBasedChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
-import org.hl7.fhir.validation.codesystem.CodeSystemChecker.StringWithFlag;
-import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
-import org.hl7.fhir.validation.codesystem.LoincChecker;
-import org.hl7.fhir.validation.codesystem.RxNormChecker;
-import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
-import org.hl7.fhir.validation.codesystem.UcumChecker;
+import org.hl7.fhir.validation.codesystem.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @Slf4j
 public class ValueSetValidator extends BaseValidator {
@@ -103,7 +93,6 @@ public class ValueSetValidator extends BaseValidator {
     private EnumSet<PropertyOperation> ops;
     private List<String> codeList = new ArrayList<>();
     private boolean change;
-    private boolean active;
 
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
@@ -146,13 +135,6 @@ public class ValueSetValidator extends BaseValidator {
     }
     public PropertyValidationRules setChange(boolean change) {
       this.change = change;
-      return this;
-    }
-    public boolean isActive() {
-      return active;
-    }
-    public PropertyValidationRules setActive(boolean active) {
-      this.active = active;
       return this;
     }
 
@@ -524,7 +506,7 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch, NodeStack baseStack, ValueSet vss) {
     if (batch.size() > 0) {
       SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
-      if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
+      if (checkTxBatchSupport(errors, baseStack, txInfo, system+(version == null ? "" : "|"+version))) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
         context.validateCodeBatch(txOptions(baseStack, vss), batch, null);
@@ -683,16 +665,7 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, expr == null, I18nConstants.VALUESET_BAD_FILTER_EXPR_AND_VALUE) && ok;
             
-            if (rules.isActive()) {
-              StringWithFlag msg = csChecker.checkFilterValue(system, version, property, op, value, rules, ValidationOptions.defaults());
-              if (msg == null) {
-                // nothing
-              } else if (msg.isFail()) {
-                warning(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_CANT_CHECK, property, value, msg.getMsg());
-              } else {
-                ok = rule(errors, "2025-06-16", IssueType.INVALID, stack, msg == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_INVALID, property, value, msg.getMsg()) && ok;                
-              }
-            } else if ("exists".equals(op)) {
+            if ("exists".equals(op)) {
               ok = checkFilterValue(errors, stack, system, version, ok, property, op, value,  new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
             } else if ("regex".equals(op)) {
               String err = null;

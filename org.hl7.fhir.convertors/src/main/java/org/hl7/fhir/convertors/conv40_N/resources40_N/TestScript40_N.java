@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -50,7 +51,10 @@ public class TestScript40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.testing.TestScript tgt = new org.hl7.fhir.model.testing.TestScript();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE,
+      CrossVersionElements40_N.url(TS, "6.0", "testSystem"), CrossVersionElements40_N.url(TS, "5.0", "copyrightLabel"));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "copyrightLabel");
+    convertSystems(src, tgt);
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
       // copyDomainResource was told to leave this extension out
       org.hl7.fhir.model.testing.TestScript.TestScriptScopeComponent scope = tgt.addScope();
@@ -68,6 +72,7 @@ public class TestScript40_N {
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "identifier", tgt.getExtension());
     if (src.hasVersion())
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasName())
@@ -107,7 +112,95 @@ public class TestScript40_N {
       tgt.addTest(convertTestScriptTestComponent(t));
     if (src.hasTeardown())
       tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
+  }
+
+  // R4 origin and destination are R6 testSystem. R4 numbers origins and destinations separately, and R6 numbers the
+  // test systems together: origins keep their index, and destinations come after the origins (destination n is
+  // testSystem [highest origin index] + n), and the operation and capability destination references move the same way.
+  // The R4 profile is a 4.0 extension on the test system, and that's what says it's an origin or a destination.
+  // Test systems that aren't marked as either are 6.0 extensions in R4
+  private static final String TS = "TestScript";
+  private static final String ORIGIN_PROFILE_URL = CrossVersionElements40_N.url("TestScript.origin", "4.0", "profile");
+  private static final String DESTINATION_PROFILE_URL = CrossVersionElements40_N.url("TestScript.destination", "4.0", "profile");
+  private static final String TEST_SYSTEM = "TestScript.testSystem";
+  private static final ThreadLocal<Integer> DESTINATION_OFFSET = ThreadLocal.withInitial(() -> 0);
+
+  private static void convertSystems(org.hl7.fhir.r4.model.TestScript src, org.hl7.fhir.model.testing.TestScript tgt) throws FHIRException {
+    int offset = 0;
+    for (org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent t : src.getOrigin())
+      offset = Math.max(offset, t.getIndex());
+    DESTINATION_OFFSET.set(offset);
+    for (org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent t : src.getOrigin())
+      tgt.addTestSystem(testSystem(t, t.getIndexElement(), t.getProfile(), 0, ORIGIN_PROFILE_URL));
+    for (org.hl7.fhir.r4.model.TestScript.TestScriptDestinationComponent t : src.getDestination())
+      tgt.addTestSystem(testSystem(t, t.getIndexElement(), t.getProfile(), offset, DESTINATION_PROFILE_URL));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "testSystem");
+  }
+
+  private static org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent testSystem(org.hl7.fhir.r4.model.BackboneElement src,
+      org.hl7.fhir.r4.model.IntegerType index, org.hl7.fhir.r4.model.Coding profile, int offset, String url) throws FHIRException {
+    org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent tgt = new org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls(TEST_SYSTEM, "6.0", new String[] {"title", "actor", "description", "url"}));
+    if (index.hasValue()) {
+      tgt.getIndexElement().setValue(index.getValue() + offset);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(index, tgt.getIndexElement());
+    }
+    if (profile != null && !profile.isEmpty())
+      tgt.addExtension(url, Coding40_N.convertCoding(profile));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, TEST_SYSTEM, "6.0", "title", "actor", "description", "url");
+    if (!tgt.hasTitle())
+      tgt.setTitle(titleFor(profile));
+    return tgt;
+  }
+
+  // R6 test systems need a title: the profile's display or code
+  private static String titleFor(org.hl7.fhir.r4.model.Coding profile) {
+    return profile == null ? null : profile.hasDisplay() ? profile.getDisplay() : profile.getCode();
+  }
+
+  private static void convertSystems(org.hl7.fhir.model.testing.TestScript src, org.hl7.fhir.r4.model.TestScript tgt) throws FHIRException {
+    int offset = 0;
+    for (org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent t : src.getTestSystemList())
+      if (t.hasExtension(ORIGIN_PROFILE_URL))
+        offset = Math.max(offset, t.getIndex());
+    DESTINATION_OFFSET.set(offset);
+    for (org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent t : src.getTestSystemList()) {
+      if (t.hasExtension(ORIGIN_PROFILE_URL))
+        fromTestSystem(t, tgt.addOrigin(), 0, ORIGIN_PROFILE_URL);
+      else if (t.hasExtension(DESTINATION_PROFILE_URL))
+        fromTestSystem(t, tgt.addDestination(), offset, DESTINATION_PROFILE_URL);
+      else
+        tgt.addExtension(org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url(TS, "6.0", "testSystem"), t));
+    }
+  }
+
+  private static void fromTestSystem(org.hl7.fhir.model.testing.TestScript.TestScriptTestSystemComponent src, org.hl7.fhir.r4.model.BackboneElement tgt, int offset, String url) throws FHIRException {
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, url);
+    org.hl7.fhir.r4.model.Coding profile = Coding40_N.convertCoding((org.hl7.fhir.model.core.Coding) src.getExtensionByUrl(url).getValue());
+    org.hl7.fhir.r4.model.IntegerType index = new org.hl7.fhir.r4.model.IntegerType();
+    if (src.hasIndex()) {
+      index.setValue(src.getIndex() - offset);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src.getIndexElement(), index);
+    }
+    tgt.setProperty("index", index);
+    tgt.setProperty("profile", profile);
+    if (src.hasTitle() && !src.getTitle().equals(titleFor(profile)))
+      CrossVersionElements40_N.elementsToExtensionsForPath(src, TEST_SYSTEM, tgt.getExtension(), "6.0", "title");
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, TEST_SYSTEM, tgt.getExtension(), "6.0", "actor", "description", "url");
+  }
+
+  private static org.hl7.fhir.model.core.IntegerType destinationToR6(org.hl7.fhir.model.core.IntegerType t) {
+    if (t.hasValue())
+      t.setValue(t.getValue() + DESTINATION_OFFSET.get());
+    return t;
+  }
+
+  private static org.hl7.fhir.r4.model.IntegerType destinationToR4(org.hl7.fhir.r4.model.IntegerType t) {
+    if (t.hasValue())
+      t.setValue(t.getValue() - DESTINATION_OFFSET.get());
+    return t;
   }
 
   public static org.hl7.fhir.r4.model.TestScript convertTestScript(org.hl7.fhir.model.testing.TestScript src) throws FHIRException {
@@ -115,10 +208,13 @@ public class TestScript40_N {
       return null;
     org.hl7.fhir.r4.model.TestScript tgt = new org.hl7.fhir.r4.model.TestScript();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "copyrightLabel");
+    convertSystems(src, tgt);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifierFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "identifier", tgt.getExtension());
     if (src.hasVersion())
       tgt.setVersionElement(String40_N.convertString(src.getVersionElement()));
     if (src.hasName())
@@ -177,6 +273,7 @@ public class TestScript40_N {
         se.setValue(CodeableConcept40_N.convertCodeableConcept(scope.getPhase()));
       }      
     }
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -189,6 +286,7 @@ public class TestScript40_N {
       tgt.addLink(convertTestScriptMetadataLinkComponent(t));
     for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability())
       tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -201,6 +299,7 @@ public class TestScript40_N {
       tgt.addLink(convertTestScriptMetadataLinkComponent(t));
     for (org.hl7.fhir.model.testing.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapabilityList())
       tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -213,6 +312,7 @@ public class TestScript40_N {
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -225,6 +325,7 @@ public class TestScript40_N {
       tgt.setUrlElement(Uri40_N.convertUri(src.getUrlElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -241,10 +342,11 @@ public class TestScript40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.IntegerType t : src.getOrigin()) tgt.getOriginList().add(Integer40_N.convertInteger(t));
     if (src.hasDestination())
-      tgt.setDestinationElement(Integer40_N.convertInteger(src.getDestinationElement()));
+      tgt.setDestinationElement(destinationToR6(Integer40_N.convertInteger(src.getDestinationElement())));
     for (org.hl7.fhir.r4.model.UriType t : src.getLink()) tgt.getLinkList().add(Uri40_N.convertUri(t));
     if (src.hasCapabilities())
       tgt.setCapabilitiesElement(Canonical40_N.convertCanonical(src.getCapabilitiesElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -261,10 +363,11 @@ public class TestScript40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.model.core.IntegerType t : src.getOriginList()) tgt.getOrigin().add(Integer40_N.convertInteger(t));
     if (src.hasDestination())
-      tgt.setDestinationElement(Integer40_N.convertInteger(src.getDestinationElement()));
+      tgt.setDestinationElement(destinationToR4(Integer40_N.convertInteger(src.getDestinationElement())));
     for (org.hl7.fhir.model.core.UriType t : src.getLinkList()) tgt.getLink().add(Uri40_N.convertUri(t));
     if (src.hasCapabilities())
       tgt.setCapabilitiesElement(Canonical40_N.convertCanonical(src.getCapabilitiesElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -279,6 +382,7 @@ public class TestScript40_N {
       tgt.setAutodeleteElement(Boolean40_N.convertBoolean(src.getAutodeleteElement()));
     if (src.hasResource())
       tgt.setResource(Reference40_N.convertReference(src.getResource()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -293,6 +397,7 @@ public class TestScript40_N {
       tgt.setAutodeleteElement(Boolean40_N.convertBoolean(src.getAutodeleteElement()));
     if (src.hasResource())
       tgt.setResource(Reference40_N.convertReference(src.getResource()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -308,7 +413,7 @@ public class TestScript40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasExpression())
-      tgt.setExpression(new Expression().setExpression(src.getExpression()));
+      tgt.setExpression(expressionToR6(src.getExpressionElement(), "TestScript.variable", "expression"));
     if (src.hasHeaderField())
       tgt.setHeaderFieldElement(String40_N.convertString(src.getHeaderFieldElement()));
     if (src.hasHint())
@@ -317,6 +422,7 @@ public class TestScript40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasSourceId())
       tgt.setSourceIdElement(Id40_N.convertId(src.getSourceIdElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -332,7 +438,7 @@ public class TestScript40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasExpression())
-      tgt.setExpressionElement(String40_N.convertString(src.getExpression().getExpressionElement()));
+      tgt.setExpressionElement(expressionToR4(src.getExpression(), "TestScript.variable", "expression"));
     if (src.hasHeaderField())
       tgt.setHeaderFieldElement(String40_N.convertString(src.getHeaderFieldElement()));
     if (src.hasHint())
@@ -341,6 +447,7 @@ public class TestScript40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasSourceId())
       tgt.setSourceIdElement(Id40_N.convertId(src.getSourceIdElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -351,6 +458,7 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestScript.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -361,6 +469,7 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (TestScript.SetupActionComponent t : src.getActionList())
       tgt.addAction(convertSetupActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -373,6 +482,7 @@ public class TestScript40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -385,6 +495,7 @@ public class TestScript40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -406,11 +517,11 @@ public class TestScript40_N {
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_N.convertCode(src.getContentTypeElement()));
     if (src.hasDestination())
-      tgt.setDestinationElement(Integer40_N.convertInteger(src.getDestinationElement()));
+      tgt.setDestinationElement(destinationToR6(Integer40_N.convertInteger(src.getDestinationElement())));
     if (src.hasEncodeRequestUrl())
       tgt.setEncodeRequestUrlElement(Boolean40_N.convertBoolean(src.getEncodeRequestUrlElement()));
     if (src.hasMethod())
-      tgt.setMethodElement(convertTestScriptRequestMethodCode(src.getMethodElement()));
+      tgt.setMethodElement(CrossVersionElements40_N.toR6Code(src.getMethodElement(), convertTestScriptRequestMethodCode(src.getMethodElement()), src.fhirType(), "method"));
     if (src.hasOrigin())
       tgt.setOriginElement(Integer40_N.convertInteger(src.getOriginElement()));
     if (src.hasParams())
@@ -427,6 +538,7 @@ public class TestScript40_N {
       tgt.setTargetIdElement(Id40_N.convertId(src.getTargetIdElement()));
     if (src.hasUrl())
       tgt.setUrlElement(String40_N.convertString(src.getUrlElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -448,11 +560,11 @@ public class TestScript40_N {
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_N.convertCode(src.getContentTypeElement()));
     if (src.hasDestination())
-      tgt.setDestinationElement(Integer40_N.convertInteger(src.getDestinationElement()));
+      tgt.setDestinationElement(destinationToR4(Integer40_N.convertInteger(src.getDestinationElement())));
     if (src.hasEncodeRequestUrl())
       tgt.setEncodeRequestUrlElement(Boolean40_N.convertBoolean(src.getEncodeRequestUrlElement()));
     if (src.hasMethod())
-      tgt.setMethodElement(convertTestScriptRequestMethodCode(src.getMethodElement()));
+      tgt.setMethodElement(CrossVersionElements40_N.toR4Code(src.getMethodElement(), convertTestScriptRequestMethodCode(src.getMethodElement()), src.fhirType(), "method"));
     if (src.hasOrigin())
       tgt.setOriginElement(Integer40_N.convertInteger(src.getOriginElement()));
     if (src.hasParams())
@@ -469,6 +581,7 @@ public class TestScript40_N {
       tgt.setTargetIdElement(Id40_N.convertId(src.getTargetIdElement()));
     if (src.hasUrl())
       tgt.setUrlElement(String40_N.convertString(src.getUrlElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -557,6 +670,7 @@ public class TestScript40_N {
       tgt.setFieldElement(String40_N.convertString(src.getFieldElement()));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -569,6 +683,7 @@ public class TestScript40_N {
       tgt.setFieldElement(String40_N.convertString(src.getFieldElement()));
     if (src.hasValue())
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -582,17 +697,17 @@ public class TestScript40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasDirection())
-      tgt.setDirectionElement(convertAssertionDirectionType(src.getDirectionElement()));
+      tgt.setDirectionElement(CrossVersionElements40_N.toR6Code(src.getDirectionElement(), convertAssertionDirectionType(src.getDirectionElement()), src.fhirType(), "direction"));
     if (src.hasCompareToSourceId())
       tgt.setCompareToSourceIdElement(String40_N.convertString(src.getCompareToSourceIdElement()));
     if (src.hasCompareToSourceExpression())
-      tgt.setCompareToSourceExpression(new Expression().setExpressionElement(String40_N.convertString(src.getCompareToSourceExpressionElement())));
+      tgt.setCompareToSourceExpression(expressionToR6(src.getCompareToSourceExpressionElement(), "TestScript.setup.action.assert", "compareToSourceExpression"));
     if (src.hasCompareToSourcePath())
       tgt.setCompareToSourcePathElement(String40_N.convertString(src.getCompareToSourcePathElement()));
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_N.convertCode(src.getContentTypeElement()));
     if (src.hasExpression())
-      tgt.setExpression(new Expression().setExpressionElement(String40_N.convertString(src.getExpressionElement())));
+      tgt.setExpression(expressionToR6(src.getExpressionElement(), "TestScript.setup.action.assert", "expression"));
     if (src.hasHeaderField())
       tgt.setHeaderFieldElement(String40_N.convertString(src.getHeaderFieldElement()));
     if (src.hasMinimumId())
@@ -600,17 +715,17 @@ public class TestScript40_N {
     if (src.hasNavigationLinks())
       tgt.setNavigationLinksElement(Boolean40_N.convertBoolean(src.getNavigationLinksElement()));
     if (src.hasOperator())
-      tgt.setOperatorElement(convertAssertionOperatorType(src.getOperatorElement()));
+      tgt.setOperatorElement(CrossVersionElements40_N.toR6Code(src.getOperatorElement(), convertAssertionOperatorType(src.getOperatorElement()), src.fhirType(), "operator"));
     if (src.hasPath())
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasRequestMethod())
-      tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
+      tgt.setRequestMethodElement(CrossVersionElements40_N.toR6Code(src.getRequestMethodElement(), convertTestScriptRequestMethodCode(src.getRequestMethodElement()), src.fhirType(), "requestMethod"));
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_N.convertString(src.getRequestURLElement()));
     if (src.hasResource())
       tgt.setResource(src.getResource());
     if (src.hasResponse())
-      tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
+      tgt.setResponseElement(CrossVersionElements40_N.toR6Code(src.getResponseElement(), convertAssertionResponseTypes(src.getResponseElement()), src.fhirType(), "response"));
     if (src.hasResponseCode())
       tgt.setResponseCodeElement(String40_N.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId())
@@ -621,6 +736,7 @@ public class TestScript40_N {
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     if (src.hasWarningOnly())
       tgt.setWarningOnlyElement(Boolean40_N.convertBoolean(src.getWarningOnlyElement()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -634,17 +750,17 @@ public class TestScript40_N {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     if (src.hasDirection())
-      tgt.setDirectionElement(convertAssertionDirectionType(src.getDirectionElement()));
+      tgt.setDirectionElement(CrossVersionElements40_N.toR4Code(src.getDirectionElement(), convertAssertionDirectionType(src.getDirectionElement()), src.fhirType(), "direction"));
     if (src.hasCompareToSourceId())
       tgt.setCompareToSourceIdElement(String40_N.convertString(src.getCompareToSourceIdElement()));
     if (src.hasCompareToSourceExpression())
-      tgt.setCompareToSourceExpressionElement(String40_N.convertString(src.getCompareToSourceExpression().getExpressionElement()));
+      tgt.setCompareToSourceExpressionElement(expressionToR4(src.getCompareToSourceExpression(), "TestScript.setup.action.assert", "compareToSourceExpression"));
     if (src.hasCompareToSourcePath())
       tgt.setCompareToSourcePathElement(String40_N.convertString(src.getCompareToSourcePathElement()));
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_N.convertCode(src.getContentTypeElement()));
     if (src.hasExpression())
-      tgt.setExpressionElement(String40_N.convertString(src.getExpression().getExpressionElement()));
+      tgt.setExpressionElement(expressionToR4(src.getExpression(), "TestScript.setup.action.assert", "expression"));
     if (src.hasHeaderField())
       tgt.setHeaderFieldElement(String40_N.convertString(src.getHeaderFieldElement()));
     if (src.hasMinimumId())
@@ -652,17 +768,17 @@ public class TestScript40_N {
     if (src.hasNavigationLinks())
       tgt.setNavigationLinksElement(Boolean40_N.convertBoolean(src.getNavigationLinksElement()));
     if (src.hasOperator())
-      tgt.setOperatorElement(convertAssertionOperatorType(src.getOperatorElement()));
+      tgt.setOperatorElement(CrossVersionElements40_N.toR4Code(src.getOperatorElement(), convertAssertionOperatorType(src.getOperatorElement()), src.fhirType(), "operator"));
     if (src.hasPath())
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasRequestMethod())
-      tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
+      tgt.setRequestMethodElement(CrossVersionElements40_N.toR4Code(src.getRequestMethodElement(), convertTestScriptRequestMethodCode(src.getRequestMethodElement()), src.fhirType(), "requestMethod"));
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_N.convertString(src.getRequestURLElement()));
     if (src.hasResource())
       tgt.setResource(src.getResource());
     if (src.hasResponse())
-      tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
+      tgt.setResponseElement(CrossVersionElements40_N.toR4Code(src.getResponseElement(), convertAssertionResponseTypes(src.getResponseElement()), src.fhirType(), "response"));
     if (src.hasResponseCode())
       tgt.setResponseCodeElement(String40_N.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId())
@@ -673,6 +789,7 @@ public class TestScript40_N {
       tgt.setValueElement(String40_N.convertString(src.getValueElement()));
     if (src.hasWarningOnly())
       tgt.setWarningOnlyElement(Boolean40_N.convertBoolean(src.getWarningOnlyElement()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -939,6 +1056,7 @@ public class TestScript40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.TestScript.TestActionComponent t : src.getAction())
       tgt.addAction(convertTestActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -953,6 +1071,7 @@ public class TestScript40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (TestScript.TestActionComponent t : src.getActionList())
       tgt.addAction(convertTestActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -965,6 +1084,7 @@ public class TestScript40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -977,6 +1097,7 @@ public class TestScript40_N {
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
       tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -987,6 +1108,7 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestScript.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -997,6 +1119,7 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.model.testing.TestScript.TeardownActionComponent t : src.getActionList())
       tgt.addAction(convertTeardownActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -1007,6 +1130,7 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -1017,6 +1141,26 @@ public class TestScript40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
+
+  // R4 has a FHIRPath string where R6 has an Expression: R4 gets the expression, and if the R6 Expression has more than
+  // that (and that its language is FHIRPath), the whole Expression as a 6.0 extension on the string
+  private static org.hl7.fhir.r4.model.StringType expressionToR4(Expression src, String path, String name) throws FHIRException {
+    org.hl7.fhir.r4.model.StringType tgt = src.hasExpressionElement() ? String40_N.convertString(src.getExpressionElement()) : new org.hl7.fhir.r4.model.StringType();
+    if (src.hasName() || src.hasDescription() || src.hasReference() || src.hasId() || src.hasExtension() || !FHIRPATH.equals(src.getLanguage()))
+      tgt.addExtension(CrossVersionElements40_N.url(path, "6.0", name), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src));
+    return tgt;
+  }
+
+  // R4 to R6: the reverse of expressionToR4 (an R4 expression is FHIRPath)
+  private static Expression expressionToR6(org.hl7.fhir.r4.model.StringType src, String path, String name) throws FHIRException {
+    String url = CrossVersionElements40_N.url(path, "6.0", name);
+    if (src.hasExtension(url))
+      return (Expression) ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(url).getValue());
+    return new Expression().setLanguage(FHIRPATH).setExpressionElement(String40_N.convertString(src));
+  }
+
+  private static final String FHIRPATH = "text/fhirpath";
 }

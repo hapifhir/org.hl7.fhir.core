@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.analytics.PackageVisitor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
 import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
-import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderRN.NullLoaderKnowledgeProviderRN;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.utilities.EOperationOutcome;

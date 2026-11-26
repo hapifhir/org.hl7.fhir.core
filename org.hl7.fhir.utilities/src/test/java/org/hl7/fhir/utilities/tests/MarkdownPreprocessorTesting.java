@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MarkdownPreprocessorTesting {
 

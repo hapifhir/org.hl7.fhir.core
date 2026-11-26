@@ -625,9 +625,10 @@ class BaseNAdaptorR5Tests {
 
     Assertions.assertEquals(java.util.Set.of("s", "i", "o", "r5"), base.getUserDataNames());
 
-    // an entry with a null value doesn't count
+    // an entry with a null value still counts as present (as it always has in R4)
     base.setUserData("null", null);
-    Assertions.assertFalse(base.hasUserData("null"));
+    Assertions.assertTrue(base.hasUserData("null"));
+    Assertions.assertTrue(base.getUserDataNames().contains("null"));
     Assertions.assertNull(base.getUserData("null"));
     Assertions.assertNull(base.getUserString("null"));
     Assertions.assertEquals(0, base.getUserInt("null"));

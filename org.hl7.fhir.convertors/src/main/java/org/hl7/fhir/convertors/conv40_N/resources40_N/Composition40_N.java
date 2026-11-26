@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -43,21 +45,51 @@ import org.hl7.fhir.model.core.*;
 
 public class Composition40_N {
 
+  public static final String RELATIONSHIP_SYSTEM = "http://terminology.hl7.org/CodeSystem/artifact-relationship-type";
+  // R6 codeable concepts that R4 codes can't hold (other codes, other codings, text)
+  public static final String ATTESTER_MODE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Composition.attester.mode";
+  public static final String RELATES_TO_TYPE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Composition.relatesTo.type";
+  // R6 relatesTo.target[x] types that R4 doesn't have
+  public static final String RELATES_TO_TARGET_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Composition.relatesTo.target";
+
+  private static void keepCodeableConcept(org.hl7.fhir.model.core.CodeableConcept src, org.hl7.fhir.r4.model.Element tgt, org.hl7.fhir.model.core.CodeableConcept regenerated, String url) throws FHIRException {
+    if (tgt != null && (regenerated == null || !src.equalsDeep(regenerated)))
+      tgt.addExtension(url, CodeableConcept40_N.convertCodeableConcept(src));
+  }
+
+  private static boolean hasKeptCodeableConcept(org.hl7.fhir.r4.model.Element src, String url) {
+    return src.hasExtension(url);
+  }
+
+  private static org.hl7.fhir.model.core.CodeableConcept keptCodeableConcept(org.hl7.fhir.r4.model.Element src, String url) throws FHIRException {
+    return CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) src.getExtensionByUrl(url).getValue());
+  }
+
+  public static final String CONFIDENTIALITY_SYSTEM = "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+
+  private static boolean isConfidentiality(org.hl7.fhir.model.core.Coding c) {
+    return (CONFIDENTIALITY_SYSTEM.equals(c.getSystem()) || !c.hasSystem()) && org.hl7.fhir.utilities.Utilities.existsInList(c.getCode(), "U", "L", "M", "N", "R", "V");
+  }
+
   public static org.hl7.fhir.model.core.Composition convertComposition(org.hl7.fhir.r4.model.Composition src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Composition tgt = new org.hl7.fhir.model.core.Composition();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Composition", "5.0", new String[] {"url", "version", "useContext", "name", "note"}, CrossVersionElements40_N.urls("Composition", "6.0", new String[] {"consent", "basedOn", "participant", "classification"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "url", "version", "useContext", "name", "note");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "consent", "basedOn", "participant", "classification");
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getIdentifier()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "identifier", tgt.getExtension());
     if (src.hasStatus())
-      tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertCompositionStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasSubject())
       tgt.addSubject(Reference40_N.convertReference(src.getSubject()));
+    CrossVersionElements40_N.extraValuesToR6(src.getExtension(), tgt, "subject", tgt.getExtension());
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -65,8 +97,14 @@ public class Composition40_N {
     for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference40_N.convertReference(t));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
+    // R6 moved confidentiality to a security label: the last one (see below). If R4 has no confidentiality, the
+    // security labels that look like it are marked as just labels
     if (src.hasConfidentiality())
-      tgt.getMeta().addSecurity().setCode(src.getConfidentiality().toCode());
+      tgt.getMeta().addSecurity(convertDocumentConfidentiality(src.getConfidentialityElement()));
+    else
+      for (org.hl7.fhir.model.core.Coding c : tgt.getMeta().getSecurityList())
+        if (isConfidentiality(c))
+          c.addExtension(VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY, new org.hl7.fhir.model.core.BooleanType(true));
     for (org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -85,16 +123,20 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.r4.model.Composition tgt = new org.hl7.fhir.r4.model.Composition();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "url", "version", "useContext", "name", "note");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "consent", "basedOn", "participant", "classification");
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_N.convertIdentifier(src.getIdentifierFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "identifier", tgt.getExtension());
     if (src.hasStatus())
-      tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertCompositionStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasSubject())
       tgt.setSubject(Reference40_N.convertReference(src.getSubjectFirstRep()));
+    CrossVersionElements40_N.extraValuesToR4(src, "subject", tgt.getExtension());
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -102,8 +144,22 @@ public class Composition40_N {
     for (org.hl7.fhir.model.core.Reference t : src.getAuthorList()) tgt.addAuthor(Reference40_N.convertReference(t));
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
-    if (src.getMeta().hasSecurity())
-      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getMeta().getSecurityFirstRep()));
+    // the last confidentiality security label (that isn't marked as just a label) is R4 confidentiality, and not a
+    // security label as well
+    int conf = -1;
+    for (int i = 0; i < src.getMeta().getSecurityList().size(); i++) {
+      org.hl7.fhir.model.core.Coding c = src.getMeta().getSecurityList().get(i);
+      if (isConfidentiality(c) && !c.hasExtension(VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY))
+        conf = i;
+    }
+    if (conf >= 0) {
+      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getMeta().getSecurityList().get(conf)));
+      tgt.getMeta().getSecurity().remove(conf);
+    }
+    for (org.hl7.fhir.r4.model.Coding c : tgt.getMeta().getSecurity())
+      c.getExtension().removeIf(e -> VersionConvertorConstants.EXT_SECURITY_LABEL_ONLY.equals(e.getUrl()));
+    if (tgt.getMeta().isEmpty())
+      tgt.setMeta(null);
     for (org.hl7.fhir.model.core.Composition.CompositionAttesterComponent t : src.getAttesterList())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -180,6 +236,7 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.model.core.Coding tgt = new org.hl7.fhir.model.core.Coding();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    tgt.setSystem(CONFIDENTIALITY_SYSTEM);
     tgt.setCode(src.getValue().toCode());
     return tgt;
   }
@@ -189,7 +246,7 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Composition.DocumentConfidentialityEnumFactory());
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    switch (src.getCode()) {
+    switch (java.util.Objects.toString(src.getCode(), "")) {
       case "U":
         tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.U);
         break;
@@ -221,7 +278,7 @@ public class Composition40_N {
     org.hl7.fhir.model.core.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.model.core.Composition.CompositionAttesterComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMode())
-      tgt.setMode(convertCompositionAttestationMode(src.getModeElement()));
+      tgt.setMode(hasKeptCodeableConcept(src.getModeElement(), ATTESTER_MODE_EXTENSION_URL) ? keptCodeableConcept(src.getModeElement(), ATTESTER_MODE_EXTENSION_URL) : convertCompositionAttestationMode(src.getModeElement()));
     if (src.hasTime())
       tgt.setTimeElement(DateTime40_N.convertDateTime(src.getTimeElement()));
     if (src.hasParty())
@@ -234,8 +291,10 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasMode())
+    if (src.hasMode()) {
       tgt.setModeElement(convertCompositionAttestationMode(src.getMode()));
+      keepCodeableConcept(src.getMode(), tgt.getModeElement(), convertCompositionAttestationMode(tgt.getModeElement()), ATTESTER_MODE_EXTENSION_URL);
+    }
     if (src.hasTime())
       tgt.setTimeElement(DateTime40_N.convertDateTime(src.getTimeElement()));
     if (src.hasParty())
@@ -247,22 +306,22 @@ public class Composition40_N {
       if (src == null || src.isEmpty())
           return null;
       CodeableConcept tgt = new CodeableConcept();
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, ATTESTER_MODE_EXTENSION_URL);
       if (src.getValue() == null) {
         // Add nothing
       } else {
           switch (src.getValue()) {
               case PERSONAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("personal");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("personal");
                   break;
               case PROFESSIONAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("professional");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("professional");
                   break;
               case LEGAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("legal");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("legal");
                   break;
               case OFFICIAL:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("official");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/composition-attestation-mode").setCode("official");
                   break;
               default:
                   break;
@@ -276,7 +335,11 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+    String code = src.getCode("http://terminology.hl7.org/CodeSystem/composition-attestation-mode");
+    if (code == null) {
+      code = src.getCode("http://hl7.org/fhir/composition-attestation-mode"); // the system before R6
+    }
+    switch (code == null ? "" : code) {
       case "personal":
         tgt.setValue(org.hl7.fhir.r4.model.Composition.CompositionAttestationMode.PERSONAL);
         break;
@@ -290,7 +353,7 @@ public class Composition40_N {
         tgt.setValue(org.hl7.fhir.r4.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4.model.Composition.CompositionAttestationMode.NULL);
+        // not a code R4 knows: leave the value empty
         break;
     }
     return tgt;
@@ -300,11 +363,15 @@ public class Composition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.model.core.Composition.CompositionRelatesToComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, RELATES_TO_TARGET_EXTENSION_URL);
     if (src.hasCode())
-      tgt.setType(convertDocumentRelationshipType(src.getCodeElement()));
+      tgt.setType(hasKeptCodeableConcept(src.getCodeElement(), RELATES_TO_TYPE_EXTENSION_URL) ? keptCodeableConcept(src.getCodeElement(), RELATES_TO_TYPE_EXTENSION_URL) : convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTargetReference())
       tgt.setTarget(Reference40_N.convertReference(src.getTargetReference()));
+    else if (src.hasTargetIdentifier())
+      tgt.setTarget(new org.hl7.fhir.model.core.Reference().setIdentifier(Identifier40_N.convertIdentifier(src.getTargetIdentifier())));
+    else if (src.hasExtension(RELATES_TO_TARGET_EXTENSION_URL))
+      tgt.setTarget(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(RELATES_TO_TARGET_EXTENSION_URL).getValue()));
     return tgt;
   }
 
@@ -313,10 +380,19 @@ public class Composition40_N {
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasType())
+    if (src.hasType()) {
       tgt.setCodeElement(convertDocumentRelationshipType(src.getType()));
-    if (src.hasTargetReference())
-      tgt.setTarget(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTargetReference()));
+      keepCodeableConcept(src.getType(), tgt.getCodeElement(), convertDocumentRelationshipType(tgt.getCodeElement()), RELATES_TO_TYPE_EXTENSION_URL);
+    }
+    // R4 target[x] is an identifier or a reference: a reference with only an identifier is the R4 identifier
+    if (src.hasTargetReference()) {
+      org.hl7.fhir.model.core.Reference r = src.getTargetReference();
+      if (r.hasIdentifier() && !r.hasReference() && !r.hasType() && !r.hasDisplay() && !r.hasId() && !r.hasExtension())
+        tgt.setTarget(Identifier40_N.convertIdentifier(r.getIdentifier()));
+      else
+        tgt.setTarget(Reference40_N.convertReference(r));
+    } else if (src.hasTarget())
+      tgt.addExtension(RELATES_TO_TARGET_EXTENSION_URL, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTarget()));
     return tgt;
   }
 
@@ -324,20 +400,20 @@ public class Composition40_N {
       if (src == null || src.isEmpty())
           return null;
     org.hl7.fhir.model.core.CodeableConcept tgt = new org.hl7.fhir.model.core.CodeableConcept();
-      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+      ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, RELATES_TO_TYPE_EXTENSION_URL);
       if (src.getValue() != null) {
           switch (src.getValue()) {
               case REPLACES:
-                tgt.addCoding().setSystem("http://terminology.hl7.org/ValueSet/artifact-relationship-type").setCode("replaces").setDisplay("Replaces");
+                tgt.addCoding().setSystem(RELATIONSHIP_SYSTEM).setCode("replaces").setDisplay("Replaces");
                   break;
               case TRANSFORMS:
-                tgt.addCoding().setSystem("http://terminology.hl7.org/ValueSet/artifact-relationship-type").setCode("transforms").setDisplay("Transforms");
+                tgt.addCoding().setSystem(RELATIONSHIP_SYSTEM).setCode("transforms").setDisplay("Transforms");
                   break;
               case SIGNS:
-                tgt.addCoding().setSystem("http://terminology.hl7.org/ValueSet/artifact-relationship-type").setCode("signs").setDisplay("Signs");
+                tgt.addCoding().setSystem(RELATIONSHIP_SYSTEM).setCode("signs").setDisplay("Signs");
                   break;
               case APPENDS:
-                tgt.addCoding().setSystem("http://terminology.hl7.org/ValueSet/artifact-relationship-type").setCode("appends").setDisplay("Appends");
+                tgt.addCoding().setSystem(RELATIONSHIP_SYSTEM).setCode("appends").setDisplay("Appends");
                   break;
               default:
                   break;
@@ -351,13 +427,13 @@ public class Composition40_N {
           return null;
       org.hl7.fhir.r4.model.Enumeration<Composition.DocumentRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new Composition.DocumentRelationshipTypeEnumFactory());
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-      if (src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "replaces")) {
+      if ((src.hasCoding(RELATIONSHIP_SYSTEM, "replaces") || src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "replaces"))) {
         tgt.setValue(Composition.DocumentRelationshipType.REPLACES);
-      } else if (src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "transforms")) {
+      } else if ((src.hasCoding(RELATIONSHIP_SYSTEM, "transforms") || src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "transforms"))) {
         tgt.setValue(Composition.DocumentRelationshipType.TRANSFORMS);
-      } else if (src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "signs")) {
+      } else if ((src.hasCoding(RELATIONSHIP_SYSTEM, "signs") || src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "signs"))) {
         tgt.setValue(Composition.DocumentRelationshipType.SIGNS);
-      } else if (src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "appends")) {
+      } else if ((src.hasCoding(RELATIONSHIP_SYSTEM, "appends") || src.hasCoding("http://terminology.hl7.org/ValueSet/artifact-relationship-type", "appends"))) {
         tgt.setValue(Composition.DocumentRelationshipType.APPENDS);
       }
       return tgt;
@@ -369,7 +445,7 @@ public class Composition40_N {
     org.hl7.fhir.model.core.Composition.CompositionEventComponent tgt = new org.hl7.fhir.model.core.Composition.CompositionEventComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
-      tgt.addDetail().setConcept(CodeableConcept40_N.convertCodeableConcept(t));
+      tgt.addDetail(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail().setReference(Reference40_N.convertReference(t));
@@ -383,11 +459,11 @@ public class Composition40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
+    // concepts go to R4 code (with any reference on the concept in the extension), references to R4 detail
     for (CodeableReference t : src.getDetailList()) {
       if (t.hasConcept()) {
-        tgt.addCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-      }
-      if (t.hasReference()) {
+        tgt.addCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+      } else if (t.hasReference()) {
         tgt.addDetail(Reference40_N.convertReference(t.getReference()));
       }
     }
@@ -398,7 +474,8 @@ public class Composition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Composition.SectionComponent tgt = new org.hl7.fhir.model.core.Composition.SectionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Composition.section", "6.0", new String[] {"note"}));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "Composition.section", "6.0", "note");
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasCode())
@@ -408,8 +485,8 @@ public class Composition40_N {
       tgt.setFocus(Reference40_N.convertReference(src.getFocus()));
     if (src.hasText())
       tgt.setText(Narrative40_N.convertNarrative(src.getText()));
-//    if (src.hasMode())
-//      tgt.setModeElement(convertSectionMode(src.getModeElement()));
+    // R6 dropped section.mode
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Composition.section", tgt.getExtension(), "mode");
     if (src.hasOrderedBy())
       tgt.setOrderedBy(CodeableConcept40_N.convertCodeableConcept(src.getOrderedBy()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEntry()) tgt.addEntry(Reference40_N.convertReference(t));
@@ -424,7 +501,8 @@ public class Composition40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Composition.SectionComponent tgt = new org.hl7.fhir.r4.model.Composition.SectionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("Composition.section", "4.0", "mode"));
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "Composition.section", tgt.getExtension(), "6.0", "note");
     if (src.hasTitle())
       tgt.setTitleElement(String40_N.convertString(src.getTitleElement()));
     if (src.hasCode())
@@ -434,8 +512,7 @@ public class Composition40_N {
       tgt.setFocus(Reference40_N.convertReference(src.getFocus()));
     if (src.hasText())
       tgt.setText(Narrative40_N.convertNarrative(src.getText()));
-//    if (src.hasMode())
-//      tgt.setModeElement(convertSectionMode(src.getModeElement()));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Composition.section", "mode");
     if (src.hasOrderedBy())
       tgt.setOrderedBy(CodeableConcept40_N.convertCodeableConcept(src.getOrderedBy()));
     for (org.hl7.fhir.model.core.Reference t : src.getEntryList()) tgt.addEntry(Reference40_N.convertReference(t));

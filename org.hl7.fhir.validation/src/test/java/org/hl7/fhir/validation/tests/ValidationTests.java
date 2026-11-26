@@ -1,17 +1,11 @@
 package org.hl7.fhir.validation.tests;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.Map.Entry;
-
+import com.google.common.base.Charsets;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
@@ -20,35 +14,37 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.SnomedUtilities;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ObjectConverter;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.validation.*;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.services.validation.constants.BindingKind;
 import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.fhirpath.TypeDetails;
-import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
-import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
-import org.hl7.fhir.services.elementmodel.ObjectConverter;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.model.core.formats.JsonParser;
-import org.hl7.fhir.model.core.formats.XmlParser;
-import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.model.utilities.SnomedUtilities;
-import org.hl7.fhir.standalone.testing.TestingUtilities;
-import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.services.xver.XVerExtensionManager;
 import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -68,37 +64,40 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.IgLoader.IDirectPackageProvider;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
-import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
-import org.hl7.fhir.validation.instance.scoring.*;
-import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
-import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.InstanceValidator.MatchetypeStatus;
 import org.hl7.fhir.validation.instance.MatchetypeValidator;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+import org.hl7.fhir.validation.instance.scoring.RuleScore;
+import org.hl7.fhir.validation.instance.scoring.ScoreOutcome;
+import org.hl7.fhir.validation.instance.scoring.ScoringEngine;
+import org.hl7.fhir.validation.instance.scoring.ScoringReporter;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
+import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
+import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.tests.utilities.TestFilter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.base.Charsets;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.junit.BeforeClass;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.Map.Entry;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
@@ -347,6 +346,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         val.getSettings().getUsageContexts().add(parseUsageContext(usage));
       }
     }
+    if (content.has("jurisdiction")) {
+      // the jurisdiction to validate in - what -jurisdiction supplies on the command line. Either a
+      // country code / uv, or system#code. It is itself a use context for additional bindings
+      String j = content.get("jurisdiction").getAsString();
+      val.getSettings().setJurisdiction(j.contains("#") ? CodeSystemUtilities.readCoding(j) : JurisdictionUtilities.getJurisdictionCodingFromLocale(j));
+    }
     if (content.has("launch-context")) {
       // launch contexts the caller supplies - what -launch-context provides on the command line.
       // The settings carry the reference as given, so extract the test resource to a real file and
@@ -468,9 +473,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     }
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
-    }
-    if (content.has("r5-bundle-relative-reference-policy")) {
-      val.getSettings().setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(content.get("r5-bundle-relative-reference-policy").getAsString()));
     }
     if (content.has("no-experimental-content")) {
       val.setNoExperimentalContent(content.get("no-experimental-content").getAsBoolean());

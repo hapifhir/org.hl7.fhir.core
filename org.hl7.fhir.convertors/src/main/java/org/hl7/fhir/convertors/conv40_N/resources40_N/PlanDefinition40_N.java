@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Duration40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -81,8 +82,8 @@ public class PlanDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -125,6 +126,7 @@ public class PlanDefinition40_N {
       tgt.addGoal(convertPlanDefinitionGoalComponent(t));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction())
       tgt.addAction(convertPlanDefinitionActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -151,8 +153,7 @@ public class PlanDefinition40_N {
       tgt.setStatusElement(Enumerations40_N.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_N.convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -195,6 +196,7 @@ public class PlanDefinition40_N {
       tgt.addGoal(convertPlanDefinitionGoalComponent(t));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionComponent t : src.getActionList())
       tgt.addAction(convertPlanDefinitionActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -217,6 +219,7 @@ public class PlanDefinition40_N {
       tgt.addDocumentation(RelatedArtifact40_N.convertRelatedArtifact(t));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTarget())
       tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -239,6 +242,7 @@ public class PlanDefinition40_N {
       tgt.addDocumentation(RelatedArtifact40_N.convertRelatedArtifact(t));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTargetList())
       tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -249,10 +253,11 @@ public class PlanDefinition40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_N.convertCodeableConcept(src.getMeasure()));
-    if (src.hasDetail())
-      tgt.setDetail(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDetail()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "detail", tgt, tgt.getExtension());
     if (src.hasDue())
       tgt.setDue(Duration40_N.convertDuration(src.getDue()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -263,10 +268,10 @@ public class PlanDefinition40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_N.convertCodeableConcept(src.getMeasure()));
-    if (src.hasDetail())
-      tgt.setDetail(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDetail()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "detail", tgt, tgt.getExtension());
     if (src.hasDue())
       tgt.setDue(Duration40_N.convertDuration(src.getDue()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -284,55 +289,78 @@ public class PlanDefinition40_N {
     if (src.hasTextEquivalent())
       tgt.setTextEquivalentElement(String40_N.convertStringToMarkdown(src.getTextEquivalentElement()));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
+    // R6 has one code: the first, and the rest as 4.0 extensions
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
-      tgt.setCode(CodeableConcept40_N.convertCodeableConcept(t));
+      if (!tgt.hasCode())
+        tgt.setCode(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("PlanDefinition.action", "4.0", "code"), CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation())
       tgt.addDocumentation(RelatedArtifact40_N.convertRelatedArtifact(t));
     for (org.hl7.fhir.r4.model.IdType t : src.getGoalId()) tgt.getGoalIdList().add(Id40_N.convertIdToString(t));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger())
       tgt.addTrigger(TriggerDefinition40_N.convertTriggerDefinition(t));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition())
       tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
+    // R6 wraps the DataRequirement: the wrapper's title and relatedData are 5.0 extensions on the R4 DataRequirement
     for (org.hl7.fhir.r4.model.DataRequirement t : src.getInput())
-      tgt.addInput(wrapInput(DataRequirement40_N.convertDataRequirement(t)));
+      tgt.addInput(unwrapExtensions(t, wrapInput(DataRequirement40_N.convertDataRequirement(t)), "PlanDefinition.action.input"));
     for (org.hl7.fhir.r4.model.DataRequirement t : src.getOutput())
-      tgt.addOutput(wrapOutput(DataRequirement40_N.convertDataRequirement(t)));
+      tgt.addOutput(unwrapExtensions(t, wrapOutput(DataRequirement40_N.convertDataRequirement(t)), "PlanDefinition.action.output"));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction())
       tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    // R4 and R6 allow different types
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), "PlanDefinition.action", "timing", tgt, tgt.getExtension());
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasGroupingBehavior())
-      tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
+      tgt.setGroupingBehaviorElement(CrossVersionElements40_N.toR6Code(src.getGroupingBehaviorElement(), convertActionGroupingBehavior(src.getGroupingBehaviorElement()), src.fhirType(), "groupingBehavior"));
     if (src.hasSelectionBehavior())
-      tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
+      tgt.setSelectionBehaviorElement(CrossVersionElements40_N.toR6Code(src.getSelectionBehaviorElement(), convertActionSelectionBehavior(src.getSelectionBehaviorElement()), src.fhirType(), "selectionBehavior"));
     if (src.hasRequiredBehavior())
-      tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
+      tgt.setRequiredBehaviorElement(CrossVersionElements40_N.toR6Code(src.getRequiredBehaviorElement(), convertActionRequiredBehavior(src.getRequiredBehaviorElement()), src.fhirType(), "requiredBehavior"));
     if (src.hasPrecheckBehavior())
-      tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
+      tgt.setPrecheckBehaviorElement(CrossVersionElements40_N.toR6Code(src.getPrecheckBehaviorElement(), convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()), src.fhirType(), "precheckBehavior"));
     if (src.hasCardinalityBehavior())
-      tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
-    if (src.hasDefinition())
-      tgt.setDefinition(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDefinition()));
+      tgt.setCardinalityBehaviorElement(CrossVersionElements40_N.toR6Code(src.getCardinalityBehaviorElement(), convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()), src.fhirType(), "cardinalityBehavior"));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "definition", tgt, tgt.getExtension());
     if (src.hasTransform())
       tgt.setTransformElement(Canonical40_N.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValue())
       tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction())
       tgt.addAction(convertPlanDefinitionActionComponent(t));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
   private static PlanDefinitionActionOutputComponent wrapOutput(DataRequirement dr) {
     return new PlanDefinitionActionOutputComponent().setRequirement(dr);
+  }
+
+  // R6 to R4: the title and relatedData of an input or output wrapper, as extensions on the R4 DataRequirement
+  private static org.hl7.fhir.r4.model.DataRequirement wrapperExtensions(org.hl7.fhir.model.Base wrapper, org.hl7.fhir.r4.model.DataRequirement dr, String path) throws FHIRException {
+    CrossVersionElements40_N.elementsToExtensionsForPath(wrapper, path, dr.getExtension(), "5.0", "title", "relatedData");
+    return dr;
+  }
+
+  // R4 to R6: the reverse of wrapperExtensions
+  private static <T extends org.hl7.fhir.model.Base> T unwrapExtensions(org.hl7.fhir.r4.model.DataRequirement src, T wrapper, String path) throws FHIRException {
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), wrapper, path, "5.0", "title", "relatedData");
+    org.hl7.fhir.model.core.DataRequirement dr = (org.hl7.fhir.model.core.DataRequirement) wrapper.getChildByName("requirement").getValues().get(0);
+    for (String name : new String[] {"title", "relatedData"}) {
+      String url = CrossVersionElements40_N.url(path, "5.0", name);
+      dr.getExtension().removeIf(e -> url.equals(e.getUrl()));
+    }
+    return wrapper;
   }
 
   private static PlanDefinitionActionInputComponent wrapInput(DataRequirement dr) {
@@ -353,49 +381,51 @@ public class PlanDefinition40_N {
     if (src.hasTextEquivalent())
       tgt.setTextEquivalentElement(String40_N.convertString(src.getTextEquivalentElement()));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertRequestPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasCode()) tgt.addCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
+    String codeUrl = CrossVersionElements40_N.url("PlanDefinition.action", "4.0", "code");
+    tgt.getExtension().removeIf(e -> codeUrl.equals(e.getUrl()));
+    for (org.hl7.fhir.model.core.Extension e : src.getExtensionsByUrl(codeUrl))
+      tgt.addCode(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) e.getValue()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getReasonList())
       tgt.addReason(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.model.core.RelatedArtifact t : src.getDocumentationList())
       tgt.addDocumentation(RelatedArtifact40_N.convertRelatedArtifact(t));
     for (org.hl7.fhir.model.core.StringType t : src.getGoalIdList()) tgt.getGoalId().add(Id40_N.convertId(t));
-    if (src.hasSubject())
-      tgt.setSubject(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getSubject()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "subject", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.TriggerDefinition t : src.getTriggerList())
       tgt.addTrigger(TriggerDefinition40_N.convertTriggerDefinition(t));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getConditionList())
       tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
     for (PlanDefinitionActionInputComponent t : src.getInputList())
-      tgt.addInput(DataRequirement40_N.convertDataRequirement(t.getRequirement()));
+      tgt.addInput(wrapperExtensions(t, t.hasRequirement() ? DataRequirement40_N.convertDataRequirement(t.getRequirement()) : new org.hl7.fhir.r4.model.DataRequirement(), "PlanDefinition.action.input"));
     for (PlanDefinitionActionOutputComponent t : src.getOutputList())
-      tgt.addOutput(DataRequirement40_N.convertDataRequirement(t.getRequirement()));
+      tgt.addOutput(wrapperExtensions(t, t.hasRequirement() ? DataRequirement40_N.convertDataRequirement(t.getRequirement()) : new org.hl7.fhir.r4.model.DataRequirement(), "PlanDefinition.action.output"));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedActionList())
       tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
-    if (src.hasTiming())
-      tgt.setTiming(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getTiming()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), "PlanDefinition.action", "timing", tgt, tgt.getExtension());
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipantList())
       tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasGroupingBehavior())
-      tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
+      tgt.setGroupingBehaviorElement(CrossVersionElements40_N.toR4Code(src.getGroupingBehaviorElement(), convertActionGroupingBehavior(src.getGroupingBehaviorElement()), src.fhirType(), "groupingBehavior"));
     if (src.hasSelectionBehavior())
-      tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
+      tgt.setSelectionBehaviorElement(CrossVersionElements40_N.toR4Code(src.getSelectionBehaviorElement(), convertActionSelectionBehavior(src.getSelectionBehaviorElement()), src.fhirType(), "selectionBehavior"));
     if (src.hasRequiredBehavior())
-      tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
+      tgt.setRequiredBehaviorElement(CrossVersionElements40_N.toR4Code(src.getRequiredBehaviorElement(), convertActionRequiredBehavior(src.getRequiredBehaviorElement()), src.fhirType(), "requiredBehavior"));
     if (src.hasPrecheckBehavior())
-      tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
+      tgt.setPrecheckBehaviorElement(CrossVersionElements40_N.toR4Code(src.getPrecheckBehaviorElement(), convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()), src.fhirType(), "precheckBehavior"));
     if (src.hasCardinalityBehavior())
-      tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
-    if (src.hasDefinition())
-      tgt.setDefinition(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getDefinition()));
+      tgt.setCardinalityBehaviorElement(CrossVersionElements40_N.toR4Code(src.getCardinalityBehaviorElement(), convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()), src.fhirType(), "cardinalityBehavior"));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "definition", tgt, tgt.getExtension());
     if (src.hasTransform())
       tgt.setTransformElement(Canonical40_N.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValueList())
       tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
     for (org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionComponent t : src.getActionList())
       tgt.addAction(convertPlanDefinitionActionComponent(t));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -729,9 +759,10 @@ public class PlanDefinition40_N {
     org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionConditionComponent tgt = new org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionConditionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasKind())
-      tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR6Code(src.getKindElement(), convertActionConditionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -741,9 +772,10 @@ public class PlanDefinition40_N {
     org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent tgt = new org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasKind())
-      tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
+      tgt.setKindElement(CrossVersionElements40_N.toR4Code(src.getKindElement(), convertActionConditionKind(src.getKindElement()), src.fhirType(), "kind"));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -807,9 +839,10 @@ public class PlanDefinition40_N {
     if (src.hasActionId())
       tgt.setTargetIdElement(Id40_N.convertIdToString(src.getActionIdElement()));
     if (src.hasRelationship())
-      tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
-    if (src.hasOffset())
-      tgt.setOffset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOffset()));
+      tgt.setRelationshipElement(CrossVersionElements40_N.toR6Code(src.getRelationshipElement(), convertActionRelationshipType(src.getRelationshipElement()), src.fhirType(), "relationship"));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "offset", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -821,9 +854,9 @@ public class PlanDefinition40_N {
     if (src.hasTargetId())
       tgt.setActionIdElement(Id40_N.convertId(src.getTargetIdElement()));
     if (src.hasRelationship())
-      tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
-    if (src.hasOffset())
-      tgt.setOffset(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOffset()));
+      tgt.setRelationshipElement(CrossVersionElements40_N.toR4Code(src.getRelationshipElement(), convertActionRelationshipType(src.getRelationshipElement()), src.fhirType(), "relationship"));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "offset", tgt, tgt.getExtension());
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -921,9 +954,10 @@ public class PlanDefinition40_N {
     org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionParticipantComponent tgt = new org.hl7.fhir.model.core.PlanDefinition.PlanDefinitionActionParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertActionParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR6Code(src.getTypeElement(), convertActionParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -933,9 +967,10 @@ public class PlanDefinition40_N {
     org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent tgt = new org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertActionParticipantType(src.getTypeElement()));
+      tgt.setTypeElement(CrossVersionElements40_N.toR4Code(src.getTypeElement(), convertActionParticipantType(src.getTypeElement()), src.fhirType(), "type"));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -1006,6 +1041,7 @@ public class PlanDefinition40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR6(src.getExtension(), tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -1018,6 +1054,7 @@ public class PlanDefinition40_N {
       tgt.setPathElement(String40_N.convertString(src.getPathElement()));
     if (src.hasExpression())
       tgt.setExpression(Expression40_N.convertExpression(src.getExpression()));
+    CrossVersionElements40_N.newElementsToR4(src, tgt, tgt.getExtension());
     return tgt;
   }
 }

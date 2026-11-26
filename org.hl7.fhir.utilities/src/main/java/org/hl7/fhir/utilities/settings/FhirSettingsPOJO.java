@@ -42,6 +42,12 @@ public class FhirSettingsPOJO {
 
   private String testIgsPath;
 
+  /**
+   * The path of the EC P-256 private key (PEM) that NPM packages are signed with - see
+   * {@code org.hl7.fhir.utilities.npm.NpmPackageSigner}. No key, no signing.
+   */
+  private String packageSigningKey;
+
   private Boolean prohibitNetworkAccess;
 
   private String txFhirProduction;
@@ -82,6 +88,7 @@ public class FhirSettingsPOJO {
       .diffToolPath(overlay(a.getDiffToolPath(), b.getDiffToolPath()))
       .tempPath(overlay(a.getTempPath(), b.getTempPath()))
       .testIgsPath(overlay(a.getTestIgsPath(), b.getTestIgsPath()))
+      .packageSigningKey(overlay(a.getPackageSigningKey(), b.getPackageSigningKey()))
       .prohibitNetworkAccess(overlay(a.getProhibitNetworkAccess(), b.getProhibitNetworkAccess()))
       .txFhirProduction(overlay(a.getTxFhirProduction(), b.getTxFhirProduction()))
       .txFhirDevelopment(overlay(a.getTxFhirDevelopment(), b.getTxFhirDevelopment()))
@@ -142,6 +149,7 @@ public class FhirSettingsPOJO {
     diffToolPath = null;
     tempPath = null;
     testIgsPath = null;
+    packageSigningKey = null;
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;

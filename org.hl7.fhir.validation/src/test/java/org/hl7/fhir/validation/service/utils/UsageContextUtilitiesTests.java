@@ -1,8 +1,5 @@
 package org.hl7.fhir.validation.service.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.Quantity;
@@ -11,6 +8,9 @@ import org.hl7.fhir.model.core.UsageContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class UsageContextUtilitiesTests {
 

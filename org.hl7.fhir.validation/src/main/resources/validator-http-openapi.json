@@ -64,7 +64,7 @@
           "Validation"
         ],
         "summary": "Validate a FHIR resource",
-        "description": "Validates the posted resource against the base specification for the FHIR version the\nserver was started with, plus any profiles supplied in `Resource.meta.profile` or in the\n`profile` query parameter.\n\nEvery query parameter is optional, but an **unrecognised** parameter name is an error:\nthe request fails with `400` and an `OperationOutcome` reading\n`Unable to process param <name>=<value>`. The same `400` is returned when a value cannot\nbe parsed (`bestPractice`, `checkDisplay`, `resourceIdRule`, and the three numeric\nparameters).\n\nEnum values are case sensitive where the underlying enum is matched by name\n(`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code\n(`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`,\n`r5BundleRelativeReferencePolicy`).\n",
+        "description": "Validates the posted resource against the base specification for the FHIR version the\nserver was started with, plus any profiles supplied in `Resource.meta.profile` or in the\n`profile` query parameter.\n\nEvery query parameter is optional, but an **unrecognised** parameter name is an error:\nthe request fails with `400` and an `OperationOutcome` reading\n`Unable to process param <name>=<value>`. The same `400` is returned when a value cannot\nbe parsed (`bestPractice`, `resourceIdRule`, and the three numeric\nparameters).\n\nEnum values are case sensitive where the underlying enum is matched by name\n(`bestPractice`) and case insensitive where it is matched by code\n(`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`).\n",
         "parameters": [
           {
             "name": "profile",
@@ -149,21 +149,6 @@
             }
           },
           {
-            "name": "checkDisplay",
-            "in": "query",
-            "description": "How the display text on `Coding`/`CodeableConcept` is checked. Case sensitive - the value must match the enum constant exactly.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "Ignore",
-                "Check",
-                "CheckCaseAndSpace",
-                "CheckCase",
-                "CheckSpace"
-              ]
-            }
-          },
-          {
             "name": "resourceIdRule",
             "in": "query",
             "description": "Whether the outermost resource must carry `Resource.id`. Contained resources (always required) and Bundle entries (always optional) are unaffected.",
@@ -205,23 +190,9 @@
             }
           },
           {
-            "name": "r5BundleRelativeReferencePolicy",
-            "in": "query",
-            "description": "Whether relative references in a Bundle follow the R5 resolution rule. An unrecognised value raises an unhandled exception rather than a `400`.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "default",
-                "never",
-                "always"
-              ],
-              "default": "default"
-            }
-          },
-          {
             "name": "assumeValidRestReferences",
             "in": "query",
-            "description": "Assume references that look like RESTful URLs are valid, and infer the resource type from the URL.",
+            "description": "When a reference that looks like a RESTful URL (e.g. `Patient/123`) isn't resolved, infer the resource type from the URL. This does not affect whether references are resolved, or whether one that can't be resolved is reported - that's set by `-check-references` when the server is started.",
             "schema": {
               "type": "boolean",
               "default": false
@@ -404,6 +375,15 @@
             "name": "outputStyle",
             "in": "query",
             "description": "Accepted for parity with the CLI, but has no effect in server mode - the response is always an `OperationOutcome`.",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": true
+          },
+          {
+            "name": "checkDisplay",
+            "in": "query",
+            "description": "Ignored - this never had any effect. It is still accepted, so that existing clients don't get a `400`, but it will be removed.",
             "schema": {
               "type": "string"
             },
@@ -1374,7 +1354,7 @@
                   "test-version": {
                     "type": "string",
                     "default": "current",
-                    "description": "Which published version of the test cases to run, e.g. `1.9.6` - a version of the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes whenever the tests do: pin a version in a pipeline.",
+                    "description": "Which published version of the test cases to run, e.g. `1.9.6` - a version of the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes whenever the tests do: pin a version in a pipeline. `current$<branch>` is the ci-build of a branch of the tests (branch names with a `/` aren't supported).",
                     "example": "1.9.6"
                   },
                   "externals": {

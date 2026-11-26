@@ -69,19 +69,25 @@ public class Runner implements IHostApplicationServices {
    * The evaluation scope threaded through select recursion, and the appContext
    * handed to the FHIRPath engine. It is immutable, so a nested scope cannot
    * disturb its parent, and the row index that reaches resolveConstant always
-   * belongs to the select currently being evaluated.
+   * belongs to the select currently being evaluated. It also carries the resource
+   * being processed, which getReferenceKey() hands to the provider so that references
+   * that only make sense relative to it (contained #id references, or references
+   * inside a Bundle) can be resolved.
    */
-  private static class ExecutionContext {
+  private static class ExecutionContext extends org.hl7.fhir.utilities.LimitedExecutionContext {
     private final JsonObject vd;
+    private final Base rootResource;
     private final int rowIndex;
 
-    private ExecutionContext(JsonObject vd, int rowIndex) {
+    private ExecutionContext(JsonObject vd, Base rootResource, int rowIndex, org.hl7.fhir.utilities.ExecutionLimits limits) {
+      super(limits);
       this.vd = vd;
+      this.rootResource = rootResource;
       this.rowIndex = rowIndex;
     }
 
     private ExecutionContext withRowIndex(int rowIndex) {
-      return new ExecutionContext(vd, rowIndex);
+      return new ExecutionContext(vd, rootResource, rowIndex, getExecutionLimits());
     }
   }
 
@@ -156,6 +162,59 @@ public class Runner implements IHostApplicationServices {
     this.maxRepeatNodes = maxRepeatNodes;
   }
 
+  /**
+   * Cap on the number of rows one resource can make: each forEach multiplies the rows by the number of items it
+   * iterates, so a few nested ones can make millions of rows from one resource, and run out of memory
+   */
+  private int maxRows = 100000;
+
+  /**
+   * The longest processing one resource can take (ms), including the FHIRPath it runs
+   */
+  private long maxExecutionMillis = org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_MILLIS;
+
+  public int getMaxRows() {
+    return maxRows;
+  }
+
+  /**
+   * The maximum number of rows one resource can make
+   *
+   * @param maxRows the maximum number of rows; must be at least 1
+   */
+  public void setMaxRows(int maxRows) {
+    if (maxRows < 1) {
+      throw new IllegalArgumentException("maxRows must be at least 1");
+    }
+    this.maxRows = maxRows;
+  }
+
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  /**
+   * The longest processing one resource can take (ms); 0 or less is no limit
+   */
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
+
+  /**
+   * Checks the budget of the resource being processed: the time (which the FHIRPath it runs shares), and how many rows
+   * it has made
+   */
+  private void checkLimits(ExecutionContext ctx, int rowCount) {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctx.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException("ViewDefinition processing of a resource didn't finish within " + limits.maxSeconds() + " seconds");
+    }
+    if (rowCount > maxRows) {
+      throw new FHIRException("ViewDefinition produced more than " + maxRows
+          + " rows for one resource; constrain the forEach expressions or raise the configured limit");
+    }
+  }
+
   public List<String> getProhibitedNames() {
     return prohibitedNames;
   }
@@ -192,6 +251,7 @@ public class Runner implements IHostApplicationServices {
       throw new FHIRException("No context provided");
     }
     fpe = new FHIRPathEngine(context);
+    fpe.setMaxExecutionMillis(maxExecutionMillis);
     fpe.setHostServices(this);
     fpe.setEmitSQLonFHIRWarning(true);
     if (viewDefinition == null) {
@@ -230,7 +290,9 @@ public class Runner implements IHostApplicationServices {
     }
     // The resource is row 0 of its own scope: %rowIndex is 0 until a select
     // starts iterating.
-    ExecutionContext ctx = new ExecutionContext(vd, 0);
+    // each resource has a budget of its own (a run over many resources can rightly take a long time), which the
+    // FHIRPath it runs shares: ctx is the app context the FHIRPath engine is given
+    ExecutionContext ctx = new ExecutionContext(vd, b, 0, fpe.makeExecutionLimits());
     boolean ok = true;
     for (JsonObject w : vd.getJsonObjects("where")) {
       String expr = w.asString("path");
@@ -287,6 +349,8 @@ public class Runner implements IHostApplicationServices {
 
     int idx = 0;
     for (Base f : focus) {
+      // the rows so far, and the copies of the pending rows this item is about to add
+      checkLimits(ctx, rows.size() + tempRows.size());
       ExecutionContext fctx = iterates ? ctx.withRowIndex(idx) : ctx;
       List<List<Cell>> rowsToAdd = cloneRows(tempRows);
 
@@ -320,6 +384,7 @@ public class Runner implements IHostApplicationServices {
       }
 
       rows.addAll(rowsToAdd);
+      checkLimits(ctx, rows.size());
       idx++;
     }
   }
@@ -337,6 +402,7 @@ public class Runner implements IHostApplicationServices {
       tempRows.addAll(sourceRows);
       executeSelect(ctx, union, b, tempRows);
       rows.addAll(tempRows);
+      checkLimits(ctx, rows.size());
     }
   }
 
@@ -404,6 +470,7 @@ public class Runner implements IHostApplicationServices {
     }
     for (ExpressionNode node : nodes) {
       for (Base child : fpe.evaluate(ctx, b, node)) {
+        checkLimits(ctx, 0);
         if (result.size() >= maxRepeatNodes) {
           throw new FHIRException("ViewDefinition repeat produced more than " + maxRepeatNodes
               + " nodes; constrain the repeat expressions or raise the configured limit");
@@ -420,6 +487,12 @@ public class Runner implements IHostApplicationServices {
     // an empty forEachOrNull. The engine tolerates a null base; %rowIndex still
     // resolves via resolveConstant, and field navigation yields the empty list.
     List<Base> bl2 = new ArrayList<>(fpe.evaluate(ctx, b, n));
+    // a column's values go in every row: a collection column can put a lot of values in a lot of rows
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctx.getExecutionLimits();
+    long cells = (long) rows.size() * bl2.size();
+    if (limits.getMaxItems() > 0 && cells > limits.getMaxItems()) {
+      throw new FHIRException("ViewDefinition produced more than " + limits.getMaxItems() + " values in a column");
+    }
     Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       log.error("Error");
@@ -611,6 +684,10 @@ public class Runner implements IHostApplicationServices {
     }
   }
 
+  private Base rootResourceOf(Object appContext) {
+    return appContext instanceof ExecutionContext ? ((ExecutionContext) appContext).rootResource : null;
+  }
+
   private int rowIndexOf(Object appContext) {
     return appContext instanceof ExecutionContext ? ((ExecutionContext) appContext).rowIndex : 0;
   }
@@ -663,7 +740,7 @@ public class Runner implements IHostApplicationServices {
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
-    case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
+    case "getReferenceKey" : return executeReferenceKey(rootResourceOf(appContext), focus, parameters);
     default: throw new FHIRException("Unknown function "+functionName);
     }
   }

@@ -739,14 +739,21 @@ public class LanguageUtils {
       String context = null;
       if (e.getName().equals("extension")) {
         context = id;
-        e = e.getNamedChild("value");
+        // the text is the extension's value; a complex extension (e.g. a cross-version extension for a data type)
+        // has none - it has sub-extensions instead, which are looked at below
+        Element value = e.getNamedChild("value", false);
+        if (value != null) {
+          e = value;
+        }
       } else {
         context = elementPath;        
       }
-      String src = e.primitiveValue();
-      String tgt = getTranslation(e, lang);
-      // no need to check for an existing unit: add() ignores one with the same id and source text
-      list.add(new TranslationUnit(lang, id, context, src, tgt));
+      if (!e.getName().equals("extension")) {
+        String src = e.primitiveValue();
+        String tgt = getTranslation(e, lang);
+        // no need to check for an existing unit: add() ignores one with the same id and source text
+        list.add(new TranslationUnit(lang, id, context, src, tgt));
+      }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
@@ -858,6 +865,14 @@ public class LanguageUtils {
   }
 
   public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
+    return switchLanguage(r, lang, markLanguage, contained, true, resourceLang, defaultLang, errors);
+  }
+
+  /**
+   * @param resourceText true if r is the narrative of a resource (Resource.text), which can be regenerated if
+   *   there's no narrative for the language. Other narratives (e.g. Composition.section.text) cannot be
+   */
+  private boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained, boolean resourceText, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
     boolean changed = false;
     if (r.isResource() && ((Resource) r).hasLanguage()) {
       // a resource inside another (bundle entry, contained, parameter) may declare its own language
@@ -889,19 +904,20 @@ public class LanguageUtils {
 
     if (r.fhirType().equals("Narrative")) {
       Base div = r.getChildValueByName("div");
-      Base status = r.getChildValueByName("status");
-
-      XhtmlNode xhtml = div.getXhtml();
-      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue(), resourceLang, defaultLang, errors);
-      if (xhtml == null) {
-        r.removeChild("div", div);
-      } else {
-        div.setXhtml(xhtml);
+      if (div != null) {
+        Base status = r.getChildValueByName("status");
+        XhtmlNode xhtml = div.getXhtml();
+        xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue(), resourceLang, defaultLang, resourceText, errors);
+        if (xhtml == null) {
+          r.removeChild("div", div);
+        } else {
+          div.setXhtml(xhtml);
+        }
       }
     }
     for (Property p : r.children()) {
       for (Base c : p.getValues()) {
-        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained"), resourceLang, defaultLang, errors) || changed;
+        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained"), r instanceof DomainResource && p.getName().equals("text"), resourceLang, defaultLang, errors) || changed;
       }
     }
     if (markLanguage && r.isResource() && !contained) {
@@ -1016,25 +1032,44 @@ public class LanguageUtils {
     return false;
   }
 
-  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status, String resourceLang, String defaultLang, List<ValidationMessage> errors) {
+  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status, String resourceLang, String defaultLang, boolean canRegenerate, List<ValidationMessage> errors) {
     if (xhtml == null) {
       return null;
     }
-    xhtml = divForLang(xhtml, lang, resourceLang, defaultLang, errors);
+    XhtmlNode langXhtml = divForLang(xhtml, lang, resourceLang, defaultLang, errors);
     
-    if (xhtml!=null)
+    if (langXhtml!=null)
+      return langXhtml;
+    
+    // only a resource's own narrative gets regenerated. Anything else (e.g. Composition.section.text)
+    // would just be lost, so keep the narrative we have, even though it's not in the right language
+    if (!canRegenerate) {
+      if (errors != null) {
+        errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", context.formatMessage(I18nConstants.NARRATIVE_NOT_TRANSLATED_KEPT_SECTION, lang), IssueSeverity.WARNING));
+      }
       return xhtml;
-    
-    // if the root language is null and the status is not additional
-    // it can be regenerated
+    }
+
+    // a resource narrative that was generated is dropped, and gets regenerated in the language. One that was
+    // written (additional, empty, or no status) would lose what was written, so it's kept, in its own language
     if (Utilities.existsInList(status, "generated", "extensions")) {
       return null;
-    }    
-    // well, really, not much we can do...
+    }
+    if (errors != null) {
+      errors.add(new ValidationMessage(Source.Publisher, IssueType.BUSINESSRULE, "IG", context.formatMessage(I18nConstants.NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED, lang, status == null ? "" : status), IssueSeverity.WARNING));
+    }
     return xhtml;
   }
 
   public boolean switchLanguage(Element e, String lang, boolean markLanguage, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {
+    return switchLanguage(e, lang, markLanguage, true, resourceLang, defaultLang, errors);
+  }
+
+  /**
+   * @param resourceText true if e is the narrative of a resource (Resource.text), which can be regenerated if
+   *   there's no narrative for the language. Other narratives (e.g. Composition.section.text) cannot be
+   */
+  private boolean switchLanguage(Element e, String lang, boolean markLanguage, boolean resourceText, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {
     boolean changed = false;
     if (e.isResource() && e.hasChild("language")) {
       // a resource inside another (bundle entry, contained, parameter) may declare its own language
@@ -1062,7 +1097,7 @@ public class LanguageUtils {
     }
     if (e.fhirType().equals("Narrative") && e.hasChild("div")) {
       XhtmlNode xhtml = e.getNamedChild("div").getXhtml();
-      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"), resourceLang, defaultLang, errors);
+      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"), resourceLang, defaultLang, resourceText, errors);
       if (xhtml == null) {
         e.removeChild("div");
       } else {
@@ -1071,7 +1106,7 @@ public class LanguageUtils {
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        changed = switchLanguage(c, lang, markLanguage, resourceLang, defaultLang, errors) || changed;
+        changed = switchLanguage(c, lang, markLanguage, e.isResource() && "text".equals(c.getName()), resourceLang, defaultLang, errors) || changed;
       }
     }
     if (markLanguage && e.isResource() && e.getSpecial() != SpecialElement.CONTAINED) {

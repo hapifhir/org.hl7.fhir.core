@@ -1,25 +1,25 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.SearchParameter;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Operation;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.model.core.SearchParameter;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class SearchParameterValidator extends BaseValidator {
 

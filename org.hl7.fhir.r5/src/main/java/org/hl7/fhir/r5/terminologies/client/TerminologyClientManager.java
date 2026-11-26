@@ -7,9 +7,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -21,6 +24,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.Terminology
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -39,6 +43,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
     private String language; // the language this resolution was made for (null = no language; see Language Specific Claims in the tx ecosystem IG)
+    private boolean fallback; // the registry couldn't be asked, so this is just the master server - use it for this run, but don't persist it
     
     public ServerOptionList(String url, String address) {
       this.url = url;
@@ -158,6 +163,18 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   private int ecosystemfailCount;
 
+  // canonicals for which a findValueSetOnServer / findCodeSystemOnServer call failed in this run
+  // (registry or server down, timeout, error) rather than got an answer - see lookupFailed().
+  // Only ever added to, so a concurrent lookup of the same canonical can't clear a failure
+  private Set<String> failedLookups = ConcurrentHashMap.newKeySet();
+
+  // hosts (with the usage, if there is one: see unknownHostKey) that the registry said, when it
+  // found no server for a code system on them, no server hosts any code system on at all
+  // (unknown-host: see 'Unknown Hosts' in the tx ecosystem IG). The registry isn't asked about
+  // any other code system on them in this run. Not persisted: like any other resolution that
+  // found nothing, it's asked again next run
+  private Set<String> unknownHosts = ConcurrentHashMap.newKeySet();
+
   // Set once by shutdown(). A manager must release its hold on each server context
   // exactly once, or the holder count those contexts keep goes wrong and a shared
   // cache is closed while another manager is still using it - so repeat shutdowns
@@ -185,7 +202,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
+    unknownHosts.addAll(other.unknownHosts);
     useEcosystem = other.useEcosystem;
+    ecosystemfailCount = other.ecosystemfailCount;
     monitorServiceURL = other.monitorServiceURL;
     cacheRegistryURL = other.cacheRegistryURL;
     factory = other.factory;
@@ -209,6 +228,10 @@ public class TerminologyClientManager implements ITerminologyClientManager {
    * operation must agree, or the routing is meaningless.
    */
   public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
+    return chooseServerInt(vs, withRequiredSupplements(vs, systems), expand, language);
+  }
+
+  private TerminologyClientContext chooseServerInt(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
@@ -222,38 +245,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       choices.add(findServerForSystem(s, language));
     }    
     
-    // first we look for a server that's authoritative for all of them
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.authoritative) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!t.authoritative.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found authoritative server "+s);
-          return findClientContext(s, systems, expand);
-        }
-      }
-    }
-    
-    // now we look for a server that's authoritative for one of them and a candidate for the others.
-    // A system that the registry knows no server for at all doesn't constrain the choice - any
-    // server is as good as any other for it - so it doesn't stop a server qualifying here
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.authoritative) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found partially authoritative server "+s);
-          return findClientContext(s, systems, expand);
-        }
-      }
+    TerminologyClientContext agreed = findAuthoritativeServer(vs, systems, expand, choices);
+    if (agreed != null) {
+      return agreed;
     }
 
     for (String sys : systems) {
@@ -263,7 +257,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (Utilities.existsInList(uri, "http://snomed.info/sct") && systems.size() > 1) {
         Set<String> sct = new HashSet<>();
         sct.add("http://snomed.info/sct");
-        return chooseServer(vs, sct, expand, language);
+        return chooseServerInt(vs, sct, expand, language);
       }
       if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
         "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
@@ -276,29 +270,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
     }
 
-    // now we look for a server that's a candidate for all of them (again, systems no server is
-    // known for don't constrain the choice), and that actually has a usable copy of the code
-    // systems. The support check costs a round trip (or several) per server, so it's only done
-    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
-    // the outcome of the check is not written back to the ServerOptionList objects: they are
-    // cached in resMap (and persisted to system-map.json), and must keep recording what the
-    // registry actually said, not the outcome of a possibly-transient support check
-    for (ServerOptionList ol : choices) {
-      for (String s : ol.candidates) {
-        boolean ok = true;
-        for (ServerOptionList t : choices) {
-          if (!isUnresolved(t) && !t.candidates.contains(s)) {
-            ok = false;
-          }
-        }
-        if (ok) {
-          ok = actuallySupportsAll(vs, s, systems, choices);
-        }
-        if (ok) {
-          log(vs, s, systems, choices, "Found candidate server " + s);
-          return findClientContext(s, systems, expand);
-        }
-      }
+    agreed = findCandidateServer(vs, systems, expand, choices);
+    if (agreed != null) {
+      return agreed;
     }
 
 
@@ -354,6 +328,131 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   /**
    * the registry answered, but knows of no server at all for the system
    */
+  /**
+   * Choose a server that can handle all of these code systems by itself, or null if there isn't one.
+   *
+   * chooseServer() always picks a server, even when the systems are spread across servers and none of
+   * them can do it all. This only returns a server when one server is authoritative or a candidate for
+   * all of the systems (or there's only one system, or the ecosystem isn't in use), so the caller can
+   * send a whole value set there, instead of splitting it up by code system (fhir-ig-publisher#1469)
+   */
+  public TerminologyClientContext chooseSingleServer(ValueSet vs, Set<String> systems, boolean expand) throws TerminologyServiceException {
+    if (serverList.isEmpty() || systems.isEmpty() || systems.contains(UNRESOLVED_VALUESET)) {
+      return null;
+    }
+    systems = withRequiredSupplements(vs, systems);
+    if (systems.size() == 1 || !useEcosystem) {
+      return chooseServer(vs, systems, expand);
+    }
+    String language = effectiveLanguage(null, expand);
+    List<ServerOptionList> choices = new ArrayList<>();
+    for (String s : systems) {
+      choices.add(findServerForSystem(s, language));
+    }
+    TerminologyClientContext agreed = findAuthoritativeServer(vs, systems, expand, choices);
+    if (agreed == null) {
+      agreed = findCandidateServer(vs, systems, expand, choices);
+    }
+    if (agreed == null) {
+      log(vs, null, systems, choices, "No single server handles all the systems");
+    }
+    return agreed;
+  }
+
+  /**
+   * The supplements a value set requires (valueset-supplement) are routed as if they were code systems
+   * in their own right: the server that does the operation has to know them, so a server that is
+   * authoritative for the code system, but doesn't know the supplement, is the wrong choice (e.g. a
+   * value set from the Canadian server that includes v3 ActCode, and requires the Infoway fr-CA
+   * supplement to it, has to go to the Canadian server, not to tx.fhir.org). The registry resolves a
+   * supplement url (and version) the same way it does a code system url.
+   *
+   * Returns a new set if anything is added - the caller's set is not changed (it may be immutable)
+   */
+  private Set<String> withRequiredSupplements(ValueSet vs, Set<String> systems) {
+    if (vs == null) {
+      return systems;
+    }
+    Set<String> res = null;
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValue() && ext.getValue().isPrimitive() && !Utilities.noString(ext.getValue().primitiveValue())) {
+        String supp = ext.getValue().primitiveValue();
+        if (!systems.contains(supp)) {
+          if (res == null) {
+            res = new HashSet<>(systems);
+          }
+          res.add(supp);
+        }
+      }
+    }
+    return res == null ? systems : res;
+  }
+
+  private TerminologyClientContext findAuthoritativeServer(ValueSet vs, Set<String> systems, boolean expand, List<ServerOptionList> choices) {
+    // first we look for a server that's authoritative for all of them
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!t.authoritative.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found authoritative server "+s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+
+    // now we look for a server that's authoritative for one of them and a candidate for the others.
+    // A system that the registry knows no server for at all doesn't constrain the choice - any
+    // server is as good as any other for it - so it doesn't stop a server qualifying here
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found partially authoritative server "+s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+    return null;
+  }
+
+  private TerminologyClientContext findCandidateServer(ValueSet vs, Set<String> systems, boolean expand, List<ServerOptionList> choices) {
+    // now we look for a server that's a candidate for all of them (again, systems no server is
+    // known for don't constrain the choice), and that actually has a usable copy of the code
+    // systems. The support check costs a round trip (or several) per server, so it's only done
+    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
+    // the outcome of the check is not written back to the ServerOptionList objects: they are
+    // cached in resMap (and persisted to system-map.json), and must keep recording what the
+    // registry actually said, not the outcome of a possibly-transient support check
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.candidates) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!isUnresolved(t) && !t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          ok = actuallySupportsAll(vs, s, systems, choices);
+        }
+        if (ok) {
+          log(vs, s, systems, choices, "Found candidate server " + s);
+          return findClientContext(s, systems, expand);
+        }
+      }
+    }
+    return null;
+  }
+
   private boolean isUnresolved(ServerOptionList choice) {
     return choice.authoritative.isEmpty() && choice.candidates.isEmpty();
   }
@@ -439,6 +538,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, vs, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      // no server because the registry couldn't be asked, not because none has it
+      failedLookups.add(vs);
     }
     return null; 
   }
@@ -526,6 +627,73 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     return language;
   }
 
+  /**
+   * The host of an http: or https: code system url (any version after '|' ignored), as the
+   * registry gives it in unknown-host: lower case, with the port if it isn't the scheme's
+   * default. null for anything else (urn:oid:, urn:uuid: ...)
+   */
+  public static String hostOf(String url) {
+    if (url == null) {
+      return null;
+    }
+    String base = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
+    String lower = base.toLowerCase(Locale.ROOT);
+    boolean https = lower.startsWith("https://");
+    if (!https && !lower.startsWith("http://")) {
+      return null;
+    }
+    try {
+      URI uri = new URI(base);
+      String host = uri.getHost();
+      if (host == null || host.isEmpty()) {
+        return null;
+      }
+      host = host.toLowerCase(Locale.ROOT);
+      int port = uri.getPort();
+      if (port > 0 && port != (https ? 443 : 80)) {
+        host = host + ":" + port;
+      }
+      return host;
+    } catch (URISyntaxException e) {
+      return null;
+    }
+  }
+
+  /**
+   * What an unknown host is remembered under: the registry's answer depends on the usage
+   * as well as the host (the FHIR version is fixed for a manager)
+   */
+  private String unknownHostKey(String url) {
+    String host = hostOf(url);
+    return host == null ? null : usage == null ? host : host + "|" + usage;
+  }
+
+  /** Whether the registry has said, in this run, that it knows of no code system on url's host */
+  private boolean isUnknownHost(String url) {
+    String hostKey = unknownHostKey(url);
+    return hostKey != null && unknownHosts.contains(hostKey);
+  }
+
+  /**
+   * The search for a canonical (url|version) on a server: by url, and by version if there is one. The url is
+   * what's before the first '|' (a url can't have a '|' in it; a version could)
+   */
+  static String searchCriteria(String canonical) {
+    CanonicalPair cp = CanonicalPair.of(canonical);
+    return "?_format=json&url="+Utilities.URLEncode(cp.getUrl())+(cp.hasVersion() ? "&version="+Utilities.URLEncode(cp.getVersion()) : "");
+  }
+
+  /**
+   * When a resolution of url found nothing, remember it if the registry said that it knows
+   * of no code system on url's host at all
+   */
+  private void seeUnknownHost(String url, JsonObject json) {
+    String host = hostOf(url);
+    if (host != null && json.has("unknown-host") && host.equals(json.asString("unknown-host"))) {
+      unknownHosts.add(unknownHostKey(url));
+    }
+  }
+
   private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return new ServerOptionList(url, getMasterClient().getAddress());
@@ -547,6 +715,12 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
     }
+    if (isUnknownHost(url)) {
+      // the registry has said it knows of no code system on this host
+      ServerOptionList ret = new ServerOptionList(url);
+      ret.language = language;
+      return ret;
+    }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(url));
     if (usage != null) {
       request = request + "&usage="+usage;
@@ -564,6 +738,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       for (JsonObject item : json.getJsonObjects("candidates")) {
         ret.candidates.add(item.asString("url"));
       }
+      if (ret.authoritative.isEmpty() && ret.candidates.isEmpty()) {
+        seeUnknownHost(url, json);
+      }
       return ret;
     } catch (Exception e) {
       String msg = "Error resolving system "+url+": "+e.getMessage();
@@ -572,9 +749,37 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
-    return new ServerOptionList(url, getMasterClient().getAddress());
+    ServerOptionList ret = new ServerOptionList(url, getMasterClient().getAddress());
+    ret.fallback = true;
+    return ret;
   }
 
+  /**
+   * true if the ecosystem server was switched off for this run because it stopped responding
+   */
+  private boolean ecosystemFailed() {
+    return !useEcosystem && ecosystemfailCount > 3;
+  }
+
+  /**
+   * true if a findValueSetOnServer / findCodeSystemOnServer / chooseServer(url) call for this canonical
+   * failed in this run rather than got an answer, so a null result means 'unknown', not 'not found',
+   * and shouldn't be remembered across runs
+   */
+  public boolean lookupFailed(String canonical) {
+    return failedLookups.contains(canonical);
+  }
+
+  /**
+   * Whether a candidate server has the content of a code system (canonical may have a version).
+   * What its TerminologyCapabilities says comes first: if it lists the code system, and doesn't say
+   * the content is anything other than complete or fragment, that's enough. Otherwise its CodeSystem
+   * resources are searched for, and one with complete or fragment content is needed.
+   *
+   * Only candidates are checked (see actuallySupportsAll): a server that provides services for a
+   * code system it says it has no content for (because it holds the concepts in its own tables)
+   * has to be registered as authoritative for it
+   */
   private boolean checkCSAvailable(String server, String canonical) {
     if (isTxFhirOrg(server)) {
       return true;
@@ -585,18 +790,23 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
     try {
       var client = findClientContext(server, null, false);
-      Bundle bnd = client.getClient().search("CodeSystem",
+      if (client.listsWithContent(canonical)) {
+        serverSupportMap.put(key, true);
+        return true;
+      }
+      // (requests go through send(): if the server has lost this client's cache, a new one is started)
+      Bundle bnd = client.send(again -> client.getClient().search("CodeSystem",
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
-          : "?url=" + Utilities.escapeUrl(canonical));
+          : "?url=" + Utilities.escapeUrl(canonical)));
       if (bnd.getEntry().size() > 0) {
         boolean ok = anyUsableCodeSystem(bnd);
         serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
-        bnd = client.getClient().search("CodeSystem",
-          "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|"))));
+        bnd = client.send(again -> client.getClient().search("CodeSystem",
+          "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))));
         if (bnd.getEntry().size() > 0) {
           boolean ok = anyUsableCodeSystem(bnd);
           serverSupportMap.put(key, ok);
@@ -675,7 +885,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
 
   public void setUserAgent(String value) {
     if (hasClient()) {
-      getMasterClient().setUserAgent(value);
+      // what the tool is, and this library's version, as the factory makes them
+      getMasterClient().setUserAgent(VersionUtil.toolingUserAgent(value));
     }
   }
 
@@ -708,6 +919,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   public TerminologyClientContext setMasterClient(ITerminologyClient5 client, String ecosystemUrl) throws IOException {
     this.monitorServiceURL = ecosystemUrl;
     this.useEcosystem = ecosystemUrl != null;
+    this.ecosystemfailCount = 0;
+    failedLookups.clear();
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     // Note: the cleared contexts are deliberately NOT released here. Releasing one
     // that turned out to be the last holder would end its cache - and if it shared
@@ -799,8 +1012,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       for (String s : Utilities.sorted(resMap.keySet())) {
         ServerOptionList sol = resMap.get(s);
-        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
-          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        if (sol.fallback || (sol.authoritative.isEmpty() && sol.candidates.isEmpty())) {
+          continue; // a fallback or empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
         }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
@@ -881,6 +1094,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     try {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
+        if (ecosystemFailed()) {
+          failedLookups.add(canonical);
+        }
       } else {
         try {
           if (usage != null) {
@@ -923,6 +1139,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
             useEcosystem = false;
             logger.logMessage("The terminology ecosystem server at "+monitorServiceURL+" is not responding; all terminology requests will go to "+getMasterClient().getAddress()+" from now on");
           }
+          // whatever the master server says, the registry wasn't asked, so don't let it be persisted
+          failedLookups.add(canonical);
           server = getMasterClient().getAddress();
         }
       }
@@ -938,13 +1156,22 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         serverMap.put(server, client);
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      final TerminologyClientContext tcc = client;
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
-      Bundle bnd = client.getClient().search("ValueSet", criteria);
+      Bundle bnd = tcc.send(again -> tcc.getClient().search("ValueSet", criteria));
+      // only a value set with the url asked for is an answer: a server may return others too
+      // (one that left matches the url found ...1267.39 for ...1267.3), and the url decides the
+      // order they are sorted in below, so the wrong one can win
+      String vsUrl = CanonicalPair.of(canonical).getUrl();
+      List<ValueSet> vslist = new ArrayList<>();
+      for (BundleEntryComponent be : bnd.getEntry()) {
+        if (be.hasResource() && be.getResource() instanceof ValueSet && vsUrl.equals(((ValueSet) be.getResource()).getUrl())) {
+          vslist.add((ValueSet) be.getResource());
+        }
+      }
       String rid = null;
-      if (bnd.getEntry().size() == 0) {
+      if (vslist.isEmpty()) {
         if (isImplicit) {
           // couldn't find it, but can we expand on it? 
           Parameters p= new Parameters();
@@ -952,34 +1179,26 @@ public class TerminologyClientManager implements ITerminologyClientManager {
           p.addParameter("count", 0);
           p.addParameters(expParameters);
           try {
-            ValueSet vs = client.getClient().expandValueset(null, p);
+            ValueSet vs = tcc.send(again -> tcc.getClient().expandValueset(null, p));
             if (vs != null) {
               return new SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
+            failedLookups.add(canonical);
             return null;
           }
         } else {
           return null;
         }
-      } else if (bnd.getEntry().size() > 1) {
-        List<ValueSet> vslist = new ArrayList<>();
-        for (BundleEntryComponent be : bnd.getEntry()) {
-          if (be.hasResource() && be.getResource() instanceof ValueSet) {
-            vslist.add((ValueSet) be.getResource());
-          }
-        }
+      } else {
         Collections.sort(vslist, new ValueSetUtilities.ValueSetSorter());
         rid = vslist.get(vslist.size()-1).getIdBase();
-      } else {
-        if (bnd.getEntryFirstRep().hasResource() && bnd.getEntryFirstRep().getResource() instanceof ValueSet) {
-          rid = bnd.getEntryFirstRep().getResource().getIdBase();
-        }
       }
       if (rid == null) {
         return null;
       }
-      ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
+      final String vsid = rid;
+      ValueSet vs = (ValueSet) tcc.send(again -> tcc.getClient().read("ValueSet", vsid));
       return new SourcedValueSet(server, vs);
     } catch (Exception e) {
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
@@ -987,12 +1206,19 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      failedLookups.add(canonical);
       return null;
     }
   }
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
+      if (ecosystemFailed()) {
+        failedLookups.add(canonical);
+      }
       return null;
+    }
+    if (isUnknownHost(canonical)) {
+      return null; // the registry has said it knows of no code system on this host
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
@@ -1012,6 +1238,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
       if (server == null) {
+        seeUnknownHost(canonical, json);
         return null;
       }
       if (server.contains("://tx.fhir.org")) {
@@ -1031,11 +1258,10 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         serverMap.put(server, client);
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
-      String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
-            "?_format=json&url="+Utilities.URLEncode(canonical);
+      final TerminologyClientContext tcc = client;
+      String criteria = searchCriteria(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
-      Bundle bnd = client.getClient().search("CodeSystem", criteria);
+      Bundle bnd = tcc.send(again -> tcc.getClient().search("CodeSystem", criteria));
       String rid = null;
       if (bnd.getEntry().size() == 0) {
         return null;
@@ -1049,6 +1275,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
             }
           }
         }
+        if (cslist.isEmpty()) {
+          return null;
+        }
         Collections.sort(cslist, new CodeSystemUtilities.CodeSystemSorter());
         rid = cslist.get(cslist.size()-1).getIdBase();
       } else {
@@ -1059,7 +1288,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (rid == null) {
         return null;
       }
-      CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
+      final String csid = rid;
+      CodeSystem vs = (CodeSystem) tcc.send(again -> tcc.getClient().read("CodeSystem", csid));
       return new SourcedCodeSystem(server, vs);
     } catch (Exception e) {
       String msg = "Error resolving CodeSystem "+canonical+": "+e.getMessage();
@@ -1067,7 +1297,25 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      failedLookups.add(canonical);
       return null;
+    }
+  }
+
+  /**
+   * Whether the ecosystem registry knows of a server for this canonical (a code system or a supplement,
+   * with or without a version). false if the ecosystem isn't in use, or the registry couldn't be asked
+   * (then nothing is known about it)
+   */
+  public boolean isKnownToEcosystem(String url) {
+    if (serverList.isEmpty() || !useEcosystem || IGNORE_TX_REGISTRY || Utilities.noString(url)) {
+      return false;
+    }
+    try {
+      ServerOptionList ol = findServerForSystem(url, null);
+      return !ol.fallback && !isUnresolved(ol);
+    } catch (TerminologyServiceException e) {
+      return false;
     }
   }
 

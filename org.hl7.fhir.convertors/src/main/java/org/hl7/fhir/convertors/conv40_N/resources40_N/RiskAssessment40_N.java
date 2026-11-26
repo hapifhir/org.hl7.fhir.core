@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
@@ -56,7 +58,7 @@ public class RiskAssessment40_N {
     if (src.hasParent())
       tgt.setParent(Reference40_N.convertReference(src.getParent()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertRiskAssessmentStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertRiskAssessmentStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasCode())
@@ -65,16 +67,13 @@ public class RiskAssessment40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
     if (src.hasCondition())
       tgt.setCondition(Reference40_N.convertReference(src.getCondition()));
     if (src.hasPerformer())
       tgt.setPerformer(Reference40_N.convertReference(src.getPerformer()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction())
       tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
@@ -96,7 +95,7 @@ public class RiskAssessment40_N {
     if (src.hasParent())
       tgt.setParent(Reference40_N.convertReference(src.getParent()));
     if (src.hasStatus())
-      tgt.setStatusElement(convertRiskAssessmentStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertRiskAssessmentStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_N.convertCodeableConcept(src.getMethod()));
     if (src.hasCode())
@@ -105,18 +104,12 @@ public class RiskAssessment40_N {
       tgt.setSubject(Reference40_N.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_N.convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurrence()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "occurrence", tgt, tgt.getExtension());
     if (src.hasCondition())
       tgt.setCondition(Reference40_N.convertReference(src.getCondition()));
     if (src.hasPerformer())
       tgt.setPerformer(Reference40_N.convertReference(src.getPerformer()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Reference t : src.getBasisList()) tgt.addBasis(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPredictionList())
       tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
@@ -212,17 +205,19 @@ public class RiskAssessment40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.model.core.RiskAssessment.RiskAssessmentPredictionComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_RISK_PREDICTION_PROBABILITY);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept40_N.convertCodeableConcept(src.getOutcome()));
-    if (src.hasProbability())
-      tgt.setProbability(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProbability()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "probability", tgt, tgt.getExtension());
+    if (src.hasExtension(VersionConvertorConstants.EXT_RISK_PREDICTION_PROBABILITY))
+      tgt.setProbability(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getExtensionByUrl(VersionConvertorConstants.EXT_RISK_PREDICTION_PROBABILITY).getValue()));
     if (src.hasQualitativeRisk())
       tgt.setQualitativeRisk(CodeableConcept40_N.convertCodeableConcept(src.getQualitativeRisk()));
     if (src.hasRelativeRisk())
       tgt.setRelativeRiskElement(Decimal40_N.convertDecimal(src.getRelativeRiskElement()));
-    if (src.hasWhen())
-      tgt.setWhen(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getWhen()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "when", tgt, tgt.getExtension());
     if (src.hasRationale())
       tgt.setRationaleElement(String40_N.convertString(src.getRationaleElement()));
     return tgt;
@@ -235,14 +230,18 @@ public class RiskAssessment40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept40_N.convertCodeableConcept(src.getOutcome()));
-    if (src.hasProbability())
-      tgt.setProbability(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProbability()));
+    // R4 probability is decimal|Range: a Quantity goes in the cross-version extension
+    if (src.hasProbability()) {
+      if (src.getProbability() instanceof org.hl7.fhir.model.core.Quantity)
+        tgt.addExtension(VersionConvertorConstants.EXT_RISK_PREDICTION_PROBABILITY, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProbability()));
+      else
+        tgt.setProbability(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getProbability()));
+    }
     if (src.hasQualitativeRisk())
       tgt.setQualitativeRisk(CodeableConcept40_N.convertCodeableConcept(src.getQualitativeRisk()));
     if (src.hasRelativeRisk())
       tgt.setRelativeRiskElement(Decimal40_N.convertDecimal(src.getRelativeRiskElement()));
-    if (src.hasWhen())
-      tgt.setWhen(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getWhen()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "when", tgt, tgt.getExtension());
     if (src.hasRationale())
       tgt.setRationaleElement(String40_N.convertString(src.getRationaleElement()));
     return tgt;

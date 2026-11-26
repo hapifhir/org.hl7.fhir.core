@@ -350,10 +350,15 @@ public class XhtmlComposer {
   }
 
   private void writeComment(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
+    // as for elements: no indent unless pretty, or every parse + compose adds whitespace before a comment
+    if (!pretty || noPrettyOverride)
+      indent = "";
     dst.append(indent + "<!-- " + node.getContent().trim() + " -->" + (pretty && !noPrettyOverride ? "\r\n" : ""));
   }
 
   private void writeCData(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
+    if (!pretty || noPrettyOverride)
+      indent = "";
     dst.append(indent + "<![CDATA[" + node.getContent() + "]]>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
   }
 

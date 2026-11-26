@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Availability40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ExtendedContactDetail40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
@@ -46,11 +51,20 @@ import org.hl7.fhir.model.core.ExtendedContactDetail;
 
 public class HealthcareService40_N {
 
+  // R6 moved availability into the Availability datatype: availableTime and notAvailable map to that,
+  // and the rest (R4 availabilityExceptions, R6 availability.period) are cross-version extensions
+  public static final String AVAILABILITY_PERIOD_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-HealthcareService.availability.period";
+  public static final String AVAILABILITY_EXCEPTIONS_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-HealthcareService.availabilityExceptions";
+
+  public static final String CONTACT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-HealthcareService.contact";
+
   public static org.hl7.fhir.model.core.HealthcareService convertHealthcareService(org.hl7.fhir.r4.model.HealthcareService src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.HealthcareService tgt = new org.hl7.fhir.model.core.HealthcareService();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("HealthcareService", "5.0", new String[] {"offeredIn"}, CrossVersionElements40_N.urls("HealthcareService", "6.0", new String[] {"referralRequired"}, CONTACT_EXTENSION_URL, AVAILABILITY_PERIOD_EXTENSION_URL)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "offeredIn");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "referralRequired");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -72,8 +86,7 @@ public class HealthcareService40_N {
       tgt.setExtraDetailsElement(MarkDown40_N.convertMarkdown(src.getExtraDetailsElement()));
     if (src.hasPhoto())
       tgt.setPhoto(Attachment40_N.convertAttachment(src.getPhoto()));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.getContactFirstRep().addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getTelecom(), src.getExtension(), CONTACT_EXTENSION_URL, tgt::addContact);
     for (org.hl7.fhir.r4.model.Reference t : src.getCoverageArea())
       tgt.addCoverageArea(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceProvisionCode())
@@ -90,12 +103,14 @@ public class HealthcareService40_N {
       tgt.addReferralMethod(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasAppointmentRequired())
       tgt.setAppointmentRequiredElement(Boolean40_N.convertBoolean(src.getAppointmentRequiredElement()));
-//    for (org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime())
-//      tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
-//    for (org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable())
-//      tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    for (org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime())
+      tgt.getAvailability().addAvailableTime(Availability40_N.convertAvailableTime(t, "availableStartTime", "availableEndTime"));
+    for (org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable())
+      tgt.getAvailability().addNotAvailableTime(Availability40_N.convertNotAvailable(t));
+    if (src.hasExtension(AVAILABILITY_PERIOD_EXTENSION_URL))
+      tgt.getAvailability().setPeriod(Period40_N.convertPeriod((org.hl7.fhir.r4.model.Period) src.getExtensionByUrl(AVAILABILITY_PERIOD_EXTENSION_URL).getValue()));
+    if (src.hasAvailabilityExceptions())
+      tgt.addExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL, String40_N.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -104,7 +119,9 @@ public class HealthcareService40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.HealthcareService tgt = new org.hl7.fhir.r4.model.HealthcareService();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, AVAILABILITY_EXCEPTIONS_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "offeredIn");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "referralRequired");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasActive())
@@ -126,9 +143,7 @@ public class HealthcareService40_N {
       tgt.setExtraDetailsElement(MarkDown40_N.convertMarkdown(src.getExtraDetailsElement()));
     if (src.hasPhoto())
       tgt.setPhoto(Attachment40_N.convertAttachment(src.getPhoto()));
-    for (ExtendedContactDetail t1 : src.getContactList())
-      for (org.hl7.fhir.model.core.ContactPoint t : t1.getTelecomList())
-        tgt.addTelecom(ContactPoint40_N.convertContactPoint(t));
+    ExtendedContactDetail40_N.convertContacts(src.getContactList(), tgt.getTelecom(), tgt.getExtension(), CONTACT_EXTENSION_URL);
     for (org.hl7.fhir.model.core.Reference t : src.getCoverageAreaList())
       tgt.addCoverageArea(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getServiceProvisionCodeList())
@@ -145,12 +160,16 @@ public class HealthcareService40_N {
       tgt.addReferralMethod(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasAppointmentRequired())
       tgt.setAppointmentRequiredElement(Boolean40_N.convertBoolean(src.getAppointmentRequiredElement()));
-//    for (org.hl7.fhir.model.core.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTimeList())
-//      tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
-//    for (org.hl7.fhir.model.core.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailableList())
-//      tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
-//    if (src.hasAvailabilityExceptions())
-//      tgt.setAvailabilityExceptionsElement(String40_N.convertString(src.getAvailabilityExceptionsElement()));
+    if (src.hasAvailability()) {
+      for (org.hl7.fhir.model.core.Availability.AvailabilityAvailableTimeComponent t : src.getAvailability().getAvailableTimeList())
+        Availability40_N.convertAvailableTime(t, tgt.addAvailableTime(), "availableStartTime", "availableEndTime");
+      for (org.hl7.fhir.model.core.Availability.AvailabilityNotAvailableTimeComponent t : src.getAvailability().getNotAvailableTimeList())
+        Availability40_N.convertNotAvailable(t, tgt.addNotAvailable());
+      if (src.getAvailability().hasPeriod())
+        tgt.addExtension(AVAILABILITY_PERIOD_EXTENSION_URL, Period40_N.convertPeriod(src.getAvailability().getPeriod()));
+    }
+    if (src.hasExtension(AVAILABILITY_EXCEPTIONS_EXTENSION_URL))
+      tgt.setAvailabilityExceptionsElement(String40_N.convertString((org.hl7.fhir.model.core.StringType) src.getExtensionByUrl(AVAILABILITY_EXCEPTIONS_EXTENSION_URL).getValue()));
     for (org.hl7.fhir.model.core.Reference t : src.getEndpointList()) tgt.addEndpoint(Reference40_N.convertReference(t));
     return tgt;
   }
@@ -159,7 +178,8 @@ public class HealthcareService40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.HealthcareService.HealthcareServiceEligibilityComponent tgt = new org.hl7.fhir.model.core.HealthcareService.HealthcareServiceEligibilityComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("HealthcareService.eligibility", "6.0", new String[] {"value", "period"}));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "HealthcareService.eligibility", "6.0", "value", "period");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasComment())
@@ -172,6 +192,7 @@ public class HealthcareService40_N {
       return null;
     org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceEligibilityComponent tgt = new org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceEligibilityComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensionsForPath(src, "HealthcareService.eligibility", tgt.getExtension(), "6.0", "value", "period");
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasComment())

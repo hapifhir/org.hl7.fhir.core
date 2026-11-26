@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.special;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hl7.fhir.model.core.Parameters;
-import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Parameters are sorted at every level the same way - including the parts of a parameter, or of

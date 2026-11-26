@@ -39,7 +39,10 @@ import java.util.*;
 
 
 @Slf4j
-public class TestDataFactory {
+public class TestDataFactory extends org.hl7.fhir.utilities.LimitedExecutionContext {
+
+  /** how long a factory may run, by default: 10 minutes */
+  public static final long DEFAULT_MAX_EXECUTION_MILLIS = 10 * 60 * 1000;
 
   public static class DataTable extends Base {
     List<String> columns = new ArrayList<String>();
@@ -193,9 +196,11 @@ public class TestDataFactory {
   private boolean testing;
   private Map<String, String> profileMap;
   private Locale locale;
+  private long maxExecutionMillis = DEFAULT_MAX_EXECUTION_MILLIS;
+  private org.hl7.fhir.utilities.ExecutionLimits limits;
   
   public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder, Map<String, String> profileMap, Locale locale) throws IOException {
-    super();
+    super(null);
     this.context = context;
     this.rootFolder = rootFolder;
     this.canonical = canonical;
@@ -209,7 +214,7 @@ public class TestDataFactory {
     if (Utilities.noString(name)) {
       throw new FHIRException("Factory has no name");
     }
-    testLog = new PrintStream(new FileOutputStream(Utilities.path(logFolder, name+".log")));
+    testLog = new PrintStream(ManagedFileAccess.outStream(Utilities.path(logFolder, name+".log")));
     format = "json".equals(details.asString("format")) ? FhirFormat.JSON : FhirFormat.XML;
   }
   
@@ -217,7 +222,35 @@ public class TestDataFactory {
     return name;
   }
   
+  /**
+   * The budget for this factory's run. The factory is the app context of everything it runs (Liquid templates, and
+   * the FHIRPath they and the profile mappings use), so the whole run spends this one budget. It starts when
+   * execute() does
+   */
+  @Override
+  public org.hl7.fhir.utilities.ExecutionLimits getExecutionLimits() {
+    if (limits == null) {
+      limits = makeExecutionLimits();
+    }
+    return limits;
+  }
+
+  private org.hl7.fhir.utilities.ExecutionLimits makeExecutionLimits() {
+    return new org.hl7.fhir.utilities.ExecutionLimits(maxExecutionMillis, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_DEPTH,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH);
+  }
+
+  /** how long the factory may run (ms; 0 or less: no limit) */
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
+
   public void execute() throws FHIRException, IOException {
+    limits = makeExecutionLimits();
     String mode = details.asString( "mode");
     if ("liquid".equals(mode)) {
       executeLiquid();
@@ -265,6 +298,7 @@ public class TestDataFactory {
       logDataScheme(tbl, tables);
       ProfileBasedFactory factory = new ProfileBasedFactory(fpe, localData.getAbsolutePath(), tbl, tables, details.forceArray("mappings"));
       factory.setLog(testLog);
+      factory.setRun(this);
       factory.setTesting(testing);
       factory.setMarkProfile(details.asBoolean("mark-profile"));
       String purl = details.asString( "profile");

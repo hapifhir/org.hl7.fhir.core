@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -52,7 +55,10 @@ public class Task40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Task tgt = new org.hl7.fhir.model.core.Task();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Task", "5.0", new String[] {"doNotPerform", "requestedPeriod", "performer", "reason"}, CrossVersionElements40_N.urls("Task", "6.0", new String[] {"statusReason"}, VersionConvertorConstants.EXT_TASK_FOCUS)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "doNotPerform", "requestedPeriod", "performer");
+    // R4 elements that R6 dropped
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "Task", tgt.getExtension(), "instantiatesCanonical", "instantiatesUri");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -60,21 +66,25 @@ public class Task40_N {
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertTaskStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasStatusReason())
       tgt.addStatusReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getStatusReason()));
+    // the other status reasons (R4 only has one)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "statusReason");
     if (src.hasBusinessStatus())
       tgt.setBusinessStatus(CodeableConcept40_N.convertCodeableConcept(src.getBusinessStatus()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertTaskIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR6Code(src.getIntentElement(), convertTaskIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertTaskPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR6Code(src.getPriorityElement(), convertTaskPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasFocus())
       tgt.addFocus().setValue(Reference40_N.convertReference(src.getFocus()));
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TASK_FOCUS))
+      tgt.addFocus().setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(ext.getValue()));
     if (src.hasFor())
       tgt.setFor(Reference40_N.convertReference(src.getFor()));
     if (src.hasEncounter())
@@ -93,10 +103,22 @@ public class Task40_N {
       tgt.setOwner(Reference40_N.convertReference(src.getOwner()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
-    if (src.hasReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getReasonCode()));
-    if (src.hasReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(src.getReasonReference()));
+    // the reasons R4 had no room for (and if they include the reasonCode and reasonReference, they're all there - see
+    // below)
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "reason");
+    java.util.List<CodeableReference> others = new java.util.ArrayList<>(tgt.getReasonList());
+    tgt.getReasonList().clear();
+    if (src.hasReasonCode()) {
+      CodeableReference r = CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getReasonCode());
+      if (others.stream().noneMatch(o -> o.equalsDeep(r)))
+        tgt.addReason(r);
+    }
+    if (src.hasReasonReference()) {
+      CodeableReference r = Reference40_N.convertReferenceToCodeableReference(src.getReasonReference());
+      if (others.stream().noneMatch(o -> o.equalsDeep(r)))
+        tgt.addReason(r);
+    }
+    tgt.getReasonList().addAll(others);
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory())
@@ -113,7 +135,9 @@ public class Task40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Task tgt = new org.hl7.fhir.r4.model.Task();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Task", "4.0", new String[] {"instantiatesCanonical", "instantiatesUri"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "Task", "instantiatesCanonical", "instantiatesUri");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "doNotPerform", "requestedPeriod", "performer");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     for (org.hl7.fhir.model.core.Reference t : src.getBasedOnList()) tgt.addBasedOn(Reference40_N.convertReference(t));
@@ -121,21 +145,35 @@ public class Task40_N {
       tgt.setGroupIdentifier(Identifier40_N.convertIdentifier(src.getGroupIdentifier()));
     for (org.hl7.fhir.model.core.Reference t : src.getPartOfList()) tgt.addPartOf(Reference40_N.convertReference(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
-    if (src.hasStatusReason())
-      tgt.setStatusReason(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getStatusReasonFirstRep()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertTaskStatus(src.getStatusElement()), src.fhirType(), "status"));
+    // R4 only has one status reason: the first, and the rest in the extension
+    for (CodeableReference t : src.getStatusReasonList()) {
+      if (!tgt.hasStatusReason())
+        tgt.setStatusReason(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Task", "6.0", "statusReason"), t));
+    }
     if (src.hasBusinessStatus())
       tgt.setBusinessStatus(CodeableConcept40_N.convertCodeableConcept(src.getBusinessStatus()));
     if (src.hasIntent())
-      tgt.setIntentElement(convertTaskIntent(src.getIntentElement()));
+      tgt.setIntentElement(CrossVersionElements40_N.toR4Code(src.getIntentElement(), convertTaskIntent(src.getIntentElement()), src.fhirType(), "intent"));
     if (src.hasPriority())
-      tgt.setPriorityElement(convertTaskPriority(src.getPriorityElement()));
+      tgt.setPriorityElement(CrossVersionElements40_N.toR4Code(src.getPriorityElement(), convertTaskPriority(src.getPriorityElement()), src.fhirType(), "priority"));
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_N.convertCodeableConcept(src.getCode()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
-    if (src.hasFocus())
-      tgt.setFocus(Reference40_N.convertReference(src.getFocusFirstRep().getValueReference()));
+    // R4 focus is a single Reference: the first focus goes there (if it's a Reference), and the rest
+    // (including canonicals) go in the cross-version extension
+    for (org.hl7.fhir.model.core.Task.TaskFocusComponent t : src.getFocusList()) {
+      if (t.hasValue()) {
+        if (!tgt.hasFocus() && !tgt.hasExtension(VersionConvertorConstants.EXT_TASK_FOCUS) && t.getValue() instanceof org.hl7.fhir.model.core.Reference) {
+          tgt.setFocus(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) t.getValue()));
+        } else {
+          tgt.addExtension(VersionConvertorConstants.EXT_TASK_FOCUS, ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(t.getValue()));
+        }
+      }
+    }
     if (src.hasFor())
       tgt.setFor(Reference40_N.convertReference(src.getFor()));
     if (src.hasEncounter())
@@ -154,12 +192,37 @@ public class Task40_N {
       tgt.setOwner(Reference40_N.convertReference(src.getOwner()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
+    // R4 has one reasonCode and one reasonReference: the first reason with a concept goes to reasonCode (with any
+    // reference on it in an extension), the first that's only a reference goes to reasonReference, and the rest go
+    // in the extension
+    // (going back, reasonCode and reasonReference come first: if that would change the order, all the reasons are
+    // in the extension, and R4 to R6 leaves out the ones it finds there)
+    CodeableReference code = null;
+    CodeableReference ref = null;
     for (CodeableReference t : src.getReasonList()) {
-      if (t.hasConcept())
-        tgt.setReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-      else if (t.hasReference())
-        tgt.setReasonReference(Reference40_N.convertReference(t.getReference()));
+      if (code == null && t.hasConcept())
+        code = t;
+      else if (ref == null && !t.hasConcept() && t.hasReference())
+        ref = t;
     }
+    java.util.List<CodeableReference> order = new java.util.ArrayList<>();
+    if (code != null)
+      order.add(code);
+    if (ref != null)
+      order.add(ref);
+    for (CodeableReference t : src.getReasonList())
+      if (t != code && t != ref)
+        order.add(t);
+    boolean all = false;
+    for (int i = 0; i < order.size(); i++)
+      all = all || order.get(i) != src.getReasonList().get(i);
+    if (code != null)
+      tgt.setReasonCode(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(code));
+    if (ref != null)
+      tgt.setReasonReference(Reference40_N.convertReference(ref.getReference()));
+    for (CodeableReference t : src.getReasonList())
+      if (all || (t != code && t != ref))
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("Task", "5.0", "reason"), t));
     for (org.hl7.fhir.model.core.Reference t : src.getInsuranceList()) tgt.addInsurance(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.Annotation t : src.getNoteList()) tgt.addNote(Annotation40_N.convertAnnotation(t));
     for (org.hl7.fhir.model.core.Reference t : src.getRelevantHistoryList())
@@ -457,8 +520,8 @@ public class Task40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -469,8 +532,7 @@ public class Task40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -481,8 +543,8 @@ public class Task40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 
@@ -493,8 +555,7 @@ public class Task40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getValue()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "value", tgt, tgt.getExtension());
     return tgt;
   }
 }

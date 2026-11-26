@@ -79,13 +79,12 @@ paths:
         Every query parameter is optional, but an **unrecognised** parameter name is an error:
         the request fails with `400` and an `OperationOutcome` reading
         `Unable to process param <name>=<value>`. The same `400` is returned when a value cannot
-        be parsed (`bestPractice`, `checkDisplay`, `resourceIdRule`, and the three numeric
+        be parsed (`bestPractice`, `resourceIdRule`, and the three numeric
         parameters).
 
         Enum values are case sensitive where the underlying enum is matched by name
-        (`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code
-        (`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`,
-        `r5BundleRelativeReferencePolicy`).
+        (`bestPractice`) and case insensitive where it is matched by code
+        (`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`).
       parameters:
         - name: profile
           in: query
@@ -141,14 +140,6 @@ paths:
           schema:
             type: string
             enum: [Ignore, Hint, Warning, Error]
-        - name: checkDisplay
-          in: query
-          description: >-
-            How the display text on `Coding`/`CodeableConcept` is checked. Case sensitive - the
-            value must match the enum constant exactly.
-          schema:
-            type: string
-            enum: [Ignore, Check, CheckCaseAndSpace, CheckCase, CheckSpace]
         - name: resourceIdRule
           in: query
           description: >-
@@ -173,20 +164,13 @@ paths:
           schema:
             type: string
             enum: [ignore, warning, error]
-        - name: r5BundleRelativeReferencePolicy
-          in: query
-          description: >-
-            Whether relative references in a Bundle follow the R5 resolution rule. An
-            unrecognised value raises an unhandled exception rather than a `400`.
-          schema:
-            type: string
-            enum: [default, never, always]
-            default: default
         - name: assumeValidRestReferences
           in: query
           description: >-
-            Assume references that look like RESTful URLs are valid, and infer the resource type
-            from the URL.
+            When a reference that looks like a RESTful URL (e.g. `Patient/123`) isn't resolved, infer
+            the resource type from the URL. This does not affect whether references are resolved, or
+            whether one that can't be resolved is reported - that's set by `-check-references` when the
+            server is started.
           schema: { type: boolean, default: false }
         - name: hintAboutNonMustSupport
           in: query
@@ -286,6 +270,13 @@ paths:
           description: >-
             Accepted for parity with the CLI, but has no effect in server mode - the response is
             always an `OperationOutcome`.
+          schema: { type: string }
+          deprecated: true
+        - name: checkDisplay
+          in: query
+          description: >-
+            Ignored - this never had any effect. It is still accepted, so that existing clients don't
+            get a `400`, but it will be removed.
           schema: { type: string }
           deprecated: true
       requestBody:
@@ -888,7 +879,8 @@ paths:
                   description: >-
                     Which published version of the test cases to run, e.g. `1.9.6` - a version of
                     the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes
-                    whenever the tests do: pin a version in a pipeline.
+                    whenever the tests do: pin a version in a pipeline. `current$<branch>` is the
+                    ci-build of a branch of the tests (branch names with a `/` aren't supported).
                   example: 1.9.6
                 externals:
                   type: object

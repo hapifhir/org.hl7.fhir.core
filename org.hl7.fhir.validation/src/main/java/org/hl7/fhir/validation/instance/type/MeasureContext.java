@@ -1,16 +1,12 @@
 package org.hl7.fhir.validation.instance.type;
 
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.core.Attachment;
-import org.hl7.fhir.model.core.CodeableConcept;
-import org.hl7.fhir.model.core.DataType;
-import org.hl7.fhir.model.core.Library;
-import org.hl7.fhir.model.core.Measure;
-import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
-import org.hl7.fhir.utilities.xml.XMLUtil;
 
 public class MeasureContext {
 

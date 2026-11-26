@@ -1,23 +1,21 @@
 package org.hl7.fhir.validation.tests;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.Enumerations;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.jupiter.api.*;
-
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.http.FhirValidatorHttpService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 
 class FhirValidatorHttpServiceTest {
 
@@ -166,7 +163,7 @@ class FhirValidatorHttpServiceTest {
       setUpService(getValidationEngine());
 
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&extension=any&bestPractice=Ignore&checkDisplay=Ignore"))
+        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&extension=any&bestPractice=Ignore"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .header("Accept", "application/fhir+json")
@@ -206,7 +203,7 @@ class FhirValidatorHttpServiceTest {
       setUpService(getValidationEngine());
 
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&bestPractice=Warning&checkDisplay=Check"))
+        .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&bestPractice=Warning"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_XML))
         .header("Content-Type", "application/fhir+xml")
         .header("Accept", "application/fhir+xml")
@@ -460,8 +457,7 @@ class FhirValidatorHttpServiceTest {
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(BASE_URL + "/validateResource?" +
           "&resourceIdRule=PROHIBITED" +
-          "&bestPractice=Ignore" +
-          "&checkDisplay=CheckCaseAndSpace"))
+          "&bestPractice=Ignore"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .build();
@@ -1392,8 +1388,7 @@ class FhirValidatorHttpServiceTest {
       HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(BASE_URL + "/validateResource" +
           "?resourceIdRule=INVALID" +
-          "&bestPractice=INVALID" +
-          "&checkDisplay=INVALID"))
+          "&bestPractice=INVALID"))
         .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
         .header("Content-Type", "application/fhir+json")
         .build();

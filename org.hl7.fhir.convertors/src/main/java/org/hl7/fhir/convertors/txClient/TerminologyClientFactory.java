@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 public class TerminologyClientFactory implements ITerminologyClientFactory5, ITerminologyClientFactoryN {
@@ -30,6 +31,8 @@ public class TerminologyClientFactory implements ITerminologyClientFactory5, ITe
 
   @Override
   public ITerminologyClient5 makeClientR5(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
+    // what the tool is, and this library's version (see VersionUtil.toolingUserAgent)
+    userAgent = VersionUtil.toolingUserAgent(userAgent);
     if (v == null)
       return new TerminologyClient5R5(id, checkEndsWith("/r4", url), userAgent).setLogger(logger);
     v = VersionUtilities.getMajMin(v);
@@ -55,6 +58,7 @@ public class TerminologyClientFactory implements ITerminologyClientFactory5, ITe
   }
 
   public ITerminologyClientN makeClientN(IModelContext context, String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
+    userAgent = VersionUtil.toolingUserAgent(userAgent);
     if (v == null)
       return new TerminologyClientR6(context, id, checkEndsWith("/r4", url), userAgent).setLogger(logger);
     v = VersionUtilities.getMajMin(v);

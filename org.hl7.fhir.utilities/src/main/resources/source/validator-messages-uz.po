@@ -149,14 +149,34 @@ msgstr ""
 msgid "Entry {0} isn''t reachable by traversing forwards from the MessageHeader. Check that this is meant to be included (needed to process the message)"
 msgstr ""
 
+# BUNDLE_BUNDLE_ENTRY_REVERSE_MSG_NO_FU
+#: BUNDLE_BUNDLE_ENTRY_REVERSE_MSG_NO_FU
+msgid "Entry {0} ({1}) has no fullUrl, and isn''t reachable by traversing forwards from the MessageHeader. Check that this is meant to be included (needed to process the message)"
+msgstr ""
+
 # BUNDLE_BUNDLE_ENTRY_REVERSE_R4
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_R4
 msgid "Entry {0} isn''t reachable by traversing forwards from the Composition. Only Provenance is approved to be used this way (R4 section 3.3.1)"
 msgstr ""
 
+# BUNDLE_BUNDLE_ENTRY_REVERSE_R4_NO_FU
+#: BUNDLE_BUNDLE_ENTRY_REVERSE_R4_NO_FU
+msgid "Entry {0} ({1}) has no fullUrl, and isn''t reachable by traversing forwards from the Composition. Only Provenance is approved to be used this way (R4 section 3.3.1)"
+msgstr ""
+
 # BUNDLE_BUNDLE_ENTRY_REVERSE_R5
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_R5
 msgid "Entry {0} isn''t reachable by traversing forwards from the Composition. Check whether this should be linked directly from the composition if it''s a source of narrative content"
+msgstr ""
+
+# BUNDLE_BUNDLE_ENTRY_REVERSE_R5_NO_FU
+#: BUNDLE_BUNDLE_ENTRY_REVERSE_R5_NO_FU
+msgid "Entry {0} ({1}) has no fullUrl, and isn''t reachable by traversing forwards from the Composition. Check whether this should be linked directly from the composition if it''s a source of narrative content"
+msgstr ""
+
+# BUNDLE_BUNDLE_POSSIBLE_MATCH_NOT_RESTFUL
+#: BUNDLE_BUNDLE_POSSIBLE_MATCH_NOT_RESTFUL
+msgid "Entry {0} matches the reference {1} by type and id, but the Bundle resolution rules can''t resolve the reference, because the fullUrl of the entry that contains it (''{2}'') is not a RESTful URL"
 msgstr ""
 
 # BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU
@@ -689,9 +709,19 @@ msgstr ""
 msgid "Entry {0} isn''t reachable by traversing links (forward or backward) from the Composition"
 msgstr ""
 
+# Bundle_BUNDLE_Entry_Orphan_DOCUMENT_NO_FU
+#: Bundle_BUNDLE_Entry_Orphan_DOCUMENT_NO_FU
+msgid "Entry {0} ({1}) has no fullUrl, and isn''t reachable by traversing links (forward or backward) from the Composition"
+msgstr ""
+
 # Bundle_BUNDLE_Entry_Orphan_MESSAGE
 #: Bundle_BUNDLE_Entry_Orphan_MESSAGE
 msgid "Entry {0} isn''t reachable by traversing links (forward or backward) from the MessageHeader, so its presence should be reviewed (is it needed to process the message?)"
+msgstr ""
+
+# Bundle_BUNDLE_Entry_Orphan_MESSAGE_NO_FU
+#: Bundle_BUNDLE_Entry_Orphan_MESSAGE_NO_FU
+msgid "Entry {0} ({1}) has no fullUrl, and isn''t reachable by traversing links (forward or backward) from the MessageHeader, so its presence should be reviewed (is it needed to process the message?)"
 msgstr ""
 
 # Bundle_BUNDLE_Entry_Type
@@ -746,6 +776,11 @@ msgstr ""
 msgid "Expected {0} but found {1} event elements"
 msgstr ""
 
+# CACHE_ID_CHANGED_DURING_REQUEST
+#: CACHE_ID_CHANGED_DURING_REQUEST
+msgid "The cache ''{0}'' changed while this request was using it: another request replaced {1} after this one had read the list of what the cache holds. This operation has not been performed. Send the request again, to read the new contents together"
+msgstr ""
+
 # CACHE_ID_CLEARED
 #: CACHE_ID_CLEARED
 msgid "The cache ''{0}'' was dropped {1} ago, when this server cleared all of its caches"
@@ -756,9 +791,44 @@ msgstr ""
 msgid "The cache ''{0}'' was closed {1} ago by the client, using $cache-control?mode=end (it had been open for {2}). It did not expire and it was not idle: something in the client released this cache while this request was still using it"
 msgstr ""
 
+# CACHE_ID_DISCARDED
+#: CACHE_ID_DISCARDED
+msgid "The cache ''{0}'' was dropped {1} ago because it grew too large: a request would have taken it over {2} concepts, the most this server allows in one cache (cacheMaxConcepts). This operation has not been performed. Start a new cache, and send the request again"
+msgstr ""
+
+# CACHE_ID_DISCARDED_TOO_BIG
+#: CACHE_ID_DISCARDED_TOO_BIG
+msgid "The cache ''{0}'' grew too large: this request would have taken it over {1} concepts, the most this server allows in one cache (cacheMaxConcepts), so the server has dropped the cache. This operation has not been performed. Start a new cache, and send the request again"
+msgstr ""
+
+# CACHE_ID_EVICTED
+#: CACHE_ID_EVICTED
+msgid "The cache ''{0}'' was dropped {1} ago to make room: the caches held more concepts than this server allows, and this was the one used least recently"
+msgstr ""
+
+# CACHE_ID_EVICTED_SIZE
+#: CACHE_ID_EVICTED_SIZE
+msgid "The cache ''{0}'' was dropped {1} ago to make room: this server holds at most {2} of client resources across all caches, and when it is full it drops the caches that have gone longest without being used (this one had been idle for {3}). Start a new cache and send the resources again"
+msgstr ""
+
 # CACHE_ID_EXPIRED
 #: CACHE_ID_EXPIRED
 msgid "The cache ''{0}'' expired: it went {1} without being used, and this server closes caches that have been idle for more than {2} (this one was dropped {3} ago). Every request that uses a cache resets its idle clock, so a client that keeps using a cache will not see this"
+msgstr ""
+
+# CACHE_ID_GONE_DURING_REQUEST
+#: CACHE_ID_GONE_DURING_REQUEST
+msgid "The cache ''{0}'' ended ({1}) while this request was using it, so {2} is no longer available. This operation has not been performed. Start a new cache with $cache-control?mode=start, and send the request again"
+msgstr ""
+
+# CACHE_ID_LOST_TO_RESTART
+#: CACHE_ID_LOST_TO_RESTART
+msgid "The cache ''{0}'' was lost to a server restart {1} ago. Caches are not carried over a restart, because neither the client nor the server can be sure a cache is intact across operations that were tried while the server was down. Start a new cache with $cache-control?mode=start and send the resources again"
+msgstr ""
+
+# CACHE_ID_NEVER_ISSUED
+#: CACHE_ID_NEVER_ISSUED
+msgid "The cache ''{0}'' was never issued by this server: it carries this server''s instance code and the start of this run, which began {1} ago, but this server has no record of it (it remembers the fate of the last {2} caches that ended). Caches are created with $cache-control?mode=start"
 msgstr ""
 
 # CACHE_ID_OTHER_INSTANCE
@@ -774,6 +844,21 @@ msgstr ""
 # CACHE_ID_UNKNOWN
 #: CACHE_ID_UNKNOWN
 msgid "The cache ''{0}'' was never issued by this server, and this server has no record of it ever existing. Caches are created with $cache-control?mode=start, and a cache-id is only valid on the server instance and endpoint that issued it - either it was issued somewhere else, or this server has restarted since it was issued"
+msgstr ""
+
+# CACHE_ID_UNKNOWN_SHARED
+#: CACHE_ID_UNKNOWN_SHARED
+msgid "The cache ''{0}'' was never issued by this server for this endpoint: this server has no record of it. Caches are created with $cache-control?mode=start, and a cache-id is only valid on the server and endpoint that issued it"
+msgstr ""
+
+# CACHE_REQUEST_TOO_BIG
+#: CACHE_REQUEST_TOO_BIG
+msgid "This request''s resources hold {0} concepts, more than this server allows in one cache ({1}, cacheMaxConcepts), so no cache can hold them"
+msgstr ""
+
+# CACHE_START_TOO_BIG
+#: CACHE_START_TOO_BIG
+msgid "The cache ''{0}'' would hold {1} concepts, more than this server allows in one cache ({2}, cacheMaxConcepts)"
 msgstr ""
 
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
@@ -836,11 +921,6 @@ msgstr ""
 msgid "This server does not support $closure (it has to be turned on by the administrator)"
 msgstr ""
 
-# CLOSURE_PARAM_UNKNOWN
-#: CLOSURE_PARAM_UNKNOWN
-msgid "The parameter ''{0}'' is not supported by $closure on this server"
-msgstr ""
-
 # CLOSURE_POST_ONLY
 #: CLOSURE_POST_ONLY
 msgid "$closure changes the closure table held on the server, so it must be invoked with POST"
@@ -854,6 +934,11 @@ msgstr ""
 # CLOSURE_TABLE_BUSY
 #: CLOSURE_TABLE_BUSY
 msgid "The closure table ''{0}'' is busy with other requests. Try again shortly"
+msgstr ""
+
+# CLOSURE_TABLE_CHANGED
+#: CLOSURE_TABLE_CHANGED
+msgid "The closure table ''{0}'' was reset while this request was reading it. Retry the request against the new table"
 msgstr ""
 
 # CLOSURE_TABLE_EXISTS
@@ -899,6 +984,11 @@ msgstr ""
 # CODESYSTEM_CONCEPT_NO_DISPLAY
 #: CODESYSTEM_CONCEPT_NO_DISPLAY
 msgid "HL7 Defined CodeSystems should ensure that every concept has a display"
+msgstr ""
+
+# CODESYSTEM_CS_CLASSIFIED_WITH_VERSION_NEEDED
+#: CODESYSTEM_CS_CLASSIFIED_WITH_VERSION_NEEDED
+msgid "When the hierarchyMeaning is ''classified-with'', the classification is usually specific to a particular version of the code system, so versionNeeded should be true"
 msgstr ""
 
 # CODESYSTEM_CS_COMPLETE_AND_EMPTY
@@ -986,6 +1076,11 @@ msgstr ""
 msgid "CodeSystem {0} cannot be found, so can''t check if concepts are valid"
 msgstr ""
 
+# CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED
+#: CODESYSTEM_CS_SUPP_EXT_CODE_NOT_RESERVED
+msgid "The code ''{1}'' is not in a code space that the CodeSystem {0} reserves for users to define their own codes (codesystem-reservedCodeSpace), so it is outside the scope of an extension-codes supplement: it is treated as a code the CodeSystem defines, as a language pack would"
+msgstr ""
+
 # CODESYSTEM_CS_SUPP_HIERARCHY_MEANING
 #: CODESYSTEM_CS_SUPP_HIERARCHY_MEANING
 msgid "The supplement declares a hierarchyMeaning of ''{0}'' that doesn''t match that in the base code system ''{1}''"
@@ -996,9 +1091,24 @@ msgstr ""
 msgid "The code ''{1}'' is not declared in the base CodeSystem {0} so is not valid in the supplement"
 msgstr ""
 
+# CODESYSTEM_CS_SUPP_NO_LANGUAGE
+#: CODESYSTEM_CS_SUPP_NO_LANGUAGE
+msgid "The supplement does not say what language it is in (CodeSystem.language), so the displays and designations in it that have no language ({0}) are considered correct displays in all languages"
+msgstr ""
+
 # CODESYSTEM_CS_SUPP_NO_SUPP
 #: CODESYSTEM_CS_SUPP_NO_SUPP
 msgid "The code system is marked as a supplement, but it does not define what code system it supplements"
+msgstr ""
+
+# CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY
+#: CODESYSTEM_CS_SUPP_RESERVED_CODE_HIERARCHY
+msgid "The code ''{0}'' is in a code space that the CodeSystem {1} reserves for users to define their own codes. No hierarchy (subsumption) is defined in reserved code spaces, so it should not be nested in another concept, or have concepts nested in it"
+msgstr ""
+
+# CODESYSTEM_CS_SUPP_SAME_URL
+#: CODESYSTEM_CS_SUPP_SAME_URL
+msgid "The supplement ''{0}'' has the url of the code system it supplements, so it claims to be a version of that code system. A supplement needs a canonical url of its own"
 msgstr ""
 
 # CODESYSTEM_CS_SUPP_TOO_MANY_CODES
@@ -1184,6 +1294,11 @@ msgstr ""
 # CODESYSTEM_TOO_COSTLY_TIME
 #: CODESYSTEM_TOO_COSTLY_TIME
 msgid "The operation ''{1}'' took too long to process (>{0}sec) (at {2})"
+msgstr ""
+
+# CODESYSTEM_VERSION_NEEDED
+#: CODESYSTEM_VERSION_NEEDED
+msgid "The code system ''{0}'' says that a version must be specified when it is referenced (versionNeeded = true), but this coding has no version"
 msgstr ""
 
 # CODE_CASE_DIFFERENCE
@@ -1451,9 +1566,19 @@ msgstr ""
 msgid "The contained resource ''{0}'' is not referenced to from elsewhere in the containing resource nor does it refer to the containing resource (dom-3)"
 msgstr ""
 
-# CS_SCT_IPS_NOT_IPS
-#: CS_SCT_IPS_NOT_IPS
-msgid "The Snomed CT code {0} ({1}) is not a member of the IPS free set"
+# CONTENT_REFERENCE_PROFILE_INVALID
+#: CONTENT_REFERENCE_PROFILE_INVALID
+msgid "The contentReferenceProfile ''{0}'' on {1} in profile {2} is not a valid element reference: the value must be a canonical URL for the profile, followed by ''#'' and the element id"
+msgstr ""
+
+# CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT
+#: CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT
+msgid "The contentReferenceProfile ''{0}'' on {1} in profile {2} refers to the element {3}, which does not exist in {4}"
+msgstr ""
+
+# CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE
+#: CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE
+msgid "The contentReferenceProfile ''{0}'' on {1} in profile {2} refers to the profile {3}, which could not be found"
 msgstr ""
 
 # Can_only_specify_profile_in_the_context
@@ -1622,6 +1747,11 @@ msgstr ""
 # Duplicate_Resource_
 #: Duplicate_Resource_
 msgid "Duplicate Resource {0} of type {3} (existing version {2}, new version {1})"
+msgstr ""
+
+# ECOSYSTEM_SERVER_UNAVAILABLE
+#: ECOSYSTEM_SERVER_UNAVAILABLE
+msgid "''{0}'' could not be looked for on the server in the terminology ecosystem that provides it: {1}"
 msgstr ""
 
 # ED_CONTEXT_INVARIANT_EXPRESSION_ERROR
@@ -2155,6 +2285,36 @@ msgstr ""
 msgid "Invalid use of ofType() in discriminator - no type on element {0}"
 msgstr ""
 
+# FHIRPATH_DOC_BOUNDS
+#: FHIRPATH_DOC_BOUNDS
+msgid "Error evaluating FHIRPath expression: {0}() needs a min that is a non-negative integer, and a max that is an integer no less than min, or ''*'' (found ''{1}'' and ''{2}'')"
+msgstr ""
+
+# FHIRPATH_DOC_CODING_ONLY
+#: FHIRPATH_DOC_CODING_ONLY
+msgid "Error evaluating FHIRPath expression: The function {0} can only be used on Coding or CodeableConcept but found {1}"
+msgstr ""
+
+# FHIRPATH_DOC_TYPE
+#: FHIRPATH_DOC_TYPE
+msgid "Error evaluating FHIRPath expression: the type given to {0}() must be a resource type name, not ''{1}''"
+msgstr ""
+
+# FHIRPATH_DOC_VALUESET
+#: FHIRPATH_DOC_VALUESET
+msgid "Error evaluating FHIRPath expression: the value set given to {0}() must be a canonical URL (optionally with |version), not ''{1}''"
+msgstr ""
+
+# FHIRPATH_DOC_VALUESET_NO_ANSWER
+#: FHIRPATH_DOC_VALUESET_NO_ANSWER
+msgid "Error evaluating FHIRPath expression: {0}() could not determine whether a code is in the value set ''{1}'': {2}"
+msgstr ""
+
+# FHIRPATH_DOC_VALUESET_UNKNOWN
+#: FHIRPATH_DOC_VALUESET_UNKNOWN
+msgid "Error evaluating FHIRPath expression: the value set ''{1}'' given to {0}() could not be found"
+msgstr ""
+
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
@@ -2276,6 +2436,11 @@ msgstr ""
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on ordered string, uri, canonical or Reference but found {1}"
 msgstr ""
 
+# FHIRPATH_REPEAT_TOO_MANY_ROUNDS
+#: FHIRPATH_REPEAT_TOO_MANY_ROUNDS
+msgid "Error evaluating FHIRPath expression: repeat() was still finding new items after {0} rounds"
+msgstr ""
+
 # FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND
 msgid "Problem with use of resolve() - profile {0} on {1} could not be resolved"
@@ -2310,6 +2475,21 @@ msgstr ""
 # FHIRPATH_STRING_SING_ONLY
 #: FHIRPATH_STRING_SING_ONLY
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, url, code, id but found {1}"
+msgstr ""
+
+# FHIRPATH_STRING_TOO_LONG
+#: FHIRPATH_STRING_TOO_LONG
+msgid "Error evaluating FHIRPath expression: it made a string of more than {0} characters"
+msgstr ""
+
+# FHIRPATH_TIMEOUT
+#: FHIRPATH_TIMEOUT
+msgid "Error evaluating FHIRPath expression: it didn''t finish within {0} seconds"
+msgstr ""
+
+# FHIRPATH_TOO_MANY_ITEMS
+#: FHIRPATH_TOO_MANY_ITEMS
+msgid "Error evaluating FHIRPath expression: it made a collection of more than {0} items"
 msgstr ""
 
 # FHIRPATH_UNABLE_BOOLEAN
@@ -2417,9 +2597,39 @@ msgstr ""
 msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 msgstr ""
 
+# ICD11_CLASSIFICATION_CODE_NONE
+#: ICD11_CLASSIFICATION_CODE_NONE
+msgid "The classificationCode extension says ''{0}'', but ''{1}'' has no classification code"
+msgstr ""
+
+# ICD11_CLASSIFICATION_CODE_NOT_ID
+#: ICD11_CLASSIFICATION_CODE_NOT_ID
+msgid "The classificationCode extension is only used when the code is an entity id, and ''{0}'' is not one (the entity id is ''{1}'')"
+msgstr ""
+
+# ICD11_CLASSIFICATION_CODE_SYSTEM
+#: ICD11_CLASSIFICATION_CODE_SYSTEM
+msgid "The classificationCode extension is only defined for ICD-11 MMS and ICF codings, not {0}"
+msgstr ""
+
+# ICD11_CLASSIFICATION_CODE_WRONG
+#: ICD11_CLASSIFICATION_CODE_WRONG
+msgid "The classificationCode extension says ''{0}'', but the classification code of ''{1}'' is ''{2}''"
+msgstr ""
+
+# ICD11_PC_AXIS_NOT_MULTIPLE
+#: ICD11_PC_AXIS_NOT_MULTIPLE
+msgid "''{0}'' takes one value on its {1} axis, but has several: {2}"
+msgstr ""
+
 # ICD11_PC_NO_AXES
 #: ICD11_PC_NO_AXES
 msgid "''{0}'' cannot be postcoordinated onto ''{1}'': that concept declares no postcoordination axes"
+msgstr ""
+
+# ICD11_PC_REQUIRED_AXIS_EMPTY
+#: ICD11_PC_REQUIRED_AXIS_EMPTY
+msgid "''{0}'' has no value on its required {1} axis"
 msgstr ""
 
 # ICD11_PC_VALUE_NOT_ON_AXIS
@@ -2689,6 +2899,11 @@ msgstr ""
 msgid "No source provided to the Liquid parser"
 msgstr ""
 
+# LIQUID_OUTPUT_TOO_LONG
+#: LIQUID_OUTPUT_TOO_LONG
+msgid "Liquid Exception: the template made more than {0} characters"
+msgstr ""
+
 # LIQUID_STATEMENT_ERROR
 #: LIQUID_STATEMENT_ERROR
 msgid "Error processing statement ''{0}'' - {1}"
@@ -2734,6 +2949,21 @@ msgstr ""
 msgid "Script {0}: Found unterminated string parsing cycle"
 msgstr ""
 
+# LIQUID_TIMEOUT
+#: LIQUID_TIMEOUT
+msgid "Liquid Exception: the template didn''t finish within {0} seconds"
+msgstr ""
+
+# LIQUID_TOO_DEEP
+#: LIQUID_TOO_DEEP
+msgid "Liquid Exception: the template is nested too deeply (for, if, capture and include inside each other, more than {0} levels)"
+msgstr ""
+
+# LIQUID_TOO_MANY_ITEMS
+#: LIQUID_TOO_MANY_ITEMS
+msgid "Liquid Exception: the template made a list of more than {0} items"
+msgstr ""
+
 # LIQUID_UNABLE_TO_PARSE_DATETIME
 #: LIQUID_UNABLE_TO_PARSE_DATETIME
 msgid "The input to the 'date' Liquid filter must be a valid date - found ''{0}''"
@@ -2772,6 +3002,11 @@ msgstr ""
 # LOGICAL_MODEL_QNAME_MISMATCH
 #: LOGICAL_MODEL_QNAME_MISMATCH
 msgid "The QName ''{0}'' does not match the expected QName ''{1}''"
+msgstr ""
+
+# LOOKUP_DISPLAY_LANGUAGE_FALLBACK
+#: LOOKUP_DISPLAY_LANGUAGE_FALLBACK
+msgid "There is no display in the language ''{0}'' for the code ''{1}'' in {2}, so the display is in the default language ''{3}''"
 msgstr ""
 
 # Language_XHTML_Lang_Different1
@@ -3247,9 +3482,39 @@ msgstr ""
 msgid "\"The narrative includes custom content for the default language ({0}), but does not include translated content for the {1} language, so the default language has been used"
 msgstr ""
 
+# NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED
+#: NARRATIVE_NOT_TRANSLATED_KEPT_AUTHORED
+msgid "The narrative has no content for the {0} language, and it wasn''t generated (its status is ''{1}''), so regenerating it would lose what was written - it has been kept as it is, in another language"
+msgstr ""
+
+# NARRATIVE_NOT_TRANSLATED_KEPT_SECTION
+#: NARRATIVE_NOT_TRANSLATED_KEPT_SECTION
+msgid "The narrative has no content for the {0} language, and only a resource''s own narrative can be regenerated, so it has been kept as it is, in another language"
+msgstr ""
+
 # NDJSON_EMPTY_LINE_WARNING
 #: NDJSON_EMPTY_LINE_WARNING
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
+msgstr ""
+
+# NEGATION_ALLERGY_REACTION
+#: NEGATION_ALLERGY_REACTION
+msgid "The code {0} says the patient doesn''t have an allergy or intolerance, but there is a reaction"
+msgstr ""
+
+# NEGATION_ALLERGY_REACTION_NO_INFO
+#: NEGATION_ALLERGY_REACTION_NO_INFO
+msgid "The code {0} says there is no information about allergies or intolerances, but there is a reaction"
+msgstr ""
+
+# NEGATION_REFUTED
+#: NEGATION_REFUTED
+msgid "The code {0} says the patient doesn''t have something, and it is refuted: this is understood as refuting the negative - that the patient does have it"
+msgstr ""
+
+# NEGATION_REFUTED_NO_INFO
+#: NEGATION_REFUTED_NO_INFO
+msgid "The code {0} says there is no information, so there is nothing to refute"
 msgstr ""
 
 # NO_CODE_PROVIDED
@@ -3418,6 +3683,66 @@ msgstr ""
 # OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE
 #: OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE
 msgid "This object is defined as a keyed Array in Json but the key property named in the definitions is not a primitive type (children = {0}, type = {1})"
+msgstr ""
+
+# OBSERVATION_LOINC_ORDER_ONLY
+#: OBSERVATION_LOINC_ORDER_ONLY
+msgid "The LOINC code {0} is only for ordering a test (ORDER_OBS = Order), not for reporting a result: it belongs in ServiceRequest.code"
+msgstr ""
+
+# OBSERVATION_LOINC_PANEL_EMPTY
+#: OBSERVATION_LOINC_PANEL_EMPTY
+msgid "The LOINC code {0} is a panel ({1}), but the observation has no child observations: they go in hasMember or component"
+msgstr ""
+
+# OBSERVATION_LOINC_PANEL_VALUE
+#: OBSERVATION_LOINC_PANEL_VALUE
+msgid "The LOINC code {0} is a panel ({1}): its results go in hasMember or component, not in a value"
+msgstr ""
+
+# OBSERVATION_LOINC_SCALE_CODED
+#: OBSERVATION_LOINC_SCALE_CODED
+msgid "The LOINC code {0} is for a coded result (scale {1}), so the value should be a CodeableConcept, not a {2}"
+msgstr ""
+
+# OBSERVATION_LOINC_SCALE_DOC
+#: OBSERVATION_LOINC_SCALE_DOC
+msgid "The LOINC code {0} is for a document (scale Doc): a document goes in a DocumentReference, not in the value of an Observation"
+msgstr ""
+
+# OBSERVATION_LOINC_SCALE_NAR
+#: OBSERVATION_LOINC_SCALE_NAR
+msgid "The LOINC code {0} is for a narrative result (scale Nar), so the value should be a string, not a {1}"
+msgstr ""
+
+# OBSERVATION_LOINC_SCALE_QN
+#: OBSERVATION_LOINC_SCALE_QN
+msgid "The LOINC code {0} is for a quantitative result (scale Qn), so the value should be a Quantity (or a Range, Ratio or SampledData), not a {1}"
+msgstr ""
+
+# OBSERVATION_LOINC_TIME_PERIOD
+#: OBSERVATION_LOINC_TIME_PERIOD
+msgid "The LOINC code {0} is for a collection over a period of time ({1}), but the observation''s effective[x] is a single time, not a period"
+msgstr ""
+
+# OBSERVATION_LOINC_TIME_POINT
+#: OBSERVATION_LOINC_TIME_POINT
+msgid "The LOINC code {0} is for a point in time (Pt), but the observation''s effective[x] is a period"
+msgstr ""
+
+# OBSERVATION_LOINC_UNITS_EXAMPLE
+#: OBSERVATION_LOINC_UNITS_EXAMPLE
+msgid "The LOINC code {0} has the example unit ''{1}'', but ''{2}'' can''t be converted to it: either the code or the unit is wrong"
+msgstr ""
+
+# OBSERVATION_LOINC_UNITS_PROPERTY
+#: OBSERVATION_LOINC_UNITS_PROPERTY
+msgid "The LOINC code {0} measures {1} ({2}), in units such as ''{3}'', but ''{4}'' is not a unit of {1}: either the code or the unit is wrong"
+msgstr ""
+
+# OBSERVATION_LOINC_UNITS_REQUIRED
+#: OBSERVATION_LOINC_UNITS_REQUIRED
+msgid "The LOINC code {0} requires units, but the value has no UCUM unit (a system of http://unitsofmeasure.org and a code)"
 msgstr ""
 
 # OPDEF_CIRCULAR_DEFINITION
@@ -3933,6 +4258,21 @@ msgstr ""
 msgid "The value ''{0}'' is not in the list of allowed values (value set ''{1}'')"
 msgstr ""
 
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_FAILED
+msgid "The questionnaire''s constraint {0} is not met: {1}"
+msgstr ""
+
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_LANGUAGE
+msgid "The questionnaire''s constraint {0} is in the language ''{1}'', so it has not been checked"
+msgstr ""
+
+# QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE
+#: QUESTIONNAIRE_QR_TARGET_CONSTRAINT_UNCHECKABLE
+msgid "The questionnaire''s constraint {0} could not be evaluated ({1}), so it has not been checked"
+msgstr ""
+
 # QUESTIONNAIRE_Q_DERIVATION_TYPE_IGNORED
 #: QUESTIONNAIRE_Q_DERIVATION_TYPE_IGNORED
 msgid "The derivation type ''{0}'' means that no derivation checking has been performed against this questionnaire"
@@ -4443,9 +4783,79 @@ msgstr ""
 msgid "Resource type mismatch for {0} / {1}"
 msgstr ""
 
-# SCT_NO_MRCM
-#: SCT_NO_MRCM
-msgid "Not validated against the Machine Readable Concept Model (MRCM)"
+# SCT_ALLERGY_CODE_WRONG
+#: SCT_ALLERGY_CODE_WRONG
+msgid "The SNOMED CT code {0} is not a substance, a product, or an allergy finding, disorder or situation (its semantic tag is ''{1}''), so it is not something a patient can be allergic or intolerant to"
+msgstr ""
+
+# SCT_BODYSITE_WRONG
+#: SCT_BODYSITE_WRONG
+msgid "The SNOMED CT code {0} is not a body structure (its semantic tag is ''{1}''), so it is not a body site"
+msgstr ""
+
+# SCT_CONDITION_CODE_PROXY
+#: SCT_CONDITION_CODE_PROXY
+msgid "The SNOMED CT code {0} is not a finding, disorder or situation (its semantic tag is ''{1}''): is it a condition recorded by proxy?"
+msgstr ""
+
+# SCT_CONDITION_CODE_WRONG
+#: SCT_CONDITION_CODE_WRONG
+msgid "The SNOMED CT code {0} is not a finding, disorder or situation (its semantic tag is ''{1}''), so it is not a condition"
+msgstr ""
+
+# SCT_LATERALITY_CONFLICT
+#: SCT_LATERALITY_CONFLICT
+msgid "The sides don''t agree: {0} says {1}, but {2} says {3}"
+msgstr ""
+
+# SCT_LATERALITY_MISSING
+#: SCT_LATERALITY_MISSING
+msgid "{0} can be on either side, but no side is given - in the code, the body site, or a laterality"
+msgstr ""
+
+# SCT_LATERALITY_NOT_LATERALIZABLE
+#: SCT_LATERALITY_NOT_LATERALIZABLE
+msgid "A side ({0}) is given for {1}, which doesn''t have one"
+msgstr ""
+
+# SCT_MEDICATION_STATEMENT_WRONG
+#: SCT_MEDICATION_STATEMENT_WRONG
+msgid "The SNOMED CT code {0} is not a medicinal product (its semantic tag is ''{1}''). A MedicationStatement may say there are no known medications (787481004), but otherwise its medication should be a medicinal product"
+msgstr ""
+
+# SCT_MEDICATION_SUBSTANCE
+#: SCT_MEDICATION_SUBSTANCE
+msgid "The SNOMED CT code {0} is a substance, not a medicinal product"
+msgstr ""
+
+# SCT_MEDICATION_WRONG
+#: SCT_MEDICATION_WRONG
+msgid "The SNOMED CT code {0} is not a medicinal product (its semantic tag is ''{1}''), so it is not a medication"
+msgstr ""
+
+# SCT_OBSERVATION_CODE_FINDING
+#: SCT_OBSERVATION_CODE_FINDING
+msgid "The SNOMED CT code {0} is a {1}, but the observation has a result as its value: the code of an observation with a result says what was observed (an observable entity, or an evaluation procedure), and a finding goes in the value, or in a Condition. A finding can be the code when there is no value, or the value says whether it is present (a boolean, or a yes/no code)"
+msgstr ""
+
+# SCT_PROCEDURE_CODE_PROXY
+#: SCT_PROCEDURE_CODE_PROXY
+msgid "The SNOMED CT code {0} is not a procedure (its semantic tag is ''{1}''): is it a procedure recorded by proxy?"
+msgstr ""
+
+# SCT_PROCEDURE_CODE_WRONG
+#: SCT_PROCEDURE_CODE_WRONG
+msgid "The SNOMED CT code {0} is not a procedure (its semantic tag is ''{1}''), so it is not a procedure"
+msgstr ""
+
+# SCT_PROCEDURE_PLANNED_DONE
+#: SCT_PROCEDURE_PLANNED_DONE
+msgid "The SNOMED CT code {0} is for a planned procedure, but the procedure''s status is completed"
+msgstr ""
+
+# SCT_SPECIMEN_TYPE_WRONG
+#: SCT_SPECIMEN_TYPE_WRONG
+msgid "The SNOMED CT code {0} is not a specimen (its semantic tag is ''{1}''), so it is not a type of specimen"
 msgstr ""
 
 # SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES
@@ -4690,6 +5100,71 @@ msgstr ""
 msgid "This element has a {0} but the types {1} do not make this kind of constraint relevant"
 msgstr ""
 
+# SD_LOINC_ORDER_ONLY
+#: SD_LOINC_ORDER_ONLY
+msgid "The profile fixes the LOINC code {0}, which is only for ordering a test (ORDER_OBS = Order), not for reporting a result: it belongs in ServiceRequest.code"
+msgstr ""
+
+# SD_LOINC_PANEL_EMPTY
+#: SD_LOINC_PANEL_EMPTY
+msgid "The profile fixes the LOINC code {0}, which is a panel ({1}), but allows neither hasMember nor component, so the observation can''t have any child observations"
+msgstr ""
+
+# SD_LOINC_PANEL_VALUE
+#: SD_LOINC_PANEL_VALUE
+msgid "The profile fixes the LOINC code {0}, which is a panel ({1}), but requires a value: a panel''s results go in hasMember or component"
+msgstr ""
+
+# SD_LOINC_SCALE_CODED
+#: SD_LOINC_SCALE_CODED
+msgid "The profile fixes the LOINC code {0}, which is for a coded result (scale {1}), but only allows a value that is a {2}, not a CodeableConcept"
+msgstr ""
+
+# SD_LOINC_SCALE_DOC
+#: SD_LOINC_SCALE_DOC
+msgid "The profile fixes the LOINC code {0}, which is for a document (scale Doc), but allows a value: a document goes in a DocumentReference, not in the value of an Observation"
+msgstr ""
+
+# SD_LOINC_SCALE_NAR
+#: SD_LOINC_SCALE_NAR
+msgid "The profile fixes the LOINC code {0}, which is for a narrative result (scale Nar), but only allows a value that is a {1}, not a string"
+msgstr ""
+
+# SD_LOINC_SCALE_QN
+#: SD_LOINC_SCALE_QN
+msgid "The profile fixes the LOINC code {0}, which is for a quantitative result (scale Qn), but only allows a value that is a {1}, not a Quantity (or a Range, Ratio or SampledData)"
+msgstr ""
+
+# SD_LOINC_TIME_PERIOD
+#: SD_LOINC_TIME_PERIOD
+msgid "The profile fixes the LOINC code {0}, which is for a collection over a period of time ({1}), but doesn''t allow a Period for effective[x]"
+msgstr ""
+
+# SD_LOINC_TIME_POINT
+#: SD_LOINC_TIME_POINT
+msgid "The profile fixes the LOINC code {0}, which is for a point in time (Pt), but only allows a Period for effective[x]"
+msgstr ""
+
+# SD_LOINC_UNITS_EXAMPLE
+#: SD_LOINC_UNITS_EXAMPLE
+msgid "The profile fixes the LOINC code {0}, which has the example unit ''{1}'', but it fixes the unit ''{2}'', which can''t be converted to it"
+msgstr ""
+
+# SD_LOINC_UNITS_PROPERTY
+#: SD_LOINC_UNITS_PROPERTY
+msgid "The profile fixes the LOINC code {0}, which measures {1} ({2}), in units such as ''{3}'', but it fixes the unit ''{4}'', which is not a unit of {1}"
+msgstr ""
+
+# SD_LOINC_UNITS_REQUIRED
+#: SD_LOINC_UNITS_REQUIRED
+msgid "The profile fixes the LOINC code {0}, which requires units, but it fixes the unit system to {1}, not UCUM"
+msgstr ""
+
+# SD_MUST_HAVE_BASE_AND_DERIVATION
+#: SD_MUST_HAVE_BASE_AND_DERIVATION
+msgid "StructureDefinition {0} must have a baseDefinition and a derivation"
+msgstr ""
+
 # SD_MUST_HAVE_DERIVATION
 #: SD_MUST_HAVE_DERIVATION
 msgid "StructureDefinition {0} must have a derivation, since it has a baseDefinition"
@@ -4833,6 +5308,11 @@ msgstr ""
 # SD_ROOT_PROHIBITED
 #: SD_ROOT_PROHIBITED
 msgid "The property {0} is not allowed on the root element {1}"
+msgstr ""
+
+# SD_SCT_FIXED
+#: SD_SCT_FIXED
+msgid "The profile fixes {0}: {1}"
 msgstr ""
 
 # SD_SLICE_MAX_EXCEEDS_SLICER
@@ -5085,6 +5565,11 @@ msgstr ""
 msgid "No maps were found to match {0} - validation may be wrong"
 msgstr ""
 
+# SM_IMPORT_NO_VALUE
+#: SM_IMPORT_NO_VALUE
+msgid "StructureMap.import[{0}] has no value, so it does not import any map"
+msgstr ""
+
 # SM_LIST_RULE_ID_ONLY_WHEN_SHARE
 #: SM_LIST_RULE_ID_ONLY_WHEN_SHARE
 msgid "A ruleId should only be provided when the rule mode is ''share''"
@@ -5213,11 +5698,6 @@ msgstr ""
 # SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE
 #: SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE
 msgid "Transform {0} takes {1}-{2} parameter(s) but {3} were found"
-msgstr ""
-
-# SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE
-#: SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE
-msgid "Transform {0} takes {1} parameter(s) but {2} were found"
 msgstr ""
 
 # SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE
@@ -5580,9 +6060,70 @@ msgstr ""
 msgid "The textLink selector ''{0}'' is invalid: {1}"
 msgstr ""
 
+# TEXT_SEARCH_NOT_SUPPORTED
+#: TEXT_SEARCH_NOT_SUPPORTED
+msgid "Text search is not supported for the code system ''{0}''"
+msgstr ""
+
+# TRANSLATE_SCT_EDITION_TOP_LEVEL_MANY
+#: TRANSLATE_SCT_EDITION_TOP_LEVEL_MANY
+msgid "No translation: the only {0} ancestors of {1} are the top-level hierarchy concepts {2}"
+msgstr ""
+
+# TRANSLATE_SCT_EDITION_TOP_LEVEL_ONE
+#: TRANSLATE_SCT_EDITION_TOP_LEVEL_ONE
+msgid "No translation: the only {0} ancestor of {1} is the top-level hierarchy concept {2}"
+msgstr ""
+
+# TRANSLATE_TARGET_CS_UNKNOWN
+#: TRANSLATE_TARGET_CS_UNKNOWN
+msgid "The code system {0} is not known, and the code ''{1}'' has not been validated"
+msgstr ""
+
+# TRANSLATION_WARNING_DENIED
+#: TRANSLATION_WARNING_DENIED
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} says that {1} is not related to {2}"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} say that {1} is not related to {2}"
+msgstr[0] ""
+msgstr[1] ""
+
+# TRANSLATION_WARNING_NOMAP
+#: TRANSLATION_WARNING_NOMAP
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} says that {1} has no mapping to {4}"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} say that {1} has no mapping to {4}"
+msgstr[0] ""
+msgstr[1] ""
+
+# TRANSLATION_WARNING_OTHER
+#: TRANSLATION_WARNING_OTHER
+msgid "This CodeableConcept has the codes {1} and {2}, but the ConceptMap {3} maps {1} to {4}. Check that these codes belong together"
+msgid_plural "This CodeableConcept has the codes {1} and {2}, but the ConceptMaps {3} map {1} to {4}. Check that these codes belong together"
+msgstr[0] ""
+msgstr[1] ""
+
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
 msgid "No valid coding was found for the value set ''{0}''"
+msgstr ""
+
+# TX_PARAM_NOT_SUPPORTED
+#: TX_PARAM_NOT_SUPPORTED
+msgid "The parameter ''{0}'' is not supported by this system"
+msgstr ""
+
+# TX_PARAM_PROFILE_RESOURCE
+#: TX_PARAM_PROFILE_RESOURCE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not a resource of type {0}"
+msgstr ""
+
+# TX_PARAM_PROFILE_TYPE
+#: TX_PARAM_PROFILE_TYPE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not a value of type {0}"
+msgstr ""
+
+# TX_PARAM_PROFILE_VALUE
+#: TX_PARAM_PROFILE_VALUE
+msgid "The parameter ''profile'' is only supported as an inline Parameters resource, not the value ''{0}''"
 msgstr ""
 
 # TX_SERVER_BATCH_RESPONSE_MISMATCH
@@ -5667,7 +6208,7 @@ msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
-msgid "Attachment content cannot be checked because there was an error accesssing {0}: {1}"
+msgid "Attachment content cannot be checked because there was an error accessing {0}: {1}"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK
@@ -6057,7 +6598,7 @@ msgstr ""
 
 # Terminology_TX_Confirm_2_CC
 #: Terminology_TX_Confirm_2_CC
-msgid "Could not confirm that the codings provided are in the value set {0} and a coding should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) (class = {1})"
+msgid "Could not confirm that the codings provided are in the value set {0} and a coding SHALL come from this value set unless it has no suitable code (the validator cannot judge what is suitable) (class = {1})"
 msgstr ""
 
 # Terminology_TX_Confirm_3_CC
@@ -6072,7 +6613,7 @@ msgstr ""
 
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
-msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
+msgid "The code provided ({1}) is not in the value set {0}, and a code SHALL come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
 msgstr ""
 
 # Terminology_TX_Confirm_6
@@ -6122,7 +6663,7 @@ msgstr ""
 
 # Terminology_TX_NoValid_13
 #: Terminology_TX_NoValid_13
-msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}"
+msgid "The Coding provided ({2}) was not found in the value set {0}, and a code SHALL come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}"
 msgstr ""
 
 # Terminology_TX_NoValid_14
@@ -6142,7 +6683,7 @@ msgstr ""
 
 # Terminology_TX_NoValid_17
 #: Terminology_TX_NoValid_17
-msgid "The value provided (''{0}'') was not found in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}"
+msgid "The value provided (''{0}'') was not found in the value set {1}, and a code SHALL come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}"
 msgstr ""
 
 # Terminology_TX_NoValid_18
@@ -6157,7 +6698,7 @@ msgstr ""
 
 # Terminology_TX_NoValid_2_CC
 #: Terminology_TX_NoValid_2_CC
-msgid "None of the codings provided are in the value set {0}, and a coding should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) (codes = {1})"
+msgid "None of the codings provided are in the value set {0}, and a coding SHALL come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) (codes = {1})"
 msgstr ""
 
 # Terminology_TX_NoValid_3_CC
@@ -6172,7 +6713,7 @@ msgstr ""
 
 # Terminology_TX_NoValid_5
 #: Terminology_TX_NoValid_5
-msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}"
+msgid "The Coding provided ({2}) was not found in the value set {0}, and a code SHALL come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}"
 msgstr ""
 
 # Terminology_TX_NoValid_6
@@ -6440,9 +6981,14 @@ msgstr ""
 msgid "Primitive types must have a value or must have child extensions"
 msgstr ""
 
-# Type_Specific_Checks_DT_Primitive_WS
-#: Type_Specific_Checks_DT_Primitive_WS
-msgid "Primitive types should not only be whitespace"
+# Type_Specific_Checks_DT_Primitive_WS_OTHER
+#: Type_Specific_Checks_DT_Primitive_WS_OTHER
+msgid "This value contains only whitespace. Handling whitespace is tricky if this resource is represented in XML/RDF due to schema rules about whitespace, so this is not an error, but it is not recommended if it can be avoided"
+msgstr ""
+
+# Type_Specific_Checks_DT_Primitive_WS_XML
+#: Type_Specific_Checks_DT_Primitive_WS_XML
+msgid "This value contains only whitespace. Handling whitespace is tricky in XML/RDF due to schema rules about whitespace, so this is not an error, but it is not recommended if it can be avoided"
 msgstr ""
 
 # Type_Specific_Checks_DT_String_Length
@@ -6545,6 +7091,11 @@ msgstr ""
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr ""
 
+# UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM
+#: UNABLE_TO_INFER_CODESYSTEM_UNKNOWN_SYSTEM
+msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': a definition for the CodeSystem ''{2}'' it includes could not be found"
+msgstr ""
+
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 msgid "Unable to resolve the content reference {0} on element {1} (path = {2}) in this context"
@@ -6615,11 +7166,6 @@ msgstr ""
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
-msgstr ""
-
-# UNKNOWN_PROPERTY
-#: UNKNOWN_PROPERTY
-msgid "Unknown property name {0} in path {1}"
 msgstr ""
 
 # UNRECOGNISED_PROPERTY_TYPE
@@ -7067,6 +7613,11 @@ msgstr ""
 msgid "{0}: magic LOINC code {1} required, but not found (from {2}). Note that other Observation codes are allowed in addition to this required magic code"
 msgstr ""
 
+# VALIDATION_VAL_PROFILE_NO_VALUE
+#: VALIDATION_VAL_PROFILE_NO_VALUE
+msgid "meta.profile[{0}] has no value, so it does not claim any profile"
+msgstr ""
+
 # VALIDATION_VAL_PROFILE_OTHER_VERSION
 #: VALIDATION_VAL_PROFILE_OTHER_VERSION
 msgid "Profile is for a different version of FHIR ({0}) so has been ignored"
@@ -7182,11 +7733,6 @@ msgstr ""
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
 msgstr ""
 
-# VALUESET_BAD_FILTER_VALUE_CANT_CHECK
-#: VALUESET_BAD_FILTER_VALUE_CANT_CHECK
-msgid "The value ''{1}'' for the filter {0} can''t be checked: {2}"
-msgstr ""
-
 # VALUESET_BAD_FILTER_VALUE_CODE
 #: VALUESET_BAD_FILTER_VALUE_CODE
 msgid "The value for a filter based on property ''{0}'' must be a valid code, not ''{1}''"
@@ -7225,11 +7771,6 @@ msgstr ""
 # VALUESET_BAD_FILTER_VALUE_INTEGER
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
 msgid "The value for a filter based on property ''{0}'' must be integer value, not ''{1}''"
-msgstr ""
-
-# VALUESET_BAD_FILTER_VALUE_INVALID
-#: VALUESET_BAD_FILTER_VALUE_INVALID
-msgid "The value ''{1}'' for the filter {0} is invalid: {2}"
 msgstr ""
 
 # VALUESET_BAD_FILTER_VALUE_VALID_CODE
@@ -7294,12 +7835,37 @@ msgstr ""
 msgid "Example System ''{0}'' specified, so Concepts and Filters can''t be checked"
 msgstr ""
 
+# VALUESET_EXPANSION_CODESYSTEM_LIMITED
+#: VALUESET_EXPANSION_CODESYSTEM_LIMITED
+msgid "Only {1} codes from the code system ''{0}'' can be listed in an expansion (by agreement with its publisher), so this expansion doesn''t list all the codes asked for"
+msgstr ""
+
 # VALUESET_EXPANSION_EXTRA
 #: VALUESET_EXPANSION_EXTRA
 msgid "The expansion provided has an extra code {1} that is not in the expansion using default expansion parameters"
 msgid_plural "The expansion provided is has {0} extra codes ({1}) that are not in the expansion using default expansion parameters"
 msgstr[0] ""
 msgstr[1] ""
+
+# VALUESET_EXPANSION_FILTER_UNKNOWN_CODE
+#: VALUESET_EXPANSION_FILTER_UNKNOWN_CODE
+msgid "The value set include filter ''{0} {1} {2}'' refers to a code that is not in the code system ''{3}'', so the filter matches no codes"
+msgstr ""
+
+# VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR
+#: VALUESET_EXPANSION_FILTER_UNKNOWN_CODE_ERROR
+msgid "The value set include filter ''{0} {1} {2}'' refers to a code that is not in the code system ''{3}'', so the value set can''t be expanded"
+msgstr ""
+
+# VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE
+#: VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE
+msgid "The value set includes the code ''{0}'', which is not in the code system ''{1}'', so it is not in the expansion"
+msgstr ""
+
+# VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR
+#: VALUESET_EXPANSION_INCLUDE_UNKNOWN_CODE_ERROR
+msgid "The value set includes the code ''{0}'', which is not in the code system ''{1}'', so the value set can''t be expanded"
+msgstr ""
 
 # VALUESET_EXPANSION_MISSING
 #: VALUESET_EXPANSION_MISSING
@@ -7453,6 +8019,16 @@ msgstr ""
 msgid "The value set include has too many concepts to validate ({0}, more than the limit of {1}), so each individual code has not been checked"
 msgstr ""
 
+# VALUESET_INVALID_FOR_VALIDATION
+#: VALUESET_INVALID_FOR_VALIDATION
+msgid "The value set ''{0}'' is not valid: {1}"
+msgstr ""
+
+# VALUESET_MODIFIER_EXTENSION_UNKNOWN
+#: VALUESET_MODIFIER_EXTENSION_UNKNOWN
+msgid "The value set {0} can''t be processed: {1} has a modifier extension that isn''t understood ({2})"
+msgstr ""
+
 # VALUESET_NO_COMPOSE
 #: VALUESET_NO_COMPOSE
 msgid "The value set {0} has no compose and no expansion, so it cannot be expanded"
@@ -7554,7 +8130,22 @@ msgstr ""
 
 # VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY_COUNT
-msgid "The value set ''{0}'' expansion has {2} codes, which is too many to produce ({1})"
+msgid "The value set ''{0}'' expansion has {2} codes, which is too many to display ({1})"
+msgstr ""
+
+# VALUESET_TOO_COSTLY_PAGE
+#: VALUESET_TOO_COSTLY_PAGE
+msgid "The value set ''{0}'' can''t be paged to offset {1} with count {2}: the server walks at most {3} codes to reach a page"
+msgstr ""
+
+# VALUESET_TOO_COSTLY_PAGE_REQUEST
+#: VALUESET_TOO_COSTLY_PAGE_REQUEST
+msgid "The value set in the request can''t be paged to offset {0} with count {1}: the server walks at most {2} codes to reach a page"
+msgstr ""
+
+# VALUESET_TOO_COSTLY_REQUEST
+#: VALUESET_TOO_COSTLY_REQUEST
+msgid "The expansion of the value set in the request has too many codes to produce ({0})"
 msgstr ""
 
 # VALUESET_TOO_COSTLY_TIME

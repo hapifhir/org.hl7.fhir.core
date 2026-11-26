@@ -451,4 +451,88 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   public List<Base> performSearch(Object appContext, String url) throws FHIRException {
     return null;
   }
+
+  // a map can call groups recursively: one that never stops is stopped at a depth, and one that calls two groups each
+  // time (2^n rules at depth n) is stopped by the number of rules it runs, before it runs out of memory
+
+  private static final String LOOP_MAP = "map \"http://example.org/StructureMap/loop\" = \"loop\"\n\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as target\n\n"
+      + "group loop(source src : Patient, target tgt : Patient) {\n"
+      + "  src then loop(src, tgt) \"again\";\n"
+      + "}\n";
+
+  // walks the items of a QuestionnaireResponse, calling the group twice for each: 2^n rules for items n deep
+  private static final String DOUBLING_MAP = "map \"http://example.org/StructureMap/doubling\" = \"doubling\"\n\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse\" alias QuestionnaireResponse as source\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as target\n\n"
+      + "group twice(source src, target tgt) {\n"
+      + "  src.item as i then twice(i, tgt) \"a\";\n"
+      + "  src.item as i then twice(i, tgt) \"b\";\n"
+      + "}\n";
+
+  private Element nestedItems(int depth) throws IOException {
+    StringBuilder b = new StringBuilder("{\"resourceType\":\"QuestionnaireResponse\",\"status\":\"completed\"");
+    for (int i = 0; i < depth; i++) {
+      b.append(",\"item\":[{\"linkId\":\"i").append(i).append("\"");
+    }
+    for (int i = 0; i < depth; i++) {
+      b.append("}]");
+    }
+    b.append("}");
+    return Manager.parseSingle(context, new ByteArrayInputStream(b.toString().getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON);
+  }
+
+  private Element patient() throws IOException {
+    return Manager.parseSingle(context, new ByteArrayInputStream("{\"resourceType\":\"Patient\",\"id\":\"p\"}".getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON);
+  }
+
+  @Test
+  void aGroupThatCallsItselfForeverIsStopped() throws IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap map = scu.parse(LOOP_MAP, "loop");
+    FHIRException e = Assertions.assertThrows(FHIRException.class, () -> scu.transform(null, patient(), map, patient()));
+    Assertions.assertTrue(e.getMessage().contains("too deeply"), e.getMessage());
+  }
+
+  @Test
+  void groupsThatMultiplyAreStopped() throws IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap map = scu.parse(DOUBLING_MAP, "doubling");
+    // a few levels is fine
+    scu.transform(null, nestedItems(5), map, patient());
+    FHIRException e = Assertions.assertThrows(FHIRException.class, () -> scu.transform(null, nestedItems(30), map, patient()));
+    Assertions.assertTrue(e.getMessage().contains("more than 1000000 rules"), e.getMessage());
+    scu.setMaxRules(1000);
+    e = Assertions.assertThrows(FHIRException.class, () -> scu.transform(null, nestedItems(30), map, patient()));
+    Assertions.assertTrue(e.getMessage().contains("more than 1000 rules"), e.getMessage());
+  }
+
+  @Test
+  void aTransformThatTakesTooLongIsStopped() throws IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    scu.setMaxExecutionMillis(100);
+    scu.setMaxRules(0);
+    StructureMap map = scu.parse(DOUBLING_MAP, "doubling");
+    FHIRException e = Assertions.assertThrows(FHIRException.class, () -> scu.transform(null, nestedItems(30), map, patient()));
+    Assertions.assertTrue(e.getMessage().contains("didn't finish"), e.getMessage());
+  }
+  // append(s, s) doubles a string: a group that calls itself with that would make one too big for memory long before it got too deep
+  private static final String APPEND_MAP = "map \"http://example.org/StructureMap/append\" = \"append\"\n\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as target\n\n"
+      + "group start(source src : Patient, target tgt : Patient) {\n"
+      + "  src.id as s -> tgt as t then grow(s, t) \"start\";\n"
+      + "}\n\n"
+      + "group grow(source s, target t) {\n"
+      + "  s -> t.id = append(s, s) as n then grow(n, t) \"grow\";\n"
+      + "}\n";
+
+  @Test
+  void aStringThatDoublesIsStopped() throws IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap map = scu.parse(APPEND_MAP, "append");
+    FHIRException e = Assertions.assertThrows(FHIRException.class, () -> scu.transform(null, patient(), map, patient()));
+    Assertions.assertTrue(e.getMessage().contains("transform made a string of more than"), e.getMessage());
+  }
 }

@@ -42,7 +42,7 @@ public class ExcelDataProvider extends TableDataProvider {
    * @throws InvalidFormatException If the file format is invalid.
    */
   public ExcelDataProvider(String filename, String sheetName, String range, Locale locale) throws IOException, InvalidFormatException {
-    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
+    FileInputStream fis = ManagedFileAccess.inStream(filename);
     this.workbook = WorkbookFactory.create(fis);
     if (sheetName != null) {
       this.sheet = workbook.getSheet(sheetName);
@@ -78,7 +78,7 @@ public class ExcelDataProvider extends TableDataProvider {
 
 
   public ExcelDataProvider(String filename) throws InvalidFormatException, IOException {
-    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
+    FileInputStream fis = ManagedFileAccess.inStream(filename);
     this.workbook = WorkbookFactory.create(fis);
     this.sheet = workbook.getSheetAt(0);
     loadColumnHeaders();

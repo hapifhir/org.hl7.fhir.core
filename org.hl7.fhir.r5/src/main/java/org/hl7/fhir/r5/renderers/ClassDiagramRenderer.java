@@ -44,6 +44,7 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ClassDiagramRenderer {
   private String defnFile;
@@ -120,7 +121,7 @@ public class ClassDiagramRenderer {
     this.context = rc.getContext();
     this.cutils = rc.getContextUtilities();
     this.putils = rc.getProfileUtilities();
-    File f = new File(destFolder);
+    File f = ManagedFileAccess.file(destFolder);
     if (!f.exists()) {
       FileUtilities.createDirectory(destFolder);
     }
@@ -136,7 +137,7 @@ public class ClassDiagramRenderer {
 
   public boolean hasSource() {
     try {
-      File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
+      File f = ManagedFileAccess.file(Utilities.path(sourceFolder, diagramId+".svg"));
       return f.exists(); 
     } catch (IOException e) {
       return false;
@@ -144,7 +145,7 @@ public class ClassDiagramRenderer {
   }
   
   public String buildClassDiagram(JsonObject control) throws Exception {
-    File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
+    File f = ManagedFileAccess.file(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
     }
@@ -182,7 +183,7 @@ public class ClassDiagramRenderer {
     this.defnFile = defnFile;
     this.defnSD = sd;
 
-    File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
+    File f = ManagedFileAccess.file(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
     }
@@ -1673,7 +1674,7 @@ public class ClassDiagramRenderer {
   public String buildConstraintDiagram(StructureDefinition profile, String defnFile) throws FHIRException, IOException {
     this.defnFile = defnFile;
     this.defnSD = profile;
-    File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
+    File f = ManagedFileAccess.file(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
     }

@@ -1,10 +1,20 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.annotation.Nonnull;
 import java.io.File;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,19 +24,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
-import javax.annotation.Nonnull;
-
-
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.*;
-
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FilesystemPackageManagerTests {
 
@@ -259,6 +258,88 @@ public class FilesystemPackageManagerTests {
 
     File dummyContentFile = ManagedFileAccess.file(dummyTempDirectory.getAbsolutePath(), "dummy.txt");
     assertThat(dummyContentFile).exists();
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "current$my-branch, true",
+    "current$2026-11-gg-supplement-unversioned, true",
+    "current$v1.2_x, true",
+    "current, false",
+    "1.2.3, false",
+    "dev, false",
+    // the branch name is used in a url and a folder name: no '/' (not supported), and nothing else odd
+    "current$, false",
+    "current$a/b, false",
+    "current$../x, false",
+    "current$-x, false",
+    "current$a b, false",
+    "current$$x, false"
+  })
+  void testIsCurrentBranch(String version, boolean expected) {
+    assertEquals(expected, FilesystemPackageCacheManager.isCurrentBranch(version), version);
+  }
+
+  /**
+   * A current$branch with a bad branch name is refused before it's looked for in the cache or fetched: the branch is
+   * used in a folder name and in a url (current$../../x would be fetched from build.fhir.org/ig/../../x)
+   */
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(strings = {
+    "current$../../x",
+    "current$a/b",
+    "current$",
+    "current$-x"})
+  void aBadBranchIsRefusedBeforeItIsUsed(String version) throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch"));
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    org.hl7.fhir.exceptions.FHIRException e = org.junit.jupiter.api.Assertions.assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> pcm.loadPackage("example.fhir.uv.myig", version));
+    assertTrue(e.getMessage().contains("illegal"), e.getMessage());
+  }
+
+  /**
+   * A branch's ci-build (current$branch) loads from start to finish when a released version of the same package is
+   * already in the cache: it's fetched from the branch on the ci-build server, cached as id#current$branch, and the next
+   * load finds it in the cache (and checks it's still the branch's latest build). current$branch has no dots, so the
+   * cache lookup used to treat it as a wildcard version, and fail matching it against the released version
+   */
+  @Test
+  void aBranchBuildLoadsWhenAReleasedVersionIsCached() throws IOException, InterruptedException {
+    org.hl7.fhir.utilities.http.ManagedWebAccess.loadFromFHIRSettings(org.hl7.fhir.utilities.settings.FhirSettingsPOJO.builder().ssrfProtectionEnabled(false).build());
+    okhttp3.mockwebserver.MockWebServer server = new okhttp3.mockwebserver.MockWebServer();
+    try {
+      String root = server.url("").toString();
+      CIBuildClient ci = new CIBuildClient(root.substring(0, root.length() - 1), 3600000, false);
+      File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-branch-build"));
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).withCiBuildClient(ci).build();
+      pcm.addPackageToCache("example.fhir.uv.myig", "1.0.0", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.0.0");
+
+      byte[] tgz;
+      try (java.io.InputStream in = this.getClass().getResourceAsStream("/npm/dummy-package.tgz")) {
+        tgz = in.readAllBytes();
+      }
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody("[{\"url\": \"http://somewhere.org/fhir/uv/myig\", \"package-id\": \"example.fhir.uv.myig\", "
+          + "\"date\": \"Sat, 30 Nov, 2024 00:31:05 +0000\", \"repo\": \"Org/myig/branches/main/qa.json\"}]").addHeader("Content-Type", "application/json"));
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody(new okio.Buffer().write(tgz)));
+
+      NpmPackage npm = pcm.loadPackage("example.fhir.uv.myig", "current$my-branch");
+      assertEquals("current$my-branch", npm.version());
+      assertTrue(ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#current$my-branch").exists());
+      server.takeRequest(); // qas.json
+      assertEquals("/ig/Org/myig/branches/my-branch/package.tgz", server.takeRequest().getRequestUrl().encodedPath());
+
+      // loaded again, it comes from the cache, once the branch's manifest says it's still the latest build
+      server.enqueue(new okhttp3.mockwebserver.MockResponse().setBody("{\"date\": \"" + npm.date() + "\"}").addHeader("Content-Type", "application/json"));
+      assertEquals("current$my-branch", pcm.loadPackage("example.fhir.uv.myig", "current$my-branch").version());
+      assertEquals("/ig/Org/myig/branches/my-branch/package.manifest.json", server.takeRequest().getRequestUrl().encodedPath());
+      assertEquals(3, server.getRequestCount());
+
+      // and the released version is still there
+      assertEquals("1.0.0", pcm.loadPackage("example.fhir.uv.myig", "1.0.0").version());
+    } finally {
+      server.shutdown();
+      org.hl7.fhir.utilities.http.ManagedWebAccess.loadFromFHIRSettings();
+    }
   }
 
   @Test

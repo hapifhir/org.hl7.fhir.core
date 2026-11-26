@@ -1,26 +1,19 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.core.VersionResolutionRules;
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
-import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
@@ -34,6 +27,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.util.*;
 
 public class CodeSystemValidator extends BaseValidator {
 
@@ -826,6 +821,15 @@ public class CodeSystemValidator extends BaseValidator {
       if (!"supplement".equals(content)) {
         NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG);
+      }
+      // a supplement with the url of the code system it supplements claims to be a version of that
+      // code system (url|version), which it is not
+      if (!Utilities.noString(url)) {
+        String suppUrl = supp.contains("|") ? supp.substring(0, supp.indexOf("|")) : supp;
+        NodeStack s = stack.push(cs.getNamedChild("url", false), -1, null, null);
+        String version = cs.getNamedChildValue("version", false);
+        // (url|version, as the terminology server names it in its warning)
+        rule(errors, "2026-11-19", IssueType.BUSINESSRULE, s.getLiteralPath(), !url.equals(suppUrl), I18nConstants.CODESYSTEM_CS_SUPP_SAME_URL, Utilities.noString(version) ? url : url + "|" + version);
       }
       if (!Utilities.noString(caseSensitive)) {
         NodeStack s = stack.push(cs.getNamedChild("caseSensitive", false), -1, null, null);

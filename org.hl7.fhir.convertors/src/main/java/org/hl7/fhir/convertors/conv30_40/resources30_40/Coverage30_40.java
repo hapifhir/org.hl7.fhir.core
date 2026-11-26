@@ -178,7 +178,7 @@ public class Coverage30_40 {
       return;
 
     Coverage.GroupComponent grouping = tgt.getGrouping();
-    switch (classComponent.getType().getCodingFirstRep().getCode()) {
+    switch (java.util.Objects.toString(classComponent.getType().getCodingFirstRep().getCode(), "")) {
       case "group":
         grouping.setGroup(classComponent.getValue());
         grouping.setGroupDisplay(classComponent.getName());

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Period40_N;
@@ -47,11 +48,13 @@ public class Account40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Account tgt = new org.hl7.fhir.model.core.Account();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Account", "5.0", new String[] {"billingStatus", "diagnosis", "procedure", "currency", "balance", "calculatedAt"}, CrossVersionElements40_N.urls("Account", "6.0", new String[] {"covers"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "billingStatus", "diagnosis", "procedure", "currency", "balance", "calculatedAt");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "covers");
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertAccountStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasName())
@@ -67,8 +70,8 @@ public class Account40_N {
       tgt.setDescriptionElement(String40_N.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
-//    if (src.hasPartOf())
-//      tgt.setPartOf(Reference40_N.convertReference(src.getPartOf()));
+    if (src.hasPartOf())
+      tgt.setParent(Reference40_N.convertReference(src.getPartOf()));
     return tgt;
   }
 
@@ -77,10 +80,12 @@ public class Account40_N {
       return null;
     org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "billingStatus", "diagnosis", "procedure", "currency", "balance", "calculatedAt");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "covers");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertAccountStatus(src.getStatusElement()), src.fhirType(), "status"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasName())
@@ -96,8 +101,8 @@ public class Account40_N {
       tgt.setDescriptionElement(String40_N.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.model.core.Account.GuarantorComponent t : src.getGuarantorList())
       tgt.addGuarantor(convertGuarantorComponent(t));
-//    if (src.hasPartOf())
-//      tgt.setPartOf(Reference40_N.convertReference(src.getPartOf()));
+    if (src.hasParent())
+      tgt.setPartOf(Reference40_N.convertReference(src.getParent()));
     return tgt;
   }
 
@@ -193,7 +198,8 @@ public class Account40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Account.GuarantorComponent tgt = new org.hl7.fhir.model.core.Account.GuarantorComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("Account.guarantor", "5.0", new String[] {}, CrossVersionElements40_N.urls("Account.guarantor", "6.0", new String[] {"account", "responsibility", "limit", "rank"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "account", "responsibility", "limit", "rank");
     if (src.hasParty())
       tgt.setParty(Reference40_N.convertReference(src.getParty()));
     if (src.hasOnHold())
@@ -208,6 +214,7 @@ public class Account40_N {
       return null;
     org.hl7.fhir.r4.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r4.model.Account.GuarantorComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "account", "responsibility", "limit", "rank");
     if (src.hasParty())
       tgt.setParty(Reference40_N.convertReference(src.getParty()));
     if (src.hasOnHold())

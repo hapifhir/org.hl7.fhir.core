@@ -1,26 +1,20 @@
 package org.hl7.fhir.validation.instance.type;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.validation.ValidatorSession;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.services.fhirpath.TypeDetails;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.services.sql.Column;
 import org.hl7.fhir.services.sql.ColumnKind;
 import org.hl7.fhir.services.sql.Runner;
-
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -31,6 +25,12 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 // see also org.hl7.fhir.r5.utils.sql.Validator
 public class ViewDefinitionValidator extends BaseValidator {

@@ -1,23 +1,28 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarUtils;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.ByteArrayInputStream;import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NpmPackageTests implements ResourceLoaderTests {
   @Test
@@ -32,7 +37,7 @@ class NpmPackageTests implements ResourceLoaderTests {
 
   @Test
   void testEvilTgz() {
-    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> {
       InputStream tgzStream = getResourceAsInputStream("npm", "tar", "tgz-evil.tgz");
       NpmPackage.fromPackage(tgzStream);
     });
@@ -67,7 +72,8 @@ class NpmPackageTests implements ResourceLoaderTests {
     byte[] content = ("{\"resourceType\":\"Basic\",\"id\":\"big\",\"language\":\""+"x".repeat(200000)+"\"}").getBytes(StandardCharsets.UTF_8);
     byte[] tgz = buildTgz("UTF-8", "package/big.json", content);
 
-    // no limit (the default) - loads fine
+    // the default limit is 1.5 GB - loads fine
+    assertEquals(1536L * 1024 * 1024, NpmPackage.getDefaultMaxLoadSize());
     assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
 
     // generous per-instance limit - loads fine
@@ -85,7 +91,7 @@ class NpmPackageTests implements ResourceLoaderTests {
       // but an explicit per-instance limit still wins
       assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz), "test", false, 1000000));
     } finally {
-      NpmPackage.setDefaultMaxLoadSize(0);
+      NpmPackage.setDefaultMaxLoadSize(NpmPackage.DEFAULT_MAX_LOAD_SIZE);
     }
   }
 
@@ -145,6 +151,97 @@ class NpmPackageTests implements ResourceLoaderTests {
     assertFalse(NpmPackage.isExampleFolder(null));
   }
 
+  @Test
+  void testEntryNameKey() {
+    assertEquals("package/examples/x.json", NpmPackage.entryNameKey("./package//Examples/X.json"));
+    assertEquals("package/examples/x.json", NpmPackage.entryNameKey("package\\examples\\x.json"));
+    assertEquals("package/package.json", NpmPackage.entryNameKey("/package/./package.json"));
+    // NFC and NFD are the same name
+    assertEquals(NpmPackage.entryNameKey("package/K\u00FDnigstein.json"), NpmPackage.entryNameKey("package/Ky\u0301nigstein.json"));
+  }
+
+  /** Two files of the same name (after normalisation, ignoring case): readers differ on which wins, so the package is refused */
+  @Test
+  void testDuplicateNames(@TempDir Path tempDir) throws IOException {
+    byte[] exact = buildTgz("UTF-8", "package/package.json", "{\"name\":\"other\",\"version\":\"9.9.9\"}".getBytes(StandardCharsets.UTF_8));
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(exact)));
+    assertTrue(thrown.getMessage().contains("more than one file named package/package.json"), thrown.getMessage());
+
+    byte[] variant = buildTgz("UTF-8", "./package/Package.JSON", PACKAGE_JSON);
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(variant)));
+    assertTrue(thrown.getMessage().contains("which are the same file to some systems"), thrown.getMessage());
+
+    // extracting to disk, as the package cache does
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.extractFromTgz(new ByteArrayInputStream(exact), "test", tempDir.resolve("x").toString(), true));
+    assertTrue(thrown.getMessage().contains("more than one file named"), thrown.getMessage());
+
+    // a zip (it can't hold the exact same name twice, but can hold two that differ in case)
+    java.io.ByteArrayOutputStream zipBytes = new java.io.ByteArrayOutputStream();
+    try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(zipBytes)) {
+      for (String name : new String[] {"package/package.json", "package/PACKAGE.json"}) {
+        zip.putNextEntry(new java.util.zip.ZipEntry(name));
+        zip.write(PACKAGE_JSON);
+        zip.closeEntry();
+      }
+    }
+    thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromZip(new ByteArrayInputStream(zipBytes.toByteArray()), false, "test"));
+    assertTrue(thrown.getMessage().contains("which are the same file to some systems"), thrown.getMessage());
+  }
+
+  /**
+   * Two examples of the same name are fine (published packages have them): only the example folders are let off, and
+   * only for exactly the same name - not one that differs in case, which is the same file to some file systems
+   */
+  @Test
+  void testDuplicateExamplesAreFine(@TempDir Path tempDir) throws IOException {
+    for (String[] names : new String[][] {
+        {"package/examples/Example-observation-bmi.json", "package/examples/Example-observation-bmi.json"},
+        {"package/example/x.json", "./package//example/x.json"},
+        {"package/examples/sub/x.json", "package/examples/sub/x.json"}}) {
+      java.io.ByteArrayOutputStream tar = new java.io.ByteArrayOutputStream();
+      try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(tar), "UTF-8")) {
+        addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+        addTarEntry(tarOut, names[0], "{\"resourceType\":\"Observation\",\"id\":\"a\"}".getBytes(StandardCharsets.UTF_8));
+        addTarEntry(tarOut, names[1], "{\"resourceType\":\"Observation\",\"id\":\"b\"}".getBytes(StandardCharsets.UTF_8));
+      }
+      byte[] tgz = tar.toByteArray();
+      NpmPackage.fromPackage(new ByteArrayInputStream(tgz));
+      NpmPackage.extractFromTgz(new ByteArrayInputStream(tgz), "test", tempDir.resolve("x" + names[1].length()).toString(), true);
+    }
+    // but not names that differ in case
+    java.io.ByteArrayOutputStream cased = new java.io.ByteArrayOutputStream();
+    try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(cased), "UTF-8")) {
+      addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/examples/x.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/Examples/X.json", PACKAGE_JSON);
+    }
+    IOException casedThrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(cased.toByteArray())));
+    assertTrue(casedThrown.getMessage().contains("which are the same file to some systems"), casedThrown.getMessage());
+    // nor in a folder that only starts with the name of one
+    java.io.ByteArrayOutputStream tar = new java.io.ByteArrayOutputStream();
+    try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new GzipCompressorOutputStream(tar), "UTF-8")) {
+      addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/examples2/x.json", PACKAGE_JSON);
+      addTarEntry(tarOut, "package/examples2/x.json", PACKAGE_JSON);
+    }
+    byte[] tgz = tar.toByteArray();
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
+    assertTrue(thrown.getMessage().contains("more than one file named package/examples2/x.json"), thrown.getMessage());
+  }
+
+  /** A name with a .. segment (/ or \\ separated) is refused by every reader; .. elsewhere in a name is fine */
+  @Test
+  void testDotDotSegments(@TempDir Path tempDir) throws IOException {
+    for (String name : new String[] {"package/../evil.json", "package\\..\\evil.json", "package/examples/.."}) {
+      byte[] tgz = buildTgz("UTF-8", name, PACKAGE_JSON);
+      IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(tgz)), name);
+      assertEquals("Entry with an illegal name: " + name, thrown.getMessage());
+      thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.extractFromTgz(new ByteArrayInputStream(tgz), "test", tempDir.resolve("x").toString(), true), name);
+      assertEquals("Entry with an illegal name: " + name, thrown.getMessage());
+    }
+    assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(buildTgz("UTF-8", "package/Patient-a..b.json", patient("a")))));
+  }
+
   private static final byte[] PACKAGE_JSON = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
     .getBytes(StandardCharsets.UTF_8);
 
@@ -173,13 +270,38 @@ class NpmPackageTests implements ResourceLoaderTests {
   private static byte[] buildTgz(String encoding, String entryName, byte[] fileContent) throws IOException {
     byte[] packageJson = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
       .getBytes(StandardCharsets.UTF_8);
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos);
-         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzipOut, encoding)) {
+    // TarArchiveEntry turns the platform file separator into /, so on Windows it can't write a name with a \ in it.
+    // Write the entry with / and put the \ back into its header afterwards, so every platform gets the same archive
+    String written = entryName.replace('\\', '/');
+    ByteArrayOutputStream tar = new ByteArrayOutputStream();
+    try (TarArchiveOutputStream tarOut = new TarArchiveOutputStream(tar, encoding)) {
       addTarEntry(tarOut, "package/package.json", packageJson);
-      addTarEntry(tarOut, entryName, fileContent);
+      addTarEntry(tarOut, written, fileContent);
+    }
+    byte[] bytes = tar.toByteArray();
+    if (!written.equals(entryName)) {
+      setTarEntryName(bytes, written, entryName, encoding);
+    }
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos)) {
+      gzipOut.write(bytes);
     }
     return baos.toByteArray();
+  }
+
+  /** rewrites the name in an entry's header (same length names only) and fixes the header checksum */
+  private static void setTarEntryName(byte[] tar, String oldName, String newName, String encoding) throws IOException {
+    byte[] o = oldName.getBytes(encoding);
+    byte[] n = newName.getBytes(encoding);
+    for (int h = 0; h + 512 <= tar.length; h += 512) {
+      if (Arrays.equals(tar, h, h + o.length, o, 0, o.length) && (o.length == 100 || tar[h + o.length] == 0)) {
+        System.arraycopy(n, 0, tar, h, n.length);
+        Arrays.fill(tar, h + 148, h + 156, (byte) ' ');
+        TarUtils.formatCheckSumOctalBytes(TarUtils.computeCheckSum(Arrays.copyOfRange(tar, h, h + 512)), tar, h + 148, 8);
+        return;
+      }
+    }
+    throw new IOException("No tar header for " + oldName);
   }
 
   // Created by claude-sonnet-4-6
@@ -190,5 +312,23 @@ class NpmPackageTests implements ResourceLoaderTests {
     tar.write(content);
     tar.closeArchiveEntry();
   }
-}
 
+  /**
+   * A zip (a template from a github repository) can't contain a name with ".." in it, any more than a tgz can:
+   * unpacked, package/content/../scripts/ant.xml would replace scripts/ant.xml
+   */
+  @Test
+  void testEvilZip() throws IOException {
+    java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
+    try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(bytes)) {
+      zip.putNextEntry(new java.util.zip.ZipEntry("repo-main/package/package.json"));
+      zip.write("{\"name\" : \"test.template\", \"version\" : \"1.0.0\"}".getBytes(StandardCharsets.UTF_8));
+      zip.closeEntry();
+      zip.putNextEntry(new java.util.zip.ZipEntry("repo-main/package/content/../scripts/ant.xml"));
+      zip.write("<project/>".getBytes(StandardCharsets.UTF_8));
+      zip.closeEntry();
+    }
+    IOException thrown = Assertions.assertThrows(IOException.class, () -> NpmPackage.fromZip(new ByteArrayInputStream(bytes.toByteArray()), true, "test"));
+    assertEquals("Entry with an illegal name: repo-main/package/content/../scripts/ant.xml", thrown.getMessage());
+  }
+}

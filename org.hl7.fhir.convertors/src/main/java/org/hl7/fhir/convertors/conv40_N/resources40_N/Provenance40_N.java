@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Signature40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Instant40_N;
@@ -47,10 +48,12 @@ public class Provenance40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Provenance tgt = new org.hl7.fhir.model.core.Provenance();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("Provenance", "5.0", new String[] {"basedOn", "patient", "encounter"}, CrossVersionElements40_N.urls("Provenance", "6.0", new String[] {"why"})));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "basedOn", "patient", "encounter");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "why");
     for (org.hl7.fhir.r4.model.Reference t : src.getTarget()) tgt.addTarget(Reference40_N.convertReference(t));
-    if (src.hasOccurred())
-      tgt.setOccurred(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurred()));
+    // the types R4 and R6 allow differ: a value of a type the other version doesn't allow is an extension
+    CrossVersionElements40_N.choiceToR6(src, src.getExtension(), src.fhirType(), "occurred", tgt, tgt.getExtension());
     if (src.hasRecorded())
       tgt.setRecordedElement(Instant40_N.convertInstant(src.getRecordedElement()));
     for (org.hl7.fhir.r4.model.UriType t : src.getPolicy()) tgt.getPolicyList().add(Uri40_N.convertUri(t));
@@ -73,9 +76,10 @@ public class Provenance40_N {
       return null;
     org.hl7.fhir.r4.model.Provenance tgt = new org.hl7.fhir.r4.model.Provenance();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "basedOn", "patient", "encounter");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "why");
     for (org.hl7.fhir.model.core.Reference t : src.getTargetList()) tgt.addTarget(Reference40_N.convertReference(t));
-    if (src.hasOccurred())
-      tgt.setOccurred(ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getOccurred()));
+    CrossVersionElements40_N.choiceToR4(src, src.getExtension(), src.fhirType(), "occurred", tgt, tgt.getExtension());
     if (src.hasRecorded())
       tgt.setRecordedElement(Instant40_N.convertInstant(src.getRecordedElement()));
     for (org.hl7.fhir.model.core.UriType t : src.getPolicyList()) tgt.getPolicy().add(Uri40_N.convertUri(t));
@@ -131,7 +135,7 @@ public class Provenance40_N {
     org.hl7.fhir.model.core.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.model.core.Provenance.ProvenanceEntityComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasRole())
-      tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
+      tgt.setRoleElement(CrossVersionElements40_N.toR6Code(src.getRoleElement(), convertProvenanceEntityRole(src.getRoleElement()), src.fhirType(), "role"));
     if (src.hasWhat())
       tgt.setWhat(Reference40_N.convertReference(src.getWhat()));
     for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent())
@@ -145,7 +149,7 @@ public class Provenance40_N {
     org.hl7.fhir.r4.model.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.r4.model.Provenance.ProvenanceEntityComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasRole())
-      tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
+      tgt.setRoleElement(CrossVersionElements40_N.toR4Code(src.getRoleElement(), convertProvenanceEntityRole(src.getRoleElement()), src.fhirType(), "role"));
     if (src.hasWhat())
       tgt.setWhat(Reference40_N.convertReference(src.getWhat()));
     for (org.hl7.fhir.model.core.Provenance.ProvenanceAgentComponent t : src.getAgentList())

@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Uri40_N;
@@ -12,7 +14,7 @@ public class Identifier40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.Identifier tgt = new org.hl7.fhir.model.core.Identifier();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertIdentifierUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertIdentifierUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasType()) tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSystem()) tgt.setSystemElement(Uri40_N.convertUri(src.getSystemElement()));
     if (src.hasValue()) tgt.setValueElement(String40_N.convertString(src.getValueElement()));
@@ -25,7 +27,7 @@ public class Identifier40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Identifier tgt = new org.hl7.fhir.r4.model.Identifier();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertIdentifierUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertIdentifierUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasType()) tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     if (src.hasSystem()) tgt.setSystemElement(Uri40_N.convertUri(src.getSystemElement()));
     if (src.hasValue()) tgt.setValueElement(String40_N.convertString(src.getValueElement()));

@@ -12,10 +12,11 @@ msgstr "Actor: {0}"
 msgid "Capabilities:"
 msgstr "Capabilidades:"
 
-# ACTOR_DEF_DER
-#: ACTOR_DEF_DER
-msgid "Derived from:"
-msgstr "Derivado de:"
+# ACTOR_DEF_CAT
+#: ACTOR_DEF_CAT
+msgctxt "ACTOR_DEF_CAT"
+msgid "Category:"
+msgstr ""
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
@@ -121,6 +122,16 @@ msgstr "Este é o conjunto de valores recomendado (a documentação deve explica
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
 msgstr "Obrigatório"
+
+# ADD_BIND_TX_ALL
+#: ADD_BIND_TX_ALL
+msgid "Additional / all"
+msgstr ""
+
+# ADD_BIND_TX_ANY
+#: ADD_BIND_TX_ANY
+msgid "Additional / any"
+msgstr ""
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -731,6 +742,11 @@ msgstr "Resumo das operações a nível do parâmetros de pesquisa"
 #, fuzzy
 msgid "support"
 msgstr "apoio"
+
+# CAPABILITY_SUPPORTED
+#: CAPABILITY_SUPPORTED
+msgid "supported"
+msgstr ""
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
@@ -1802,6 +1818,11 @@ msgstr "Imediato"
 msgid "Interval: {0}"
 msgstr "Intervalo: {0}"
 
+# DATA_REND_ISO_COUNTRY
+#: DATA_REND_ISO_COUNTRY
+msgid "ISO Country Codes"
+msgstr ""
+
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 #, fuzzy
@@ -2016,6 +2037,11 @@ msgstr "AVISO: Extensão de modificador não renderizável!"
 #, fuzzy
 msgid "Until {0}"
 msgstr "Até {0}"
+
+# DATA_REND_UN_REGIONS
+#: DATA_REND_UN_REGIONS
+msgid "UN Regions"
+msgstr ""
 
 # DATA_REND_UP
 #: DATA_REND_UP
@@ -2670,6 +2696,7 @@ msgstr "Tesauro NCI"
 # GENERAL_NOTE
 #: GENERAL_NOTE
 #, fuzzy
+msgctxt "GENERAL_NOTE"
 msgid "Note"
 msgstr "Nota"
 
@@ -2782,6 +2809,11 @@ msgstr "Recursos"
 #, fuzzy
 msgid "Security Label"
 msgstr "Etiqueta de segurança"
+
+# GENERAL_SHOW
+#: GENERAL_SHOW
+msgid "Show:"
+msgstr ""
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
@@ -4752,6 +4784,13 @@ msgstr "Questionário"
 msgid "Questionnaire:"
 msgstr "Questionário:"
 
+# QUEST_QUESTION_CODE
+#: QUEST_QUESTION_CODE
+msgid "Question Code:"
+msgid_plural "Question Codes:"
+msgstr[0] ""
+msgstr[1] ""
+
 # QUEST_READONLY
 #: QUEST_READONLY
 #, fuzzy
@@ -5367,9 +5406,9 @@ msgstr "Esta extensão está obsoleta e não deve mais ser usada"
 msgid "This extension may be used on the following element(s)"
 msgstr "Esta extensão pode ser usada nos seguintes elementos"
 
-# SDR_EXT_ELEM_ID
-#: SDR_EXT_ELEM_ID
-msgid "Element ID"
+# SDR_EXT_ELEMENTS
+#: SDR_EXT_ELEMENTS
+msgid "elements"
 msgstr ""
 
 # SDR_EXT_EXT
@@ -5388,6 +5427,11 @@ msgstr ""
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
 msgstr "Caminho"
+
+# SDR_EXT_ROOT_ELEMENTS
+#: SDR_EXT_ROOT_ELEMENTS
+msgid "root elements"
+msgstr ""
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
@@ -5417,6 +5461,7 @@ msgstr ""
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
+msgctxt "SDR_GUIDANCE_HERE"
 msgid "documentation"
 msgstr ""
 
@@ -5894,6 +5939,11 @@ msgstr "Fixo: {0} {1}"
 msgid "Mandatory: {0} {1}"
 msgstr "Obrigatório: {0} {1}"
 
+# SD_SUMMARY_MAPPINGS
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgstr ""
+
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 #, fuzzy
@@ -6095,6 +6145,11 @@ msgstr ""
 msgid "This element has or is affected by constraints ("
 msgstr "Este elemento tem ou é afetado por restrições ("
 
+# STRUC_DEF_AGGREGATION
+#: STRUC_DEF_AGGREGATION
+msgid "Aggregation"
+msgstr ""
+
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 #, fuzzy
@@ -6106,6 +6161,11 @@ msgstr "Unidades permitidas"
 #, fuzzy
 msgid "All Actors"
 msgstr "Todos os actores"
+
+# STRUC_DEF_ALL_MAP_KEY
+#: STRUC_DEF_ALL_MAP_KEY
+msgid "All Mappings are Empty"
+msgstr ""
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
@@ -6137,12 +6197,6 @@ msgstr "e"
 #, fuzzy
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
 msgstr "Os conceitos devem provir deste conjunto de valores se o conceito apropriado estiver neste conjunto de valores"
-
-# STRUC_DEF_AS_SHOWN
-#: STRUC_DEF_AS_SHOWN
-#, fuzzy
-msgid "As shown"
-msgstr "Como mostrado"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
@@ -6270,12 +6324,6 @@ msgstr "Comentários:"
 msgid "Complex"
 msgstr "Complexo"
 
-# STRUC_DEF_COMPLEXBRACK
-#: STRUC_DEF_COMPLEXBRACK
-#, fuzzy
-msgid "(Complex)"
-msgstr "!!(complexo)"
-
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 #, fuzzy
@@ -6323,6 +6371,11 @@ msgstr "Controlo"
 #: STRUC_DEF_CONT_PROFILE
 msgctxt "STRUC_DEF_CONT_PROFILE"
 msgid "profiled by"
+msgstr ""
+
+# STRUC_DEF_CONT_PROFILE_INVALID
+#: STRUC_DEF_CONT_PROFILE_INVALID
+msgid "invalid reference {0}"
 msgstr ""
 
 # STRUC_DEF_CONT_RULE
@@ -6564,12 +6617,6 @@ msgstr "Identificador formal de invariante"
 msgid "Fixed Value"
 msgstr "Valor fixo"
 
-# STRUC_DEF_FIXED_VALUE
-#: STRUC_DEF_FIXED_VALUE
-#, fuzzy
-msgid "Fixed Value:"
-msgstr "Valor fixo:"
-
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 #, fuzzy
@@ -6767,12 +6814,6 @@ msgstr "Nome da propriedade JSON para o tipo"
 msgid "Label"
 msgstr "Etiqueta"
 
-# STRUC_DEF_LEAST_FOLLOW
-#: STRUC_DEF_LEAST_FOLLOW
-#, fuzzy
-msgid "At least the following"
-msgstr "Pelo menos os seguintes elementos"
-
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 #, fuzzymsgctxt "STRUC_DEF_LOGICAL"
@@ -6797,6 +6838,16 @@ msgstr "Código LOINC"
 #, fuzzy
 msgid "LOINC code"
 msgstr "Código LOINC"
+
+# STRUC_DEF_MAPPINGS
+#: STRUC_DEF_MAPPINGS
+msgid "Mappings"
+msgstr ""
+
+# STRUC_DEF_MAPPING_COMMENTS
+#: STRUC_DEF_MAPPING_COMMENTS
+msgid "Mapping Comments"
+msgstr ""
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
@@ -6905,6 +6956,11 @@ msgstr "e não define quaisquer disciminadores para diferenciar as fatias"
 msgid "(no extensions allowed)"
 msgstr ""
 
+# STRUC_DEF_NO_EXT_ID
+#: STRUC_DEF_NO_EXT_ID
+msgid "No extension or id"
+msgstr ""
+
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 #, fuzzy
@@ -6982,6 +7038,27 @@ msgstr "Abrir no fim"
 #, fuzzy
 msgid "Ordered"
 msgstr "Encomendado"
+
+# STRUC_DEF_OTHER_CHANGES
+#: STRUC_DEF_OTHER_CHANGES
+msgid "Other Changes:"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+#: STRUC_DEF_OTHER_CHANGES_DOCUMENTATION
+msgctxt "STRUC_DEF_OTHER_CHANGES_DOCUMENTATION"
+msgid "documentation"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_HINT
+#: STRUC_DEF_OTHER_CHANGES_HINT
+msgid "This profile changes the {0} of this element, which is not shown in this table. See the full definition for details"
+msgstr ""
+
+# STRUC_DEF_OTHER_CHANGES_MAPPINGS
+#: STRUC_DEF_OTHER_CHANGES_MAPPINGS
+msgid "mappings"
+msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
@@ -7123,12 +7200,6 @@ msgstr "Esta ordem de repetição de elementos: {0}"
 msgid "required"
 msgstr "necessário"
 
-# STRUC_DEF_REQUIRED_PATT
-#: STRUC_DEF_REQUIRED_PATT
-#, fuzzy
-msgid "Required Pattern:"
-msgstr "Padrão necessário:"
-
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 #, fuzzy
@@ -7188,6 +7259,11 @@ msgstr "Curto"
 #, fuzzy
 msgid "The codes SHOULD be taken from"
 msgstr "Os códigos DEVERÃO ser retirados de"
+
+# STRUC_DEF_SHOW_MAPPINGS
+#: STRUC_DEF_SHOW_MAPPINGS
+msgid "Show Mappings:"
+msgstr ""
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
@@ -7842,6 +7918,16 @@ msgstr "Referência a outro elemento"
 msgid "Slice Definition"
 msgstr "Definição de fatia"
 
+# TEXT_ICON_SLICE_EXTENSION
+#: TEXT_ICON_SLICE_EXTENSION
+msgid "Extension Slice Definition"
+msgstr ""
+
+# TEXT_ICON_SLICE_EXTENSION_MODIFIER
+#: TEXT_ICON_SLICE_EXTENSION_MODIFIER
+msgid "Modifier Extension Slice Definition"
+msgstr ""
+
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 #, fuzzy
@@ -8107,6 +8193,27 @@ msgstr "Expansão a partir de {0} com base em"
 #, fuzzy
 msgid "Expansion based on code system fragment"
 msgstr "Expansão baseada num fragmento de sistema de códigos"
+
+# VALUE_SET_EXP_ISSUES
+#: VALUE_SET_EXP_ISSUES
+msgid "Notes about this expansion:"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_ERROR
+#: VALUE_SET_EXP_ISSUE_ERROR
+msgid "Error"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_INFO
+#: VALUE_SET_EXP_ISSUE_INFO
+msgctxt "VALUE_SET_EXP_ISSUE_INFO"
+msgid "Note"
+msgstr ""
+
+# VALUE_SET_EXP_ISSUE_WARNING
+#: VALUE_SET_EXP_ISSUE_WARNING
+msgid "Warning"
+msgstr ""
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
@@ -8381,6 +8488,11 @@ msgstr "Reino Unido"
 #, fuzzy
 msgid "UK Clinical Edition"
 msgstr "Edição clínica no Reino Unido"
+
+# VALUE_SET_UNCLOSED
+#: VALUE_SET_UNCLOSED
+msgid "This expansion is not closed: there are codes in the value set that are not included in the expansion"
+msgstr ""
 
 # VALUE_SET_US
 #: VALUE_SET_US

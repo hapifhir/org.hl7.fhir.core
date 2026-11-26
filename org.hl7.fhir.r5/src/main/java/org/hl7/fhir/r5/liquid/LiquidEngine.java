@@ -172,27 +172,27 @@ public class LiquidEngine implements IHostApplicationServices {
   private Map<String, List<Base>> vars = new HashMap<>();
   private KeyIssuer keyIssuer;
   
-  private class LiquidEngineContext {
+  private class LiquidEngineContext extends org.hl7.fhir.utilities.LimitedExecutionContext {
     private Object externalContext;
     private Map<String, Base> loopVars = new HashMap<>();
     private Map<String, List<Base>> globalVars = new HashMap<>();
 
     public LiquidEngineContext(Object externalContext, Map<String, List<Base>> vars) {
-      super();
+      super(LiquidEngine.this.limitsFor(externalContext));
       this.externalContext = externalContext;
       globalVars = new HashMap<>();
       globalVars.putAll(vars);
     }
 
     public LiquidEngineContext(Object externalContext, LiquidEngineContext existing) {
-      super();
+      super(existing.getExecutionLimits());
       this.externalContext = externalContext;
       loopVars.putAll(existing.loopVars);
       globalVars = existing.globalVars;
     }
 
     public LiquidEngineContext(LiquidEngineContext existing) {
-      super();
+      super(existing.getExecutionLimits());
       externalContext = existing.externalContext;
       loopVars.putAll(existing.loopVars);
       globalVars = existing.globalVars;
@@ -206,6 +206,135 @@ public class LiquidEngine implements IHostApplicationServices {
     engine.setHostServices(this);
     engine.setLiquidMode(true);
     engine.setCheckWithHostServicesBeforeHand(true);
+  }
+
+  /**
+   * How deep a template can go - for, if, capture and include inside each other, counting the includes too - when it's
+   * parsed and when it's run. A template comes from content, and one that includes itself would otherwise go until the
+   * stack ran out
+   */
+  public static final int MAX_DEPTH = 100;
+
+  /**
+   * The longest string a run of a template can make, and the most output it can make (characters; 0 or less for no
+   * limit). Templates and values from content are limited (ExecutionLimits.DEFAULT_MAX_STRING_LENGTH); a host that
+   * runs its own templates over values it built itself (e.g. the comparison pages) can lift the limit. Not used when
+   * the run is part of another engine's run, which has its own limits
+   */
+  private int maxStringLength = org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH;
+
+  public int getMaxStringLength() {
+    return maxStringLength;
+  }
+
+  public void setMaxStringLength(int maxStringLength) {
+    this.maxStringLength = maxStringLength;
+  }
+
+  /**
+   * The limits of a run of a template: the app context's, if it's the context of a run of another engine; otherwise
+   * new ones. Every FHIRPath expression the template runs spends the same budget (the FHIRPath engine finds it in the
+   * context Liquid passes it)
+   */
+  private org.hl7.fhir.utilities.ExecutionLimits limitsFor(Object externalContext) {
+    org.hl7.fhir.utilities.ExecutionLimits limits = org.hl7.fhir.utilities.LimitedExecutionContext.limitsOf(externalContext);
+    return limits != null ? limits : new org.hl7.fhir.utilities.ExecutionLimits(engine.getMaxExecutionMillis(), MAX_DEPTH,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, maxStringLength);
+  }
+
+  /** going into a for, if, capture or include: the run mustn't be out of time, or nested too deeply */
+  private void enter(LiquidEngineContext ctxt) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TIMEOUT, limits.maxSeconds()));
+    }
+    if (!limits.enter()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TOO_DEEP, Integer.toString(limits.getMaxDepth())));
+    }
+  }
+
+  private void leave(LiquidEngineContext ctxt) {
+    ctxt.getExecutionLimits().exit();
+  }
+
+  /** as output is made (each time round a loop, and as nodes' output is added up): the run mustn't be out of time, or have made too much */
+  private void checkOutput(LiquidEngineContext ctxt, StringBuilder b) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TIMEOUT, limits.maxSeconds()));
+    }
+    if (limits.isTooLong(b.length())) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_OUTPUT_TOO_LONG, Integer.toString(limits.getMaxStringLength())));
+    }
+  }
+
+  /**
+   * a statement's value, as each filter makes it: the run mustn't be out of time, and the value mustn't be too big
+   * (filters can make it longer - append, replace, escape... - and assign keeps it, so a loop can double it each time
+   * round)
+   */
+  private List<String> checkValue(LiquidEngineContext ctxt, List<String> t) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isOutOfTime()) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TIMEOUT, limits.maxSeconds()));
+    }
+    if (t == null) {
+      return t;
+    }
+    if (limits.isTooManyItems(t.size())) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TOO_MANY_ITEMS, Integer.toString(limits.getMaxItems())));
+    }
+    long length = 0;
+    for (String s : t) {
+      length = length + (s == null ? 0 : s.length());
+    }
+    checkLength(ctxt, length);
+    return t;
+  }
+
+  /** a string about to be made mustn't be too long (replace and join can make one far longer than what they start with) */
+  private void checkLength(LiquidEngineContext ctxt, long length) throws FHIRException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = ctxt.getExecutionLimits();
+    if (limits.isTooLong(length)) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_OUTPUT_TOO_LONG, Integer.toString(limits.getMaxStringLength())));
+    }
+  }
+
+  /** how long s.replace(t, r) will be, without making it */
+  private static long replacedLength(String s, String t, String r) {
+    if (t.isEmpty()) {
+      return s.length() + (long) (s.length() + 1) * r.length();
+    }
+    long count = 0;
+    int i = s.indexOf(t);
+    while (i >= 0) {
+      count++;
+      i = s.indexOf(t, i + t.length());
+    }
+    return s.length() + count * (r.length() - t.length());
+  }
+
+  /**
+   * removes &lt;...&gt; tags, as replacing the regex &lt;[^&gt;]*&gt; with "" does, but without a regex: the regex looks
+   * for a closing &gt; from every &lt;, so a string with many &lt;s and no &gt; took as long as the square of its length
+   */
+  private static String stripHtml(String s) {
+    StringBuilder b = new StringBuilder(s.length());
+    int i = 0;
+    while (i < s.length()) {
+      int open = s.indexOf('<', i);
+      if (open < 0) {
+        break;
+      }
+      int close = s.indexOf('>', open + 1);
+      if (close < 0) {
+        break; // no more tags: there's no > after this <, so there isn't one after any later one either
+      }
+      b.append(s, i, open);
+      i = close + 1;
+    }
+    b.append(s, i, s.length());
+    return b.toString();
   }
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
@@ -237,6 +366,7 @@ public class LiquidEngine implements IHostApplicationServices {
     LiquidEngineContext ctxt = new LiquidEngineContext(appContext, vars );
     for (LiquidNode n : document.body) {
       b.append(singleString(n.evaluate(resource, ctxt)));
+      checkOutput(ctxt, b);
     }
     return b.toString();
   }
@@ -571,11 +701,14 @@ public class LiquidEngine implements IHostApplicationServices {
           }
           break;
         }
-        case REPLACE:
-          t = List.of(singleString(t).replace(
-            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)),
-            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2))));
+        case REPLACE: {
+          String s = singleString(t);
+          String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          String replacement = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2));
+          checkLength(ctxt, replacedLength(s, target, replacement));
+          t = List.of(s.replace(target, replacement));
           break;
+        }
         case REPLACE_FIRST: {
           String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
           String replacement = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2));
@@ -629,7 +762,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case STRIP_HTML: {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //simple character class match; safe
-          String stripped = singleString(t).replaceAll("<[^>]*>", "");
+          String stripped = stripHtml(singleString(t));
           t = List.of(stripped);
           break;
         }
@@ -798,10 +931,16 @@ public class LiquidEngine implements IHostApplicationServices {
         case FIRST:
           t = t.isEmpty() ? List.of("") : List.of(t.get(0));
           break;
-        case JOIN:
-          t = List.of(String.join(
-            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)), t));
+        case JOIN: {
+          String sep = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          long length = 0;
+          for (String item : t) {
+            length = length + item.length() + sep.length();
+          }
+          checkLength(ctxt, length);
+          t = List.of(String.join(sep, t));
           break;
+        }
         case LAST:
           t = t.isEmpty() ? List.of("") : List.of(t.get(t.size() - 1));
           break;
@@ -841,16 +980,10 @@ public class LiquidEngine implements IHostApplicationServices {
           t = List.of(formatNumber(sum, "0"));
           break;
         }
-        case UNIQ: {
-          List<String> unique = new ArrayList<>();
-          for (String item : t) {
-            if (!unique.contains(item)) {
-              unique.add(item);
-            }
-          }
-          t = unique;
+        case UNIQ:
+          // first appearances, in order (looking each up in the list as it grew took as long as the square of its size)
+          t = new ArrayList<>(new java.util.LinkedHashSet<>(t));
           break;
-        }
         case WHERE:
           // where requires property access on objects; not feasible with string-only pipeline
           //
@@ -889,6 +1022,7 @@ public class LiquidEngine implements IHostApplicationServices {
           t = List.of(jsonEscape(singleString(t)));
           break;
       }
+        t = checkValue(ctxt, t);
       }
       return t;
     }
@@ -1253,6 +1387,7 @@ public class LiquidEngine implements IHostApplicationServices {
       StringBuilder b = new StringBuilder();
       for (LiquidNode n : body) {
         b.append(singleString(n.evaluate(resource, ctxt)));
+        checkOutput(ctxt, b);
       }
       return List.of(b.toString());
     }
@@ -1267,6 +1402,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        return evaluateInner(resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private List<String> evaluateInner(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
       boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled);
@@ -1289,6 +1433,7 @@ public class LiquidEngine implements IHostApplicationServices {
       StringBuilder b = new StringBuilder();
       for (LiquidNode n : list) {
         b.append(singleString(n.evaluate(resource, ctxt)));
+        checkOutput(ctxt, b);
       }
       return List.of(b.toString());
     }
@@ -1360,6 +1505,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        return evaluateInner(resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private List<String> evaluateInner(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null) {
         ExpressionNodeWithOffset po = engine.parsePartial(condition, 0);
         compiled = po.getNode();
@@ -1375,6 +1529,7 @@ public class LiquidEngine implements IHostApplicationServices {
       if (list.isEmpty()) {
         for (LiquidNode n : elseBody) {
           b.append(singleString(n.evaluate(resource, lctxt)));
+          checkOutput(lctxt, b);
         }
       } else {
         if (reversed) {
@@ -1383,6 +1538,7 @@ public class LiquidEngine implements IHostApplicationServices {
         int i = 0;
         LiquidforloopObject parentLoop = (LiquidforloopObject) (lctxt.globalVars.containsKey("forloop") ? lctxt.globalVars.get("forloop").get(0) : null);
         for (Base o : list) {
+          checkOutput(lctxt, b);
           if (offset >= 0 && i < offset) {
             i++;
             continue;
@@ -1398,6 +1554,7 @@ public class LiquidEngine implements IHostApplicationServices {
           for (LiquidNode n : body) {
             try {
               b.append(singleString(n.evaluate(resource, lctxt)));
+              checkOutput(lctxt, b);
             } catch (LiquidContinueExecuted e) {
               break;
             } catch (LiquidBreakExecuted e) {
@@ -1468,9 +1625,19 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        return evaluateInner(resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private List<String> evaluateInner(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       StringBuilder bc = new StringBuilder();
       for (LiquidNode n : body) {
         bc.append(singleString(n.evaluate(resource, ctxt)));
+        checkOutput(ctxt, bc);
       }
       ctxt.globalVars.put(varName, List.of(new StringType(bc.toString())));
       return new ArrayList<String>();
@@ -1483,6 +1650,15 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      enter(ctxt);
+      try {
+        return evaluateInner(resource, ctxt);
+      } finally {
+        leave(ctxt);
+      }
+    }
+
+    private List<String> evaluateInner(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (includeResolver == null) {
         throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_INCLUDE_NOT_SUPPORTED));
       }
@@ -1501,6 +1677,7 @@ public class LiquidEngine implements IHostApplicationServices {
       StringBuilder b = new StringBuilder();
       for (LiquidNode n : doc.body) {
         b.append(singleString(n.evaluate(resource, nctxt)));
+        checkOutput(nctxt, b);
       }
       return List.of(b.toString());
     }
@@ -1512,6 +1689,8 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   private class LiquidParser {
+    // how deeply for, if, capture etc are inside each other here (see MAX_DEPTH)
+    private int nesting;
 
     private String source;
     private int cursor;
@@ -1577,6 +1756,18 @@ public class LiquidEngine implements IHostApplicationServices {
     }
 
     private String parseList(List<LiquidNode> list, boolean inLoop, String[] terminators) throws FHIRException {
+      nesting++;
+      if (nesting > MAX_DEPTH) {
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_TOO_DEEP, Integer.toString(MAX_DEPTH)));
+      }
+      try {
+        return parseListInner(list, inLoop, terminators);
+      } finally {
+        nesting--;
+      }
+    }
+
+    private String parseListInner(List<LiquidNode> list, boolean inLoop, String[] terminators) throws FHIRException {
       String close = null;
       while (cursor < source.length()) {
         if (next1() == '{' && (next2() == '%' || next2() == '{')) {

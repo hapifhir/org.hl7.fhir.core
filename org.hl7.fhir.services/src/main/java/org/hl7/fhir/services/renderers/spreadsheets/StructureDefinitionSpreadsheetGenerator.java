@@ -180,7 +180,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
       for (StructureDefinitionMappingComponent mapKey : sd.getMappingList()) {
         String mapString = "";
         for (ElementDefinitionMappingComponent map : ed.getMappingList()) {
-          if (map.getIdentity().equals(mapKey.getIdentity()))
+          if (java.util.Objects.equals(map.getIdentity(), mapKey.getIdentity()))
             mapString = map.getMap();        
         }
         addCell(row, i++, mapString);
@@ -190,6 +190,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
 
   private String itemList(List l) {
     StringBuilder s = new StringBuilder();
+    boolean first = true;
     for (int i =0; i< l.size(); i++) {
       Object o = l.get(i);
       String val = "";
@@ -229,9 +230,12 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
         val = val.substring(val.indexOf("[")+1);
         val = val.substring(0, val.indexOf("]"));
       }
-      s = s.append(val);
-      if (i == 0)
+      // one item a line (a newline went after the first item only, so the rest ran together)
+      if (!first) {
         s.append("\n");
+      }
+      first = false;
+      s.append(val);
     }
     return s.toString();
   }

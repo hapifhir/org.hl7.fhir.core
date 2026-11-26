@@ -34,8 +34,6 @@ package org.hl7.fhir.utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -674,14 +672,14 @@ public final class IniFile
         String     strTemp   = null;
         Iterator<String>   itrSec    = null;
         INISection objSec    = null;
-        FileWriter objWriter = null;
+        Writer objWriter = null;
 
         try
         {
             if (this.iniSections.size() == 0) return false;
             objFile = ManagedFileAccess.csfile(this.filepath);
             if (objFile.exists()) objFile.delete();
-            objWriter = new FileWriter(objFile);
+            objWriter = new OutputStreamWriter(ManagedFileAccess.outStream(objFile)); // the platform charset, as FileWriter
             itrSec = this.iniSections.keySet().iterator();
             while (itrSec.hasNext())
             {
@@ -938,12 +936,12 @@ public final class IniFile
         String         strSection = null;
         String         strRemarks = null;
         BufferedReader objBRdr    = null;
-        FileReader     objFRdr    = null;
+        Reader         objFRdr    = null;
         INISection     objSec     = null;
 
         try
         {
-            objFRdr = new FileReader(this.filepath);
+            objFRdr = new InputStreamReader(ManagedFileAccess.inStream(this.filepath)); // the platform charset, as FileReader
             if (objFRdr != null)
             {
                 objBRdr = new BufferedReader(objFRdr);
@@ -1214,42 +1212,6 @@ public final class IniFile
         pstrSrc = pstrSrc + "\r\n";
         return pstrSrc;
     }
-/*------------------------------------------------------------------------------
- * Main entry point to test the functionality.
- *----------------------------------------------------------------------------*/
-    /**
-     * The main entry point for testing.
-     * @param pstrArgs the command line arguments array if any.
-     * @ 
-     */
-    public static void main(String[] pstrArgs) 
-    {
-        IniFile objINI = null;
-        String  strFile = null;
-
-        if (pstrArgs.length == 0) return;
-
-        strFile = pstrArgs[0];
-        // Following call will load the strFile if one exists.
-        objINI = new IniFile(strFile);
-
-//        objINI.addSection("QADatabase", "QA database connection details\nUsed for QA Testing");
-//        objINI.setStringProperty("QADatabase", "SID", "ORCL", null);
-//        objINI.setStringProperty("QADatabase", "UserId", "System", null);
-//        objINI.setStringProperty("QADatabase", "Password", "Manager", null);
-//        objINI.setStringProperty("QADatabase", "HostName", "DBServer", null);
-//        objINI.setIntegerProperty("QADatabase", "Port", 1521, null);
-//        objINI.setStringProperty("QADatabase", "OracleHome", "%ORACLE_HOME%", null);
-//        
-        // objINI.setSectionComments("Folders", "Directories where generated files are stored");
-        objINI.setStringProperty("Folders", "folder1", "G:\\Temp", null);
-        objINI.setStringProperty("Folders", "folder2", "G:\\Temp\\Backup", null);
-
-        // Save changes back to strFile.
-        objINI.save();
-        objINI = null;
-    }
-
 /*------------------------------------------------------------------------------
  * Private class representing the INI Section.
  *----------------------------------------------------------------------------*/

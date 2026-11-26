@@ -1,17 +1,23 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.io.*;
-import java.nio.file.*;
-import java.security.cert.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.util.X509CertUtils;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.ByteArrayInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyStore;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import com.nimbusds.jose.jwk.*;
-import com.nimbusds.jose.util.X509CertUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CertificateScanner {
@@ -571,60 +577,4 @@ public class CertificateScanner {
         return lastDot > 0 ? fileName.substring(lastDot + 1) : "";
     }
     
-    /**
-     * Main method for testing
-     */
-    public static void main(String[] args) {
-        if (args.length < 2) {
-            log.info("Usage: java CertificateScanner <folder_path1> [folder_path2...] <kid>");
-            return;
-        }
-        
-        // Last argument is the kid
-        String targetKid = args[args.length - 1];
-        
-        // All other arguments are folder paths
-        List<String> folderPaths = new ArrayList<>();
-        for (int i = 0; i < args.length - 1; i++) {
-            folderPaths.add(args[i]);
-        }
-        
-        try {
-            CertificateScanner scanner = new CertificateScanner();
-            Map<String, byte[]> loadedCertificates = new HashMap<>();
-            CertificateResult result = scanner.findCertificateByKid(loadedCertificates, folderPaths, targetKid);
-            
-            if (result != null) {
-                log.info("\nFound matching certificate!");
-                log.info("Source: " + result.getSource());
-                
-                if (result.hasJwk()) {
-                    JWK jwk = result.getJwk();
-                    log.info("Key ID: " + jwk.getKeyID());
-                    log.info("Key Type: " + jwk.getKeyType());
-                    log.info("Algorithm: " + jwk.getAlgorithm());
-                    log.info("JWK: " + jwk.toJSONString());
-                }
-                
-                if (result.hasCertificate()) {
-                    X509Certificate cert = result.getCertificate();
-                    log.info("\nX509 Certificate Details:");
-                    log.info("Subject: " + cert.getSubjectX500Principal().getName());
-                    log.info("Issuer: " + cert.getIssuerX500Principal().getName());
-                    log.info("Serial Number: " + cert.getSerialNumber().toString(16));
-                    log.info("Valid From: " + cert.getNotBefore());
-                    log.info("Valid Until: " + cert.getNotAfter());
-                    log.info("Signature Algorithm: " + cert.getSigAlgName());
-                }
-                
-                log.info("\nLoaded certificates cache now contains " + loadedCertificates.size() + " files");
-            } else {
-                log.info("\nNo matching certificate found for kid: " + targetKid);
-                log.info("Scanned " + loadedCertificates.size() + " files total");
-            }
-            
-        } catch (Exception e) {
-            log.error("Error: " + e.getMessage(), e);
-        }
-    }
 }

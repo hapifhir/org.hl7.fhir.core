@@ -49,6 +49,7 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.PackageEntryNames;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -91,9 +92,11 @@ public class NPMPackageGenerator {
   }
 
   private String destFile;
-  private Set<String> created = new HashSet<String>();
+  // what the duplicate check goes by: the same file to some systems is an error (see PackageEntryNames)
+  private PackageEntryNames entryNames = new PackageEntryNames();
+  /** the names of the files in the package */
   public Set<String> getCreated() {
-    return created;
+    return entryNames.getNames();
   }
 
   // files whose path was too long for a tar entry, and so are in the package under another name:
@@ -402,6 +405,10 @@ public class NPMPackageGenerator {
     return shortName;
   }
 
+  /**
+   * Whether the package already has the file, or one that is the same file to some systems (a name that differs only
+   * in case): adding it would then be skipped, or fail (see PackageEntryNames)
+   */
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
     if (tooLongForTar(path)) {
@@ -409,7 +416,7 @@ public class NPMPackageGenerator {
       path = cat.getDirectory()+name;
     }
       
-    return created.contains(path);    
+    return entryNames.contains(path);
   }
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
@@ -421,10 +428,9 @@ public class NPMPackageGenerator {
       renamed.put(original, path);
     }
       
-    if (created.contains(path)) {
+    if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
-      created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
       tar.putArchiveEntry(entry);
@@ -448,10 +454,9 @@ public class NPMPackageGenerator {
       renamed.put(original, path);
     }
       
-    if (created.contains(path)) {
+    if (!entryNames.add(path)) {
       log.warn("Duplicate package file "+path);
     } else {
-      created.add(path);
       TarArchiveEntry entry = new TarArchiveEntry(path);
       entry.setSize(content.length);
       tar.putArchiveEntry(entry);
@@ -497,8 +502,8 @@ public class NPMPackageGenerator {
   }
 
     public void loadFiles(String root, String ignoreFile, File dir, String... noload) throws IOException {
-        Path rootPath = Paths.get(root);
-        Path dirPath = dir == null ? rootPath : dir.toPath();
+        Path rootPath = ManagedFileAccess.file(root).toPath();
+        Path dirPath = dir == null ? rootPath : ManagedFileAccess.fromPath(dir.toPath()).toPath();
         // Ensure the directory to scan is inside the root
         Path normalizedRoot = rootPath.toAbsolutePath().normalize();
         Path normalizedDir = dirPath.toAbsolutePath().normalize();
@@ -538,7 +543,8 @@ public class NPMPackageGenerator {
         }
 
         try (Stream<Path> paths = Files.list(directory)) {
-            paths.filter(Files::isDirectory)
+            // a linked folder isn't followed (it could lead out of the folder, or round in a circle), as Files.walk doesn't below
+            paths.filter(p -> Files.isDirectory(p, java.nio.file.LinkOption.NOFOLLOW_LINKS))
                 .filter(p -> !p.getFileName().toString().startsWith("."))
                 .forEach(subDir -> {
                     try {
@@ -550,6 +556,14 @@ public class NPMPackageGenerator {
         }
     }
 
+    /**
+     * The name of a package entry for a file, from its path relative to the folder being packaged. A tar entry's
+     * separator is /, on every platform, so the platform's separator (\ on Windows) is replaced
+     */
+    static String entryName(String relativePath, char separator) {
+      return relativePath.replace(separator, '/');
+    }
+
     private void scanAndFilterFiles(Path root, Path startDir, String ignoreFileName, IgnoreNode rootIgnoreNode) throws IOException {
         Map<String, Boolean> directoryIgnoreCache = new java.util.HashMap<>();
         try (Stream<Path> paths = Files.walk(startDir)) {
@@ -557,12 +571,17 @@ public class NPMPackageGenerator {
                 try {
                     if (isNotIgnored(f, root, rootIgnoreNode, directoryIgnoreCache)) {
                         Path rel = root.relativize(f);
-                        String path = rel.toString();
-                        if (created.contains(path))
+                        String path = entryName(rel.toString(), File.separatorChar);
+                        if (Files.isSymbolicLink(f) && !isReallyInside(root, f)) {
+                            // what the link leads to isn't part of the folder being packaged, and could be anything
+                            log.warn("Package file "+path+" is a link to somewhere outside "+root+", so it isn't in the package");
+                        } else if (!entryNames.add(path))
                             log.warn("Duplicate package file "+path);
                         else {
-                            byte[] content = FileUtilities.fileToBytes(f.toFile());
-                            created.add(path);
+                            byte[] content;
+                            try (java.io.InputStream in = ManagedFileAccess.inStream(f.toFile())) {
+                                content = in.readAllBytes();
+                            }
                             TarArchiveEntry entry = new TarArchiveEntry(path);
                             entry.setSize(content.length);
                             tar.putArchiveEntry(entry);
@@ -577,9 +596,18 @@ public class NPMPackageGenerator {
         }
     }
 
+    /** whether the file, where it really is (following links), is in the folder (where that really is) */
+    private static boolean isReallyInside(Path root, Path file) {
+        try {
+            return file.toRealPath().startsWith(root.toRealPath());
+        } catch (IOException e) {
+            return false; // a link that leads nowhere
+        }
+    }
+
     private boolean isNotIgnored(Path file, Path root, IgnoreNode rootIgnoreNode, Map<String, Boolean> directoryIgnoreCache) throws IOException {
         Path relativePath = root.relativize(file);
-        String pathString = relativePath.toString().replace(File.separator, "/");
+        String pathString = entryName(relativePath.toString(), File.separatorChar);
 
         if (rootIgnoreNode.isIgnored(pathString, false) == IgnoreNode.MatchResult.IGNORED) {
             return false;
@@ -587,7 +615,7 @@ public class NPMPackageGenerator {
 
         Path parent = relativePath.getParent();
         while (parent != null) {
-            String parentPath = parent.toString().replace(File.separator, "/");
+            String parentPath = entryName(parent.toString(), File.separatorChar);
             Boolean cached = directoryIgnoreCache.get(parentPath);
             if (cached != null) {
                 if (cached) return false;

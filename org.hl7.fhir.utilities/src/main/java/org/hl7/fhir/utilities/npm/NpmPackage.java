@@ -30,33 +30,6 @@ package org.hl7.fhir.utilities.npm;
  */
 
 
-
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.zip.Deflater;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.annotation.Nonnull;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -66,9 +39,11 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -80,6 +55,21 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.regex.RegexUtils;
+
+import javax.annotation.Nonnull;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * info and loader for a package 
@@ -420,7 +410,13 @@ public class NpmPackage {
   private int size;
   private boolean warned = false;
   private static boolean loadCustomResources;
-  private static long defaultMaxLoadSize = 0; // 0 = no limit
+  /**
+   * The default limit on what a package may decompress to: 1.5 GB. The largest real package is
+   * us.nlm.vsac#0.18.0, 1.25 GB decompressed (Nov 2026); anything more is refused as soon as it passes this, so a
+   * decompression bomb can't exhaust memory or disk. FHIRsmith uses the same limit
+   */
+  public static final long DEFAULT_MAX_LOAD_SIZE = 1536L * 1024 * 1024;
+  private static long defaultMaxLoadSize = DEFAULT_MAX_LOAD_SIZE; // 0 = no limit
   private long maxLoadSize = defaultMaxLoadSize;
 
   /**
@@ -602,48 +598,27 @@ public class NpmPackage {
   public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
     FileUtilities.createDirectory(tempDir);
 
-    int size = 0;
-    
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(tgz);
-    } catch (Exception e) {
-      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
-    }
-    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-
-      while ((entry = tarIn.getNextEntry()) != null) {
-        String n = getEntryName(entry);
-        if (n.contains("/..") || n.contains("../")) {
-          throw new RuntimeException("Entry with an illegal name: " + n);
-        }
-        if (entry.isDirectory()) {
-          if (!Utilities.noString(n)) {
-            String dir = n.substring(0, n.length()-1);
-            FileUtilities.createDirectory(Utilities.path(tempDir, dir));
-          }
-        } else {
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          String filename = Utilities.path(tempDir, n);
-          String folder = FileUtilities.getDirectoryForFile(filename);
-          FileUtilities.createDirectory(folder);
-          FileOutputStream fos = ManagedFileAccess.outStream(filename);
-          try (BufferedOutputStream dst = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dst.write(data, 0, count);
-              size = size + count;
-              checkLoadedSize(size, defaultMaxLoadSize, desc); // no instance yet, so only the default limit applies here
-            }
-          }
-          fos.close();
+    // no instance yet, so only the default limit applies here
+    long size = readTgz(tgz, desc, defaultMaxLoadSize, new TgzEntryHandler() {
+      @Override
+      public void folder(String name) throws IOException {
+        if (!Utilities.noString(name)) {
+          FileUtilities.createDirectory(Utilities.path(tempDir, name.substring(0, name.length()-1)));
         }
       }
-    } 
+
+      @Override
+      public void file(String name, InputStream content) throws IOException {
+        String filename = Utilities.path(tempDir, name);
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(filename));
+        try (OutputStream dst = new BufferedOutputStream(ManagedFileAccess.outStream(filename), BUFFER_SIZE)) {
+          content.transferTo(dst);
+        }
+      }
+    });
     try {
       NpmPackage npm = NpmPackage.fromFolderMinimal(tempDir);
-      npm.setSize(size);
+      npm.setSize((int) Math.min(size, Integer.MAX_VALUE));
       if (!minimal) {
         npm.checkIndexed(desc);
       }
@@ -693,56 +668,35 @@ public class NpmPackage {
   }
 
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(tgz);
-    } catch (Exception e) {
-      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
-    }
+    NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
+    readTgz(tgz, desc, maxLoadSize, new TgzEntryHandler() {
+      private boolean haveLoggedDotSlashPrefixWarning = false;
 
-    boolean haveLoggedDotSlashPrefixWarning = false;
-    long loadedSize = 0;
-
-    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-      NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
-      while ((entry = tarIn.getNextEntry()) != null) {
-        String entryName = getEntryName(entry);
-        if (entryName.contains("..")) {
-          throw new RuntimeException("Entry with an illegal name: " + entryName);
+      @Override
+      public void folder(String name) {
+        String dir = name.substring(0, name.length()-1);
+        // If resource paths in the TGZ file are prefixed with "./", be tolerant
+        // and strip that
+        if (dir.startsWith("./")) {
+          if (!haveLoggedDotSlashPrefixWarning) {
+            log.warn("The NPM file contains resource paths that are prefixed with \"./\". This is invalid and should be corrected in the source package.");
+            haveLoggedDotSlashPrefixWarning = true;
+          }
+          dir = dir.substring(2);
         }
-        if (entry.isDirectory()) {
-          String dir = entryName.substring(0, entryName.length()-1);
-          // If resource paths in the TGZ file are prefixed with "./", be tolerant
-          // and strip that
-          if (dir.startsWith("./")) {
-            if (!haveLoggedDotSlashPrefixWarning) {
-              log.warn("The NPM file contains resource paths that are prefixed with \"./\". This is invalid and should be corrected in the source package.");
-              haveLoggedDotSlashPrefixWarning = true;
-            }
-            dir = dir.substring(2);
-          }
-          if (dir.startsWith("package/")) {
-            dir = dir.substring(8);
-          }
-          folders.put(dir, new NpmPackageFolder(dir));
-        } else {
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          ByteArrayOutputStream fos = new ByteArrayOutputStream();
-          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dest.write(data, 0, count);
-              loadedSize = loadedSize + count;
-              checkLoadedSize(loadedSize, maxLoadSize, desc);
-            }
-          }
-          fos.close();
-          loadFile(entryName, fos.toByteArray());
+        if (dir.startsWith("package/")) {
+          dir = dir.substring(8);
         }
-        readLogger.entry(entryName);
+        folders.put(dir, new NpmPackageFolder(dir));
+        readLogger.entry(name);
       }
-    } 
+
+      @Override
+      public void file(String name, InputStream content) throws IOException {
+        loadFile(name, content.readAllBytes());
+        readLogger.entry(name);
+      }
+    });
     NpmPackageFolder packageFolder = folders.get("package");
     Validate.notNull(packageFolder, "Package folder not found in NPM file");
     byte[] packageJsonBytes = packageFolder.fetchFile("package.json");
@@ -755,7 +709,168 @@ public class NpmPackage {
     checkIndexed(desc);
   }
 
-  private static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
+  /**
+   * The name a file in a package is compared by, to find two files with the same name. A
+   * package with two is refused: readers don't agree which copy wins (this class keeps the
+   * last, a reader that stops at the first one it wants keeps the first), so a package with two
+   * package.json files could be one package to one reader and another package to another.
+   * <p/>
+   * Names that are different strings but the same file to some reader or file system count as
+   * the same: \ is /, runs of / are one, . segments and leading / are dropped (./package/x and
+   * package//x are package/x), Unicode is NFC (macOS file systems don't tell NFC and NFD apart),
+   * and case is ignored (macOS and Windows file systems don't tell Package.json from
+   * package.json). FHIRsmith (library/package-names.js) normalises the same way.
+   */
+  public static String entryNameKey(String name) {
+    return normalisedEntryName(name).toLowerCase(Locale.ROOT);
+  }
+
+  /** entryNameKey, but keeping the case */
+  private static String normalisedEntryName(String name) {
+    String n = Normalizer.normalize(name, Normalizer.Form.NFC).replace('\\', '/');
+    StringBuilder b = new StringBuilder();
+    for (String s : pathSegments(n)) {
+      if (!s.isEmpty() && !s.equals(".")) {
+        if (b.length() > 0) {
+          b.append('/');
+        }
+        b.append(s);
+      }
+    }
+    return b.toString();
+  }
+
+  /**
+   * A package is refused if any entry's name has a .. segment, with / or \ as the separator:
+   * unpacked, it names a file outside the package, or outside the folder it claims to be in.
+   * FHIRsmith (library/package-names.js) refuses the same names
+   */
+  public static void checkEntryPath(String name) throws IOException {
+    for (String s : pathSegments(name.replace('\\', '/'))) {
+      if ("..".equals(s)) {
+        throw new IOException("Entry with an illegal name: " + name);
+      }
+    }
+  }
+
+  /** the segments of a name split on / (empty segments included), without using a regex */
+  private static List<String> pathSegments(String name) {
+    List<String> res = new ArrayList<>();
+    int start = 0;
+    int i = name.indexOf('/');
+    while (i >= 0) {
+      res.add(name.substring(start, i));
+      start = i + 1;
+      i = name.indexOf('/', start);
+    }
+    res.add(name.substring(start));
+    return res;
+  }
+
+  /** What {@link #readTgz} hands the entries of a package to, in the order they are in the package */
+  public interface TgzEntryHandler {
+    /** a folder entry: the name ends with '/' */
+    void folder(String name) throws IOException;
+
+    /**
+     * a file entry. Reading content takes the file's bytes from the package, and throws an IOException if that takes
+     * what has been decompressed past the limit. Content doesn't need to be closed, and can't be read once this returns
+     */
+    void file(String name, InputStream content) throws IOException;
+  }
+
+  /**
+   * Reads a package (a tgz), entry by entry. This is where all the readers of packages refuse what they refuse: a
+   * name with a .. segment ({@link #checkEntryPath}), two files of the same name ({@link #checkDuplicateName}), and
+   * more than maxLoadSize decompressed ({@link #checkLoadedSize}; 0 = no limit)
+   *
+   * @return how many bytes the files decompressed to
+   */
+  public static long readTgz(InputStream tgz, String desc, long maxLoadSize, TgzEntryHandler handler) throws IOException {
+    GzipCompressorInputStream gzipIn;
+    try {
+      gzipIn = new GzipCompressorInputStream(tgz);
+    } catch (Exception e) {
+      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);
+    }
+    Map<String, String> names = new HashMap<>();
+    long[] loadedSize = {0};
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
+      TarArchiveEntry entry;
+      while ((entry = tarIn.getNextEntry()) != null) {
+        String name = getEntryName(entry);
+        checkEntryPath(name);
+        if (entry.isDirectory()) {
+          handler.folder(name);
+        } else {
+          checkDuplicateName(names, name, desc);
+          handler.file(name, new FilterInputStream(tarIn) {
+            @Override
+            public int read() throws IOException {
+              int b = super.read();
+              if (b != -1) {
+                count(1);
+              }
+              return b;
+            }
+
+            @Override
+            public int read(byte[] buf, int off, int len) throws IOException {
+              int n = super.read(buf, off, len);
+              if (n > 0) {
+                count(n);
+              }
+              return n;
+            }
+
+            private void count(int n) throws IOException {
+              loadedSize[0] = loadedSize[0] + n;
+              checkLoadedSize(loadedSize[0], maxLoadSize, desc);
+            }
+
+            @Override
+            public void close() {
+              // the tar stream carries on to the next entry
+            }
+          });
+        }
+      }
+    }
+    return loadedSize[0];
+  }
+
+  /**
+   * Refuses a file whose name (see {@link #entryNameKey}) is already in names, which is keyed by entryNameKey. Except
+   * two examples (in {@link #EXAMPLE_FOLDERS}) of exactly the same name - case and all: which of them a reader ends up
+   * with doesn't matter, and published packages have them (de.basisprofil.r4#0.9.13 has two
+   * package/examples/Example-observation-bmi.json). Names that differ in case are still refused there: unpacked onto a
+   * file system that ignores case, they're one file, and the package cache refuses a name whose case doesn't match
+   */
+  public static void checkDuplicateName(Map<String, String> names, String name, String desc) throws IOException {
+    String key = entryNameKey(name);
+    String earlier = names.putIfAbsent(key, name);
+    if (earlier != null && isInExampleFolder(key) && normalisedEntryName(earlier).equals(normalisedEntryName(name))) {
+      return;
+    }
+    if (earlier != null) {
+      throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- "+(earlier.equals(name)
+        ? "it has more than one file named "+name
+        : "it has files named "+earlier+" and "+name+", which are the same file to some systems"));
+    }
+  }
+
+  /** whether a file (its entryNameKey) is in one of the example folders, or a folder in one */
+  private static boolean isInExampleFolder(String key) {
+    for (String f : EXAMPLE_FOLDERS) {
+      if (key.startsWith("package/" + f + "/")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /** Refuses a package once what has been decompressed passes maxLoadSize (0 = no limit) */
+  public static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
     if (maxLoadSize > 0 && loadedSize > maxLoadSize) {
       throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- the decompressed size exceeds the limit of "+maxLoadSize+" bytes");
     }
@@ -849,7 +964,14 @@ public class NpmPackage {
     long loadedSize = 0;
     ZipInputStream zip = new ZipInputStream(stream);
     ZipEntry ze;
+    Map<String, String> names = new HashMap<>();
     while ((ze = zip.getNextEntry()) != null) {
+      // as for tgz packages: no entry name may have a .. segment. Unpacked, content/../scripts/ant.xml is written
+      // over scripts/ant.xml, but the list of files unpacked still says content/../scripts/ant.xml
+      checkEntryPath(ze.getName());
+      if (!ze.isDirectory()) {
+        checkDuplicateName(names, ze.getName(), desc);
+      }
       int size;
       byte[] buffer = new byte[2048];
 
@@ -1767,8 +1889,8 @@ public class NpmPackage {
 
   /**
    * The default limit on the total decompressed size of a package being loaded, in bytes
-   * (0 = no limit, which is the default). Servers that load packages from untrusted sources
-   * should set this to guard against zip bombs. Applies to packages
+   * (0 = no limit). It is {@link #DEFAULT_MAX_LOAD_SIZE} (1.5 GB) unless it is changed; it guards
+   * against decompression bombs, so only set it to 0 where every package is trusted. Applies to packages
    * loaded after it is set; can be overridden per package instance (see
    * {@link #fromPackage(InputStream, String, boolean, long)})
    */

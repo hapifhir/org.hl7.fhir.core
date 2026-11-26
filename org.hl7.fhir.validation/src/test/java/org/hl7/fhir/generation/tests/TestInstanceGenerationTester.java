@@ -1,42 +1,38 @@
 package org.hl7.fhir.generation.tests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
-import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderRN.NullLoaderKnowledgeProviderRN;
 import org.hl7.fhir.convertors.loaders.loaderRN.R4ToRNLoader;
-import org.hl7.fhir.convertors.txClient.TerminologyClient5R4;
 import org.hl7.fhir.convertors.txClient.TerminologyClientNR4;
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.liquid.BaseTableWrapper;
-import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
-import org.hl7.fhir.services.liquid.LiquidEngine;
 import org.hl7.fhir.model.core.DateTimeType;
 import org.hl7.fhir.model.core.DateType;
 import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.services.testing.CompareUtilities;
-import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.liquid.BaseTableWrapper;
+import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.services.liquid.LiquidEngine;
 import org.hl7.fhir.services.testfactory.TestDataFactory;
 import org.hl7.fhir.services.testfactory.TestDataHostServices;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.hl7.fhir.utilities.settings.FhirSettings;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
 
 @Slf4j
 class TestInstanceGenerationTester {

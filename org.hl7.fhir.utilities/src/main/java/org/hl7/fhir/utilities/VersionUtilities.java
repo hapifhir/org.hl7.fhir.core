@@ -1,12 +1,11 @@
 package org.hl7.fhir.utilities;
 
-import java.util.*;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -39,6 +38,7 @@ import javax.annotation.Nullable;
 
 
 public class VersionUtilities {
+
 
   public enum VersionPrecision { MAJOR, MINOR, PATCH, FULL}
 
@@ -1410,5 +1410,147 @@ public class VersionUtilities {
     } else {
       return 0;
     }
+  }
+
+
+  /**
+   * Whether a version (criteria) matches another (candidate), whatever kind of version they are. An empty criteria
+   * matches anything; a criteria matches nothing empty. Otherwise:
+   * <ul>
+   *   <li>SNOMED CT editions (http://snomed.info/sct/[module](/version/[date])): the same module, and, if the
+   *   criteria has a version, a version date that it matches as a date (below)</li>
+   *   <li>dates: a part at a time (see dateMatches) - so 2026 and 2026-12 match 2026-12-01, but 2026-1 doesn't
+   *   match 2026-12</li>
+   *   <li>semver (both): see versionMatches</li>
+   *   <li>anything else: the criteria is the start of the candidate, and ends where a part of it does - at its end,
+   *   or before a separator ('.', '-', '_', '/', ':', '+'). So 1 matches 1.0 and v1 matches v1-beta, but 1
+   *   doesn't match 10, and R4 doesn't match R4B</li>
+   * </ul>
+   */
+  public static boolean versionMatchesGeneral(String criteria, String candidate) {
+    if (criteria != null && !criteria.isEmpty() && candidate != null && !candidate.isEmpty()) {
+      if (criteria.equals(candidate)) {
+        return true;
+      }
+      if (criteria.startsWith(SNOMED_EDITION_PREFIX) || candidate.startsWith(SNOMED_EDITION_PREFIX)) {
+        return snomedEditionMatches(criteria, candidate);
+      }
+      String fmt1 = guessVersionAlgorithmFromVersion(criteria);
+      String fmt2 = guessVersionAlgorithmFromVersion(candidate);
+      if ("date".equals(fmt2)) {
+        // a partial date (2026, 2026-1) isn't recognised as a date itself, but still has to match a part at a time
+        return dateMatches(criteria, candidate);
+      }
+      if ("semver".equals(fmt1) && "semver".equals(fmt2)) {
+        return versionMatches(criteria, candidate);
+      }
+      return wholePartPrefix(criteria, candidate);
+    } else if (criteria != null && !criteria.isEmpty()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private static final String SNOMED_EDITION_PREFIX = "http://snomed.info/sct/";
+
+  /**
+   * Both have to be SNOMED CT editions, of the same module. A criteria without a version matches every version of
+   * the module; one with a version matches a version date as a date does (so .../version/2024 matches
+   * .../version/20240101, but .../version/2024010 doesn't)
+   */
+  private static boolean snomedEditionMatches(String criteria, String candidate) {
+    String[] c = snomedEdition(criteria);
+    String[] d = snomedEdition(candidate);
+    if (c == null || d == null || !c[0].equals(d[0])) {
+      return false;
+    }
+    if (c[1] == null) {
+      return true;
+    }
+    return d[1] != null && dateMatches(c[1], d[1]);
+  }
+
+  /** [module, version date or null], or null if it isn't a SNOMED CT edition */
+  private static String[] snomedEdition(String s) {
+    if (!s.startsWith(SNOMED_EDITION_PREFIX)) {
+      return null;
+    }
+    String rest = s.substring(SNOMED_EDITION_PREFIX.length());
+    int i = rest.indexOf('/');
+    String module = i < 0 ? rest : rest.substring(0, i);
+    if (module.isEmpty() || !isDigits(module)) {
+      return null;
+    }
+    if (i < 0 || i == rest.length() - 1) {
+      return new String[] {module, null};
+    }
+    String tail = rest.substring(i + 1);
+    if (!tail.startsWith("version/") || tail.length() == 8) {
+      return null;
+    }
+    return new String[] {module, tail.substring(8)};
+  }
+
+  /** criteria is the start of candidate, and ends where a part of candidate does */
+  private static boolean wholePartPrefix(String criteria, String candidate) {
+    if (!candidate.startsWith(criteria)) {
+      return false;
+    }
+    return isPartSeparator(candidate.charAt(criteria.length())) || isPartSeparator(criteria.charAt(criteria.length() - 1));
+  }
+
+  private static boolean isPartSeparator(char ch) {
+    return ch == '.' || ch == '-' || ch == '_' || ch == '/' || ch == ':' || ch == '+';
+  }
+
+  /**
+   * Whether the date criteria is the start of the date candidate, a whole part at a time: the parts are
+   * separated by '-', 'T' and ':', and a date written without '-' (20261201, 202612) has its year, month and day
+   * as parts too. So 2026 and 2026-12 match 2026-12-01, but 2026-1 doesn't match 2026-12
+   */
+  static boolean dateMatches(String criteria, String candidate) {
+    List<String> c = dateParts(criteria);
+    List<String> d = dateParts(candidate);
+    if (c.size() > d.size()) {
+      return false;
+    }
+    for (int i = 0; i < c.size(); i++) {
+      if (!c.get(i).equals(d.get(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static List<String> dateParts(String date) {
+    List<String> parts = new ArrayList<>();
+    int t = date.indexOf('T');
+    String day = t < 0 ? date : date.substring(0, t);
+    if ((day.length() == 6 || day.length() == 8) && isDigits(day)) {
+      // compact: yyyymm or yyyymmdd
+      date = day.substring(0, 4) + "-" + day.substring(4, 6) + (day.length() == 8 ? "-" + day.substring(6) : "") + (t < 0 ? "" : date.substring(t));
+    }
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < date.length(); i++) {
+      char ch = date.charAt(i);
+      if (ch == '-' || ch == 'T' || ch == ':') {
+        parts.add(b.toString());
+        b.setLength(0);
+      } else {
+        b.append(ch);
+      }
+    }
+    parts.add(b.toString());
+    return parts;
+  }
+
+  private static boolean isDigits(String s) {
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) < '0' || s.charAt(i) > '9') {
+        return false;
+      }
+    }
+    return !s.isEmpty();
   }
 }

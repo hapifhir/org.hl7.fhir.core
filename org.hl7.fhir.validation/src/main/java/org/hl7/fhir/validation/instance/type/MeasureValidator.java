@@ -1,25 +1,18 @@
 package org.hl7.fhir.validation.instance.type;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_N;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
+import org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent;
+import org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.JsonParser;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
-import org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent;
-import org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.services.renderers.DataRenderer;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -35,6 +28,14 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class MeasureValidator extends BaseValidator {
 
@@ -700,8 +701,7 @@ public class MeasureValidator extends BaseValidator {
       return -1;
     }
     BooleanHolder bh = new BooleanHolder();
-    BooleanHolder stop = new BooleanHolder();
-    ResolvedReference rr = ((InstanceValidator) parent).localResolve(ref, ns, new ArrayList<>(), ns.getLiteralPath(), valContext.getRootResource(), valContext.getGroupingResource(), sr, bh, stop);
+    ResolvedReference rr = ((InstanceValidator) parent).localResolve(ref, ns, new ArrayList<>(), ns.getLiteralPath(), valContext.getRootResource(), valContext.getGroupingResource(), sr, bh);
     Element tgt;
     if (rr != null) {
       tgt = rr.getResource();

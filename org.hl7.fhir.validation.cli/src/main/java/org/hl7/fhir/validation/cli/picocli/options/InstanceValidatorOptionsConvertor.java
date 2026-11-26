@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +8,7 @@ import java.util.Map;
 import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.services.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -20,6 +19,7 @@ import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.UsageContextUtilities;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+@Slf4j
 public class InstanceValidatorOptionsConvertor {
   public InstanceValidatorParameters convert(InstanceValidatorOptions options) {
     InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
@@ -63,10 +63,6 @@ public class InstanceValidatorOptionsConvertor {
     instanceValidatorParameters.setAllowDoubleQuotesInFHIRPath(options.allowDoubleQuotesInFHIRPath);
 
     // Enum fields - null check then setter
-    if (options.r5BundleRelativeReferencePolicy != null) {
-      instanceValidatorParameters.setR5BundleRelativeReferencePolicy(ValidationOptions.R5BundleRelativeReferencePolicy.fromCode(options.r5BundleRelativeReferencePolicy));
-    }
-
     if (options.questionnaireMode != null) {
       instanceValidatorParameters.setQuestionnaireMode(QuestionnaireMode.fromCode(options.questionnaireMode));
     }
@@ -152,7 +148,7 @@ public class InstanceValidatorOptionsConvertor {
     }
 
     if (options.checkDisplay != null) {
-      instanceValidatorParameters.setCheckDisplay(parseCheckDisplayOption(options.checkDisplay));
+      log.warn("The option '-check-display' has never had any effect, and is deprecated - it is ignored, and will be removed in a future release");
     }
 
     if (options.resourceIdRule != null) {
@@ -165,11 +161,6 @@ public class InstanceValidatorOptionsConvertor {
   static IdStatus parseIdStatus(String param) {
     if (param == null) return IdStatus.OPTIONAL;
     return IdStatus.valueOf(param.toUpperCase());
-  }
-
-  static CheckDisplayOption parseCheckDisplayOption(String param) {
-    if (param == null) return CheckDisplayOption.Ignore;
-    return CheckDisplayOption.valueOf(param);
   }
 
   static BestPracticeWarningLevel readBestPractice(String s) {

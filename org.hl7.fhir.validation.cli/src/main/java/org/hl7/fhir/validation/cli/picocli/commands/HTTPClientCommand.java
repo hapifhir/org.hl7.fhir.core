@@ -221,9 +221,6 @@ public class HTTPClientCommand implements Callable<Integer> {
     if (instanceValidatorOptions.outputStyle != null) {
       uriBuilder.addParameter(ParamNames.OUTPUT_STYLE, instanceValidatorOptions.outputStyle);
     }
-    if (instanceValidatorOptions.r5BundleRelativeReferencePolicy != null) {
-      uriBuilder.addParameter(ParamNames.R5_BUNDLE_RELATIVE_REFERENCE_POLICY, instanceValidatorOptions.r5BundleRelativeReferencePolicy);
-    }
     if (instanceValidatorOptions.questionnaireMode != null) {
       uriBuilder.addParameter(ParamNames.QUESTIONNAIRE_MODE, instanceValidatorOptions.questionnaireMode);
     }
@@ -235,9 +232,6 @@ public class HTTPClientCommand implements Callable<Integer> {
     }
     if (instanceValidatorOptions.htmlInMarkdownCheck != null) {
       uriBuilder.addParameter(ParamNames.HTML_IN_MARKDOWN_CHECK, instanceValidatorOptions.htmlInMarkdownCheck);
-    }
-    if (instanceValidatorOptions.checkDisplay != null) {
-      uriBuilder.addParameter(ParamNames.CHECK_DISPLAY, instanceValidatorOptions.checkDisplay);
     }
     if (instanceValidatorOptions.resourceIdRule != null) {
       uriBuilder.addParameter(ParamNames.RESOURCE_ID_RULE, instanceValidatorOptions.resourceIdRule);

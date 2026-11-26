@@ -1,20 +1,57 @@
 package org.hl7.fhir.validation;
 
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.utilities.ImplicitValueSets;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.JsonParser;
+import org.hl7.fhir.services.terminology.ValidationContextCarrier.IValidationContextResourceLoader;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+import org.hl7.fhir.services.xver.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.instance.utils.BundleIndex;
+import org.hl7.fhir.validation.instance.utils.IndexedElement;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -44,56 +81,6 @@ import javax.annotation.Nonnull;
   POSSIBILITY OF SUCH DAMAGE.
 
  */
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.ContextUtilities;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.JsonParser;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.core.CanonicalResource;
-import org.hl7.fhir.model.core.Coding;
-import org.hl7.fhir.model.core.Constants;
-import org.hl7.fhir.model.core.DomainResource;
-import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.model.core.Extension;
-import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.core.UsageContext;
-import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
-import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.model.utilities.ImplicitValueSets;
-import org.hl7.fhir.services.validation.IMessagingServices;
-import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.services.validation.ValidatorSession;
-import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.services.xver.XVerExtensionManager;
-import org.hl7.fhir.services.xver.XVerExtensionManager.XVerExtensionStatus;
-import org.hl7.fhir.services.terminology.ValidationContextCarrier.IValidationContextResourceLoader;
-import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
-import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.validation.service.utils.ValidationLevel;
-import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
-import org.hl7.fhir.validation.instance.utils.IndexedElement;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
   public final static String URI_REGEX_XVER = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-_]*\\/)*?)?($$)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
@@ -245,6 +232,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.fetcher = parent.fetcher;
     this.policyAdvisor = parent.policyAdvisor;
     this.noTerminologyChecks = parent.noTerminologyChecks;
+  }
+
+  /**
+   * The definitions (url:STATUS - DEPRECATED, WITHDRAWN, RETIRED, Experimental) whose status this validator has
+   * already reported, so that each is reported only once. It's shared with the validators this one creates.
+   * <p>
+   * This is the live set, not a copy: a caller that reuses the outcome of an earlier validation instead of validating
+   * again (e.g. the IG publisher's -rapido mode) adds what that validation reported, so it isn't reported a second time
+   */
+  public Set<String> getStatusWarnings() {
+    return statusWarnings;
   }
 
   private boolean doingLevel(IssueSeverity error) {
@@ -639,6 +637,26 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, String id, boolean thePass, String msg, Object... theMessageArguments) {
     return warning(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), id, thePass, msg, theMessageArguments);
+  }
+
+  /**
+   * Whether codes from a code system can be validated as a batch, by the server that getTxSupportInfo found for it; if
+   * they can't, a warning says why, at stack. There may be no server at all: there's no terminology service (none was
+   * configured, or the validator stopped using it when it couldn't be reached), or no server is known to support the code
+   * system. Otherwise the server has to support batch validation
+   *
+   * @param system the code system, as the message names it (url, or url|version)
+   */
+  protected boolean checkTxBatchSupport(List<ValidationMessage> errors, NodeStack stack, org.hl7.fhir.services.terminology.SystemSupportInformation txInfo, String system) {
+    if (txInfo.getServer() == null) {
+      warning(errors, "2026-11-22", IssueType.NOTSUPPORTED, stack, false, context.isNoTerminologyServer()
+        ? I18nConstants.VALUESET_TXVER_BATCH_NO_SERVICE : I18nConstants.VALUESET_TXVER_BATCH_NO_SERVER, system);
+      return false;
+    }
+    boolean batchOk = txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(org.hl7.fhir.standalone.terminology.client.TerminologyClientContext.TX_BATCH_VERSION,
+      txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
+    return warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, stack, batchOk, I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED,
+      txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion(), system, txInfo.getServer());
   }
 
   protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, int num, String msg, Object... theMessageArguments) {
@@ -1054,84 +1072,29 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (bnd == null)
       return null;
     if (bnd.fhirType().equals(BUNDLE)) {
-      for (Element be : bnd.getChildrenByName(ENTRY)) {
-        Element res = be.getNamedChild(RESOURCE, false);
-        if (res != null) {
-          String fullUrl = be.getChildValue(FULL_URL);
-          String rt = res.fhirType();
-          String id = res.getChildValue(ID);
-          if (url.equals(fullUrl))
-            return res;
-          if (url.equals(rt + "/" + id))
-            return res;
+      // the first entry (in bundle order) that matches by fullUrl or by Type/id
+      BundleIndex index = BundleIndex.forBundle(bnd);
+      Element byUrl = firstWithResource(index.getByFullUrl(url));
+      Element byId = firstWithResource(index.getByTypeAndId(url));
+      Element entry = byUrl == null ? byId : byId == null ? byUrl : index.getEntryIndex(byId) < index.getEntryIndex(byUrl) ? byId : byUrl;
+      return entry == null ? null : entry.getNamedChild(RESOURCE, false);
+    }
+    return null;
+  }
+
+  private Element firstWithResource(List<Element> entries) {
+    if (entries != null) {
+      for (Element entry : entries) {
+        if (entry.hasChild(RESOURCE, false)) {
+          return entry;
         }
       }
     }
     return null;
   }
 
-  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
-    @SuppressWarnings("unchecked")
-    Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map);
-    @SuppressWarnings("unchecked")
-    Map<String, List<Element>> relMap = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map_reverse);
-    List<Element> list = null;
-
-    if (map == null) {
-      map = new HashMap<>();
-      bundle.setUserData(UserDataNames.validator_entry_map, map);
-      relMap = new HashMap<>();
-      bundle.setUserData(UserDataNames.validator_entry_map_reverse, relMap);
-      for (Element entry : entries) {
-        String fu = entry.getNamedChildValue(FULL_URL, false);
-        list = map.get(fu);
-        if (list == null) {
-          list = new ArrayList<Element>();
-          map.put(fu, list);
-        }
-        list.add(entry);
-
-        Element resource = entry.getNamedChild(RESOURCE, false);
-        if (resource != null) {
-          String et = resource.getType();
-          String eid = resource.getNamedChildValue(ID, false);
-          String rl = null;
-          if (eid != null) {
-            rl = et+"/"+eid;
-            list = relMap.get(rl);
-            if (list == null) {
-              list = new ArrayList<Element>();
-              relMap.put(rl, list);
-            }
-            list.add(entry);
-          }
-          boolean versionIdPresent = resource.hasChild(META, false)
-            && resource.getNamedChild(META, false).hasChild(VERSION_ID, false)
-            && resource.getNamedChild(META, false).getNamedChild(VERSION_ID, false).hasValue();
-          if (versionIdPresent){
-            String versionId = resource.getNamedChild(META).getNamedChild(VERSION_ID).getValue();
-            String fullUrlVersioned = fu + "/_history/" + versionId;
-            List<Element> listMapVersioned = null;
-            listMapVersioned = map.get(fullUrlVersioned);
-            if (listMapVersioned == null) {
-              listMapVersioned = new ArrayList<Element>();
-              map.put(fullUrlVersioned, listMapVersioned);
-            }
-            listMapVersioned.add(entry);
-            if (rl != null) {
-              String relativePathVersioned = rl + "/_history/" + versionId;
-              List<Element> listRelMapVersioned = null;
-              listRelMapVersioned = relMap.get(relativePathVersioned);
-              if (listRelMapVersioned == null) {
-                listRelMapVersioned = new ArrayList<Element>();
-                relMap.put(relativePathVersioned, listRelMapVersioned);
-              }
-              listRelMapVersioned.add(entry);
-            }
-          }
-        }
-      }
-    }
+  protected Element resolveInBundle(Element bundle, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
+    BundleIndex index = BundleIndex.forBundle(bundle);
 
     String fragment = null;
     if (ref != null && ref.contains("#")) {
@@ -1141,7 +1104,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
     if (Utilities.isAbsoluteUrl(ref)) {
       // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
-      List<Element> el = map.get(ref);
+      List<Element> el = index.getByFullUrl(ref);
       if (el == null) {
         // if this something we complain about?
         // not if it's in a package, or it looks like a restful URL and it's one of the canonical resource types
@@ -1186,7 +1149,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       if (fullUrlMatchesUrl && fullUrl.endsWith(type + "/" + id)) {
         u = fullUrl.substring(0, fullUrl.length() - (type + "/" + id).length()) + ref;
       }
-      List<Element> el = map.get(u);
+      // if the source entry doesn't have a RESTful fullUrl, there's no defined way to resolve a relative reference (see "Resolving references in Bundles")
+      List<Element> el = u == null ? null : index.getByFullUrl(u);
       if (el != null && el.size() > 0) {
         if (el.size() == 1) {
           return el.get(0);
@@ -1205,7 +1169,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           String t = parts[0];
           if (context.getResourceNamesAsSet().contains(t)) {
             String i = parts[1];
-            el = relMap.get(t+"/"+i);
+            el = index.getByTypeAndId(t+"/"+i);
             if (el != null) {
               Set<String> tl = new HashSet<>();
               for (Element e : el) {
@@ -1461,7 +1425,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (ref.startsWith("http:") || ref.startsWith("urn:") || Utilities.isAbsoluteUrl(ref)) {
       // We've got an absolute reference, no need to calculate
       if (ref.contains("/_history/")) {
-        targetUrl = ref.substring(0, ref.indexOf("/_history/") - 1);
+        targetUrl = ref.substring(0, ref.indexOf("/_history/"));
         version = ref.substring(ref.indexOf("/_history/") + 10);
       } else
         targetUrl = ref;
@@ -1481,67 +1445,59 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       return null;
 
     } else {
-      String base = "";
-      if (fullUrl.startsWith("urn")) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] parts = fullUrl.split("\\:");
-        for (int i = 0; i < parts.length - 1; i++) {
-          base = base + parts[i] + ":";
-        }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //Regex sourced from URI_REGEX_XVER configured at initialization; known FHIR resource name alternation
+      boolean fullUrlIsRestful = fullUrl.matches(urlRegex);
+      if (!fullUrlIsRestful) {
+        // the bundle resolution rules only define how to resolve a relative reference against a RESTful fullUrl (or, in a
+        // batch/transaction, against the base of the server it is sent to, which we don't know). So it can't be resolved here
+        hint(errors, "2025-04-08", IssueType.INFORMATIONAL, -1, -1, path, false, I18nConstants.REFERENCE_REF_REL_UNSOLVEABLE, ref);
+        targetUrl = null;
       } else {
+        String base = "";
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
         String[] parts = fullUrl.split("/");
         for (int i = 0; i < parts.length - 2; i++) {
           base = base + parts[i] + "/";
         }
-      }
 
-      String id = null;
-      if (ref.contains("/_history/")) {
-        version = ref.substring(ref.indexOf("/_history/") + 10);
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] refBaseParts = ref.substring(0, ref.indexOf("/_history/")).split("/");
-        resourceType = refBaseParts[0];
-        id = refBaseParts[1];
-        targetUrl = base + resourceType+"/"+ id;
-      } else if (base.startsWith("urn")) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] refParts = ref.split("/");
-        resourceType = refParts[0];
-        id = refParts[1];
-        targetUrl = base + id;
-      } else {
-        id = ref;
-        targetUrl = base + id;
+        if (ref.contains("/_history/")) {
+          version = ref.substring(ref.indexOf("/_history/") + 10);
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] refBaseParts = ref.substring(0, ref.indexOf("/_history/")).split("/");
+          resourceType = refBaseParts[0];
+          targetUrl = base + resourceType + "/" + refBaseParts[1];
+        } else {
+          targetUrl = base + ref;
+        }
       }
     }
 
-    List<Element> entries = new ArrayList<Element>();
-    bundle.getNamedChildren(ENTRY, entries);
+    BundleIndex index = BundleIndex.forBundle(bundle);
     Element match = null;
-    int matchIndex = -1;
-    for (int i = 0; i < entries.size(); i++) {
-      Element we = entries.get(i);
-      if (targetUrl.equals(we.getChildValue(FULL_URL))) {
+    Element matchEntry = null;
+    List<Element> candidates = targetUrl == null ? null : index.getByFullUrl(version.isEmpty() ? targetUrl : targetUrl + "/_history/" + version);
+    if (candidates != null) {
+      for (Element we : candidates) {
         Element r = we.getNamedChild(RESOURCE, false);
-        if (version.isEmpty()) {
+        if (r != null) {
           rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
           match = r;
-          matchIndex = i;
-        } else {
-          try {
-            if (version.equals(r.getChildren(META).get(0).getChildValue("versionId"))) {
-              rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
-              match = r;
-              matchIndex = i;
-            }
-          } catch (Exception e) {
-            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, r.getChildren(META).size() == 1 && r.getChildren(META).get(0).getChildValue("versionId") != null, I18nConstants.BUNDLE_BUNDLE_FULLURL_NEEDVERSION, targetUrl);
-            // If one of these things is null
+          matchEntry = we;
+        }
+      }
+    }
+    if (match == null && targetUrl != null && !version.isEmpty()) {
+      // nothing with that version. If there's entries with the right fullUrl but no versionId, tell the user
+      List<Element> unversioned = index.getByFullUrl(targetUrl);
+      if (unversioned != null) {
+        for (Element we : unversioned) {
+          Element r = we.getNamedChild(RESOURCE, false);
+          if (r != null) {
+            Element meta = r.getNamedChild(META, false);
+            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, meta != null && meta.getNamedChildValue(VERSION_ID, false) != null, I18nConstants.BUNDLE_BUNDLE_FULLURL_NEEDVERSION, targetUrl);
           }
         }
       }
@@ -1555,31 +1511,29 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
         String[] p = ref.split("\\/");
-        List<Element> ml = new ArrayList<>();
+        List<Element> ml = null;
         if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && Utilities.isValidId(p[1])) {
-          for (int i = 0; i < entries.size(); i++) {
-            Element we = entries.get(i);
-            Element r = we.getNamedChild(RESOURCE, false);
-            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id", false)) ) {
-              ml.add(we);
-            }
+          ml = index.getByTypeAndId(p[0] + "/" + p[1]);
+        }
+        if (ml != null) {
+          if (ml.size() > 1) {
+            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl == null ? ref : targetUrl);
           }
-        }
-        if (ml.size() > 1) {
-          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl);
-        }
-        for (Element e : ml) {
-          String fu = e.getChildValue(FULL_URL);
-          int i = entries.indexOf(e);
-          if (fu == null) {
-            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
-          } else {
-            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);
+          for (Element e : ml) {
+            String fu = e.getChildValue(FULL_URL);
+            int i = index.getEntryIndex(e);
+            if (targetUrl == null) {
+              warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NOT_RESTFUL, i, ref, fullUrl);
+            } else if (fu == null) {
+              warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
+            } else {
+              warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);
+            }
           }
         }
       }
     }
-    return match == null ? null : new IndexedElement(matchIndex, match, entries.get(matchIndex));
+    return match == null ? null : new IndexedElement(index.getEntryIndex(matchEntry), match, matchEntry);
   }
 
   /**
@@ -1894,25 +1848,36 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return true;
   }
 
-  protected boolean hasUseContext(Coding use, Coding value) {
-    for (UsageContext usage : settings.getUsageContexts())  {
-      if (isContext(use, value, usage)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isContext(Coding use, Coding value, UsageContext usage) {
-    // subsumes() returns null when it can't tell - there's no usable definition for the code
-    // system, and no terminology server to ask - so don't unbox it; treat unknown as no match
-    return usage.getValue() instanceof Coding && Boolean.TRUE.equals(context.subsumes(settings, usage.getCode(), use)) && Boolean.TRUE.equals(context.subsumes(settings, (Coding) usage.getValue(), value));
-  }
-
 
   protected boolean isKnownUsage(UsageContext usage) {
     for (UsageContext t : settings.getUsageContexts()) {
       if (usagesMatch(usage, t)) {
+        return true;
+      }
+    }
+    return isJurisdictionUsage(usage);
+  }
+
+  private static final String USAGE_CONTEXT_TYPE = "http://terminology.hl7.org/CodeSystem/usage-context-type";
+
+  /**
+   * The jurisdiction the caller validates in (-jurisdiction) is a use context too: usage-context-type#jurisdiction,
+   * with the value a code from urn:iso:std:iso:3166 or the UN M49 code system (see ValueSet/jurisdiction).
+   * It matches when any coding in the usage's value has the same system and code as the declared jurisdiction.
+   */
+  private boolean isJurisdictionUsage(UsageContext usage) {
+    Coding j = settings.getJurisdiction();
+    if (j == null || !j.hasSystem() || !j.hasCode() || !JurisdictionUtilities.isJurisdiction(j.getSystem())) {
+      return false;
+    }
+    if (!usage.hasCode() || !USAGE_CONTEXT_TYPE.equals(usage.getCode().getSystem()) || !"jurisdiction".equals(usage.getCode().getCode())) {
+      return false;
+    }
+    if (!usage.hasValueCodeableConcept()) {
+      return false;
+    }
+    for (Coding c : usage.getValueCodeableConcept().getCodingList()) {
+      if (j.getSystem().equals(c.getSystem()) && j.getCode().equals(c.getCode())) {
         return true;
       }
     }

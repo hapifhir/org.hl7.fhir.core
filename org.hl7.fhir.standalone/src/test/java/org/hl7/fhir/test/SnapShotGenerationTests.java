@@ -57,7 +57,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +106,7 @@ public class SnapShotGenerationTests {
     private boolean fail;
     private boolean newSliceProcessing;
     private boolean debug;
+    private boolean forPublication;
 
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
@@ -124,6 +124,7 @@ public class SnapShotGenerationTests {
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
       debug = "true".equals(test.getAttribute("debug"));
+      forPublication = "true".equals(test.getAttribute("for-publication"));
 
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -229,6 +230,10 @@ public class SnapShotGenerationTests {
 
     public boolean isNewSliceProcessing() {
       return newSliceProcessing;
+    }
+
+    public boolean isForPublication() {
+      return forPublication;
     }
 
     public boolean isDebug() {
@@ -547,7 +552,7 @@ public class SnapShotGenerationTests {
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
 //    IOUtils.copy(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")), test.getOutput());
+    new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -593,6 +598,7 @@ public class SnapShotGenerationTests {
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
+    pu.setForPublication(test.isForPublication());
     pu.setIds(test.getSource(), false);
     pu.setAllowUnknownProfile(test.allow);
     if (!testContext.hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
@@ -610,9 +616,9 @@ public class SnapShotGenerationTests {
     StructureDefinition sdc = test.getSource().copy(Base.COPY_DATA);
     new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential(), sdc);
     if (test.sourceJson) {
-      new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
+      new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json"), sdc);
     } else {
-      new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
+      new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml"), sdc);
     }
 
 
@@ -648,9 +654,9 @@ public class SnapShotGenerationTests {
       }
 //      IOUtils.copy(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(dst));
       if (test.json) {
-        new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+        new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(dst.getAbsolutePath(), output);
       } else {
-        new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+        new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeFile(dst.getAbsolutePath(), output);
       }
       StructureDefinition t1 = test.expected.copy(Base.COPY_DATA);
       t1.setText(null);

@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import java.util.List;
-
-import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.ElementDefinition;
 import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+
+import java.util.List;
 
 public class ElementInfo {
 

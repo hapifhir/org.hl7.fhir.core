@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Annotation40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.ContactPoint40_N;
@@ -48,11 +49,13 @@ public class CareTeam40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CareTeam tgt = new org.hl7.fhir.model.core.CareTeam();
+    // R6 dropped these
+    CrossVersionElements40_N.r4ElementsToExtensions(src, "CareTeam", tgt.getExtension(), "encounter");
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCareTeamStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR6Code(src.getStatusElement(), convertCareTeamStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasName())
@@ -63,10 +66,7 @@ public class CareTeam40_N {
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertCareTeamParticipantComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(Reference40_N.convertReferenceToCodeableReference(t));
+    CodeableConcept40_N.convertReasonsToR6(src.getReasonCode(), src.getReasonReference(), tgt.getReasonList());
     for (org.hl7.fhir.r4.model.Reference t : src.getManagingOrganization())
       tgt.addManagingOrganization(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
@@ -79,11 +79,12 @@ public class CareTeam40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CareTeam tgt = new org.hl7.fhir.r4.model.CareTeam();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("CareTeam", "4.0", new String[] {"encounter"}));
+    CrossVersionElements40_N.extensionsToR4Elements(src.getExtension(), tgt, "CareTeam", "encounter");
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
-      tgt.setStatusElement(convertCareTeamStatus(src.getStatusElement()));
+      tgt.setStatusElement(CrossVersionElements40_N.toR4Code(src.getStatusElement(), convertCareTeamStatus(src.getStatusElement()), src.fhirType(), "status"));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
       tgt.addCategory(CodeableConcept40_N.convertCodeableConcept(t));
     if (src.hasName())
@@ -94,12 +95,7 @@ public class CareTeam40_N {
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.model.core.CareTeam.CareTeamParticipantComponent t : src.getParticipantList())
       tgt.addParticipant(convertCareTeamParticipantComponent(t));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasConcept())
-        tgt.addReasonCode(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReasonList())
-      if (t.hasReference())
-        tgt.addReasonReference(Reference40_N.convertReference(t.getReference()));
+    CodeableConcept40_N.convertReasonsToR4(src.getReasonList(), tgt.getReasonCode(), tgt.getReasonReference());
     for (org.hl7.fhir.model.core.Reference t : src.getManagingOrganizationList())
       tgt.addManagingOrganization(Reference40_N.convertReference(t));
     for (org.hl7.fhir.model.core.ContactPoint t : src.getTelecomList())
@@ -176,15 +172,23 @@ public class CareTeam40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.model.core.CareTeam.CareTeamParticipantComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole())
-      tgt.setRole(CodeableConcept40_N.convertCodeableConcept(t));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("CareTeam.participant", "5.0", new String[] {}, CrossVersionElements40_N.urls("CareTeam.participant", "6.0", new String[] {"supportingInfo", "effective"}, CrossVersionElements40_N.url("CareTeam.participant", "4.0", "role"))));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "supportingInfo");
+    // R6 role is single: the first, and the rest in 4.0 extensions
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole()) {
+      if (!tgt.hasRole())
+        tgt.setRole(CodeableConcept40_N.convertCodeableConcept(t));
+      else
+        tgt.addExtension(CrossVersionElements40_N.url("CareTeam.participant", "4.0", "role"), CodeableConcept40_N.convertCodeableConcept(t));
+    }
     if (src.hasMember())
       tgt.setMember(Reference40_N.convertReference(src.getMember()));
     if (src.hasOnBehalfOf())
       tgt.setOnBehalfOf(Reference40_N.convertReference(src.getOnBehalfOf()));
     if (src.hasPeriod())
       tgt.setEffective(Period40_N.convertPeriod(src.getPeriod()));
+    // R6 effective can also be a Timing
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "effective");
     return tgt;
   }
 
@@ -192,15 +196,21 @@ public class CareTeam40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.url("CareTeam.participant", "4.0", "role"));
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "supportingInfo");
     if (src.hasRole())
       tgt.addRole(CodeableConcept40_N.convertCodeableConcept(src.getRole()));
+    for (org.hl7.fhir.model.core.Extension ext : src.getExtension())
+      if (CrossVersionElements40_N.url("CareTeam.participant", "4.0", "role").equals(ext.getUrl()))
+        tgt.addRole(CodeableConcept40_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) ext.getValue()));
     if (src.hasMember())
       tgt.setMember(Reference40_N.convertReference(src.getMember()));
     if (src.hasOnBehalfOf())
       tgt.setOnBehalfOf(Reference40_N.convertReference(src.getOnBehalfOf()));
     if (src.hasEffectivePeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getEffectivePeriod()));
+    else if (src.hasEffective())
+      tgt.addExtension(CrossVersionElements40_N.url("CareTeam.participant", "6.0", "effective"), ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().convertType(src.getEffective()));
     return tgt;
   }
 }

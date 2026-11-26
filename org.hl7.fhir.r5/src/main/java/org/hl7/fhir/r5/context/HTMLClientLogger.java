@@ -71,14 +71,10 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("<hr/><a name=\"l"+id+"\"> </a>");
     file.println("<p>#"+id+"</p>");
     file.println("<pre>");
-    file.println(method+" "+url+" HTTP/1.1");
+    file.println(Utilities.escapeXml(method+" "+url+" HTTP/1.1"));
     if (headers != null) {
       for (String s : headers) {
-        if (s.startsWith("Api-Key")) {
-          file.println("Api-Key: xxxxxxxxxxxxxxxx");
-        } else {
-          file.println(s);
-        }
+        file.println(Utilities.escapeXmlText(ToolingClientLogger.presentHeader(s)));
       }
     }
     if (body != null) {
@@ -105,9 +101,12 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     }
     req = false;
     file.println("<pre>");
-    file.println(outcome);
-    for (String s : headers)  
-      file.println(Utilities.escapeXml(s));
+    file.println(Utilities.escapeXml(outcome));
+    if (headers != null) {
+      for (String s : headers) {
+        file.println(Utilities.escapeXml(ToolingClientLogger.presentHeader(s)));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
@@ -115,6 +114,19 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
       } catch (UnsupportedEncodingException e) {
       }
     }
+    file.println("</pre>");
+  }
+
+  @Override
+  public void logFailure(String error, long elapsed) {
+
+    log.debug(" txlog fail: " +error+" after "+elapsed+"ms");
+
+    if (file == null)
+      return;
+    req = false;
+    file.println("<pre>");
+    file.println("No Response ("+Utilities.escapeXml(Utilities.describeDuration(elapsed))+"): "+Utilities.escapeXml(error));
     file.println("</pre>");
   }
 

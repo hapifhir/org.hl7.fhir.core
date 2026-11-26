@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N;
 
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.String40_N;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -10,7 +12,7 @@ public class HumanName40_N {
     if (src == null) return null;
     org.hl7.fhir.model.core.HumanName tgt = new org.hl7.fhir.model.core.HumanName();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR6Code(src.getUseElement(), convertNameUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasText()) tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     if (src.hasFamily()) tgt.setFamilyElement(String40_N.convertString(src.getFamilyElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getGiven()) tgt.getGivenList().add(String40_N.convertString(t));
@@ -24,7 +26,7 @@ public class HumanName40_N {
     if (src == null) return null;
     org.hl7.fhir.r4.model.HumanName tgt = new org.hl7.fhir.r4.model.HumanName();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
+    if (src.hasUse()) tgt.setUseElement(CrossVersionElements40_N.toR4Code(src.getUseElement(), convertNameUse(src.getUseElement()), src.fhirType(), "use"));
     if (src.hasText()) tgt.setTextElement(String40_N.convertString(src.getTextElement()));
     if (src.hasFamily()) tgt.setFamilyElement(String40_N.convertString(src.getFamilyElement()));
     for (org.hl7.fhir.model.core.StringType t : src.getGivenList()) tgt.getGiven().add(String40_N.convertString(t));

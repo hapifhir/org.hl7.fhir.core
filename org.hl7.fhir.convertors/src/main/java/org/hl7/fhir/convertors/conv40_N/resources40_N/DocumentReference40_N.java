@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv40_N.resources40_N;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Coding40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionDatatype40_N;
+import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.CrossVersionElements40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Attachment40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.CodeableConcept40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.general40_N.Identifier40_N;
@@ -48,19 +51,48 @@ import org.hl7.fhir.model.core.Enumerations;
 
 public class DocumentReference40_N {
 
+  private static final String RELATES_TO_CODE_URL = CrossVersionElements40_N.url("DocumentReference.relatesTo", "5.0", "code");
+
+
+  public static final String ATTESTATION_MODE_SYSTEM = "http://terminology.hl7.org/CodeSystem/composition-attestation-mode";
+  // marks the identifier that was the R4 masterIdentifier
+  public static final String MASTER_IDENTIFIER_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.masterIdentifier";
+  private static final String CONTEXT_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.context";
+  public static final String SOURCE_PATIENT_INFO_EXTENSION_URL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-DocumentReference.context.sourcePatientInfo";
+
+  /**
+   * true if the attester is what R4 authenticator says: an official attester, with nothing but the party
+   */
+  private static boolean isAuthenticator(DocumentReferenceAttesterComponent t) {
+    org.hl7.fhir.model.core.CodeableConcept m = t.getMode();
+    if (!t.hasParty() || t.hasTime() || t.hasId() || t.hasExtension() || t.hasModifierExtension())
+      return false;
+    if (m.getCodingList().size() != 1 || m.hasText() || m.hasId() || m.hasExtension())
+      return false;
+    org.hl7.fhir.model.core.Coding c = m.getCodingFirstRep();
+    return (ATTESTATION_MODE_SYSTEM.equals(c.getSystem()) || "http://hl7.org/fhir/composition-attestation-mode".equals(c.getSystem())) && "official".equals(c.getCode())
+      && !c.hasDisplay() && !c.hasVersion() && !c.hasUserSelected() && !c.hasId() && !c.hasExtension();
+  }
+
   public static org.hl7.fhir.model.core.DocumentReference convertDocumentReference(org.hl7.fhir.r4.model.DocumentReference src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DocumentReference tgt = new org.hl7.fhir.model.core.DocumentReference();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
-    if (src.hasMasterIdentifier())
-      tgt.addIdentifier(Identifier40_N.convertIdentifier(src.getMasterIdentifier()));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, CrossVersionElements40_N.urls("DocumentReference", "5.0", new String[] {"version", "basedOn", "modality", "attester"}, CrossVersionElements40_N.urls("DocumentReference", "6.0", new String[] {"bodyStructure", "related"}, SOURCE_PATIENT_INFO_EXTENSION_URL)));
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "version", "basedOn", "modality");
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "bodyStructure");
+    // R6 dropped masterIdentifier: it's an identifier, marked so it can go back
+    if (src.hasMasterIdentifier()) {
+      org.hl7.fhir.model.core.Identifier mi = Identifier40_N.convertIdentifier(src.getMasterIdentifier());
+      mi.addExtension(MASTER_IDENTIFIER_EXTENSION_URL, new org.hl7.fhir.model.core.BooleanType(true));
+      tgt.addIdentifier(mi);
+    }
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertDocumentReferenceStatus(src.getStatusElement()));
     if (src.hasDocStatus())
-      tgt.setDocStatusElement(convertReferredDocumentStatus(src.getDocStatusElement()));
+      tgt.setDocStatusElement(CrossVersionElements40_N.toR6Code(src.getDocStatusElement(), convertReferredDocumentStatus(src.getDocStatusElement()), src.fhirType(), "docStatus"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
@@ -71,8 +103,10 @@ public class DocumentReference40_N {
       tgt.setDateElement(Instant40_N.convertInstantToDateTime(src.getDateElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference40_N.convertReference(t));
     if (src.hasAuthenticator())
-      tgt.addAttester().setMode(new org.hl7.fhir.model.core.CodeableConcept().addCoding(new org.hl7.fhir.model.core.Coding("http://hl7.org/fhir/composition-attestation-mode","official", "Official")))
+      tgt.addAttester().setMode(new org.hl7.fhir.model.core.CodeableConcept().addCoding(new org.hl7.fhir.model.core.Coding(ATTESTATION_MODE_SYSTEM, "official", null)))
         .setParty(Reference40_N.convertReference(src.getAuthenticator()));
+    // the other attesters
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "5.0", "attester");
     if (src.hasCustodian())
       tgt.setCustodian(Reference40_N.convertReference(src.getCustodian()));
     for (org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo())
@@ -83,8 +117,19 @@ public class DocumentReference40_N {
       tgt.addSecurityLabel(CodeableConcept40_N.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContentComponent t : src.getContent())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
-    if (src.hasContext())
+    if (src.hasContext()) {
       convertDocumentReferenceContextComponent(src.getContext(), tgt);
+      // R6 has no context element: its id and extensions (including modifier extensions) are a 4.0 extension
+      org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent c = src.getContext();
+      if (c.hasId() || c.hasExtension() || c.hasModifierExtension()) {
+        org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent own = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent();
+        own.setId(c.getId());
+        own.getExtension().addAll(c.getExtension());
+        own.getModifierExtension().addAll(c.getModifierExtension());
+        tgt.addExtension(CrossVersionDatatype40_N.convertR4ElementToExtension(CONTEXT_URL, own));
+      }
+    }
+    CrossVersionElements40_N.extensionsToElements(src.getExtension(), tgt, "6.0", "related");
     return tgt;
   }
 
@@ -92,15 +137,20 @@ public class DocumentReference40_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentReference tgt = new org.hl7.fhir.r4.model.DocumentReference();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt);
-//        if (src.hasMasterIdentifier())
-//            tgt.setMasterIdentifier(convertIdentifier(src.getMasterIdentifier()));
-    for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())
-      tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, SOURCE_PATIENT_INFO_EXTENSION_URL);
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "5.0", "version", "basedOn", "modality");
+    CrossVersionElements40_N.elementsToExtensions(src, tgt.getExtension(), "6.0", "bodyStructure");
+    for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList()) {
+      if (t.hasExtension(MASTER_IDENTIFIER_EXTENSION_URL) && !tgt.hasMasterIdentifier()) {
+        tgt.setMasterIdentifier(Identifier40_N.convertIdentifier(t));
+        tgt.getMasterIdentifier().removeExtension(MASTER_IDENTIFIER_EXTENSION_URL);
+      } else
+        tgt.addIdentifier(Identifier40_N.convertIdentifier(t));
+    }
     if (src.hasStatus())
       tgt.setStatusElement(Enumerations40_N.convertDocumentReferenceStatus(src.getStatusElement()));
     if (src.hasDocStatus())
-      tgt.setDocStatusElement(convertReferredDocumentStatus(src.getDocStatusElement()));
+      tgt.setDocStatusElement(CrossVersionElements40_N.toR4Code(src.getDocStatusElement(), convertReferredDocumentStatus(src.getDocStatusElement()), src.fhirType(), "docStatus"));
     if (src.hasType())
       tgt.setType(CodeableConcept40_N.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.model.core.CodeableConcept t : src.getCategoryList())
@@ -110,9 +160,12 @@ public class DocumentReference40_N {
     if (src.hasDate())
       tgt.setDateElement(Instant40_N.convertInstantFromDateTime(src.getDateElement()));
     for (org.hl7.fhir.model.core.Reference t : src.getAuthorList()) tgt.addAuthor(Reference40_N.convertReference(t));
+    // R4 authenticator is an official attester with only a party; the others go in the extension
     for (DocumentReferenceAttesterComponent t : src.getAttesterList()) {
-      if (t.getMode().hasCoding("http://hl7.org/fhir/composition-attestation-mode", "official"))
+      if (!tgt.hasAuthenticator() && isAuthenticator(t))
         tgt.setAuthenticator(Reference40_N.convertReference(t.getParty()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("DocumentReference", "5.0", "attester"), t));
     }
     if (src.hasCustodian())
       tgt.setCustodian(Reference40_N.convertReference(src.getCustodian()));
@@ -125,6 +178,16 @@ public class DocumentReference40_N {
     for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceContentComponent t : src.getContentList())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     convertDocumentReferenceContextComponent(src, tgt.getContext());
+    if (src.hasExtension(CONTEXT_URL)) {
+      CrossVersionDatatype40_N.populateR4Element(src.getExtensionByUrl(CONTEXT_URL), tgt.getContext());
+      tgt.getExtension().removeIf(e -> CONTEXT_URL.equals(e.getUrl()));
+    }
+    for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceRelatedComponent t : src.getRelatedList()) {
+      if (!(t.hasTarget() && !t.hasCode() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension()))
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("DocumentReference", "6.0", "related"), t));
+    }
+    if (tgt.hasContext() && tgt.getContext().isEmpty())
+      tgt.setContext(null);
     return tgt;
   }
 
@@ -213,6 +276,10 @@ public class DocumentReference40_N {
   static public org.hl7.fhir.model.core.CodeableConcept convertDocumentRelationshipType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> src) throws FHIRException {
       if (src == null || src.isEmpty())
           return null;
+      // the whole R6 concept, if R4 couldn't carry it (see below)
+      CodeableConcept kept = CodeableConcept40_N.keptCodeableConcept(src, RELATES_TO_CODE_URL);
+      if (kept != null)
+        return kept;
       CodeableConcept tgt = new CodeableConcept();
       ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
       if (src.getValue() == null) {
@@ -220,16 +287,16 @@ public class DocumentReference40_N {
       } else {
           switch (src.getValue()) {
               case REPLACES:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("replaces");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("replaces");
                   break;
               case TRANSFORMS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("transforms");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("transforms");
                   break;
               case SIGNS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("signs");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("signs");
                   break;
               case APPENDS:
-                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("appends");
+                  tgt.addCoding().setSystem("http://terminology.hl7.org/CodeSystem/document-relationship-type").setCode("appends");
                   break;
               default:
                   break;
@@ -243,7 +310,11 @@ public class DocumentReference40_N {
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipTypeEnumFactory());
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
-    switch (src.getCode("http://hl7.org/fhir/document-relationship-type")) {
+    String code = src.getCode("http://terminology.hl7.org/CodeSystem/document-relationship-type");
+    if (code == null) {
+      code = src.getCode("http://hl7.org/fhir/document-relationship-type"); // the system before R6
+    }
+    switch (code == null ? "" : code) {
       case "replaces":
         tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.REPLACES);
         break;
@@ -257,9 +328,13 @@ public class DocumentReference40_N {
         tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.APPENDS);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.NULL);
+        // not a code R4 knows: leave the value empty
         break;
     }
+    // if the R4 code doesn't make the same concept again, the concept goes in a 5.0 extension
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> plain = tgt.copy();
+    plain.getExtension().clear();
+    CodeableConcept40_N.keepCodeableConcept(src, tgt, plain.hasValue() ? convertDocumentRelationshipType(plain) : null, RELATES_TO_CODE_URL);
     return tgt;
   }
 
@@ -267,9 +342,13 @@ public class DocumentReference40_N {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.model.core.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt, CrossVersionElements40_N.urls("DocumentReference.content", "5.0", new String[] {"profile"}));
     if (src.hasAttachment())
       tgt.setAttachment(Attachment40_N.convertAttachment(src.getAttachment()));
+    // R4 format is the R6 profile, as a coding (any other profiles are in the extension)
+    if (src.hasFormat())
+      tgt.addProfile().setValue(Coding40_N.convertCoding(src.getFormat()));
+    CrossVersionElements40_N.extensionsToElementsForPath(src.getExtension(), tgt, "DocumentReference.content", "5.0", "profile");
     return tgt;
   }
 
@@ -280,37 +359,49 @@ public class DocumentReference40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment40_N.convertAttachment(src.getAttachment()));
+    for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceContentProfileComponent p : src.getProfileList()) {
+      if (!tgt.hasFormat() && p.hasValueCoding() && !p.hasId() && !p.hasExtension() && !p.hasModifierExtension())
+        tgt.setFormat(Coding40_N.convertCoding(p.getValueCoding()));
+      else
+        tgt.addExtension(CrossVersionDatatype40_N.convertToExtension(CrossVersionElements40_N.url("DocumentReference.content", "5.0", "profile"), p));
+    }
     return tgt;
   }
 
   public static void convertDocumentReferenceContextComponent(org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent src, org.hl7.fhir.model.core.DocumentReference tgt) throws FHIRException {
     for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addContext(Reference40_N.convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getEvent())
-      tgt.addEvent(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(t)));
+      tgt.addEvent(CodeableConcept40_N.convertCodeableConceptToCodeableReference(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     if (src.hasFacilityType())
       tgt.setFacilityType(CodeableConcept40_N.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept40_N.convertCodeableConcept(src.getPracticeSetting()));
-//    if (src.hasSourcePatientInfo())
-//      tgt.setSourcePatientInfo(Reference40_N.convertReference(src.getSourcePatientInfo()));
-//    for (org.hl7.fhir.r4.model.Reference t : src.getRelated()) tgt.addRelated(Reference40_N.convertReference(t));
+    // R6 dropped sourcePatientInfo
+    if (src.hasSourcePatientInfo())
+      tgt.addExtension(SOURCE_PATIENT_INFO_EXTENSION_URL, Reference40_N.convertReference(src.getSourcePatientInfo()));
+    // R6 related has a code as well as the target
+    for (org.hl7.fhir.r4.model.Reference t : src.getRelated())
+      tgt.addRelated().setTarget(Reference40_N.convertReference(t));
   }
 
   public static void convertDocumentReferenceContextComponent(org.hl7.fhir.model.core.DocumentReference src, org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent tgt) throws FHIRException {
     for (org.hl7.fhir.model.core.Reference t : src.getContextList()) tgt.addEncounter(Reference40_N.convertReference(t));
     for (CodeableReference t : src.getEventList())
-      if (t.hasConcept())
-      tgt.addEvent(CodeableConcept40_N.convertCodeableConcept(t.getConcept()));
+      tgt.addEvent(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_N.convertPeriod(src.getPeriod()));
     if (src.hasFacilityType())
       tgt.setFacilityType(CodeableConcept40_N.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept40_N.convertCodeableConcept(src.getPracticeSetting()));
-//    if (src.hasSourcePatientInfo())
-//      tgt.setSourcePatientInfo(Reference40_N.convertReference(src.getSourcePatientInfo()));
-//    for (org.hl7.fhir.model.core.Reference t : src.getRelatedList()) tgt.addRelated(Reference40_N.convertReference(t));
+    if (src.hasExtension(SOURCE_PATIENT_INFO_EXTENSION_URL))
+      tgt.setSourcePatientInfo(Reference40_N.convertReference((org.hl7.fhir.model.core.Reference) src.getExtensionByUrl(SOURCE_PATIENT_INFO_EXTENSION_URL).getValue()));
+    // a related with only a target is R4 context.related; the others go in the extension
+    for (org.hl7.fhir.model.core.DocumentReference.DocumentReferenceRelatedComponent t : src.getRelatedList()) {
+      if (t.hasTarget() && !t.hasCode() && !t.hasId() && !t.hasExtension() && !t.hasModifierExtension())
+        tgt.addRelated(Reference40_N.convertReference(t.getTarget()));
+    }
   }
 }

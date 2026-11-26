@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -100,6 +101,23 @@ public interface IWorkerContext {
    * @return the object previously stored, if there's been no change
    */
   public Object retrieveAnalysis(Class className);
+
+  /**
+   * As storeAnalysis(className, analysis), for an analysis that was worked out from the definitions as they were when
+   * getDefinitionsVersion() was startingDefinitionsVersion (asked before the work started). If they've changed since -
+   * something was loaded while it was being worked out - the analysis may be out of date, and it isn't kept (the
+   * caller can still use it). Without this, an analysis that missed what was just loaded could be kept until the next
+   * time something was loaded
+   *
+   * A context that doesn't track this stores the analysis anyway
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @param analysis the object to store
+   * @param startingDefinitionsVersion the value of getDefinitionsVersion() before the analysis was started
+   */
+  default void storeAnalysis(Class className, Object analysis, long startingDefinitionsVersion) {
+    storeAnalysis(className, analysis);
+  }
 
   /**
    * @return The URL that points to the base specification for the version loaded
@@ -234,7 +252,9 @@ public interface IWorkerContext {
   public List<String> getResourceNames();
 
   /**
-   * @return a set of the resource names defined for this version
+   * Thread safe: implementations must allow this to be called from any thread
+   * 
+   * @return a set of the resource names defined for this version (don't change it)
    */
   public Set<String> getResourceNamesAsSet();
 
@@ -304,6 +324,8 @@ public interface IWorkerContext {
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
    * @return if the resource is known
+   *
+   * Thread safe: implementations must allow this to be called from any thread
    */
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri);
 
@@ -893,6 +915,21 @@ public interface IWorkerContext {
    * @return true if it does, false if it doesn't, and null if it's not know whether it does
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
+  /**
+   * ask the terminology system for some of a concept's properties ($lookup, with a property
+   * parameter for each). The answer is remembered for the life of the context.
+   *
+   * @param properties the codes of the properties wanted - and "designation" for the active
+   *   designations, which come back as designation:{use code} (e.g. designation:900000000000003001
+   *   for a SNOMED CT fully specified name)
+   * @return the values of each of those properties that the concept has, as strings (the code,
+   *   for a code or Coding); empty if it has none of them; null if the concept couldn't be looked
+   *   up (no terminology server, an unknown code, the server failed...)
+   */
+  public default Map<String, List<String>> lookupProperties(ValidationOptions options, String system, String version, String code, Set<String> properties) {
+    return null;
+  }
 
   /**
    * return the System Support Information for the server that serves the specified code system

@@ -116,10 +116,75 @@ public class GraphQLEngine implements IGraphQLEngine {
     this.context = context;
   }
 
+  /**
+   * How deeply objects can nest in the output (fields within fields, references followed, fragments used): a query
+   * comes from whoever sends it, and a fragment that uses itself would otherwise go until the stack ran out
+   */
+  public static final int MAX_DEPTH = 100;
+  /** the longest a query can take (ms), including the FHIRPath it runs; 0 or less is no limit */
+  private long maxExecutionMillis = org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_MILLIS;
+  /**
+   * the most lookups and searches (following a reference, a ...List or ...Connection) a query can make: nested ones
+   * multiply. 0 or less is no limit
+   */
+  private long maxLookups = 10000;
+  /**
+   * the most objects a query can process (0 or less: no limit). A fragment can use another fragment twice,
+   * which uses another twice... so a short query can ask for an object a great many times over
+   */
+  private long maxObjects = 1000000;
+  /** the objects the query being executed has processed */
+  private long objects;
+  /** the budget of the query being executed, which the FHIRPath it runs shares (it's the app context given to FHIRPath) */
+  private org.hl7.fhir.utilities.LimitedExecutionContext run;
+
+  public long getMaxExecutionMillis() {
+    return maxExecutionMillis;
+  }
+
+  public void setMaxExecutionMillis(long maxExecutionMillis) {
+    this.maxExecutionMillis = maxExecutionMillis;
+  }
+
+  public long getMaxObjects() {
+    return maxObjects;
+  }
+
+  public void setMaxObjects(long maxObjects) {
+    this.maxObjects = maxObjects;
+  }
+
+  public long getMaxLookups() {
+    return maxLookups;
+  }
+
+  public void setMaxLookups(long maxLookups) {
+    this.maxLookups = maxLookups;
+  }
+
+  private void checkTime() throws EGraphQLException {
+    org.hl7.fhir.utilities.ExecutionLimits limits = run.getExecutionLimits();
+    // every time: what follows is a lookup or search, which the host does, and which can take a while
+    if (limits.isOutOfTimeNow()) {
+      throw new EGraphQLException("The query didn't finish within " + limits.maxSeconds() + " seconds");
+    }
+  }
+
+  /** before each lookup or search */
+  private void checkLookup() throws EGraphQLException {
+    checkTime();
+    if (!run.getExecutionLimits().step()) {
+      throw new EGraphQLException("The query made more than " + run.getExecutionLimits().getMaxSteps() + " lookups and searches");
+    }
+  }
+
   public void execute() throws EGraphEngine, EGraphQLException, FHIRException {
     if (graphQL == null)
       throw new EGraphEngine("Unable to process graphql - graphql document missing");
     fpe = new FHIRPathEngine(this.context);
+    run = new org.hl7.fhir.utilities.LimitedExecutionContext(new org.hl7.fhir.utilities.ExecutionLimits(maxExecutionMillis, MAX_DEPTH,
+        org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_ITEMS, org.hl7.fhir.utilities.ExecutionLimits.DEFAULT_MAX_STRING_LENGTH, maxLookups)) {};
+    objects = 0;
     magicExpression = new ExpressionNode(0);
 
     output = new GraphQLResponse();
@@ -284,7 +349,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       else {
         ExpressionNode node = fpe.parse(fp.substring(5));
         for (Base v : newValues) {
-          if ((i >= offset) && passesExtensionMode(v, extensionMode) && fpe.evaluateToBoolean(null, context, v, node)) {
+          if ((i >= offset) && passesExtensionMode(v, extensionMode) && fpe.evaluateToBoolean(run, null, context, v, node)) {
             result.add(v);
             t++;
             if (t >= count)
@@ -307,7 +372,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         FHIRPathEngine fpe = new FHIRPathEngine(context);
         ExpressionNode node = fpe.parse(getSingleValue(fhirpath));
         for (BundleEntryComponent be : bnd.getEntry())
-          if (fpe.evaluateToBoolean(null, be.getResource(), be.getResource(), node))
+          if (fpe.evaluateToBoolean(run, null, be.getResource(), be.getResource(), node))
             result.add(be.getResource());
       }
     }
@@ -325,7 +390,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         FHIRPathEngine fpe = new FHIRPathEngine(context);
         ExpressionNode node = fpe.parse(getSingleValue(fhirpath));
         for (IBaseResource v : list)
-          if (fpe.evaluateToBoolean(null, (Resource) v, (Base) v, node))
+          if (fpe.evaluateToBoolean(run, null, (Resource) v, (Base) v, node))
             result.add((Resource) v);
       }
     }
@@ -369,7 +434,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         if (expression == magicExpression)
           ss = suffix + '.' + Integer.toString(index);
         else
-          ss = suffix + '.' + fpe.evaluateToString(null, null, null, value, expression);
+          ss = suffix + '.' + fpe.evaluateToString(run, null, null, value, expression);
         if (!sel.getField().hasDirective("flatten"))
           arg = target.addField(sel.getField().getAlias() + suffix,
               listStatus(sel.getField(), prop.isList() || inheritedList));
@@ -423,7 +488,23 @@ public class GraphQLEngine implements IGraphQLEngine {
     return context.getResourceNamesAsSet().contains(name);
   }
 
-  private void processObject(Resource context, Base source, ObjectValue target, List<Selection> selection,
+  private void processObject(Resource context, Base source, ObjectValue target, List<Selection> selection, boolean inheritedList, String suffix) throws EGraphQLException, FHIRException {
+    checkTime();
+    objects++;
+    if (maxObjects > 0 && objects > maxObjects) {
+      throw new EGraphQLException("The query processed more than " + maxObjects + " objects (fragments using other fragments more than once?)");
+    }
+    if (!run.getExecutionLimits().enter()) {
+      throw new EGraphQLException("The query is nested too deeply (more than " + MAX_DEPTH + " levels - a fragment that uses itself?)");
+    }
+    try {
+      processObjectInner(context, source, target, selection, inheritedList, suffix);
+    } finally {
+      run.getExecutionLimits().exit();
+    }
+  }
+
+  private void processObjectInner(Resource context, Base source, ObjectValue target, List<Selection> selection,
       boolean inheritedList, String suffix) throws EGraphQLException, FHIRException {
     for (Selection sel : selection) {
       if (sel.getField() != null) {
@@ -498,6 +579,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       throw new EGraphQLException("Resource Referencing services not provided");
 
     Reference ref = (Reference) source;
+    checkLookup();
     ReferenceResolution res = services.lookup(appInfo, context, ref);
     if (res != null) {
       if (targetTypeOk(field.getArguments(), res.getTarget())) {
@@ -519,6 +601,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       throw new EGraphQLException("Resource Referencing services not provided");
 
     Reference ref = new Reference(source.primitiveValue());
+    checkLookup();
     ReferenceResolution res = services.lookup(appInfo, context, ref);
     if (res != null) {
       if (targetTypeOk(field.getArguments(), res.getTarget())) {
@@ -561,6 +644,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     params.add(arg);
     arg.setName(getSingleValue(parg));
     arg.addValue(new StringValue(source.fhirType() + "/" + source.getIdPart()));
+    checkLookup();
     services.listResources(appInfo, field.getName().substring(0, field.getName().length() - 4), params, list);
     arg = null;
     ObjectValue obj = null;
@@ -595,6 +679,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     params.add(arg);
     arg.setName(getSingleValue(parg));
     arg.addValue(new StringValue(source.fhirType() + "/" + source.getId()));
+    checkLookup();
     Bundle bnd = (Bundle) services.search(appInfo, field.getName().substring(0, field.getName().length() - 10), params);
     Base bndWrapper = new SearchWrapper(field.getName(), bnd);
     arg = target.addField(field.getAlias() + suffix, listStatus(field, false));
@@ -631,6 +716,7 @@ public class GraphQLEngine implements IGraphQLEngine {
         throw new EGraphQLException("Unknown/invalid parameter " + arg.getName());
     if (Utilities.noString(id))
       throw new EGraphQLException("No id found");
+    checkLookup();
     Resource res = (Resource) services.lookup(appInfo, field.getName(), id);
     if (res == null)
       throw new EGraphQLException("Resource " + field.getName() + "/" + id + " not found");
@@ -645,6 +731,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     if (services == null)
       throw new EGraphQLException("Resource Referencing services not provided");
     List<IBaseResource> list = new ArrayList<>();
+    checkLookup();
     services.listResources(appInfo, field.getName().substring(0, field.getName().length() - 4), field.getArguments(),
         list);
     Argument arg = null;
@@ -682,6 +769,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       params.add(new Argument("search-offset", new StringValue(parts[1])));
     }
 
+    checkLookup();
     Bundle bnd = (Bundle) services.search(appInfo, field.getName().substring(0, field.getName().length() - 10), params);
     SearchWrapper bndWrapper = new SearchWrapper(field.getName(), bnd);
     Argument arg = target.addField(field.getAlias() + suffix, listStatus(field, false));

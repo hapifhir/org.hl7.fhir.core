@@ -1,13 +1,6 @@
 package org.hl7.fhir.utilities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.condition.JRE.*;
-
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.stream.Stream;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
@@ -15,7 +8,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.condition.JRE.*;
 
 public class DateTimeUtilTests {
 

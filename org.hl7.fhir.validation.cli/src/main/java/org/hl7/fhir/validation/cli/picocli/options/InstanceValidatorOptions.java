@@ -41,7 +41,7 @@ public class InstanceValidatorOptions {
 
   // Boolean flags
   @CommandLine.Option(names = {"-assumeValidRestReferences"},
-    description = "If present, assume that URLs that reference resources follow the RESTful URI pattern and it is safe to infer the type from the URL",
+    description = "If present, assume that URLs that reference resources follow the RESTful URI pattern and it is safe to infer the type from the URL. This does not affect whether references are resolved - see -check-references",
     arity = "0")
   @With
   public boolean assumeValidRestReferences = false;
@@ -153,16 +153,6 @@ public class InstanceValidatorOptions {
   public String outputStyle;
 
   // Enum fields
-  @CommandLine.Option(names = {"-r5-bundle-relative-reference-policy"},
-    description = """
-  Control R5 bundle resolution policy (always, never, default)
-      * always - always apply the rule irrespective of version
-      * never - never apply this rule irrespective of version
-      * default - the default behaviour: apply this rule in R5 and later
-  """)
-  @With
-  public String r5BundleRelativeReferencePolicy;
-
   @CommandLine.Option(names = {"-questionnaire"},
     description = """
     What to do when validating QuestionnaireResponse resources (none, check, required)
@@ -250,16 +240,14 @@ public class InstanceValidatorOptions {
   @With
   public Long validationTimeout = 0L;
 
-  // Created by claude-sonnet-4-6
+  /**
+   * @deprecated -check-display never had any effect. It's still accepted (and hidden from the help) so that
+   * existing command lines don't fail, but it's ignored with a warning, and will be removed
+   */
+  @Deprecated
   @CommandLine.Option(names = {"-check-display"},
-    description = """
-      How to validate the display text on coded elements (Coding, CodeableConcept).
-                 * Ignore (default): display text is not checked
-                 * Check: display must exactly match the code system's canonical text
-                 * CheckCase: match ignoring case differences
-                 * CheckSpace: match ignoring whitespace differences
-                 * CheckCaseAndSpace: match ignoring both case and whitespace differences
-    """,
+    description = "Deprecated, and ignored: this never had any effect",
+    hidden = true,
     arity = "1")
   @With
   public String checkDisplay = null;

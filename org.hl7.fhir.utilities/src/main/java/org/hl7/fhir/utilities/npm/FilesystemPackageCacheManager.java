@@ -1,12 +1,5 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.*;
-
-import java.util.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.With;
@@ -23,6 +16,14 @@ import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -120,18 +121,30 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     @Getter
     private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
 
+    /**
+     * If set, what the package servers answer to catalog searches and version lists, and their 404s for unknown
+     * packages, are kept in it and reused. The list of IG builds on build.fhir.org is not: it is how current
+     * builds are found.
+     * See {@link RegistryAnswerCache}.
+     */
+    @With
+    @Getter
+    private final RegistryAnswerCache registryAnswerCache;
+
     public Builder() throws IOException {
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
       this.lockParameters = null;
       this.ciBuildClient = new CIBuildClient();
+      this.registryAnswerCache = null;
     }
 
-    private Builder(File cacheFolder, List<PackageServer> packageServers, CIBuildClient ciBuildClient, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
+    private Builder(File cacheFolder, List<PackageServer> packageServers, CIBuildClient ciBuildClient, FilesystemPackageCacheManagerLocks.LockParameters lockParameters, RegistryAnswerCache registryAnswerCache) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
       this.ciBuildClient = ciBuildClient;
       this.lockParameters = lockParameters;
+      this.registryAnswerCache = registryAnswerCache;
     }
 
     private File getUserCacheFolder() throws IOException {
@@ -164,7 +177,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
-      return new Builder(cacheFolder, this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(cacheFolder, this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public Builder withSystemCacheFolder() throws IOException {
@@ -174,11 +187,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new Builder(systemCacheFolder,  this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(systemCacheFolder,  this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters, this.registryAnswerCache);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -192,7 +205,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
+      if (registryAnswerCache != null) {
+        pcm.setClientFactory(server -> new PackageClient(server, registryAnswerCache));
+      }
+      return pcm;
     }
   }
 
@@ -333,9 +350,34 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    if (!(Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version, true))) {
-      throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current' or 'dev'");
+    if (!(
+      Utilities.existsInList(version, "current", "dev")
+        || isCurrentBranch(version)
+        || VersionUtilities.isSemVer(version, true)
+    )) {
+      throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current', 'current$branch' or 'dev'");
     }
+  }
+
+  /**
+   * Whether the version is the ci-build of a branch: current$branch. The branch name is used in a
+   * url and a folder name, so it is limited to letters, digits, '.', '_' and '-' (not starting with
+   * one of those three): a branch with a '/' in its name is not supported
+   */
+  public static boolean isCurrentBranch(String version) {
+    if (version == null || !version.startsWith("current$") || version.length() == 8) {
+      return false;
+    }
+    String branch = version.substring(8);
+    for (int i = 0; i < branch.length(); i++) {
+      char ch = branch.charAt(i);
+      boolean ok = (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')
+        || (i > 0 && (ch == '.' || ch == '_' || ch == '-'));
+      if (!ok) {
+        return false;
+      }
+    }
+    return true;
   }
 
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) throws FileNotFoundException {
@@ -358,7 +400,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
-        PackageClient pc = new PackageClient(nextPackageServer);
+        PackageClient pc = newPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id, milestonesOnly);
         } catch (IOException e) {
@@ -385,7 +427,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
-        PackageClient pc = new PackageClient(nextPackageServer);
+        PackageClient pc = newPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id, versionFilter);
         } catch (IOException e) {
@@ -573,7 +615,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         if (currentPackageFolder.equals(id + "#" + version) || (Utilities.noString(version) && currentPackageFolder.startsWith(id + "#"))) {
           return currentPackageFolder;
         }
-        if (version != null && !Utilities.existsInList(version, "current", "dev") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
+        // a version with fewer than two dots is a wildcard (1.0 is 1.0.x), except for the ci-builds: current$branch has
+        // no dots, and isn't a version that VersionUtilities can match
+        if (version != null
+          && !Utilities.existsInList(version, "current", "dev")
+          && !version.startsWith("current$")
+          && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2)
+          && currentPackageFolder.contains("#")) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //single literal character split
           String[] parts = currentPackageFolder.split("#");
@@ -623,7 +671,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
         tempPackage.buildIndexes(packageRoot);
 
-        if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
+        // a ci-build (current, or a branch's current$branch) replaces the copy it is newer than
+        if (!ManagedFileAccess.file(packageRoot).exists()
+          || Utilities.existsInList(version, "current", "dev")
+          || isCurrentBranch(version)) {
           FileUtilities.createDirectory(packageRoot);
           try {
             FileUtilities.clearDirectory(packageRoot);
@@ -707,6 +758,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String actualVersion = checkOKToLoadPackage(statedId, version);
+    // the branch of a current$branch is used in a folder name and a url: check it before either is made
+    if (actualVersion != null
+      && actualVersion.startsWith("current$")
+      && !isCurrentBranch(actualVersion)) {
+      throw new FHIRException("Cannot load package " + statedId + " - the version '" + actualVersion + "' is illegal: the branch must be letters, digits, '.', '_' and '-' (not starting with one of those three)");
+    }
 
     String id = stripAlias(statedId);
     //ok, try to resolve locally
@@ -717,7 +774,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     NpmPackage p = loadPackageFromCacheOnly(id, actualVersion);
     if (p != null) {
       if ("current".equals(actualVersion)) {
-        p = nullIfNotCurrentPackage(id, p);
+        p = nullIfNotCurrentPackage(id, p, null);
+      } else if (isCurrentBranch(actualVersion)) {
+        // a branch's ci-build rolls over too, each time the branch is pushed
+        p = nullIfNotCurrentPackage(id, p, actualVersion.substring(8));
       }
       if (p != null)
         return p;
@@ -725,7 +785,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     if ("dev".equals(actualVersion)) {
       p = loadPackageFromCacheOnly(id, "current");
-      p = nullIfNotCurrentPackage(id, p);
+      p = nullIfNotCurrentPackage(id, p, null);
       if (p != null)
         return p;
       actualVersion = "current";
@@ -742,7 +802,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       source = fetchSourceFromUrlSpecific(actualVersion);
     } else if ("current".equals(actualVersion) || (actualVersion != null && actualVersion.startsWith("current$"))) {
       // special case - fetch from ci-build server
-      source = ciBuildClient.loadFromCIBuild(id, actualVersion.startsWith("current$") ? version.substring(8) : null);
+      source = ciBuildClient.loadFromCIBuild(id, actualVersion.startsWith("current$") ? actualVersion.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, actualVersion);
     }
@@ -835,10 +895,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @param npmPackage
    * @return
    */
-  private NpmPackage nullIfNotCurrentPackage(String id, NpmPackage npmPackage) {
+  private NpmPackage nullIfNotCurrentPackage(String id, NpmPackage npmPackage, String branch) {
     // special case: current versions roll over, and we have to check their currency
     try {
-      return ciBuildClient.isCurrent(id, npmPackage) ? npmPackage : null;
+      return ciBuildClient.isCurrent(id, npmPackage, branch) ? npmPackage : null;
     } catch (Exception e) {
       log.info("Unable to check package currency: " + id + ": " + id);
     }

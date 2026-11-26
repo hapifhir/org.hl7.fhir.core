@@ -14,9 +14,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class ManagedWebAccessUtilsTests {
 
@@ -199,8 +197,29 @@ class ManagedWebAccessUtilsTests {
     @ParameterizedTest
     @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#nonPublicLiteralIps")
     void throwsForNonPublicLiteralIp(String host) {
+      // Canonical literals must still be rejected by the IP-range check itself, not by the
+      // non-canonical fallback, so assert on the message to pin down which branch fired.
       assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
-        .isInstanceOf(IOException.class);
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("non-public address");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "2130706433",      // decimal 127.0.0.1
+      "127.1",           // short form of 127.0.0.1
+      "127.000.000.001", // leading zeros, 127.0.0.1
+      "10.000.000.001",  // leading zeros, 10.0.0.1
+      "2852039166",      // decimal 169.254.169.254
+      "017700000001",    // octal-looking 127.0.0.1
+      "134744072"        // decimal 8.8.8.8 - public, but non-canonical forms are refused too
+    })
+    void throwsForNonCanonicalIpLiteral(String host) {
+      // Regression test: Guava does not recognize these as IP literals, but OkHttp does and
+      // connects via InetAddress.getByName, bypassing NonPublicAddressRejectingDns entirely.
+      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("not in the usual canonical form");
     }
 
     @ParameterizedTest

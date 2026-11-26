@@ -1,47 +1,33 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.utilities.formats.FhirFormat;
-import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
-import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.fhirpath.ExpressionNode;
-import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.services.fhirpath.TypeDetails;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.utilities.DefinitionNavigator;
-import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -54,6 +40,11 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * todo:
@@ -238,6 +229,14 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         if (!(differentials.isEmpty() && snapshots.isEmpty())) {
           ok = checkPossibleValues(errors, sd, stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null)) && ok;
+        }
+        // a profile on Observation that fixes a LOINC code: check what it allows against what LOINC says
+        if (constraint && "Observation".equals(typeName) && sd.hasSnapshot()) {
+          new ObservationProfileValidator(this).checkLoinc(errors, sd, stack);
+        }
+        // a profile that fixes SNOMED CT codes: check them against what SNOMED CT says about them
+        if (constraint && sd.hasSnapshot() && SnomedProfileValidator.TYPES.contains(typeName)) {
+          ok = new SnomedProfileValidator(this).check(errors, sd, stack) && ok;
         }
 
         // obligation profile support
@@ -867,14 +866,18 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     if (snapshot && element.hasChild("slicing", false) && isTypeSlicing(element.getNamedChild("slicing", false)) && typeCharacteristics.size() > 1) {
-      // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false), "can-bind", "Binding");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false), "has-length", "MaxLength");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false), "has-range", "MinValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false), "has-range", "MaxValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size");
+      // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others.
+      // Like the slices, only what the differential states is reported: a constraint inherited from the base (e.g. the binding on a
+      // choice element in a core resource) isn't something this profile did (#2699)
+      Element slicerDiff = diffById == null || diffById.isEmpty() ? null : diffById.get(element.getNamedChildValue("id", false));
+      boolean anyDiff = diffById != null && !diffById.isEmpty();
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false) && statedOnSlicer(anyDiff, slicerDiff, "binding", false), "can-bind", "Binding");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false) && statedOnSlicer(anyDiff, slicerDiff, "maxLength", false), "has-length", "MaxLength");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MIN_LENGTH, true), "has-length", "MinLength Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false) && statedOnSlicer(anyDiff, slicerDiff, "minValue", false), "has-range", "MinValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false) && statedOnSlicer(anyDiff, slicerDiff, "maxValue", false), "has-range", "MaxValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MAX_DECIMALS, true), "is-continuous", "Max Decimal Places Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && statedOnSlicer(anyDiff, slicerDiff, ExtensionDefinitions.EXT_MAX_SIZE, true), "has-size", "Max Size");
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
@@ -1676,6 +1679,20 @@ public class StructureDefinitionValidator extends BaseValidator {
       return false; // e.g. an implied type slice
     }
     return extension ? diffElement.hasExtension(name) : diffElement.hasChild(name, false);
+  }
+
+  /**
+   * whether the differential states the constraint on a type slicer. When the structure has no differential at all,
+   * there's no telling what's inherited, so it's taken as stated
+   */
+  private boolean statedOnSlicer(boolean anyDiff, Element slicerDiff, String name, boolean extension) {
+    if (!anyDiff) {
+      return true;
+    }
+    if (slicerDiff == null) {
+      return false;
+    }
+    return extension ? slicerDiff.hasExtension(name) : slicerDiff.hasChild(name, false);
   }
 
   private boolean isTypeSlicing(Element slicing) {

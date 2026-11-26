@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -113,6 +115,9 @@ public class ValueSetProcessBase {
   protected List<String> requiredSupplements = new ArrayList<>();
   protected List<String> usedSupplements = new ArrayList<>();
   protected List<String> allErrors = new ArrayList<>();
+  // the supplements found with the url of a code system the operation looked up (see noteSupplementsWithCodeSystemUrl)
+  protected Set<String> sameUrlSupplements = new LinkedHashSet<>();
+  private Set<String> sameUrlSupplementsChecked = new LinkedHashSet<>();
   @Getter @Setter private CanonicalResource externalSource;
 
   protected ValueSetProcessBase(BaseWorkerContext context, TerminologyOperationContext opContext) {
@@ -397,6 +402,76 @@ public class ValueSetProcessBase {
     }
   }
 
+
+  /**
+   * A supplement needs a canonical url of its own. One with the url of the code system it
+   * supplements claims, with url|version, to be a version of that code system - which it isn't.
+   * Such supplements are found in published packages, so they aren't rejected, but whenever an
+   * operation looks up the code system they have the url of, it says so (see sameUrlSupplementIssues),
+   * and their version is not treated as a version of the code system
+   */
+  public static boolean isSupplementWithCodeSystemUrl(CodeSystem cs) {
+    if (cs == null || !cs.hasUrl() || !cs.hasSupplements()) {
+      return false;
+    }
+    String supplements = cs.getSupplements();
+    int i = supplements.indexOf('|');
+    if (i > -1) {
+      supplements = supplements.substring(0, i);
+    }
+    return supplements.equals(cs.getUrl());
+  }
+
+  /**
+   * Note any supplements that have the url of the code system the operation is looking up
+   * (see isSupplementWithCodeSystemUrl)
+   */
+  protected void noteSupplementsWithCodeSystemUrl(String url) {
+    if (url == null) {
+      return;
+    }
+    int i = url.indexOf('|'); // a system may come with a version (url|version)
+    if (i > -1) {
+      url = url.substring(0, i);
+    }
+    if (!sameUrlSupplementsChecked.add(url)) {
+      return;
+    }
+    for (CodeSystem cs : context.fetchResourceVersions(CodeSystem.class, url)) {
+      if (isSupplementWithCodeSystemUrl(cs)) {
+        sameUrlSupplements.add(cs.getVersionedUrl());
+      }
+    }
+  }
+
+  /**
+   * The warnings for the supplements noted by noteSupplementsWithCodeSystemUrl
+   */
+  protected List<OperationOutcomeIssueComponent> sameUrlSupplementIssues() {
+    List<OperationOutcomeIssueComponent> res = new ArrayList<>();
+    for (String vurl : sameUrlSupplements) {
+      res.addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, null, context.formatMessage(I18nConstants.CODESYSTEM_CS_SUPP_SAME_URL, vurl), OpIssueCode.VersionError, null, I18nConstants.CODESYSTEM_CS_SUPP_SAME_URL));
+    }
+    return res;
+  }
+
+  /**
+   * Add the warnings for the supplements noted by noteSupplementsWithCodeSystemUrl to the issues
+   * (once - they may already be there)
+   */
+  protected void addSameUrlSupplementIssues(List<OperationOutcomeIssueComponent> issues) {
+    for (OperationOutcomeIssueComponent iss : sameUrlSupplementIssues()) {
+      boolean found = false;
+      for (OperationOutcomeIssueComponent t : issues) {
+        if (iss.getDetails().getText().equals(t.getDetails().getText())) {
+          found = true;
+        }
+      }
+      if (!found) {
+        issues.add(iss);
+      }
+    }
+  }
 
   protected void seeUsedSupplement(String s) {
     usedSupplements.add(s);

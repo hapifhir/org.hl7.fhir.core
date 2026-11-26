@@ -53,6 +53,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class XhtmlParser {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
@@ -537,7 +538,7 @@ public class XhtmlParser {
   }
 
   public XhtmlDocument parse(File file, String entryName) throws FHIRFormatError, IOException  {
-    try (InputStream input = new FileInputStream(file)) {
+    try (InputStream input = ManagedFileAccess.inStream(file)) {
       return parse(input, entryName);
     }
   }

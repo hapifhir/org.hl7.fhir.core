@@ -62,8 +62,11 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     String id = nextId();
     file.println("\r\n--- " + id + " -----------------\r\nRequest: \r\n");
     file.println(method + " " + url + " HTTP/1.1");
-    for (String s : headers)
-      file.println(s);
+    if (headers != null) {
+      for (String s : headers) {
+        file.println(ToolingClientLogger.presentHeader(s));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
@@ -79,8 +82,11 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
       return;
     file.println("\r\n\r\nResponse: \r\n");
     file.println(outcome);
-    for (String s : headers)
-      file.println(Utilities.escapeXml(s));
+    if (headers != null) {
+      for (String s : headers) {
+        file.println(ToolingClientLogger.presentHeader(s));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
@@ -88,6 +94,14 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
       } catch (UnsupportedEncodingException e) {
       }
     }
+  }
+
+  @Override
+  public void logFailure(String error, long elapsed) {
+    if (file == null)
+      return;
+    file.println("\r\n\r\nNo Response ("+Utilities.describeDuration(elapsed)+"): \r\n");
+    file.println(error);
   }
 
 }

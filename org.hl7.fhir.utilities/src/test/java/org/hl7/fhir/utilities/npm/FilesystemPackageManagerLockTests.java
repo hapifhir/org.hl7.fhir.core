@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -125,6 +127,30 @@ public class FilesystemPackageManagerLockTests {
     Assertions.assertTrue(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
   }
 
+  /**
+   * A lock file that has gone (whoever held it finished) isn't left over, and looking for it doesn't make it again: a
+   * lock file no process holds makes the package look like an incomplete install (and it gets deleted), and makes
+   * every read of the package fail
+   */
+  @Test
+  void testWhenLockFileIsGone_canLockFileBeHeldByThisProcessIsFalseAndDoesNotMakeIt() throws IOException {
+    File lockFile = getPackageLockFile();
+    Assertions.assertFalse(lockFile.exists());
+    Assertions.assertFalse(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
+    Assertions.assertFalse(lockFile.exists());
+  }
+
+  @Test
+  void testOpeningALockFileThatIsGoneDoesNotMakeIt() throws IOException {
+    File lockFile = getPackageLockFile();
+    Assertions.assertNull(FilesystemPackageCacheManagerLocks.openExistingLockFile(lockFile));
+    Assertions.assertFalse(lockFile.exists());
+    lockFile.createNewFile();
+    try (java.nio.channels.FileChannel channel = FilesystemPackageCacheManagerLocks.openExistingLockFile(lockFile)) {
+      Assertions.assertNotNull(channel);
+    }
+  }
+
   @Test
   void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws InterruptedException, TimeoutException, IOException {
     File lockFile = getPackageLockFile();
@@ -242,6 +268,111 @@ public class FilesystemPackageManagerLockTests {
     }, new FilesystemPackageCacheManagerLocks.LockParameters(10L, TimeUnit.SECONDS));
 
     lockThread.join();
+  }
+
+  /**
+   * Another process holds the lock (installing the same package, say), and moves the lock file away when it's done
+   * with it. The write that was waiting must then lock the lock file, not the file that was moved away
+   */
+  @Test
+  void testWriteWhenLockedByAnotherProcess() throws InterruptedException, TimeoutException, IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    final File lockFile = getPackageLockFile();
+
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 3);
+    LockfileTestUtility.waitForLockfileCreation(cachePath, lockFile.getName());
+
+    String result = packageLock.doWriteWithLock(() -> {
+      assertThat(lockFile).exists();
+      return "done";
+    }, new FilesystemPackageCacheManagerLocks.LockParameters(20L, TimeUnit.SECONDS));
+
+    assertThat(result).isEqualTo("done");
+    assertThat(lockFile).doesNotExist();
+    lockThread.join();
+    // and the package can be written again
+    packageLock.doWriteWithLock(() -> null, null);
+  }
+
+  /** if what the write does fails, the locks are still released, so the package can be used again */
+  @Test
+  void testWriteThatFailsReleasesTheLocks() throws IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    assertThrows(IOException.class, () -> packageLock.doWriteWithLock(() -> {
+      throw new IOException("failed");
+    }, null));
+    assertThat(getPackageLockFile()).doesNotExist();
+    packageLock.doWriteWithLock(() -> null, null);
+    filesystemPackageCacheLockManager.getCacheLock().doWriteWithLock(() -> null);
+  }
+
+  /**
+   * The other process moves the lock file away before it releases it, so a write that was waiting finds the file it
+   * has open still locked: it has to try again with the lock file that's there now, not give up
+   */
+  @Test
+  void testWriteWhenTheMovedLockFileIsStillLocked() throws InterruptedException, TimeoutException, IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    final File lockFile = getPackageLockFile();
+
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 2, 3);
+    LockfileTestUtility.waitForLockfileCreation(cachePath, lockFile.getName());
+
+    String result = packageLock.doWriteWithLock(() -> {
+      assertThat(lockFile).exists();
+      return "done";
+    }, new FilesystemPackageCacheManagerLocks.LockParameters(20L, TimeUnit.SECONDS));
+
+    assertThat(result).isEqualTo("done");
+    lockThread.join();
+    packageLock.doWriteWithLock(() -> null, null);
+  }
+
+  /**
+   * A read that finds a lock file no process holds (an install that didn't finish) fails - and releases the locks it
+   * took, or no write in this process could ever happen again
+   */
+  @Test
+  void testReadThatFailsReleasesTheLocks() throws IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    File lockFile = getPackageLockFile();
+    Files.writeString(lockFile.toPath(), "left behind");
+    IOException e = assertThrows(IOException.class, () -> packageLock.doReadWithLock(() -> null, null));
+    assertThat(e.getMessage()).contains("not locked by a process");
+    Files.delete(lockFile.toPath());
+    Assertions.assertTimeoutPreemptively(java.time.Duration.ofSeconds(10), () -> {
+      packageLock.doWriteWithLock(() -> null, null);
+      filesystemPackageCacheLockManager.getCacheLock().doWriteWithLock(() -> null);
+    });
+  }
+
+  /** a read that times out waiting for the lock file also releases its locks */
+  @Test
+  void testReadThatTimesOutReleasesTheLocks() throws InterruptedException, TimeoutException, IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    File lockFile = getPackageLockFile();
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 3);
+    LockfileTestUtility.waitForLockfileCreation(cachePath, lockFile.getName());
+    assertThrows(IOException.class, () -> packageLock.doReadWithLock(() -> null, new FilesystemPackageCacheManagerLocks.LockParameters(1L, TimeUnit.SECONDS)));
+    lockThread.join();
+    Assertions.assertTimeoutPreemptively(java.time.Duration.ofSeconds(10), () -> {
+      packageLock.doWriteWithLock(() -> null, null);
+    });
+  }
+
+  /**
+   * the lock file says which process holds it. Not on Windows: there the lock is mandatory, so while the lock file is
+   * locked nothing else can read it - not even another file handle in the same process
+   */
+  @Test
+  void testTheLockFileHasTheProcessId() throws IOException {
+    Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS, "a locked file can't be read on Windows");
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    File lockFile = getPackageLockFile();
+    // left by a process that died: what's in it is replaced
+    Files.writeString(lockFile.toPath(), "99999999999 left behind");
+    String content = packageLock.doWriteWithLock(() -> Files.readString(lockFile.toPath()), null);
+    assertThat(content).isEqualTo(String.valueOf(ProcessHandle.current().pid()));
   }
 
   private File getPackageLockFile() {
