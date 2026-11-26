@@ -1213,42 +1213,6 @@ public final class IniFile
         return pstrSrc;
     }
 /*------------------------------------------------------------------------------
- * Main entry point to test the functionality.
- *----------------------------------------------------------------------------*/
-    /**
-     * The main entry point for testing.
-     * @param pstrArgs the command line arguments array if any.
-     * @ 
-     */
-    public static void main(String[] pstrArgs) 
-    {
-        IniFile objINI = null;
-        String  strFile = null;
-
-        if (pstrArgs.length == 0) return;
-
-        strFile = pstrArgs[0];
-        // Following call will load the strFile if one exists.
-        objINI = new IniFile(strFile);
-
-//        objINI.addSection("QADatabase", "QA database connection details\nUsed for QA Testing");
-//        objINI.setStringProperty("QADatabase", "SID", "ORCL", null);
-//        objINI.setStringProperty("QADatabase", "UserId", "System", null);
-//        objINI.setStringProperty("QADatabase", "Password", "Manager", null);
-//        objINI.setStringProperty("QADatabase", "HostName", "DBServer", null);
-//        objINI.setIntegerProperty("QADatabase", "Port", 1521, null);
-//        objINI.setStringProperty("QADatabase", "OracleHome", "%ORACLE_HOME%", null);
-//        
-        // objINI.setSectionComments("Folders", "Directories where generated files are stored");
-        objINI.setStringProperty("Folders", "folder1", "G:\\Temp", null);
-        objINI.setStringProperty("Folders", "folder2", "G:\\Temp\\Backup", null);
-
-        // Save changes back to strFile.
-        objINI.save();
-        objINI = null;
-    }
-
-/*------------------------------------------------------------------------------
  * Private class representing the INI Section.
  *----------------------------------------------------------------------------*/
     /**

@@ -151,7 +151,7 @@ public class ManagedFileAccess {
    * symbolic links, as far as the path exists (the rest of it is yet to be created). Compared by path segments, so
    * /ig-other isn't under /ig
    */
-  private static boolean inAllowedPaths(String pathname) {
+  public static boolean inAllowedPaths(String pathname) {
     List<String> allowedPathsRef = allowedPaths; // keep a reference to the original list throughout this method, even if the original is replaced by another thread.
     if (allowedPathsRef.isEmpty()) {
       return true;

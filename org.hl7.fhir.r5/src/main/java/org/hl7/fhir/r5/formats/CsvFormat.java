@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class CsvFormat {
 
-  public static void main(String[] args) throws Exception {
-  }
   private final JsonParser json = new JsonParser();
   private final Map<String, Integer> codingsCache = new HashMap<>();
 
