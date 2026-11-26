@@ -56,16 +56,18 @@ public class PathBuilder {
    * </p>
    *
    * <p>
-   * If the args contain variables enclosed in square brackets (<code>[ ]</code>), they will be replaced with values in
-   * the built path. There are several built-in variables available, listed below. Any text between square brackets that
-   * does not match these will be replaced by a matching System environment variable if one is available.
+   * The first entry may start with one of the variables below, which is replaced in the built
+   * path. Variables in later entries, and any other text in square brackets, are left as they are.
    * </p>
    *
    * <p>
-   * Built-in variables include:
+   * Variables:
    * <ul>
-   *  <li><i>[tmp]</i> An available temp directory (Java Temp directory, <code>c:\\temp, $TMPDIR, %TEMP%</code>, etc.) </li>
-   *  <li><i>[user]</i> The OS user directory (~, user.home, etc) </li>
+   *  <li><i>[tmp]</i> An available temp directory (<code>c:\temp</code> on Windows if it is
+   *  writable, otherwise the FHIR settings temp path, otherwise <code>java.io.tmpdir</code>). It
+   *  can be followed by more path, for example <code>[tmp]/work</code>.</li>
+   *  <li><i>[user]</i> The OS user directory (<code>user.home</code>). It must be the whole
+   *  entry.</li>
    * </ul>
    * </p>
    *
