@@ -1,12 +1,12 @@
 ---
 paths:
-  - "org.hl7.fhir.r4/src/main/java/**"
-  - "org.hl7.fhir.r4b/src/main/java/**"
-  - "org.hl7.fhir.r5/src/main/java/**"
-  - "org.hl7.fhir.services/src/main/java/**"
-  - "org.hl7.fhir.standalone/src/main/java/**"
-  - "org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/utilities/**"
-  - "org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv*/**"
+  - "org.hl7.fhir.r4/src/*/java/**"
+  - "org.hl7.fhir.r4b/src/*/java/**"
+  - "org.hl7.fhir.r5/src/*/java/**"
+  - "org.hl7.fhir.services/src/*/java/**"
+  - "org.hl7.fhir.standalone/src/*/java/**"
+  - "org.hl7.fhir.model/src/*/java/org/hl7/fhir/model/utilities/**"
+  - "org.hl7.fhir.convertors/src/*/java/org/hl7/fhir/convertors/conv*/**"
 ---
 
 # Per-version copies

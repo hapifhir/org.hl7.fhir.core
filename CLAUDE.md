@@ -7,7 +7,7 @@ This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @
 - `org.hl7.fhir.utilities`: shared utilities. Every other module depends on it.
 - `org.hl7.fhir.dstu2`, `dstu2016may`, `dstu3`, `r4`, `r4b`, `r5`: per-version models plus their FHIRPath, terminology, renderers and context code. These models used to be generated; they are now maintained by hand.
 - `org.hl7.fhir.dstu3.support`: DSTU3 worker context (`SimpleWorkerContext`), terminology (value set expansion and checking), `ProfileUtilities`, `NarrativeGenerator` and the DSTU3 `FHIRToolingClient`, moved out of `org.hl7.fhir.dstu3`. Used by `convertors` and `validation`, and by fhir-ig-publisher.
-- `org.hl7.fhir.model`: the R6 model. `model/core/**` is **generated** by the core generator, and `model/api`, `fml`, `testing` and `tools` by `ig-codegen` (see below).
+- `org.hl7.fhir.model`: the R6 model. `model/core/**` is **generated** by the core generator, and `model/api`, `fml`, `testing` and `tools` by `ig-codegen` (see `.claude/rules/generated-code.md`).
 - `org.hl7.fhir.services`: the R6 FHIRPath engine, terminology, renderers, elementmodel and conformance code (`IModelContext` implementations).
 - `org.hl7.fhir.standalone`: a standalone R6 `IWorkerContext` (context and terminology) for command-line use.
 - `org.hl7.fhir.convertors`: version-to-version converters.
@@ -16,15 +16,9 @@ This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @
 - `org.hl7.fhir.support`: standalone maintenance tools, almost all run through a `main()` method: terminology importers (VSAC, CPT, LOINC and others), package building and fixing, IG and search parameter analysis, and test data generators. It depends on most other modules, and only `org.hl7.fhir.report` depends on it.
 - `org.hl7.fhir.report`: only aggregates reports.
 
-## Per-version copies
+## Per-version copies and generated code
 
-A lot of logic exists in several copies: r4, r4b and r5 (`fhirpath`, `terminologies`, `renderers`, `context`), plus the R6 copies in `services`, `standalone` and `model/utilities`. Examples are `FHIRPathEngine`, `CodeSystemUtilities`, `ValueSetExpander`, `ValueSetValidator` and `BaseWorkerContext`. The R6 convertors `conv40_N` and `conv43_N` are clones of `conv40_50` and `conv43_50`. See `.claude/rules/per-version-copies.md` for the full list and the review guidance.
-- When you change one copy, find the others (`find . -name <Class>.java -not -path '*/target/*'`) and decide whether they need the same change. Bug fixes usually go to r5 and its R6 copies, and to both convertor clones. Some `services` changes are deliberately not ported to r5. The r4 and r4b terminology client loggers are still maintained.
-- The copies existing is expected; don't report it as duplication. Copies that have **diverged** without a reason are a finding.
-
-## Generated code
-
-Files that start with `// This file is generated code - do not edit it.` are produced by one of two generators: `org.hl7.fhir.core.generator` (the R6 core model in `org.hl7.fhir.model/.../model/core/**`) or the validator's `ig-codegen` command (IG-based code such as `model/tools`, `model/testing` and `r5/igs/testing`). Don't edit the output. See `.claude/rules/generated-code.md`.
+Much of this code exists in several per-version copies, including the `conv*_50` and `conv*_N` convertor clones, and some of it is generated. Before you change or review code in r4, r4b, r5, `services`, `standalone`, `model` or `convertors`, read `.claude/rules/per-version-copies.md` and `.claude/rules/generated-code.md`. They load on their own when you open a matching file, but not when you only read a diff.
 
 ## Downstream consumers
 
