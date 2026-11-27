@@ -3,9 +3,12 @@ package org.hl7.fhir.utilities.npm;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,13 +136,52 @@ class PackageServerTest {
 
   @Test
   public void testPackageFhirServer() throws IOException, InterruptedException {
-
-    String packageServerUrl = server.getPackageServerUrl();
-    server.enqueueDummyPackage();
-
-    PackageServer testServer = new PackageServer(packageServerUrl)
+    PackageServer testServer = new PackageServer(server.getPackageServerUrl())
       .withAllowHttp(true)
       .withAllowPrivateNetwork(true);
+
+    assertUnauthenticatedFhirPackageDownload(testServer);
+  }
+
+  @Test
+  void testPackageFhirServerWithExplicitNoAuthentication() throws IOException, InterruptedException {
+    PackageServer testServer = PackageServer.getPackageServerFromPOJO(ServerDetailsPOJO.builder()
+      .url(server.getPackageServerUrl())
+      .type("fhir-package")
+      .authenticationType("none")
+      .allowHttp(true)
+      .allowPrivateNetwork(true)
+      .build());
+
+    assertUnauthenticatedFhirPackageDownload(testServer);
+  }
+
+  @Test
+  void testPackageFhirServerWithAuthenticationTypeOmitted() throws IOException, InterruptedException {
+    PackageServer testServer = PackageServer.getPackageServerFromPOJO(ServerDetailsPOJO.builder()
+      .url(server.getPackageServerUrl())
+      .type("fhir-package")
+      .allowHttp(true)
+      .allowPrivateNetwork(true)
+      .build());
+
+    assertUnauthenticatedFhirPackageDownload(testServer);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"BaSiC, BASIC", "ToKeN, TOKEN", "ApiKey, APIKEY", "unrecognized, NONE"})
+  void testConfiguredAuthenticationMode(String authenticationType, HTTPAuthenticationMode expectedMode) {
+    PackageServer testServer = PackageServer.getPackageServerFromPOJO(ServerDetailsPOJO.builder()
+      .url(server.getPackageServerUrl())
+      .type("fhir-package")
+      .authenticationType(authenticationType)
+      .build());
+
+    assertEquals(expectedMode, testServer.getAuthenticationMode());
+  }
+
+  private void assertUnauthenticatedFhirPackageDownload(PackageServer testServer) throws IOException, InterruptedException {
+    server.enqueueDummyPackage();
 
     PackageClient packageClient = new PackageClient(testServer);
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -152,6 +194,7 @@ class PackageServerTest {
     NpmPackage npmPackage = NpmPackage.fromPackage(inputStream);
     assertDummyPackageContent(npmPackage);
   }
+
   private static void assertBasicAuthorization(RecordedRequest packageRequest) {
     String authorizationHeader = packageRequest.getHeader("Authorization");
 
