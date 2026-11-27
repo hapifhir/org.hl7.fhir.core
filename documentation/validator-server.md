@@ -139,6 +139,7 @@ the HTTP status.
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
+| GET | `/package` | Package an artifact with its dependencies |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
 | GET | `/canonical` | Fetch a canonical resource the engine knows, by canonical URL |
 | POST | `/txTest/setup` | Start a run of the terminology ecosystem tests against a server |
@@ -348,6 +349,32 @@ curl 'http://localhost:8080/canonical?url=http://hl7.org/fhir/ValueSet/administr
 by any client with `/loadIG` - can be read by every client of the server, including unpublished
 content loaded from a local folder. Don't load anything into a server others can reach that they
 shouldn't see.
+
+### GET /package
+
+The CRMI `$package` operation: returns a `collection` Bundle holding the artifact at `url` and
+everything it transitively depends on. Core FHIR resources are not included, and the root artifact
+must already be loaded.
+
+```sh
+curl 'http://localhost:8080/package?url=http://example.org/StructureDefinition/MyProfile&expand=true'
+```
+
+| Parameter | Required | Default |
+| --- | --- | --- |
+| `url` | yes | - |
+| `expand` | no | `false` |
+| `includeRules` | no | `false` |
+| `format` | no | `json` |
+
+`expand=true` replaces each ValueSet entry by its expansion, best effort - a ValueSet that cannot
+be expanded is included unexpanded. `includeRules=true` also follows canonical references inside
+StructureMap rules, notably the ConceptMaps used by `translate(...)`; it is off by default because
+rule-walking can pull in a long tail of extra artifacts.
+
+Only part of the CRMI parameter surface is implemented: paging (`count`/`offset`),
+`contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest` and capability-based filtering
+are not.
 
 ### Terminology ecosystem tests: /txTest
 
