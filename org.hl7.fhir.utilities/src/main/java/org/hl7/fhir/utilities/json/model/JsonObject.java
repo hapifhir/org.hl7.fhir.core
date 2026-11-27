@@ -367,7 +367,7 @@ public class JsonObject extends JsonElement {
     if (Utilities.noString(source) || "null".equals(source)) {
       return null;
     } else if (source.length() <= 10) {
-      Date d = new SimpleDateFormat("yyyy-mm-dd").parse(source);
+      Date d = new SimpleDateFormat("yyyy-MM-dd").parse(source);
       return d.toInstant();
     } else {
       OffsetDateTime odt = OffsetDateTime.parse(source);

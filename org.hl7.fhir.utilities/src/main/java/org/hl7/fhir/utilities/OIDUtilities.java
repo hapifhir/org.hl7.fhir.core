@@ -136,17 +136,17 @@ public class OIDUtilities {
     if (r.equals("2.16.840.1.113883.6.42"))
       return "http://hl7.org/fhir/sid/icd-9";
     if (r.equals("2.16.840.1.113883.6.104"))
-      return "http://hl7.org/fhir/sid/icd-9";
+      return "http://hl7.org/fhir/sid/icd-9-cm";
     if (r.equals("2.16.840.1.113883.6.103"))
-      return "http://hl7.org/fhir/sid/icd-9"; //todo: confirm this		
+      return "http://hl7.org/fhir/sid/icd-9-cm";
     if (r.equals("2.16.840.1.113883.6.73"))
       return "http://www.whocc.no/atc";
     if (r.equals("2.16.840.1.113883.3.26.1.1"))
-      return "http://ncimeta.nci.nih.gov";
+      return "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl";
     if (r.equals("2.16.840.1.113883.3.26.1.1.1"))
-      return "http://ncimeta.nci.nih.gov";
+      return "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl";
     if (r.equals("2.16.840.1.113883.6.88"))
-      return "http://www.nlm.nih.gov/research/umls/rxnorm"; // todo: confirm this
+      return "http://www.nlm.nih.gov/research/umls/rxnorm";
 
     if (r.equals("2.16.840.1.113883.6.59"))
       return "http://hl7.org/fhir/sid/cvx";
