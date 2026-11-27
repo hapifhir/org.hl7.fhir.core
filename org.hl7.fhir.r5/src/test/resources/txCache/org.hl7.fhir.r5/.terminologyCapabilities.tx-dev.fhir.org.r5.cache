@@ -3628,7 +3628,7 @@
   {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
     "version" : [{
-      "code" : "9.0.0",
+      "code" : "10.0.0-ballot",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -3636,7 +3636,7 @@
   {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/condition-category",
     "version" : [{
-      "code" : "9.0.0",
+      "code" : "10.0.0-ballot",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -3644,7 +3644,7 @@
   {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-category",
     "version" : [{
-      "code" : "9.0.0",
+      "code" : "10.0.0-ballot",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -3652,7 +3652,7 @@
   {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category",
     "version" : [{
-      "code" : "9.0.0",
+      "code" : "10.0.0-ballot",
       "isDefault" : true
     }],
     "content" : "complete"
@@ -11459,7 +11459,7 @@
   {
     "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm",
     "version" : [{
-      "code" : "??",
+      "code" : "RXNORM-2026-11-24",
       "isDefault" : true
     }],
     "content" : "complete"
