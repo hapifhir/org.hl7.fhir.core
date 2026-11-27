@@ -22,9 +22,16 @@ Much of this code exists in several per-version copies, including the `conv*_50`
 
 ## Downstream consumers
 
-`kindling` (HL7/kindling) and `fhir-ig-publisher` (HL7/fhir-ig-publisher) import core classes directly. For example, kindling's `RdfGenerator` uses `org.hl7.fhir.dstu3.formats.TurtleLexer`. So "no callers in this repo" does **not** mean dead code.
-- Before you delete or call unused any public class or method, or change a public signature, grep the kindling and fhir-ig-publisher checkouts (see "Sibling repositories").
-- If they aren't checked out, say so, and use `gh search code --repo HL7/kindling --repo HL7/fhir-ig-publisher <Symbol>` instead.
+Other projects import core classes directly, so "no callers in this repo" does **not** mean dead code:
+- `kindling` (HL7/kindling). For example, its `RdfGenerator` uses `org.hl7.fhir.dstu3.formats.TurtleLexer`.
+- `fhir-ig-publisher` (HL7/fhir-ig-publisher).
+- `validator-wrapper` (hapifhir/org.hl7.fhir.validator-wrapper).
+- `hapi-fhir` (hapifhir/hapi-fhir). It is the biggest consumer of the public API, and it is very large.
+
+Before you delete or call unused any public class or method, or change a public signature:
+1. Grep the kindling, fhir-ig-publisher and validator-wrapper checkouts (see "Sibling repositories"). If one isn't checked out, say so, and use `gh search code --repo <GitHub repo> <Symbol>` for it instead.
+2. Ask the developer whether to check hapi-fhir too. Only if they agree, resolve its path and grep it, or use `gh search code --repo hapifhir/hapi-fhir <Symbol>`.
+3. If hapi-fhir wasn't checked, say so. Don't call a public API change safe based on the other three alone.
 
 ## Sibling repositories
 
@@ -35,6 +42,10 @@ Developers clone these wherever they like and name the folders as they like, so 
 | kindling | `HL7/kindling` | `../kindling` |
 | fhir-ig-publisher | `HL7/fhir-ig-publisher` | `../fhir-ig-publisher` |
 | fhir-test-cases | `FHIR/fhir-test-cases` | `../fhir-test-cases` |
+| validator-wrapper | `hapifhir/org.hl7.fhir.validator-wrapper` | `../org.hl7.fhir.validator-wrapper` |
+| hapi-fhir | `hapifhir/hapi-fhir` | `../hapi-fhir` |
+
+Resolve hapi-fhir only after the developer has agreed to check it (see "Downstream consumers").
 
 Paths are relative to this repo's root (`git rev-parse --show-toplevel`). When a task needs one of these repos, resolve its path in this order:
 1. **Memory.** If you have auto-memory, use the `sibling-repo-paths` memory if it exists. Check that the remembered path still exists and still matches (see step 2). If it doesn't, treat the repo as unknown.

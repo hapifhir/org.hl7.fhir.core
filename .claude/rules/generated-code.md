@@ -25,4 +25,4 @@ Files that start with `// This file is generated code - do not edit it.` are ove
 When reviewing regenerated code, check:
 - that the output is purely regenerated, with no hand edits mixed in;
 - that hand-written add-ons weren't lost;
-- whether renamed or removed public API breaks `kindling` or `fhir-ig-publisher` (see "Downstream consumers" in `CLAUDE.md`).
+- whether renamed or removed public API breaks a downstream consumer (see "Downstream consumers" in `CLAUDE.md`).
