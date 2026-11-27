@@ -1020,6 +1020,33 @@
             </build>
         </profile>
         <profile>
+            <!-- Fails the build if SpotBugs finds issues that match spotbugs.threshold and
+                 spotbugs.maxRank. Run with: mvn compile -P SPOTBUGS
+                 The check is bound to the compile phase, so it needs no later phases, and the
+                 profile skips tests if a later phase is run. -->
+            <id>SPOTBUGS</id>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>spotbugs-check</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>LICENSE_CHECK</id>
             <build>
                 <plugins>

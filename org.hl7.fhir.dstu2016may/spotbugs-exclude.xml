@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
     <!--
+        DSTU2016May is deprecated, and bugs in it are not normally fixed.
+
         Generated DSTU2016May model classes contain EC_UNRELATED_TYPES in has*() methods
         that accept List<StringType> but compare with String via contains(). These are
         generated code and should not be edited directly.
@@ -8,5 +10,10 @@
     <Match>
         <Bug pattern="EC_UNRELATED_TYPES"/>
         <Class name="~org\.hl7\.fhir\.dstu2016may\.model\..*"/>
+    </Match>
+    <Match>
+        <Bug pattern="SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH"/>
+        <Class name="org.hl7.fhir.dstu2016may.utils.FHIRPathEngine"/>
+        <Method name="operateTypes"/>
     </Match>
 </FindBugsFilter>

@@ -402,6 +402,8 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId><!-- Use the latest version -->
                 <configuration>
+                    <!-- Without the SPOTBUGS profile, SpotBugs still loads every unpacked
+                         dependency class in target/classes and times out. -->
                     <onlyAnalyze>org.hl7.fhir.validation.cli.*</onlyAnalyze>
                 </configuration>
             </plugin>
@@ -470,5 +472,53 @@
         	</plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <!-- Adds to the root pom's SPOTBUGS profile. -->
+            <id>SPOTBUGS</id>
+            <build>
+                <plugins>
+                    <!--
+                    Copy this module's own compiled classes to a separate directory before
+                    unpack-dependencies (process-classes) fills target/classes with the fat jar's
+                    dependencies. SpotBugs analyses only this directory.
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-classes-for-spotbugs</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/spotbugs-classes</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.outputDirectory}</directory>
+                                            <includes>
+                                                <include>org/hl7/fhir/validation/cli/**</include>
+                                            </includes>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <configuration>
+                            <classFilesDirectory>${project.build.directory}/spotbugs-classes</classFilesDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
