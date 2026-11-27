@@ -154,20 +154,20 @@ Every whole-project command below uses the `SPOTBUGS` profile (`-P SPOTBUGS`). `
 
 To fail the build at the first module that has issues matching the `pom.xml` configuration, as a build gate:
 ```
-mvn verify -P SPOTBUGS
+mvn compile -P SPOTBUGS
 ```
-_The profile binds `spotbugs:check` to the `verify` phase, so tests run too unless you add `-DskipTests`. A failing module causes every module that depends on it to be skipped, so this shows whether there are any issues, not a full list._
+_The profile binds `spotbugs:check` to the `compile` phase, so the build doesn't need to go any further. The profile also sets `skipTests`, so tests don't run even if you run a later phase. A failing module causes every module that depends on it to be skipped, so this shows whether there are any issues, not a full list._
 
 To run SpotBugs on the whole project, list every issue, and then fail the build if any module has issues:
 ```
-mvn compile spotbugs:check -P SPOTBUGS -Dspotbugs.failOnError=false
+mvn compile -P SPOTBUGS -Dspotbugs.failOnError=false
 mvn spotbugs:verify
 ```
 _The first command analyzes every module and lists the issues found without failing. The second reads those results and fails the build if any module has issues. Running `spotbugs:check` on its own would stop at the first failing module, and every module depends on `org.hl7.fhir.utilities`, so `--fail-at-end` doesn't help._
 
 To produce a human-readable HTML report of all issues, regardless of the `pom.xml` threshold, without failing the build:
 ```
-mvn compile spotbugs:spotbugs -P SPOTBUGS -Dspotbugs.htmlOutput=true -Dspotbugs.threshold=Low -Dspotbugs.maxRank=20
+mvn compile -P SPOTBUGS -Dspotbugs.failOnError=false -Dspotbugs.htmlOutput=true -Dspotbugs.threshold=Low -Dspotbugs.maxRank=20
 ```
 _This produces a report for each module in `<module>/target/reports/spotbugs.html`, and a combined report for the whole project in `org.hl7.fhir.report/target/reports/spotbugs.html`._
 
