@@ -83,12 +83,17 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       return HTTPAuthenticationMode.NONE;
     }
 
-    return switch (serverDetails.getAuthenticationType()) {
-      case "basic" -> HTTPAuthenticationMode.BASIC;
-      case "token" -> HTTPAuthenticationMode.TOKEN;
-      case "apikey" -> HTTPAuthenticationMode.APIKEY;
-      default -> HTTPAuthenticationMode.NONE;
-    };
+    String authenticationType = serverDetails.getAuthenticationType();
+    if ("basic".equalsIgnoreCase(authenticationType)) {
+      return HTTPAuthenticationMode.BASIC;
+    }
+    if ("token".equalsIgnoreCase(authenticationType)) {
+      return HTTPAuthenticationMode.TOKEN;
+    }
+    if ("apikey".equalsIgnoreCase(authenticationType)) {
+      return HTTPAuthenticationMode.APIKEY;
+    }
+    return HTTPAuthenticationMode.NONE;
   }
 
   /**

@@ -2,10 +2,10 @@ package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
+import org.hl7.fhir.utilities.http.ServerDetailsPOJOHTTPAuthProvider;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +70,7 @@ public class PackageServer {
 
   public static PackageServer getPackageServerFromPOJO(ServerDetailsPOJO pojo) {
     return new PackageServer(pojo.getUrl())
-      .withAuthenticationMode(getModeFromPOJO(pojo))
+      .withAuthenticationMode(ServerDetailsPOJOHTTPAuthProvider.getHTTPAuthenticationMode(pojo))
       .withServerType(
         getPackageServerType(pojo.getType())
       )
@@ -105,15 +105,6 @@ public class PackageServer {
     if (serverType.equals("npm-package")) {
       return PackageServerType.NPM;
     }
-    return null;
-  }
-
-  @Nullable
-  private static HTTPAuthenticationMode getModeFromPOJO(ServerDetailsPOJO pojo) {
-    if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return HTTPAuthenticationMode.BASIC;
-    if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return HTTPAuthenticationMode.TOKEN;
-    if (pojo.getAuthenticationType().equalsIgnoreCase("apikey")) return HTTPAuthenticationMode.APIKEY;
-    if ("none".equalsIgnoreCase(pojo.getAuthenticationType())) return HTTPAuthenticationMode.NONE;
     return null;
   }
 
