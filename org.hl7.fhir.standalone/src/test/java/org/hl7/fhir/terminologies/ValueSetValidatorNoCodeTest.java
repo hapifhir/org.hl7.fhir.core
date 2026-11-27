@@ -1,6 +1,7 @@
 package org.hl7.fhir.terminologies;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
@@ -26,12 +28,16 @@ import org.junit.jupiter.api.Test;
 /**
  * A Coding with a system but no code has nothing to look up, so it is reported as having no code -
  * whether or not the code system is known - rather than as a code system that could not be found.
+ * A system that is really a ValueSet or some other resource is still reported as such.
  */
 class ValueSetValidatorNoCodeTest {
 
   private static final String KNOWN_CS = "http://example.org/fhir/CodeSystem/known";
   private static final String UNKNOWN_CS = "http://example.org/fhir/CodeSystem/unknown";
   private static final String VS_URL = "http://example.org/fhir/ValueSet/both";
+  private static final String INCOMPLETE_CS = "http://example.org/fhir/CodeSystem/incomplete";
+  private static final String INCOMPLETE_VS_URL = "http://example.org/fhir/ValueSet/incomplete";
+  private static final String CM_URL = "http://example.org/fhir/ConceptMap/map";
 
   private SimpleWorkerContext ctxt;
 
@@ -51,6 +57,21 @@ class ValueSetValidatorNoCodeTest {
     vs.getCompose().addInclude().setSystem(KNOWN_CS);
     vs.getCompose().addInclude().setSystem(UNKNOWN_CS);
     ctxt.cacheResource(vs);
+    CodeSystem incomplete = new CodeSystem();
+    incomplete.setUrl(INCOMPLETE_CS);
+    incomplete.setStatus(PublicationStatus.RETIRED);
+    incomplete.setContent(CodeSystemContentMode.NOTPRESENT);
+    incomplete.setVersionNeeded(true);
+    ctxt.cacheResource(incomplete);
+    ValueSet ivs = new ValueSet();
+    ivs.setUrl(INCOMPLETE_VS_URL);
+    ivs.setStatus(PublicationStatus.ACTIVE);
+    ivs.getCompose().addInclude().setSystem(INCOMPLETE_CS);
+    ctxt.cacheResource(ivs);
+    ConceptMap cm = new ConceptMap();
+    cm.setUrl(CM_URL);
+    cm.setStatus(PublicationStatus.ACTIVE);
+    ctxt.cacheResource(cm);
   }
 
   private static List<String> messageIds(ValidationResult vr) {
@@ -112,6 +133,60 @@ class ValueSetValidatorNoCodeTest {
     CodeableConcept cc = new CodeableConcept().addCoding(new Coding(UNKNOWN_CS, "x", null));
     ValidationResult vr = ctxt.validateCode(new ValidationOptions(), cc, null);
     assertTrue(messageIds(vr).contains(I18nConstants.UNKNOWN_CODESYSTEM), "issues: " + messageIds(vr));
-    assertTrue(!messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED));
+    assertFalse(messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED));
+  }
+
+  @Test
+  void codingWithValueSetAsSystemAndNoCodeIsReportedAsAValueSet() {
+    Coding c = new Coding().setSystem(VS_URL).setDisplay("Something");
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), c, ctxt.fetchResource(ValueSet.class, VS_URL));
+    OperationOutcomeIssueComponent iss = only(vr, I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2);
+    assertEquals("Coding.system", iss.getExpressionList().get(0).getValue());
+    assertFalse(messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED), "issues: " + messageIds(vr));
+  }
+
+  @Test
+  void codingWithOtherResourceAsSystemAndNoCodeIsReportedAsThatResource() {
+    Coding c = new Coding().setSystem(CM_URL).setDisplay("Something");
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), c, ctxt.fetchResource(ValueSet.class, VS_URL));
+    OperationOutcomeIssueComponent iss = only(vr, I18nConstants.TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE);
+    assertTrue(iss.getDetails().getText().contains("ConceptMap"), iss.getDetails().getText());
+    assertFalse(messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED), "issues: " + messageIds(vr));
+  }
+
+  @Test
+  void codeableConceptWithValueSetAsSystemAndNoCodeIsNotReportedAsNoCode() {
+    CodeableConcept cc = new CodeableConcept().addCoding(new Coding().setSystem(VS_URL).setDisplay("Something"));
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), cc, null);
+    assertFalse(messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED), "issues: " + messageIds(vr));
+    // handled as a coding with a code would be: with no terminology server, the system is not found
+    assertEquals("CodeableConcept.coding[0].system", only(vr, I18nConstants.UNKNOWN_CODESYSTEM).getExpressionList().get(0).getValue());
+  }
+
+  @Test
+  void codeableConceptWithOtherResourceAsSystemAndNoCodeIsNotReportedAsNoCode() {
+    CodeableConcept cc = new CodeableConcept().addCoding(new Coding().setSystem(CM_URL).setDisplay("Something"));
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), cc, null);
+    assertFalse(messageIds(vr).contains(I18nConstants.NO_CODE_PROVIDED), "issues: " + messageIds(vr));
+    // handled as a coding with a code would be: with no terminology server, the system is not found
+    assertEquals("CodeableConcept.coding[0].system", only(vr, I18nConstants.UNKNOWN_CODESYSTEM).getExpressionList().get(0).getValue());
+  }
+
+  @Test
+  void codingWithIncompleteCodeSystemAndNoCodeStillGetsCodeSystemChecks() {
+    Coding c = new Coding().setSystem(INCOMPLETE_CS).setDisplay("Something");
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), c, ctxt.fetchResource(ValueSet.class, INCOMPLETE_VS_URL));
+    only(vr, I18nConstants.NO_CODE_PROVIDED);
+    only(vr, I18nConstants.MSG_RETIRED);
+    assertEquals("Coding.version", only(vr, I18nConstants.CODESYSTEM_VERSION_NEEDED).getExpressionList().get(0).getValue());
+  }
+
+  @Test
+  void codeableConceptWithIncompleteCodeSystemAndNoCodeStillGetsCodeSystemChecks() {
+    CodeableConcept cc = new CodeableConcept().addCoding(new Coding().setSystem(INCOMPLETE_CS).setDisplay("Something"));
+    ValidationResult vr = ctxt.validateCode(new ValidationOptions(), cc, ctxt.fetchResource(ValueSet.class, INCOMPLETE_VS_URL));
+    only(vr, I18nConstants.NO_CODE_PROVIDED);
+    only(vr, I18nConstants.MSG_RETIRED);
+    assertEquals("CodeableConcept.coding[0].version", only(vr, I18nConstants.CODESYSTEM_VERSION_NEEDED).getExpressionList().get(0).getValue());
   }
 }

@@ -278,9 +278,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
             checkVersion(null, c.getSystem(), cs.getVersion(), va, null);
           }
           if (!isLocallyValidatable(cs)) {
-            if (!c.hasCode()) {
+            if (!c.hasCode() && (cs != null || !isSystemAnotherResource(c.getSystem()))) {
               // there is no code to look up, so whether the code system is known is beside the point:
-              // report the missing code rather than asking (a server) about the code system
+              // report the missing code rather than asking (a server) about the code system. A system
+              // that is really a ValueSet (or some other resource) is reported as such below
+              if (cs != null) {
+                checkCanonical(info.getIssues(), path, cs, valueset);
+                checkVersionNeeded(info.getIssues(), path+".coding["+i+"]", c, cs);
+              }
               res = noCodeProvided(path+".coding["+i+"]", cs == null ? c.getSystem() : cs.getUrl(), cs == null ? c.getVersion() : cs.getVersion());
             } else if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
@@ -834,9 +839,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
         // package's code system, and resolving the two from different packages produces spurious status
         // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
         CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
-        if (!code.hasCode() && !isLocallyValidatable(cs)) {
+        if (!code.hasCode() && !isLocallyValidatable(cs) && (cs != null || !isSystemAnotherResource(system))) {
           // as for a CodeableConcept: with no code there is nothing to look up, so report the missing
-          // code rather than an unknown code system (and don't go to the server to find out)
+          // code rather than an unknown code system (and don't go to the server to find out). A system
+          // that is really a ValueSet (or some other resource) is reported as such below
+          if (cs != null) {
+            checkCanonical(issues, path, cs, valueset);
+            checkVersionNeeded(issues, path, code, cs);
+          }
           ValidationResult ncp = noCodeProvided(path, cs == null ? system : cs.getUrl(), cs == null ? code.getVersion() : cs.getVersion());
           ncp.setIssues(issues); // keeps any issues already found (e.g. a relative system), then this one
           return ncp;
@@ -1354,6 +1364,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private static boolean isLocallyValidatable(CodeSystem cs) {
     return cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.SUPPLEMENT || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+  }
+
+  private boolean isSystemAnotherResource(String system) {
+    if (context.fetchResource(ValueSet.class, system, VersionResolutionRules.defaultRule()) != null) {
+      return true;
+    }
+    Resource res = context.fetchResource(Resource.class, system, VersionResolutionRules.defaultRule());
+    return res != null && !"CodeSystem".equals(res.fhirType());
   }
 
   private ValidationResult noCodeProvided(String path, String system, String version) {
