@@ -38,6 +38,12 @@ public class SnomedRules {
   private static final Set<String> KNOWN_ABSENT = Set.of("410516002", "410593006", "410594000", "1381510001");
   private static final String PLANNED = "397943006";
   private static final String PRODUCT = "373873005"; // Pharmaceutical / biologic product
+  /**
+   * Product name (a qualifier value). Some national editions code a branded product by its name
+   * alone, with no strength or form: e.g. AMT v4 (the Australian extension) moved its trade products
+   * here (4445011000036103 'Chlorsig'), and they are legitimate as a medication
+   */
+  private static final String PRODUCT_NAME = "774167006";
   // what a MedicationStatement may say instead of naming a medication: No known medications
   private static final Set<String> NO_MEDICATIONS = Set.of("787481004");
 
@@ -167,6 +173,11 @@ public class SnomedRules {
     /** whether this is a medicinal product; null if that can't be told */
     public Boolean isProduct() {
       return context.subsumes(options, new Coding(SCT, PRODUCT, null), new Coding(SCT, code, null).setVersion(version));
+    }
+
+    /** whether this is a product name (a branded product with no strength or form); null if that can't be told */
+    public Boolean isProductName() {
+      return context.subsumes(options, new Coding(SCT, PRODUCT_NAME, null), new Coding(SCT, code, null).setVersion(version));
     }
   }
 
@@ -300,12 +311,14 @@ public class SnomedRules {
     case ALLERGY:
       return ALLERGY_TAGS.contains(tag) ? null : new Judgement(Level.WARNING, I18nConstants.SCT_ALLERGY_CODE_WRONG, desc, tag);
     case MEDICATION:
-      // products are told by the hierarchy, not the tag: national editions have tags of their own
+      // products are told by the hierarchy, not the tag: national editions have tags of their own.
+      // Only a warning: what counts as a medication code is unsettled (national editions model brands
+      // as product names, and the medication value sets include substances outside the product hierarchy)
       Boolean product = concept.isProduct();
-      if (product == null || product) {
+      if (product == null || product || Boolean.TRUE.equals(concept.isProductName())) {
         return null;
       }
-      return "substance".equals(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_MEDICATION_SUBSTANCE, desc) : new Judgement(Level.ERROR, I18nConstants.SCT_MEDICATION_WRONG, desc, tag);
+      return "substance".equals(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_MEDICATION_SUBSTANCE, desc) : new Judgement(Level.WARNING, I18nConstants.SCT_MEDICATION_WRONG, desc, tag);
     case MEDICATION_STATEMENT:
       // a statement may say the patient takes no medications - No known medications is fully
       // legitimate; anything else that isn't a product is only a warning here
@@ -313,7 +326,7 @@ public class SnomedRules {
         return null;
       }
       Boolean stated = concept.isProduct();
-      if (stated == null || stated) {
+      if (stated == null || stated || Boolean.TRUE.equals(concept.isProductName())) {
         return null;
       }
       return "substance".equals(tag) ? new Judgement(Level.HINT, I18nConstants.SCT_MEDICATION_SUBSTANCE, desc) : new Judgement(Level.WARNING, I18nConstants.SCT_MEDICATION_STATEMENT_WRONG, desc, tag);
