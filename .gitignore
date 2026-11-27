@@ -333,5 +333,4 @@ Claude outputs/
 # Claude Code: personal settings and local state
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
-.claude/review-state/
 .claude/agent-memory-local/

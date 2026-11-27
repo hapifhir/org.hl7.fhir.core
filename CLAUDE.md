@@ -55,6 +55,6 @@ Subagents can't ask the user or read your memory. Resolve the paths first and pu
 
 ## Before opening a pull request
 
-Run `/pre-pr-review` before `gh pr create`. It reviews the branch in a fresh context and records the result under `.claude/review-state/`. A hook in `.claude/settings.json` blocks `gh pr create` until a review exists for the current HEAD.
-- Never create or edit files in `.claude/review-state/` yourself. Only the user may add `acknowledged: true` to accept the remaining findings.
-- See `.claude/README.md` for the full set of shared Claude Code skills, agents and rules.
+Run `/pre-pr-review` before `gh pr create`. It reviews the branch in a fresh context and reports the verified findings.
+
+See `.claude/README.md` for the full set of shared Claude Code skills, agents and rules.
