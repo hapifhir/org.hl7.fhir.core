@@ -69,15 +69,15 @@ public class PackageReGenerator {
     public String error;
   }
 
-  public static void main(String[] args) throws Exception {
+  // public static void main(String[] args) throws Exception {
 
-    new PackageReGenerator()
-      .addPackage("hl7.fhir.us.davinci-alerts")
-      .setJson(true)
-      .setOutputType(ExpansionPackageGeneratorOutputType.TGZ)
-      .setOutput("/Users/grahamegrieve/temp/vs-output.tgz")
-      .generateExpansionPackage();
-  }
+    // new PackageReGenerator()
+      // .addPackage("hl7.fhir.us.davinci-alerts")
+      // .setJson(true)
+      // .setOutputType(ExpansionPackageGeneratorOutputType.TGZ)
+      // .setOutput("/Users/grahamegrieve/temp/vs-output.tgz")
+      // .generateExpansionPackage();
+  // }
 
   public enum ExpansionPackageGeneratorOutputType {
     FOLDER, ZIP, TGZ

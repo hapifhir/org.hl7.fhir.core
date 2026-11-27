@@ -194,9 +194,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     testReport = new TestReport();
   }
 
-  public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(ModelContext.fullCoreContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
-  }
+  // public static void main(String[] args) throws Exception {
+    // new TxTester(new InternalTxLoader(ModelContext.fullCoreContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
+  // }
 
   public void addLoader(ITxTesterLoader loader) {
     this.loaders.add(loader);
@@ -1737,8 +1737,13 @@ public class TxTester implements ITerminologyRequestIdProvider {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerErrors().get(0);
-      oo.setText(null);
-      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      if (oo != null) {
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+        oo.setText(null);
+        pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = checkResponse(id, expected, code, pj, modes, false);
     return diff;

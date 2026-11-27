@@ -162,12 +162,6 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private StringBuilder validationLog;
 
-  public static void main(String[] args) throws JsonException, IOException {
-    
-    // arg[0] is the location of the fhir-extensions repo
-    new R4R5MapTester().testMaps(args[0], args[1], args[2]);
-  }
-
   public void testMaps(String src, String maps, String filter) throws JsonException, IOException {
     validationLog = new StringBuilder();
     log("Load Test Outcomes");

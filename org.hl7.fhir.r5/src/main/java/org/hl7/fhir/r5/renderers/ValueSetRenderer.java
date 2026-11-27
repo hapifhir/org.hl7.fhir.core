@@ -581,7 +581,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean res = false;
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
-      if (p.getName().equals(mode)) {
+      if (p.getName().equals(mode) && p.hasValue()) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
@@ -691,7 +691,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Multimap<String, String> versions = HashMultimap.create();
     Set<String> vlist = new HashSet<>();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
-      if ((p.getName().startsWith("used-") || p.getName().equals("version")) && !vlist.contains(p.getValue().primitiveValue())) {
+      // ValueSet.expansion.parameter.value[x] is 0..1: a server may report a parameter without a value
+      if ((p.getName().startsWith("used-") || p.getName().equals("version")) && p.hasValue() && !vlist.contains(p.getValue().primitiveValue())) {
         String name = p.getName().equals("version") ? "system" : p.getName().substring(5);
         vlist.add(p.getValue().primitiveValue());
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -742,7 +743,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private String findParamValue(List<ValueSetExpansionParameterComponent> list, String name) {
     for (ValueSetExpansionParameterComponent p : list) {
       if (name.equals(p.getName())) {
-        return p.getValue().primitiveValue();
+        return p.hasValue() ? p.getValue().primitiveValue() : null;
       }
     }
     return null;

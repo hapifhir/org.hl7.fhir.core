@@ -9,10 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 import java.util.Objects;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -23,6 +25,7 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -137,6 +140,21 @@ class ValueSetValidatorSupplementTest {
     assertSupplementMissing(() -> vsv.validateCode(new CodeableConcept(new Coding(SUPPLEMENTED_URL, "x", null))));
   }
 
+  /**
+   * A required supplement we don't have, but that the ecosystem knows a server for, means the request has to go to the
+   * server (which the routing then picks because it knows the supplement), rather than being reported as not found
+   * (e.g. the Infoway fr-CA supplement to v3 ActCode, on the Canadian server)
+   */
+  @Test
+  void missingSupplementKnownToEcosystemGoesToServer() throws Exception {
+    String supp = "http://example.org/fhir/CodeSystem/missing-supplement";
+    TerminologyClientManager tcm = mock(TerminologyClientManager.class);
+    doReturn(true).when(tcm).isKnownToEcosystem(supp);
+    ValueSetValidator vsv = validatorWithServer(SUPPLEMENTED_URL, supp, null, false, new ValidationOptions(), tcm);
+    FHIRException e = assertThrows(FHIRException.class, () -> vsv.validateCode(new CodeableConcept(new Coding(SUPPLEMENTED_URL, "x", null))));
+    assertEquals(ValueSetValidator.NO_TRY_THE_SERVER, e.getMessage());
+  }
+
   /** A supplement to one version of the code system is sent when that version is the one being checked. */
   @Test
   void versionedSupplementIsSentForItsVersion() throws Exception {
@@ -182,6 +200,10 @@ class ValueSetValidatorSupplementTest {
   }
 
   private ValueSetValidator validatorWithServer(String supplementTarget, String supplement, String includeVersion, boolean withLocalSystem, ValidationOptions options) throws Exception {
+    return validatorWithServer(supplementTarget, supplement, includeVersion, withLocalSystem, options, null);
+  }
+
+  private ValueSetValidator validatorWithServer(String supplementTarget, String supplement, String includeVersion, boolean withLocalSystem, ValidationOptions options, TerminologyClientManager tcm) throws Exception {
     SimpleWorkerContext ctxt = spy(contextWithSupplement(supplementTarget));
     doReturn(false).when(ctxt).isNoTerminologyServer();
     doReturn(new ValidationResult(SUPPLEMENTED_URL, null, new ConceptDefinitionComponent("x"), "x"))
@@ -201,7 +223,7 @@ class ValueSetValidatorSupplementTest {
     }
     vs.getCompose().addInclude().setSystem(SUPPLEMENTED_URL).setVersion(includeVersion);
     ValueSetValidator vsv = new ValueSetValidator(ctxt, new TerminologyOperationContext(ctxt, options, "validation"),
-        options, vs, new Parameters(), null, null);
+        options, vs, new Parameters(), tcm, null);
     vsv.setThrowToServer(true);
     return vsv;
   }

@@ -1176,6 +1176,16 @@ public class RenderingContext extends RenderingI18nContext {
     return anchors;
   }
 
+  /**
+   * Replaces the set of anchors already used in the output (see hasAnchor and addAnchor). Copies made with
+   * copy(true) afterwards share the new set; copies made before keep the old one. A host application can use this
+   * to give the context a set of its own, to track which anchors rendering uses
+   */
+  public RenderingContext setAnchors(Set<String> anchors) {
+    this.anchors = Objects.requireNonNull(anchors);
+    return this;
+  }
+
   public void clearAnchors() {
     anchors.clear();
   }

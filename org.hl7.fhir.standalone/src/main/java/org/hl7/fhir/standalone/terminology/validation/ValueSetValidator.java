@@ -144,7 +144,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     for (Parameters.ParametersParameterComponent pp : this.expansionParameters.getParameterList()) {
-      if ("useSupplement".equals(pp.getName())) {
+      if ("useSupplement".equals(pp.getName()) && pp.hasValue() && pp.getValue().primitiveValue() != null) {
         requiredSupplements.add(pp.getValue().primitiveValue());
       }
     }
@@ -159,7 +159,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       opContext.note("vs = "+valueset.getVersionedUrl());
       opContext.seeContext(contextName(valueset));
       for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-        requiredSupplements.add(s.getValue().primitiveValue());
+        if (s.hasValue() && s.getValue().primitiveValue() != null) {
+          requiredSupplements.add(s.getValue().primitiveValue());
+        }
       }
 
       if (!requiredSupplements.isEmpty()) {
@@ -293,8 +295,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (cs != null) {
             checkVersion(null, c.getSystem(), cs.getVersion(), va, null);
           }
-          if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
-            if (context.isNoTerminologyServer()) {
+          if (!isLocallyValidatable(cs)) {
+            if (!c.hasCode() && (cs != null || !isSystemAnotherResource(c.getSystem()))) {
+              // there is no code to look up, so whether the code system is known is beside the point:
+              // report the missing code rather than asking (a server) about the code system. A system
+              // that is really a ValueSet (or some other resource) is reported as such below
+              if (cs != null) {
+                checkCanonical(info.getIssues(), path, cs, valueset);
+                checkVersionNeeded(info.getIssues(), path+".coding["+i+"]", c, cs);
+              }
+              res = noCodeProvided(path+".coding["+i+"]", cs == null ? c.getSystem() : cs.getUrl(), cs == null ? c.getVersion() : cs.getVersion());
+            } else if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
                 String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
@@ -654,6 +665,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     List<String> missingSupplements = checkForMissingSupplements();
     if (!missingSupplements.isEmpty()) {
+      if (throwToServer && anySupplementOnlyOnServer(missingSupplements)) {
+        // we don't have the supplement, but the ecosystem knows a server that does, so this has to be done
+        // there. The routing takes the value set's required supplements into account, so it goes to a server
+        // that knows them (e.g. the Infoway fr-CA supplement to v3 ActCode is on the Canadian server, not
+        // tx.fhir.org). A supplement no one has is reported here, as before
+        throw new FHIRException(NO_TRY_THE_SERVER);
+      }
       String msg = context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements));
       throw new TerminologyServiceProtectionException(msg, TerminologyServiceErrorClass.BUSINESS_RULE, IssueType.NOTFOUND, I18nConstants.VALUESET_SUPPLEMENT_MISSING, OpIssueCode.NotFound);
     }
@@ -741,6 +759,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   // an unversioned supplement applies to every version, a versioned one only to that version - the same rule
   // as CanonicalResourceManager.getSupplements(url, version)
+  private boolean anySupplementOnlyOnServer(List<String> supplements) {
+    if (tcm == null) {
+      return false;
+    }
+    for (String s : supplements) {
+      if (tcm.isKnownToEcosystem(s) && context.fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule()) == null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private List<String> supplementsFor(String system, String version) {
     List<String> res = new ArrayList<>();
     for (String s : requiredSupplements) {
@@ -853,6 +883,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
         // package's code system, and resolving the two from different packages produces spurious status
         // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
         CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
+        if (!code.hasCode() && !isLocallyValidatable(cs) && (cs != null || !isSystemAnotherResource(system))) {
+          // as for a CodeableConcept: with no code there is nothing to look up, so report the missing
+          // code rather than an unknown code system (and don't go to the server to find out). A system
+          // that is really a ValueSet (or some other resource) is reported as such below
+          if (cs != null) {
+            checkCanonical(issues, path, cs, valueset);
+            checkVersionNeeded(issues, path, code, cs);
+          }
+          ValidationResult ncp = noCodeProvided(path, cs == null ? system : cs.getUrl(), cs == null ? code.getVersion() : cs.getVersion());
+          ncp.setIssues(issues); // keeps any issues already found (e.g. a relative system), then this one
+          return ncp;
+        }
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getFHIRVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(null, code.getCode()), "application/fhir+"+code.getCode());
@@ -981,7 +1023,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
           for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameterList()) {
-            if ("used-supplement".equals(p.getName())) {
+            if ("used-supplement".equals(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null) {
               seeUsedSupplement(p.getValue().primitiveValue());
             }
           }
@@ -1234,8 +1276,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset != null) {
       for (Extension ext : valueset.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
         var name = ext.getExtensionString("name");
-        var value = ext.getExtensionByUrl("value").getValue();
-        if ("displayLanguage".equals(name)) {
+        var value = ext.getExtensionByUrl("value") == null ? null : ext.getExtensionByUrl("value").getValue();
+        if ("displayLanguage".equals(name) && value != null && value.primitiveValue() != null) {
           options.setLanguages(value.primitiveValue());
         }
       }
@@ -1389,11 +1431,27 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return false;
   }
 
+  private static boolean isLocallyValidatable(CodeSystem cs) {
+    return cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.SUPPLEMENT || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+  }
+
+  private boolean isSystemAnotherResource(String system) {
+    if (context.fetchResource(ValueSet.class, system, VersionResolutionRules.defaultRule()) != null) {
+      return true;
+    }
+    Resource res = context.fetchResource(Resource.class, system, VersionResolutionRules.defaultRule());
+    return res != null && !"CodeSystem".equals(res.fhirType());
+  }
+
+  private ValidationResult noCodeProvided(String path, String system, String version) {
+    String msgid = version == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
+    String msg = context.formatMessage(msgid, system, version);
+    return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
+  }
+
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
     if (code.getCode() == null) {
-      String msgid = cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
-      String msg = context.formatMessage(msgid, cs.getUrl(), cs.getVersion());
-      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
+      return noCodeProvided(path, cs.getUrl(), cs.getVersion());
     }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConceptList(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
@@ -1736,7 +1794,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private List<String> alternateCodes(ConceptDefinitionComponent focus, AlternateCodesProcessingRules altCodeRules) {
     List<String> codes = new ArrayList<>();
     for (ConceptPropertyComponent p : focus.getPropertyList()) {
-      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.hasValue() && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -2141,13 +2199,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameterList()) {
-      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
@@ -2225,7 +2283,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private void checkVersion(String path, @Nonnull String system, @Nonnull String version, VersionAlgorithm va, List<OperationOutcomeIssueComponent> issues) {
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameterList()) {
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }

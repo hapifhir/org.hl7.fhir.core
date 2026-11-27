@@ -114,10 +114,6 @@ public class AITests {
     }
   }
 
-  public static void main(String[] args) throws IOException {
-    new AITests().execute(args[0], args.length == 1 ? null : args[1], args.length == 2 ? true : "true".equals(args[2]));
-  }
-
   @SuppressWarnings("checkstyle:systemout")
   public void execute(String testFilename, String config, boolean useServers) throws IOException {
     ManagedWebAccess.loadFromFHIRSettings();

@@ -1,165 +1,60 @@
 package org.hl7.fhir.utilities;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.XMLConstants;
-
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-
-/*
-  Copyright (c) 2011+, HL7, Inc.
-  All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
-  are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
-     list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
-     and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
-     prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-  POSSIBILITY OF SUCH DAMAGE.
-  
- */
 
 /**
- * Utilities for working with XML
- * <p>
- * This is separate from {@link Utilities} in order to avoid introducing a mandatory
- * dependency on Saxon for anyone using just the structures
- * </p>
+ * Kept so that existing source and compiled clients continue to work. Every method delegates to
+ * {@link org.hl7.fhir.utilities.xslt.XsltUtilities}.
+ *
+ * @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities}
  */
+@Deprecated(since = "2026-11-18", forRemoval = true)
 public class XsltUtilities {
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#saxonTransform(Map, byte[], byte[])} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
-    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
-
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();
+    return org.hl7.fhir.utilities.xslt.XsltUtilities.saxonTransform(files, source, xslt);
   }
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#transform(Map, byte[], byte[])} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static byte[] transform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
-    f.setURIResolver(new ZipURIResolver(files));
-    Transformer t = f.newTransformer(xsrc);
-
-    t.setURIResolver(new ZipURIResolver(files));
-    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    StreamResult res = new StreamResult(out);
-    t.transform(src, res);
-    return out.toByteArray();
+    return org.hl7.fhir.utilities.xslt.XsltUtilities.transform(files, source, xslt);
   }
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#saxonTransform(String, String)} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static String saxonTransform(String source, String xslt) throws TransformerException, IOException {
-    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
-    Transformer t = f.newTransformer(xsrc);
-    StreamSource src = new StreamSource(ManagedFileAccess.inStream(source));
-    StreamResult res = new StreamResult(new ByteArrayOutputStream());
-    t.transform(src, res);
-    return res.getOutputStream().toString();
+    return org.hl7.fhir.utilities.xslt.XsltUtilities.saxonTransform(source, xslt);
   }
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#saxonTransform(String, String, String, String, URIResolver)} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws TransformerException, IOException {
-    saxonTransform(xsltDir, source, xslt, dest, alt, null);
+    org.hl7.fhir.utilities.xslt.XsltUtilities.saxonTransform(xsltDir, source, xslt, dest, alt);
   }
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#saxonTransform(String, String, String, String, URIResolver, Map)} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws TransformerException, IOException {
-    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
-    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-    StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
-    if (params != null) {
-      for (Map.Entry<String, String> entry : params.entrySet()) {
-        t.setParameter(entry.getKey(), entry.getValue());
-      }
-    }
-
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    FileInputStream fso = ManagedFileAccess.inStream(source);
-    FileOutputStream fsr = ManagedFileAccess.outStream(dest);
-    try {
-      StreamSource src = new StreamSource(fso);
-      StreamResult res = new StreamResult(fsr);
-      t.transform(src, res);
-    } finally {
-      fso.close();
-      fsr.close();
-    }
+    org.hl7.fhir.utilities.xslt.XsltUtilities.saxonTransform(xsltDir, source, xslt, dest, alt, params);
   }
 
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#transform(String, String, String, String, URIResolver)} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws TransformerException, IOException {
-
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
-    StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
-    f.setURIResolver(new MyURIResolver(xsltDir, alt));
-    Transformer t = f.newTransformer(xsrc);
-
-    t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    FileInputStream fss = ManagedFileAccess.inStream(source);
-    FileOutputStream fsr = ManagedFileAccess.outStream(dest);
-    try {
-      StreamSource src = new StreamSource(fss);
-      StreamResult res = new StreamResult(fsr);
-      t.transform(src, res);
-    } finally {
-      fss.close();
-      fsr.close();
-    }
-
+    org.hl7.fhir.utilities.xslt.XsltUtilities.transform(xsltDir, source, xslt, dest, alt);
   }
 
-  /**
-   * This method is used to create a new net.sf.saxon.TransformerFactoryImpl instance with external processing features
-   * configured securely.
-   * <p/>
-   * <b>IMPORTANT</b> This method should be the only place where TransformerFactory is instantiated in this project.
-   *
-   * @return A TransformerFactoryImpl instance external processing features configured securely.
-   */
-  @SuppressWarnings("checkstyle:transformerFactoryImplInstantiation")
+  /** @deprecated use {@link org.hl7.fhir.utilities.xslt.XsltUtilities#newXXEProtectedSaxonTransformerFactory()} */
+  @Deprecated(since = "2026-11-18", forRemoval = true)
   public static TransformerFactory newXXEProtectedSaxonTransformerFactory() {
-    final TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
-    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-    return f;
+    return org.hl7.fhir.utilities.xslt.XsltUtilities.newXXEProtectedSaxonTransformerFactory();
   }
-
 }

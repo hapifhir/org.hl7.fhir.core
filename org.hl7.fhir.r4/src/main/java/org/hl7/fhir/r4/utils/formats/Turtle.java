@@ -838,7 +838,7 @@ public class Turtle {
         String end = "\"";
         while (cursor < source.length()) {
           ch = grab();
-          if (b.length() == 2 && ch != '"' && b.equals("\"\"")) {
+          if (b.length() == 2 && ch != '"' && b.toString().equals("\"\"")) {
             cursor--;
             break;
           }
@@ -846,7 +846,7 @@ public class Turtle {
           if (ch == '"')
             if (b.toString().equals("\"\"\""))
               end = "\"\"\"";
-            else if (!b.toString().equals("\"\"") && b.toString().endsWith(end) && !b.toString().endsWith("\\" + end))
+            else if (!b.toString().equals("\"\"") && b.length() >= 2 * end.length() && b.toString().endsWith(end) && !b.toString().endsWith("\\" + end))
               break;
         }
         type = LexerTokenType.LITERAL;
@@ -857,14 +857,14 @@ public class Turtle {
         end = "'";
         while (cursor < source.length()) {
           ch = grab();
-          if (b.equals("''") && ch != '\'') {
+          if (b.toString().equals("''") && ch != '\'') {
             cursor--;
             break;
           }
           b.append(ch);
           if (b.toString().equals("'''"))
             end = "'''";
-          else if (!b.toString().equals("''") && b.toString().endsWith(end))
+          else if (!b.toString().equals("''") && b.length() >= 2 * end.length() && b.toString().endsWith(end))
             break;
         }
         type = LexerTokenType.LITERAL;

@@ -69,40 +69,40 @@ import org.xmlpull.v1.XmlPullParserFactory;
 @SuppressWarnings("checkstyle:systemout")
 public class ToolsHelper {
 
-  public static void main(String[] args) {
-    try {
-      ToolsHelper self = new ToolsHelper();
-      if (args.length == 0)
-        throw new FHIRException(
-            "Missing Command Parameter. Valid Commands: round, json, version, fragments, snapshot-maker");
-      if (args[0].equals("round"))
-        self.executeRoundTrip(args);
-      else if (args[0].equals("test"))
-        self.executeTest(args);
-      else if (args[0].equals("examples"))
-        self.executeExamples(args);
-      else if (args[0].equals("json"))
-        self.executeJson(args);
-      else if (args[0].equals("cxml"))
-        self.executeCanonicalXml(args);
-      else if (args[0].equals("version"))
-        self.executeVersion(args);
-      else if (args[0].equals("fragments"))
-        self.executeFragments(args);
-      else if (args[0].equals("snapshot-maker"))
-        self.generateSnapshots(args);
-      else
-        throw new FHIRException("Unknown command '" + args[0]
-            + "'. Valid Commands: round, test, examples, json, cxml, version, fragments, snapshot-maker");
-    } catch (Throwable e) {
-      try {
-        e.printStackTrace();
-        FileUtilities.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0]) + ".err");
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-    }
-  }
+  // public static void main(String[] args) {
+    // try {
+      // ToolsHelper self = new ToolsHelper();
+      // if (args.length == 0)
+        // throw new FHIRException(
+            // "Missing Command Parameter. Valid Commands: round, json, version, fragments, snapshot-maker");
+      // if (args[0].equals("round"))
+        // self.executeRoundTrip(args);
+      // else if (args[0].equals("test"))
+        // self.executeTest(args);
+      // else if (args[0].equals("examples"))
+        // self.executeExamples(args);
+      // else if (args[0].equals("json"))
+        // self.executeJson(args);
+      // else if (args[0].equals("cxml"))
+        // self.executeCanonicalXml(args);
+      // else if (args[0].equals("version"))
+        // self.executeVersion(args);
+      // else if (args[0].equals("fragments"))
+        // self.executeFragments(args);
+      // else if (args[0].equals("snapshot-maker"))
+        // self.generateSnapshots(args);
+      // else
+        // throw new FHIRException("Unknown command '" + args[0]
+            // + "'. Valid Commands: round, test, examples, json, cxml, version, fragments, snapshot-maker");
+    // } catch (Throwable e) {
+      // try {
+        // e.printStackTrace();
+        // FileUtilities.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0]) + ".err");
+      // } catch (Exception e1) {
+        // e1.printStackTrace();
+      // }
+    // }
+  // }
 
   private void executeExamples(String[] args) throws IOException {
     try {

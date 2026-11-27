@@ -15,6 +15,7 @@ import org.hl7.fhir.services.terminology.ITerminologyClientManager;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
@@ -231,6 +232,10 @@ public class TerminologyClientManager implements ITerminologyClientManager {
    * operation must agree, or the routing is meaningless.
    */
   public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
+    return chooseServerInt(vs, withRequiredSupplements(vs, systems), expand, language);
+  }
+
+  private TerminologyClientContext chooseServerInt(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
@@ -256,7 +261,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       if (Utilities.existsInList(uri, "http://snomed.info/sct") && systems.size() > 1) {
         Set<String> sct = new HashSet<>();
         sct.add("http://snomed.info/sct");
-        return chooseServer(vs, sct, expand, language);
+        return chooseServerInt(vs, sct, expand, language);
       }
       if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
         "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
@@ -339,6 +344,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     if (serverList.isEmpty() || systems.isEmpty() || systems.contains(UNRESOLVED_VALUESET)) {
       return null;
     }
+    systems = withRequiredSupplements(vs, systems);
     if (systems.size() == 1 || !useEcosystem) {
       return chooseServer(vs, systems, expand);
     }
@@ -355,6 +361,35 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       log(vs, null, systems, choices, "No single server handles all the systems");
     }
     return agreed;
+  }
+
+  /**
+   * The supplements a value set requires (valueset-supplement) are routed as if they were code systems
+   * in their own right: the server that does the operation has to know them, so a server that is
+   * authoritative for the code system, but doesn't know the supplement, is the wrong choice (e.g. a
+   * value set from the Canadian server that includes v3 ActCode, and requires the Infoway fr-CA
+   * supplement to it, has to go to the Canadian server, not to tx.fhir.org). The registry resolves a
+   * supplement url (and version) the same way it does a code system url.
+   *
+   * Returns a new set if anything is added - the caller's set is not changed (it may be immutable)
+   */
+  private Set<String> withRequiredSupplements(ValueSet vs, Set<String> systems) {
+    if (vs == null) {
+      return systems;
+    }
+    Set<String> res = null;
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValue() && ext.getValue().isPrimitive() && !Utilities.noString(ext.getValue().primitiveValue())) {
+        String supp = ext.getValue().primitiveValue();
+        if (!systems.contains(supp)) {
+          if (res == null) {
+            res = new HashSet<>(systems);
+          }
+          res.add(supp);
+        }
+      }
+    }
+    return res == null ? systems : res;
   }
 
   private TerminologyClientContext findAuthoritativeServer(ValueSet vs, Set<String> systems, boolean expand, List<ServerOptionList> choices) {
@@ -1256,6 +1291,23 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
       failedLookups.add(canonical);
       return null;
+    }
+  }
+
+  /**
+   * Whether the ecosystem registry knows of a server for this canonical (a code system or a supplement,
+   * with or without a version). false if the ecosystem isn't in use, or the registry couldn't be asked
+   * (then nothing is known about it)
+   */
+  public boolean isKnownToEcosystem(String url) {
+    if (serverList.isEmpty() || !useEcosystem || IGNORE_TX_REGISTRY || Utilities.noString(url)) {
+      return false;
+    }
+    try {
+      ServerOptionList ol = findServerForSystem(url, null);
+      return !ol.fallback && !isUnresolved(ol);
+    } catch (TerminologyServiceException e) {
+      return false;
     }
   }
 

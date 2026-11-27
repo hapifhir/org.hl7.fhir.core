@@ -423,17 +423,17 @@ public class MappingSheetParser {
 
   private static final String PFX = "<html lang=\"en\"><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
   private static final String SFX = "<body></html>";
-  public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
-    MappingSheetParser parser = new MappingSheetParser();
-    try (InputStream stream = ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv"))) {
-      parser.parse(stream, "v2-pid.csv");
-    }
-    ConceptMap cm = parser.getConceptMap();
-    StructureMap sm = parser.getStructureMap();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "sm.json"), sm);
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "cm.json"), cm);
-    FileUtilities.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
-    FileUtilities.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
-  }
+  // public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
+    // MappingSheetParser parser = new MappingSheetParser();
+    // try (InputStream stream = ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv"))) {
+      // parser.parse(stream, "v2-pid.csv");
+    // }
+    // ConceptMap cm = parser.getConceptMap();
+    // StructureMap sm = parser.getStructureMap();
+    // new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "sm.json"), sm);
+    // new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeFile(Utilities.path("[tmp]", "cm.json"), cm);
+    // FileUtilities.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
+    // FileUtilities.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
+  // }
 
 }

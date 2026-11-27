@@ -24,12 +24,12 @@ public class PackageHacker {
 
   private static boolean useSecureReferences = false;
 
-  public static void main(String[] args) throws FileNotFoundException, IOException {
-//    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.core.tgz");
-    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.expansions.tgz");
-    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.examples.tgz");
-    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.search.tgz");
-  }
+  // public static void main(String[] args) throws FileNotFoundException, IOException {
+// //    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.core.tgz");
+    // new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.expansions.tgz");
+    // new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.examples.tgz");
+    // new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.search.tgz");
+  // }
 //
 //  private void packFolder(String src) throws FileNotFoundException, IOException {
 //    NpmPackage npm = NpmPackage.fromFolder(src);
