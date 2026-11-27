@@ -2026,7 +2026,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
           addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp, Integer.MAX_VALUE);
         }
       }
-    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty()) || KnownProperties.redefinesStandardProperty(cs, fc.getProperty())) {
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty()) || CodeSystemUtilities.redefinesStandardProperty(cs, fc.getProperty())) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
         PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
         if (exclude) {

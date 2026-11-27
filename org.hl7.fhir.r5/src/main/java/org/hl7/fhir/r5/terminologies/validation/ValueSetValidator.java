@@ -1458,11 +1458,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     boolean inactive = (CodeSystemUtilities.isInactive(cs, cc));
     String status = CodeSystemUtilities.getStatus(cs, cc);
-    if (status == null) {
-      // no status property or standards-status: what the concept's other properties say (a
-      // deprecated property, say) - the status that filters and expansions use (KnownProperties)
-      status = KnownProperties.getStatus(cc);
-    }
     boolean abstractCode = CodeSystemUtilities.isNotSelectable(cs, cc);
 
     if (abstractCode && options.isNoAbstract()) {
@@ -2483,7 +2478,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       // notSelectable, status, inactive, deprecated have their built-in meaning, whether or not
       // the code system declares them (see KnownProperties) - checked first, as the expander does
       return codeInKnownPropertyFilter(cs, f, code);
-    } else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty()) || KnownProperties.redefinesStandardProperty(cs, f.getProperty())) {
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty()) || CodeSystemUtilities.redefinesStandardProperty(cs, f.getProperty())) {
       // (a standard property code the code system declares with a uri of its own is its own property)
       return codeInPropertyFilter(cs, f, code);
     } else {
@@ -2563,7 +2558,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
     ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), code);
-    return def != null && KnownProperties.matches(f, KnownProperties.getValue(cs, def, f.getProperty()));
+    return def != null && KnownProperties.selects(f, KnownProperties.getValue(cs, def, f.getProperty()));
   }
 
   private boolean codeInRegexFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {

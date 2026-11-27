@@ -233,6 +233,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @AfterClass
   public static void cleanup() throws IOException {
+    // the last test's setting would otherwise leak into the test classes that run after this one
+    XVerExtensionManagerFactory.setNewLoader(false);
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
     FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
 

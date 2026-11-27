@@ -35,7 +35,7 @@ import java.util.*;
 
 @RunWith(Parameterized.class)
 @Slf4j
-public class LocalTerminologyServiceTests implements ITxTesterLoader { 
+public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
   /** every test is registered once for each of these FHIR versions - all the R4 tests, then all the R5 tests */
   private static final String[] VERSIONS = {"4.0.1", "5.0.0"};

@@ -204,10 +204,8 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
 
-  private static final String NOT_SELECTABLE_URI = "http://hl7.org/fhir/concept-properties#notSelectable";
-
-  /** the codes that are recognised as the notSelectable property when the code system doesn't say otherwise */
-  private static final Set<String> NOT_SELECTABLE_CODES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("notSelectable", "abstract", "not-selectable")));
+  /** The prefix of the uris of the standard concept properties (http://hl7.org/fhir/concept-properties) */
+  public static final String CONCEPT_PROPERTIES = "http://hl7.org/fhir/concept-properties#";
 
   /**
    * Whether the concept is not selectable (aka abstract): it has a boolean property with the value true
@@ -226,21 +224,63 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   /**
-   * Whether a concept property code is the code system's code for the standard notSelectable property.
-   * A property declared with the standard uri counts whatever code it was given. A property declared
-   * with a different uri is a different property, and doesn't count, whatever its code. Otherwise
-   * (not declared, or declared with no uri) notSelectable, abstract and not-selectable are recognised
-   * by the code alone
+   * Whether a concept property code is the code system's code for the standard notSelectable property
+   * (or its aliases abstract and not-selectable): see isStandardProperty
    */
   private static boolean isNotSelectableProperty(@Nonnull CodeSystem cs, String code) {
+    return isStandardProperty(cs, code, "notSelectable", "abstract", "not-selectable");
+  }
+
+  /**
+   * The concept's notSelectable property, by whatever code the code system gives it, or null if it
+   * doesn't have one
+   */
+  public static ConceptPropertyComponent getNotSelectableProperty(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) {
+    for (ConceptPropertyComponent p : def.getPropertyList()) {
+      if (isNotSelectableProperty(cs, p.getCode())) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Whether a concept property code is the code system's code for one of the standard concept
+   * properties (http://hl7.org/fhir/concept-properties#[name]). A property declared with the
+   * standard uri counts whatever code it was given. A property declared with a different uri is a
+   * different property, and doesn't count, whatever its code. Otherwise (not declared, or declared
+   * with no uri) the standard code, and any aliases, are recognised by the code alone
+   */
+  public static boolean isStandardProperty(@Nonnull CodeSystem cs, String code, @Nonnull String name, String... aliases) {
     if (code == null) {
       return false;
     }
     PropertyComponent pc = cs.getProperty(code);
     if (pc != null && pc.hasUri()) {
-      return NOT_SELECTABLE_URI.equals(pc.getUri());
+      return (CONCEPT_PROPERTIES + name).equals(pc.getUri());
     }
-    return NOT_SELECTABLE_CODES.contains(code);
+    if (name.equals(code)) {
+      return true;
+    }
+    for (String a : aliases) {
+      if (a.equals(code)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Whether the code system declares the code of a standard concept property for a property of its
+   * own (with a different uri). A filter on that code is then a filter on the code system's property
+   */
+  public static boolean redefinesStandardProperty(@Nonnull CodeSystem cs, @Nonnull String name) {
+    PropertyComponent pc = cs.getProperty(name);
+    return pc != null && pc.hasUri() && !(CONCEPT_PROPERTIES + name).equals(pc.getUri());
+  }
+
+  private static String primitiveValue(ConceptPropertyComponent p) {
+    return p.hasValue() && p.getValue().isPrimitive() ? p.getValue().primitiveValue() : null;
   }
 
   public static boolean isNotSelectable(@Nonnull CodeSystem cs, @Nonnull String code) {
@@ -365,40 +405,55 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     defineCodeSystemProperty(cs, "child", "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
+  /**
+   * Whether the concept is deprecated - its use is discouraged, though it is still valid: its status
+   * property is deprecated (unless ignoreStatus), its deprecationDate (or the older deprecated
+   * property, which means the same thing) has passed, the legacy boolean deprecated property is true,
+   * or its standards-status is deprecated. A retired concept is inactive, not deprecated. All of
+   * these are looked at: the order of the concept's properties makes no difference
+   */
   public static boolean isDeprecated(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getPropertyList()) {
-        if (!ignoreStatus) {
-          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "deprecated".equals(p.getValueCodeType().getCode()))
-            return true;
+        if (!ignoreStatus && isStandardProperty(cs, p.getCode(), "status") && "deprecated".equals(primitiveValue(p))) {
+          return true;
         }
-        // this, though status should also be set
-        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType) 
-          return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
-        // legacy  
-        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
-          return ((BooleanType) p.getValue()).getValue();
+        if (isStandardProperty(cs, p.getCode(), "deprecationDate") || isStandardProperty(cs, p.getCode(), "deprecated")) {
+          DataType v = p.getValue();
+          if (v instanceof DateTimeType && ((DateTimeType) v).getValue() != null && ((DateTimeType) v).before(new DateTimeType(Calendar.getInstance()))) {
+            return true;
+          }
+          if (v instanceof BooleanType && Boolean.TRUE.equals(((BooleanType) v).getValue())) { // legacy
+            return true;
+          }
+        }
       }
-      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
-      if (ss == StandardsStatus.DEPRECATED) {
-        return true;
-      }
-      return false;
+      return ExtensionUtilities.getStandardsStatus(def) == StandardsStatus.DEPRECATED;
     } catch (FHIRException e) {
       return false;
     }
   }
 
+  /**
+   * Whether the concept is inactive: its inactive property is true, its status property is inactive
+   * or retired (unless ignoreStatus), or its standards-status is withdrawn. All of these are looked
+   * at: the order of the concept's properties makes no difference
+   */
   public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
+      if (ExtensionUtilities.getStandardsStatus(def) == StandardsStatus.WITHDRAWN) {
+        return true;
+      }
       for (ConceptPropertyComponent p : def.getPropertyList()) {
-        if (!ignoreStatus) {
-          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "inactive".equals(p.getValueCodeType().getCode()))
-            return true;
+        if (isStandardProperty(cs, p.getCode(), "inactive") && (p.getValue() instanceof BooleanType || p.getValue() instanceof CodeType) && "true".equals(primitiveValue(p))) {
+          return true;
         }
-        // legacy  
-        if ("inactive".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
-          return ((BooleanType) p.getValue()).getValue();
+        if (!ignoreStatus && isStandardProperty(cs, p.getCode(), "status")) {
+          String status = primitiveValue(p);
+          if ("inactive".equals(status) || "retired".equals(status)) {
+            return true;
+          }
+        }
       }
       return false;
     } catch (FHIRException e) {
@@ -418,23 +473,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
   
   public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent def) throws FHIRException {
-    StandardsStatus ss = ExtensionUtilities.getStandardsStatus(def);
-    if (ss == StandardsStatus.WITHDRAWN) {
-      return true;
-    }
-    for (ConceptPropertyComponent p : def.getPropertyList()) {
-      if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return Utilities.existsInList(p.getValueStringType().primitiveValue(), "inactive", "retired");
-      }
-      if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
-        return p.getValueBooleanType().getValue();
-      }
-      if ("inactive".equals(p.getCode()) && p.hasValueCodeType()) {
-        String code = p.getValueCodeType().primitiveValue();
-        return "true".equals(code);
-      }
-    }
-    return false;
+    return isInactive(cs, def, false);
   }
   
   public static boolean isInactive(@Nonnull CodeSystem cs, @Nonnull String code) throws FHIRException {
@@ -1143,17 +1182,37 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
+  /**
+   * The concept's status. A standards-status of deprecated or withdrawn, or else its status property.
+   * If it has neither, what its other properties say: retired, inactive or deprecated (if more than
+   * one, the later stage). Failing that, any other standards-status it has (trial-use, normative...).
+   * null if nothing says what its status is
+   */
   public static String getStatus(@Nonnull CodeSystem cs, @Nonnull ConceptDefinitionComponent cc) {
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cc);
     if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
       return ss.toCode();
     }
-    DataType v = getProperty(cs, cc, "status");
-    if (v == null || !v.isPrimitive()) {
-      return null;
-    } else {
-      return v.primitiveValue();
+    for (ConceptPropertyComponent p : cc.getPropertyList()) {
+      if (isStandardProperty(cs, p.getCode(), "status")) {
+        String v = primitiveValue(p);
+        if (!Utilities.noString(v)) {
+          return v;
+        }
+      }
     }
+    for (ConceptPropertyComponent p : cc.getPropertyList()) {
+      if ("retired".equals(p.getCode()) && "true".equals(primitiveValue(p))) { // legacy: not a standard property
+        return "retired";
+      }
+    }
+    if (isInactive(cs, cc, true)) {
+      return "inactive";
+    }
+    if (isDeprecated(cs, cc, true)) {
+      return "deprecated";
+    }
+    return ss == null ? null : ss.toCode();
   }
 
   /**
@@ -1202,6 +1261,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
    * @return
    */
   public static PropertyComponent getPropertyDefinition(@Nonnull CodeSystem cs, @Nonnull String property) {
+    if (redefinesStandardProperty(cs, property)) {
+      // the code system's own property with this code, not whatever it calls the standard one
+      return cs.getProperty(property);
+    }
     String uri = getStandardPropertyUri(property);
     if (uri != null) {
       for (PropertyComponent cp : cs.getPropertyList()) {

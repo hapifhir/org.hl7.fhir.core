@@ -26,7 +26,7 @@ public class KnownPropertyFilter extends ConceptFilter {
     if (!KnownProperties.isSupportedOperation(filter.getOp())) {
       throw fail("not supported yet: "+filter.getOp().toCode());
     }
-    return KnownProperties.matches(filter, KnownProperties.getValue(cs, def, code));
+    return KnownProperties.selects(filter, KnownProperties.getValue(cs, def, code));
   }
 
 }
