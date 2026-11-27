@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -432,6 +433,12 @@ public class SnapShotGenerationXTests {
   private SnapShotGenerationTestsContext context;
   private List<ValidationMessage> messages;
   private static String version;
+
+  @AfterAll
+  static void resetXVerLoader() {
+    // test() turns the new loader on - it's a static, so don't leak it into other test classes
+    XVerExtensionManagerFactory.setNewLoader(false);
+  }
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
