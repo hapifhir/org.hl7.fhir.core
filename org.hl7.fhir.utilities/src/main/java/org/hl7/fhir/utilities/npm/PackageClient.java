@@ -161,7 +161,7 @@ public class PackageClient {
       return obj.hasString("date") ? obj.asDate("date") : null;
     } catch (DateTimeParseException e) {
       try {
-        return new SimpleDateFormat("yyyyMMddhhmmss").parse(obj.getJsonString("date").asString()).toInstant();
+        return new SimpleDateFormat("yyyyMMddHHmmss").parse(obj.getJsonString("date").asString()).toInstant();
       } catch (ParseException ex) {
         // we tried to parse the date, but failed twice. We're just going to pretend we didn't get a date 
         return null;    

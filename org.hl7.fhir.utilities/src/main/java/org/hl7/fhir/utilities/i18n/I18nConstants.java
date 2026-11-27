@@ -233,6 +233,7 @@ public class I18nConstants {
   public static final String DOES_NOT_MATCH_SLICE_ = "Does_not_match_slice_";
   public static final String DUPLICATE_ID = "DUPLICATE_ID";
   public static final String DUPLICATE_JSON_PROPERTY_KEY = "DUPLICATE_JSON_PROPERTY_KEY";
+  public static final String DUPLICATE_JSON_PROPERTY_REJECTED = "DUPLICATE_JSON_PROPERTY_REJECTED";
   public static final String DUPLICATE_RESOURCE_ = "Duplicate_Resource_";
   public static final String ED_CONTEXT_INVARIANT_EXPRESSION_ERROR = "ED_CONTEXT_INVARIANT_EXPRESSION_ERROR";
   public static final String ED_INVARIANT_DIFF_NO_SOURCE = "ED_INVARIANT_DIFF_NO_SOURCE";
