@@ -9,8 +9,6 @@ import org.hl7.fhir.convertors.conv40_N.datatypes40_N.primitive40_N.Uri40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Extension40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Meta40_N;
 import org.hl7.fhir.convertors.conv40_N.datatypes40_N.special40_N.Narrative40_N;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Basic;
 
@@ -156,8 +154,6 @@ public class Resource40_N {
       return Immunization40_N.convertImmunization((org.hl7.fhir.r4.model.Immunization) src);
     if (src instanceof org.hl7.fhir.r4.model.ImplementationGuide)
       return ImplementationGuide40_N.convertImplementationGuide((org.hl7.fhir.r4.model.ImplementationGuide) src);
-    if (src instanceof org.hl7.fhir.r4.model.Invoice)
-      return Invoice40_N.convertInvoice((org.hl7.fhir.r4.model.Invoice) src);
     if (src instanceof org.hl7.fhir.r4.model.Library)
       return Library40_N.convertLibrary((org.hl7.fhir.r4.model.Library) src);
     if (src instanceof org.hl7.fhir.r4.model.ListResource)
@@ -388,8 +384,6 @@ public class Resource40_N {
       return Immunization40_N.convertImmunization((org.hl7.fhir.model.core.Immunization) src);
     if (src instanceof org.hl7.fhir.model.core.ImplementationGuide)
       return ImplementationGuide40_N.convertImplementationGuide((org.hl7.fhir.model.core.ImplementationGuide) src, advisor.produceIllegalParameters());
-    if (src instanceof org.hl7.fhir.model.core.Invoice)
-      return Invoice40_N.convertInvoice((org.hl7.fhir.model.core.Invoice) src);
     if (src instanceof org.hl7.fhir.model.core.Library)
       return Library40_N.convertLibrary((org.hl7.fhir.model.core.Library) src);
     if (src instanceof org.hl7.fhir.model.core.ListResource)

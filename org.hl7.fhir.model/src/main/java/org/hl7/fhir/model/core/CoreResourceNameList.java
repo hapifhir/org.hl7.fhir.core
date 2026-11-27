@@ -66,7 +66,6 @@ public class CoreResourceNameList extends AbstractList<String> {
       "Immunization",
       "ImplementationGuide",
       "Ingredient",
-      "Invoice",
       "Library",
       "List",
       "Location",
