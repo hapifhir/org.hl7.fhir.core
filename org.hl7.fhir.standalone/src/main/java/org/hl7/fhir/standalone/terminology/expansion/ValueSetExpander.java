@@ -2023,20 +2023,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
-    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty())) {
-      for (ConceptDefinitionComponent def : cs.getConceptList()) {
-        PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
-        if (exclude) {
-          excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, pf, filters, exp, Integer.MAX_VALUE);
-        } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getPropertyList(), filters, exp, Integer.MAX_VALUE);
-        }
-      }
-    } else if (isKnownProperty(fc.getProperty(), cs)) {
+    } else if (KnownProperties.isKnownProperty(cs, fc.getProperty())) {
+      // notSelectable, status, inactive, deprecated have their built-in meaning, whether or not
+      // the code system declares them (see KnownProperties) - checked first, as FHIRsmith does
       for (ConceptDefinitionComponent def : cs.getConceptList()) {
         KnownPropertyFilter pf = new KnownPropertyFilter(allErrors, fc, fc.getProperty());
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, imports, null, pf, filters, exp, Integer.MAX_VALUE);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getPropertyList(), filters, exp, Integer.MAX_VALUE);
+        }
+      }
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty()) || KnownProperties.redefinesStandardProperty(cs, fc.getProperty())) {
+      for (ConceptDefinitionComponent def : cs.getConceptList()) {
+        PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, pf, filters, exp, Integer.MAX_VALUE);
         } else {
           addCodeAndDescendents(wc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, pf, noInactive, exp.getPropertyList(), filters, exp, Integer.MAX_VALUE);
         }
@@ -2054,10 +2056,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else {
       throw fail(I18nConstants.VS_EXP_FILTER_UNK, focus.getVersionedUrl(), fc.getProperty(), fc.getOp());
     }
-  }
-
-  private boolean isKnownProperty(String property, CodeSystem cs) {
-    return Utilities.existsInList(property, "notSelectable");
   }
 
   /**

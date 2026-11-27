@@ -64,6 +64,8 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.expansion.KnownProperties;
+import org.hl7.fhir.r5.terminologies.expansion.PropertyFilter;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
@@ -1417,6 +1419,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     boolean inactive = (CodeSystemUtilities.isInactive(cs, cc));
     String status = CodeSystemUtilities.getStatus(cs, cc);
+    if (status == null) {
+      // no status property or standards-status: what the concept's other properties say (a
+      // deprecated property, say) - the status that filters and expansions use (KnownProperties)
+      status = KnownProperties.getStatus(cc);
+    }
     boolean abstractCode = CodeSystemUtilities.isNotSelectable(cs, cc);
 
     if (abstractCode && options.isNoAbstract()) {
@@ -2433,18 +2440,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInList(f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.NOTIN)
       return !codeInList(f, code);
-    else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
-      return codeInPropertyFilter(cs, f, code);
-    } else if (isKnownProperty(f.getProperty())) {
+    else if (KnownProperties.isKnownProperty(cs, f.getProperty())) {
+      // notSelectable, status, inactive, deprecated have their built-in meaning, whether or not
+      // the code system declares them (see KnownProperties) - checked first, as the expander does
       return codeInKnownPropertyFilter(cs, f, code);
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty()) || KnownProperties.redefinesStandardProperty(cs, f.getProperty())) {
+      // (a standard property code the code system declares with a uri of its own is its own property)
+      return codeInPropertyFilter(cs, f, code);
     } else {
       log.error("todo: handle filters with property = "+f.getProperty()+" "+f.getOp().toCode());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__, cs.getUrl(), f.getProperty(), f.getOp().toCode()));
     }
-  }
-
-  private boolean isKnownProperty(String code) {
-    return Utilities.existsInList(code, "notSelectable");
   }
 
   private boolean codeInPropertyFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
@@ -2460,7 +2466,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return d != null && f.getValue().equals(d.primitiveValue());
       }
     case EXISTS: 
-      return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
+      return PropertyFilter.existsFilterMatches(f.getValue(), CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null);
     case REGEX:
       if (f.getValue() == null) {
         return false;
@@ -2513,26 +2519,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   private boolean codeInKnownPropertyFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
-
-    switch (f.getOp()) {
-    case EQUAL:
-      if (f.getValue() == null) {
-        return false;
-      }
-      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && f.getValue().equals(d.primitiveValue());
-    case EXISTS: 
-      return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
-    case REGEX:
-      if (f.getValue() == null) {
-        return false;
-      }
-      d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && d.primitiveValue() != null && regexMatchSafe(d.primitiveValue(), f.getValue());
-    default:
+    if (!KnownProperties.isSupportedOperation(f.getOp())) {
       log.error("todo: handle known property filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
+    ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), code);
+    return def != null && KnownProperties.matches(f, KnownProperties.getValue(cs, def, f.getProperty()));
   }
 
   private boolean codeInRegexFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
