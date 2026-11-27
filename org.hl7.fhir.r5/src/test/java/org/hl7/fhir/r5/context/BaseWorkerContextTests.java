@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.context;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.VersionResolutionRules;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -844,6 +846,252 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  private static CodeSystem codeSystem(String url, String display) {
+    CodeSystem cs = new CodeSystem();
+    cs.setId(Integer.toHexString(url.hashCode()));
+    cs.setUrl(url);
+    cs.setContent(Enumerations.CodeSystemContentMode.COMPLETE);
+    cs.addConcept().setCode("a").setDisplay(display);
+    return cs;
+  }
+
+  private static CodeSystem supplement(String url, String supplements, String display) {
+    CodeSystem supp = codeSystem(url, display);
+    supp.setContent(Enumerations.CodeSystemContentMode.SUPPLEMENT);
+    supp.setSupplements(supplements);
+    return supp;
+  }
+
+  @Test
+  void testExpansionDependencies() throws IOException {
+    // vs imports a, a imports b, and b imports a again; c can't be loaded. A not-present stub has no content
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType("http://example.org/supp"));
+    vs.getCompose().addInclude().addValueSet("http://example.org/a");
+    vs.getCompose().addExclude().addValueSet("http://example.org/c");
+    ValueSet a = new ValueSet();
+    a.setUrl("http://example.org/a");
+    a.getCompose().addInclude().addValueSet("http://example.org/b");
+    ValueSet b = new ValueSet();
+    b.setUrl("http://example.org/b");
+    b.getCompose().addInclude().addValueSet("http://example.org/a");
+    b.getCompose().addInclude().setSystem("http://example.org/cs").setVersion("1.0");
+    b.getCompose().addInclude().setSystem("http://snomed.info/sct");
+    CodeSystem cs = codeSystem("http://example.org/cs", "A");
+    CodeSystem stub = codeSystem("http://snomed.info/sct", null);
+    stub.setContent(Enumerations.CodeSystemContentMode.NOTPRESENT);
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs", "A");
+    context.cacheResource(a);
+    context.cacheResource(b);
+    context.cacheResource(cs);
+    context.cacheResource(stub);
+    context.cacheResource(supp);
+    Mockito.lenient().doThrow(new FHIRException("can't load c")).when(context).fetchResourceWithException(eq(ValueSet.class), eq("http://example.org/c"), any(), any(), any());
+
+    Map<String, String> deps = context.findExpansionDependencies(vs, null);
+    assertEquals(List.of("ValueSet " + DUMMY_URL + "|1", "CodeSystem http://example.org/supp", "ValueSet http://example.org/a", "ValueSet http://example.org/b",
+      "CodeSystem http://example.org/cs", "supplements http://example.org/cs", "CodeSystem http://example.org/cs|1.0", "supplements http://example.org/cs|1.0",
+      "CodeSystem http://snomed.info/sct", "supplements http://snomed.info/sct", "ValueSet http://example.org/c"), new ArrayList<>(deps.keySet()));
+    assertEquals(cache.contentDigest(a), deps.get("ValueSet http://example.org/a"));
+    assertEquals(cache.contentDigest(cs), deps.get("CodeSystem http://example.org/cs"));
+    assertEquals(cache.contentDigest(supp), deps.get("CodeSystem http://example.org/supp"));
+    assertNotEquals(TerminologyCache.ABSENT, deps.get("supplements http://example.org/cs"));
+    assertEquals(TerminologyCache.NO_CONTENT, deps.get("CodeSystem http://snomed.info/sct"));
+    assertEquals(TerminologyCache.ABSENT, deps.get("supplements http://snomed.info/sct"));
+    assertEquals(TerminologyCache.FAILED, deps.get("ValueSet http://example.org/c"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"system-version", "force-system-version", "check-system-version"})
+  void testExpansionDependenciesHaveThePinnedVersion(String param) throws IOException {
+    context.initTxCache(new TerminologyCache(new Object(), null));
+    ValueSet vs = new ValueSet();
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    Parameters p = new Parameters();
+    p.addParameter(param, new CanonicalType("http://example.org/cs|1.0"));
+
+    Map<String, String> deps = context.findExpansionDependencies(vs, p);
+    assertTrue(deps.containsKey("CodeSystem http://example.org/cs|1.0"), deps.toString());
+    assertTrue(deps.containsKey("supplements http://example.org/cs|1.0"), deps.toString());
+  }
+
+  @Test
+  void testExpansionDependenciesHaveThePinnedImport() throws IOException {
+    // the local expander imports the version default-valueset-version pins the ValueSet to; a pin without a value is
+    // left to the expansion to report
+    context.initTxCache(new TerminologyCache(new Object(), null));
+    ValueSet vs = new ValueSet();
+    vs.getCompose().addInclude().addValueSet("http://example.org/b");
+    Parameters p = new Parameters();
+    p.addParameter().setName("default-valueset-version");
+    p.addParameter("default-valueset-version", new CanonicalType("http://example.org/b|1"));
+
+    assertEquals(List.of("ValueSet http://example.org/b", "ValueSet http://example.org/b|1"), new ArrayList<>(context.findExpansionDependencies(vs, p).keySet()));
+  }
+
+  @Test
+  void testValidationDependencies() throws IOException {
+    // the code is checked against its code system, at the version the coding names, whether or not the ValueSet names it
+    context.initTxCache(new TerminologyCache(new Object(), null));
+    ValueSet vs = new ValueSet();
+    vs.getCompose().addInclude().setSystem("http://example.org/other");
+
+    assertEquals(List.of("CodeSystem http://example.org/other", "supplements http://example.org/other", "CodeSystem http://example.org/cs", "supplements http://example.org/cs",
+        "CodeSystem http://example.org/cs|1.0", "supplements http://example.org/cs|1.0"),
+      new ArrayList<>(context.findValidationDependencies(vs, List.of(new Coding("http://example.org/cs", "a", null).setVersion("1.0"))).keySet()));
+    assertEquals(List.of("CodeSystem http://example.org/cs", "supplements http://example.org/cs"),
+      new ArrayList<>(context.findValidationDependencies(null, List.of(new Coding("http://example.org/cs", "a", null), new Coding(null, "a", null))).keySet()));
+  }
+
+  private ValueSetExpansionOutcome lookUp(TerminologyCache cache, ValueSet vs) {
+    return cache.getExpansion(cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true)));
+  }
+
+  /**
+   * With a real cache: an answer is dropped when the context loads a different version of something it depended on,
+   * and kept when what is loaded is the same
+   */
+  /** a new token each time, as the context makes one for each request */
+  private void storeExpansion(TerminologyCache cache, ValueSet vs) {
+    TerminologyCache.CacheToken token = cache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(true));
+    token.setDependencies(() -> context.findExpansionDependencies(vs, null));
+    cache.cacheExpansion(token, new ValueSetExpansionOutcome(vs.copy()), true);
+  }
+
+  @Test
+  void testLoadingAChangedCodeSystemOrSupplementInvalidates() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    CodeSystem cs = codeSystem("http://example.org/cs", "A");
+    context.cacheResource(cs);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    storeExpansion(cache, vs);
+    assertNotNull(lookUp(cache, vs));
+
+    // loaded again, unchanged
+    context.setAllowLoadingDuplicates(true);
+    context.cacheResource(codeSystem("http://example.org/cs", "A"));
+    assertNotNull(lookUp(cache, vs));
+
+    // a supplement is added
+    CodeSystem supp = supplement("http://example.org/supp", "http://example.org/cs", "A");
+    context.cacheResource(supp);
+    assertNull(lookUp(cache, vs));
+
+    storeExpansion(cache, vs);
+    assertNotNull(lookUp(cache, vs));
+    // the supplement is edited
+    context.dropResource(supp);
+    context.cacheResource(supplement("http://example.org/supp", "http://example.org/cs", "A changed"));
+    assertNull(lookUp(cache, vs));
+
+    storeExpansion(cache, vs);
+    // the code system is edited
+    context.dropResource(cs);
+    context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
+    assertNull(lookUp(cache, vs));
+
+    storeExpansion(cache, vs);
+    // the code system is dropped
+    context.dropResource(cs);
+    assertNull(lookUp(cache, vs));
+  }
+
+  @Test
+  void testLoadingAChangedValueSetInvalidates() throws IOException {
+    // the key of a ValueSet with a version is its url and version, so an edit that keeps the version must invalidate
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    ValueSet vs = new ValueSet();
+    vs.setId("vs");
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs").addConcept().setCode("a");
+    context.cacheResource(vs);
+    storeExpansion(cache, vs);
+
+    ValueSet same = vs.copy();
+    same.setTitle("A new title");
+    context.setAllowLoadingDuplicates(true);
+    context.cacheResource(same);
+    assertNotNull(lookUp(cache, same));
+
+    ValueSet edited = vs.copy();
+    edited.getCompose().getIncludeFirstRep().addConcept().setCode("b");
+    context.dropResource(same);
+    context.cacheResource(edited);
+    assertNull(lookUp(cache, edited));
+  }
+
+  @Test
+  void testTxCacheHasAGetter() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    assertSame(cache, context.getTxCache());
+  }
+
+  @Test
+  void testWhatIsLoadedBeforeTheCacheIsGivenIsNotCompared(@TempDir java.nio.file.Path folder) throws IOException {
+    // core has its own copy of a THO code system, and is loaded before the context is given its cache folder; the
+    // answers are checked when THO's copy is loaded
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    context.setAllowLoadingDuplicates(true);
+    context.cacheResource(codeSystem("http://example.org/cs", "THO"));
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    context.initTxCache(cache);
+    storeExpansion(cache, vs);
+    cache.unload();
+
+    // the next run
+    context.cacheResource(codeSystem("http://example.org/cs", "core"));
+    TerminologyCache next = new TerminologyCache(new Object(), folder.toString());
+    context.initTxCache(next);
+    assertNotNull(lookUp(next, vs));
+    context.cacheResource(codeSystem("http://example.org/cs", "THO"));
+    assertNotNull(lookUp(next, vs));
+    context.cacheResource(codeSystem("http://example.org/cs", "THO, edited"));
+    assertNull(lookUp(next, vs));
+  }
+
+  @Test
+  void testBatchValidationSeesAnEditMadeWhileItIsWorkedOut() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    context.initTxCache(cache);
+    CodeSystem cs = codeSystem("http://example.org/cs", "A");
+    context.cacheResource(cs);
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+    vs.setVersion("1");
+    vs.getCompose().addInclude().setSystem("http://example.org/cs");
+    AtomicInteger validated = new AtomicInteger();
+    Mockito.doAnswer(invocation -> {
+      if (validated.incrementAndGet() == 1) {
+        context.dropResource(cs);
+        context.cacheResource(codeSystem("http://example.org/cs", "A changed"));
+      }
+      return createdValidationResult;
+    }).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
+    Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any());
+
+    for (int i = 0; i < 2; i++) {
+      List<CodingValidationRequest> codes = List.of(new CodingValidationRequest(new Coding("http://example.org/other", "a", null)));
+      context.validateCodeBatch(ValidationOptions.defaults(), codes, vs, false);
+      assertSame(createdValidationResult, codes.get(0).getResult());
+    }
+    // it wasn't known which code system the first answer used, so it wasn't stored
+    assertEquals(2, validated.get());
   }
 
   private static OperationOutcome serverError(OperationOutcome.IssueType type, String text) {
