@@ -1,0 +1,308 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://hl7.org/fhir/PlanDefinition/KDN5> a fhir:PlanDefinition ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "KDN5"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "additional" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      \n      <table style=\"width: 100%;\">\n        \n        <tr>\n          \n          <td>\n            \n            \n            <div style=\"width: 200px; height: 100px; vertical-align: top;\">National Comprehensive Cancer Network</div>\n          \n          </td>\n          \n          <td>\n            \n            <h3>Chemotherapy Order Template</h3>\n            \n            <h1>Kidney Cancer</h1>\n            \n            <h2>Gemcitabine/CARBOplatin</h2>\n          \n          </td>\n          \n          <td style=\"text-align: right; vertical-align: top;\">KDN5</td>\n        \n        </tr>\n      \n      </table>\n      \n      <table style=\"width: 100%; border-top: 1px solid; border-bottom: 1px solid;\">\n        \n        <tr>\n          \n          <td style=\"width: 33%; border-right: 1px solid; vertical-align: top\">\n            \n            <h4>INDICATION:</h4>\n            \n            <p>Metastatic or Relapsed – Collecting Duct/Medullary Subtypes</p>\n          \n          </td>\n          \n          <td style=\"width: 34%; border-right: 1px solid; vertical-align: top\">\n            \n            <h4>REFERENCES:</h4>\n            \n            <ol>\n              \n              <li>\n                <a href=\"http://www.example.org/professionals/physician_gls/PDF/kidney.pdf\">NCCN Guidelines® for Kidney Cancer. V.3.2015.</a>\n              </li>\n              \n              <li>\n                <a href=\"http://www.ncbi.nlm.nih.gov/pubmed?term=%22The+Journal+of+urology%22%5BJour%5D+AND+1698%5Bpage%5D+AND+2007%5Bpdat%5D+AND+Oudard+S%5Bauthor%5D\">Oudard S, et al. \n                  <em>J Urol</em>. 2007;177(5):1698-702.\n                </a>\n                <sup>\n                  \n                  <a href=\"http://www.example.org/OrderTemplates/PDF/appendix_E.pdf\">a</a>\n                </sup>\n              \n              </li>\n            \n            </ol>\n          \n          </td>\n          \n          <td style=\"width: 33%; vertical-align: top\">\n            \n            <h4>NCCN SUPPORTIVE CARE:</h4>\n            \n            <ol>\n              \n              <li>\n                \n                <i>Emetic Risk:</i>\n                \n                <table>\n                  \n                  <tr>\n                    \n                    <td>Day 1</td>\n                    \n                    <td>Moderate</td>\n                  \n                  </tr>\n                  \n                  <tr>\n                    \n                    <td>Day 8</td>\n                    \n                    <td>Low</td>\n                  \n                  </tr>\n                \n                </table>\n              \n              </li>\n              \n              <li>\n                \n                <i>Fever Neutropenia Risk:</i>\n                <br/>\n                Refer to \n                <a href=\"http://www.example.org/professionals/physician_gls/PDF/myeloid_growth.pdf\">NCCN Guidelines for Myeloid Growth Factors. V.2.2014</a>\n              \n              </li>\n            \n            </ol>\n          \n          </td>\n        \n        </tr>\n      \n      </table>\n      \n      \n      <h4>CHEMOTHERAPY REGIMEN</h4>\n      \n      <p>\n        \n        <i>21-day cycle for 6 cycles</i>\n      \n      </p>\n      \n      <ul>\n        \n        <li>Gemcitabine 1250 mg/m\n          <sup>2</sup> IV over 30 minutes on Days 1 and 8\n        </li>\n        \n        <li>CARBOplatin AUC 5 IV over 30 minutes on Day 1</li>\n      \n      </ul>\n    \n    </div>"^^rdf:XMLLiteral ]
+  ] ; # 
+  fhir:contained ( [
+     a fhir:ActivityDefinition ;
+     fhir:id [ fhir:v "1111" ] ;
+     fhir:status [ fhir:v "draft" ] ;
+     fhir:product [
+       a fhir:CodeableConcept ;
+       fhir:coding ( [
+         fhir:system [ fhir:v "http://www.nlm.nih.gov/research/umls/rxnorm"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "12574" ] ;
+         fhir:display [ fhir:v "gemcitabine" ]
+       ] ) ;
+       fhir:text [ fhir:v "gemcitabine" ]
+     ] ;
+     fhir:dosage ( [
+       fhir:text [ fhir:v "1250 mg/m² IV over 30 minutes" ] ;
+       fhir:timing [
+         fhir:repeat [
+           fhir:duration [ fhir:v "30"^^xsd:decimal ] ;
+           fhir:durationUnit [ fhir:v "min" ]
+         ]
+       ] ;
+       fhir:route [
+         fhir:text [ fhir:v "IV" ]
+       ] ;
+       fhir:doseAndRate ( [
+         fhir:type [
+           fhir:coding ( [
+             fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/dose-rate-type"^^xsd:anyURI ] ;
+             fhir:code [ fhir:v "ordered" ] ;
+             fhir:display [ fhir:v "Ordered" ]
+           ] )
+         ] ;
+         fhir:dose [
+           a fhir:Quantity ;
+           fhir:value [ fhir:v "1250"^^xsd:decimal ] ;
+           fhir:unit [ fhir:v "mg/m²" ]
+         ]
+       ] )
+     ] )
+  ] [
+     a fhir:ActivityDefinition ;
+     fhir:id [ fhir:v "2222" ] ;
+     fhir:status [ fhir:v "draft" ] ;
+     fhir:product [
+       a fhir:CodeableConcept ;
+       fhir:coding ( [
+         fhir:system [ fhir:v "http://www.nlm.nih.gov/research/umls/rxnorm"^^xsd:anyURI ] ;
+         fhir:code [ fhir:v "40048" ] ;
+         fhir:display [ fhir:v "Carboplatin" ]
+       ] ) ;
+       fhir:text [ fhir:v "CARBOplatin" ]
+     ] ;
+     fhir:dosage ( [
+       fhir:text [ fhir:v "AUC 5 IV over 30 minutes" ] ;
+       fhir:timing [
+         fhir:repeat [
+           fhir:duration [ fhir:v "30"^^xsd:decimal ] ;
+           fhir:durationUnit [ fhir:v "min" ]
+         ]
+       ] ;
+       fhir:route [
+         fhir:text [ fhir:v "IV" ]
+       ] ;
+       fhir:doseAndRate ( [
+         fhir:type [
+           fhir:coding ( [
+             fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/dose-rate-type"^^xsd:anyURI ] ;
+             fhir:code [ fhir:v "ordered" ] ;
+             fhir:display [ fhir:v "Ordered" ]
+           ] )
+         ] ;
+         fhir:dose [
+           a fhir:Quantity ;
+           fhir:extension ( [
+             fhir:url [ fhir:v "http://example.org/fhir/AUC-dose"^^xsd:anyURI ] ;
+             fhir:value [
+               a fhir:integer ;
+               fhir:v 5
+             ]
+           ] )
+         ]
+       ] )
+     ] )
+  ] ) ; # 
+  fhir:identifier ( [
+     fhir:system [ fhir:v "http://example.org/ordertemplates"^^xsd:anyURI ] ;
+     fhir:value [ fhir:v "KDN5" ]
+  ] ) ; # 
+  fhir:version [ fhir:v "1"] ; # 
+  fhir:name [ fhir:v "GemcitabineCARBOplatin"] ; # 
+  fhir:title [ fhir:v "Gemcitabine/CARBOplatin"] ; # 
+  fhir:type [
+     fhir:text [ fhir:v "Chemotherapy Order Template" ]
+  ] ; # 
+  fhir:status [ fhir:v "draft"] ; # 
+  fhir:experimental [ fhir:v true] ; # 
+  fhir:publisher [ fhir:v "National Comprehensive Cancer Network, Inc."] ; # 
+  fhir:description [ fhir:v "Gemcitabine/CARBOplatin"] ; # 
+  fhir:useContext ( [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "A"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://example.org/fhir/CodeSystem/indications"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "treamentSetting-or-diseaseStatus" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Metastatic" ]
+     ]
+  ] [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "A"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://example.org/fhir/CodeSystem/indications"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "disease-or-histology" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Collecting Duct/Medullary Subtypes" ]
+     ]
+  ] [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "A"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/usage-context-type"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "focus" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Kidney Cancer" ]
+     ]
+  ] [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "B"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://example.org/fhir/CodeSystem/indications"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "treatmentSetting-or-diseaseStatus" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Relapsed" ]
+     ]
+  ] [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "B"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://example.org/fhir/CodeSystem/indications"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "disease-or-histology" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Collecting Duct/Medullary Subtypes" ]
+     ]
+  ] [
+     fhir:extension ( [
+       fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/usagecontext-group"^^xsd:anyURI ] ;
+       fhir:value [
+         a fhir:string ;
+         fhir:v "B"
+       ]
+     ] ) ;
+     fhir:code [
+       fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/usage-context-type"^^xsd:anyURI ] ;
+       fhir:code [ fhir:v "focus" ]
+     ] ;
+     fhir:value [
+       a fhir:CodeableConcept ;
+       fhir:text [ fhir:v "Kidney Cancer – Collecting Duct/Medullary Subtypes - Metastatic" ]
+     ]
+  ] ) ; # 
+  fhir:copyright [ fhir:v "All rights reserved."] ; # 
+  fhir:approvalDate [ fhir:v "2016-07-27"^^xsd:date] ; # 
+  fhir:lastReviewDate [ fhir:v "2016-07-27"^^xsd:date] ; # 
+  fhir:author ( [
+     fhir:name [ fhir:v "Lee Surprenant" ]
+  ] ) ; # 
+  fhir:relatedArtifact ( [
+     fhir:type [ fhir:v "derived-from" ] ;
+     fhir:display [ fhir:v "NCCN Guidelines for Kidney Cancer. V.2.2016" ] ;
+     fhir:document [
+       fhir:url [ fhir:v "http://www.example.org/professionals/physician_gls/PDF/kidney.pdf"^^xsd:anyURI ]
+     ]
+  ] [
+     fhir:type [
+       fhir:v "citation" ;
+       fhir:extension ( [
+         fhir:url [ fhir:v "http://example.org/fhir/regimenReferenceType"^^xsd:anyURI ] ;
+         fhir:value [
+           a fhir:code ;
+           fhir:v "a"
+         ]
+       ] )
+     ] ;
+     fhir:citation [ fhir:v "Oudard S, et al. J Urol. 2007;177(5):1698-702" ] ;
+     fhir:document [
+       fhir:url [ fhir:v "http://www.ncbi.nlm.nih.gov/pubmed/17437788"^^xsd:anyURI ]
+     ]
+  ] ) ; # 
+  fhir:action ( [
+     fhir:selectionBehavior [ fhir:v "exactly-one" ] ;
+     fhir:action ( [
+       fhir:selectionBehavior [ fhir:v "all" ] ;
+       fhir:action ( [
+         fhir:groupingBehavior [ fhir:v "sentence-group" ] ;
+         fhir:selectionBehavior [ fhir:v "exactly-one" ] ;
+         fhir:action ( [
+           fhir:id [ fhir:v "cycle-definition-1" ] ;
+           fhir:textEquivalent [ fhir:v "21-day cycle for 6 cycles" ] ;
+           fhir:timing [
+             a fhir:Timing ;
+             fhir:repeat [
+               fhir:count [ fhir:v "6"^^xsd:positiveInteger ] ;
+               fhir:duration [ fhir:v "21"^^xsd:decimal ] ;
+               fhir:durationUnit [ fhir:v "d" ]
+             ]
+           ] ;
+           fhir:action ( [
+             fhir:id [ fhir:v "action-1" ] ;
+             fhir:extension ( [
+               fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/timing-daysOfCycle"^^xsd:anyURI ] ;
+               fhir:extension ( [
+                 fhir:url [ fhir:v "day"^^xsd:anyURI ] ;
+                 fhir:value [
+                   a fhir:integer ;
+                   fhir:v 1
+                 ]
+               ] [
+                 fhir:url [ fhir:v "day"^^xsd:anyURI ] ;
+                 fhir:value [
+                   a fhir:integer ;
+                   fhir:v 8
+                 ]
+               ] )
+             ] ) ;
+             fhir:textEquivalent [ fhir:v "Gemcitabine 1250 mg/m² IV over 30 minutes on days 1 and 8" ] ;
+             fhir:definition [
+               a fhir:canonical ;
+               fhir:v "#1111"^^xsd:anyURI
+             ]
+           ] [
+             fhir:id [ fhir:v "action-2" ] ;
+             fhir:extension ( [
+               fhir:url [ fhir:v "http://hl7.org/fhir/StructureDefinition/timing-daysOfCycle"^^xsd:anyURI ] ;
+               fhir:extension ( [
+                 fhir:url [ fhir:v "day"^^xsd:anyURI ] ;
+                 fhir:value [
+                   a fhir:integer ;
+                   fhir:v 1
+                 ]
+               ] )
+             ] ) ;
+             fhir:textEquivalent [ fhir:v "CARBOplatin AUC 5 IV over 30 minutes on Day 1" ] ;
+             fhir:relatedAction ( [
+               fhir:targetId [ fhir:v "action-1" ] ;
+               fhir:relationship [ fhir:v "concurrent-with-start" ]
+             ] ) ;
+             fhir:definition [
+               a fhir:canonical ;
+               fhir:v "#2222"^^xsd:anyURI
+             ]
+           ] )
+         ] )
+       ] )
+     ] )
+  ] ) . # 
+
+# -------------------------------------------------------------------------------------
+

@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
@@ -46,6 +47,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * TurtleGeneratorTests
@@ -311,6 +315,201 @@ public class TurtleGeneratorTests {
     assertThat(turtle).doesNotContain("@prefix loinc:");
     // Coding itself must still be emitted
     assertThat(turtle).contains("29463-7");
+  }
+
+  @Test
+  void testR6BundleDisambiguatesVersionsAndResolvesRelativeReferences() throws Exception {
+    String turtle = generateR6TurtleFromXml(bundleWithPatients("1", "2", true));
+    assertThat(turtle).contains("fhir:resource <http://example.org/fhir/Patient/45/_history/1>",
+        "fhir:resource <http://example.org/fhir/Patient/45/_history/2>",
+        "fhir:resource <http://example.org/fhir/Observation/47>",
+        "fhir:l <http://example.org/fhir/Patient/45/_history/2>");
+    assertThat(turtle).doesNotContain("fhir:resource (", "<http://hl7.org/fhir/Patient/45/_history/2>");
+    assertThat(turtle).contains("fhir:v \"http://example.org/fhir/Patient/45\"");
+    new Turtle().parse(turtle);
+  }
+
+  @Test
+  void testR6BundleKeepsUniqueFullUrlUnversioned() throws Exception {
+    String turtle = generateR6TurtleFromXml(bundleWithPatients("1", null, false));
+    assertThat(turtle).contains("fhir:resource <http://example.org/fhir/Patient/45>");
+    assertThat(turtle).doesNotContain("/_history/", "fhir:resource (");
+    new Turtle().parse(turtle);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"", "1"})
+  void testR6BundleRejectsAmbiguousDuplicateFullUrls(String secondVersion) {
+    Assertions.assertThrows(FHIRException.class,
+        () -> generateR6TurtleFromXml(bundleWithPatients("1", secondVersion, true)));
+  }
+
+  @ParameterizedTest
+  @CsvSource(delimiter = ' ', value = {
+      "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999947796 <http://hl7.org/fhir/Practitioner?identifier=http://hl7.org/fhir/sid/us-npi%7C9999947796>",
+      "Patient?identifier=123456 <http://hl7.org/fhir/Patient?identifier=123456>"
+  })
+  void testR6IdentifierReferenceLinksWithoutTypingTarget(String reference, String link) throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <subject><reference value="%s"/></subject>
+        </Observation>
+        """.formatted(reference));
+    assertThat(turtle).contains("fhir:l " + link);
+    assertThat(turtle).doesNotContain(link + " a ", "fhir:Patient?");
+    new Turtle().parse(turtle);
+  }
+
+  @Test
+  void testR6VerticalBarIsVersionOnlyInCanonical() throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/account"/>
+          <identifier><system value="http://example.org/system|1"/><value value="x"/></identifier>
+          <name value="AccountProfile"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Account"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Account.status"/>
+              <path value="Account.status"/>
+              <binding>
+                <strength value="required"/>
+                <valueSet value="http://hl7.org/fhir/ValueSet/account-status|6.0.0"/>
+              </binding>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """);
+    assertThat(turtle).contains("fhir:l <http://hl7.org/fhir/ValueSet/account-status?version=6.0.0>",
+        "fhir:l <http://example.org/system%7C1>");
+    new Turtle().parse(turtle);
+  }
+
+  @Test
+  void testR6ContainedResourcesAreNamedFromTheirContainer() throws Exception {
+    String turtle = generateR6TurtleFromXml(observationWithContainedPatient("<id value=\"o1\"/>"));
+    assertThat(turtle).contains("fhir:contained ( <http://hl7.org/fhir/Observation/o1#p1> )",
+        "<http://hl7.org/fhir/Observation/o1#p1> a fhir:Patient",
+        "fhir:l <http://hl7.org/fhir/Observation/o1#p1>");
+    assertThat(turtle).doesNotContain("<http://hl7.org/fhir/Observation/o1#p1> a fhir:Observation");
+    new Turtle().parse(turtle);
+
+    String anonymous = generateR6TurtleFromXml(observationWithContainedPatient(""));
+    assertThat(anonymous).contains("fhir:contained ( <#p1> )", "fhir:l <#p1>");
+
+    String bundled = generateR6TurtleFromXml("<Bundle xmlns=\"http://hl7.org/fhir\"><type value=\"collection\"/>"
+        + "<entry><fullUrl value=\"http://example.org/fhir/Observation/o1\"/><resource>"
+        + observationWithContainedPatient("<id value=\"o1\"/>").replace(" xmlns=\"http://hl7.org/fhir\"", "")
+        + "</resource></entry></Bundle>");
+    assertThat(bundled).contains("fhir:contained ( <http://example.org/fhir/Observation/o1#p1> )",
+        "fhir:l <http://example.org/fhir/Observation/o1#p1>");
+    new Turtle().parse(bundled);
+  }
+
+  @Test
+  void testR5ContainedResourcesStayAnonymous() throws Exception {
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(
+        TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("5.0.0"));
+    String turtle = generateTurtleFromXml(parserContext, observationWithContainedPatient("<id value=\"o1\"/>"));
+    assertThat(turtle).doesNotContain("#p1>");
+  }
+
+  private String observationWithContainedPatient(String id) {
+    return "<Observation xmlns=\"http://hl7.org/fhir\">" + id
+        + "<contained><Patient><id value=\"p1\"/></Patient></contained>"
+        + "<status value=\"final\"/><code><text value=\"x\"/></code>"
+        + "<subject><reference value=\"#p1\"/></subject></Observation>";
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {R4_VERSION, "5.0.0"})
+  void testR4R5LinksEncodeVerticalBar(String version) throws Exception {
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(
+        TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(version));
+    String reference = generateTurtleFromXml(parserContext, """
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <subject><reference value="Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999947796"/></subject>
+        </Observation>
+        """);
+    assertThat(reference).contains("fhir:link <http://hl7.org/fhir/Practitioner?identifier=http://hl7.org/fhir/sid/us-npi%7C9999947796>");
+    assertThat(reference).doesNotContain("a fhir:Practitioner");
+    new Turtle().parse(reference);
+
+    String canonical = generateTurtleFromXml(parserContext, """
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/account"/>
+          <name value="AccountProfile"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Account"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Account.status"/>
+              <path value="Account.status"/>
+              <binding>
+                <strength value="required"/>
+                <valueSet value="http://hl7.org/fhir/ValueSet/account-status|6.0.0"/>
+              </binding>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """);
+    assertThat(canonical).contains("fhir:link <http://hl7.org/fhir/ValueSet/account-status?version=6.0.0>");
+    new Turtle().parse(canonical);
+  }
+
+  @Test
+  void testR6MailtoUriLinksAsIri() throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <Endpoint xmlns="http://hl7.org/fhir">
+          <status value="active"/>
+          <address value="mailto:MARTIN.SMIETANKA@directnppes.com"/>
+        </Endpoint>
+        """);
+    assertThat(turtle).contains("fhir:l <mailto:MARTIN.SMIETANKA@directnppes.com>");
+    assertThat(turtle).doesNotContain("fhir:mailto:");
+    new Turtle().parse(turtle);
+  }
+
+  private String generateR6TurtleFromXml(String xml) throws IOException, UcumException {
+    return generateTurtleFromXml(getVersionOverrideParsers(R6_VERSION), xml);
+  }
+
+  private String generateTurtleFromXml(TurtleGeneratorTestUtils.ParserContext parserContext, String xml) throws IOException, UcumException {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    return output.toString(StandardCharsets.UTF_8);
+  }
+
+  private String bundleWithPatients(String firstVersion, String secondVersion, boolean includeObservation) {
+    String entries = patientEntry(firstVersion);
+    if (secondVersion != null) {
+      entries += patientEntry(secondVersion);
+    }
+    if (includeObservation) {
+      entries += """
+          <entry><fullUrl value="http://example.org/fhir/Observation/47"/><resource>
+            <Observation><id value="47"/><status value="final"/>
+              <subject><reference value="Patient/45/_history/2"/></subject>
+            </Observation>
+          </resource></entry>
+          """;
+    }
+    return "<Bundle xmlns=\"http://hl7.org/fhir\"><type value=\"collection\"/>" + entries + "</Bundle>";
+  }
+
+  private String patientEntry(String version) {
+    String meta = version.isEmpty() ? "" : "<meta><versionId value=\"" + version + "\"/></meta>";
+    return "<entry><fullUrl value=\"http://example.org/fhir/Patient/45\"/><resource>"
+        + "<Patient><id value=\"45\"/>" + meta + "</Patient></resource></entry>";
   }
 
   @Disabled("Not critical")
