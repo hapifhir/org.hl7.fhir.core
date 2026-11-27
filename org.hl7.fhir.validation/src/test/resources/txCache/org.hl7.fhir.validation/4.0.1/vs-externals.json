@@ -16,6 +16,10 @@
   "http://hl7.org/a/1" : null,
   "http://example.org/invalid-valueset-canonical" : null,
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
+  "https://fhir.infoway-inforoute.ca/ValueSet/actpharmacysupplytype|1.2.0" : {
+    "server" : "https://terminologystandardsservice.ca/tx/fhir",
+    "filename" : "vs-ab54742c-bdc7-4239-913c-7b15ea40d293.json"
+  },
   "http://phinvads.cdc.gov/fhir/ValueSet/2.16.840.1.113883.3.88.12.3221.6.2" : {
     "server" : "http://tx-dev.fhir.org/r4",
     "filename" : "vs-4a1c244c-9faa-4ef2-a4c5-5a9b6811c42a.json"

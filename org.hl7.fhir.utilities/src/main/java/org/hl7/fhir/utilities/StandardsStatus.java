@@ -72,7 +72,7 @@ public enum StandardsStatus {
     case EXTERNAL:
       return "external";
     case WITHDRAWN: 
-      return "Withdrawn";
+      return "withdrawn";
     }
     return "?";
   }

@@ -112,7 +112,7 @@
 
   public boolean getParameterBool(String name) {
     for (ParametersParameterComponent p : getParameterList()) {
-      if (p.getName().equals(name)) {
+      if (p.getName().equals(name) && p.hasValue() && p.getValue().primitiveValue() != null) {
         if (p.getValue() instanceof BooleanType)
           return ((BooleanType) p.getValue()).booleanValue();
         boolean ok = "true".equals(p.getValue().primitiveValue());

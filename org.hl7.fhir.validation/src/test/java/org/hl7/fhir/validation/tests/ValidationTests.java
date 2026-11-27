@@ -112,21 +112,41 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
+    Map<String, String> suites = new HashMap<String, String>();
+    Map<String, String> versions = new HashMap<String, String>();
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
     thoVersion = manifest.getAsJsonObject("versions").get("terminology").getAsString();
     extensionsVersion = manifest.getAsJsonObject("versions").get("extensions").getAsString();
-    for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
-      JsonObject o = (JsonObject) e;
-      String name = JsonUtilities.str(o, "name");
-      String version = JsonUtilities.str(o, "version");
-      if (version == null) {
-        version = "5.0.0";
+    for (JsonElement se : manifest.getAsJsonArray("suites")) {
+      JsonObject suite = (JsonObject) se;
+      String suiteName = JsonUtilities.str(suite, "name");
+      if (Utilities.noString(suiteName)) {
+        throw new FHIRException("A suite in the validator manifest has no name");
       }
-      String id = VersionUtilities.getNameForVersion(version) + "." + name;
-      if (examples.containsKey(id)) {
-        throw new FHIRException("Duplicate test case name in the validator manifest: " + id);
+      if (!suite.has("suites")) {
+        throw new FHIRException("Suite '" + suiteName + "' in the validator manifest has no version sub-suites");
       }
-      examples.put(id, o);
+      for (JsonElement vse : suite.getAsJsonArray("suites")) {
+        JsonObject versionSuite = (JsonObject) vse;
+        String version = JsonUtilities.str(versionSuite, "version");
+        if (Utilities.noString(version)) {
+          throw new FHIRException("A sub-suite of suite '" + suiteName + "' in the validator manifest has no version");
+        }
+        if (!versionSuite.has("tests")) {
+          throw new FHIRException("Sub-suite " + version + " of suite '" + suiteName + "' in the validator manifest has no tests");
+        }
+        for (JsonElement e : versionSuite.getAsJsonArray("tests")) {
+          JsonObject o = (JsonObject) e;
+          String name = JsonUtilities.str(o, "name");
+          String id = VersionUtilities.getNameForVersion(version) + "." + name;
+          if (examples.containsKey(id)) {
+            throw new FHIRException("Duplicate test case name in the validator manifest: " + id);
+          }
+          examples.put(id, o);
+          suites.put(id, suiteName);
+          versions.put(id, version);
+        }
+      }
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -143,7 +163,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       JsonArray jsonTags = example.getAsJsonArray("tags");
       List<String> tags = jsonTags == null ? List.of() : jsonTags.asList().stream().map(JsonElement::getAsString).toList();
       if (testFilter.shouldRunBasedOnTags(tags)) {
-          objects.add(new Object[]{id, examples.get(id)});
+          objects.add(new Object[]{id, examples.get(id), suites.get(id), versions.get(id)});
         }
       }
     return objects;
@@ -151,6 +171,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   private static JsonObject manifest;
   private JsonObject content;
+  private String suite;
+  private String suiteVersion;
   private String version;
   private String name;
   private Map<String, String> packageMap = new HashMap<String, String>();
@@ -165,9 +187,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private static String currentVersion;
   private static IgLoader igLoader;
 
-  public ValidationTests(String name, JsonObject content) throws IOException {
+  public ValidationTests(String name, JsonObject content, String suite, String suiteVersion) throws IOException {
     this.name = name;
     this.content = content;
+    this.suite = suite;
+    this.suiteVersion = suiteVersion;
     this.outputFolder = Utilities.path("[tmp]", "validator", "validation-output");
     FileUtilities.createDirectory(outputFolder);
   }
@@ -209,6 +233,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @AfterClass
   public static void cleanup() throws IOException {
+    // the last test's setting would otherwise leak into the test classes that run after this one
+    XVerExtensionManagerFactory.setNewLoader(false);
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
     FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
 
@@ -231,7 +257,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 //    SHLParser.setTestMode(true);
     long setup = System.nanoTime();
 
-    logOutput("---- " + name + " ---------------------------------------------------------------- (" + System.getProperty("java.vm.name") + ")");
+    logOutput("---- " + name + " (suite " + suite + "/" + suiteVersion + ") ---------------------------------------------------------------- (" + System.getProperty("java.vm.name") + ")");
     logOutput("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
@@ -239,13 +265,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     } else {
       txLog = "/Users/grahamegrieve/temp/tx.log";
     }
-    version = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    if (content.has("version")) {
-      version = content.get("version").getAsString();
-    }
-
-    version = VersionUtilities.getMajMin(version);
+    version = VersionUtilities.getMajMin(suiteVersion);
     if (!version.equals(currentVersion)) {
       saveTerminologyCache();
       currentEngine = buildVersionEngine(version, txLog);
@@ -279,9 +300,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       throw new FHIRException("Unknown format in source " + JsonUtilities.str(content, "file"));
     }
 
-    if (!content.has("module")) {
-      throw new FHIRException("A module is required");
-    }
     InstanceValidator val = vCurr.getValidator(fmt);
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
@@ -480,9 +498,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }
-    if (content.has("new-xver-mode")) {
-      XVerExtensionManagerFactory.setNewLoader(true);
-    }
+    // a static, so it must be set for every test, or it leaks into the tests that run after this one
+    XVerExtensionManagerFactory.setNewLoader(content.has("new-xver-mode"));
     if (content.has("enforceAggregationOutsideBundles")) {
       val.setEnforceAggregationOutsideBundles(content.get("enforceAggregationOutsideBundles").getAsBoolean());
     }
@@ -583,7 +600,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       } else {
         String contents = TestingUtilities.loadTestResource("validator", filename);
         logOutput("Name: " + name + " - profile : " + profile.get("source").getAsString());
-        version = content.has("version") ? content.get("version").getAsString() : version;
         sd = loadProfile(filename, contents, messages, val.getSettings().isDebug(), val.getContext());
         logOutput("load resource " + sd.getUrl());
         val.getContext().getManager().cacheResource(sd);

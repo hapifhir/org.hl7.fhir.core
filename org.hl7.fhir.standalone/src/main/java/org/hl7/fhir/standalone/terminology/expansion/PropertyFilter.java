@@ -31,6 +31,11 @@ public class PropertyFilter extends ConceptFilter {
   @Override
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
     List<ConceptPropertyComponent> propertyComponents = getPropertiesForConcept(def);
+    if (filter.getOp() == FilterOperator.EXISTS) {
+      // "The specified property of the code has a value (if the filter value is true) or does
+      // not have a value (if false)" - a concept with no property element has no value
+      return existsFilterMatches(filter.getValue(), !propertyComponents.isEmpty());
+    }
     if (propertyComponents.isEmpty()) {
       return filter.getOp() == FilterOperator.NOTIN;
     }
@@ -126,6 +131,20 @@ public class PropertyFilter extends ConceptFilter {
       }
     } else {
       throw fail("not supported yet: " + propertyComponent.getValue().fhirType());
+    }
+  }
+
+  /**
+   * Whether a concept passes an exists filter: true selects the concepts that have a value for
+   * the property, false those that don't. Any other filter value selects nothing.
+   */
+  public static boolean existsFilterMatches(String filterValue, boolean hasValue) {
+    if ("true".equals(filterValue)) {
+      return hasValue;
+    } else if ("false".equals(filterValue)) {
+      return !hasValue;
+    } else {
+      return false;
     }
   }
 
