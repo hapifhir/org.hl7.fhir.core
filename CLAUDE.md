@@ -6,12 +6,14 @@ This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @
 
 - `org.hl7.fhir.utilities`: shared utilities. Every other module depends on it.
 - `org.hl7.fhir.dstu2`, `dstu2016may`, `dstu3`, `r4`, `r4b`, `r5`: per-version models plus their FHIRPath, terminology, renderers and context code. These models used to be generated; they are now maintained by hand.
+- `org.hl7.fhir.dstu3.support`: DSTU3 worker context (`SimpleWorkerContext`), terminology (value set expansion and checking), `ProfileUtilities`, `NarrativeGenerator` and the DSTU3 `FHIRToolingClient`, moved out of `org.hl7.fhir.dstu3`. Used by `convertors` and `validation`, and by fhir-ig-publisher.
 - `org.hl7.fhir.model`: the R6 model. `org/hl7/fhir/model/core/**` is **generated** (see below).
 - `org.hl7.fhir.services`: the R6 FHIRPath engine, terminology, renderers, elementmodel and conformance code (`IModelContext` implementations).
 - `org.hl7.fhir.standalone`: a standalone R6 `IWorkerContext` (context and terminology) for command-line use.
 - `org.hl7.fhir.convertors`: version-to-version converters.
 - `org.hl7.fhir.validation`, `org.hl7.fhir.validation.cli`: the validator and its CLI/HTTP server.
 - `org.hl7.fhir.core.generator`: the R6 code generator. It is **not** a Maven module of the root pom. See its `readme.md`.
+- `org.hl7.fhir.support`: standalone maintenance tools, almost all run through a `main()` method: terminology importers (VSAC, CPT, LOINC and others), package building and fixing, IG and search parameter analysis, and test data generators. It depends on most other modules, and only `org.hl7.fhir.report` depends on it.
 - `org.hl7.fhir.report`: only aggregates reports.
 
 ## Per-version copies
