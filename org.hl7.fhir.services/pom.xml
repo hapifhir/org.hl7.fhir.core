@@ -103,10 +103,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <!-- Suppress empty JAR warning while this module has no sources -->
-        </plugins>
-    </build>
 </project>
