@@ -75,6 +75,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /*
@@ -325,6 +326,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Getter
   protected TerminologyCache txCache;
+  /** see {@link TerminologyCache.DependencyResolver} */
+  private final TerminologyCache.DependencyResolver txResolver = this::txDependencyState;
   protected TimeTracker clock;
   private boolean tlogging = true;
   private IWorkerContextManager.ICanonicalResourceLocator locator;
@@ -340,6 +343,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
     txCache = new TerminologyCache(this, null, this); // memory only until initTxCache() is called - see TerminologyCache
+    txCache.setDependencyResolver(txResolver);
   }
 
   protected BaseWorkerContext(IModelContext modelContext, Locale locale) throws FileNotFoundException, IOException, FHIRException {
@@ -350,6 +354,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
     txCache = new TerminologyCache(this, null, this); // memory only until initTxCache() is called - see TerminologyCache
+    txCache.setDependencyResolver(txResolver);
   }
 
   protected BaseWorkerContext(IModelContext modelContext, CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
@@ -473,6 +478,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       boolean added = registerResource(r, packageInfo);
       if (added) {
         registerInAllResourceIndex(r, packageInfo);
+        if (Utilities.existsInList(r.getType(), "ValueSet", "CodeSystem")) {
+          txDependencyChanged(url, r.getSupplements(), false);
+        }
       }
     }
   }
@@ -644,9 +652,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           typeManager.see(sd);
         } else if (r instanceof ValueSet) {
           valueSets.see((ValueSet) m, packageInfo);
+          txDependencyChanged(url, null, false);
         } else if (r instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) r);
           codeSystems.see((CodeSystem) m, packageInfo);
+          txDependencyChanged(url, ((CodeSystem) m).getSupplements(), false);
         } else if (r instanceof ImplementationGuide) {
           guides.see((ImplementationGuide) m, packageInfo);
         } else if (r instanceof CapabilityStatement) {
@@ -1016,6 +1026,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getIncludeList().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, new ExpansionOptions().withHierarchical(hierarchical));
+    cacheToken.setDependencies(() -> findExpansionDependencies(vs, getExpansionParameters()));
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
     if (res != null) {
@@ -1215,12 +1226,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     CacheToken cacheToken = txCache.generateExpandToken(vs, options);
+    Parameters sent = p;
+    cacheToken.setDependencies(() -> findExpansionDependencies(vs, sent));
     ValueSetExpansionOutcome res;
     if (options.isCacheOk()) {
       res = txCache.getExpansion(cacheToken);
       if (res != null) {
         return res;
       }
+    } else {
+      txCache.captureDependencies(cacheToken);
     }
 
     List<String> allErrors = new ArrayList<>();
@@ -1336,6 +1351,218 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
+  }
+
+  /**
+   * What an expansion of vs depends on, for the tx cache (see {@link TerminologyCache.DependencyResolver}): vs
+   * itself, the ValueSets it imports, all the way down, and the CodeSystems it draws on and their supplements. These
+   * are what addDependentResources sends the server as tx-resource, and what the local expander uses, and an IG can
+   * edit any of them without changing a version. Worked out only when an answer is stored
+   */
+  public Map<String, String> findExpansionDependencies(ValueSet vs, Parameters p) {
+    Map<String, String> res = new LinkedHashMap<>();
+    if (vs.hasUrl() && !vs.getUrl().startsWith("urn:uuid:")) {
+      addTxDependency(res, "ValueSet " + vs.getVersionedUrl());
+    }
+    findExpansionDependencies(vs, p, res);
+    return res;
+  }
+
+  private void findExpansionDependencies(ValueSet vs, Parameters p, Map<String, String> res) {
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        addTxDependency(res, "CodeSystem " + ext.getValueCanonicalType().asStringValue());
+      }
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+      findExpansionDependencies(inc, p, res);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
+      findExpansionDependencies(inc, p, res);
+    }
+  }
+
+  private void findExpansionDependencies(ConceptSetComponent inc, Parameters p, Map<String, String> res) {
+    for (CanonicalType c : inc.getValueSetList()) {
+      // the server is sent the import as resolved without a version, the local expander pins it by default-valueset-version
+      String url = c.getValue();
+      String pinned = pinnedImport(url, p);
+      for (String u : url == null ? new String[0] : url.equals(pinned) ? new String[] {url} : new String[] {url, pinned}) {
+        // one that can't be loaded is recorded as failed, and there is nothing to follow
+        if (addTxDependency(res, "ValueSet " + u) && !TerminologyCache.FAILED.equals(res.get("ValueSet " + u))) {
+          ValueSet imp = (ValueSet) resolveTxDependency("ValueSet " + u);
+          if (imp != null) {
+            findExpansionDependencies(imp, p, res);
+          }
+        }
+      }
+    }
+    String sys = inc.getSystem();
+    if (sys != null) {
+      // the server is sent the code system as resolved without the include's version, the local expander uses that
+      // version, or the one the parameters pin it to
+      addCodeSystemDependencies(res, sys, inc.getVersion(), pinnedVersions(sys, p));
+      if (!sys.contains("!") && p != null) {
+        String fixed = getFixedVersion(sys, p);
+        if (fixed != null) {
+          addTxDependency(res, "supplements " + fixed);
+        }
+      }
+    }
+  }
+
+  private void addCodeSystemDependencies(Map<String, String> res, String sys, String version, List<String> pinned) {
+    addTxDependency(res, "CodeSystem " + sys);
+    addTxDependency(res, "supplements " + sys);
+    List<String> versions = new ArrayList<>(pinned);
+    if (version != null) {
+      versions.add(0, version);
+    }
+    for (String v : versions) {
+      addTxDependency(res, "CodeSystem " + sys + "|" + v);
+      addTxDependency(res, "supplements " + sys + "|" + v);
+    }
+  }
+
+  /** url as default-valueset-version pins it, as ContextUtilities.pinValueSet does for the local expander, but a malformed parameter is left to the expansion to report */
+  private String pinnedImport(String url, Parameters p) {
+    if (url != null && p != null && !url.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        String v = "default-valueset-version".equals(pp.getName()) && pp.hasValue() ? pp.getValue().primitiveValue() : null;
+        if (v != null && v.startsWith(url + "|")) {
+          return v;
+        }
+      }
+    }
+    return url;
+  }
+
+  /** the versions of sys that force-system-version, system-version and check-system-version pin it to, as the local expander reads them */
+  private List<String> pinnedVersions(String sys, Parameters p) {
+    List<String> res = new ArrayList<>();
+    if (sys != null && p != null && !sys.contains("|")) {
+      for (ParametersParameterComponent pp : p.getParameterList()) {
+        if (pp.getName() != null && Utilities.existsInList(pp.getName().toLowerCase(), "force-system-version", "system-version", "check-system-version")) {
+          String v = pp.hasValue() ? pp.getValue().primitiveValue() : null;
+          if (v != null && v.startsWith(sys + "|")) {
+            res.add(v.substring(sys.length() + 1));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * What a validate-code depends on: what an expansion of the ValueSet depends on, and the code system of each coding
+   * with its supplements, which the code and display are checked against whether or not the ValueSet names it
+   */
+  public Map<String, String> findValidationDependencies(ValueSet vs, List<Coding> codings) {
+    Parameters p = getExpansionParametersForCacheToken();
+    Map<String, String> res = vs == null ? new LinkedHashMap<>() : findExpansionDependencies(vs, p);
+    for (Coding c : codings) {
+      if (c.getSystem() != null) {
+        addCodeSystemDependencies(res, c.getSystem(), c.getVersion(), c.hasVersion() ? Collections.emptyList() : pinnedVersions(c.getSystem(), p));
+      }
+    }
+    return res;
+  }
+
+  /** false if the request is already there, so the caller doesn't follow it again (imports can be circular) */
+  private boolean addTxDependency(Map<String, String> res, String request) {
+    if (res.containsKey(request)) {
+      return false;
+    }
+    res.put(request, txDependencyState(request));
+    return true;
+  }
+
+  /**
+   * The state of a request that a cached answer depends on (see {@link TerminologyCache.DependencyResolver}): a
+   * digest of the ValueSet or CodeSystem it names, or of the supplements of the code system it names.
+   * {@link TerminologyCache#ABSENT} when there is none, {@link TerminologyCache#NO_CONTENT} for a code system whose
+   * content isn't here (a not-present stub, such as THO's for SNOMED CT and LOINC, says nothing about the answer), and
+   * {@link TerminologyCache#FAILED} when it can't be loaded. The digest of one fetched from a terminology server starts
+   * with {@link TerminologyCache#FETCHED}
+   */
+  public String txDependencyState(String request) {
+    try {
+      return dependencyState(request);
+    } catch (RuntimeException e) {
+      if (keyFetchFailures.add(request)) {
+        log.warn("Unable to load " + request + " for the tx cache: " + e.getMessage());
+      }
+      return TerminologyCache.FAILED;
+    }
+  }
+
+  private String dependencyState(String request) {
+    if (request.startsWith("supplements ")) {
+      String ref = request.substring("supplements ".length());
+      String url = ref.contains("|") ? ref.substring(0, ref.indexOf('|')) : ref;
+      String version = ref.contains("|") ? ref.substring(ref.indexOf('|') + 1) : null;
+      if (version == null) {
+        CodeSystem cs = fetchForKey(CodeSystem.class, url, null, null, null);
+        version = cs == null ? null : cs.getVersion();
+      }
+      List<String> digests = new ArrayList<>();
+      for (CodeSystem supp : codeSystems.getSupplements(url, version)) {
+        digests.add(txCache.contentDigest(supp));
+      }
+      if (digests.isEmpty()) {
+        return TerminologyCache.ABSENT;
+      }
+      Collections.sort(digests);
+      return txCache.hashJson(String.join(",", digests));
+    }
+    CanonicalResource cr = resolveTxDependency(request);
+    if (cr == null) {
+      return TerminologyCache.ABSENT;
+    }
+    if (cr instanceof CodeSystem && !isUsedContent(((CodeSystem) cr).getContent())) {
+      return TerminologyCache.NO_CONTENT;
+    }
+    // see findTxResource
+    return (cr.hasUserData(UserDataNames.render_external_link) ? TerminologyCache.FETCHED : "") + txCache.contentDigest(cr);
+  }
+
+  private static boolean isUsedContent(CodeSystemContentMode content) {
+    return content == CodeSystemContentMode.COMPLETE || content == CodeSystemContentMode.FRAGMENT || content == CodeSystemContentMode.SUPPLEMENT;
+  }
+
+  /** "ValueSet {url}[|{version}]" or "CodeSystem {url}[|{version}]" */
+  private CanonicalResource resolveTxDependency(String request) {
+    int i = request.indexOf(' ');
+    String ref = request.substring(i + 1);
+    int v = ref.indexOf('|');
+    String url = v < 0 ? ref : ref.substring(0, v);
+    String version = v < 0 ? null : ref.substring(v + 1);
+    if (request.startsWith("ValueSet ")) {
+      return fetchForKey(ValueSet.class, url, null, version, null);
+    } else {
+      return fetchForKey(CodeSystem.class, url, null, version, null);
+    }
+  }
+
+  /** a ValueSet or CodeSystem (or a supplement of the code system supplements) with this url was loaded, or dropped */
+  private void txDependencyChanged(String url, String supplements, boolean removed) {
+    if (txCache != null) {
+      if (removed) {
+        txCache.invalidateRemoved(url);
+        txCache.invalidateRemoved(supplements);
+      } else {
+        // checked against this context: a copy shares the cache
+        txCache.invalidate(url, txResolver);
+        txCache.invalidate(supplements, txResolver);
+      }
+    }
+  }
+
+  /** dependencies that couldn't be loaded, so each is only reported once */
+  private final Set<String> keyFetchFailures = ConcurrentHashMap.newKeySet();
+
+  private <T extends Resource> T fetchForKey(Class<T> type, String url, VersionResolutionRules rules, String version, Resource src) {
+    return url == null ? null : fetchResourceWithException(type, url, rules, version, src);
   }
 
   /**
@@ -1517,6 +1744,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
+      if (t.getCacheToken() != null) {
+        Coding coding = t.getCoding();
+        t.getCacheToken().setDependencies(() -> findValidationDependencies(vs, List.of(coding)));
+      }
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1803,6 +2034,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
+    if (cacheToken != null) {
+      cacheToken.setDependencies(() -> findValidationDependencies(vs, List.of(code)));
+    }
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -2280,6 +2514,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken());
+    cacheToken.setDependencies(() -> findValidationDependencies(vs, code.getCodingList()));
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
@@ -2626,7 +2861,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       && !serverHasPackagedCopy(tc, cs)) {
       checkAddToParams(tc, pin, cs);
     }
-    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+    for (CodeSystem supp : dependentSupplements(cs, sys, pin)) {
       if (opCtxt != null) {
         opCtxt.seeSupplement(supp);
       }
@@ -2634,31 +2869,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         checkAddToParams(tc, pin, supp);
       }
     }
-    if (sys != null) {
-      // we also have to look at this by version because the resource might not be versioned or we might not have a copy
-      for (CodeSystem supp : codeSystems.getSupplements(sys)) {
+  }
 
-        if (opCtxt != null) {
-          opCtxt.seeSupplement(supp);
-        }
-        if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-          checkAddToParams(tc, pin, supp);
-        }
-      }
+  /**
+   * The supplements sent with the code system sys, resolved as cs: those of cs, those by url (the resource might not
+   * be versioned, or we might not have a copy), and those of the version the parameters fix
+   */
+  private Set<CodeSystem> dependentSupplements(CodeSystem cs, String sys, Parameters pin) {
+    Set<CodeSystem> res = new LinkedHashSet<>(codeSystems.getSupplements(cs));
+    if (sys != null) {
+      res.addAll(codeSystems.getSupplements(sys));
       if (!sys.contains("!")) {
-        sys = getFixedVersion(sys, pin);
-        if (sys != null) {
-          for (CodeSystem supp : codeSystems.getSupplements(sys)) {
-            if (opCtxt != null) {
-              opCtxt.seeSupplement(supp);
-            }
-            if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-              checkAddToParams(tc, pin, supp);
-            }
-          }
+        String fixed = getFixedVersion(sys, pin);
+        if (fixed != null) {
+          res.addAll(codeSystems.getSupplements(fixed));
         }
       }
     }
+    return res;
+  }
+
+  /** the supplements sent with an include that is expanded on a server, so that an answer from the tx cache sees the same ones */
+  public Set<CodeSystem> getSupplementsSentWith(ConceptSetComponent inc) {
+    CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), null, null);
+    Parameters p = getExpansionParametersForCacheToken();
+    return dependentSupplements(cs, inc.getSystem(), p == null ? new Parameters() : p);
   }
 
   /**
@@ -2908,6 +3143,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTxCache(TerminologyCache cache) {
     txCache = cache;
+    txCache.setDependencyResolver(txResolver);
     terminologyClientManager.setCache(txCache);
   }
 
@@ -3877,6 +4113,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         for (ResourceProxy r = map.remove(id); r != null; r = r.replaced) {
           if (r.getUrl() != null) {
             unindexUrl(r.getUrl(), fhirType, id);
+          }
+          if (Utilities.existsInList(fhirType, "ValueSet", "CodeSystem")) {
+            txDependencyChanged(r.getUrl(), r.getProxy() != null ? r.getProxy().getSupplements() : r.getResource() instanceof CodeSystem ? ((CodeSystem) r.getResource()).getSupplements() : null, true);
           }
         }
       }

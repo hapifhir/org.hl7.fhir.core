@@ -1616,6 +1616,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  // the server is sent these with the request (addDependentResources), so an answer from the tx cache sees the same ones
+  private void seeServerSupplements(ConceptSetComponent inc) {
+    if (!requiredSupplements.isEmpty()) {
+      TerminologyOperationDetails seen = new TerminologyOperationDetails(requiredSupplements);
+      for (CodeSystem supp : context.getSupplementsSentWith(inc)) {
+        seen.seeSupplement(supp);
+      }
+    }
+  }
+
   private void seeSupplement(String s) {
     requiredSupplements.remove(s);
     if (s.contains("|")) {
@@ -1724,6 +1734,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       throw createTerminologyServiceException("Unable to expand imported value set: " + vso.getError(), vso);
     }
+    seeServerSupplements(inc);
     ValueSet vs = vso.getValueset();
     if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
       sources.add(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
