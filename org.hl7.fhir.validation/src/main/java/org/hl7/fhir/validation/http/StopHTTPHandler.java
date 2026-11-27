@@ -48,6 +48,9 @@ class StopHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       sendResponse(exchange, 405, "Method not allowed", "text/plain");
       return;
     }
+    if (!requireDeclaredType(exchange)) {
+      return;
+    }
 
     try {
       OperationOutcome outcome = OperationOutcomeUtilities.createSuccess("Stopping");
