@@ -964,7 +964,7 @@ class TurtleTests {
 
   @Test
   void test_turtle_subm_18NT() throws Exception {
-    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-subm-18.nt"), false);
+    doTest(TestingUtilities.resourceNameToFile("turtle", "turtle-subm-18.nt"), true);
   }
 
   @Test
