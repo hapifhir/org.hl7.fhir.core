@@ -3800,6 +3800,22 @@ public class ProfileUtilities {
 
 
   private boolean sdConformsToTargets(String path, String dPath, String url, IWorkerContext.VersionResolutionRules rules, TypeRefComponent td) {
+    // profiles that can't be found only make the target acceptable when nothing else matches
+    List<String> unknown = new ArrayList<>();
+    if (sdConformsToTargets(url, rules, td, new HashSet<>(), unknown)) {
+      return true;
+    }
+    if (unknown.contains(url)) {
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.SNAPSHOT_TARGET_PROFILE_UNKNOWN, url, dPath), IssueSeverity.WARNING));
+      return true;
+    } else if (!unknown.isEmpty()) {
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.SNAPSHOT_TARGET_PROFILE_ANCESTOR_UNKNOWN, url, dPath, CommaSeparatedStringBuilder.join(", ", unknown)), IssueSeverity.WARNING));
+      return true;
+    }
+    return false;
+  }
+
+  private boolean sdConformsToTargets(String url, IWorkerContext.VersionResolutionRules rules, TypeRefComponent td, Set<String> visited, List<String> unknown) {
     if (td.hasTargetProfile(url)) {
       return true;
     }
@@ -3808,14 +3824,21 @@ public class ProfileUtilities {
     }
     StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url, rules);
     if (sd == null) {
-      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
-      return true;
-    } else {
-      if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), td)) {
+      if (!unknown.contains(url)) {
+        unknown.add(url);
+      }
+    } else if (visited.add(sd.getVersionedUrl())) {
+      if (sd.hasBaseDefinition() && sdConformsToTargets(sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), td, visited, unknown)) {
         return true;
       }
       for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-        if (sdConformsToTargets(path, dPath, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValueCanonicalType()), td)) {
+        if (ext.getValue() != null && ext.getValue().primitiveValue() != null && sdConformsToTargets(ext.getValue().primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), td, visited, unknown)) {
+          return true;
+        }
+      }
+      // the compliesWith claim itself is checked when the profile is validated
+      for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+        if (ext.getValue() != null && ext.getValue().primitiveValue() != null && sdConformsToTargets(ext.getValue().primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()), td, visited, unknown)) {
           return true;
         }
       }
