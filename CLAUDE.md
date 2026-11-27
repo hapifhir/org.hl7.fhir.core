@@ -7,7 +7,7 @@ This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @
 - `org.hl7.fhir.utilities`: shared utilities. Every other module depends on it.
 - `org.hl7.fhir.dstu2`, `dstu2016may`, `dstu3`, `r4`, `r4b`, `r5`: per-version models plus their FHIRPath, terminology, renderers and context code. These models used to be generated; they are now maintained by hand.
 - `org.hl7.fhir.dstu3.support`: DSTU3 worker context (`SimpleWorkerContext`), terminology (value set expansion and checking), `ProfileUtilities`, `NarrativeGenerator` and the DSTU3 `FHIRToolingClient`, moved out of `org.hl7.fhir.dstu3`. Used by `convertors` and `validation`, and by fhir-ig-publisher.
-- `org.hl7.fhir.model`: the R6 model. `org/hl7/fhir/model/core/**` is **generated** (see below).
+- `org.hl7.fhir.model`: the R6 model. `model/core/**` is **generated** by the core generator, and `model/api`, `fml`, `testing` and `tools` by `ig-codegen` (see below).
 - `org.hl7.fhir.services`: the R6 FHIRPath engine, terminology, renderers, elementmodel and conformance code (`IModelContext` implementations).
 - `org.hl7.fhir.standalone`: a standalone R6 `IWorkerContext` (context and terminology) for command-line use.
 - `org.hl7.fhir.convertors`: version-to-version converters.
@@ -24,7 +24,7 @@ A lot of logic exists in several copies: r4, r4b and r5 (`fhirpath`, `terminolog
 
 ## Generated code
 
-Files that start with `// This file is generated code - do not edit it.` (mainly `org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/core/**`) are produced by `org.hl7.fhir.core.generator`. To change them, edit the templates in `org.hl7.fhir.core.generator/configuration` or `add-ons-config*`, not the output.
+Files that start with `// This file is generated code - do not edit it.` are produced by one of two generators: `org.hl7.fhir.core.generator` (the R6 core model in `org.hl7.fhir.model/.../model/core/**`) or the validator's `ig-codegen` command (IG-based code such as `model/tools`, `model/testing` and `r5/igs/testing`). Don't edit the output. See `.claude/rules/generated-code.md`.
 
 ## Downstream consumers
 
