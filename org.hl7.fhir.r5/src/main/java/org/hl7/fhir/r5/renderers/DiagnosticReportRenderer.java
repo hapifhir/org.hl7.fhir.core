@@ -160,8 +160,10 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private void populateSubjectSummary(RenderingStatus status, XhtmlNode container, ResourceWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome { 
     ResourceWithReference r = resolveReference(subject); 
-    if (r == null || r.getResource() == null) {
-      // can't resolve the subject - just render the reference as given (display / reference) 
+    if (r == null) {
+      container.tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_UNABLE)); 
+    } else if (r.getResource() == null) {
+      // resolved to a location but no resource - render the reference as given (display / reference) 
       renderReference(status, container, subject);
     } else if (r.getResource().fhirType().equals("Patient")) 
       generatePatientSummary(status, container, r.getResource()); 
