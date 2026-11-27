@@ -22,6 +22,14 @@
                       value="Incorrect matcher import used: The &quot;org.assertj.core.api.Assertions.assertThat&quot; import should be used for tests"/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- OpenTelemetry is only inherited from hapi-fhir; it must not be used directly -->
+            <property name="id" value="NoOpenTelemetry"/>
+            <property name="format" value="io\.opentelemetry\."/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message"
+                      value="OpenTelemetry must not be used directly in this project. It is only inherited from the hapi-fhir parent pom and hapi-fhir-base."/>
+        </module>
+        <module name="RegexpSinglelineJava">
             <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
             <property name="message"

@@ -37,6 +37,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- XSLT: required only by XsltUtilities; optional so consumers of just the structures don't inherit it -->
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Markdown Utilities -->
         <dependency>
             <groupId>org.commonmark</groupId>
