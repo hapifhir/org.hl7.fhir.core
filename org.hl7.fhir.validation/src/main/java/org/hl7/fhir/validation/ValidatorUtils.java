@@ -4,8 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -140,8 +142,10 @@ public class ValidatorUtils {
 
   protected static List<ValidationMessage> removeDuplicates(List<ValidationMessage> messages) {
     List<ValidationMessage> uniqueMessages = new ArrayList<ValidationMessage>();
+    Set<List<String>> knownMessageLocations = new HashSet<>();
     for (ValidationMessage e : messages) {
-      if (!uniqueMessages.contains(e))
+      // same semantics as ValidationMessage.equals: null message/location is never a duplicate
+      if (e.getMessage() == null || e.getLocation() == null || knownMessageLocations.add(List.of(e.getMessage(), e.getLocation())))
         uniqueMessages.add(e);
     }
     //filteredValidation.sort(null);

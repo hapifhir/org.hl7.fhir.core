@@ -1133,6 +1133,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     activeContentReferenceValidations.clear();
     trackedMessages.clear();
     messagesToRemove.clear();
+    messagePositionIndexes.clear();
     executionId = UUID.randomUUID().toString();
     setParents(element);
     // Start validation time out tracker; set timeout to global setting (default 0 if null)
@@ -7213,29 +7214,56 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private static void addMessagesReplaceExistingIfMoreSevere(List<ValidationMessage> errors, List<ValidationMessage> newErrors) {
-    for (ValidationMessage newError : newErrors) {
-      int index = indexOfMatchingMessageAndLocation(errors, newError);
-      if (index == -1) {
-        errors.add(newError);
-      } else {
-        ValidationMessage existingError = errors.get(index);
-        if (newError.getLevel().ordinal() < existingError.getLevel().ordinal()) {
-          errors.set(index, newError);
+  // Remembers, per message list, the position of the first message for each (message, stripped location) pair.
+  // Kept across calls because the same growing list is passed in once per resource/profile.
+  private static class MessagePositionIndex {
+    private final Map<List<String>, Integer> positionByMessageAndLocation = new HashMap<>();
+    private int indexedMessageCount = 0;
+
+    private Integer findPosition(List<ValidationMessage> messages, ValidationMessage message) {
+      catchUpWith(messages);
+      List<String> key = messageAndLocationKey(message);
+      return key == null ? null : positionByMessageAndLocation.get(key);
+    }
+
+    private void catchUpWith(List<ValidationMessage> messages) {
+      if (messages.size() < indexedMessageCount) {
+        positionByMessageAndLocation.clear();
+        indexedMessageCount = 0;
+      }
+      for (; indexedMessageCount < messages.size(); indexedMessageCount++) {
+        List<String> key = messageAndLocationKey(messages.get(indexedMessageCount));
+        if (key != null) {
+          positionByMessageAndLocation.putIfAbsent(key, indexedMessageCount);
         }
+      }
+    }
+
+    // messages without message text or location never match (same as the previous linear search)
+    private static List<String> messageAndLocationKey(ValidationMessage message) {
+      if (message.getMessage() == null || message.getLocation() == null) {
+        return null;
+      }
+      return Arrays.asList(message.getMessage(), message.getStrippedLocation());
+    }
+  }
+
+  private final Map<List<ValidationMessage>, MessagePositionIndex> messagePositionIndexes = new IdentityHashMap<>();
+
+  private void addMessagesReplaceExistingIfMoreSevere(List<ValidationMessage> errors, List<ValidationMessage> newErrors) {
+    MessagePositionIndex positionIndex = messagePositionIndexes.computeIfAbsent(errors, messages -> new MessagePositionIndex());
+    for (ValidationMessage newError : newErrors) {
+      Integer existingPosition = positionIndex.findPosition(errors, newError);
+      if (existingPosition == null) {
+        errors.add(newError);
+      } else if (isMoreSevere(newError, errors.get(existingPosition))) {
+        errors.set(existingPosition, newError);
       }
     }
   }
 
-  private static int indexOfMatchingMessageAndLocation(List<ValidationMessage> messages, ValidationMessage message) {
-    for (int i = 0; i < messages.size(); i++) {
-      ValidationMessage iMessage = messages.get(i);
-      if (message.getMessage() != null && message.getMessage().equals(iMessage.getMessage())
-        && message.getLocation() != null && message.getStrippedLocation().equals(iMessage.getStrippedLocation())) {
-        return i;
-      }
-    }
-    return -1;
+  private static boolean isMoreSevere(ValidationMessage message, ValidationMessage other) {
+    return message.getLevel().ordinal() < other.getLevel().ordinal();
   }
 
   public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws TimeoutException {

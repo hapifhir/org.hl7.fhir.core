@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* Improve validation performance for large inputs (hash-based merging and de-duplication of validation messages)
 
 ## Other code changes
 
