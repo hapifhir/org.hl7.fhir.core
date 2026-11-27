@@ -144,7 +144,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     for (Parameters.ParametersParameterComponent pp : this.expansionParameters.getParameterList()) {
-      if ("useSupplement".equals(pp.getName()) && pp.hasValue()) {
+      if ("useSupplement".equals(pp.getName()) && pp.hasValue() && pp.getValue().primitiveValue() != null) {
         requiredSupplements.add(pp.getValue().primitiveValue());
       }
     }
@@ -159,7 +159,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       opContext.note("vs = "+valueset.getVersionedUrl());
       opContext.seeContext(contextName(valueset));
       for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-        requiredSupplements.add(s.getValue().primitiveValue());
+        if (s.hasValue() && s.getValue().primitiveValue() != null) {
+          requiredSupplements.add(s.getValue().primitiveValue());
+        }
       }
 
       if (!requiredSupplements.isEmpty()) {
@@ -1000,7 +1002,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
           for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameterList()) {
-            if ("used-supplement".equals(p.getName()) && p.hasValue()) {
+            if ("used-supplement".equals(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null) {
               seeUsedSupplement(p.getValue().primitiveValue());
             }
           }
@@ -1253,8 +1255,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset != null) {
       for (Extension ext : valueset.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
         var name = ext.getExtensionString("name");
-        var value = ext.getExtensionByUrl("value").getValue();
-        if ("displayLanguage".equals(name)) {
+        var value = ext.getExtensionByUrl("value") == null ? null : ext.getExtensionByUrl("value").getValue();
+        if ("displayLanguage".equals(name) && value != null && value.primitiveValue() != null) {
           options.setLanguages(value.primitiveValue());
         }
       }

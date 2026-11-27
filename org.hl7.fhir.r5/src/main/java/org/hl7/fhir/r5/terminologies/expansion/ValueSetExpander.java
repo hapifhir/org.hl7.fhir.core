@@ -926,14 +926,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
     for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
-      processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
+      Extension value = ext.getExtensionByUrl("value");
+      processParameter(ext.getExtensionString("name"), value == null ? null : value.getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
     expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-      requiredSupplements.add(s.getValue().primitiveValue());
+      if (s.hasValue() && s.getValue().primitiveValue() != null) {
+        requiredSupplements.add(s.getValue().primitiveValue());
+      }
     }
     if (langs == null && focus.hasLanguage()) {
       langs = new AcceptLanguageHeader(focus.getLanguage(), true);
@@ -1030,6 +1033,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void processParameter(String name, DataType value) {
+    if (value == null || value.primitiveValue() == null) {
+      return;
+    }
     if (Utilities.existsInList(name, "default-valueset-version")) {
       boolean found = false;
       for (var p : focus.getExpansion().getParameter()) {
@@ -1114,14 +1120,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
     for (Extension ext : focus.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
-      processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
+      Extension value = ext.getExtensionByUrl("value");
+      processParameter(ext.getExtensionString("name"), value == null ? null : value.getValue());
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
     expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-      requiredSupplements.add(s.getValue().primitiveValue());
+      if (s.hasValue() && s.getValue().primitiveValue() != null) {
+        requiredSupplements.add(s.getValue().primitiveValue());
+      }
     }
     if (langs == null && focus.hasLanguage()) {
       langs = new AcceptLanguageHeader(focus.getLanguage(), true);
@@ -1331,7 +1340,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
    */
   private boolean checkNoInActiveFromParam(Parameters expParams) {
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if (p.getName().equals("activeOnly")) {
+      if (p.getName().equals("activeOnly") && p.hasValue() && p.getValue().primitiveValue() != null) {
         return p.getValueBooleanType().getValue();
       }
     }
