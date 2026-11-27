@@ -293,8 +293,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (cs != null) {
             checkVersion(null, c.getSystem(), cs.getVersion(), va, null);
           }
-          if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
-            if (context.isNoTerminologyServer()) {
+          if (!isLocallyValidatable(cs)) {
+            if (!c.hasCode() && (cs != null || !isSystemAnotherResource(c.getSystem()))) {
+              // there is no code to look up, so whether the code system is known is beside the point:
+              // report the missing code rather than asking (a server) about the code system. A system
+              // that is really a ValueSet (or some other resource) is reported as such below
+              if (cs != null) {
+                checkCanonical(info.getIssues(), path, cs, valueset);
+                checkVersionNeeded(info.getIssues(), path+".coding["+i+"]", c, cs);
+              }
+              res = noCodeProvided(path+".coding["+i+"]", cs == null ? c.getSystem() : cs.getUrl(), cs == null ? c.getVersion() : cs.getVersion());
+            } else if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
                 String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
@@ -872,6 +881,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
         // package's code system, and resolving the two from different packages produces spurious status
         // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
         CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
+        if (!code.hasCode() && !isLocallyValidatable(cs) && (cs != null || !isSystemAnotherResource(system))) {
+          // as for a CodeableConcept: with no code there is nothing to look up, so report the missing
+          // code rather than an unknown code system (and don't go to the server to find out). A system
+          // that is really a ValueSet (or some other resource) is reported as such below
+          if (cs != null) {
+            checkCanonical(issues, path, cs, valueset);
+            checkVersionNeeded(issues, path, code, cs);
+          }
+          ValidationResult ncp = noCodeProvided(path, cs == null ? system : cs.getUrl(), cs == null ? code.getVersion() : cs.getVersion());
+          ncp.setIssues(issues); // keeps any issues already found (e.g. a relative system), then this one
+          return ncp;
+        }
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getFHIRVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(null, code.getCode()), "application/fhir+"+code.getCode());
@@ -1408,11 +1429,27 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return false;
   }
 
+  private static boolean isLocallyValidatable(CodeSystem cs) {
+    return cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.SUPPLEMENT || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+  }
+
+  private boolean isSystemAnotherResource(String system) {
+    if (context.fetchResource(ValueSet.class, system, VersionResolutionRules.defaultRule()) != null) {
+      return true;
+    }
+    Resource res = context.fetchResource(Resource.class, system, VersionResolutionRules.defaultRule());
+    return res != null && !"CodeSystem".equals(res.fhirType());
+  }
+
+  private ValidationResult noCodeProvided(String path, String system, String version) {
+    String msgid = version == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
+    String msg = context.formatMessage(msgid, system, version);
+    return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
+  }
+
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
     if (code.getCode() == null) {
-      String msgid = cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
-      String msg = context.formatMessage(msgid, cs.getUrl(), cs.getVersion());
-      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
+      return noCodeProvided(path, cs.getUrl(), cs.getVersion());
     }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConceptList(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
