@@ -144,7 +144,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     for (Parameters.ParametersParameterComponent pp : this.expansionParameters.getParameterList()) {
-      if ("useSupplement".equals(pp.getName())) {
+      if ("useSupplement".equals(pp.getName()) && pp.hasValue()) {
         requiredSupplements.add(pp.getValue().primitiveValue());
       }
     }
@@ -1000,7 +1000,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
           for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameterList()) {
-            if ("used-supplement".equals(p.getName())) {
+            if ("used-supplement".equals(p.getName()) && p.hasValue()) {
               seeUsedSupplement(p.getValue().primitiveValue());
             }
           }
@@ -1755,7 +1755,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private List<String> alternateCodes(ConceptDefinitionComponent focus, AlternateCodesProcessingRules altCodeRules) {
     List<String> codes = new ArrayList<>();
     for (ConceptPropertyComponent p : focus.getPropertyList()) {
-      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.hasValue() && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -2160,13 +2160,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameterList()) {
-      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
@@ -2244,7 +2244,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private void checkVersion(String path, @Nonnull String system, @Nonnull String version, VersionAlgorithm va, List<OperationOutcomeIssueComponent> issues) {
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameterList()) {
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }

@@ -363,7 +363,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private String findParamValue(List<ValueSetExpansionParameterComponent> list, String name) {
     for (ValueSetExpansionParameterComponent p : list) {
-      if (name.equals(p.getName())) {
+      if (name.equals(p.getName()) && p.hasValue()) {
         return p.getValue().primitiveValue();
       }
     }
@@ -536,7 +536,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return vsSrc.getLanguage();
     }
     for (ValueSetExpansionParameterComponent p : vsSrc.getExpansion().getParameter()) {
-      if ("displayLanguage".equals(p.getName())) {
+      if ("displayLanguage".equals(p.getName()) && p.hasValue()) {
         return p.getValue().primitiveValue();
       }
     }
@@ -558,7 +558,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     List<String> codes = new ArrayList<>();
     codes.add(focus.getCode());
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p : focus.getProperty()) {
-      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.hasValue() && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -653,7 +653,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     List<String> codes = new ArrayList<>();
     codes.add(focus.getCode());
     for (ConceptPropertyComponent p : focus.getProperty()) {
-      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeParams.passes(p.getExtension())) && p.hasValue() && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -1639,13 +1639,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     String result = version;
     List<ParametersParameterComponent> rules = new ArrayList<>();
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
@@ -1697,7 +1697,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     String result = version;
     List<ParametersParameterComponent> rules = new ArrayList<>();
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
@@ -1716,7 +1716,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private boolean hasParam(ValueSetExpansionComponent exp, String name, String s) {
     for (ValueSetExpansionParameterComponent t : exp.getParameter()) {
-      if (t.getName().equals(name) && t.getValue().primitiveValue() != null && t.getValue().primitiveValue().equals(s)) {
+      if (t.getName().equals(name) && t.hasValue() && t.getValue().primitiveValue() != null && t.getValue().primitiveValue().equals(s)) {
         return true;
       }
     }
