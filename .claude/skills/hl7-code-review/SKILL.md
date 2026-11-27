@@ -9,7 +9,7 @@ This skill supports code review for org.hl7.fhir.core and its sibling repos. The
 
 ## Projects
 
-| Default location (relative to this repo's root) | GitHub repo |
+| Usual location (found by git remote, see CLAUDE.md) | GitHub repo |
 |---|---|
 | `.` | `hapifhir/org.hl7.fhir.core` |
 | `../fhir-ig-publisher` | `HL7/fhir-ig-publisher` |

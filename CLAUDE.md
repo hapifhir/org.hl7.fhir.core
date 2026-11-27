@@ -34,19 +34,21 @@ Files that start with `// This file is generated code - do not edit it.` are pro
 
 ## Sibling repositories
 
-Developers clone these wherever they like, so never assume a path.
+Developers clone these wherever they like and name the folders as they like, so never assume a path.
 
-| Name | GitHub repo | Default location to try |
+| Name | GitHub repo | Clone location if missing |
 |---|---|---|
 | kindling | `HL7/kindling` | `../kindling` |
 | fhir-ig-publisher | `HL7/fhir-ig-publisher` | `../fhir-ig-publisher` |
 | fhir-test-cases | `FHIR/fhir-test-cases` | `../fhir-test-cases` |
 
-When a task needs one of them, resolve its path in this order:
-1. **Memory.** Use the `sibling-repo-paths` auto-memory if it exists. Check that the remembered path still exists. If it doesn't, treat the repo as unknown.
-2. **Default location.** Accept the default location only if `git -C <path> remote -v` shows a URL containing the GitHub repo name.
-3. **Ask.** Use AskUserQuestion with these options: clone it to the default location (`gh repo clone <GitHub repo> <path>`, recommended), give another path (verify it as in step 2), or "not checked out, use `gh search code`".
-4. **Remember.** Write or update the `sibling-repo-paths` memory (type `reference`, one line per repo with an absolute path or "not checked out") in your auto-memory directory, and its `MEMORY.md` pointer. Record "not checked out" too, so you don't ask again. Never store these paths under this repo's `.claude/`.
+Paths are relative to this repo's root (`git rev-parse --show-toplevel`). When a task needs one of these repos, resolve its path in this order:
+1. **Memory.** If you have auto-memory, use the `sibling-repo-paths` memory if it exists. Check that the remembered path still exists and still matches (see step 2). If it doesn't, treat the repo as unknown.
+2. **Scan the parent folder.** Check every folder next to this repo: `for d in ../*/; do git -C "$d" remote -v 2>/dev/null | sed "s|^|$d |"; done`. A folder matches if any remote URL ends in the repo name, with or without `.git`, for example `.../kindling.git`. This also catches forks whose `upstream` is the HL7 repo.
+   - Exactly one match: use it.
+   - Several matches: ask which one to use.
+3. **Ask.** If nothing matches, ask the developer, with AskUserQuestion if you have it. Offer three options: clone it to the location in the table (`gh repo clone <GitHub repo> <path>`, recommended), give another path (verify it as in step 2), or "not checked out, use `gh search code`".
+4. **Remember.** If you have auto-memory, write or update the `sibling-repo-paths` memory (type `reference`, one line per repo with an absolute path or "not checked out") and its `MEMORY.md` pointer. Record "not checked out" too, so you don't ask again. Without auto-memory, reuse the answer for the rest of the session. Never store these paths in this repo, including `.claude/`.
 
 Subagents can't ask the user or read your memory. Resolve the paths first and put them in the subagent's brief.
 
