@@ -18,8 +18,8 @@ This is a Java project using Maven and JUnit 5. Tests use parameterized tests, @
 
 ## Per-version copies
 
-A lot of logic exists in several copies: r4, r4b and r5 (`fhirpath`, `terminologies`, `renderers`, `context`), plus the R6 copies in `services`, `standalone` and `model/utilities`. Examples are `FHIRPathEngine`, `CodeSystemUtilities`, `ValueSetExpander`, `ValueSetValidator` and `BaseWorkerContext`.
-- When you change one copy, find the others (`find . -name <Class>.java -not -path '*/target/*'`) and decide whether they need the same change. Usually r5 and its R6 copies do.
+A lot of logic exists in several copies: r4, r4b and r5 (`fhirpath`, `terminologies`, `renderers`, `context`), plus the R6 copies in `services`, `standalone` and `model/utilities`. Examples are `FHIRPathEngine`, `CodeSystemUtilities`, `ValueSetExpander`, `ValueSetValidator` and `BaseWorkerContext`. The R6 convertors `conv40_N` and `conv43_N` are clones of `conv40_50` and `conv43_50`. See `.claude/rules/per-version-copies.md` for the full list and the review guidance.
+- When you change one copy, find the others (`find . -name <Class>.java -not -path '*/target/*'`) and decide whether they need the same change. Bug fixes usually go to r5 and its R6 copies, and to both convertor clones. Some `services` changes are deliberately not ported to r5. The r4 and r4b terminology client loggers are still maintained.
 - The copies existing is expected; don't report it as duplication. Copies that have **diverged** without a reason are a finding.
 
 ## Generated code
