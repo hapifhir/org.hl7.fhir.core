@@ -153,7 +153,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     for (Parameters.ParametersParameterComponent pp : this.expansionParameters.getParameter()) {
-      if ("useSupplement".equals(pp.getName())) {
+      if ("useSupplement".equals(pp.getName()) && pp.hasValue() && pp.getValue().primitiveValue() != null) {
         requiredSupplements.add(pp.getValue().primitiveValue());
       }
     }
@@ -168,7 +168,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       opContext.note("vs = "+valueset.getVersionedUrl());
       opContext.seeContext(contextName(valueset));
       for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-        requiredSupplements.add(s.getValue().primitiveValue());
+        if (s.hasValue() && s.getValue().primitiveValue() != null) {
+          requiredSupplements.add(s.getValue().primitiveValue());
+        }
       }
 
       if (!requiredSupplements.isEmpty()) {
@@ -1031,7 +1033,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
           for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameter()) {
-            if ("used-supplement".equals(p.getName())) {
+            if ("used-supplement".equals(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null) {
               seeUsedSupplement(p.getValue().primitiveValue());
             }
           }
@@ -1242,8 +1244,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset != null) {
       for (Extension ext : valueset.getCompose().getExtensionsByUrl(ExtensionDefinitions.EXT_VS_EXP_PARAM_NEW, ExtensionDefinitions.EXT_VS_EXP_PARAM_OLD)) {
         var name = ext.getExtensionString("name");
-        var value = ext.getExtensionByUrl("value").getValue();
-        if ("displayLanguage".equals(name)) {
+        var value = ext.getExtensionByUrl("value") == null ? null : ext.getExtensionByUrl("value").getValue();
+        if ("displayLanguage".equals(name) && value != null && value.primitiveValue() != null) {
           options.setLanguages(value.primitiveValue());
         }
       }
@@ -1760,7 +1762,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private List<String> alternateCodes(ConceptDefinitionComponent focus, AlternateCodesProcessingRules altCodeRules) {
     List<String> codes = new ArrayList<>();
     for (ConceptPropertyComponent p : focus.getProperty()) {
-      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.getValue().isPrimitive()) {
+      if ("alternateCode".equals(p.getCode()) && (altCodeRules.passes(p.getExtension())) && p.hasValue() && p.getValue().isPrimitive()) {
         codes.add(p.getValue().primitiveValue());        
       }
     }
@@ -2165,13 +2167,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameter()) {
-      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("force-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
@@ -2249,7 +2251,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private void checkVersion(String path, @Nonnull String system, @Nonnull String version, VersionAlgorithm va, List<OperationOutcomeIssueComponent> issues) {
     List<Parameters.ParametersParameterComponent> rules = new ArrayList<>();
     for (Parameters.ParametersParameterComponent p : expansionParameters.getParameter()) {
-      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
+      if ("check-system-version".equalsIgnoreCase(p.getName()) && p.hasValue() && p.getValue().primitiveValue() != null && p.getValue().primitiveValue().startsWith(system+"|")) {
         rules.add(p);
       }
     }
