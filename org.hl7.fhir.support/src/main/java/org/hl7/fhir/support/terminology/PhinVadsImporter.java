@@ -74,7 +74,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
       vs.setStatus(PublicationStatus.DRAFT);
     }
     if (rdr.has("VS Last Updated Date")) {
-      vs.setDate(new SimpleDateFormat("mm/dd/yyyy").parse(rdr.cell("VS Last Updated Date")));
+      vs.setDate(new SimpleDateFormat("MM/dd/yyyy").parse(rdr.cell("VS Last Updated Date")));
     }
 
     rdr = new CSVReader(new ByteArrayInputStream(parts.get(parts.size() - 1)));

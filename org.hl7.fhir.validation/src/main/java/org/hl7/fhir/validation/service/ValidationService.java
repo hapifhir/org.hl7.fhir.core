@@ -126,7 +126,7 @@ public class ValidationService {
 
   public ValidationService(RendererFactory rendererFactory) {
     sessionCache = new PassiveExpiringSessionCache();
-    runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
+    runDate = new SimpleDateFormat("HH:mm:ss", new Locale("en", "US")).format(new Date());
     this.rendererFactory = rendererFactory;
   }
 

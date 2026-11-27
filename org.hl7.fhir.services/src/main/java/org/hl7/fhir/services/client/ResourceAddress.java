@@ -413,7 +413,7 @@ public class ResourceAddress {
 	}
 	
 	public static String getCalendarDateInIsoTimeFormat(Calendar calendar) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", new Locale("en", "US"));//TODO Move out
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", new Locale("en", "US"));//TODO Move out
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 	    return format.format(calendar.getTime());
 	}

@@ -487,7 +487,7 @@ public class ValidationEngineTests {
   }
 
   private String setupFolder() throws IOException {
-    String now = new SimpleDateFormat("yyyymmddhhMMss").format(new Date());
+    String now = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
     String folder = Utilities.path("[tmp]", "validator-resolution", now);
     FileUtilities.createDirectory(folder);
     for (String s : Utilities.strings("Organization-first.xml", "Patient-example-newborn.json", "patient-example.json")) {
