@@ -188,6 +188,10 @@ public class ParametersValidator extends BaseValidator {
     String type = parameter.hasChild("value") ? parameter.getNamedChild("value").fhirType() : null;
     String rType = parameter.hasChild("resource") ? parameter.getNamedChild("resource").fhirType() : null;
 
+    if (name == null) {
+      return true; // Parameters.parameter.name is 1..1; the structural cardinality check reports it
+    }
+
     ParamRule rule = PARAM_RULES.get(name);
     if (rule == null) {
       return true; // unknown parameter, nothing to validate
