@@ -902,7 +902,7 @@ public class Turtle {
           if (ch == '"') {
             if (b.toString().equals("\"\"\"")) {
               end = "\"\"\"";
-            } else if (!b.toString().equals("\"\"") && b.toString().endsWith(end) && !b.toString().endsWith("\\" + end)) {
+            } else if (!b.toString().equals("\"\"") && b.length() >= 2 * end.length() && b.toString().endsWith(end) && !b.toString().endsWith("\\" + end)) {
               break;
             }
           }
@@ -922,7 +922,7 @@ public class Turtle {
 					b.append(ch);
 					if (b.toString().equals("'''"))
 						end = "'''";
-					else if (!b.toString().equals("''") && b.toString().endsWith(end))
+					else if (!b.toString().equals("''") && b.length() >= 2 * end.length() && b.toString().endsWith(end))
 						break;
 				}
 				type = LexerTokenType.LITERAL;
