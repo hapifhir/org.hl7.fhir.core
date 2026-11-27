@@ -233,6 +233,9 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (!Utilities.noString(display)) {
       return display;
     }
+    if (res.getResource() == null) {
+      return res.getUrlReference() != null ? res.getUrlReference() : "??";
+    }
     return context.getRendererFactory().factory(res.getResource(), context.forContained()).buildSummary(res.getResource());
   }
 

@@ -335,6 +335,8 @@ public abstract class ResourceRenderer extends DataRenderer {
           try {
             if (display != null && display.hasPrimitiveValue()) {
               disp = displayDataType(display);
+            } else if (rr.getResource() == null) {
+              disp = rr.getUrlReference() != null ? rr.getUrlReference() : actual.primitiveValue();
             } else if (recursionCount >= MAX_SUMMARY_RECURSION) {
               disp = "???";
             } else {
@@ -705,7 +707,9 @@ public abstract class ResourceRenderer extends DataRenderer {
         x.ah(context.prefixLocalHref(v)).addText(v.substring(7)); 
       } else { 
         ResourceWithReference rr = resolveReference(resource, uri.primitiveValue(), false);
-        if (rr != null) {
+        if (rr != null && rr.getResource() == null) {
+          x.ah(rr.getWebPath()).addText(rr.getUrlReference() != null ? rr.getUrlReference() : v);
+        } else if (rr != null) {
           x.ah(rr.getWebPath()).addText(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
         } else {
           Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(uri));
