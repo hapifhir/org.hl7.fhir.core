@@ -30,12 +30,6 @@ Note that the safe-regex2 tool has the following warning, and keep it in mind wh
 WARNING: This module has both false positives and false negatives. It is not meant as a full checker, but it detects basic cases.
 ```
 
-## safe_regex.xml
-
-[safe_regex.xml](./safe_regex.xml) contains a list of regexes that are known to be safe from catastrophic backtracking that can be used for some common validation purposes.
-
-These were sourced from https://owasp.org/www-community/OWASP_Validation_Regex_Repository. If the user asks, compare this file with that page and suggest updates.
-
 ## SonarQube rule for catastrophic backtracking
 
 SonarQube evaluates regexs using the following project: https://github.com/SonarSource/sonar-java/ 
