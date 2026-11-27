@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -18,6 +19,14 @@ class JsonObjectTests {
     json.set("date", "2022-10-12");
     System.out.println(json.asString("date"));
     Assertions.assertNotNull(json.asInstant("date"));
+  }
+
+  @Test
+  void asInstantKeepsTheMonthOfADate() throws ParseException {
+    JsonObject json = new JsonObject();
+    json.set("date", "2022-10-12");
+    Instant expected = LocalDate.of(2022, 10, 12).atStartOfDay(ZoneId.systemDefault()).toInstant();
+    Assertions.assertEquals(expected, json.asInstant("date"));
   }
 
   @Test
